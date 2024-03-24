@@ -288,7 +288,12 @@
         </select>
     </div>
     <div id="mycell">
-        <script type="text/x-sage">plot(sin(x), (x, 0, 2*pi))</script>
+        <script type="text/x-sage">def f(x,y):
+        return math.exp(x/5)*math.sin(y)
+        P = plot3d(f, (-5, 5), (-5, 5), adaptive=True, color=['red', 'yellow'])
+        from sage.plot.plot3d.plot3d import axes
+        S = P + axes(6, color='black')
+        S.show())</script>
     </div>
     <script>
         var availableTags = ['gamma(x)', 'zeta(x)', 'polylog(n,m)', 'polylog(n,m).re', 'polylog(n,m).im', 'abs', 'acos', 'asin', 'atan', 'asinh', 'acosh', 'atanh', 'cos', 'sin', 'tan', 'sinh', 'cosh', 'tanh', 'sqrt', 'log10', 'log2', 'log', 'ln', 'exp',
