@@ -1,0 +1,57 @@
+.js-tabs {
+    /* margin: 2em;*/
+    margin: 10px 0;
+    max-width: 100%;
+}
+
+.js-tabs__header {
+    display: block;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.js-tabs__header li {
+    display: inline-block;
+    float: left;
+}
+
+.js-tabs__title {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: block;
+    margin-right: 0.5em;
+    padding: 0.3em 0.5em;
+    transition: all 0.25s;
+    /*font-weight: 700;*/
+}
+
+.js-tabs__header li a:link,
+.js-tabs__header li a:visited {
+    color: #202020;
+    text-decoration: none;
+}
+
+.js-tabs__title:hover {
+    text-decoration: none;
+    background-color: #dfdfdf;
+}
+
+.js-tabs__title-active {
+    background: #fff;
+    border-bottom-color: #fff;
+    border-top-left-radius: 0.75em;
+}
+
+.js-tabs__header li a.js-tabs__title.js-tabs__title-active {
+    color: #ff1477;
+    text-decoration: none;
+}
+
+.js-tabs__content {
+    border: 1px solid #ccc;
+    line-height: 1.5;
+    margin-top: -1px;
+    padding: 10px 5px 5px 5px;
+}
