@@ -1,9 +1,360 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>SageMathCell Calculator</title>
+    <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
+    <script>
+        // Make the div with id 'mycell' a Sage cell
+        sagecell.makeSagecell({
+            inputLocation: '#mycell',
+            evalButtonText: 'Activate'
+        });
+    </script>
+    <link rel="stylesheet" href="vanilla-js-tabs/dist/vanilla-js-tabs.css">
+    <script src="vanilla-js-tabs/dist/vanilla-js-tabs.min.js"></script>
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script> -->
+    <style>
+        button.sagecell_fullScreen.sagecell_icon-resize-full {
+            top: 2px;
+            right: 17px;
+        }
+        
+        table.kbd tr td {
+            width: 20px;
+            height: 15px;
+            background-color: #eee;
+            /*font-weight: 700;*/
+            padding: 5px;
+            text-align: center;
+            line-height: 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+        
+        table.kbd tr td:hover {
+            background-color: #ddd;
+            border: 1px solid #ccc;
+        }
+        
+        #settingbar {
+            border: 1px solid #dfdfdf;
+            border-radius: 3px;
+            padding: 5px;
+        }
+        
+        .CodeMirror-sizer {
+            padding-top: 5px;
+        }
+        
+        .container {
+            display: grid;
+            width: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(50px, max-content));
+            grid-gap: 0.3em;
+            padding-top: 2px;
+        }
+        
+        .kbdbtn {
+            padding: 5px;
+            text-align: center;
+            cursor: pointer;
+            /*background-color: fuchsia;
+           color: white;*/
+            background-color: #e6e6e6;
+            color: #636363;
+            font-size: 1em;
+            border-radius: 5px;
+            box-shadow: 1px 1px 1px #333;
+            transition: .2s;
+        }
+        
+        .kbdbtn:hover {
+            /*box-shadow: 10px 10px 10px fuchsia;
+            box-shadow: 10px 10px 10px #c7c7c7;*/
+            box-shadow: 4px 4px 4px #c7c7c7;
+            transform: scale(1.05);
+            background-color: white;
+            color: black;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-day.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-night.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/abbott.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/abcdef.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ambiance-mobile.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ayu-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ayu-mirage.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/base16-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/bespin.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/base16-light.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/blackboard.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/cobalt.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/colorforth.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/darcula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/duotone-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/duotone-light.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/eclipse.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/elegant.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/erlang-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/gruvbox-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/hopscotch.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/icecoder.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/idea.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/isotope.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/juejin.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/lesser-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/liquibyte.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/lucario.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/material.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/material-darker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/material-palenight.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/material-ocean.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/mbo.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/mdn-like.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/midnight.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/moxer.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/neat.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/neo.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/night.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/nord.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/oceanic-next.min.css">
+    <link rel="stylesheet" href="one-dark.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/panda-syntax.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/paraiso-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/paraiso-light.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/pastel-on-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/railscasts.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/rubyblue.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/seti.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/shadowfox.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/solarized.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/the-matrix.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/tomorrow-night-bright.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/tomorrow-night-eighties.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ttcn.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/twilight.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/vibrant-ink.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/xq-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/xq-light.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/yeti.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/yonce.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/zenburn.min.css">
+</head>
+
 <body>
-    <h1>Hello World zz</h1>
-    <p>I'm hosted with GitHub Pages.</p>
+    <div class="js-tabs" id="tabs">
+
+        <ul class="js-tabs__header">
+            <li><a href="#" class="js-tabs__title">Γ, ζ, Li<sub>n</sub></a></li>
+            <li><a href="#" class="js-tabs__title">Title 2</a></li>
+            <li><a href="#" class="js-tabs__title">Title 3</a></li>
+            <li><a href="#" class="js-tabs__title">Title 4</a></li>
+        </ul>
+
+        <div class="js-tabs__content">
+            <div class="container">
+                <div class="kbdbtn" data-btn="gamma(x)" onclick="beilleszt(this,1);" title="">Γ(x)</div>
+                <div class="kbdbtn" data-btn="zeta(n)" onclick="beilleszt(this,1);" title="Riemann zeta function of a real or complex number">ζ(x)</div>
+                <div class="kbdbtn" data-btn="hurwitzZeta(n,a)" onclick="beilleszt(this,2);" title="Hurwitz zeta function of a real or complex number with real or complex parameter a">ζ(x,a)</div>
+                <div class="kbdbtn" data-btn="dirichletEta(n)" onclick="beilleszt(this,1);" title="Dirichlet eta function of a real or complex number">η(x)</div>
+                <div class="kbdbtn" data-btn="harmonic(n)" onclick="beilleszt(this,1);" title="Harmonic number for index n">H<sub>n</sub></div>
+                <div class="kbdbtn" data-btn="polylog(n,x)" onclick="beilleszt(this,2);" title="Polylogarithm function of real or complex order n of a real or complex number">Li<sub>n</sub>(x)</div>
+                <div class="kbdbtn" data-btn="bernoulli(n)" onclick="beilleszt(this,1);" title="Bernoulli number for index n">B<sub>n</sub></div>
+                <div class="kbdbtn" data-btn="bernoulli(n,x)" onclick="beilleszt(this,2);" title="Bernoulli polynomial for index n of a real or complex number">B<sub>n</sub>(x)</div>
+                <div class="kbdbtn" data-btn="dB(n,m)" onclick="beilleszt(this,2);" title="Bernoulli polynomial for index n of a real or complex number">∂<sub>n,m</sub>B</div>
+                <div div class="kbdbtn">7</div>
+                <div div class="kbdbtn">8</div>
+            </div>
+        </div>
+        <div class="js-tabs__content">
+            <h1>TWO</h1>
+        </div>
+
+        <div class="js-tabs__content">
+            <h1>THREE</h1>
+        </div>
+
+        <div class="js-tabs__content">
+            <h1>FOUR</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0</div>
+        <div class="kbdbtn" data-btn="1" onclick="beilleszt(this,0);">1</div>
+        <div class="kbdbtn" data-btn="2" onclick="beilleszt(this,0);">2</div>
+        <div class="kbdbtn" data-btn="3" onclick="beilleszt(this,0);">3</div>
+        <div class="kbdbtn" data-btn="4" onclick="beilleszt(this,0);">4</div>
+        <div class="kbdbtn" data-btn="5" onclick="beilleszt(this,0);">5</div>
+        <div class="kbdbtn" data-btn="6" onclick="beilleszt(this,0);">6</div>
+        <div class="kbdbtn" data-btn="7" onclick="beilleszt(this,0);">7</div>
+        <div class="kbdbtn" data-btn="8" onclick="beilleszt(this,0);">8</div>
+        <div class="kbdbtn" data-btn="9" onclick="beilleszt(this,0);">9</div>
+        <div class="kbdbtn" data-btn="." onclick="beilleszt(this,0);">.</div>
+        <div class="kbdbtn" data-btn="pi" onclick="beilleszt(this,0);">π</div>
+        <div class="kbdbtn" data-btn=".re" onclick="beilleszt(this,0);">ℜe</div>
+        <div class="kbdbtn" data-btn=".im" onclick="beilleszt(this,0);">ℑm</div>
+        <div class="kbdbtn" data-btn="+" onclick="beilleszt(this,0);">+</div>
+        <div class="kbdbtn" data-btn="-" onclick="beilleszt(this,0);">-</div>
+        <div class="kbdbtn" data-btn="*" onclick="beilleszt(this,0);">*</div>
+        <div class="kbdbtn" data-btn="/" onclick="beilleszt(this,0);">/</div>
+        <div class="kbdbtn" data-btn="sqrt(x)" onclick="beilleszt(this,1);">&#x221A</div>
+        <div class="kbdbtn" data-btn="(" onclick="beilleszt(this,0);">(</div>
+        <div class="kbdbtn" data-btn=")" onclick="beilleszt(this,0);">)</div>
+        <div class="kbdbtn" data-btn="[" onclick="beilleszt(this,0);">[</div>
+        <div class="kbdbtn" data-btn="]" onclick="beilleszt(this,0);">]</div>
+        <div class="kbdbtn" data-btn="" onclick="beilleszt(this,0);">&nbsp;</div>
+        <div class="kbdbtn" data-btn="," onclick="beilleszt(this,0);">,</div>
+        <div class="kbdbtn" onclick="moveLeft();">&#x27E8</div>
+        <div class="kbdbtn" onclick="moveRight();">&#x27E9</div>
+        <div class="kbdbtn" onclick="torolTextLeft();">&#x232B</div>
+        <div class="kbdbtn" onclick="torol();">AC</div>
+    </div>
+
+    <div id="settingbar">
+        <input id="font-slider" oninput="setCmFont(this.value);" type="range" min="12" max="24" value="16" style="display:inline-block;width:120px;vertical-align: middle;">
+        <select id="cm-select" onchange="setCmTheme(this.value);" style="display:inline-block;width:180px;">
+        <option value="default">default</option>
+        <option value="3024-day">3024-day</option>
+        <option value="3024-night">3024-night</option>
+        <option value="abbott">abbott</option>
+        <option value="abcdef">abcdef</option>
+        <option value="ambiance">ambiance</option>
+        <option value="ayu-dark">ayu-dark</option>
+        <option value="ayu-mirage">ayu-mirage</option>
+        <option value="base16-dark">base16-dark</option>
+        <option value="base16-light">base16-light</option>
+        <option value="bespin">bespin</option>
+        <option value="blackboard">blackboard</option>
+        <option value="cobalt">cobalt</option>
+        <option value="colorforth">colorforth</option>
+        <option value="darcula">darcula</option>
+        <option value="dracula">dracula</option>
+        <option value="duotone-dark">duotone-dark</option>
+        <option value="duotone-light">duotone-light</option>
+        <option value="eclipse">eclipse</option>
+        <option value="elegant">elegant</option>
+        <option value="erlang-dark">erlang-dark</option>
+        <option value="gruvbox-dark">gruvbox-dark</option>
+        <option value="hopscotch">hopscotch</option>
+        <option value="icecoder">icecoder</option>
+        <option value="idea">idea</option>
+        <option value="isotope">isotope</option>
+        <option value="juejin<">juejin</option>
+        <option value="lesser-dark">lesser-dark</option>
+        <option value="liquibyte">liquibyte</option>
+        <option value="lucario">lucario</option>
+        <option value="material">material</option>
+        <option value="material-darker">material-darker</option>
+        <option value="material-palenight">material-palenight</option>
+        <option value="material-ocean">material-ocean</option>
+        <option value="mbo">mbo</option>
+        <option value="mdn-like">mdn-like</option>
+        <option value="midnight">midnight</option>
+        <option value="monokai">monokai</option>
+        <option value="moxer">moxer</option>
+        <option value="neat">neat</option>
+        <option value="neo">neo</option>
+        <option value="night">night</option>
+        <option value="nord">nord</option>
+        <option value="oceanic-next">oceanic-next</option>
+        <option value="one-dark">one-dark</option>
+        <option value="panda-syntax">panda-syntax</option>
+        <option value="paraiso-dark">paraiso-dark</option>
+        <option value="paraiso-light">paraiso-light</option>
+        <option value="pastel-on-dark">pastel-on-dark</option>
+        <option value="railscasts">railscasts</option>
+        <option value="rubyblue">rubyblue</option>
+        <option value="seti" selected="">seti</option>
+        <option value="shadowfox">shadowfox</option>
+        <option value="solarized dark">solarized dark</option>
+        <option value="solarized light">solarized light</option>
+        <option value="the-matrix">the-matrix</option>
+        <option value="tomorrow-night-bright">tomorrow-night-bright</option>
+        <option value="tomorrow-night-eighties">tomorrow-night-eighties</option>
+        <option value="ttcn">ttcn</option>
+        <option value="twilight">twilight</option>
+        <option value="vibrant-ink">vibrant-ink</option>
+        <option value="xq-dark">xq-dark</option>
+        <option value="xq-light">xq-light</option>
+        <option value="yeti">yeti</option>
+        <option value="yonce">yonce</option>
+        <option value="zenburn">zenburn</option>
+        </select>
+    </div>
+    <div id="mycell">
+        <script type="text/x-sage">plot(sin(x), (x, 0, 2*pi))</script>
+    </div>
+    <script>
+        var availableTags = ['gamma(x)', 'zeta(x)', 'polylog(n,m)', 'polylog(n,m).re', 'polylog(n,m).im', 'abs', 'acos', 'asin', 'atan', 'asinh', 'acosh', 'atanh', 'cos', 'sin', 'tan', 'sinh', 'cosh', 'tanh', 'sqrt', 'log10', 'log2', 'log', 'ln', 'exp',
+            'abs(x)', 'acos(x)', 'asin(x)', 'atan(x)', 'asinh(x)', 'acosh(x)', 'atanh(x)', 'cos(x)', 'sin(x)', 'tan(x)', 'sinh(x)', 'cosh(x)', 'tanh(x)', 'sqrt(x)', 'log10(x)', 'log2(x)', 'log(x)', 'ln(x)', 'exp(x)'
+        ];
+
+        var tabs = new Tabs({
+            elem: "tabs",
+            open: 0
+        });
+
+        function setCmFont(v) {
+            cmeditor.getWrapperElement().style["font-size"] = v + "px";
+            cmeditor.refresh();
+        };
+
+        function setCmTheme(theme) {
+            cmeditor.setOption("theme", theme);
+        }
+        var beilleszt = function(x, n) {
+            var btntxt = x.getAttribute('data-btn');
+            insertText(btntxt, n);
+        };
+
+        var insertText = (text, n) => {
+            cmeditor.replaceSelection(text);
+            if (n > 0) {
+                var back = 1;
+                if (n == 2)
+                    back = 3
+                cmeditor.execCommand('goCharLeft')
+                var pos = cmeditor.getCursor();
+                console.log(pos)
+                cmeditor.setSelection({
+                    line: pos.line,
+                    ch: pos.ch - back
+                }, pos);
+            }
+            cmeditor.focus();
+        };
+
+        var torolTextLeft = () => {
+            cmeditor.execCommand('delCharBefore');
+            cmeditor.focus();
+        };
+
+        var moveLeft = () => {
+            cmeditor.execCommand('goCharLeft');
+            cmeditor.focus();
+        };
+
+        var moveRight = () => {
+            cmeditor.execCommand('goCharRight');
+            cmeditor.focus();
+        };
+
+        var torol = function() {
+            cmeditor.setValue('');
+            cmeditor.focus();
+        };
+
+        setTimeout(() => {
+            cmeditor = document.querySelector(".CodeMirror").CodeMirror;
+        }, 20);
+    </script>
 </body>
 
 </html>
