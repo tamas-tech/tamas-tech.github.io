@@ -10,11 +10,12 @@
         // Make the div with id 'mycell' a Sage cell
         sagecell.makeSagecell({
             inputLocation: '#mycell',
-            evalButtonText: 'Activate'
+            evalButtonText: 'OK'
         });
     </script>
-      <link rel="stylesheet" href="vanilla-js-tabs.css">
+    <link rel="stylesheet" href="vanilla-js-tabs.css">
     <script src="vanilla-js-tabs.min.js"></script>
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script> -->
     <style>
         button.sagecell_fullScreen.sagecell_icon-resize-full {
             top: 2px;
@@ -43,6 +44,7 @@
             border: 1px solid #dfdfdf;
             border-radius: 3px;
             padding: 5px;
+            margin-bottom: 5px;
         }
         
         .CodeMirror-sizer {
@@ -54,7 +56,9 @@
             width: 1fr;
             grid-template-columns: repeat(auto-fit, minmax(50px, max-content));
             grid-gap: 0.3em;
-            padding-top: 2px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
         }
         
         .kbdbtn {
@@ -78,6 +82,20 @@
             transform: scale(1.05);
             background-color: white;
             color: black;
+        }
+        
+        button.sagecell_evalButton {
+            background-color: #cfffb3;
+        }
+        
+        button.sagecell_evalButton:hover {
+            background-color: #beff99;
+        }
+        
+        @media (max-width: 50rem) {
+            button.sagecell_fullScreen.sagecell_icon-resize-full {
+                display: none;
+            }
         }
     </style>
 
@@ -151,37 +169,67 @@
     <div class="js-tabs" id="tabs">
 
         <ul class="js-tabs__header">
-            <li><a href="#" class="js-tabs__title">Γ, ζ, Li<sub>n</sub></a></li>
-            <li><a href="#" class="js-tabs__title">Title 2</a></li>
-            <li><a href="#" class="js-tabs__title">Title 3</a></li>
-            <li><a href="#" class="js-tabs__title">Title 4</a></li>
+            <li><a href="#" class="js-tabs__title">∫, ∂</a></li>
+            <li><a href="#" class="js-tabs__title">Γ, ψ<sub>n</sub></a></li>
+            <li><a href="#" class="js-tabs__title">ζ, H</a></li>
+            <li><a href="#" class="js-tabs__title">log, Li</a></li>
+            <li><a href="#" class="js-tabs__title">Elliptic</a></li>
+            <li><a href="#" class="js-tabs__title">Links</a></li>
         </ul>
 
         <div class="js-tabs__content">
             <div class="container">
-                <div class="kbdbtn" data-btn="gamma(x)" onclick="beilleszt(this,1);" title="">Γ(x)</div>
-                <div class="kbdbtn" data-btn="zeta(n)" onclick="beilleszt(this,1);" title="Riemann zeta function of a real or complex number">ζ(x)</div>
-                <div class="kbdbtn" data-btn="hurwitzZeta(n,a)" onclick="beilleszt(this,2);" title="Hurwitz zeta function of a real or complex number with real or complex parameter a">ζ(x,a)</div>
-                <div class="kbdbtn" data-btn="dirichletEta(n)" onclick="beilleszt(this,1);" title="Dirichlet eta function of a real or complex number">η(x)</div>
-                <div class="kbdbtn" data-btn="harmonic(n)" onclick="beilleszt(this,1);" title="Harmonic number for index n">H<sub>n</sub></div>
-                <div class="kbdbtn" data-btn="polylog(n,x)" onclick="beilleszt(this,2);" title="Polylogarithm function of real or complex order n of a real or complex number">Li<sub>n</sub>(x)</div>
-                <div class="kbdbtn" data-btn="bernoulli(n)" onclick="beilleszt(this,1);" title="Bernoulli number for index n">B<sub>n</sub></div>
-                <div class="kbdbtn" data-btn="bernoulli(n,x)" onclick="beilleszt(this,2);" title="Bernoulli polynomial for index n of a real or complex number">B<sub>n</sub>(x)</div>
-                <div class="kbdbtn" data-btn="dB(n,m)" onclick="beilleszt(this,2);" title="Bernoulli polynomial for index n of a real or complex number">∂<sub>n,m</sub>B</div>
-                <div div class="kbdbtn">7</div>
-                <div div class="kbdbtn">8</div>
+                <div class="kbdbtn" data-btn="integrate(f,x)" onclick="beilleszt(this,2);" title="Undefinite integration:&#013;integrate( f, x )"><big>∫</big></div>
+                <div class="kbdbtn" data-btn="integrate(f,x,a,b)" onclick="beilleszt(this,6);" title="Definite integration:&#013;integrate( f, x, a, b )"><big>∫</big><sub><var>a</var></sub><sup style="margin-left:-6px;"><var>b</var></sup></div>
+                <div class="kbdbtn" data-btn="derivative(f,x)" onclick="beilleszt(this,2);" title="Derivative of function with respect to variable x :&#013;derivative( f, x )"><big>∂</big></div>
+                <div class="kbdbtn" data-btn="plot(f,x,a,b)" onclick="beilleszt(this,6);"><span style="font-size:32px;line-height:30px;" title="2D plot:&#013;plot( f, x, a, b )">&#x1F5E0;</span></div>
+            </div>
+        </div>
+
+        <div class="js-tabs__content">
+            <div class="container">
+                <div class="kbdbtn" data-btn="gamma(x)" onclick="beilleszt(this,1);" title="Euler gamma function:&#013;gamma( x )">Γ(x)</div>
+                <div class="kbdbtn" data-btn="gamma_inc(a,x)" onclick="beilleszt(this,2);" title="Incomplet Euler gamma function:&#013;gamma_inc( a, x )">Γ<sub>a</sub>(x)</div>
+                <div class="kbdbtn" data-btn="psi(a,x)" onclick="beilleszt(this,2);" title="Polygamma function:&#013;psi( a, x )">ψ<sub>a</sub>(x)</div>
+                <div class="kbdbtn" data-btn="erf(x)" onclick="beilleszt(this,1);" title="Error function:&#013;erf( x )">Φ(x)</div>
+                <div class="kbdbtn" data-btn="factorial(x)" onclick="beilleszt(this,1);" title="Factorial function:&#013;factorial( x )">n!</div>
+                <div class="kbdbtn" data-btn="binomial(n,k)" onclick="beilleszt(this,2);" title="Binomial function:&#013;binomial( n, k )">C(n,k)</div>
             </div>
         </div>
         <div class="js-tabs__content">
-            <h1>TWO</h1>
+            <div class="container">
+                <div class="kbdbtn" data-btn="zeta(x)" onclick="beilleszt(this,1);" title="Riemann zeta function of a real or complex number:&#013;zeta( x )">ζ(x)</div>
+                <div class="kbdbtn" data-btn="hurwitz_zeta(x,a)" onclick="beilleszt(this,2);" title="Hurwitz zeta function of a real or complex number with real or complex parameter a:&#013;hurwitz_zeta( x,a )">ζ(x,a)</div>
+                <div class="kbdbtn" data-btn="harmonic_number(n)" onclick="beilleszt(this,1);" title="Harmonic number for index n:&#013;harmonic_number(n) = harmonic_number( n, 1 )">H<sub>n</sub></div>
+                <div class="kbdbtn" data-btn="harmonic_number(n,m)" onclick="beilleszt(this,2);" title="Generalized harmonic number for index n, power m:&#013;harmonic_number( n, m ) = 1/1^m + 1/2^m +...+1/n^m">H<sub>n</sub><sup>m</sup></div>
+                <div class="kbdbtn" data-btn="bernoulli(n)" onclick="beilleszt(this,1);" title="Bernoulli number for index n:&#013;bernoulli( n )">B<sub>n</sub></div>
+            </div>
         </div>
 
         <div class="js-tabs__content">
-            <h1>THREE</h1>
+            <div class="container">
+                <div class="kbdbtn" data-btn="exp(x)" onclick="beilleszt(this,1);" title="The exponential function:&#013; exp( x )">e<sup>x</sup></div>
+                <div class="kbdbtn" data-btn="ln(x)" onclick="beilleszt(this,1);" title="The natural logarithmic function:&#013; ln( x )">ln(x)</div>
+                <div class="kbdbtn" data-btn="polylog(n,x)" onclick="beilleszt(this,2);" title="Polylogarithm function of real or complex order n of a real or complex number:&#013; polylog( n, x )">Li<sub>n</sub>(x)</div>
+                <div class="kbdbtn" data-btn="lambert_w(x)" onclick="beilleszt(this,1);" title="The Lambert W function function:&#013; lambert_w( x )">W(x)</div>
+            </div>
         </div>
 
         <div class="js-tabs__content">
-            <h1>FOUR</h1>
+            <div class="container">
+                <div class="kbdbtn" data-btn="elliptic_f(z,m)" onclick="beilleszt(this,2);" title="The incomplete elliptic integral of the first kind of z and parameter m = k^2:&#013; elliptic_f( z, m )">F(z,m)</div>
+                <div class="kbdbtn" data-btn="elliptic_kc(m)" onclick="beilleszt(this,1);" title="The complete elliptic integral of the first kind of parameter m = k^2:&#013; elliptic_kc( m )">K(m=k^2)</div>
+                <div class="kbdbtn" data-btn="elliptic_e(z,m)" onclick="beilleszt(this,2);" title="The incomplete elliptic integral of the second kind of z and parameter m = k^2:&#013; elliptiz_e( z, m=k^2 )">E(z,m)</div>
+                <div class="kbdbtn" data-btn="elliptic_ec(x)" onclick="beilleszt(this,1);" title="The complete elliptic integral of the second kind of parameter m = k^2:&#013; elliptiz_ec( z, m=k^2 )">E(m)</div>
+                <div class="kbdbtn" data-btn="elliptic_pi(n,z,m)" onclick="beilleszt(this,4);" title="The incomplete elliptic integral of the third kind of z, characteristic n and parameter m = k^2:&#013; elliptiz_pi( n, z, m=k^2 )">Π(n,z,m)</div>
+            </div>
+        </div>
+
+        <div class="js-tabs__content">
+            <ol>
+                <li><a href="https://paulmasson.github.io/sagemath-docs/">Simple and clear documentation for SageMath functions and operations</a></li>
+                <li><a href="https://mosullivan.sdsu.edu/Teaching/sdsu-sage-tutorial/sagecalc.html">SageMath as a Calculator</a></li>
+            </ol>
         </div>
     </div>
     <div class="container">
@@ -196,29 +244,44 @@
         <div class="kbdbtn" data-btn="8" onclick="beilleszt(this,0);">8</div>
         <div class="kbdbtn" data-btn="9" onclick="beilleszt(this,0);">9</div>
         <div class="kbdbtn" data-btn="." onclick="beilleszt(this,0);">.</div>
+        <div class="kbdbtn" data-btn="n(x,digits=10)" onclick="beilleszt(this,10);">n( )</div>
         <div class="kbdbtn" data-btn="pi" onclick="beilleszt(this,0);">π</div>
-        <div class="kbdbtn" data-btn=".re" onclick="beilleszt(this,0);">ℜe</div>
-        <div class="kbdbtn" data-btn=".im" onclick="beilleszt(this,0);">ℑm</div>
+        <div class="kbdbtn" data-btn="e" onclick="beilleszt(this,0);">e</div>
+        <div class="kbdbtn" data-btn="i" onclick="beilleszt(this,0);">i</div>
+        <div class="kbdbtn" data-btn="real(x)" onclick="beilleszt(this,1);">ℜe</div>
+        <div class="kbdbtn" data-btn="imag(x)" onclick="beilleszt(this,1);">ℑm</div>
         <div class="kbdbtn" data-btn="+" onclick="beilleszt(this,0);">+</div>
         <div class="kbdbtn" data-btn="-" onclick="beilleszt(this,0);">-</div>
         <div class="kbdbtn" data-btn="*" onclick="beilleszt(this,0);">*</div>
+        <div class="kbdbtn" data-btn="^" onclick="beilleszt(this,0);">^</div>
         <div class="kbdbtn" data-btn="/" onclick="beilleszt(this,0);">/</div>
         <div class="kbdbtn" data-btn="sqrt(x)" onclick="beilleszt(this,1);">&#x221A</div>
         <div class="kbdbtn" data-btn="(" onclick="beilleszt(this,0);">(</div>
         <div class="kbdbtn" data-btn=")" onclick="beilleszt(this,0);">)</div>
         <div class="kbdbtn" data-btn="[" onclick="beilleszt(this,0);">[</div>
         <div class="kbdbtn" data-btn="]" onclick="beilleszt(this,0);">]</div>
+        <div class="kbdbtn" data-btn="x" onclick="beilleszt(this,0);">x</div>
+        <div class="kbdbtn" data-btn="y" onclick="beilleszt(this,0);">y</div>
+        <div class="kbdbtn" data-btn="z" onclick="beilleszt(this,0);">z</div>
         <div class="kbdbtn" data-btn="" onclick="beilleszt(this,0);">&nbsp;</div>
+        <div class="kbdbtn" onclick="tabcm();">&#x21B9;</div>
         <div class="kbdbtn" data-btn="," onclick="beilleszt(this,0);">,</div>
-        <div class="kbdbtn" onclick="moveLeft();">&#x27E8</div>
-        <div class="kbdbtn" onclick="moveRight();">&#x27E9</div>
-        <div class="kbdbtn" onclick="torolTextLeft();">&#x232B</div>
-        <div class="kbdbtn" onclick="torol();">AC</div>
+        <div class="kbdbtn" data-btn="?" onclick="beilleszt(this,0);">?</div>
     </div>
 
+    <div class="container">
+        <div class="kbdbtn" onclick="redocm();" title="Redo">&#x21BB;</div>
+        <div class="kbdbtn" onclick="undocm();" title="Undo">&#x21BA;</div>
+        <div class="kbdbtn" onclick="moveLeft();" title="Go one character left">&#x27E8;</div>
+        <div class="kbdbtn" onclick="moveRight();" title="Go one character right">&#x27E9;</div>
+        <div class="kbdbtn" onclick="homecm();" title="Go line start">&#x21E4;</div>
+        <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
+        <div class="kbdbtn" onclick="torolTextLeft();" title="Backspace">&#x232B;</div>
+        <div class="kbdbtn" onclick="torol();" title="Clear editor">CA</div>
+        <div class="kbdbtn" onclick="clearOutput();" title="Clear output" style="background-color:#ff89a0"><big>&#x2327;</big></div>
+    </div>
     <div id="settingbar">
-        <input id="font-slider" oninput="setCmFont(this.value);" type="range" min="12" max="24" value="16" style="display:inline-block;width:120px;vertical-align: middle;">
-        <select id="cm-select" onchange="setCmTheme(this.value);" style="display:inline-block;width:180px;">
+        <select id="cm-select" onchange="setCmTheme(this.value);" style="display:inline-block;width:180px;" title="Select editor's theme">
         <option value="default">default</option>
         <option value="3024-day">3024-day</option>
         <option value="3024-night">3024-night</option>
@@ -286,14 +349,10 @@
         <option value="yonce">yonce</option>
         <option value="zenburn">zenburn</option>
         </select>
+        <input id="font-slider" oninput="setCmFont(this.value);" type="range" min="12" max="24" value="16" style="display:inline-block;width:120px;vertical-align: middle;" title="set editor's fontsize">
     </div>
     <div id="mycell">
-        <script type="text/x-sage">def f(x,y):
-    return math.exp(x/5)*math.sin(y)
-P = plot3d(f, (-5, 5), (-5, 5), adaptive=True, color=['red', 'yellow'])
-from sage.plot.plot3d.plot3d import axes
-S = P + axes(6, color='black')
-S.show()</script>
+        <script type="text/x-sage">plot(sin(x), (x, 0, 2*pi))</script>
     </div>
     <script>
         var availableTags = ['gamma(x)', 'zeta(x)', 'polylog(n,m)', 'polylog(n,m).re', 'polylog(n,m).im', 'abs', 'acos', 'asin', 'atan', 'asinh', 'acosh', 'atanh', 'cos', 'sin', 'tan', 'sinh', 'cosh', 'tanh', 'sqrt', 'log10', 'log2', 'log', 'ln', 'exp',
@@ -322,8 +381,8 @@ S.show()</script>
             cmeditor.replaceSelection(text);
             if (n > 0) {
                 var back = 1;
-                if (n == 2)
-                    back = 3
+                if (n > 1)
+                    back = n + 1
                 cmeditor.execCommand('goCharLeft')
                 var pos = cmeditor.getCursor();
                 console.log(pos)
@@ -332,6 +391,31 @@ S.show()</script>
                     ch: pos.ch - back
                 }, pos);
             }
+            cmeditor.focus();
+        };
+
+        var undocm = () => {
+            cmeditor.execCommand('undo');
+            cmeditor.focus();
+        };
+
+        var redocm = () => {
+            cmeditor.execCommand('redo');
+            cmeditor.focus();
+        };
+
+        var homecm = () => {
+            cmeditor.execCommand('goLineStart');
+            cmeditor.focus();
+        };
+
+        var endcm = () => {
+            cmeditor.execCommand('goLineEnd');
+            cmeditor.focus();
+        };
+
+        var tabcm = () => {
+            cmeditor.execCommand('insertTab');
             cmeditor.focus();
         };
 
@@ -353,6 +437,12 @@ S.show()</script>
         var torol = function() {
             cmeditor.setValue('');
             cmeditor.focus();
+        };
+
+        var clearOutput = function() {
+            var output = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
+            if (output)
+                output.remove();
         };
 
         setTimeout(() => {
