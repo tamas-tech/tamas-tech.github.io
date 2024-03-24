@@ -1,6 +1,6 @@
 .js-tabs {
     /* margin: 2em;*/
-    margin: 10px 0;
+    margin: 5px 0;
     max-width: 100%;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .js-tabs__header li {
-    display: inline-block;
+    display: block;
     float: left;
 }
 
@@ -39,13 +39,13 @@
 }
 
 .js-tabs__title-active {
-    background: #fff;
+    background: #555555;
     border-bottom-color: #fff;
     border-top-left-radius: 0.75em;
 }
 
 .js-tabs__header li a.js-tabs__title.js-tabs__title-active {
-    color: #ff1477;
+    color: #3cff5d;
     text-decoration: none;
 }
 
