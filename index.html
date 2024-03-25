@@ -13,193 +13,13 @@
             evalButtonText: 'OK',
         });
     </script>
-    <link rel="stylesheet" href="vanilla-js-tabs.css">
+    <link rel="stylesheet" href="calculatorlight.css" id="stylelight">
+    <link rel="stylesheet" href="calculatordark.css" id="styledark" disabled="true">
+    <link rel="stylesheet" href="vanilla-js-tabs.css" id="jst-stylelight">
+    <link rel="stylesheet" href="vanilla-js-tabs_dark.css" id="jst-styledark" disabled="true">
     <script src="vanilla-js-tabs.min.js"></script>
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
-    <style>
-        button.sagecell_fullScreen.sagecell_icon-resize-full {
-            top: 2px;
-            right: 17px;
-        }
-        
-        table.kbd tr td {
-            width: 20px;
-            height: 15px;
-            background-color: #eee;
-            /*font-weight: 700;*/
-            padding: 5px;
-            text-align: center;
-            line-height: 25px;
-            border-radius: 4px;
-            cursor: pointer;
-            border: 1px solid #ddd;
-        }
-        
-        table.kbd tr td:hover {
-            background-color: #ddd;
-            border: 1px solid #ccc;
-        }
-        
-        #settingbar {
-            border: 1px solid #dfdfdf;
-            border-radius: 3px;
-            padding: 5px;
-            margin-bottom: 5px;
-        }
-        
-        .CodeMirror-sizer {
-            padding-top: 5px;
-        }
-        
-        .container {
-            display: grid;
-            width: 1fr;
-            grid-template-columns: repeat(auto-fit, minmax(50px, max-content));
-            grid-gap: 0.3em;
-            padding: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 5px;
-        }
-        
-        .kbdbtn {
-            padding: 5px;
-            text-align: center;
-            cursor: pointer;
-            /*background-color: fuchsia;
-           color: white;*/
-            background-color: #e6e6e6;
-            color: #636363;
-            font-size: 1em;
-            border-radius: 5px;
-            box-shadow: 1px 1px 1px #333;
-            transition: .2s;
-        }
-        
-        .kbdbtn:hover {
-            /*box-shadow: 10px 10px 10px fuchsia;
-            box-shadow: 10px 10px 10px #c7c7c7;*/
-            box-shadow: 4px 4px 4px #c7c7c7;
-            transform: scale(1.05);
-            background-color: white;
-            color: black;
-        }
-        
-        button.sagecell_evalButton {
-            background-color: #cfffb3;
-        }
-        
-        button.sagecell_evalButton:hover {
-            background-color: #beff99;
-        }
-        
-        @media (max-width: 50rem) {
-            button.sagecell_fullScreen.sagecell_icon-resize-full {
-                display: none;
-            }
-        }
-        
-        h2 {
-            color: #007fff;
-            text-align: center;
-        }
-        
-        #output {
-            display: inline-block;
-            min-height: 20px;
-            text-align: center;
-            vertical-align: middle;
-            padding: 2px 10px;
-            background-color: #f7f7f7;
-            color: #007fff;
-            font-size: 18px;
-            width: 96%;
-            overflow: auto;
-            border: 1px solid #e5fff8;
-            margin-left: 1%;
-        }
-        
-        button.otherbtn {
-            border: 1px solid #d3d3d3;
-            font-size: larger;
-            border-radius: 4px;
-            padding: 0.4em 1em;
-            color: #555;
-            text-decoration: none;
-            background-color: #cfffb3;
-            font-weight: normal;
-            font-family: Verdana, Arial, sans-serif;
-            font-size: 1.1em;
-            margin-top: 10px;
-        }
-        
-        button.otherbtn:hover {
-            background-color: #beff99;
-            border: 1px solid #999;
-        }
-        /* Toggleswitch*/
-        
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-            bottom: 9px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-        
-        input:checked+.slider {
-            background-color: #2196F3;
-        }
-        
-        input:focus+.slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
-        
-        input:checked+.slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-        /* Rounded sliders */
-        
-        .slider.round {
-            border-radius: 24px;
-        }
-        
-        .slider.round:before {
-            border-radius: 50%;
-        }
-    </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-day.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-night.min.css">
@@ -268,7 +88,7 @@
 </head>
 
 <body>
-    <h2>Calculator with sagecell</h2>
+    <h2>Calculator with use of sagecell</h2>
     <div class="js-tabs" id="tabs">
 
         <ul class="js-tabs__header">
@@ -285,7 +105,7 @@
                 <div class="kbdbtn" data-btn="integrate(f,x)" onclick="beilleszt(this,2);" title="Undefinite integration:&#013;integrate( f, x )"><big>∫</big></div>
                 <div class="kbdbtn" data-btn="integrate(f,x,a,b)" onclick="beilleszt(this,6);" title="Definite integration:&#013;integrate( f, x, a, b )"><big>∫</big><sub><var>a</var></sub><sup style="margin-left:-6px;"><var>b</var></sup></div>
                 <div class="kbdbtn" data-btn="derivative(f,x)" onclick="beilleszt(this,2);" title="Derivative of function with respect to variable x :&#013;derivative( f, x )"><big>∂</big></div>
-                <div class="kbdbtn" data-btn="plot(f,x,a,b)" onclick="beilleszt(this,6);"><span style="font-size:32px;line-height:30px;" title="2D plot:&#013;plot( f, x, a, b )">&#x1F5E0;</span></div>
+                <div class="kbdbtn" data-btn="plot(f,x,a,b)" onclick="beilleszt(this,6);"><span style="line-height:29px;" title="2D plot:&#013;plot( f, x, a, b )">2Dplot</span></div>
             </div>
         </div>
 
@@ -367,7 +187,7 @@
         <div class="kbdbtn" data-btn="x" onclick="beilleszt(this,0);">x</div>
         <div class="kbdbtn" data-btn="y" onclick="beilleszt(this,0);">y</div>
         <div class="kbdbtn" data-btn="z" onclick="beilleszt(this,0);">z</div>
-        <div class="kbdbtn" data-btn="" onclick="beilleszt(this,0);">&nbsp;</div>
+        <div class="kbdbtn" data-btn=" " onclick="beilleszt(this,0);">&nbsp;</div>
         <div class="kbdbtn" onclick="tabcm();">&#x21B9;</div>
         <div class="kbdbtn" data-btn="," onclick="beilleszt(this,0);">,</div>
         <div class="kbdbtn" data-btn="?" onclick="beilleszt(this,0);">?</div>
@@ -382,10 +202,10 @@
         <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
         <div class="kbdbtn" onclick="torolTextLeft();" title="Backspace">&#x232B;</div>
         <div class="kbdbtn" onclick="torol();" title="Clear editor">CA</div>
-        <div class="kbdbtn" onclick="clearOutput();" title="Clear output" style="background-color:#ff89a0"><big>&#x2327;</big></div>
+        <div class="kbdbtn" id="spec1" onclick="clearOutput();" title="Clear output"><big>&#x2327;</big></div>
     </div>
     <div id="settingbar">
-        <select id="cm-select" onchange="setCmTheme(this.value);" style="display:inline-block;width:180px;" title="Select editor's theme">
+        <select id="cm-select" onchange="setCmTheme(this.value);" title="Select editor's theme">
         <option value="default">default</option>
         <option value="3024-day">3024-day</option>
         <option value="3024-night">3024-night</option>
@@ -453,25 +273,29 @@
         <option value="yonce">yonce</option>
         <option value="zenburn">zenburn</option>
         </select>
-        <input id="font-slider" oninput="setCmFont(this.value);" type="range" min="12" max="24" value="16" style="display:inline-block;width:120px;vertical-align: middle;" title="set editor's fontsize">
+        <input id="font-slider" oninput="setCmFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;" title="set editor's fontsize">
+        <label class="switch">
+            <input id="optsotet" type="checkbox">
+            <span class="slider round"></span>
+         </label>
     </div>
     <div id="mycell">
         <script type="text/x-sage">latex(integrate(polylog(3,x)*ln(x)^2,x))</script>
     </div>
-
     <script>
-        var availableTags = ['gamma(x)', 'zeta(x)', 'polylog(n,m)', 'polylog(n,m).re', 'polylog(n,m).im', 'abs', 'acos', 'asin', 'atan', 'asinh', 'acosh', 'atanh', 'cos', 'sin', 'tan', 'sinh', 'cosh', 'tanh', 'sqrt', 'log10', 'log2', 'log', 'ln', 'exp',
-            'abs(x)', 'acos(x)', 'asin(x)', 'atan(x)', 'asinh(x)', 'acosh(x)', 'atanh(x)', 'cos(x)', 'sin(x)', 'tan(x)', 'sinh(x)', 'cosh(x)', 'tanh(x)', 'sqrt(x)', 'log10(x)', 'log2(x)', 'log(x)', 'ln(x)', 'exp(x)'
-        ];
-
         var tabs = new Tabs({
             elem: "tabs",
             open: 0
         });
 
+        $(document).on('click', '.sagecell_sessionOutput', function() {
+            $(this).css('font-size', '20px')
+        })
+
         function setCmFont(v) {
             cmeditor.getWrapperElement().style["font-size"] = v + "px";
             cmeditor.refresh();
+            $('div.sagecell_sessionOutput').css('font-size', v + 'px')
         };
 
         function setCmTheme(theme) {
@@ -545,14 +369,15 @@
         };
 
         var clearOutput = function() {
-            var output = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
-            if (output)
-                output.remove();
+            var outputs = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
+            if (outputs)
+                outputs.remove();
+            output.innerHTML = "";
         };
 
         var printLatex = function() {
             var inptxt = cmeditor.getValue();
-            if (inptxt.startsWith('latex(')) {
+            if (/latex\(/.test(cmeditor.getValue())) {
                 var outputtxt = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
                 if (outputtxt) {
                     output.innerHTML = "\\[ " + outputtxt.innerText.replace(/\\log/g, '\\ln') + " \\]";
@@ -561,7 +386,7 @@
                     output.innerText = "There is no output";
                 }
             } else {
-                output.innerHTML = "A kimenet nem érvényes Latex kód.";
+                output.innerHTML = "The sagecell output is not a valid Latex code.";
             }
         };
 
@@ -569,16 +394,14 @@
             cmeditor = document.querySelector(".CodeMirror").CodeMirror;
         }, 200);
 
+        var onlineSt = navigator.onLine ? true : false;
+        var opt_sotet = false;
+
         $(document).ready(function() {
-            /*   $(document).on('click', '.sagecell_output', function() {
-                  printLatex();
-              }); */
             $('#cm-select').val('default');
             // Detect offline/online mode in simple way.
             window.addEventListener('online', updateOnlineStatus);
             window.addEventListener('offline', updateOnlineStatus);
-
-            var onlineSt = navigator.onLine ? true : false;
 
             function updateOnlineStatus(event) {
                 onlineSt = navigator.onLine ? true : false;
@@ -591,19 +414,26 @@
             if (!onlineSt)
                 alert('You are offline! For the correct operate of calculator you need to be online.')
 
-            var latexwrap = false;
-            $('#ltxwrap').on('change', function() {
-                latexwrap = this.checked;
+            $('#optsotet').on('change', function() {
+                opt_sotet = this.checked;
+                themeSwitch();
             })
         });
+
+        function themeSwitch() {
+            var t1 = document.getElementById('stylelight');
+            var t2 = document.getElementById('styledark');
+            var t1t = document.getElementById('jst-stylelight');
+            var t2t = document.getElementById('jst-styledark');
+            t1.disabled = !t1.disabled;
+            t2.disabled = !t1.disabled;
+            t1t.disabled = !t1t.disabled;
+            t2t.disabled = !t1t.disabled;
+            //opt_sotet = !opt_sotet;
+        };
     </script>
-    <div>
-        <button id="ltxbtn" class="otherbtn" onclick="printLatex();">Latex</button>
-        <label class="switch">
-            <input id="ltxwrap" type="checkbox">
-            <span class="slider round"></span>
-         </label>
-    </div>
+
+    <button id="ltxbtn" class="otherbtn" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button>
     <p>
         <div id="output"></div>
         <div class="sagecell_poweredBy"><a href="https://sagecell.sagemath.org/help.html" target="_blank">Help</a> | Powered by <a href="http://www.sagemath.org" target="_blank">SageMath</a></div>
