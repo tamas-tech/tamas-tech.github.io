@@ -10,12 +10,13 @@
         // Make the div with id 'mycell' a Sage cell
         sagecell.makeSagecell({
             inputLocation: '#mycell',
-            evalButtonText: 'OK'
+            evalButtonText: 'OK',
         });
     </script>
     <link rel="stylesheet" href="vanilla-js-tabs.css">
     <script src="vanilla-js-tabs.min.js"></script>
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
     <style>
         button.sagecell_fullScreen.sagecell_icon-resize-full {
             top: 2px;
@@ -97,6 +98,45 @@
                 display: none;
             }
         }
+        
+        h2 {
+            color: #007fff;
+            text-align: center;
+        }
+        
+        #output {
+            display: inline-block;
+            min-height: 20px;
+            text-align: center;
+            vertical-align: middle;
+            padding: 2px 10px;
+            background-color: #f7f7f7;
+            color: #007fff;
+            font-size: 18px;
+            width: 96%;
+            overflow: auto;
+            border: 1px solid #e5fff8;
+            margin-left: 1.8%;
+        }
+        
+        button.otherbtn {
+            border: 1px solid #d3d3d3;
+            font-size: larger;
+            border-radius: 4px;
+            padding: 0.4em 1em;
+            color: #555;
+            text-decoration: none;
+            background-color: #cfffb3;
+            font-weight: normal;
+            font-family: Verdana, Arial, sans-serif;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        
+        button.otherbtn:hover {
+            background-color: #beff99;
+            border: 1px solid #999;
+        }
     </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-day.min.css">
@@ -166,6 +206,7 @@
 </head>
 
 <body>
+    <h2>Calculator with sagecell</h2>
     <div class="js-tabs" id="tabs">
 
         <ul class="js-tabs__header">
@@ -194,7 +235,7 @@
                 <div class="kbdbtn" data-btn="erf(x)" onclick="beilleszt(this,1);" title="Error function:&#013;erf( x )">Φ(x)</div>
                 <div class="kbdbtn" data-btn="factorial(x)" onclick="beilleszt(this,1);" title="Factorial function:&#013;factorial( x )">n!</div>
                 <div class="kbdbtn" data-btn="binomial(n,k)" onclick="beilleszt(this,2);" title="Binomial function:&#013;binomial( n, k )">C(n,k)</div>
-                 <div class="kbdbtn" data-btn="beta(x,y)" onclick="beilleszt(this,2);" title="Beta function:&#013;beta( x, y )">B(x,y)</div>
+                <div class="kbdbtn" data-btn="beta(x,y)" onclick="beilleszt(this,2);" title="Beta function:&#013;beta( x, y )">B(x,y)</div>
             </div>
         </div>
         <div class="js-tabs__content">
@@ -202,7 +243,7 @@
                 <div class="kbdbtn" data-btn="zeta(x)" onclick="beilleszt(this,1);" title="Riemann zeta function of a real or complex number:&#013;zeta( x )">ζ(x)</div>
                 <div class="kbdbtn" data-btn="hurwitz_zeta(x,a)" onclick="beilleszt(this,2);" title="Hurwitz zeta function of a real or complex number with real or complex parameter a:&#013;hurwitz_zeta( x,a )">ζ(x,a)</div>
                 <div class="kbdbtn" data-btn="harmonic_number(n)" onclick="beilleszt(this,1);" title="Harmonic number for index n:&#013;harmonic_number(n) = harmonic_number( n, 1 )">H<sub>n</sub></div>
-                <div class="kbdbtn" data-btn="harmonic_number(n,m)" onclick="beilleszt(this,2);" title="Generalized harmonic number for index n, power m:&#013;harmonic_number( n, m ) = 1/1^m + 1/2^m +...+1/n^m">H<sub>n</sub><sup>m</sup></div>
+                <div class="kbdbtn" data-btn="harmonic_number(n,m)" onclick="beilleszt(this,2);" title="Generalized harmonic number for index n, power m:&#013;harmonic_number( n, m ) = 1/1^m + 1/2^m +...+1/n^m">H<sub>n</sub><sup style="margin-left:-6px;">m</sup></div>
                 <div class="kbdbtn" data-btn="bernoulli(n)" onclick="beilleszt(this,1);" title="Bernoulli number for index n:&#013;bernoulli( n )">B<sub>n</sub></div>
             </div>
         </div>
@@ -355,6 +396,7 @@
     <div id="mycell">
         <script type="text/x-sage">plot(sin(x), (x, 0, 2*pi))</script>
     </div>
+
     <script>
         var availableTags = ['gamma(x)', 'zeta(x)', 'polylog(n,m)', 'polylog(n,m).re', 'polylog(n,m).im', 'abs', 'acos', 'asin', 'atan', 'asinh', 'acosh', 'atanh', 'cos', 'sin', 'tan', 'sinh', 'cosh', 'tanh', 'sqrt', 'log10', 'log2', 'log', 'ln', 'exp',
             'abs(x)', 'acos(x)', 'asin(x)', 'atan(x)', 'asinh(x)', 'acosh(x)', 'atanh(x)', 'cos(x)', 'sin(x)', 'tan(x)', 'sinh(x)', 'cosh(x)', 'tanh(x)', 'sqrt(x)', 'log10(x)', 'log2(x)', 'log(x)', 'ln(x)', 'exp(x)'
@@ -446,10 +488,32 @@
                 output.remove();
         };
 
+        var printLatex = function() {
+            var inptxt = cmeditor.getValue();
+            if (inptxt.startsWith('latex(')) {
+                var outputtxt = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
+                output.innerHTML = "\\[ " + outputtxt.innerText + " \\]";
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'output']);
+            } else {
+                output.innerHTML = "A kimenet nem érvényes Latex kód.";
+            }
+        };
+
         setTimeout(() => {
             cmeditor = document.querySelector(".CodeMirror").CodeMirror;
-        }, 20);
+        }, 200);
+
+        $(document).ready(function() {
+            $(document).on('click', '.sagecell_output', function() {
+                printLatex();
+            });
+        });
     </script>
+    <button id="ltxbtn" class="otherbtn" onclick="printLatex();">Latex</button>
+    <p>
+        <div id="output"></div>
+        <div class="sagecell_poweredBy"><a href="https://sagecell.sagemath.org/help.html" target="_blank">Help</a> | Powered by <a href="http://www.sagemath.org" target="_blank">SageMath</a></div>
+    </p>
 </body>
 
 </html>
