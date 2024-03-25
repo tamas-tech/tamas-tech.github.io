@@ -504,9 +504,10 @@
         }, 200);
 
         $(document).ready(function() {
-            $(document).on('click', '.sagecell_output', function() {
+           /* $(document).on('click', '.sagecell_output', function() {
                 printLatex();
-            });
+            });*/
+           $('#cm-select').val('default');
         });
     </script>
     <button id="ltxbtn" class="otherbtn" onclick="printLatex();">Latex</button>
