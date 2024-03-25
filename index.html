@@ -288,10 +288,6 @@
             open: 0
         });
 
-        $(document).on('click', '.sagecell_sessionOutput', function() {
-            $(this).css('font-size', '20px')
-        })
-
         function setCmFont(v) {
             cmeditor.getWrapperElement().style["font-size"] = v + "px";
             cmeditor.refresh();
