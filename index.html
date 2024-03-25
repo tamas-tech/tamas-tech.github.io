@@ -116,7 +116,7 @@
             width: 96%;
             overflow: auto;
             border: 1px solid #e5fff8;
-            margin-left: 1.8%;
+            margin-left: 1%;
         }
         
         button.otherbtn {
@@ -136,6 +136,68 @@
         button.otherbtn:hover {
             background-color: #beff99;
             border: 1px solid #999;
+        }
+        /* Toggleswitch*/
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            bottom: 9px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+        
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+        
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+        /* Rounded sliders */
+        
+        .slider.round {
+            border-radius: 24px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
         }
     </style>
 
@@ -394,7 +456,7 @@
         <input id="font-slider" oninput="setCmFont(this.value);" type="range" min="12" max="24" value="16" style="display:inline-block;width:120px;vertical-align: middle;" title="set editor's fontsize">
     </div>
     <div id="mycell">
-        <script type="text/x-sage">latex(integrate(polylog(3,x)*ln(x),x))</script>
+        <script type="text/x-sage">latex(integrate(polylog(3,x)*ln(x)^2,x))</script>
     </div>
 
     <script>
@@ -492,8 +554,12 @@
             var inptxt = cmeditor.getValue();
             if (inptxt.startsWith('latex(')) {
                 var outputtxt = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
-                output.innerHTML = "\\[ " + outputtxt.innerText + " \\]";
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'output']);
+                if (outputtxt) {
+                    output.innerHTML = "\\[ " + outputtxt.innerText.replace(/\\log/g, '\\ln') + " \\]";
+                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'output']);
+                } else {
+                    output.innerText = "There is no output";
+                }
             } else {
                 output.innerHTML = "A kimenet nem érvényes Latex kód.";
             }
@@ -504,13 +570,40 @@
         }, 200);
 
         $(document).ready(function() {
-           /* $(document).on('click', '.sagecell_output', function() {
-                printLatex();
-            });*/
-           $('#cm-select').val('default');
+            /*   $(document).on('click', '.sagecell_output', function() {
+                  printLatex();
+              }); */
+            $('#cm-select').val('default');
+            // Detect offline/online mode in simple way.
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+
+            var onlineSt = navigator.onLine ? true : false;
+
+            function updateOnlineStatus(event) {
+                onlineSt = navigator.onLine ? true : false;
+                if (onlineSt) {
+                    $('.online').css('opacity', 1)
+                } else {
+                    $('.online').css('opacity', 0.25)
+                }
+            }
+            if (!onlineSt)
+                alert('You are offline! For the correct operate of calculator you need to be online.')
+
+            var latexwrap = false;
+            $('#ltxwrap').on('change', function() {
+                latexwrap = this.checked;
+            })
         });
     </script>
-    <button id="ltxbtn" class="otherbtn" onclick="printLatex();">Latex</button>
+    <div>
+        <button id="ltxbtn" class="otherbtn" onclick="printLatex();">Latex</button>
+        <label class="switch">
+            <input id="ltxwrap" type="checkbox">
+            <span class="slider round"></span>
+         </label>
+    </div>
     <p>
         <div id="output"></div>
         <div class="sagecell_poweredBy"><a href="https://sagecell.sagemath.org/help.html" target="_blank">Help</a> | Powered by <a href="http://www.sagemath.org" target="_blank">SageMath</a></div>
