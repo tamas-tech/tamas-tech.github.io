@@ -16,8 +16,8 @@
 }
 
 .js-tabs__title {
-    background: #f5f5f5;
-    border: 1px solid #ccc;
+    background: #28313E;
+    border: 1px solid #30363D;
     cursor: pointer;
     display: block;
     margin-right: 0.5em;
@@ -27,18 +27,19 @@
 
 .js-tabs__header li a:link,
 .js-tabs__header li a:visited {
-    color: #202020;
+    color: #a7abb3;
     text-decoration: none;
 }
 
 .js-tabs__title:not(.js-tabs__title-active):hover {
     text-decoration: none;
-    background-color: #dddddd;
+    color: #dfdfdf;
+    background-color: #3d4c5f;
 }
 
 .js-tabs__title-active {
-    background: #65707b;
-    border-bottom-color: #f1f1f1;
+    background: #0a4580;
+    border-bottom-color: #95c8fb;
     border-top-left-radius: 0.75em;
 }
 
@@ -48,7 +49,7 @@
 }
 
 .js-tabs__content {
-    border: 1px solid #ccc;
+    border: 1px solid #30363D;
     line-height: 1.5;
     margin-top: -1px;
     padding: 10px 5px 5px 5px;
