@@ -29,10 +29,11 @@ table.kbd tr td:hover {
 }
 
 #settingbar {
-    border: 1px solid #dfdfdf;
+    border: 1px solid #ccc;
     border-radius: 3px;
     padding: 5px;
     margin-bottom: 5px;
+    background-color: #dde2e8;
 }
 
 .CodeMirror-sizer {
@@ -152,11 +153,12 @@ button.sagecell_evalButton.ui-button.ui-corner-all.ui-widget:hover {
     background-color: #a9aec5;
 }
 
-@media (max-width: 50rem) {
+
+/* @media (max-width: 50rem) {
     button.sagecell_fullScreen.sagecell_icon-resize-full {
         display: none;
     }
-}
+} */
 
 h2 {
     color: #007fff;
@@ -173,10 +175,9 @@ h2 {
     background-color: #f7f7f7;
     color: #007fff;
     font-size: 18px;
-    width: 96%;
+    width: calc(100% - 26px);
     overflow: auto;
     border: 1px solid #e5fff8;
-    margin-left: 1%;
 }
 
 button.otherbtn {
@@ -278,6 +279,8 @@ input:checked+.slider:before {
 
 .myslick.fn.show {
     display: block;
+    padding-top: 6px;
+    border-top: 2px dotted #aaa;
 }
 
 #tabcontainer {
@@ -288,14 +291,19 @@ input:checked+.slider:before {
     border: 1px solid #ccc;
     margin-bottom: 4px;
     text-align: center;
+    border-radius: 6px
 }
 
-#tabcontainer1 {
+#tabcontainer1,
+#tabcontainer2 {
     width: calc(100% 42px);
     padding: 0 25px;
     padding-top: 4px;
     border: 1px solid #ccc;
     text-align: center;
+    background-color: #eee;
+    margin-bottom: 4px;
+    border-radius: 6px
 }
 
 #tabs {
@@ -324,3 +332,9 @@ input:checked+.slider:before {
     height: 28px!important;
     width: 28px!important
 }
+
+
+/* .slick-slider {
+    border: 1px solid #ddd;
+    background-color: #6f6f6f;
+} */
