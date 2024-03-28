@@ -7,6 +7,10 @@ div.CodeMirror.cm-s-default {
     border-color: #dfdfdf;
 }
 
+div.sagecell_permalink {
+    display: none;
+}
+
 table.kbd tr td {
     width: 20px;
     height: 15px;
@@ -42,7 +46,7 @@ table.kbd tr td:hover {
     grid-gap: 0.3em;
     padding: 5px;
     border: 1px solid #ccc;
-    margin-bottom: 5px;
+    margin: 2px;
 }
 
 .kbdbtn {
@@ -55,6 +59,29 @@ table.kbd tr td:hover {
     border-radius: 5px;
     box-shadow: 1px 1px 1px #333;
     transition: .2s;
+    height: 22px;
+    max-width: 50px;
+    margin: 2px 3px;
+}
+
+.kbdbtnc {
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #e6e6e6;
+    color: #636363;
+    font-size: 1em;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px #333;
+    transition: .2s;
+}
+
+.fnbtn.kbdbtn.active {
+    background-color: #a3bfdb;
+}
+
+.kbdbtn.big {
+    line-height: 0.9;
 }
 
 .kbdbtn:hover {
@@ -66,6 +93,53 @@ table.kbd tr td:hover {
 
 #spec1.kbdbtn {
     background-color: #ff89a0;
+}
+
+#btglbtn,
+#fntglbtn,
+#sbtglbtn {
+    position: absolute;
+    top: 14px;
+    background-color: #e6e6e6;
+    color: #636363;
+    cursor: pointer;
+    border: 1px solid #d8d8d8;
+    padding: 5px;
+    border-radius: 3px;
+    width: 32px;
+    height: 28px;
+}
+
+#btglbtn.closed,
+#fntglbtn.closed,
+#sbtglbtn.closed {
+    opacity: 0.5;
+    border-color: #ff0000;
+}
+
+#btglbtn {
+    right: 45px;
+}
+
+#fntglbtn {
+    right: 80px;
+}
+
+#sbtglbtn {
+    right: 10px;
+}
+
+#btglbtn:hover,
+#fntglbtn:hover,
+#sbtglbtn:hover {
+    background-color: #cccccc;
+    border-color: #b3b3b3;
+}
+
+#btglbtn.closed:hover,
+#fntglbtn.closed:hover,
+#sbtglbtn.closed:hover {
+    border-color: #af0000;
 }
 
 button.sagecell_evalButton,
@@ -87,6 +161,7 @@ button.sagecell_evalButton.ui-button.ui-corner-all.ui-widget:hover {
 h2 {
     color: #007fff;
     text-align: center;
+    margin-top: 10px;
 }
 
 #output {
@@ -194,4 +269,58 @@ input:checked+.slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+.myslick.fn {
+    display: none;
+    transition: 200
+}
+
+.myslick.fn.show {
+    display: block;
+}
+
+#tabcontainer {
+    width: calc(100% - 52px);
+    padding: 0 25px;
+    padding-top: 4px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+#tabcontainer1 {
+    width: calc(100% 42px);
+    padding: 0 25px;
+    padding-top: 4px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+#tabs {
+    margin: 2px;
+    padding-bottom: 1px;
+}
+
+#tabs .container {
+    background-color: #fff
+}
+
+.slick-next::before,
+.slick-prev::before {
+    color: #888888!important;
+    font-size: 28px!important;
+}
+
+.slick-prev {
+    left: -26px!important;
+    height: 28px!important;
+    width: 28px!important;
+}
+
+.slick-next {
+    right: -26px!important;
+    height: 28px!important;
+    width: 28px!important
 }
