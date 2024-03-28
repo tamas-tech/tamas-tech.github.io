@@ -31,6 +31,10 @@ div.sagecell_sessionOutput.sagecell_active {
     border-color: #007fff;
 }
 
+div.sagecell_permalink {
+    display: none;
+}
+
 table.kbd tr td {
     width: 20px;
     height: 15px;
@@ -66,7 +70,7 @@ table.kbd tr td:hover {
     grid-gap: 0.3em;
     padding: 5px;
     border: 1px solid #30363D;
-    margin-bottom: 5px;
+    margin: 2px;
 }
 
 .kbdbtn {
@@ -77,8 +81,33 @@ table.kbd tr td:hover {
     color: #95b1ff;
     font-size: 1em;
     border-radius: 5px;
-    box-shadow: 1px 1px 1px #333;
+    /*box-shadow: 1px 1px 1px #333;*/
     transition: .2s;
+    height: 22px;
+    max-width: 50px;
+    margin: 2px 3px;
+    outline: 1px solid #27273a;
+}
+
+.kbdbtnc {
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #161B22;
+    color: #95b1ff;
+    font-size: 1em;
+    border-radius: 5px;
+    /*box-shadow: 1px 1px 1px #333;*/
+    transition: .2s;
+    outline: 1px solid #27273a;
+}
+
+.fnbtn.kbdbtn.active {
+    background-color: #002efd;
+}
+
+.kbdbtn.big {
+    line-height: 0.9;
 }
 
 .kbdbtn:hover {
@@ -90,10 +119,58 @@ table.kbd tr td:hover {
 
 #spec1.kbdbtn {
     background-color: #77071d;
+    line-height: 1;
 }
 
 #spec1.kbdbtn:hover {
     background-color: #990b28;
+}
+
+#btglbtn,
+#fntglbtn,
+#sbtglbtn {
+    position: absolute;
+    top: 14px;
+    background-color: #28313E;
+    color: #b4c8ff;
+    border: 1px solid #30363D;
+    cursor: pointer;
+    border: none;
+    padding: 5px;
+    border-radius: 3px;
+    width: 32px;
+    height: 28px;
+}
+
+#btglbtn.closed,
+#fntglbtn.closed,
+#sbtglbtn.closed {
+    opacity: 0.65;
+    background-color: #ff0000;
+}
+
+#btglbtn {
+    right: 45px;
+}
+
+#fntglbtn {
+    right: 80px;
+}
+
+#sbtglbtn {
+    right: 10px;
+}
+
+#btglbtn:hover,
+#fntglbtn:hover,
+#sbtglbtn:hover {
+    background-color: #3D4C5F
+}
+
+#btglbtn.closed:hover,
+#fntglbtn.closed:hover,
+#sbtglbtn.closed:hover {
+    border-color: #af0000;
 }
 
 button.sagecell_evalButton,
@@ -119,6 +196,7 @@ button.sagecell_evalButton.ui-button.ui-corner-all.ui-widget:hover {
 h2 {
     color: #007fff;
     text-align: center;
+    margin-top: 10px
 }
 
 #output {
@@ -227,4 +305,74 @@ input:checked+.slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+.myslick.fn {
+    display: none;
+}
+
+.myslick.fn.show {
+    display: block;
+}
+
+#tabs {
+    margin: 2px;
+}
+
+.slick-dots li button::before {
+    color: white!important;
+}
+
+.myslick.fn {
+    display: none;
+    transition: 200
+}
+
+.myslick.fn.show {
+    display: block;
+}
+
+#tabcontainer {
+    width: calc(100% - 52px);
+    padding: 0 25px;
+    padding-top: 4px;
+    background-color: #181b24;
+    border: 1px solid #423030;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+#tabcontainer1 {
+    width: calc(100% 42px);
+    padding: 0 25px;
+    padding-top: 4px;
+    border: 1px solid #423030;
+    text-align: center;
+}
+
+#tabs {
+    margin: 2px;
+    padding-bottom: 1px;
+}
+
+#tabs .container {
+    background-color: #0E1218;
+}
+
+.slick-next::before,
+.slick-prev::before {
+    color: #95B1EE !important;
+    font-size: 28px !important;
+}
+
+.slick-prev {
+    left: -26px!important;
+    height: 28px!important;
+    width: 28px!important;
+}
+
+.slick-next {
+    right: -26px!important;
+    height: 28px!important;
+    width: 28px!important
 }
