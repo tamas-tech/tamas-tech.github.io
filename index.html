@@ -20,6 +20,7 @@
     <script src="vanilla-js-tabs.min.js"></script> -->
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!--  <script src="https://unpkg.com/mathlive"></script> -->
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-day.min.css">
@@ -142,9 +143,7 @@
                 <div class="kbdbtn big" data-btn="integrate(f,x,a,b)" onclick="beilleszt(this,6);" title="Definite integration:&#013;integrate( f, x, a, b )">∫<sub><var>a</var></sub><sup style="margin-left:-6px;"><var>b</var></sup></div>
                 <div class="kbdbtn" data-btn="derivative(f,x)" onclick="beilleszt(this,2);" title="Derivative of function with respect to variable x :&#013;derivative( f, x )">∂</div>
                 <div class="kbdbtn" data-btn="plot(f,x,a,b)" onclick="beilleszt(this,6);" title="2D plot:&#013;plot( f, x, a, b )">2Dplot</div>
-                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+
             </div>
             <div class="myslick fn" data-name="gamma">
                 <div class="kbdbtn" data-btn="gamma(x)" onclick="beilleszt(this,1);" title="Euler gamma function:&#013;gamma( x )">Γ(x)</div>
@@ -157,6 +156,15 @@
                 <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
                 <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
                 <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
             </div>
             <div class="myslick fn" data-name="zeta">
                 <div class="kbdbtn" data-btn="zeta(x)" onclick="beilleszt(this,1);" title="Riemann zeta function of a real or complex number:&#013;zeta( x )">ζ(x)</div>
@@ -240,16 +248,25 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="kbdbtnc" onclick="redocm();" title="Redo">&#x21BB;</div>
-        <div class="kbdbtnc" onclick="undocm();" title="Undo">&#x21BA;</div>
-        <div class="kbdbtnc" onclick="moveLeft();" title="Go one character left">&#x27E8;</div>
-        <div class="kbdbtnc" onclick="moveRight();" title="Go one character right">&#x27E9;</div>
-        <div class="kbdbtnc" onclick="homecm();" title="Go line start">&#x21E4;</div>
-        <div class="kbdbtnc" onclick="endcm();" title="Go line end">&#x21E5;</div>
-        <div class="kbdbtnc" onclick="torolTextLeft();" title="Backspace">&#x232B;</div>
-        <div class="kbdbtnc" onclick="torol();" title="Clear editor">CA</div>
-        <div class="kbdbtnc" id="spec1" onclick="clearOutput();" title="Clear output"><big>&#x2327;</big></div>
+    <div id="tabcontainer2">
+        <div class="myslick" id="tabsb">
+            <div class="kbdbtn" onclick="redocm();" title="Redo">&#x21BB;</div>
+            <div class="kbdbtn" onclick="undocm();" title="Undo">&#x21BA;</div>
+            <div class="kbdbtn" onclick="moveLeft();" title="Go one character left">&#x27E8;</div>
+            <div class="kbdbtn" onclick="moveRight();" title="Go one character right">&#x27E9;</div>
+            <div class="kbdbtn" onclick="homecm();" title="Go line start">&#x21E4;</div>
+            <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
+            <div class="kbdbtn" onclick="torolTextLeft();" title="Backspace">&#x232B;</div>
+            <div class="kbdbtn" onclick="torol();" title="Clear editor">CA</div>
+            <div class="kbdbtn" id="spec1" onclick="clearOutput();" title="Clear output">&#x2327;</div>
+            <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
+            <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
+            <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
+            <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
+            <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
+            <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
+            <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
+        </div>
     </div>
     <div id="settingbar">
         <select id="cm-select" onchange="setCmTheme(this.value);" title="Select editor's theme">
@@ -462,6 +479,19 @@
             }
         };
 
+
+        var printLatexMathLive = function() {
+            var inptxt = cmeditor.getValue();
+            var outputtxt = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
+            if (outputtxt) {
+                outputtxt = window.MathLive.convertAsciiMathToLatex(outputtxt.innerText).replace(/\\log/g, '\\ln');
+                output.innerHTML = "$$ " + outputtxt + " $$";
+                window.MathLive.renderMathInDocument();
+            } else {
+                output.innerText = "There is no output";
+            }
+        };
+
         setTimeout(() => {
             cmeditor = document.querySelector(".CodeMirror").CodeMirror;
         }, 200);
@@ -590,9 +620,9 @@
                 'max-width': btnw - 16,
                 'width': btnw - 16
             });
+
             /*  $('.myslick').slick('slickSetOption', 'slidesPerRow', btnNo, true);
              $('.myslick').slick('reinit'); */
-
         };
     </script>
 </body>
