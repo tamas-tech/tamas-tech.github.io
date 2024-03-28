@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>SageMathCell Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <title>SageCellCalc</title>
     <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
     <script>
         // Make the div with id 'mycell' a Sage cell
@@ -15,11 +15,12 @@
     </script>
     <link rel="stylesheet" href="calculator.css" id="stylelight">
     <link rel="stylesheet" href="calculatordark.css" id="styledark" disabled="true">
-    <link rel="stylesheet" href="vanilla-js-tabs.css" id="jst-stylelight">
+    <!-- <link rel="stylesheet" href="vanilla-js-tabs.css" id="jst-stylelight">
     <link rel="stylesheet" href="vanilla-js-tabs_dark.css" id="jst-styledark" disabled="true">
-    <script src="vanilla-js-tabs.min.js"></script>
+    <script src="vanilla-js-tabs.min.js"></script> -->
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-day.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-night.min.css">
@@ -88,29 +89,64 @@
 </head>
 
 <body>
-    <h2>Calculator with use of sagecell</h2>
-    <div class="js-tabs" id="tabs">
-
-        <ul class="js-tabs__header">
-            <li><a href="#" class="js-tabs__title">∫, ∂</a></li>
-            <li><a href="#" class="js-tabs__title">Γ, ψ<sub>n</sub></a></li>
-            <li><a href="#" class="js-tabs__title">ζ, H</a></li>
-            <li><a href="#" class="js-tabs__title">log, Li</a></li>
-            <li><a href="#" class="js-tabs__title">Elliptic</a></li>
-            <li><a href="#" class="js-tabs__title">Links</a></li>
-        </ul>
-
-        <div class="js-tabs__content">
-            <div class="container">
-                <div class="kbdbtn" data-btn="integrate(f,x)" onclick="beilleszt(this,2);" title="Undefinite integration:&#013;integrate( f, x )"><big>∫</big></div>
-                <div class="kbdbtn" data-btn="integrate(f,x,a,b)" onclick="beilleszt(this,6);" title="Definite integration:&#013;integrate( f, x, a, b )"><big>∫</big><sub><var>a</var></sub><sup style="margin-left:-6px;"><var>b</var></sup></div>
-                <div class="kbdbtn" data-btn="derivative(f,x)" onclick="beilleszt(this,2);" title="Derivative of function with respect to variable x :&#013;derivative( f, x )"><big>∂</big></div>
-                <div class="kbdbtn" data-btn="plot(f,x,a,b)" onclick="beilleszt(this,6);"><span style="line-height:29px;" title="2D plot:&#013;plot( f, x, a, b )">2Dplot</span></div>
+    <h2>SageCellCalc</h2>
+    <button id="fntglbtn" onclick="fcnTgl();">f(x)</button>
+    <button id="btglbtn" onclick="bTgl();">+/-</button>
+    <button id="sbtglbtn" onclick="sbTgl();">⚙</button>
+    <div id="tabcontainer">
+        <div id="tabs">
+            <div class="myslick">
+                <div class="fnbtn kbdbtn active" data-btn="calculus" onclick="megnyitfn(this);">∫, ∂</div>
+                <div class="fnbtn kbdbtn" data-btn="gamma" onclick="megnyitfn(this);">Γ, ψ</div>
+                <div class="fnbtn kbdbtn" data-btn="zeta" onclick="megnyitfn(this);">ζ, H</div>
+                <div class="fnbtn kbdbtn" data-btn="log" onclick="megnyitfn(this);">log, Li</div>
+                <div class="fnbtn kbdbtn" data-btn="elliptic" onclick="megnyitfn(this);">Elliptic</div>
+                <div class="fnbtn kbdbtn" data-btn="links" onclick="megnyitfn(this);">Links</div>
+                <div class="fnbtn kbdbtn" data-btn="6" onclick="megnyitfn(this);">6</div>
+                <div class="fnbtn kbdbtn" data-btn="7" onclick="megnyitfn(this);">7</div>
+                <div class="fnbtn kbdbtn" data-btn="8" onclick="megnyitfn(this);">8</div>
+                <div class="fnbtn kbdbtn" data-btn="9" onclick="megnyitfn(this);">9</div>
+                <div class="fnbtn kbdbtn" data-btn="0" onclick="megnyitfn(this);">0</div>
+                <div class="fnbtn kbdbtn" data-btn="1" onclick="megnyitfn(this);">1</div>
+                <div class="fnbtn kbdbtn" data-btn="2" onclick="megnyitfn(this);">2</div>
+                <div class="fnbtn kbdbtn" data-btn="3" onclick="megnyitfn(this);">3</div>
+                <div class="fnbtn kbdbtn" data-btn="4" onclick="megnyitfn(this);">4</div>
+                <div class="fnbtn kbdbtn" data-btn="5" onclick="megnyitfn(this);">5</div>
+                <div class="fnbtn kbdbtn" data-btn="6" onclick="megnyitfn(this);">6</div>
+                <div class="fnbtn kbdbtn" data-btn="7" onclick="megnyitfn(this);">7</div>
+                <div class="fnbtn kbdbtn" data-btn="8" onclick="megnyitfn(this);">8</div>
+                <div class="fnbtn kbdbtn" data-btn="9" onclick="megnyitfn(this);">9</div>
+                <div class="fnbtn kbdbtn" data-btn="0" onclick="megnyitfn(this);">0</div>
+                <div class="fnbtn kbdbtn" data-btn="1" onclick="megnyitfn(this);">1</div>
+                <div class="fnbtn kbdbtn" data-btn="2" onclick="megnyitfn(this);">2</div>
+                <div class="fnbtn kbdbtn" data-btn="3" onclick="megnyitfn(this);">3</div>
+                <div class="fnbtn kbdbtn" data-btn="4" onclick="megnyitfn(this);">4</div>
+                <div class="fnbtn kbdbtn" data-btn="5" onclick="megnyitfn(this);">5</div>
+                <div class="fnbtn kbdbtn" data-btn="6" onclick="megnyitfn(this);">6</div>
+                <div class="fnbtn kbdbtn" data-btn="7" onclick="megnyitfn(this);">7</div>
+                <div class="fnbtn kbdbtn" data-btn="8" onclick="megnyitfn(this);">8</div>
+                <div class="fnbtn kbdbtn" data-btn="9" onclick="megnyitfn(this);">9</div>
+                <div class="fnbtn kbdbtn" data-btn="0" onclick="megnyitfn(this);">0</div>
+                <div class="fnbtn kbdbtn" data-btn="1" onclick="megnyitfn(this);">1</div>
+                <div class="fnbtn kbdbtn" data-btn="2" onclick="megnyitfn(this);">2</div>
+                <div class="fnbtn kbdbtn" data-btn="3" onclick="megnyitfn(this);">3</div>
+                <div class="fnbtn kbdbtn" data-btn="4" onclick="megnyitfn(this);">4</div>
+                <div class="fnbtn kbdbtn" data-btn="5" onclick="megnyitfn(this);">5</div>
+                <div class="fnbtn kbdbtn" data-btn="6" onclick="megnyitfn(this);">6</div>
+                <div class="fnbtn kbdbtn" data-btn="7" onclick="megnyitfn(this);">7</div>
+                <div class="fnbtn kbdbtn" data-btn="8" onclick="megnyitfn(this);">8</div>
+                <div class="fnbtn kbdbtn" data-btn="9" onclick="megnyitfn(this);">9</div>
             </div>
-        </div>
-
-        <div class="js-tabs__content">
-            <div class="container">
+            <div class="myslick fn show" data-name="calculus">
+                <div class="kbdbtn" data-btn="integrate(f,x)" onclick="beilleszt(this,2);" title="Undefinite integration:&#013;integrate( f, x )">∫</div>
+                <div class="kbdbtn big" data-btn="integrate(f,x,a,b)" onclick="beilleszt(this,6);" title="Definite integration:&#013;integrate( f, x, a, b )">∫<sub><var>a</var></sub><sup style="margin-left:-6px;"><var>b</var></sup></div>
+                <div class="kbdbtn" data-btn="derivative(f,x)" onclick="beilleszt(this,2);" title="Derivative of function with respect to variable x :&#013;derivative( f, x )">∂</div>
+                <div class="kbdbtn" data-btn="plot(f,x,a,b)" onclick="beilleszt(this,6);" title="2D plot:&#013;plot( f, x, a, b )">2Dplot</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
+            </div>
+            <div class="myslick fn" data-name="gamma">
                 <div class="kbdbtn" data-btn="gamma(x)" onclick="beilleszt(this,1);" title="Euler gamma function:&#013;gamma( x )">Γ(x)</div>
                 <div class="kbdbtn" data-btn="gamma_inc(a,x)" onclick="beilleszt(this,2);" title="Incomplet Euler gamma function:&#013;gamma_inc( a, x )">Γ<sub>a</sub>(x)</div>
                 <div class="kbdbtn" data-btn="psi(a,x)" onclick="beilleszt(this,2);" title="Polygamma function:&#013;psi( a, x )">ψ<sub>a</sub>(x)</div>
@@ -118,91 +154,102 @@
                 <div class="kbdbtn" data-btn="factorial(x)" onclick="beilleszt(this,1);" title="Factorial function:&#013;factorial( x )">n!</div>
                 <div class="kbdbtn" data-btn="binomial(n,k)" onclick="beilleszt(this,2);" title="Binomial function:&#013;binomial( n, k )">C(n,k)</div>
                 <div class="kbdbtn" data-btn="beta(x,y)" onclick="beilleszt(this,2);" title="Beta function:&#013;beta( x, y )">B(x,y)</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
             </div>
-        </div>
-        <div class="js-tabs__content">
-            <div class="container">
+            <div class="myslick fn" data-name="zeta">
                 <div class="kbdbtn" data-btn="zeta(x)" onclick="beilleszt(this,1);" title="Riemann zeta function of a real or complex number:&#013;zeta( x )">ζ(x)</div>
                 <div class="kbdbtn" data-btn="hurwitz_zeta(x,a)" onclick="beilleszt(this,2);" title="Hurwitz zeta function of a real or complex number with real or complex parameter a:&#013;hurwitz_zeta( x,a )">ζ(x,a)</div>
                 <div class="kbdbtn" data-btn="harmonic_number(n)" onclick="beilleszt(this,1);" title="Harmonic number for index n:&#013;harmonic_number(n) = harmonic_number( n, 1 )">H<sub>n</sub></div>
                 <div class="kbdbtn" data-btn="harmonic_number(n,m)" onclick="beilleszt(this,2);" title="Generalized harmonic number for index n, power m:&#013;harmonic_number( n, m ) = 1/1^m + 1/2^m +...+1/n^m">H<sub>n</sub><sup style="margin-left:-6px;">m</sup></div>
                 <div class="kbdbtn" data-btn="bernoulli(n)" onclick="beilleszt(this,1);" title="Bernoulli number for index n:&#013;bernoulli( n )">B<sub>n</sub></div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
             </div>
-        </div>
-
-        <div class="js-tabs__content">
-            <div class="container">
+            <div class="myslick fn" data-name="log">
                 <div class="kbdbtn" data-btn="exp(x)" onclick="beilleszt(this,1);" title="The exponential function:&#013; exp( x )">e<sup>x</sup></div>
                 <div class="kbdbtn" data-btn="ln(x)" onclick="beilleszt(this,1);" title="The natural logarithmic function:&#013; ln( x )">ln(x)</div>
                 <div class="kbdbtn" data-btn="polylog(n,x)" onclick="beilleszt(this,2);" title="Polylogarithm function of real or complex order n of a real or complex number:&#013; polylog( n, x )">Li<sub>n</sub>(x)</div>
                 <div class="kbdbtn" data-btn="lambert_w(x)" onclick="beilleszt(this,1);" title="The Lambert W function function:&#013; lambert_w( x )">W(x)</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
             </div>
-        </div>
-
-        <div class="js-tabs__content">
-            <div class="container">
+            <div class="myslick fn" data-name="elliptic">
                 <div class="kbdbtn" data-btn="elliptic_f(z,m)" onclick="beilleszt(this,2);" title="The incomplete elliptic integral of the first kind of z and parameter m = k^2:&#013; elliptic_f( z, m )">F(z,m)</div>
                 <div class="kbdbtn" data-btn="elliptic_kc(m)" onclick="beilleszt(this,1);" title="The complete elliptic integral of the first kind of parameter m = k^2:&#013; elliptic_kc( m )">K(m)</div>
                 <div class="kbdbtn" data-btn="elliptic_e(z,m)" onclick="beilleszt(this,2);" title="The incomplete elliptic integral of the second kind of z and parameter m = k^2:&#013; elliptiz_e( z, m=k^2 )">E(z,m)</div>
                 <div class="kbdbtn" data-btn="elliptic_ec(x)" onclick="beilleszt(this,1);" title="The complete elliptic integral of the second kind of parameter m = k^2:&#013; elliptiz_ec( z, m=k^2 )">E(m)</div>
                 <div class="kbdbtn" data-btn="elliptic_pi(n,z,m)" onclick="beilleszt(this,4);" title="The incomplete elliptic integral of the third kind of z, characteristic n and parameter m = k^2:&#013; elliptiz_pi( n, z, m=k^2 )">Π(n,z,m)</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+            </div>
+            <div class="myslick fn" data-name="links">
+                <div><a href="https://paulmasson.github.io/sagemath-docs/">Simple and clear documentation for SageMath functions and operations</a></div>
+                <div><a href="https://mosullivan.sdsu.edu/Teaching/sdsu-sage-tutorial/sagecalc.html">SageMath as a Calculator</a></div>
+                <div><a href="http://utmost-sage-cell.org/">Utmost sagecell</a></div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+                <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
             </div>
         </div>
-
-        <div class="js-tabs__content">
-            <ol>
-                <li><a href="https://paulmasson.github.io/sagemath-docs/">Simple and clear documentation for SageMath functions and operations</a></li>
-                <li><a href="https://mosullivan.sdsu.edu/Teaching/sdsu-sage-tutorial/sagecalc.html">SageMath as a Calculator</a></li>
-            </ol>
+    </div>
+    <div id="tabcontainer1">
+        <div class="myslick" id="tabsb">
+            <div class="kbdbtn" data-btn="latex(x)" onclick="beilleszt(this,1);">latex()</div>
+            <div class="kbdbtn" data-btn="n(x,digits=10)" onclick="beilleszt(this,10);">n( )</div>
+            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0</div>
+            <div class="kbdbtn" data-btn="1" onclick="beilleszt(this,0);">1</div>
+            <div class="kbdbtn" data-btn="2" onclick="beilleszt(this,0);">2</div>
+            <div class="kbdbtn" data-btn="3" onclick="beilleszt(this,0);">3</div>
+            <div class="kbdbtn" data-btn="4" onclick="beilleszt(this,0);">4</div>
+            <div class="kbdbtn" data-btn="5" onclick="beilleszt(this,0);">5</div>
+            <div class="kbdbtn" data-btn="6" onclick="beilleszt(this,0);">6</div>
+            <div class="kbdbtn" data-btn="7" onclick="beilleszt(this,0);">7</div>
+            <div class="kbdbtn" data-btn="8" onclick="beilleszt(this,0);">8</div>
+            <div class="kbdbtn" data-btn="9" onclick="beilleszt(this,0);">9</div>
+            <div class="kbdbtn" data-btn="." onclick="beilleszt(this,0);">.</div>
+            <div class="kbdbtn" data-btn="=" onclick="beilleszt(this,0);">=</div>
+            <div class="kbdbtn" data-btn="pi" onclick="beilleszt(this,0);">π</div>
+            <div class="kbdbtn" data-btn="e" onclick="beilleszt(this,0);">e</div>
+            <div class="kbdbtn" data-btn="i" onclick="beilleszt(this,0);">i</div>
+            <div class="kbdbtn" data-btn="real(x)" onclick="beilleszt(this,1);">ℜe</div>
+            <div class="kbdbtn" data-btn="imag(x)" onclick="beilleszt(this,1);">ℑm</div>
+            <div class="kbdbtn" data-btn="+" onclick="beilleszt(this,0);">+</div>
+            <div class="kbdbtn" data-btn="-" onclick="beilleszt(this,0);">-</div>
+            <div class="kbdbtn" data-btn="*" onclick="beilleszt(this,0);">*</div>
+            <div class="kbdbtn" data-btn="^" onclick="beilleszt(this,0);">^</div>
+            <div class="kbdbtn" data-btn="/" onclick="beilleszt(this,0);">/</div>
+            <div class="kbdbtn" data-btn="sqrt(x)" onclick="beilleszt(this,1);">&#x221A</div>
+            <div class="kbdbtn" data-btn="( )" onclick="beilleszt(this,1);">( )</div>
+            <div class="kbdbtn" data-btn="(" onclick="beilleszt(this,0);">(</div>
+            <div class="kbdbtn" data-btn=")" onclick="beilleszt(this,0);">)</div>
+            <div class="kbdbtn" data-btn="[ ]" onclick="beilleszt(this,1);">[ ]</div>
+            <div class="kbdbtn" data-btn="[" onclick="beilleszt(this,0);">[</div>
+            <div class="kbdbtn" data-btn="]" onclick="beilleszt(this,0);">]</div>
+            <div class="kbdbtn" data-btn="x" onclick="beilleszt(this,0);">x</div>
+            <div class="kbdbtn" data-btn="y" onclick="beilleszt(this,0);">y</div>
+            <div class="kbdbtn" data-btn="z" onclick="beilleszt(this,0);">z</div>
+            <div class="kbdbtn" data-btn=" " onclick="beilleszt(this,0);">&nbsp;</div>
+            <div class="kbdbtn" onclick="tabcm();">&#x21B9;</div>
+            <div class="kbdbtn" data-btn="," onclick="beilleszt(this,0);">,</div>
+            <div class="kbdbtn" data-btn="?" onclick="beilleszt(this,0);">?</div>
         </div>
     </div>
-    <div class="container">
-        <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0</div>
-        <div class="kbdbtn" data-btn="1" onclick="beilleszt(this,0);">1</div>
-        <div class="kbdbtn" data-btn="2" onclick="beilleszt(this,0);">2</div>
-        <div class="kbdbtn" data-btn="3" onclick="beilleszt(this,0);">3</div>
-        <div class="kbdbtn" data-btn="4" onclick="beilleszt(this,0);">4</div>
-        <div class="kbdbtn" data-btn="5" onclick="beilleszt(this,0);">5</div>
-        <div class="kbdbtn" data-btn="6" onclick="beilleszt(this,0);">6</div>
-        <div class="kbdbtn" data-btn="7" onclick="beilleszt(this,0);">7</div>
-        <div class="kbdbtn" data-btn="8" onclick="beilleszt(this,0);">8</div>
-        <div class="kbdbtn" data-btn="9" onclick="beilleszt(this,0);">9</div>
-        <div class="kbdbtn" data-btn="." onclick="beilleszt(this,0);">.</div>
-        <div class="kbdbtn" data-btn="n(x,digits=10)" onclick="beilleszt(this,10);">n( )</div>
-        <div class="kbdbtn" data-btn="pi" onclick="beilleszt(this,0);">π</div>
-        <div class="kbdbtn" data-btn="e" onclick="beilleszt(this,0);">e</div>
-        <div class="kbdbtn" data-btn="i" onclick="beilleszt(this,0);">i</div>
-        <div class="kbdbtn" data-btn="real(x)" onclick="beilleszt(this,1);">ℜe</div>
-        <div class="kbdbtn" data-btn="imag(x)" onclick="beilleszt(this,1);">ℑm</div>
-        <div class="kbdbtn" data-btn="+" onclick="beilleszt(this,0);">+</div>
-        <div class="kbdbtn" data-btn="-" onclick="beilleszt(this,0);">-</div>
-        <div class="kbdbtn" data-btn="*" onclick="beilleszt(this,0);">*</div>
-        <div class="kbdbtn" data-btn="^" onclick="beilleszt(this,0);">^</div>
-        <div class="kbdbtn" data-btn="/" onclick="beilleszt(this,0);">/</div>
-        <div class="kbdbtn" data-btn="sqrt(x)" onclick="beilleszt(this,1);">&#x221A</div>
-        <div class="kbdbtn" data-btn="(" onclick="beilleszt(this,0);">(</div>
-        <div class="kbdbtn" data-btn=")" onclick="beilleszt(this,0);">)</div>
-        <div class="kbdbtn" data-btn="[" onclick="beilleszt(this,0);">[</div>
-        <div class="kbdbtn" data-btn="]" onclick="beilleszt(this,0);">]</div>
-        <div class="kbdbtn" data-btn="x" onclick="beilleszt(this,0);">x</div>
-        <div class="kbdbtn" data-btn="y" onclick="beilleszt(this,0);">y</div>
-        <div class="kbdbtn" data-btn="z" onclick="beilleszt(this,0);">z</div>
-        <div class="kbdbtn" data-btn=" " onclick="beilleszt(this,0);">&nbsp;</div>
-        <div class="kbdbtn" onclick="tabcm();">&#x21B9;</div>
-        <div class="kbdbtn" data-btn="," onclick="beilleszt(this,0);">,</div>
-        <div class="kbdbtn" data-btn="?" onclick="beilleszt(this,0);">?</div>
-    </div>
 
     <div class="container">
-        <div class="kbdbtn" onclick="redocm();" title="Redo">&#x21BB;</div>
-        <div class="kbdbtn" onclick="undocm();" title="Undo">&#x21BA;</div>
-        <div class="kbdbtn" onclick="moveLeft();" title="Go one character left">&#x27E8;</div>
-        <div class="kbdbtn" onclick="moveRight();" title="Go one character right">&#x27E9;</div>
-        <div class="kbdbtn" onclick="homecm();" title="Go line start">&#x21E4;</div>
-        <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
-        <div class="kbdbtn" onclick="torolTextLeft();" title="Backspace">&#x232B;</div>
-        <div class="kbdbtn" onclick="torol();" title="Clear editor">CA</div>
-        <div class="kbdbtn" id="spec1" onclick="clearOutput();" title="Clear output"><big>&#x2327;</big></div>
+        <div class="kbdbtnc" onclick="redocm();" title="Redo">&#x21BB;</div>
+        <div class="kbdbtnc" onclick="undocm();" title="Undo">&#x21BA;</div>
+        <div class="kbdbtnc" onclick="moveLeft();" title="Go one character left">&#x27E8;</div>
+        <div class="kbdbtnc" onclick="moveRight();" title="Go one character right">&#x27E9;</div>
+        <div class="kbdbtnc" onclick="homecm();" title="Go line start">&#x21E4;</div>
+        <div class="kbdbtnc" onclick="endcm();" title="Go line end">&#x21E5;</div>
+        <div class="kbdbtnc" onclick="torolTextLeft();" title="Backspace">&#x232B;</div>
+        <div class="kbdbtnc" onclick="torol();" title="Clear editor">CA</div>
+        <div class="kbdbtnc" id="spec1" onclick="clearOutput();" title="Clear output"><big>&#x2327;</big></div>
     </div>
     <div id="settingbar">
         <select id="cm-select" onchange="setCmTheme(this.value);" title="Select editor's theme">
@@ -283,11 +330,6 @@
         <script type="text/x-sage">latex(integrate(polylog(3,x)*ln(x)^2,x))</script>
     </div>
     <script>
-        var tabs = new Tabs({
-            elem: "tabs",
-            open: 0
-        });
-
         function setCmFont(v) {
             cmeditor.getWrapperElement().style["font-size"] = v + "px";
             cmeditor.refresh();
@@ -303,18 +345,52 @@
         };
 
         var insertText = (text, n) => {
-            cmeditor.replaceSelection(text);
-            if (n > 0) {
-                var back = 1;
-                if (n > 1)
-                    back = n + 1
-                cmeditor.execCommand('goCharLeft')
-                var pos = cmeditor.getCursor();
-                console.log(pos)
-                cmeditor.setSelection({
-                    line: pos.line,
-                    ch: pos.ch - back
-                }, pos);
+            var last = cmeditor.getSelection();
+            if (last.length > 0) {
+                cmeditor.replaceSelection(text);
+                if (n > 0) {
+                    var back = 1;
+                    if (n > 1)
+                        back = n + 1;
+                    var pos = cmeditor.getCursor();
+                    cmeditor.setCursor({
+                        line: pos.line,
+                        ch: pos.ch - back
+                    });
+                    cmeditor.setSelection({
+                        line: pos.line,
+                        ch: pos.ch - back - 1
+                    }, {
+                        line: pos.line,
+                        ch: pos.ch - back
+                    });
+                    cmeditor.replaceSelection(last);
+                    var pos1 = cmeditor.getCursor();
+                    cmeditor.setCursor({
+                        line: pos1.line,
+                        ch: pos1.ch - last.length
+                    });
+                    cmeditor.setSelection({
+                        line: pos1.line,
+                        ch: pos1.ch - last.length
+                    }, {
+                        line: pos1.line,
+                        ch: pos1.ch + back - 1
+                    });
+                }
+            } else {
+                cmeditor.replaceSelection(text);
+                if (n > 0) {
+                    var back = 1;
+                    if (n > 1)
+                        back = n + 1
+                    cmeditor.execCommand('goCharLeft')
+                    var pos = cmeditor.getCursor();
+                    cmeditor.setSelection({
+                        line: pos.line,
+                        ch: pos.ch - back
+                    }, pos);
+                }
             }
             cmeditor.focus();
         };
@@ -393,40 +469,68 @@
         var onlineSt = navigator.onLine ? true : false;
         var opt_sotet = false;
 
+        function updateOnlineStatus(event) {
+            onlineSt = navigator.onLine ? true : false;
+            if (onlineSt) {
+                $('.online').css('opacity', 1)
+            } else {
+                $('.online').css('opacity', 0.25);
+                alert('You are offline! For the correct operate of calculator you need to be online.');
+            }
+        }
+
+        setTimeout(() => {
+            if (!onlineSt)
+                alert('You are offline! For the correct operate of calculator you need to be online.');
+        }, 1000);
+
+        document.getElementById('optsotet').checked = opt_sotet;
+        window.addEventListener('onload', updateOnlineStatus);
+        $('#optsotet').attr('checked', opt_sotet);
         $(document).ready(function() {
             $('#cm-select').val('default');
             // Detect offline/online mode in simple way.
             window.addEventListener('online', updateOnlineStatus);
             window.addEventListener('offline', updateOnlineStatus);
+            console.log('onlinestatus', onlineSt)
 
-            function updateOnlineStatus(event) {
-                onlineSt = navigator.onLine ? true : false;
-                if (onlineSt) {
-                    $('.online').css('opacity', 1)
-                } else {
-                    $('.online').css('opacity', 0.25)
-                }
-            }
-            if (!onlineSt)
-                alert('You are offline! For the correct operate of calculator you need to be online.')
-
-            $('#optsotet').on('change', function() {
+            document.getElementById('optsotet').onchange = function() {
                 opt_sotet = this.checked;
                 themeSwitch();
-            })
+            }
         });
 
         function themeSwitch() {
             var t1 = document.getElementById('stylelight');
             var t2 = document.getElementById('styledark');
-            var t1t = document.getElementById('jst-stylelight');
-            var t2t = document.getElementById('jst-styledark');
             t1.disabled = !t1.disabled;
             t2.disabled = !t1.disabled;
-            t1t.disabled = !t1t.disabled;
-            t2t.disabled = !t1t.disabled;
-            //opt_sotet = !opt_sotet;
         };
+
+        function bTgl() {
+            $('#tabcontainer1').toggle(300);
+            $('#btglbtn').toggleClass('closed');
+        };
+
+        function fcnTgl() {
+            $('#tabcontainer').toggle(300);
+            $('#fntglbtn').toggleClass('closed');
+        };
+
+        function sbTgl() {
+            $('#settingbar').toggle(300);
+            $('#sbtglbtn').toggleClass('closed');
+        };
+
+        function megnyitfn(x) {
+            $('.fnbtn.kbdbtn.active').removeClass('active');
+            $(x).addClass('active');
+            var fncel = x.getAttribute('data-btn');
+            $('.myslick.fn.show').removeClass('show');
+            var elem = $('.myslick.fn[data-name=' + fncel + ']')
+            elem.addClass('show');
+            elem.slick('setPosition')
+        }
     </script>
 
     <button id="ltxbtn" class="otherbtn" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button>
@@ -434,6 +538,63 @@
         <div id="output"></div>
         <div class="sagecell_poweredBy"><a href="https://sagecell.sagemath.org/help.html" target="_blank">Help</a> | Powered by <a href="http://www.sagemath.org" target="_blank">SageMath</a></div>
     </p>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js "></script>
+
+    <script type="text/javascript ">
+        var ww = $('#tabs').width();
+        var btnNo = Math.floor(ww / 66);
+        var btnw = Math.floor(ww / btnNo) - 1;
+        console.log(btnw)
+        $('.myslick').slick({
+            dots: true,
+            mobileFirst: true,
+            //adaptiveHeight: true,
+            rows: 2,
+            slidesPerRow: btnNo,
+        });
+
+        $('.kbdbtn ').css({
+            'max-width': btnw - 16,
+            'width': btnw - 16
+        });
+
+        function debounce(func) {
+            var timer;
+            return function(event) {
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(func, 100, event);
+            };
+        };
+
+        window.addEventListener("resize", debounce(function(e) {
+            afterResize();
+        }));
+
+        function afterResize() {
+            $('.myslick').slick('unslick');
+            var ww = $('#tabs').width();
+            var btnNo = Math.floor(ww / 66);
+            var btnw = Math.floor(ww / btnNo) - 1;
+            console.log(btnw);
+            $('.myslick').slick({
+                dots: true,
+                mobileFirst: true,
+                //adaptiveHeight: true,
+                rows: 2,
+                slidesPerRow: btnNo,
+            });
+
+            $('.kbdbtn ').css({
+                'max-width': btnw - 16,
+                'width': btnw - 16
+            });
+            /*  $('.myslick').slick('slickSetOption', 'slidesPerRow', btnNo, true);
+             $('.myslick').slick('reinit'); */
+
+        };
+    </script>
 </body>
 
 </html>
