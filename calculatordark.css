@@ -5,6 +5,7 @@ html {
 button.sagecell_fullScreen.sagecell_icon-resize-full {
     top: 2px;
     right: 17px;
+    opacity: 0.5;
 }
 
 div.CodeMirror.cm-s-default {
@@ -35,29 +36,42 @@ div.sagecell_permalink {
     display: none;
 }
 
-table.kbd tr td {
-    width: 20px;
-    height: 15px;
-    background-color: #eee;
-    padding: 5px;
-    text-align: center;
-    line-height: 25px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #ddd;
-}
-
-table.kbd tr td:hover {
-    background-color: #ddd;
-    border: 1px solid #ccc;
-}
-
 #settingbar {
     border: 1px solid #30363D;
     border-radius: 3px;
-    padding: 5px;
+    padding: 2px;
     margin-bottom: 5px;
-    background-color: #444;
+}
+
+th {
+    background-color: #414449;
+    font-size: 20px;
+    padding: 5px 10px;
+    color: #c3d3ff
+}
+
+td {
+    text-align: left;
+    border-right: 2px solid #4e4e4e;
+    padding: 5px 10px;
+    color: #c3d3ff
+}
+
+tr:nth-of-type(even) {
+    background-color: #1b222b;
+}
+
+tr:nth-of-type(odd) {
+    background-color: #161B22;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid #555555;
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    width: 100%
 }
 
 .CodeMirror-sizer {
@@ -82,11 +96,37 @@ table.kbd tr td:hover {
     color: #95b1ff;
     font-size: 1em;
     border-radius: 5px;
-    transition: .2s;
     height: 22px;
     max-width: 50px;
     margin: 2px 3px;
-    outline: 1px solid #303062;
+    outline: 1px solid #2e2e4f;
+    position: relative;
+    -webkit-transition-duration: 0.4s;
+    /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.kbdbtn:after {
+    content: "";
+    background: #001b94;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px!important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.7s
+}
+
+.kbdbtn:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
 }
 
 .kbdbtnc {
@@ -110,8 +150,6 @@ table.kbd tr td:hover {
 }
 
 .kbdbtn:hover {
-    box-shadow: 4px 4px 4px #353f4e;
-    transform: scale(1.05);
     background-color: #575e68;
     color: #b4c8ff;
 }
@@ -124,8 +162,6 @@ table.kbd tr td:hover {
     background-color: #990b28;
 }
 
-#btglbtn,
-#fntglbtn,
 #sbtglbtn {
     position: absolute;
     top: 14px;
@@ -136,39 +172,16 @@ table.kbd tr td:hover {
     border: none;
     padding: 5px;
     border-radius: 3px;
-    width: 32px;
-    height: 28px;
-}
-
-#btglbtn.closed,
-#fntglbtn.closed,
-#sbtglbtn.closed {
-    opacity: 0.65;
-    background-color: #ff0000;
-}
-
-#btglbtn {
-    right: 45px;
-}
-
-#fntglbtn {
-    right: 80px;
+    width: 42px;
+    font-size: large;
 }
 
 #sbtglbtn {
     right: 10px;
 }
 
-#btglbtn:hover,
-#fntglbtn:hover,
 #sbtglbtn:hover {
     background-color: #3D4C5F
-}
-
-#btglbtn.closed:hover,
-#fntglbtn.closed:hover,
-#sbtglbtn.closed:hover {
-    border-color: #af0000;
 }
 
 button.sagecell_evalButton,
@@ -180,7 +193,6 @@ button.sagecell_evalButton.ui-button.ui-corner-all.ui-widget {
 
 button.sagecell_evalButton:hover,
 button.sagecell_evalButton.ui-button.ui-corner-all.ui-widget:hover {
-    box-shadow: 4px 4px 4px #353f4e;
     background-color: #575e68;
     color: #b4c8ff;
 }
@@ -222,11 +234,15 @@ button.otherbtn {
     font-weight: normal;
     font-family: Verdana, Arial, sans-serif;
     font-size: 1.1em;
-    margin-top: 10px;
+    vertical-align: middle;
+    display: inline-block
+}
+
+button.otherbtn * {
+    color: #95b1ff;
 }
 
 button.otherbtn:hover {
-    box-shadow: 4px 4px 4px #353f4e;
     background-color: #575e68;
     color: #b4c8ff;
 }
@@ -234,10 +250,10 @@ button.otherbtn:hover {
 #cm-select {
     display: inline-block;
     width: 180px;
-    background-color: #161B22;
+    background-color: #2F3235;
     color: #95b1ff;
     border: none;
-    border-bottom: 1px solid #30363D;
+    border-bottom: 1px solid #7C8A99;
 }
 
 
@@ -285,7 +301,7 @@ input:checked+.slider {
 }
 
 input:focus+.slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #68a7da;
 }
 
 input:checked+.slider:before {
