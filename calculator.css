@@ -90,6 +90,10 @@ table {
     cursor: pointer;
 }
 
+.kbdbtn.width {
+    text-indent: -4px;
+}
+
 .kbdbtn:after {
     content: "";
     background: #7e95ff;
