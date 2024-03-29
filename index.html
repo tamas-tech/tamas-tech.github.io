@@ -196,7 +196,17 @@
                         <span class="slider round"></span>
                     </label>
                 </td>
-
+            </tr>
+            <tr>
+                <td>Number of rows in each panel</td>
+                <td>
+                    <div id="radioset">
+                        <input type="radio" class="rown" id="radio1" name="radio" value="1"><label for="radio1">1</label>
+                        <input type="radio" class="rown" id="radio2" name="radio" value="2" checked="checked"><label for="radio2">2</label>
+                        <input type="radio" class="rown" id="radio3" name="radio" value="3"><label for="radio3">3</label>
+                        <input type="radio" class="rown" id="radio4" name="radio" value="4"><label for="radio4">4</label>
+                    </div>
+                </td>
             </tr>
         </table>
     </div>
@@ -205,8 +215,10 @@
             <div class="myslick">
                 <div class="fnbtn kbdbtn" data-btn="lastused" onclick="megnyitLast(this);">Recent</div>
                 <div class="fnbtn kbdbtn active" data-btn="calculus" onclick="megnyitfn(this);">∫, ∂</div>
+                <div class="fnbtn kbdbtn" data-btn="airy" onclick="megnyitfn(this);" title="Airy functions">Ai, Bi</div>
+                <div class="fnbtn kbdbtn" data-btn="bessel" onclick="megnyitfn(this);" title="Bessel functions, Hankel functions">J<sub>n</sub>, Y<sub>n</sub></div>
                 <div class="fnbtn kbdbtn" effect="ripple" data-btn="gamma" onclick="megnyitfn(this);">Γ, ψ</div>
-                <div class="fnbtn kbdbtn" data-btn="zeta" onclick="megnyitfn(this);">ζ, H</div>
+                <div class="fnbtn kbdbtn" data-btn="zeta" onclick="megnyitfn(this);">ζ, H<sub>n</sub></div>
                 <div class="fnbtn kbdbtn" data-btn="log" onclick="megnyitfn(this);">log, Li</div>
                 <div class="fnbtn kbdbtn" data-btn="elliptic" onclick="megnyitfn(this);">Elliptic</div>
                 <div class="fnbtn kbdbtn" data-btn="links" onclick="megnyitfn(this);">Links</div>
@@ -255,55 +267,59 @@
             <div class="kbdbtn" data-btn="derivative(f,x)" onclick="beilleszt(this,2);" title="Derivative of function with respect to variable x :&#013;derivative( f, x )">∂</div>
             <div class="kbdbtn" data-btn="plot(f,x,a,b)" onclick="beilleszt(this,6);" title="2D plot:&#013;plot( f, x, a, b )">2Dplot</div>
         </div>
+        <div class="myslick fn" data-name="airy">
+            <div class="kbdbtn" data-btn="airy_ai(z)" onclick="beilleszt(this,1);" title="The Airy function of the first kind of z:&#013;airy_ai( x )">Ai(x)</div>
+            <div class="kbdbtn" data-btn="airy_ai_prime(z)" onclick="beilleszt(this,1);" title="The first derivative of the Airy function of the first kind of z:&#013;airy_ai_prime( z )">∂Ai(x)</div>
+            <div class="kbdbtn" data-btn="airy_bi(z)" onclick="beilleszt(this,1);" title="The Airy function of the second kind of z:&#013;airy_ai( x )">Bi(x)</div>
+            <div class="kbdbtn" data-btn="airy_bi_prime(z)" onclick="beilleszt(this,1);" title="The first derivative of the Airy function of the second kind of z:&#013;airy_bi_prime( z )">∂Bi(x)</div>
+        </div>
+        <div class="myslick fn" data-name="bessel">
+            <div class="kbdbtn" data-btn="bessel_J(n,z)" onclick="beilleszt(this,2);" title="The Bessel function of the first kind of z:&#013;bessel_J( n, z )">J<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="bessel_I(n,z)" onclick="beilleszt(this,2);" title="The modified Bessel function of the first kind of z:&#013;bessel_I( n, z )">I<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="bessel_Y(n,z)" onclick="beilleszt(this,2);" title="The Bessel function of the second kind of z:&#013;bessel_Y( n, z )">Y<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="bessel_K(n,z)" onclick="beilleszt(this,2);" title="The modified Bessel function of the second kind of z:&#013;bessel_K( n, z )">K<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="hankel1(n,z)" onclick="beilleszt(this,2);" title="The Hankel function of the first kind of z :&#013;hankel1( n, z )">H<sub>n</sub><sup style="margin-left:-6px;">(1)</sup>(z)</div>
+            <div class="kbdbtn" data-btn="hankel2(n,z)" onclick="beilleszt(this,2);" title="The Hankel function of the second kind of z :&#013;hankel2( n, z )">H<sub>n</sub><sup style="margin-left:-6px;">(2)</sup>(z)</div>
+            <div class="kbdbtn" data-btn="spherical_bessel_J(n,z)" onclick="beilleszt(this,2);" title="The spherical Bessel function of the first kind of z:&#013;spherical_bessel_J( n, z )">j<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="spherical_bessel_Y(n,z)" onclick="beilleszt(this,2);" title="The spherical Bessel function of the second kind of z:&#013;spherical_bessel_Y( n, z )">y<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="spherical_hankel1(n,z)" onclick="beilleszt(this,2);" title="The spherical Hankel function of the first kind of z :&#013;spherical_hankel1( n, z )">h<sub>n</sub><sup style="margin-left:-6px;">(1)</sup>(z)</div>
+            <div class="kbdbtn" data-btn="spherical_hankel2(n,z)" onclick="beilleszt(this,2);" title="The spherical Hankel function of the second kind of z :&#013;hankel2( n, z )">h<sub>n</sub><sup style="margin-left:-6px;">(2)</sup>(z)</div>
+        </div>
         <div class="myslick fn" data-name="gamma">
             <div class="kbdbtn" data-btn="gamma(x)" onclick="beilleszt(this,1);" title="Euler gamma function:&#013;gamma( x )">Γ(x)</div>
             <div class="kbdbtn" data-btn="gamma_inc(a,x)" onclick="beilleszt(this,2);" title="Incomplet Euler gamma function:&#013;gamma_inc( a, x )">Γ<sub>a</sub>(x)</div>
+            <div class="kbdbtn" data-btn="log_gamma(x)" onclick="beilleszt(this,1);" title="The natural logarithm of the gamma function of x :&#013;log_gamma(  x )">lnΓ(x)</div>
             <div class="kbdbtn" data-btn="psi(a,x)" onclick="beilleszt(this,2);" title="Polygamma function:&#013;psi( a, x )">ψ<sub>a</sub>(x)</div>
             <div class="kbdbtn" data-btn="erf(x)" onclick="beilleszt(this,1);" title="Error function:&#013;erf( x )">Φ(x)</div>
             <div class="kbdbtn" data-btn="factorial(x)" onclick="beilleszt(this,1);" title="Factorial function:&#013;factorial( x )">n!</div>
             <div class="kbdbtn" data-btn="binomial(n,k)" onclick="beilleszt(this,2);" title="Binomial function:&#013;binomial( n, k )">C(n,k)</div>
             <div class="kbdbtn" data-btn="beta(x,y)" onclick="beilleszt(this,2);" title="Beta function:&#013;beta( x, y )">B(x,y)</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/1</div>
         </div>
         <div class="myslick fn" data-name="zeta">
-            <div class="kbdbtn" data-btn="zeta(x)" onclick="beilleszt(this,1);" title="Riemann zeta function of a real or complex number:&#013;zeta( x )">ζ(x)</div>
+            <div class="kbdbtn" data-btn="zeta(x)" onclick="beilleszt(this,1);" title="Riemann ξ-function of a real or complex number:&#013;zeta( x )">ζ(x)</div>
+            <div class="kbdbtn" data-btn="zeta_symmetric(x)" onclick="beilleszt(this,1);" title="The symmetric Riemann ξ-function of x:&#013;zeta_symmetric( x )">ζ<sub>sym</sub>(x)</div>
+            <div class="kbdbtn" data-btn="zetaderiv(n,x)" onclick="beilleszt(this,2);" title="The nth-order derivative of the Riemann zeta function of x:&#013;zetaderiv( n, x )">∂<sup>n</sup><sub style="margin-left:-7px;">x</sub>ζ(x)</div>
             <div class="kbdbtn" data-btn="hurwitz_zeta(x,a)" onclick="beilleszt(this,2);" title="Hurwitz zeta function of a real or complex number with real or complex parameter a:&#013;hurwitz_zeta( x,a )">ζ(x,a)</div>
             <div class="kbdbtn" data-btn="harmonic_number(n)" onclick="beilleszt(this,1);" title="Harmonic number for index n:&#013;harmonic_number(n) = harmonic_number( n, 1 )">H<sub>n</sub></div>
             <div class="kbdbtn" data-btn="harmonic_number(n,m)" onclick="beilleszt(this,2);" title="Generalized harmonic number for index n, power m:&#013;harmonic_number( n, m ) = 1/1^m + 1/2^m +...+1/n^m">H<sub>n</sub><sup style="margin-left:-6px;">m</sup></div>
             <div class="kbdbtn" data-btn="bernoulli(n)" onclick="beilleszt(this,1);" title="Bernoulli number for index n:&#013;bernoulli( n )">B<sub>n</sub></div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
         </div>
         <div class="myslick fn" data-name="log">
             <div class="kbdbtn" data-btn="exp(x)" onclick="beilleszt(this,1);" title="The exponential function:&#013; exp( x )">e<sup>x</sup></div>
+            <div class="kbdbtn" data-btn="exp_polar(x)" onclick="beilleszt(this,1);" title=" The multivalued exponential of x:&#013; exp_polar( x )">e<sub>polar</sub></div>
             <div class="kbdbtn" data-btn="ln(x)" onclick="beilleszt(this,1);" title="The natural logarithmic function:&#013; ln( x )">ln(x)</div>
+            <div class="kbdbtn" data-btn="log(x,a)" onclick="beilleszt(this,2);" title="The  logarithmic function with base a:&#013; log( x, a )">log<sub>a</sub>(x)</div>
             <div class="kbdbtn" data-btn="polylog(n,x)" onclick="beilleszt(this,2);" title="Polylogarithm function of real or complex order n of a real or complex number:&#013; polylog( n, x )">Li<sub>n</sub>(x)</div>
+            <div class="kbdbtn" data-btn="diloglog(x)" onclick="beilleszt(this,1);" title="The dilogarithm of x :&#013;diloglog( x ) = polylog( 2, x )">Li<sub>2</sub>(x)</div>
             <div class="kbdbtn" data-btn="lambert_w(x)" onclick="beilleszt(this,1);" title="The Lambert W function function:&#013; lambert_w( x )">W(x)</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
         </div>
         <div class="myslick fn" data-name="elliptic">
             <div class="kbdbtn" data-btn="elliptic_f(z,m)" onclick="beilleszt(this,2);" title="The incomplete elliptic integral of the first kind of z and parameter m = k^2:&#013; elliptic_f( z, m )">F(z,m)</div>
             <div class="kbdbtn" data-btn="elliptic_kc(m)" onclick="beilleszt(this,1);" title="The complete elliptic integral of the first kind of parameter m = k^2:&#013; elliptic_kc( m )">K(m)</div>
             <div class="kbdbtn" data-btn="elliptic_e(z,m)" onclick="beilleszt(this,2);" title="The incomplete elliptic integral of the second kind of z and parameter m = k^2:&#013; elliptiz_e( z, m=k^2 )">E(z,m)</div>
-            <div class="kbdbtn" data-btn="elliptic_ec(x)" onclick="beilleszt(this,1);" title="The complete elliptic integral of the second kind of parameter m = k^2:&#013; elliptiz_ec( z, m=k^2 )">E(m)</div>
-            <div class="kbdbtn" data-btn="elliptic_pi(n,z,m)" onclick="beilleszt(this,4);" title="The incomplete elliptic integral of the third kind of z, characteristic n and parameter m = k^2:&#013; elliptiz_pi( n, z, m=k^2 )">Π(n,z,m)</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+            <div class="kbdbtn" data-btn="elliptic_ec(z)" onclick="beilleszt(this,1);" title="The complete elliptic integral of the second kind of parameter m = k^2:&#013; elliptiz_ec( z, m=k^2 )">E(m)</div>
+            <div class="kbdbtn" data-btn="elliptic_eu(z,m)" onclick="beilleszt(this,1);" title="The incomplete elliptic integral of the second kind of a modified argument z and parameter  m = k^2:&#013; elliptiz_eu( z, m=k^2 )">Eu(m)</div>
+            <div class="kbdbtn width" data-btn="elliptic_pi(n,z,m)" onclick="beilleszt(this,4);" title="The incomplete elliptic integral of the third kind of z, characteristic n and parameter m = k^2:&#013; elliptiz_pi( n, z, m=k^2 )">Π(n,z,m)</div>
         </div>
         <div class="myslick fn" data-name="links">
             <div><a href="https://doc.sagemath.org/html/en/reference/functions/index.html">SageMath Function Reference</a></div>
@@ -384,6 +400,7 @@
     </div>
     <script>
         var lastlist = [];
+        var numrows = 2;
 
         function setCmFont(v) {
             cmeditor.getWrapperElement().style["font-size"] = v + "px";
@@ -570,26 +587,34 @@
             document.getElementById('optsotet').onchange = function() {
                 opt_sotet = this.checked;
                 themeSwitch();
-            }
+            };
 
             document.getElementById('fntglbtn').onchange = function() {
                 $('#tabcontainer').toggle(300);
-            }
+            };
 
             document.getElementById('btglbtn').onchange = function() {
                 $('#tabcontainer1').toggle(300);
-            }
+            };
+
             $('.sagecell_input').append('<button id="ltxbtn" class="otherbtn" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button><input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;margin-left:10px;" title="set output\'s fontsize">')
 
             $(document).on('click', '.myslick.fn .kbdbtn', function() {
                 var elem = $(this)
                 var name = elem.attr('data-btn')
                 if (lastlist.indexOf(name) < 0) {
+                    console.log(name)
                     lastlist.push(name)
                     Clone = elem.clone(true);
                     $(lastelem).append(Clone);
-                }
-            })
+                };
+            });
+
+            $('.rown').on('change', function() {
+                numrows = $(this).val() * 1;
+                afterResize();
+            });
+
         });
 
         function themeSwitch() {
@@ -630,12 +655,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js "></script>
 
-    <script type="text/javascript ">
+    <script type="text/javascript">
         var ww = $('#tabs').width();
         var btnNo = Math.floor(ww / 66);
         var btnw = Math.floor(ww / btnNo) - 1;
+        console.log(btnw)
         $('.myslick').slick({
-            dots: true,
+            //dots: true,
             mobileFirst: true,
             //adaptiveHeight: true,
             rows: 2,
@@ -664,11 +690,12 @@
             var ww = $('#tabs').width();
             var btnNo = Math.floor(ww / 66);
             var btnw = Math.floor(ww / btnNo) - 1;
+            console.log(btnw);
             $('.myslick').slick({
-                dots: true,
+                //dots: true,
                 mobileFirst: true,
                 //adaptiveHeight: true,
-                rows: 2,
+                rows: numrows,
                 slidesPerRow: btnNo,
             });
 
