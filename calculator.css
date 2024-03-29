@@ -50,13 +50,23 @@ table {
 }
 
 .container {
+    width: calc(100% - 14px);
     display: grid;
     width: 1fr;
-    grid-template-columns: repeat(auto-fit, minmax(50px, max-content));
+    grid-template-columns: repeat(auto-fit, minmax(62px, max-content));
     grid-gap: 0.3em;
     padding: 5px;
     border: 1px solid #ccc;
     margin: 2px;
+    background-color: #ccc;
+}
+
+#lastused.container {
+    display: none;
+}
+
+#lastused.container.show {
+    display: block;
 }
 
 .kbdbtn {
@@ -318,10 +328,6 @@ input:checked+.slider:before {
 #tabs {
     margin: 2px;
     padding-bottom: 1px;
-}
-
-#tabs .container {
-    background-color: #fff
 }
 
 .slick-next::before,
