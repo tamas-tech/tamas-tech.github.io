@@ -79,13 +79,23 @@ table {
 }
 
 .container {
+    width: calc(100% - 14px);
     display: grid;
     width: 1fr;
-    grid-template-columns: repeat(auto-fit, minmax(50px, max-content));
+    grid-template-columns: repeat(auto-fit, minmax(60px, max-content));
     grid-gap: 0.3em;
     padding: 5px;
     border: 1px solid #30363D;
     margin: 2px;
+    background-color: #30363D;
+}
+
+#lastused.container {
+    display: none;
+}
+
+#lastused.container.show {
+    display: block;
 }
 
 .kbdbtn {
@@ -376,10 +386,6 @@ input:checked+.slider:before {
 #tabs {
     margin: 2px;
     padding-bottom: 1px;
-}
-
-#tabs .container {
-    background-color: #0E1218;
 }
 
 .slick-next::before,
