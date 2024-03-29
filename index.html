@@ -585,7 +585,6 @@
                 var elem = $(this)
                 var name = elem.attr('data-btn')
                 if (lastlist.indexOf(name) < 0) {
-                    console.log(name)
                     lastlist.push(name)
                     Clone = elem.clone(true);
                     $(lastelem).append(Clone);
@@ -635,7 +634,6 @@
         var ww = $('#tabs').width();
         var btnNo = Math.floor(ww / 66);
         var btnw = Math.floor(ww / btnNo) - 1;
-        console.log(btnw)
         $('.myslick').slick({
             dots: true,
             mobileFirst: true,
@@ -666,7 +664,6 @@
             var ww = $('#tabs').width();
             var btnNo = Math.floor(ww / 66);
             var btnw = Math.floor(ww / btnNo) - 1;
-            console.log(btnw);
             $('.myslick').slick({
                 dots: true,
                 mobileFirst: true,
