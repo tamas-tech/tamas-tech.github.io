@@ -91,14 +91,120 @@
 
 <body>
     <h2>SageCellCalc</h2>
-    <button id="fntglbtn" onclick="fcnTgl();">f(x)</button>
-    <button id="btglbtn" onclick="bTgl();">+/-</button>
     <button id="sbtglbtn" onclick="sbTgl();">⚙</button>
+    <div id="settingbar">
+        <table>
+            <th colspan="2">Settings</th>
+            <tr>
+                <td>Editor's theme</td>
+                <td><select id="cm-select" onchange="setCmTheme(this.value);" title="Select editor's theme">
+                <option value="default">default</option>
+                <option value="3024-day">3024-day</option>
+                <option value="3024-night">3024-night</option>
+                <option value="abbott">abbott</option>
+                <option value="abcdef">abcdef</option>
+                <option value="ambiance">ambiance</option>
+                <option value="ayu-dark">ayu-dark</option>
+                <option value="ayu-mirage">ayu-mirage</option>
+                <option value="base16-dark">base16-dark</option>
+                <option value="base16-light">base16-light</option>
+                <option value="bespin">bespin</option>
+                <option value="blackboard">blackboard</option>
+                <option value="cobalt">cobalt</option>
+                <option value="colorforth">colorforth</option>
+                <option value="darcula">darcula</option>
+                <option value="dracula">dracula</option>
+                <option value="duotone-dark">duotone-dark</option>
+                <option value="duotone-light">duotone-light</option>
+                <option value="eclipse">eclipse</option>
+                <option value="elegant">elegant</option>
+                <option value="erlang-dark">erlang-dark</option>
+                <option value="gruvbox-dark">gruvbox-dark</option>
+                <option value="hopscotch">hopscotch</option>
+                <option value="icecoder">icecoder</option>
+                <option value="idea">idea</option>
+                <option value="isotope">isotope</option>
+                <option value="juejin<">juejin</option>
+                <option value="lesser-dark">lesser-dark</option>
+                <option value="liquibyte">liquibyte</option>
+                <option value="lucario">lucario</option>
+                <option value="material">material</option>
+                <option value="material-darker">material-darker</option>
+                <option value="material-palenight">material-palenight</option>
+                <option value="material-ocean">material-ocean</option>
+                <option value="mbo">mbo</option>
+                <option value="mdn-like">mdn-like</option>
+                <option value="midnight">midnight</option>
+                <option value="monokai">monokai</option>
+                <option value="moxer">moxer</option>
+                <option value="neat">neat</option>
+                <option value="neo">neo</option>
+                <option value="night">night</option>
+                <option value="nord">nord</option>
+                <option value="oceanic-next">oceanic-next</option>
+                <option value="one-dark">one-dark</option>
+                <option value="panda-syntax">panda-syntax</option>
+                <option value="paraiso-dark">paraiso-dark</option>
+                <option value="paraiso-light">paraiso-light</option>
+                <option value="pastel-on-dark">pastel-on-dark</option>
+                <option value="railscasts">railscasts</option>
+                <option value="rubyblue">rubyblue</option>
+                <option value="seti" selected="">seti</option>
+                <option value="shadowfox">shadowfox</option>
+                <option value="solarized dark">solarized dark</option>
+                <option value="solarized light">solarized light</option>
+                <option value="the-matrix">the-matrix</option>
+                <option value="tomorrow-night-bright">tomorrow-night-bright</option>
+                <option value="tomorrow-night-eighties">tomorrow-night-eighties</option>
+                <option value="ttcn">ttcn</option>
+                <option value="twilight">twilight</option>
+                <option value="vibrant-ink">vibrant-ink</option>
+                <option value="xq-dark">xq-dark</option>
+                <option value="xq-light">xq-light</option>
+                <option value="yeti">yeti</option>
+                <option value="yonce">yonce</option>
+                <option value="zenburn">zenburn</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Editor's fontsize</td>
+                <td> <input id="font-slider" oninput="setCmFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;" title="set editor's fontsize"></td>
+            </tr>
+            <tr>
+                <td>Light/Dark mode</td>
+                <td>
+                    <label class="switch">
+                        <input id="optsotet" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Show/hide function panel</td>
+                <td>
+                    <label class="switch">
+                        <input id="fntglbtn" type="checkbox" checked="true">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Show/hide base panel</td>
+                <td>
+                    <label class="switch">
+                        <input id="btglbtn" type="checkbox" checked="true">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+
+            </tr>
+        </table>
+    </div>
     <div id="tabcontainer">
         <div id="tabs">
             <div class="myslick">
                 <div class="fnbtn kbdbtn active" data-btn="calculus" onclick="megnyitfn(this);">∫, ∂</div>
-                <div class="fnbtn kbdbtn" data-btn="gamma" onclick="megnyitfn(this);">Γ, ψ</div>
+                <div class="fnbtn kbdbtn" effect="ripple" data-btn="gamma" onclick="megnyitfn(this);">Γ, ψ</div>
                 <div class="fnbtn kbdbtn" data-btn="zeta" onclick="megnyitfn(this);">ζ, H</div>
                 <div class="fnbtn kbdbtn" data-btn="log" onclick="megnyitfn(this);">log, Li</div>
                 <div class="fnbtn kbdbtn" data-btn="elliptic" onclick="megnyitfn(this);">Elliptic</div>
@@ -268,81 +374,6 @@
             <div class="kbdbtn" onclick="endcm();" title="Go line end">&#x21E5;</div>
         </div>
     </div>
-    <div id="settingbar">
-        <select id="cm-select" onchange="setCmTheme(this.value);" title="Select editor's theme">
-        <option value="default">default</option>
-        <option value="3024-day">3024-day</option>
-        <option value="3024-night">3024-night</option>
-        <option value="abbott">abbott</option>
-        <option value="abcdef">abcdef</option>
-        <option value="ambiance">ambiance</option>
-        <option value="ayu-dark">ayu-dark</option>
-        <option value="ayu-mirage">ayu-mirage</option>
-        <option value="base16-dark">base16-dark</option>
-        <option value="base16-light">base16-light</option>
-        <option value="bespin">bespin</option>
-        <option value="blackboard">blackboard</option>
-        <option value="cobalt">cobalt</option>
-        <option value="colorforth">colorforth</option>
-        <option value="darcula">darcula</option>
-        <option value="dracula">dracula</option>
-        <option value="duotone-dark">duotone-dark</option>
-        <option value="duotone-light">duotone-light</option>
-        <option value="eclipse">eclipse</option>
-        <option value="elegant">elegant</option>
-        <option value="erlang-dark">erlang-dark</option>
-        <option value="gruvbox-dark">gruvbox-dark</option>
-        <option value="hopscotch">hopscotch</option>
-        <option value="icecoder">icecoder</option>
-        <option value="idea">idea</option>
-        <option value="isotope">isotope</option>
-        <option value="juejin<">juejin</option>
-        <option value="lesser-dark">lesser-dark</option>
-        <option value="liquibyte">liquibyte</option>
-        <option value="lucario">lucario</option>
-        <option value="material">material</option>
-        <option value="material-darker">material-darker</option>
-        <option value="material-palenight">material-palenight</option>
-        <option value="material-ocean">material-ocean</option>
-        <option value="mbo">mbo</option>
-        <option value="mdn-like">mdn-like</option>
-        <option value="midnight">midnight</option>
-        <option value="monokai">monokai</option>
-        <option value="moxer">moxer</option>
-        <option value="neat">neat</option>
-        <option value="neo">neo</option>
-        <option value="night">night</option>
-        <option value="nord">nord</option>
-        <option value="oceanic-next">oceanic-next</option>
-        <option value="one-dark">one-dark</option>
-        <option value="panda-syntax">panda-syntax</option>
-        <option value="paraiso-dark">paraiso-dark</option>
-        <option value="paraiso-light">paraiso-light</option>
-        <option value="pastel-on-dark">pastel-on-dark</option>
-        <option value="railscasts">railscasts</option>
-        <option value="rubyblue">rubyblue</option>
-        <option value="seti" selected="">seti</option>
-        <option value="shadowfox">shadowfox</option>
-        <option value="solarized dark">solarized dark</option>
-        <option value="solarized light">solarized light</option>
-        <option value="the-matrix">the-matrix</option>
-        <option value="tomorrow-night-bright">tomorrow-night-bright</option>
-        <option value="tomorrow-night-eighties">tomorrow-night-eighties</option>
-        <option value="ttcn">ttcn</option>
-        <option value="twilight">twilight</option>
-        <option value="vibrant-ink">vibrant-ink</option>
-        <option value="xq-dark">xq-dark</option>
-        <option value="xq-light">xq-light</option>
-        <option value="yeti">yeti</option>
-        <option value="yonce">yonce</option>
-        <option value="zenburn">zenburn</option>
-        </select>
-        <input id="font-slider" oninput="setCmFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;" title="set editor's fontsize">
-        <label class="switch">
-            <input id="optsotet" type="checkbox">
-            <span class="slider round"></span>
-         </label>
-    </div>
     <div id="mycell">
         <script type="text/x-sage">latex(integrate(polylog(3,x)*ln(x)^2,x))</script>
     </div>
@@ -351,6 +382,11 @@
             cmeditor.getWrapperElement().style["font-size"] = v + "px";
             cmeditor.refresh();
             $('div.sagecell_sessionOutput').css('font-size', v + 'px')
+        };
+
+        function setOutputFont(v) {
+            $('div.sagecell_sessionOutput').css('font-size', v + 'px');
+            $('div#output').css('font-size', v + 'px');
         };
 
         function setCmTheme(theme) {
@@ -528,6 +564,15 @@
                 opt_sotet = this.checked;
                 themeSwitch();
             }
+
+            document.getElementById('fntglbtn').onchange = function() {
+                $('#tabcontainer').toggle(300);
+            }
+
+            document.getElementById('btglbtn').onchange = function() {
+                $('#tabcontainer1').toggle(300);
+            }
+            $('.sagecell_input').append('<button id="ltxbtn" class="otherbtn" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button><input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;margin-left:10px;" title="set output\'s fontsize">')
         });
 
         function themeSwitch() {
@@ -537,19 +582,8 @@
             t2.disabled = !t1.disabled;
         };
 
-        function bTgl() {
-            $('#tabcontainer1').toggle(300);
-            $('#btglbtn').toggleClass('closed');
-        };
-
-        function fcnTgl() {
-            $('#tabcontainer').toggle(300);
-            $('#fntglbtn').toggleClass('closed');
-        };
-
         function sbTgl() {
             $('#settingbar').toggle(300);
-            $('#sbtglbtn').toggleClass('closed');
         };
 
         function megnyitfn(x) {
@@ -562,8 +596,6 @@
             elem.slick('setPosition')
         }
     </script>
-
-    <button id="ltxbtn" class="otherbtn" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button>
     <p>
         <div id="output"></div>
         <div class="sagecell_poweredBy"><a href="https://sagecell.sagemath.org/help.html" target="_blank">Help</a> | Powered by <a href="http://www.sagemath.org" target="_blank">SageMath</a></div>
