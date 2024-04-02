@@ -480,26 +480,12 @@ body {
     left: 0;
 }
 
-
-/* .zeynep-opened body {
-    overflow: hidden;
-} */
-
 .zeynep {
     right: auto;
     left: 0;
     position: relative;
     height: 0;
 }
-
-
-/* .zeynep.opened {
-    position: fixed;
-    height: calc(100% + 20px);
-    top: calc(100% - 370px);
-    bottom: calc(100% + 370px);
-    transform: translateX(0) translateZ(0);
-} */
 
 .zeynep.opened {
     position: fixed;
@@ -522,14 +508,7 @@ body {
 }
 
 .zeynep-overlay {
-    background-color: rgba(172, 172, 172, 0.42);
-    bottom: 0;
-    display: none;
-    left: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: 1010;
+    background-color: #424E8899!important;
 }
 
 .lead {
