@@ -4,8 +4,46 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-    <meta name="google" value="notranslate">
     <title>SageCellCalc</title>
+    <script>
+        var onlineSt = navigator.onLine ? true : false;
+
+        function tryOnline() {
+            tt = setInterval(() => {
+                onlineSt = navigator.onLine ? true : false;
+                if (onlineSt) {
+                    window.location.href = window.location.href;
+                } else {
+                    console.log('you are offline')
+                    clearInterval(tt)
+                }
+            }, 500);
+        };
+
+        function updateOnlineStatus() {
+            onlineSt = navigator.onLine ? true : false;
+            if (onlineSt) {
+                setTimeout(() => {
+                    var conf = confirm("Now, you are online. Do you want to reload the page?")
+                    if (conf)
+                        window.location.reload(true);
+                    else
+                        return;
+                }, 10000)
+            } else {
+                alert('You are offline! For the correct operate of calculator you need to be online.');
+            }
+        };
+        window.addEventListener('onload', updateOnlineStatus);
+        // Detect offline/online mode in simple way.
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        console.log('onlinestatus', onlineSt)
+        if (!onlineSt) {
+            document.write('<h2 style="text-align:center;margin-top:10%;">You are offline!</h2><div style="text-align:center;"><span style="text-align:center;font-size:30px;outline:5px solid red;width:fit-content;display: inline-block;">For the proper works of this application you need to be online.</span></div>');
+            window.stop();
+        }
+    </script>
     <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
     <script>
         // Make the div with id 'mycell' a Sage cell
@@ -16,12 +54,14 @@
     </script>
     <link rel="stylesheet" href="calculator.css" id="stylelight">
     <link rel="stylesheet" href="calculatordark.css" id="styledark" disabled="true">
-    <!-- <link rel="stylesheet" href="vanilla-js-tabs.css" id="jst-stylelight">
-    <link rel="stylesheet" href="vanilla-js-tabs_dark.css" id="jst-styledark" disabled="true">
-    <script src="vanilla-js-tabs.min.js"></script> -->
-    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script> -->
+
     <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
-    <!--  <script src="https://unpkg.com/mathlive"></script> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zeynepjs@2.2.0/dist/zeynep.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/zeynepjs@2.2.0/dist/zeynep.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js "></script>
+    <script src="main.js"></script>
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-day.min.css">
@@ -88,6 +128,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/yeti.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/yonce.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/zenburn.min.css">
+
+</head>
 </head>
 
 <body>
@@ -260,7 +302,7 @@
             </div>
         </div>
 
-        <div class="container fn" id="lastused"></div>
+        <div class="container fn" id="lastused"><button id="clearbtn" onclick="clearRecent();" titleuu="Clear all  buttons in 'Recent' panel">Clear</button></div>
 
         <div class="myslick fn show" data-name="calculus">
             <div class="kbdbtn" data-btn="integrate(f,x)" onclick="beilleszt(this,2);" title="Undefinite integration:&#013;integrate( f, x )">∫</div>
@@ -400,261 +442,11 @@
         <script type="text/x-sage">latex(integrate(polylog(3,x)*ln(x)^2,x))</script>
     </div>
     <script>
-        var lastlist = [];
-        var numrows = 2;
-
-        function setCmFont(v) {
-            cmeditor.getWrapperElement().style["font-size"] = v + "px";
-            cmeditor.refresh();
-            $('div.sagecell_sessionOutput').css('font-size', v + 'px')
-        };
-
-        function setOutputFont(v) {
-            $('div.sagecell_sessionOutput').css('font-size', v + 'px');
-            $('div#output').css('font-size', v + 'px');
-        };
-
-        function setCmTheme(theme) {
-            cmeditor.setOption("theme", theme);
-        }
-        var beilleszt = function(x, n) {
-            var btntxt = x.getAttribute('data-btn');
-            insertText(btntxt, n);
-        };
-
-        var insertText = (text, n) => {
-            var last = cmeditor.getSelection();
-            if (last.length > 0) {
-                cmeditor.replaceSelection(text);
-                if (n > 0) {
-                    var back = 1;
-                    if (n > 1)
-                        back = n + 1;
-                    var pos = cmeditor.getCursor();
-                    cmeditor.setCursor({
-                        line: pos.line,
-                        ch: pos.ch - back
-                    });
-                    cmeditor.setSelection({
-                        line: pos.line,
-                        ch: pos.ch - back - 1
-                    }, {
-                        line: pos.line,
-                        ch: pos.ch - back
-                    });
-                    cmeditor.replaceSelection(last);
-                    var pos1 = cmeditor.getCursor();
-                    cmeditor.setCursor({
-                        line: pos1.line,
-                        ch: pos1.ch - last.length
-                    });
-                    cmeditor.setSelection({
-                        line: pos1.line,
-                        ch: pos1.ch - last.length
-                    }, {
-                        line: pos1.line,
-                        ch: pos1.ch + back - 1
-                    });
-                }
-            } else {
-                cmeditor.replaceSelection(text);
-                if (n > 0) {
-                    var back = 1;
-                    if (n > 1)
-                        back = n + 1
-                    cmeditor.execCommand('goCharLeft')
-                    var pos = cmeditor.getCursor();
-                    cmeditor.setSelection({
-                        line: pos.line,
-                        ch: pos.ch - back
-                    }, pos);
-                }
-            }
-            cmeditor.focus();
-        };
-
-        var undocm = () => {
-            cmeditor.execCommand('undo');
-            cmeditor.focus();
-        };
-
-        var redocm = () => {
-            cmeditor.execCommand('redo');
-            cmeditor.focus();
-        };
-
-        var homecm = () => {
-            cmeditor.execCommand('goLineStart');
-            cmeditor.focus();
-        };
-
-        var endcm = () => {
-            cmeditor.execCommand('goLineEnd');
-            cmeditor.focus();
-        };
-
-        var tabcm = () => {
-            cmeditor.execCommand('insertTab');
-            cmeditor.focus();
-        };
-
-        var torolTextLeft = () => {
-            cmeditor.execCommand('delCharBefore');
-            cmeditor.focus();
-        };
-
-        var moveLeft = () => {
-            cmeditor.execCommand('goCharLeft');
-            cmeditor.focus();
-        };
-
-        var moveRight = () => {
-            cmeditor.execCommand('goCharRight');
-            cmeditor.focus();
-        };
-
-        var torol = function() {
-            cmeditor.setValue('');
-            cmeditor.focus();
-        };
-
-        var clearOutput = function() {
-            var outputs = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
-            if (outputs)
-                outputs.remove();
-            output.innerHTML = "";
-        };
-
-        var printLatex = function() {
-            var inptxt = cmeditor.getValue();
-            if (/latex\(/.test(cmeditor.getValue())) {
-                var outputtxt = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
-                if (outputtxt) {
-                    output.innerHTML = "\\[ " + outputtxt.innerText.replace(/\\log/g, '\\ln') + " \\]";
-                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'output']);
-                } else {
-                    output.innerText = "There is no output";
-                }
-            } else {
-                output.innerHTML = "The sagecell output is not a valid Latex code.";
-            }
-        };
-
-
-        var printLatexMathLive = function() {
-            var inptxt = cmeditor.getValue();
-            var outputtxt = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
-            if (outputtxt) {
-                outputtxt = window.MathLive.convertAsciiMathToLatex(outputtxt.innerText).replace(/\\log/g, '\\ln');
-                output.innerHTML = "$$ " + outputtxt + " $$";
-                window.MathLive.renderMathInDocument();
-            } else {
-                output.innerText = "There is no output";
-            }
-        };
-
-        setTimeout(() => {
-            cmeditor = document.querySelector(".CodeMirror").CodeMirror;
-        }, 200);
-
-        var onlineSt = navigator.onLine ? true : false;
-        var opt_sotet = false;
-
-        function updateOnlineStatus(event) {
-            onlineSt = navigator.onLine ? true : false;
-            if (onlineSt) {
-                $('.online').css('opacity', 1)
-            } else {
-                $('.online').css('opacity', 0.25);
-                alert('You are offline! For the correct operate of calculator you need to be online.');
-            }
-        }
-
-        setTimeout(() => {
-            if (!onlineSt)
-                alert('You are offline! For the correct operate of calculator you need to be online.');
-        }, 1000);
-
-        document.getElementById('optsotet').checked = opt_sotet;
-        window.addEventListener('onload', updateOnlineStatus);
-        $('#optsotet').attr('checked', opt_sotet);
-        $(document).ready(function() {
-            $('#cm-select').val('default');
-            // Detect offline/online mode in simple way.
-            window.addEventListener('online', updateOnlineStatus);
-            window.addEventListener('offline', updateOnlineStatus);
-            console.log('onlinestatus', onlineSt)
-
-            document.getElementById('optsotet').onchange = function() {
-                opt_sotet = this.checked;
-                themeSwitch();
-            };
-
-            document.getElementById('fntglbtn').onchange = function() {
-                $('#tabcontainer').toggle(300);
-            };
-
-            document.getElementById('btglbtn').onchange = function() {
-                $('#tabcontainer1').toggle(300);
-            };
-
-            $('.sagecell_input').append('<button id="ltxbtn" class="otherbtn" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button><input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;margin-left:10px;" title="set output\'s fontsize">')
-
-            $(document).on('click', '.myslick.fn .kbdbtn', function() {
-                var elem = $(this)
-                var name = elem.attr('data-btn')
-                if (lastlist.indexOf(name) < 0) {
-                    console.log(name)
-                    lastlist.push(name)
-                    Clone = elem.clone(true);
-                    $(lastelem).append(Clone);
-                };
-            });
-
-            $('.rown').on('change', function() {
-                numrows = $(this).val() * 1;
-                afterResize();
-            });
-
-        });
-
-        function themeSwitch() {
-            var t1 = document.getElementById('stylelight');
-            var t2 = document.getElementById('styledark');
-            t1.disabled = !t1.disabled;
-            t2.disabled = !t1.disabled;
-        };
-
-        function sbTgl() {
-            $('#settingbar').toggle(300);
-        };
-
-        function megnyitfn(x) {
-            $('.fnbtn.kbdbtn.active').removeClass('active');
-            $(x).addClass('active');
-            var fncel = x.getAttribute('data-btn');
-            $('.myslick.fn.show,#lastused.show').removeClass('show');
-            var elem = $('.myslick.fn[data-name=' + fncel + ']')
-            elem.addClass('show');
-            elem.slick('setPosition')
-        }
-
-        function megnyitLast(x) {
-            $('.fnbtn.kbdbtn.active').removeClass('active');
-            $(x).addClass('active');
-            var fncel = x.getAttribute('data-btn');
-            $('.myslick.fn.show').removeClass('show');
-            var elem = $('#lastused')
-            elem.addClass('show');
-        }
     </script>
     <p>
-        <div id="output" translate="no" class="notranslate"></div>
+        <div id="output"></div>
         <div class="sagecell_poweredBy"><a href="https://sagecell.sagemath.org/help.html" target="_blank">Help</a> | Powered by <a href="http://www.sagemath.org" target="_blank">SageMath</a></div>
     </p>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js "></script>
 
     <script type="text/javascript">
         var ww = $('#tabs').width();
@@ -673,42 +465,145 @@
             'max-width': btnw - 16,
             'width': btnw - 16
         });
-
-        function debounce(func) {
-            var timer;
-            return function(event) {
-                if (timer) clearTimeout(timer);
-                timer = setTimeout(func, 100, event);
-            };
-        };
-
-        window.addEventListener("resize", debounce(function(e) {
-            afterResize();
-        }));
-
-        function afterResize() {
-            $('.myslick').slick('unslick');
-            var ww = $('#tabs').width();
-            var btnNo = Math.floor(ww / 66);
-            var btnw = Math.floor(ww / btnNo) - 1;
-            console.log(btnw);
-            $('.myslick').slick({
-                //dots: true,
-                mobileFirst: true,
-                //adaptiveHeight: true,
-                rows: numrows,
-                slidesPerRow: btnNo,
-            });
-
-            $('.kbdbtn').css({
-                'max-width': btnw - 16,
-                'width': btnw - 16
-            });
-            /*  $('.myslick').slick('slickSetOption', 'slidesPerRow', btnNo, true);
-             $('.myslick').slick('reinit'); */
-        };
-        var lastelem = document.getElementById('lastused');
     </script>
+    <div id="sample-cc" style=margin-top:28px;>
+        <button type="button" class="sample-open first" onclick="sampleTgl();">Show samples</button>
+        <button type="button" class="btn-open first">Samples</button>
+    </div>
+    <div id="sample-container">
+        <iframe id="samples" type="text/html" src="samples/smpl001.html" width="100%" height="270px"></iframe>
+        <div class="zeynep">
+            <ul>
+                <li>
+                    <a href="#">Home</a>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="#" data-submenu="stores">Stores</a>
+
+                    <div id="stores" class="submenu">
+                        <div class="submenu-header">
+                            <a href="#" data-submenu-close="stores">Main Menu</a>
+                        </div>
+
+                        <label>Stores</label>
+
+                        <ul>
+                            <li>
+                                <a href="#">Istanbul</a>
+                            </li>
+
+                            <li>
+                                <a href="#">Mardin</a>
+                            </li>
+
+                            <li>
+                                <a href="#">Amed</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="#" data-submenu="categories">Categories</a>
+
+                    <div id="categories" class="submenu">
+                        <div class="submenu-header">
+                            <a href="#" data-submenu-close="categories">Main Menu</a>
+                        </div>
+
+                        <label>Categories</label>
+
+                        <ul>
+                            <li class="has-submenu">
+                                <a href="#" data-submenu="electronics">Electronics</a>
+
+                                <div id="electronics" class="submenu">
+                                    <div class="submenu-header">
+                                        <a href="#" data-submenu-close="electronics">Categories</a>
+                                    </div>
+
+                                    <label>Electronics</label>
+
+                                    <ul>
+                                        <li class="veg">
+                                            <a data-src="samples/smpl004.html" href="#">Camera & Photo</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl004.html" href="#">Home Audio</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl003.html" href="#">Tv & Video</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl005.html" href="#">Computers & Accessories</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl000.html" href="#">Car & Vehicle Electronics</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl005.html" href="#">Portable Audio & Video</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl002.html" href="#">Headphones</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl003.html" href="#">Accessories & Supplies</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl004.html" href="#">Video Projectors</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl002.html" href="#">Office Electronics</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl001.html" href="#">Wearable Technology</a>
+                                        </li>
+
+                                        <li class="veg">
+                                            <a data-src="samples/smpl005.html" href="#">Service Plans</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li>
+                                <a href="#">Books</a>
+                            </li>
+
+                            <li>
+                                <a href="#">Video Games</a>
+                            </li>
+
+                            <li>
+                                <a href="#">Computers</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+
+                <li>
+                    <a href="#">About</a>
+                </li>
+            </ul>
+        </div>
+        <div class="zeynep-overlay"></div>
+    </div>
+
 </body>
 
 </html>
