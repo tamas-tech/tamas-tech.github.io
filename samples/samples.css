@@ -1,15 +1,12 @@
 .pre-container {
-    margin: 0 8px;
+    margin: 8px;
     display: inline-block;
-}
-
-pre {
-    font-size: 12px;
     background-color: #e3eaea;
+    color: #362bb0;
+    font-size: 16px;
     cursor: pointer;
     padding: 5px 10px;
-    width: 98%;
-    margin-right: 2%;
+    border: 1px solid #aaa;
 }
 
 button.sendbtn {
