@@ -1,6 +1,8 @@
 var lastlist = [];
 var numrows = 2;
 var opt_sotet = false;
+var opt_wrap = false;
+var opt_wrapltx = false;
 
 setTimeout(() => {
     if (!onlineSt)
@@ -11,11 +13,13 @@ setTimeout(() => {
 function setCmFont(v) {
     cmeditor.getWrapperElement().style["font-size"] = v + "px";
     cmeditor.refresh();
-    $('div.sagecell_sessionOutput').css('font-size', v + 'px')
 };
 
 function setOutputFont(v) {
-    $('div.sagecell_sessionOutput').css('font-size', v + 'px');
+    $('div.sagecell_sessionOutput,div.sagecell_sessionOutput pre').css('font-size', v + 'px');
+};
+
+function setLtxFont(v) {
     $('div#output').css('font-size', v + 'px');
 };
 
@@ -131,7 +135,6 @@ var clearOutput = function() {
 };
 
 var printLatex = function() {
-    var inptxt = cmeditor.getValue();
     if (/latex\(/.test(cmeditor.getValue())) {
         var outputtxt = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
         if (outputtxt) {
@@ -142,19 +145,6 @@ var printLatex = function() {
         }
     } else {
         output.innerHTML = "The sagecell output is not a valid Latex code.";
-    }
-};
-
-
-var printLatexMathLive = function() {
-    var inptxt = cmeditor.getValue();
-    var outputtxt = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
-    if (outputtxt) {
-        outputtxt = window.MathLive.convertAsciiMathToLatex(outputtxt.innerText).replace(/\\log/g, '\\ln');
-        output.innerHTML = "$$ " + outputtxt + " $$";
-        window.MathLive.renderMathInDocument();
-    } else {
-        output.innerText = "There is no output";
     }
 };
 
@@ -231,8 +221,9 @@ $(document).ready(function() {
         $('#tabcontainer1').toggle(300);
     };
 
-    $('.sagecell_input').append('<button id="ltxbtn" class="otherbtn" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button><input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;margin-left:10px;" title="set output\'s fontsize">')
 
+    //$('.sagecell_input').append('<button id="ltxbtn" class="otherbtn" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button><input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;margin-left:10px;" title="set output\'s fontsize">')
+    $('.sagecell_input').append('<label class="switch"><input id="optwrap" type="checkbox"><span class="slider round"></span></label><input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;margin-left:10px;" title="set output\'s fontsize">')
     $(document).on('click', '.myslick.fn .kbdbtn', function() {
         var elem = $(this)
         var name = elem.attr('data-btn')
@@ -244,6 +235,20 @@ $(document).ready(function() {
         };
     });
 
+    document.getElementById('optwrap').onchange = function() {
+        opt_wrap = this.checked;
+        wrapSwitch();
+    };
+
+    $('#optwrap')[0].checked = opt_wrap;
+
+    document.getElementById('optwrapltx').onchange = function() {
+        opt_wrapltx = this.checked;
+        wrapSwitchLtx();
+    };
+
+    $('#optwrapltx')[0].checked = opt_wrapltx;
+
     $('.rown').on('change', function() {
         numrows = $(this).val() * 1;
         afterResize();
@@ -254,6 +259,20 @@ $(document).ready(function() {
         e.preventDefault();
         $('#samples').attr('src', $(this).attr('data-src'))
     })
+
+    document.querySelector('.sagecell_evalButton').onclick = function() {
+        try {
+            var w = document.getElementById('optwrap')
+            document.getElementById('outfont-slider').value = 12;
+            if (w && w.checked) {
+                /*  w.checked = false;
+                 opt_wrap = false; */
+                w.click();
+            }
+        } catch {
+            console.log('NEM SIKERÜLT')
+        }
+    }
 });
 
 
@@ -305,6 +324,47 @@ function displayMessage(evt) {
         block: 'center'
     });
     cmeditor.execCommand('selectAll');
+};
+
+function wrapSwitch() {
+    if (opt_wrap) {
+        $('div.sagecell_sessionOutput pre').css({
+            overflow: 'auto',
+            'white-space': 'pre-wrap'
+        })
+    } else
+        $('div.sagecell_sessionOutput pre').css({
+            'white-space': 'nowrap',
+            'word-wrap': 'wrap none'
+        })
+};
+
+function wrapSwitchLtx() {
+    if (opt_wrapltx) {
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [
+                    ["$", "$"],
+                    ["\\(", "\\)"]
+                ]
+            },
+            "HTML-CSS": {
+                linebreaks: { automatic: true, width: "container" }
+            }
+        });
+    } else
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [
+                    ["$", "$"],
+                    ["\\(", "\\)"]
+                ]
+            },
+            "HTML-CSS": {
+                linebreaks: { automatic: false, width: "container" }
+            }
+        });
+    printLatex();
 };
 
 //zeynep
