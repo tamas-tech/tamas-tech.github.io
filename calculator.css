@@ -259,7 +259,8 @@ button.sample-open {
     font-family: Verdana, Arial, sans-serif;
     font-size: 1.1em;
     vertical-align: middle;
-    display: inline-block
+    display: inline-block;
+    margin-right: 8px;
 }
 
 button.otherbtn:hover,
