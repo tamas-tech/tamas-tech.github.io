@@ -8,6 +8,20 @@ div.CodeMirror.cm-s-default {
     border-color: #dfdfdf;
 }
 
+#mycell,
+#ltxout,
+#sample-c {
+    border: 1px solid #aaa;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
+    box-shadow: 0px 0px 5px 5px #94a1b04d;
+}
+
+#ltxout {
+    padding-bottom: 25px;
+}
+
 div.sagecell_permalink {
     display: none;
 }
@@ -194,7 +208,9 @@ table {
 
 button.sagecell_evalButton,
 button.sagecell_evalButton.ui-button.ui-corner-all.ui-widget {
-    background-color: #c1c4d2
+    background-color: #c1c4d2;
+    width: 85px;
+    margin-right: 8px;
 }
 
 button.sagecell_evalButton:hover,
@@ -226,7 +242,8 @@ h2 {
     font-size: 18px;
     width: calc(100% - 26px);
     overflow: auto;
-    border: 1px solid #e5fff8;
+    border: 1px solid #a9dfd1;
+    margin-top: 5px;
 }
 
 button.otherbtn,
@@ -393,7 +410,6 @@ div#sample-container {
     display: none;
     padding-top: 3px;
     margin-right: 5px;
-    margin-bottom: 5px;
 }
 
 iframe#samples {
@@ -402,8 +418,8 @@ iframe#samples {
 }
 
 iframe#samples.shrinked {
-    width: calc(100% - 300px);
-    margin-left: 300px
+    width: calc(100% - 290px);
+    margin-left: 290px
 }
 
 @media (max-width: 500px) {
@@ -430,6 +446,15 @@ body {
     position: relative;
     height: 0;
 }
+
+
+/* .zeynep.opened {
+    position: fixed;
+    height: calc(100% + 20px);
+    top: calc(100% - 370px);
+    bottom: calc(100% + 370px);
+    transform: translateX(0) translateZ(0);
+} */
 
 .zeynep.opened {
     position: fixed;
