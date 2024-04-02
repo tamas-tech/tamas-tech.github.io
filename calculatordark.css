@@ -294,7 +294,8 @@ button.sample-open {
     font-family: Verdana, Arial, sans-serif;
     font-size: 1.1em;
     vertical-align: middle;
-    display: inline-block
+    display: inline-block;
+    margin-right: 5px;
 }
 
 button.otherbtn * {
@@ -547,7 +548,7 @@ body {
 
 .btn-open {
     border: 0;
-    border-radius: 5px;
+    border-radius: 22.5px;
     box-shadow: 0 2px 14px 0 rgba(0, 0, 0, .05);
     display: none;
     font-size: 16px;
