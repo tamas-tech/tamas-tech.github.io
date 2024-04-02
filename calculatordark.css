@@ -13,11 +13,7 @@ div.CodeMirror.cm-s-default {
 }
 
 div.sagecell_sessionOutput {
-    color: #95b1ff;
-}
-
-img.sagecell_spinner {
-    background-color: #dddddd;
+    background-color: #fff;
 }
 
 div.sagecell_poweredBy {
