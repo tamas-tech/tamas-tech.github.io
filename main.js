@@ -317,24 +317,26 @@ window.addEventListener("resize", debounce(function(e) {
     afterResize();
 }));
 
-function afterResize() {
-    $('.myslick').slick('unslick');
+function afterResize() {;
     var ww = $('#tabs').width();
     var btnNo = Math.floor(ww / 76);
-    var btnw = Math.floor(ww / btnNo) - 1;
-    console.log(btnw);
-    $('.myslick').slick({
-        mobileFirst: true,
-        rows: numrows,
-        slidesPerRow: btnNo,
-    });
+    if (btnNo > 1) {
+        $('.myslick').slick('unslick');
+        var btnw = Math.floor(ww / btnNo) - 1;
+        console.log(ww, btnNo, btnw);
+        console.log(typeof(btnNo), typeof(btnw))
+        $('.myslick').slick({
+            mobileFirst: true,
+            rows: numrows,
+            slidesPerRow: btnNo,
+        });
 
-    $('.kbdbtn').css({
-        'max-width': btnw - 16,
-        'width': btnw - 16
-    });
+        $('.kbdbtn').css({
+            'max-width': btnw - 16,
+            'width': btnw - 16
+        });
+    }
 };
-
 
 if (window.addEventListener) {
     window.addEventListener("message", displayMessage, false);
