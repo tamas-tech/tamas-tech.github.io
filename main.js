@@ -1,6 +1,7 @@
 var lastlist = [];
 var numrows = 2;
 var opt_sotet = false;
+var opt_help = false;
 var opt_wrap = false;
 var opt_wrapltx = false;
 
@@ -27,8 +28,14 @@ function setCmTheme(theme) {
     cmeditor.setOption("theme", theme);
 }
 var beilleszt = function(x, n) {
-    var btntxt = x.getAttribute('data-btn');
-    insertText(btntxt, n);
+    if (!opt_help) {
+        var btntxt = x.getAttribute('data-btn');
+        insertText(btntxt, n);
+    } else {
+        var slno = x.getAttribute('data-slickno') * 1;
+        $('#myslickhelp').slick('slickGoTo', slno, false)
+    }
+
 };
 
 var insertText = (text, n) => {
@@ -155,6 +162,20 @@ function themeSwitch() {
     t2.disabled = !t1.disabled;
 };
 
+function helpSwitch() {
+    var elem = $('#myslickhelp');
+    if (opt_help) {
+        $('#fnhelp').show(300);
+        setTimeout(() => {
+            elem.slick('setPosition');
+        }, 330);
+        $('.myslick.fn .kbdbtn').addClass('help');
+    } else {
+        $('#fnhelp').hide(300);
+        $('.myslick.fn .kbdbtn.help').removeClass('help');
+    }
+};
+
 function sbTgl() {
     $('#settingbar').toggle(300);
 };
@@ -213,6 +234,15 @@ $(document).ready(function() {
         themeSwitch();
     };
 
+    document.getElementById('opthelp').checked = opt_help;
+
+    $('#opthelp').attr('checked', opt_help);
+
+    document.getElementById('opthelp').onchange = function() {
+        opt_help = this.checked;
+        helpSwitch();
+    };
+
     document.getElementById('fntglbtn').onchange = function() {
         $('#tabcontainer').toggle(300);
     };
@@ -221,14 +251,11 @@ $(document).ready(function() {
         $('#tabcontainer1').toggle(300);
     };
 
-
-    //$('.sagecell_input').append('<button id="ltxbtn" class="otherbtn" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button><input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;margin-left:10px;" title="set output\'s fontsize">')
     $('.sagecell_input').append('<label class="switch"><input id="optwrap" type="checkbox"><span class="slider round"></span></label><input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;margin-left:10px;" title="set output\'s fontsize">')
     $(document).on('click', '.myslick.fn .kbdbtn', function() {
         var elem = $(this)
         var name = elem.attr('data-btn')
         if (lastlist.indexOf(name) < 0) {
-            console.log(name)
             lastlist.push(name)
             Clone = elem.clone(true);
             $(lastelem).append(Clone);
@@ -257,7 +284,11 @@ $(document).ready(function() {
 
     $('li.veg a').on('click', function(e) {
         e.preventDefault();
-        $('#samples').attr('src', $(this).attr('data-src'))
+        $('#samples').attr('src', $(this).attr('data-src'));
+        document.querySelector('#samples').scrollIntoView({
+            behavior: "smooth",
+            block: 'end'
+        });
     })
 
     document.querySelector('.sagecell_evalButton').onclick = function() {
@@ -265,8 +296,6 @@ $(document).ready(function() {
             var w = document.getElementById('optwrap')
             document.getElementById('outfont-slider').value = 12;
             if (w && w.checked) {
-                /*  w.checked = false;
-                 opt_wrap = false; */
                 w.click();
             }
         } catch {
@@ -291,13 +320,11 @@ window.addEventListener("resize", debounce(function(e) {
 function afterResize() {
     $('.myslick').slick('unslick');
     var ww = $('#tabs').width();
-    var btnNo = Math.floor(ww / 66);
+    var btnNo = Math.floor(ww / 76);
     var btnw = Math.floor(ww / btnNo) - 1;
     console.log(btnw);
     $('.myslick').slick({
-        //dots: true,
         mobileFirst: true,
-        //adaptiveHeight: true,
         rows: numrows,
         slidesPerRow: btnNo,
     });
