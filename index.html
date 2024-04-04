@@ -40,8 +40,10 @@
         window.addEventListener('offline', updateOnlineStatus);
         console.log('onlinestatus', onlineSt)
         if (!onlineSt) {
-            document.write('<h2 style="text-align:center;margin-top:10%;">You are offline!</h2><div style="text-align:center;"><span style="text-align:center;font-size:30px;outline:5px solid red;width:fit-content;display: inline-block;">For the proper works of this application you need to be online.</span></div>');
+            document.write('<h2 style="text-align:center;margin-top:10%;">You are offline!</h2><div style="text-align:center;"><span style="text-align:center;font-size:30px;text-shadow:1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;width:fit-content;display: inline-block;">For the proper works of this application you need to be online.</span></div>');
             window.stop();
+            document.body.style["background-color"] = "rgb(43, 43, 43)";
+            document.body.style["color"] = "rgb(241, 241, 241)";
         }
     </script>
     <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
@@ -223,6 +225,15 @@
                 </td>
             </tr>
             <tr>
+                <td>Write/Info mode</td>
+                <td>
+                    <label class="switch">
+                        <input id="opthelp" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
                 <td>Show/hide function panel</td>
                 <td>
                     <label class="switch">
@@ -257,55 +268,45 @@
         <div id="tabs">
             <div class="myslick">
                 <div class="fnbtn kbdbtn" data-btn="lastused" onclick="megnyitLast(this);">Recent</div>
-                <div class="fnbtn kbdbtn active" data-btn="calculus" onclick="megnyitfn(this);">∫, ∂</div>
+                <div class="fnbtn kbdbtn active" data-btn="basic" onclick="megnyitfn(this);">⌊x⌋, ⌈x⌉</div>
+                <div class="fnbtn kbdbtn" data-btn="calculus" onclick="megnyitfn(this);">∫, ∂</div>
                 <div class="fnbtn kbdbtn" data-btn="airy" onclick="megnyitfn(this);" title="Airy functions">Ai, Bi</div>
                 <div class="fnbtn kbdbtn" data-btn="bessel" onclick="megnyitfn(this);" title="Bessel functions, Hankel functions">J<sub>n</sub>, Y<sub>n</sub></div>
                 <div class="fnbtn kbdbtn" effect="ripple" data-btn="gamma" onclick="megnyitfn(this);">Γ, ψ</div>
                 <div class="fnbtn kbdbtn" data-btn="zeta" onclick="megnyitfn(this);">ζ, H<sub>n</sub></div>
+                <div class="fnbtn kbdbtn" data-btn="gen" onclick="megnyitfn(this);" title="Generalized Functions">δ<sub>n,m</sub></div>
+                <div class="fnbtn kbdbtn" data-btn="trig" onclick="megnyitfn(this);" title="Trigonometric(Circular) Functions">sin</div>
+                <div class="fnbtn kbdbtn" data-btn="hyperbolic" onclick="megnyitfn(this);" title="Hyperbolic Functions">sinh</div>
+                <div class="fnbtn kbdbtn" data-btn="hypergeo" onclick="megnyitfn(this);" title="Hypergeometric Functions"><sub>p</sub>F<sub>q</sub>(a,b,z)</div>
+                <div class="fnbtn kbdbtn" data-btn="jacobi" onclick="megnyitfn(this);" title="Jacobi Elliptic Functions">Jacobi</div>
                 <div class="fnbtn kbdbtn" data-btn="log" onclick="megnyitfn(this);">log, Li</div>
+                <div class="fnbtn kbdbtn" data-btn="expint" onclick="megnyitfn(this);" title="Exponential Integrals">Ei, Si, Ci</div>
                 <div class="fnbtn kbdbtn" data-btn="elliptic" onclick="megnyitfn(this);">Elliptic</div>
-                <div class="fnbtn kbdbtn" data-btn="links" onclick="megnyitfn(this);">Links</div>
-                <div class="fnbtn kbdbtn" data-btn="6" onclick="megnyitfn(this);">6</div>
-                <div class="fnbtn kbdbtn" data-btn="7" onclick="megnyitfn(this);">7</div>
-                <div class="fnbtn kbdbtn" data-btn="8" onclick="megnyitfn(this);">8</div>
-                <div class="fnbtn kbdbtn" data-btn="9" onclick="megnyitfn(this);">9</div>
-                <div class="fnbtn kbdbtn" data-btn="0" onclick="megnyitfn(this);">0</div>
-                <div class="fnbtn kbdbtn" data-btn="1" onclick="megnyitfn(this);">1</div>
-                <div class="fnbtn kbdbtn" data-btn="2" onclick="megnyitfn(this);">2</div>
-                <div class="fnbtn kbdbtn" data-btn="3" onclick="megnyitfn(this);">3</div>
-                <div class="fnbtn kbdbtn" data-btn="4" onclick="megnyitfn(this);">4</div>
-                <div class="fnbtn kbdbtn" data-btn="5" onclick="megnyitfn(this);">5</div>
-                <div class="fnbtn kbdbtn" data-btn="6" onclick="megnyitfn(this);">6</div>
-                <div class="fnbtn kbdbtn" data-btn="7" onclick="megnyitfn(this);">7</div>
-                <div class="fnbtn kbdbtn" data-btn="8" onclick="megnyitfn(this);">8</div>
-                <div class="fnbtn kbdbtn" data-btn="9" onclick="megnyitfn(this);">9</div>
-                <div class="fnbtn kbdbtn" data-btn="0" onclick="megnyitfn(this);">0</div>
-                <div class="fnbtn kbdbtn" data-btn="1" onclick="megnyitfn(this);">1</div>
-                <div class="fnbtn kbdbtn" data-btn="2" onclick="megnyitfn(this);">2</div>
-                <div class="fnbtn kbdbtn" data-btn="3" onclick="megnyitfn(this);">3</div>
-                <div class="fnbtn kbdbtn" data-btn="4" onclick="megnyitfn(this);">4</div>
-                <div class="fnbtn kbdbtn" data-btn="5" onclick="megnyitfn(this);">5</div>
-                <div class="fnbtn kbdbtn" data-btn="6" onclick="megnyitfn(this);">6</div>
-                <div class="fnbtn kbdbtn" data-btn="7" onclick="megnyitfn(this);">7</div>
-                <div class="fnbtn kbdbtn" data-btn="8" onclick="megnyitfn(this);">8</div>
-                <div class="fnbtn kbdbtn" data-btn="9" onclick="megnyitfn(this);">9</div>
-                <div class="fnbtn kbdbtn" data-btn="0" onclick="megnyitfn(this);">0</div>
-                <div class="fnbtn kbdbtn" data-btn="1" onclick="megnyitfn(this);">1</div>
-                <div class="fnbtn kbdbtn" data-btn="2" onclick="megnyitfn(this);">2</div>
-                <div class="fnbtn kbdbtn" data-btn="3" onclick="megnyitfn(this);">3</div>
-                <div class="fnbtn kbdbtn" data-btn="4" onclick="megnyitfn(this);">4</div>
-                <div class="fnbtn kbdbtn" data-btn="5" onclick="megnyitfn(this);">5</div>
-                <div class="fnbtn kbdbtn" data-btn="6" onclick="megnyitfn(this);">6</div>
-                <div class="fnbtn kbdbtn" data-btn="7" onclick="megnyitfn(this);">7</div>
-                <div class="fnbtn kbdbtn" data-btn="8" onclick="megnyitfn(this);">8</div>
-                <div class="fnbtn kbdbtn" data-btn="9" onclick="megnyitfn(this);">9</div>
+                <div class="fnbtn kbdbtn" data-btn="orthpoly" onclick="megnyitfn(this);" title="Orthogonal polynomials">OrthPoly</div>
+                <div class="fnbtn kbdbtn" data-btn="misc" onclick="megnyitfn(this);" title="Miscellaneous Functions">Misc.</div>
             </div>
         </div>
 
         <div class="container fn" id="lastused"><button id="clearbtn" onclick="clearRecent();" titleuu="Clear all  buttons in 'Recent' panel">Clear</button></div>
 
-        <div class="myslick fn show" data-name="calculus">
-            <div class="kbdbtn" data-btn="integrate(f,x)" onclick="beilleszt(this,2);" title="Undefinite integration:&#013;integrate( f, x )">∫</div>
+        <div class="myslick fn show" data-name="basic">
+            <div class="kbdbtn" data-btn="abs(x)" data-slickno="0" onclick="beilleszt(this,1);" title="The absolute value of x:&#013;abs( x )">| x |</div>
+            <div class="kbdbtn" data-btn="floor(x)" data-slickno="1" onclick="beilleszt(this,1);" title="he greatest integer less than or equal to x:&#013;floor( x )">⌊ x ⌋</div>
+            <div class="kbdbtn" data-btn="ceil(x)" data-slickno="2" onclick="beilleszt(this,1);" title="The smallest integer greater than or equal to x:&#013;ceil( x )">⌈ x ⌉</div>
+            <div class="kbdbtn" data-btn="frac(x)" data-slickno="3" onclick="beilleszt(this,1);" title="The fractional part of x:&#013;frac( x )">{x}</div>
+            <div class="kbdbtn" data-btn="sgn(x)" data-slickno="4" onclick="beilleszt(this,1);" title="The signum of x :&#013;sgn( x )">sgn(x)</div>
+            <div class="kbdbtn" data-btn="min_symbolic(a,b,...)" data-slickno="5" onclick="beilleszt(this,6);" title="The minimum in SageMath of two or more symbolic expressions.&#013;&#013;Although this function appears as min under the operation show it is not identical to it. The function min is evaluated using Python’s built-in function that does not respect symbolic expressions, which leads to unexpected results handling them.
+            &#013;min_symbolic(a,b,...)">min</div>
+            <div class="kbdbtn" data-btn="max_symbolic(a,b,...)" data-slickno="6" onclick="beilleszt(this,6);" title="The maximum in SageMath of two or more symbolic expressions.&#013;&#013;Although this function appears as max under the operation show it is not identical to it. The function max is evaluated using Python’s built-in function that does not respect symbolic expressions, which leads to unexpected results handling them.&#013;max_symbolic(a,b,...)">max</div>
+            <div class="kbdbtn" data-btn="piecewise([[(a1,b1),f1],[(a2,b2),f2],...])" data-slickno="7" onclick="beilleszt(this,30);" title="A piecewise function in SageMath defined in part by function on the domain from begin to end. Consecutive domains should share an endpoint to avoid unexpected errors. The optional var keyword argument specifies which single symbolic variable is the argument of the complete function&#013;&#013;The argument function for each domain must be the name of a symbolic function, not a numeric function. Symbolic functions are constructed from numeric functions using function. Symbolic functions entail significant overhead that can make piecewise unsuitable for purely numeric calculations.&#013;&#013;The current version of SageMath makes a distinction for this function between open and closed domains. Open domains are specified with parentheses ( ). Closed domains are specified with square brackets [ ]. Attempting to specify a mixed domain ( ] or [ ) leads to Python syntax errors.&#013;&#013;To ensure a piecewise function consisting of several domains is valid at all points in the complete domain, alternately specify successive domains as open and closed. If the domains are all open then points on the boundaries will not be included, and making all domains closed leads to the error message domains must be pairwise disjoint.&#013;&#013;Specifying a partial domain when plotting a piecewise function is supported in the current version of SageMath. Previously this led to the opaque error message local variable 'G' referenced before assignment.&#013;&#013;Examples:
+
+            f = piecewise( [ [(0,1),x], [[1,3],2-x], [(3,4),x-4] ] )
+            show( plot( f, 0, 4, figsize=[4.5,2], color=(0,.5,1) ) )
+            &#013;&#013;piecewise([[(a1,b1),f1],[(a2,b2),f2],...])">piecewise</div>
+            min_symbolic(a,b,...)
+        </div>
+        <div class="myslick fn" data-name="calculus">
+            <div class="kbdbtn" data-btn="integrate(f,x) ghfhfghgfhg hgf hgf hgf  gh " onclick="beilleszt(this,2);" title="Undefinite integration:&#013;integrate( f, x )">∫</div>
             <div class="kbdbtn big" data-btn="integrate(f,x,a,b)" onclick="beilleszt(this,6);" title="Definite integration:&#013;integrate( f, x, a, b )">∫<sub><var>a</var></sub><sup style="margin-left:-6px;"><var>b</var></sup></div>
             <div class="kbdbtn" data-btn="derivative(f,x)" onclick="beilleszt(this,2);" title="Derivative of function with respect to variable x :&#013;derivative( f, x )">∂</div>
             <div class="kbdbtn" data-btn="plot(f,x,a,b)" onclick="beilleszt(this,6);" title="2D plot:&#013;plot( f, x, a, b )">2Dplot</div>
@@ -338,6 +339,13 @@
             <div class="kbdbtn" data-btn="binomial(n,k)" onclick="beilleszt(this,2);" title="Binomial function:&#013;binomial( n, k )">C(n,k)</div>
             <div class="kbdbtn" data-btn="beta(x,y)" onclick="beilleszt(this,2);" title="Beta function:&#013;beta( x, y )">B(x,y)</div>
         </div>
+        <div class="myslick fn" data-name="gen">
+            <div class="kbdbtn" data-btn="kronecker_delta(n,m)" onclick="beilleszt(this,2);" title="The Kronecker delta function of m and n :&#013;kronecker_delta( n, m )">δ<sub>n,m</sub></div>
+            <div class="kbdbtn" data-btn="dirac_delta(x)" onclick="beilleszt(this,1);" title="The Dirac delta function :&#013;dirac_delta( x )">δ(x)</div>
+            <div class="kbdbtn" data-btn="heaviside(x)" onclick="beilleszt(this,1);" title="The Heaviside function :&#013;heaviside( x )">H(x)</div>
+            <div class="kbdbtn" data-btn="unit_step(x)" onclick="beilleszt(this,1);" title="The unit step function :&#013;unit_step( x )">u(x)</div>
+            <div class="kbdbtn" data-btn="spike_function([(x1,f1),(x2,f2),...],approx)" onclick="beilleszt(this,27);" title="The function in SageMath of spikes at individual x with height. The optional approx argument determines the approximation to a true spike. :&#013;spike_function( [ (x1, f1), (x2, f2),...], approx)">┬┴┴</div>
+        </div>
         <div class="myslick fn" data-name="zeta">
             <div class="kbdbtn" data-btn="zeta(x)" onclick="beilleszt(this,1);" title="Riemann ξ-function of a real or complex number:&#013;zeta( x )">ζ(x)</div>
             <div class="kbdbtn" data-btn="zeta_symmetric(x)" onclick="beilleszt(this,1);" title="The symmetric Riemann ξ-function of x:&#013;zeta_symmetric( x )">ζ<sub>sym</sub>(x)</div>
@@ -346,6 +354,71 @@
             <div class="kbdbtn" data-btn="harmonic_number(n)" onclick="beilleszt(this,1);" title="Harmonic number for index n:&#013;harmonic_number(n) = harmonic_number( n, 1 )">H<sub>n</sub></div>
             <div class="kbdbtn" data-btn="harmonic_number(n,m)" onclick="beilleszt(this,2);" title="Generalized harmonic number for index n, power m:&#013;harmonic_number( n, m ) = 1/1^m + 1/2^m +...+1/n^m">H<sub>n</sub><sup style="margin-left:-6px;">m</sup></div>
             <div class="kbdbtn" data-btn="bernoulli(n)" onclick="beilleszt(this,1);" title="Bernoulli number for index n:&#013;bernoulli( n )">B<sub>n</sub></div>
+        </div>
+        <div class="myslick fn" data-name="trig">
+            <div class="kbdbtn" data-btn="sin(z)" onclick="beilleszt(this,1);" title="The sine of z :&#013;sin( z )">sin(z)</div>
+            <div class="kbdbtn" data-btn="cos(z)" onclick="beilleszt(this,1);" title="The cosine of z :&#013;cos( z )">cos(z)</div>
+            <div class="kbdbtn" data-btn="tan(z)" onclick="beilleszt(this,1);" title="The tangent of z :&#013;tan( z )">tan(z)</div>
+            <div class="kbdbtn" data-btn="cot(z)" onclick="beilleszt(this,1);" title="The cotangent of z :&#013;cot( z )">cot(z)</div>
+            <div class="kbdbtn" data-btn="sec(z)" onclick="beilleszt(this,1);" title="The secant of z :&#013;sec( z )">sec(z)</div>
+            <div class="kbdbtn" data-btn="csc(z)" onclick="beilleszt(this,1);" title="The cosecant of z :&#013;csc( z )">csc(z)</div>
+            <div class="kbdbtn" data-btn="asin(z)" onclick="beilleszt(this,1);" title="The inverse sine of z :&#013;asin( z )">asin(z)</div>
+            <div class="kbdbtn" data-btn="acos(z)" onclick="beilleszt(this,1);" title="The inverse cosine of z :&#013;acos( z )">acos(z)</div>
+            <div class="kbdbtn" data-btn="atan(z)" onclick="beilleszt(this,1);" title="The inverse tangent of z :&#013;atan( z )">atan(z)</div>
+            <div class="kbdbtn" data-btn="acot(z)" onclick="beilleszt(this,1);" title="The inverse cotangent of z :&#013;acot( z )">acot(z)</div>
+            <div class="kbdbtn" data-btn="asec(z)" onclick="beilleszt(this,1);" title="The inverse secant of z :&#013;asec( z )">asec(z)</div>
+            <div class="kbdbtn" data-btn="acsc(z)" onclick="beilleszt(this,1);" title="The inverse cosecant of z :&#013;acsc( z )">acsc(z)</div>
+            <div class="kbdbtn" data-btn="atan2(x,y)" onclick="beilleszt(this,2);" title=" The inverse tangent in SageMath of the ratio of planar coordinates y and x taking quadrant into account :&#013;atan2( x,y )">atan2(x,y)</div>
+        </div>
+        <div class="myslick fn" data-name="hyperbolic">
+            <div class="kbdbtn" data-btn="sinh(z)" onclick="beilleszt(this,1);" title="The hyperbolic sine of z :&#013;sinh( z )">sinh(z)</div>
+            <div class="kbdbtn" data-btn="cosh(z)" onclick="beilleszt(this,1);" title="The hyperbolic cosine of z :&#013;cosh( z )">cosh(z)</div>
+            <div class="kbdbtn" data-btn="tanh(z)" onclick="beilleszt(this,1);" title="The hyperbolic tangent of z :&#013;tanh( z )">tanh(z)</div>
+            <div class="kbdbtn" data-btn="coth(z)" onclick="beilleszt(this,1);" title="The hyperbolic cotangent of z :&#013;coth( z )">coth(z)</div>
+            <div class="kbdbtn" data-btn="sech(z)" onclick="beilleszt(this,1);" title="The hyperbolic secant of z :&#013;sech( z )">sech(z)</div>
+            <div class="kbdbtn" data-btn="csch(z)" onclick="beilleszt(this,1);" title="The hyperbolic cosecant of z :&#013;csch( z )">csch(z)</div>
+            <div class="kbdbtn" data-btn="asinh(z)" onclick="beilleszt(this,1);" title="The inverse hyperbolic sine of z :&#013;asinh( z )">asinh(z)</div>
+            <div class="kbdbtn" data-btn="acosh(z)" onclick="beilleszt(this,1);" title="The inverse hyperbolic cosine of z :&#013;acosh( z )">acosh(z)</div>
+            <div class="kbdbtn" data-btn="atanh(z)" onclick="beilleszt(this,1);" title="The inverse hyperbolic tangent of z :&#013;atanh( z )">atanh(z)</div>
+            <div class="kbdbtn" data-btn="acoth(z)" onclick="beilleszt(this,1);" title="The inverse hyperbolic cotangent of z :&#013;acoth( z )">acoth(z)</div>
+            <div class="kbdbtn" data-btn="asech(z)" onclick="beilleszt(this,1);" title="The inverse hyperbolic secant of z :&#013;asech( z )">asech(z)</div>
+            <div class="kbdbtn" data-btn="acsch(z)" onclick="beilleszt(this,1);" title="The inverse hyperbolic cosecant of z :&#013;acsch( z )">acsch(z)</div>
+        </div>
+        <div class="myslick fn" data-name="hypergeo">
+            <div class="kbdbtn" data-btn="hypergeometric([a1,...],[b1,...],z)" onclick="beilleszt(this,18);" title="The generalized hypergeometric function of z :&#013;hypergeometric( [a1,...], [b1,...],z )"><sub>p</sub>F<sub>q</sub>(a,b,z)</div>
+            <div class="kbdbtn" data-btn="hypergeometric_M(a,b,z)" onclick="beilleszt(this,4);" title="The confluent hypergeometric function of the first kind of z :&#013;hypergeometric_M(a,b,z)&#013;&#013; Kummer's (confluent hypergeometric) function M(a, b, z)">M(a,b,z)</div>
+            <div class="kbdbtn" data-btn="hypergeometric_U(a,b,z)" onclick="beilleszt(this,4);" title="The confluent hypergeometric function of the second kind of z :&#013;hypergeometric_U(a,b,z) &#013;&#013; Tricomi's (confluent hypergeometric) function U(a, b, z) ">U(a,b,z)</div>
+        </div>
+        <div class="myslick fn" data-name="jacobi">
+            <div class="kbdbtn" data-btn="jacobi(kind,z,m)" onclick="beilleszt(this,7);" title="The Jacobi kind elliptic function of z and parameter m:&#013;jacobi(kind,z,m)&#013;&#013;The two-letter kind argument gives twelve aliases&#013;&#013; jacobi( 'sn', z, m ) = jacobi_sn( z, m )&#013; jacobi( 'cn', z, m ) = jacobi_cn( z, m )&#013; jacobi( 'dn', z, m ) = jacobi_dn( z, m )&#013;&#013; jacobi( 'ns', z, m ) = jacobi_ns( z, m )&#013; jacobi( 'nc', z, m ) = jacobi_nc( z, m )&#013; jacobi( 'nd', z, m ) = jacobi_nd( z, m )&#013;&#013; jacobi( 'sc', z, m ) = jacobi_sc( z, m )&#013; jacobi( 'sd', z, m ) = jacobi_sd( z, m )&#013; jacobi( 'cs', z, m ) = jacobi_cs( z, m )&#013; jacobi( 'cd', z, m ) = jacobi_cd( z, m )&#013; jacobi( 'ds', z, m ) = jacobi_ds( z, m )&#013; jacobi( 'dc', z, m ) = jacobi_dc( z, m ) &#013;">J(k,z,m)</div>
+
+            <div class="kbdbtn" data-btn="jacobi_sn(z,m)" onclick="beilleszt(this,2);" title="The Jacobi sn function of z and parameter m:&#013;jacobi_sn( z, m )&#013;&#013; Note that m = k^2">sn(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_cn(z,m)" onclick="beilleszt(this,2);" title="The Jacobi cn function of z and parameter m:&#013;jacobi_cn( z, m )&#013;&#013; Note that m = k^2">cn(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_dn(z,m)" onclick="beilleszt(this,2);" title="The Jacobi dn function of z and parameter m:&#013;jacobi_dn( z, m )&#013;&#013; Note that m = k^2">dn(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_ns(z,m)" onclick="beilleszt(this,2);" title="The Jacobi ns function of z and parameter m:&#013;jacobi_ns( z, m )&#013;&#013; Note that m = k^2">ns(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_nc(z,m)" onclick="beilleszt(this,2);" title="The Jacobi nc function of z and parameter m:&#013;jacobi_nc( z, m )&#013;&#013; Note that m = k^2">nc(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_nd(z,m)" onclick="beilleszt(this,2);" title="The Jacobi nd function of z and parameter m:&#013;jacobi_nd( z, m )&#013;&#013; Note that m = k^2">nd(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_sc(z,m)" onclick="beilleszt(this,2);" title="The Jacobi sc function of z and parameter m:&#013;jacobi_sc( z, m )&#013;&#013; Note that m = k^2">sc(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_sd(z,m)" onclick="beilleszt(this,2);" title="The Jacobi sd function of z and parameter m:&#013;jacobi_sd( z, m )&#013;&#013; Note that m = k^2">sd(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_cs(z,m)" onclick="beilleszt(this,2);" title="The Jacobi cs function of z and parameter m:&#013;jacobi_cs( z, m )&#013;&#013; Note that m = k^2">cs(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_cd(z,m)" onclick="beilleszt(this,2);" title="The Jacobi cd function of z and parameter m:&#013;jacobi_cd( z, m )&#013;&#013; Note that m = k^2">cd(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_ds(z,m)" onclick="beilleszt(this,2);" title="The Jacobi ds function of z and parameter m:&#013;jacobi_ds( z, m )&#013;&#013; Note that m = k^2">ds(z,m)</div>
+            <div class="kbdbtn" data-btn="jacobi_dc(z,m)" onclick="beilleszt(this,2);" title="The Jacobi dc function of z and parameter m:&#013;jacobi_dc( z, m )&#013;&#013; Note that m = k^2">dc(z,m)</div>
+
+            <div class="kbdbtn" data-btn="inverse_jacobi(kind,z,m)" onclick="beilleszt(this,7);" title="The inverse_jacobi kind elliptic function of z and parameter m:&#013;inverse_jacobi(kind,z,m)&#013;&#013;The two-letter kind argument gives twelve aliases&#013;&#013; inverse_jacobi( 'sn', z, m ) = jacobi_sn( z, m )&#013; inverse_jacobi( 'cn', z, m ) = inverse_jacobi_cn( z, m )&#013; inverse_jacobi( 'dn', z, m ) = inverse_jacobi_dn( z, m )&#013;&#013; inverse_jacobi( 'ns', z, m ) = inverse_jacobi_ns( z, m )&#013; inverse_jacobi( 'nc', z, m ) = inverse_jacobi_nc( z, m )&#013; inverse_jacobi( 'nd', z, m ) = inverse_jacobi_nd( z, m )&#013;&#013; inverse_jacobi( 'sc', z, m ) = inverse_jacobi_sc( z, m )&#013; inverse_jacobi( 'sd', z, m ) = inverse_jacobi_sd( z, m )&#013; inverse_jacobi( 'cs', z, m ) = inverse_jacobi_cs( z, m )&#013; inverse_jacobi( 'cd', z, m ) = inverse_jacobi_cd( z, m )&#013; inverse_jacobi( 'ds', z, m ) = inverse_jacobi_ds( z, m )&#013; inverse_jacobi( 'dc', z, m ) = inverse_jacobi_dc( z, m ) &#013;">J<sup>-1</sup>(k,z,m)</div>
+
+            <div class="kbdbtn" data-btn="inverse_jacobi_sn(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi sn function of z and parameter m:&#013;inverse_jacobi_sn( z, m )&#013;&#013; Note that m = k^2">sn<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_cn(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi cn function of z and parameter m:&#013;inverse_jacobi_cn( z, m )&#013;&#013; Note that m = k^2">cn<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_dn(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi dn function of z and parameter m:&#013;inverse_jacobi_dn( z, m )&#013;&#013; Note that m = k^2">dn<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_ns(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi ns function of z and parameter m:&#013;inverse_jacobi_ns( z, m )&#013;&#013; Note that m = k^2">ns<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_nc(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi nc function of z and parameter m:&#013;inverse_jacobi_nc( z, m )&#013;&#013; Note that m = k^2">nc<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_nd(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi nd function of z and parameter m:&#013;inverse_jacobi_nd( z, m )&#013;&#013; Note that m = k^2">nd<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_sc(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi sc function of z and parameter m:&#013;inverse_jacobi_sc( z, m )&#013;&#013; Note that m = k^2">sc<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_sd(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi sd function of z and parameter m:&#013;inverse_jacobi_sd( z, m )&#013;&#013; Note that m = k^2">sd<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_cs(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi cs function of z and parameter m:&#013;inverse_jacobi_cs( z, m )&#013;&#013; Note that m = k^2">cs<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_cd(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi cd function of z and parameter m:&#013;inverse_jacobi_cd( z, m )&#013;&#013; Note that m = k^2">cd<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_ds(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi ds function of z and parameter m:&#013;inverse_jacobi_ds( z, m )&#013;&#013; Note that m = k^2">ds<sup>-1</sup>(z,m)</div>
+            <div class="kbdbtn" data-btn="inverse_jacobi_dc(z,m)" onclick="beilleszt(this,2);" title="The inverse Jacobi dc function of z and parameter m:&#013;inverse_jacobi_dc( z, m )&#013;&#013; Note that m = k^2">dc<sup>-1</sup>(z,m)</div>
         </div>
         <div class="myslick fn" data-name="log">
             <div class="kbdbtn" data-btn="exp(x)" onclick="beilleszt(this,1);" title="The exponential function:&#013; exp( x )">e<sup>x</sup></div>
@@ -356,24 +429,105 @@
             <div class="kbdbtn" data-btn="diloglog(x)" onclick="beilleszt(this,1);" title="The dilogarithm of x :&#013;diloglog( x ) = polylog( 2, x )">Li<sub>2</sub>(x)</div>
             <div class="kbdbtn" data-btn="lambert_w(x)" onclick="beilleszt(this,1);" title="The Lambert W function function:&#013; lambert_w( x )">W(x)</div>
         </div>
+        <div class="myslick fn" data-name="expint">
+            <div class="kbdbtn" data-btn="Ei(z)" onclick="beilleszt(this,1);" title="The exponential integral Ei of z:&#013; Ei( z ) = exp_integral_ei( z )">Ei(z)</div>
+            <div class="kbdbtn" data-btn="exp_integral_e1(z)" onclick="beilleszt(this,1);" title="The exponential integral E1 of z :&#013; exp_integral_e1( z )">E<sub>1</sub>(z)</div>
+            <div class="kbdbtn" data-btn="exponential_integral_1(z)" onclick="beilleszt(this,1);" title="The numerical exponential integral E1 of z  :&#013; exponential_integral_1(z)">n(E<sub>1</sub>(z))</div>
+            <div class="kbdbtn" data-btn="exp_integral_e(n,z)" onclick="beilleszt(this,2);" title="The generalized exponential integral of z:&#013; exp_integral_e( n, z)">E<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="li(z)" onclick="beilleszt(this,1);" title="The logarithmic integral of z :&#013; li( z ) = log_integral( z )">li(z)</div>
+            <div class="kbdbtn" data-btn="Li(z)" onclick="beilleszt(this,1);" title="The offset logarithmic integral of z :&#013; Li( z ) = log_integral_offset( z )">Li(z)</div>
+            <div class="kbdbtn" data-btn="Si(z)" onclick="beilleszt(this,1);" title="The sine integral of z :&#013; Si( z ) = sin_integral( z )">Si(z)</div>
+            <div class="kbdbtn" data-btn="Ci(z)" onclick="beilleszt(this,1);" title="The cosine integral of z :&#013; Ci( z ) = cos_integral( z )">Ci(z)</div>
+            <div class="kbdbtn" data-btn="Shi(z)" onclick="beilleszt(this,1);" title="The hyperbolic sine integral of z :&#013; Shi( z ) = sinh_integral( z )">Shi(z)</div>
+            <div class="kbdbtn" data-btn="Chi(z)" onclick="beilleszt(this,1);" title="The hyperbolic  cosine integral of z :&#013; Chi( z ) = cosh_integral( z )">Chi(z)</div>
+        </div>
         <div class="myslick fn" data-name="elliptic">
             <div class="kbdbtn" data-btn="elliptic_f(z,m)" onclick="beilleszt(this,2);" title="The incomplete elliptic integral of the first kind of z and parameter m = k^2:&#013; elliptic_f( z, m )">F(z,m)</div>
             <div class="kbdbtn" data-btn="elliptic_kc(m)" onclick="beilleszt(this,1);" title="The complete elliptic integral of the first kind of parameter m = k^2:&#013; elliptic_kc( m )">K(m)</div>
             <div class="kbdbtn" data-btn="elliptic_e(z,m)" onclick="beilleszt(this,2);" title="The incomplete elliptic integral of the second kind of z and parameter m = k^2:&#013; elliptiz_e( z, m=k^2 )">E(z,m)</div>
             <div class="kbdbtn" data-btn="elliptic_ec(z)" onclick="beilleszt(this,1);" title="The complete elliptic integral of the second kind of parameter m = k^2:&#013; elliptiz_ec( z, m=k^2 )">E(m)</div>
             <div class="kbdbtn" data-btn="elliptic_eu(z,m)" onclick="beilleszt(this,1);" title="The incomplete elliptic integral of the second kind of a modified argument z and parameter  m = k^2:&#013; elliptiz_eu( z, m=k^2 )">Eu(m)</div>
-            <div class="kbdbtn width" data-btn="elliptic_pi(n,z,m)" onclick="beilleszt(this,4);" title="The incomplete elliptic integral of the third kind of z, characteristic n and parameter m = k^2:&#013; elliptiz_pi( n, z, m=k^2 )">Π(n,z,m)</div>
+            <div class="kbdbtn" data-btn="elliptic_pi(n,z,m)" onclick="beilleszt(this,4);" title="The incomplete elliptic integral of the third kind of z, characteristic n and parameter m = k^2:&#013; elliptiz_pi( n, z, m=k^2 )">Π(n,z,m)</div>
         </div>
-        <div class="myslick fn" data-name="links">
-            <div><a href="https://doc.sagemath.org/html/en/reference/functions/index.html">SageMath Function Reference</a></div>
-            <div><a href="https://paulmasson.github.io/sagemath-docs/">Simple and clear documentation for SageMath functions and operations</a></div>
-            <div><a href="https://mosullivan.sdsu.edu/Teaching/sdsu-sage-tutorial/sagecalc.html">SageMath as a Calculator</a></div>
-            <div><a href="http://utmost-sage-cell.org/">Utmost sagecell</a></div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
-            <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0/2</div>
+        <div class="myslick fn" data-name="orthpoly">
+            <div class="kbdbtn" data-btn="hermite(n,z)" onclick="beilleszt(this,2);" title="The Hermite polynomial of z :&#013; hermite( n, z )">H<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="laguerre(n,z)" onclick="beilleszt(this,2);" title="The Laguerre polynomial of z :&#013; laguerre( n, z )">L<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="gen_laguerre(n,a,z)" onclick="beilleszt(this,4);" title="The generalized or associated Laguerre polynomial of z :&#013; gen_laguerre( n, a, z )">L<sub>n</sub><sup style="margin-left:-6px;">a</sup>(z)</div>
+            <div class="kbdbtn" data-btn="legendre_P(n,z)" onclick="beilleszt(this,2);" title="The Legendre polynomial of z :&#013; legendre_P( n, z )">P<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="legendre_Q(n,z)" onclick="beilleszt(this,2);" title="The Legendre polynomial of the second kind of z:&#013; legendre_Q( n, z )">Q<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="gen_legendre_P(n,m,z)" onclick="beilleszt(this,4);" title="The generalized or associated Legendre polynomial of z :&#013; gen_legendre_P( n, m, z )">P<sub>n</sub><sup style="margin-left:-6px;">a</sup>(z)</div>
+            <div class="kbdbtn" data-btn="gen_legendre_Q(n,m,z)" onclick="beilleszt(this,4);" title="The generalized or associated Legendre function of the second kind of z :&#013; gen_legendre_Q( n, m, z )">Q<sub>n</sub><sup style="margin-left:-6px;">a</sup>(z)</div>
+            <div class="kbdbtn" data-btn="spherical_harmonic(n,m,θ,φ)" onclick="beilleszt(this,6);" title="The spherical harmonic:&#013; spherical_harmonic( n , m , θ , φ )">Y<sub>n</sub><sup style="margin-left:-6px;">m</sup>(θ,φ)</div>
+            <div class="kbdbtn" data-btn="chebyshev_T(n,z)" onclick="beilleszt(this,2);" title="The Chebyshev polynomial of the first kind of z :&#013; chebyshev_T( n, z )">T<sub>n</sub>(z)</div>
+            <div class="kbdbtn" data-btn="chebyshev_U(n,z)" onclick="beilleszt(this,2);" title="The Chebyshev polynomial of the second kind of z :&#013; chebyshev_U( n, z )">U<sub>n</sub>(z)</div>
+
+            <div class="kbdbtn" data-btn="jacobi_P(n,a,b,z)" onclick="beilleszt(this,6);" title="The Jacobi polynomial of z :&#013; jacobi_P( n, a, b, z )">P<sub>n</sub><sup style="margin-left:-6px;">(a,b)</sup>(z)</div>
+            <div class="kbdbtn" data-btn="gegenbauer(n,a,z)" onclick="beilleszt(this,4);" title="The ultraspherical or Gegenbauer polynomial of z :&#013; jacobi_P( n, a, z )">P<sub>n</sub><sup style="margin-left:-6px;">(a)</sup>(z)</div>
         </div>
-    </div>
+        <div class="myslick fn" data-name="misc">
+            <div class="kbdbtn" data-btn="dickman_rho(z)" onclick="beilleszt(this,1);" title="The Dickman function of z :&#013; dickman_rho( z )">ρ(z)</div>
+            <div class="kbdbtn" data-btn="elliptic_j(z)" onclick="beilleszt(this,1);" title="The elliptic modular j-function of z :&#013;elliptic_j( z )">ρ(z)</div>
+            <div class="kbdbtn" data-btn="legendre_phi(x,n)" onclick="beilleszt(this,1);" title="The partial sieve function of x. The number of positive integers less than or equal to x that are not divisible by the first n primes. Alias of partial_sieve_function :&#013;legendre_phi( x, n )">ϕ(x,n)</div>
+            <div class="kbdbtn" data-btn="prime_pi(x)" onclick="beilleszt(this,1);" title="The prime counting function of x. The number of primes less than or equal to x :&#013;prime_pi( x )">π(x)</div>
+            <div class="kbdbtn" data-btn="wigner_3j(j1,j2,j3,m1,m2,m3)" onclick="beilleszt(this,16);" title="The Wigner 3-j symbol :&#013;wigner_3j( j1, j2, j3, m1, m2, m3 )">wigner3j</div>
+            <div class="kbdbtn" data-btn="wigner_6j(j1,j2,j3,j4,j5,j6)" onclick="beilleszt(this,16);" title="The Wigner 6-j symbol :&#013;wigner_3j( j1, j2, j3, 14, j5, j6 )">wigner6j</div>
+            <div class="kbdbtn" data-btn="wigner_9j(j1,j2,j3,j4,j5,j6,j7,j8,j9)" onclick="beilleszt(this,25);" title="The Wigner 9-j symbol :&#013;wigner_9j( j1, j2, j3, 14, j5, j6,j 7, j8, j9)">wigner9j</div>
+            <div class="kbdbtn" data-btn="clebsch_gordan(j1,j2,j3,m1,m2,m3)" onclick="beilleszt(this,16);" title="The Clebsch-Gordan coefficients :&#013;clebsch_gordan( j1, j2, j3, m1, m2, m3 )">C-G_3j</div>
+            <div class="kbdbtn" data-btn="clebsch_gordan(j1,j2,j3,m1,m2,m3)" onclick="beilleszt(this,16);" title="The Gaunt coefficients :&#013;gaunt( j1, j2, j3, m1, m2, m3 )">Gaunt_3j</div>
+            <div class="kbdbtn" data-btn="racah(j1,j2,j3,j4,j5,j6)" onclick="beilleszt(this,16);" title="The Racah W-symbol :&#013;racah( j1, j2, j3, 14, j5, j6 )">racah6j</div>
+        </div>
+        <div id="fnhelp">
+            <div id="myslickhelp">
+                <div>
+                    <h2>abs(x) = \(|x|\)</h2>
+                    \[|x|\]
+                    <embed src="help/abs.html" width=98% height=200/>
+                    <embed src=" https://paulmasson.github.io/sagemath-docs/functions/bessel_I.html" width=98% height=400/>
+                </div>
+                <div>
+                    <h2>floor(x)</h2>
+                    fghgf
+                </div>
+                <div>
+                    <h2>ceil(x)</h2>
+                    <!--   <embed src="samples/smplstart.html" width=98% height=400 onerror="alert('URL invalid !!');" /> -->
+                </div>
+                <div>
+                    <h2>frac(x)</h2>
+                    <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
+                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                </div>
+                <div>
+                    <h2>sgn(x)</h2>
+                    <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
+                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                </div>
+                <div>
+                    <h2>min</h2>
+                    <p>fghgfh g \[\frac{1}{2}\] kf gf hgfd h</p>
+                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                </div>
+                <div>
+                    <h2>max</h2>
+                    <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
+                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                </div>
+                <div>
+                    <h2>piecewise</h2>
+                    <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
+                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                </div>
+                <div>A</div>
+                <div>A</div>
+                <div>A</div>
+                <div>A</div>
+                <div>A</div>
+                <div>A</div>
+                <div>A</div>
+                <div>A</div>
+                <div>A</div>
+            </div>
+        </div>
     </div>
     <div id="tabcontainer1">
         <div class="myslick" id="tabsb">
@@ -456,7 +610,7 @@
 
     <script type="text/javascript">
         var ww = $('#tabs').width();
-        var btnNo = Math.floor(ww / 66);
+        var btnNo = Math.floor(ww / 76);
         var btnw = Math.floor(ww / btnNo) - 1;
         console.log(btnw)
         $('.myslick').slick({
@@ -471,6 +625,11 @@
             'max-width': btnw - 16,
             'width': btnw - 16
         });
+        $('#myslickhelp').slick({
+            mobileFirst: true,
+            //adaptiveHeight: true,
+            fade: true
+        });
     </script>
     <div id="sample-c">
         <div id="sample-cc">
@@ -478,7 +637,7 @@
             <button type="button" class="btn-open first">Samples</button>
         </div>
         <div id="sample-container">
-            <iframe id="samples" type="text/html" src="samples/smpl001.html" width="100%" height="270px"></iframe>
+            <iframe id="samples" type="text/html" src="samples/smplstart.html" width="100%" height="270px"></iframe>
             <div class="zeynep">
                 <ul>
                     <li>
@@ -489,24 +648,14 @@
                         <a href="#" data-submenu="stores">Stores</a>
 
                         <div id="stores" class="submenu">
-                            <div class="submenu-header">
-                                <a href="#" data-submenu-close="stores">Main Menu</a>
-                            </div>
+                            <div class="submenu-header"><a href="#" data-submenu-close="stores">Main Menu</a></div>
 
                             <label>Stores</label>
 
                             <ul>
-                                <li>
-                                    <a href="#">Istanbul</a>
-                                </li>
-
-                                <li>
-                                    <a href="#">Mardin</a>
-                                </li>
-
-                                <li>
-                                    <a href="#">Amed</a>
-                                </li>
+                                <li class="veg"><a href="samples/smpl002.html">smpl002</a></li>
+                                <li><a href="#">Mardin</a></li>
+                                <li><a href="#">Amed</a></li>
                             </ul>
                         </div>
                     </li>
@@ -526,60 +675,23 @@
                                     <a href="#" data-submenu="electronics">Electronics</a>
 
                                     <div id="electronics" class="submenu">
-                                        <div class="submenu-header">
-                                            <a href="#" data-submenu-close="electronics">Categories</a>
-                                        </div>
+                                        <div class="submenu-header"><a href="#" data-submenu-close="electronics">Categories</a></div>
 
                                         <label>Electronics</label>
 
                                         <ul>
-                                            <li class="veg">
-                                                <a data-src="samples/smpl004.html" href="#">Camera & Photo</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl004.html" href="#">Home Audio</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl003.html" href="#">Tv & Video</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl005.html" href="#">Computers & Accessories</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl000.html" href="#">Car & Vehicle Electronics</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl005.html" href="#">Portable Audio & Video</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl002.html" href="#">Headphones</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl003.html" href="#">Accessories & Supplies</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl004.html" href="#">Video Projectors</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl002.html" href="#">Office Electronics</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl001.html" href="#">Wearable Technology</a>
-                                            </li>
-
-                                            <li class="veg">
-                                                <a data-src="samples/smpl005.html" href="#">Service Plans</a>
-                                            </li>
+                                            <li class="veg"><a data-src="samples/smpl004.html" href="#">Camera & Photo</a></li>
+                                            <li class="veg"><a data-src="samples/smpl004.html" href="#">Home Audio</a></li>
+                                            <li class="veg"><a data-src="samples/smpl003.html" href="#">Tv & Video</a></li>
+                                            <li class="veg"><a data-src="samples/smpl005.html" href="#">Computers & Accessories</a></li>
+                                            <li class="veg"><a data-src="samples/smpl000.html" href="#">Car & Vehicle Electronics</a></li>
+                                            <li class="veg"><a data-src="samples/smpl005.html" href="#">Portable Audio & Video</a></li>
+                                            <li class="veg"><a data-src="samples/smpl002.html" href="#">Headphones</a></li>
+                                            <li class="veg"><a data-src="samples/smpl003.html" href="#">Accessories & Supplies</a></li>
+                                            <li class="veg"><a data-src="samples/smpl004.html" href="#">Video Projectors</a></li>
+                                            <li class="veg"><a data-src="samples/smpl002.html" href="#">Office Electronics</a></li>
+                                            <li class="veg"><a data-src="samples/smpl001.html" href="#">Wearable Technology</a></li>
+                                            <li class="veg"><a data-src="samples/smpl005.html" href="#">Service Plans</a></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -603,15 +715,26 @@
                         <a href="#">Contact</a>
                     </li>
 
-                    <li>
-                        <a href="#">About</a>
+                    <li class="has-submenu">
+                        <a href="#" data-submenu="links">Links</a>
+
+                        <div id="links" class="submenu">
+                            <div class="submenu-header"><a href="#" data-submenu-close="links">Main Menu</a></div>
+
+                            <label>Links</label>
+
+                            <ul>
+                                <li class="veg"><a data-src="samples/smpl001.html" href="#">sageMath helps</a></li>
+                                <li><a href="#">zzz</a></li>
+                                <li><a href="#">rrr</a></li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </div>
             <div class="zeynep-overlay"></div>
         </div>
     </div>
-
 </body>
 
 </html>
