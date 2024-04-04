@@ -612,11 +612,9 @@
         var ww = $('#tabs').width();
         var btnNo = Math.floor(ww / 76);
         var btnw = Math.floor(ww / btnNo) - 1;
-        console.log(btnw)
+        if(btnNo>1){
         $('.myslick').slick({
-            //dots: true,
             mobileFirst: true,
-            //adaptiveHeight: true,
             rows: 2,
             slidesPerRow: btnNo,
         });
@@ -625,6 +623,7 @@
             'max-width': btnw - 16,
             'width': btnw - 16
         });
+        }
         $('#myslickhelp').slick({
             mobileFirst: true,
             adaptiveHeight: true,
