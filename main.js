@@ -323,8 +323,6 @@ function afterResize() {;
     if (btnNo > 1) {
         $('.myslick').slick('unslick');
         var btnw = Math.floor(ww / btnNo) - 1;
-        console.log(ww, btnNo, btnw);
-        console.log(typeof(btnNo), typeof(btnw))
         $('.myslick').slick({
             mobileFirst: true,
             rows: numrows,
