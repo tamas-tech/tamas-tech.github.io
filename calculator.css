@@ -396,11 +396,11 @@ input:checked+.slider:before {
 }
 
 #myslickhelp .slick-prev {
-    top: 18px;
+    top: 12px;
 }
 
 #myslickhelp .slick-next {
-    top: 18px;
+    top: 12px;
 }
 
 
