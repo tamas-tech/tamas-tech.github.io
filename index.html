@@ -65,7 +65,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js "></script>
     <script src="main.js"></script>
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-day.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-night.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/abbott.min.css">
@@ -478,44 +478,68 @@
         </div>
         <div id="fnhelp">
             <div id="myslickhelp">
-                <div>
+                <div class="helpdiv">
                     <h2>abs(x) = \(|x|\)</h2>
-                    \[|x|\]
-                    <embed src="help/abs.html" width=98% height=200/>
-                    <embed src=" https://paulmasson.github.io/sagemath-docs/functions/bessel_I.html" width=98% height=400/>
+                    <p>The absolute value of <i>z</i> in SageMath. Alias of abs_symbolic.</p>
                 </div>
-                <div>
+                <div class="helpdiv">
                     <h2>floor(x)</h2>
                     fghgf
                 </div>
-                <div>
+                <div class="helpdiv">
                     <h2>ceil(x)</h2>
                     <!--   <embed src="samples/smplstart.html" width=98% height=400 onerror="alert('URL invalid !!');" /> -->
                 </div>
-                <div>
+                <div class="helpdiv">
                     <h2>frac(x)</h2>
                     <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
                     <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
                 </div>
-                <div>
+                <div class="helpdiv">
                     <h2>sgn(x)</h2>
                     <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
                     <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
                 </div>
-                <div>
+                <div class="helpdiv">
                     <h2>min</h2>
                     <p>fghgfh g \[\frac{1}{2}\] kf gf hgfd h</p>
                     <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
                 </div>
-                <div>
+                <div class="helpdiv">
                     <h2>max</h2>
                     <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
                     <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
                 </div>
-                <div>
+                <div class="helpdiv">
                     <h2>piecewise</h2>
-                    <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
-                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                    <p class="sagemath"> piecewise( [ [ ( <code>begin</code> , <code>end</code> ) , <code>function</code> ] , ... ] , var=<i>variable</i> ) </p>
+
+                    <p>A piecewise function in SageMath defined in part by <code>function</code> on the domain from <code>begin</code> to <code>end</code>. Consecutive domains should share an endpoint to avoid unexpected errors. The optional <code>var</code>                        keyword argument specifies which single symbolic variable is the argument of the complete function.</p>
+
+                    <p>The argument <code>function</code> for each domain must be the name of a symbolic function, not a numeric function. Symbolic functions are constructed from numeric functions using function. Symbolic functions entail significant overhead
+                        that can make <code>piecewise</code> unsuitable for purely numeric calculations.</p>
+
+                    <p>The current version of SageMath makes a distinction for this function between open and closed domains. Open domains are specified with parentheses <code>( )</code>. Closed domains are specified with square brackets <code>[ ]</code>.
+                        Attempting to specify a mixed domain <code>( ]</code> or <code>[ )</code> leads to Python syntax errors.</p>
+
+                    <p>To ensure a piecewise function consisting of several domains is valid at all points in the complete domain, alternately specify successive domains as open and closed. If the domains are all open then points on the boundaries will not
+                        be included, and making all domains closed leads to the error message <code>domains must be pairwise disjoint</code>.</p>
+
+                    <p>Specifying a partial domain when plotting a piecewise function is supported in the current version of SageMath. Previously this led to the opaque error message <code>local variable 'G' referenced before assignment</code>.</p>
+
+                    <p>Including a numeric Python-callable function directly in <code>piecewise</code> leads to the error message <code>unable to simplify to float approximation</code>. This is avoided by constructing a symbolic function using function.</p>
+
+                    <br/>
+                    <p>Examples:</p>
+                    <pre>
+f = piecewise( [ [(0,1),x], [[1,3],2-x], [(3,4),x-4] ] )
+show( plot( f, 0, 4, figsize=[4.5,2], color=(0,.5,1) ) )
+</pre>
+                    <pre>
+f = piecewise( [ [(0,1),lambda x:-.6], [[1,2],lambda x:-.2],
+                 [(2,3),lambda x:.2], [[3,4],lambda x:.6]    ] )
+show( plot( f, 0, 4, figsize=[4.5,2], color=(0,.5,1) ) )
+</pre>
                 </div>
                 <div>A</div>
                 <div>A</div>
@@ -531,6 +555,7 @@
     </div>
     <div id="tabcontainer1">
         <div class="myslick" id="tabsb">
+            <div class="kbdbtn" data-btn="show(x)" onclick="beilleszt(this,1);">show()</div>
             <div class="kbdbtn" data-btn="latex(x)" onclick="beilleszt(this,1);">latex()</div>
             <div class="kbdbtn" data-btn="n(x,digits=10)" onclick="beilleszt(this,10);">n( )</div>
             <div class="kbdbtn" data-btn="0" onclick="beilleszt(this,0);">0</div>
@@ -595,35 +620,23 @@
     <div id="mycell" style="margin-top:10px;">
         <script type="text/x-sage">latex(integrate(polylog(3,x)*ln(x)^2,x))</script>
     </div>
-    <script>
-    </script>
-    <div id="ltxout">
-        <button id="ltxbtn" class="otherbtn" style="width:85px;" onclick="printLatex();" title="Conver sagecell output to rendered Latex output if possible">Latex</button>
-        <label class="switch">
-            <input id="optwrapltx" type="checkbox" >
-            <span class="slider round"></span>
-        </label>
-        <input id="ltx-slider" oninput="setLtxFont(this.value);" type="range" min="12" max="24" value="18" style="display:inline-block;width:120px;vertical-align: middle;margin-left:10px;" title="set output's fontsize">
-        <div id="output"></div>
-        <div class="sagecell_poweredBy"><a href="https://sagecell.sagemath.org/help.html" target="_blank">Help</a> | Powered by <a href="http://www.sagemath.org" target="_blank">SageMath</a></div>
-    </div>
 
     <script type="text/javascript">
         var ww = $('#tabs').width();
         var btnNo = Math.floor(ww / 76);
         var btnw = Math.floor(ww / btnNo) - 1;
-        if(btnNo>1){
-        $('.myslick').slick({
-            mobileFirst: true,
-            rows: 2,
-            slidesPerRow: btnNo,
-        });
+        if (btnNo > 1) {
+            $('.myslick').slick({
+                mobileFirst: true,
+                rows: 2,
+                slidesPerRow: btnNo,
+            });
 
-        $('.kbdbtn ').css({
-            'max-width': btnw - 16,
-            'width': btnw - 16
-        });
-        }
+            $('.kbdbtn ').css({
+                'max-width': btnw - 16,
+                'width': btnw - 16
+            });
+        };
         $('#myslickhelp').slick({
             mobileFirst: true,
             adaptiveHeight: true,
