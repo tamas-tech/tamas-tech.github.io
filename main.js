@@ -5,6 +5,9 @@ var opt_help = false;
 var opt_wrap = false;
 var opt_wrapltx = false;
 
+/* var cmsuggests = ["vektorter{}{}{}{}", "feladat", "form", "konyv", "fajl", "fajlvalaszto", "csatolmany", "link", "Link", "media", "sqrt", "sqrt{}", "gyok", "gyok{}", "frac", "frac{}{}", "tort", "tort{}{}", "ph{}", "figy{}", "%", "&", "'", "+", "-", "<", "=", ">", "@", "AA", "BB", "C", "CC", "DD", "Delta", "Downarrow", "EE", "FF", "GG", "Gamma", "H", "HH", "II", "Im", "JJ", "KK", "LL", "Lambda", "Leftarrow", "Leftrightarrow", "Longleftarrow", "Longleftrightarrow", "Longrightarrow", "MM", "N", "NN", "OO", "Omega", "P", "PP", "Phi", "Pi", "Psi", "Q", "QQ", "R", "RR", "Re", "Rightarrow", "SS", "Sigma", "TT", "Theta", "UU", "Uparrow", "Updownarrow", "Upsilon", "VV", "Vdash", "XX", "Xi", "YY", "Z", "ZZ", "^circ", "acos", "acosec", "acosech", "acosh", "acot", "acotan", "acotanh", "acoth", "acsc", "acsch", "aleph", "alpha", "amalg", "angle", "approx", "arccos", "arccosec", "arccosh", "arccot", "arccotan", "arccotanh", "arccoth", "arccsc", "arccsch", "arcsec", "arcsech", "arcsin", "arctan", "arctanh", "asec", "asech", "asin", "asinh", "ast", "atan", "atanh", "backslash", "because", "beta", "bigcap", "bigcirc", "bigcup", "bigodot", "bigoplus", "bigotimes", "bigsqcup", "bigtriangledown", "bigtriangleup", "biguplus", "bigvee", "bigwedge", "bot", "bowtie", "bullet", "cap", "caret", "cdot", "cdots", "chi", "circ", "closecurlybrace", "clubsuit", "cong", "coprod", "cos", "cosec", "cosech", "cosh", "cot", "cotan", "cotanh", "coth", "csc", "csch", "cup", "dagger", "dashleftarrow", "dashrightarrow", "dashv", "ddagger", "ddots", "delta", "det", "diamond", "digamma", "dim", "div", "doteq", "dots", "downarrow", "ell", "enter", "epsilon", "equiv", "eta", "exists", "nexists", "f", "flat", "frown", "gamma", "gcd", "gcf", "ge", "gets", "gg", "gt", "hcf", "heartsuit", "hookleftarrow", "hookrightarrow", "implies", "impliedby", "in", "infty", "int", "sint", "sdefint", "iota", "kappa", "lambda", "lceil", "lcm", "ldots", "le", "left(", "left[", "left\\langle", "left\{", "leftarrow", "leftarrowtail", "leftharpoondown", "leftharpoonup", "leftrightarrow", "left|", "lfloor", "lg", "lim", "ll", "ln", "log", "longleftarrow", "longleftrightarrow", "longmapsto", "longrightarrow", "lowercase", "lt", "mapsto", "mathbf", "mathit", "mathrm", "mathsf", "mathtt", "mathfrak", "mathcal", "mathscr", "mathbb", "max", "mid", "min", "mod", "models", "mp", "mu", "multimap", "nabla", "natural", "ne", "nearrow", "neg", "ni", "nmid", "notin", "notni", "notsubset", "notsubseteq", "notsupset", "notsupseteq", "nparallel", "nu", "nwarrow", "odot", "oint", "omega", "ominus", "opencurlybrace", "oplus", "otimes", "overline", "parallel", "partial", "perp", "phi", "pi", "pm", "prec", "preceq", "prod", "proj", "propto", "psi", "qquad", "quad", "rceil", "rfloor", "rho", "right)", "right\\rangle", "right\}", "right]", "rightarrow", "rightarrowtail", "rightharpoondown", "rightharpoonup", "right|", "searrow", "sec", "sech", "setminus", "sharp", "sigma", "sim", "simeq", "sin", "sinh", "slash", "smile", "spadesuit", "span", "sqcap", "sqcup", "sqsubset", "sqsubseteq", "sqsupset", "sqsupseteq", "square", "subset", "subseteq", "succ", "succeq", "sum", "supset", "supseteq", "surd", "swarrow", "tab", "tan", "tanh", "tau", "textbf", "textit", "textrm", "textsf", "texttt", "therefore", "theta", "times", "to", "top", "triangle", "triangleleft", "triangleright", "twoheadleftarrow", "twoheadrightarrow", "underline", "underscore", "uparrow", "updownarrow", "uplus", "uppercase", "upsilon", "varepsilon", "varkappa", "varnothing", "varphi", "varpi", "varrho", "varsigma", "vartheta", "vdash", "vdots", "vector", "vee", "wedge", "wp", "wr", "xi", "zeta", "|", "boxminus", "boxplus", "boxtimes", "boxdot", "circledast", "circleddash", "circledcirc", "ltimes", "rtimes", "leftthreetimes", "rightthreetimes", "divideontimes", "centerdot", "intercal", "oslash", "doublebarwedge", "dotplus", "barwedge", "veebar", "curlywedge", "curlyvee", "biconditional", "roundimplies", "Lleftarrow", "Rrightarrow", "leftrightarrows", "rightleftarrows", "curvearrowleft", "curvearrowright", "looparrowleft", "looparrowright", "circlearrowleft", "circlearrowright", "leftleftarrows", "rightrightarrows", "upuparrows", "downdownarrows", "Lsh", "Rsh", "upharpoonleft", "upharpoonright", "downharpoonleft", "downharpoonright", "leftrightsquigarrow", "rightsquigarrow", "nrightarrow", "nleftarrow", "nRightarrow", "nLeftarrow", "nleftrightarrow", "nLeftrightarrow", "lessapprox", "leqslant", "gtrapprox", "geqslant", "precapprox", "succapprox", "lesssim", "gtrsim", "asymp", "approxeq", "backsim", "backsimeq", "succsim", "precsim", "eqsim", "leqq", "geqq", "eqslantless", "eqslantgtr", "lll", "ggg", "lessgtr", "lesseqgtr", "lesseqqgtr", "gtrless", "gtreqless", "gtreqqless", "llles", "gggtr", "preccurlyeq", "succurlyeq", "curlyeqprec", "curlyeqsucc", "lessdot", "gtrdot", "coloneq", "measeq", "eqdef", "questeq", "doteqdot", "Doteq", "fallingdotseq", "risingdotseq", "bumpeq", "Bumpeq", "circeq", "eqcirc", "vDash", "lhd", "rhd", "shortparallel", "shortmid", "varpropto", "Vvdash", "between", "pitchfork", "stilus", "rajzlap", "gsor", "doboz", "kepletdoboz", "keplet", "hasab", "sorszam", "vektorter", "szintvonal", "grafikon", "grafikone", "grafikonhd", "firka", "kep", "svg", "video", "audio", "ID", "lap", "slider", "jsx", "ltx", "sgeo", "gomb", "asciisvg"] */
+
+
 setTimeout(() => {
     if (!onlineSt)
         alert('You are offline! For the correct operate of calculator you need to be online.');
@@ -35,8 +38,8 @@ var beilleszt = function(x, n) {
         var slno = x.getAttribute('data-slickno') * 1;
         $('#myslickhelp').slick('slickGoTo', slno, false)
     }
-
 };
+
 
 var insertText = (text, n) => {
     var last = cmeditor.getSelection();
@@ -139,20 +142,6 @@ var clearOutput = function() {
     if (outputs)
         outputs.remove();
     output.innerHTML = "";
-};
-
-var printLatex = function() {
-    if (/latex\(/.test(cmeditor.getValue())) {
-        var outputtxt = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
-        if (outputtxt) {
-            output.innerHTML = "\\[ " + outputtxt.innerText.replace(/\\log/g, '\\ln') + " \\]";
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub, 'output']);
-        } else {
-            output.innerText = "There is no output";
-        }
-    } else {
-        output.innerHTML = "The sagecell output is not a valid Latex code.";
-    }
 };
 
 function themeSwitch() {
@@ -269,13 +258,6 @@ $(document).ready(function() {
 
     $('#optwrap')[0].checked = opt_wrap;
 
-    document.getElementById('optwrapltx').onchange = function() {
-        opt_wrapltx = this.checked;
-        wrapSwitchLtx();
-    };
-
-    $('#optwrapltx')[0].checked = opt_wrapltx;
-
     $('.rown').on('change', function() {
         numrows = $(this).val() * 1;
         afterResize();
@@ -295,9 +277,9 @@ $(document).ready(function() {
         try {
             var w = document.getElementById('optwrap')
             document.getElementById('outfont-slider').value = 12;
-            if (w && w.checked) {
-                w.click();
-            }
+            /*   if (w && w.checked) {
+                  w.click();
+              } */
         } catch {
             console.log('NEM SIKERÜLT')
         }
@@ -323,6 +305,8 @@ function afterResize() {;
     if (btnNo > 1) {
         $('.myslick').slick('unslick');
         var btnw = Math.floor(ww / btnNo) - 1;
+        console.log(ww, btnNo, btnw);
+        console.log(typeof(btnNo), typeof(btnw))
         $('.myslick').slick({
             mobileFirst: true,
             rows: numrows,
@@ -359,15 +343,6 @@ function wrapSwitch() {
             overflow: 'auto',
             'white-space': 'pre-wrap'
         })
-    } else
-        $('div.sagecell_sessionOutput pre').css({
-            'white-space': 'nowrap',
-            'word-wrap': 'wrap none'
-        })
-};
-
-function wrapSwitchLtx() {
-    if (opt_wrapltx) {
         MathJax.Hub.Config({
             tex2jax: {
                 inlineMath: [
@@ -379,7 +354,12 @@ function wrapSwitchLtx() {
                 linebreaks: { automatic: true, width: "container" }
             }
         });
-    } else
+    } else {
+        $('div.sagecell_sessionOutput pre').css({
+            'white-space': 'nowrap',
+            'word-wrap': 'wrap none'
+        })
+
         MathJax.Hub.Config({
             tex2jax: {
                 inlineMath: [
@@ -391,7 +371,7 @@ function wrapSwitchLtx() {
                 linebreaks: { automatic: false, width: "container" }
             }
         });
-    printLatex();
+    }
 };
 
 //zeynep
