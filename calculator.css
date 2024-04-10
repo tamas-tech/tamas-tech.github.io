@@ -9,17 +9,12 @@ div.CodeMirror.cm-s-default {
 }
 
 #mycell,
-#ltxout,
 #sample-c {
     border: 1px solid #aaa;
     padding: 5px;
     border-radius: 5px;
     margin: 5px 0;
     box-shadow: 0px 0px 5px 5px #94a1b04d;
-}
-
-#ltxout {
-    padding-bottom: 25px;
 }
 
 div.sagecell_permalink {
@@ -400,6 +395,14 @@ input:checked+.slider:before {
     width: 28px!important
 }
 
+#myslickhelp .slick-prev {
+    top: 18px;
+}
+
+#myslickhelp .slick-next {
+    top: 18px;
+}
+
 
 /* drilldown*/
 
@@ -615,6 +618,9 @@ body {
     border: 1px solid #aaa;
 }
 
-#fnhelp #myslickhelp div {
+#fnhelp #myslickhelp div.helpdiv {
     background-color: #ffffb1;
+    text-align: left;
+    padding: 10px;
+    max-width: 98%;
 }
