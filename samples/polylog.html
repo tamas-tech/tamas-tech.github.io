@@ -77,6 +77,26 @@ show(integrate(polylog(m,x)*log(x)^n,x,hold=True),'=',f(m,n))
         </pre>
         </div>
     </div>
+     <div class="keret even">
+        <b><big class="sorszam">4.</big></b>
+        <p class="keplet">\[\left.\dfrac{\partial^{p+q}}{\partial z_{1}^{p}\partial z_{2}^{q}}\mathbf{B}(z_{1},z_{2})\right|_{\begin{subarray}{c} z_{1}=1\\ \vphantom{\frac{1}{2}}z_{2}=1 \end{subarray}}=\mathbf{B}_{p,q}(1,1)=\intop_{0}^{1}\ln^{p}(t)\ln^{q}(1-t)\,\text{d}t=(-1)^{p+q}\,p!q!\sum_{i=0}^{p}\sum_{j=0}^{q}(-1)^{i+j}\binom{p+q-(i+j)}{p-i}\begin{Vmatrix}i+j\\
+            i \end{Vmatrix}_{x_{k}=\zeta(k)}\]
+        </p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+##########
+p=2
+q=3
+##########
+var('x,y')
+def B(p,q): 
+    return expand(diff(diff(beta(x,y),x,p),y,q).subs(x=1,y=1))
+
+show(LatexExpr(r"\frac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),B(p,q))</pre>
+        </div>
+    </div>
 </body>
 
 </html>
