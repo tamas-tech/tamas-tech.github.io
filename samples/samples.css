@@ -1,12 +1,21 @@
+body {
+    background-color: #444;
+}
+
+body h1,
+body h2 {
+    color: #f1f1f1;
+}
+
 .pre-container {
     display: inline-block;
     margin: 8px;
-    background-color: #e3eaea;
+    /*background-color: #e3eaea;*/
     color: #394B75;
     font-size: 12px;
     cursor: pointer;
     padding: 5px 10px;
-    border: 1px solid #aaa;
+    border: 1px solid #e1e1e1;
 }
 
 button.sendbtn {
@@ -23,10 +32,55 @@ button.sendbtn {
 }
 
 button.sendbtn:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
     background-color: #5f6983;
 }
 
 pre {
     margin: 5px 0;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+div.keret {
+    border: 1px solid #bebebe;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    min-width: min-content;
+}
+
+div.keret.odd {
+    background-color: #f5fff9;
+    box-shadow: 0px 0px 10px 3px #6b77aa;
+}
+
+div.keret.even {
+    background-color: #fff1f1;
+    box-shadow: 0px 0px 10px 3px #eea8a8;
+}
+
+div.keret.odd .pre-container {
+    background-color: #e8f2f2;
+}
+
+div.keret.even .pre-container {
+    background-color: #ffe5e5;
+}
+
+p.keplet {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 5px;
+}
+
+div.keret.odd p.keplet {
+    background-color: #ddeee8;
+}
+
+div.keret.even p.keplet {
+    background-color: #ffe4e4;
+}
+
+big.sorszam {
+    margin-left: 10px
 }
