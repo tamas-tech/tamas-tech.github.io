@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Polylogarithms</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="samples.css">
+    <script src="samples.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+
+<body>
+
+    <h1>Integrals Involving Polylogarithm Function</h1>
+    <div class="keret odd">
+        <b><big class="sorszam">1.</big></b>
+        <p class="keplet">\[\int {\rm Li}_{n}(x)\,{d x}=(-1)^{m}\,\left[x\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{k}(x)+\text{Li}_{1}(x)-x\right]\]</p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+##########
+n=4
+##########
+
+def foo(x,m):
+    f(x) = (-1)^m*sum([(-1)^k*x*function('Li'+str(k))(x) for k in (1..m)])+function('Li'+str(1))(x)-x
+    return f(x)
+def f(m):
+    return foo(x,m)
+
+show(integrate(polylog(n,x),x,hold=True),'=',f(n))
+        </pre>
+        </div>
+    </div>
+    <div class="keret even">
+        <b><big class="sorszam">2.</big></b>
+        <p class="keplet">\[\int \dfrac{{\rm Li}_{n}(x)\cdot\ln^{n}\left(x\right)}{x}\,{d x}=(-1)^{n}\,n!\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{n+m+1-k}(x)\ln^{k}(x)\]</p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+# Li_m(x)*ln(x)^n
+##########
+m=4
+n=2
+##########
+
+def foo(x,m,n):
+    f(x) = (-1)^n*factorial(n)*sum([(-1)^k/factorial(k)*function('Li'+str(n+m+1-k))(x)*function('ln')(x)^k for k in (0..n)])
+    return f(x)
+def f(m,n):
+    return foo(x,m,n)
+
+show(integrate((polylog(m,x)*ln(x)^n)/x,x,hold=True),'=',f(m,n))
+        </pre>
+        </div>
+    </div>
+    <div class="keret odd">
+        <b><big class="sorszam">3.</big></b>
+        <p class="keplet">\[\int {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{d x}=(-1)^{n+m}\,n!\,\sum_{k=0}^{n}\dfrac{(-1)^{k}}{k!}\ln^{k}(x)\cdot\left[x\sum_{j=1}^{m}(-1)^{j}\binom{n+m-k-j}{m-j}\text{Li}_{j}(x)-x\,\binom{n+m-k}{m}+\sum_{j=1}^{n+1-k}\binom{n+m-k-j}{1+n-k-j}\text{Li}_{j}(x)\right]\]</p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+##########
+m=2
+n=3
+##########
+def foo(x,m,n):
+    f(x) = (-1)^(n+m)*factorial(m)*sum([(-1)^k/factorial(k)*function('ln')(x)^k*(x*sum([(-1)^j*binomial(n+m-k-j,n-j)*function('Li'+str(j))(x) for j in (1..n)])-x*binomial(n+m-k,n)+sum([binomial(n+m-k-j,1+m-k-j)*function('Li'+str(j))(x) for j in (1..m+1-k)])) for k in (0..m)])
+    return f(x)
+def f(m,n):
+    return expand(foo(x,m,n))
+
+show(integrate(polylog(m,x)*log(x)^n,x,hold=True),'=',f(m,n))
+        </pre>
+        </div>
+    </div>
+</body>
+
+</html>
