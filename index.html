@@ -130,7 +130,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/yeti.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/yonce.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/zenburn.min.css">
-
 </head>
 </head>
 
@@ -578,7 +577,7 @@ show( plot( f, 0, 4, figsize=[4.5,2], color=(0,.5,1) ) )
             <div class="kbdbtn" data-btn="+" onclick="beilleszt(this,0);">+</div>
             <div class="kbdbtn" data-btn="-" onclick="beilleszt(this,0);">-</div>
             <div class="kbdbtn" data-btn="*" onclick="beilleszt(this,0);">*</div>
-            <div class="kbdbtn" data-btn="^" onclick="beilleszt(this,0);" style="font-size:28px;line-height:1.1;font-weight:900;">^</div>
+            <div class="kbdbtn" data-btn="^" onclick="beilleszt(this,0);" style="font-size:28px;line-height:1.1;font-weight:900">^</div>
             <div class="kbdbtn" data-btn="/" onclick="beilleszt(this,0);">/</div>
             <div class="kbdbtn" data-btn="sqrt(x)" onclick="beilleszt(this,1);">&#x221A</div>
             <div class="kbdbtn" data-btn="( )" onclick="beilleszt(this,1);">( )</div>
@@ -618,7 +617,7 @@ show( plot( f, 0, 4, figsize=[4.5,2], color=(0,.5,1) ) )
         </div>
     </div>
     <div id="mycell" style="margin-top:10px;">
-        <script type="text/x-sage">show(integrate(polylog(3,x)*ln(x)^2,x))</script>
+        <script type="text/x-sage">latex(integrate(polylog(3,x)*ln(x)^2,x))</script>
     </div>
 
     <script type="text/javascript">
@@ -657,67 +656,38 @@ show( plot( f, 0, 4, figsize=[4.5,2], color=(0,.5,1) ) )
                     </li>
 
                     <li class="has-submenu">
-                        <a href="#" data-submenu="stores">Stores</a>
+                        <a href="#" data-submenu="integrals">Integrals</a>
 
-                        <div id="stores" class="submenu">
-                            <div class="submenu-header"><a href="#" data-submenu-close="stores">Main Menu</a></div>
-
-                            <label>Stores</label>
-
-                            <ul>
-                                <li class="veg"><a href="samples/smpl002.html">smpl002</a></li>
-                                <li><a href="#">Mardin</a></li>
-                                <li><a href="#">Amed</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="has-submenu">
-                        <a href="#" data-submenu="categories">Categories</a>
-
-                        <div id="categories" class="submenu">
+                        <div id="integrals" class="submenu">
                             <div class="submenu-header">
-                                <a href="#" data-submenu-close="categories">Main Menu</a>
+                                <a href="#" data-submenu-close="integrals">Main Menu</a>
                             </div>
 
-                            <label>Categories</label>
+                            <label>Integrals</label>
 
                             <ul>
                                 <li class="has-submenu">
-                                    <a href="#" data-submenu="electronics">Electronics</a>
+                                    <a href="#" data-submenu="polylog">Polylogarithm</a>
 
-                                    <div id="electronics" class="submenu">
-                                        <div class="submenu-header"><a href="#" data-submenu-close="electronics">Categories</a></div>
+                                    <div id="polylog" class="submenu">
+                                        <div class="submenu-header"><a href="#" data-submenu-close="polylog">Polylogarithm</a></div>
 
-                                        <label>Electronics</label>
+                                        <label>Polylogarithm</label>
 
                                         <ul>
-                                            <li class="veg"><a data-src="samples/smpl004.html" href="#">Camera & Photo</a></li>
-                                            <li class="veg"><a data-src="samples/smpl004.html" href="#">Home Audio</a></li>
-                                            <li class="veg"><a data-src="samples/smpl003.html" href="#">Tv & Video</a></li>
-                                            <li class="veg"><a data-src="samples/smpl005.html" href="#">Computers & Accessories</a></li>
-                                            <li class="veg"><a data-src="samples/smpl000.html" href="#">Car & Vehicle Electronics</a></li>
-                                            <li class="veg"><a data-src="samples/smpl005.html" href="#">Portable Audio & Video</a></li>
-                                            <li class="veg"><a data-src="samples/smpl002.html" href="#">Headphones</a></li>
-                                            <li class="veg"><a data-src="samples/smpl003.html" href="#">Accessories & Supplies</a></li>
-                                            <li class="veg"><a data-src="samples/smpl004.html" href="#">Video Projectors</a></li>
-                                            <li class="veg"><a data-src="samples/smpl002.html" href="#">Office Electronics</a></li>
-                                            <li class="veg"><a data-src="samples/smpl001.html" href="#">Wearable Technology</a></li>
-                                            <li class="veg"><a data-src="samples/smpl005.html" href="#">Service Plans</a></li>
+                                            <li class="veg"><a data-src="samples/polylog.html" href="#">Li<sub>n</sub></a></li>
+                                            <li class="veg"><a data-src="samples/smpl004.html" href="#">name1</a></li>
+                                            <li class="veg"><a data-src="samples/smpl003.html" href="#">name2</a></li>
+                                            <li class="veg"><a data-src="samples/smpl005.html" href="#">name3</a></li>
+                                            <li class="veg"><a data-src="samples/smpl000.html" href="#">name4</a></li>
                                         </ul>
                                     </div>
                                 </li>
-
                                 <li>
-                                    <a href="#">Books</a>
+                                    <a href="#">Combinatorics</a>
                                 </li>
-
                                 <li>
-                                    <a href="#">Video Games</a>
-                                </li>
-
-                                <li>
-                                    <a href="#">Computers</a>
+                                    <a href="#">Algebra</a>
                                 </li>
                             </ul>
                         </div>
