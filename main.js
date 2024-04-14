@@ -267,11 +267,7 @@ $(document).ready(function() {
 
     document.querySelector('.sagecell_evalButton').onclick = function() {
         try {
-            var w = document.getElementById('optwrap')
-            document.getElementById('outfont-slider').value = 12;
-            /*   if (w && w.checked) {
-                  w.click();
-              } */
+            setOutputFont($('#outfont-slider').val());
         } catch {
             console.log('NEM SIKERÜLT')
         }
