@@ -686,3 +686,8 @@ body {
     text-align: left;
     padding: 10px;
 }
+
+p.sagemath {
+    font-size: large;
+    font-weight: bold;
+}
