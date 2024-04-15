@@ -86,6 +86,7 @@ show(integrate(polylog(m,x)*log(x)^n,x,hold=True),'=',f(m,n))
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
+# Partial derivatives of the Beta function at point (1,1)
 ##########
 p=2
 q=3
@@ -94,7 +95,7 @@ var('x,y')
 def B(p,q): 
     return expand(diff(diff(beta(x,y),x,p),y,q).subs(x=1,y=1))
 
-show(LatexExpr(r"\frac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),B(p,q))</pre>
+show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'),LatexExpr(r"\frac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),B(p,q))</pre>
         </div>
     </div>
 </body>
