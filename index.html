@@ -481,53 +481,30 @@
                     <h2>abs(x) = \(|x|\)</h2>
                     <p class="sagemath"> abs( <i>z</i> ) </p>
                     <p>The absolute value of <i>z</i> in SageMath. Alias of abs_symbolic.</p>
+                    See more: <a href="https://paulmasson.github.io/sagemath-docs/functions/abs.html" target="helpframe">paulmasson.github.io/sagemath-docs/functions/abs.html</a>
                 </div>
                 <div class="helpdiv">
                     <h2>floor(x) = \(\lfloor x\rfloor\)</h2>
                     <p class="sagemath"> floor( <i>x</i> ) </p>
-                    The greatest integer less than or equal to x in SageMath. Not defined for complex numbers.
-                    <p>Examples:</p>
-                    <pre>
-        floor(2)=2
-        floor(2.4)=2
-        floor(3.2)=3
-        floor(-2.3)=-3
-                </pre>
+                    <p>The greatest integer less than or equal to x in SageMath. Not defined for complex numbers.</p>
+                    See more: <a href="https://paulmasson.github.io/sagemath-docs/functions/floor.html" target="helpframe">paulmasson.github.io/sagemath-docs/functions/floor.html</a>
                 </div>
                 <div class="helpdiv">
                     <h2>ceil(x) = \(\lceil x\rceil\)</h2>
                     <p class="sagemath"> ceil( <i>x</i> ) </p>
-                    The smallest integer greater than or equal to x in SageMath. Not defined for complex numbers.
-                    <p>Examples:</p>
-                    <pre>
-        ceil(2)=2
-        ceil(2.4)=3
-        ceil(2.9)=3
-        ceil(-2.3)=-2
-                </pre>
+                    <p>The smallest integer greater than or equal to x in SageMath. Not defined for complex numbers.</p>
+                    See more: <a href="https://paulmasson.github.io/sagemath-docs/functions/ceil.html" target="helpframe">paulmasson.github.io/sagemath-docs/functions/ceil.html</a>
                 </div>
                 <div class="helpdiv">
                     <h2>frac(x) = \(\lbrace x \rbrace\)</h2>
                     <p class="sagemath"> frac( <i>x</i> ) </p>
-                    The fractional part of x in SageMath. Not defined for complex numbers.
-                    <p>Examples:</p>
-                    <pre>
-        frac(2)=0
-        frac(2.4)=0.400000000000000
-        frac(3.2)=0.300000000000000
-        frac(-2.3)=−0.300000000000000
-                </pre>
+                    <p>The fractional part of x in SageMath. Not defined for complex numbers.</p>
+                    See more: <a href="https://paulmasson.github.io/sagemath-docs/functions/frac.html" target="helpframe">paulmasson.github.io/sagemath-docs/functions/frac.html</a>
                 </div>
                 <div class="helpdiv">
                     <h2>sgn(x)</h2>
                     <p class="sagemath"> sgn( <i>x</i> ) </p>
-                    The signum of x in SageMath. Alias of sgn.
-                    <p>Examples:</p>
-                    <pre>
-        sgn(1)=1
-        sgn(-2)=-1
-        sgn(0)=0
-                </pre>
+                    See more: <a href="https://paulmasson.github.io/sagemath-docs/functions/sign.html" target="helpframe">paulmasson.github.io/sagemath-docs/functions/sign.html</a>
                 </div>
                 <div class="helpdiv">
                     <h2>min_symbolic(a,b,...)</h2>
@@ -535,17 +512,14 @@
 
                     <p>The minimum in SageMath of two or more symbolic expressions.</p>
 
-                    <p>Although this function appears as <code>min</code> under the operation <code>show</code> it is not identical to it. The function <code>min</code> is evaluated using Python&rsquo;s built-in function that does not respect symbolic expressions,
-                        which leads to unexpected results handling them.</p>
+                    See more: <a href="https://paulmasson.github.io/sagemath-docs/functions/min_symbolic.html" target="helpframe">paulmasson.github.io/sagemath-docs/functions/min_symbolic.html</a>
                 </div>
                 <div class="helpdiv">
                     <h2>max_symbolic(a,b,...)</h2>
                     <p class="sagemath"> max_symbolic( <i>a</i> , <i>b</i> [ , <i>c</i> , <i>d</i> , &hellip; ] ) </p>
 
                     <p>The maximum in SageMath of two or more symbolic expressions.</p>
-
-                    <p>Although this function appears as <code>max</code> under the operation <code>show</code> it is not identical to it. The function <code>max</code> is evaluated using Python&rsquo;s built-in function that does not respect symbolic expressions,
-                        which leads to unexpected results handling them.</p>
+                    See more: <a href="https://paulmasson.github.io/sagemath-docs/functions/max_symbolic.html" target="helpframe">paulmasson.github.io/sagemath-docs/functions/max_symbolic.html</a>
                 </div>
                 <div class="helpdiv">
                     <h2>piecewise</h2>
@@ -555,28 +529,7 @@
 
                     <p>The argument <code>function</code> for each domain must be the name of a symbolic function, not a numeric function. Symbolic functions are constructed from numeric functions using function. Symbolic functions entail significant overhead
                         that can make <code>piecewise</code> unsuitable for purely numeric calculations.</p>
-
-                    <p>The current version of SageMath makes a distinction for this function between open and closed domains. Open domains are specified with parentheses <code>( )</code>. Closed domains are specified with square brackets <code>[ ]</code>.
-                        Attempting to specify a mixed domain <code>( ]</code> or <code>[ )</code> leads to Python syntax errors.</p>
-
-                    <p>To ensure a piecewise function consisting of several domains is valid at all points in the complete domain, alternately specify successive domains as open and closed. If the domains are all open then points on the boundaries will not
-                        be included, and making all domains closed leads to the error message <code>domains must be pairwise disjoint</code>.</p>
-
-                    <p>Specifying a partial domain when plotting a piecewise function is supported in the current version of SageMath. Previously this led to the opaque error message <code>local variable 'G' referenced before assignment</code>.</p>
-
-                    <p>Including a numeric Python-callable function directly in <code>piecewise</code> leads to the error message <code>unable to simplify to float approximation</code>. This is avoided by constructing a symbolic function using function.</p>
-
-                    <br/>
-                    <p>Examples:</p>
-                    <pre>
-f = piecewise( [ [(0,1),x], [[1,3],2-x], [(3,4),x-4] ] )
-show( plot( f, 0, 4, figsize=[4.5,2], color=(0,.5,1) ) )
-</pre>
-                    <pre>
-f = piecewise( [ [(0,1),lambda x:-.6], [[1,2],lambda x:-.2],
-                 [(2,3),lambda x:.2], [[3,4],lambda x:.6]    ] )
-show( plot( f, 0, 4, figsize=[4.5,2], color=(0,.5,1) ) )
-</pre>
+                    See more: <a href="https://paulmasson.github.io/sagemath-docs/functions/piecewise.html" target="helpframe">paulmasson.github.io/sagemath-docs/functions/piecewise.html</a>
                 </div>
                 <div>A</div>
                 <div>A</div>
