@@ -14,13 +14,13 @@
     <h1>Integrals Involving Polylogarithm Function</h1>
     <div class="keret odd">
         <b><big class="sorszam">1.</big></b>
-        <p class="keplet">\[\int {\rm Li}_{n}(x)\,{d x}=(-1)^{m}\,\left[x\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{k}(x)+\text{Li}_{1}(x)-x\right]\]</p>
+        <p class="keplet">\[\int {\rm Li}_{m}(x)\,{d x}=(-1)^{m}\,\left[x\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{k}(x)+\text{Li}_{1}(x)-x\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
 ##########
-n=4
+m=4
 ##########
 
 def foo(x,m):
@@ -29,13 +29,13 @@ def foo(x,m):
 def f(m):
     return foo(x,m)
 
-show(integrate(polylog(n,x),x,hold=True),'=',f(n))
+show(integrate(polylog(m,x),x,hold=True),'=',f(m))
         </pre>
         </div>
     </div>
     <div class="keret even">
         <b><big class="sorszam">2.</big></b>
-        <p class="keplet">\[\int \dfrac{{\rm Li}_{n}(x)\cdot\ln^{n}\left(x\right)}{x}\,{d x}=(-1)^{n}\,n!\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{n+m+1-k}(x)\ln^{k}(x)\]</p>
+        <p class="keplet">\[\int \dfrac{{\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)}{x}\,{d x}=(-1)^{n}\,n!\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{n+m+1-k}(x)\ln^{k}(x)\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
