@@ -479,35 +479,73 @@
             <div id="myslickhelp">
                 <div class="helpdiv">
                     <h2>abs(x) = \(|x|\)</h2>
+                    <p class="sagemath"> abs( <i>z</i> ) </p>
                     <p>The absolute value of <i>z</i> in SageMath. Alias of abs_symbolic.</p>
                 </div>
                 <div class="helpdiv">
-                    <h2>floor(x)</h2>
-                    fghgf
+                    <h2>floor(x) = \(\lfloor x\rfloor\)</h2>
+                    <p class="sagemath"> floor( <i>x</i> ) </p>
+                    The greatest integer less than or equal to x in SageMath. Not defined for complex numbers.
+                    <p>Examples:</p>
+                    <pre>
+        floor(2)=2
+        floor(2.4)=2
+        floor(3.2)=3
+        floor(-2.3)=-3
+                </pre>
                 </div>
                 <div class="helpdiv">
-                    <h2>ceil(x)</h2>
-                    <!--   <embed src="samples/smplstart.html" width=98% height=400 onerror="alert('URL invalid !!');" /> -->
+                    <h2>ceil(x) = \(\lceil x\rceil\)</h2>
+                    <p class="sagemath"> ceil( <i>x</i> ) </p>
+                    The smallest integer greater than or equal to x in SageMath. Not defined for complex numbers.
+                    <p>Examples:</p>
+                    <pre>
+        ceil(2)=2
+        ceil(2.4)=3
+        ceil(2.9)=3
+        ceil(-2.3)=-2
+                </pre>
                 </div>
                 <div class="helpdiv">
-                    <h2>frac(x)</h2>
-                    <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
-                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                    <h2>frac(x) = \(\lbrace x \rbrace\)</h2>
+                    <p class="sagemath"> frac( <i>x</i> ) </p>
+                    The fractional part of x in SageMath. Not defined for complex numbers.
+                    <p>Examples:</p>
+                    <pre>
+        frac(2)=0
+        frac(2.4)=0.400000000000000
+        frac(3.2)=0.300000000000000
+        frac(-2.3)=−0.300000000000000
+                </pre>
                 </div>
                 <div class="helpdiv">
                     <h2>sgn(x)</h2>
-                    <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
-                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                    <p class="sagemath"> sgn( <i>x</i> ) </p>
+                    The signum of x in SageMath. Alias of sgn.
+                    <p>Examples:</p>
+                    <pre>
+        sgn(1)=1
+        sgn(-2)=-1
+        sgn(0)=0
+                </pre>
                 </div>
                 <div class="helpdiv">
-                    <h2>min</h2>
-                    <p>fghgfh g \[\frac{1}{2}\] kf gf hgfd h</p>
-                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                    <h2>min_symbolic(a,b,...)</h2>
+                    <p class="sagemath"> min_symbolic( <i>a</i> , <i>b</i> [ , <i>c</i> , <i>d</i> , &hellip; ] ) </p>
+
+                    <p>The minimum in SageMath of two or more symbolic expressions.</p>
+
+                    <p>Although this function appears as <code>min</code> under the operation <code>show</code> it is not identical to it. The function <code>min</code> is evaluated using Python&rsquo;s built-in function that does not respect symbolic expressions,
+                        which leads to unexpected results handling them.</p>
                 </div>
                 <div class="helpdiv">
-                    <h2>max</h2>
-                    <p>fghgfh gfh gf hguhkjf kf gf hgfd h</p>
-                    <p>fdfhglkléghgffgh h gfh gf hklégufg hfg hkjf kf gf hgfd h</p>
+                    <h2>max_symbolic(a,b,...)</h2>
+                    <p class="sagemath"> max_symbolic( <i>a</i> , <i>b</i> [ , <i>c</i> , <i>d</i> , &hellip; ] ) </p>
+
+                    <p>The maximum in SageMath of two or more symbolic expressions.</p>
+
+                    <p>Although this function appears as <code>max</code> under the operation <code>show</code> it is not identical to it. The function <code>max</code> is evaluated using Python&rsquo;s built-in function that does not respect symbolic expressions,
+                        which leads to unexpected results handling them.</p>
                 </div>
                 <div class="helpdiv">
                     <h2>piecewise</h2>
