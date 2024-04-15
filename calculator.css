@@ -629,3 +629,8 @@ p.sagemath {
     font-size: large;
     font-weight: bold;
 }
+
+#fnhelp iframe {
+    display: none;
+    background-color: #fffce4;
+}
