@@ -155,6 +155,7 @@ function helpSwitch() {
         $('#fnhelp').hide(300);
         $('.myslick.fn .kbdbtn.help').removeClass('help');
     }
+     $('#fnhelp iframe').css('display', '');
 };
 
 function sbTgl() {
@@ -272,6 +273,13 @@ $(document).ready(function() {
             console.log('NEM SIKERÜLT')
         }
     }
+    $(document).on('click', '#fnhelp .helpdiv>a', function() {
+        $('#fnhelp iframe').css('display', 'inline');
+    });
+
+    $('#myslickhelp').on('beforeChange', function() {
+        $('#fnhelp iframe').css('display', '');
+    });
 });
 
 
