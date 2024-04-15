@@ -216,6 +216,9 @@ $(document).ready(function() {
         themeSwitch();
     };
 
+    document.getElementById('optlinewrap').onchange = function() {
+        cmeditor.setOption('lineWrapping', this.checked)
+    };
     document.getElementById('opthelp').checked = opt_help;
 
     $('#opthelp').attr('checked', opt_help);
