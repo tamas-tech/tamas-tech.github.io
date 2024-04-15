@@ -624,3 +624,8 @@ body {
     padding: 10px;
     max-width: 98%;
 }
+
+p.sagemath {
+    font-size: large;
+    font-weight: bold;
+}
