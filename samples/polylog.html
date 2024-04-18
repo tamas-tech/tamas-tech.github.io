@@ -12,9 +12,9 @@
 <body>
 
     <h1>Integrals Involving Polylogarithm Function</h1>
-    <div class="keret odd">
+    <div class="keret odd" id="k1">
         <b><big class="sorszam">1.</big></b>
-        <p class="keplet">\[\int {\rm Li}_{m}(x)\,{d x}=(-1)^{m}\,\left[x\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{k}(x)+\text{Li}_{1}(x)-x\right]\]</p>
+        <p class="keplet">\[\int {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[x\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{k}(x)+\text{Li}_{1}(x)-x\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
@@ -33,9 +33,9 @@ show(integrate(polylog(m,x),x,hold=True),'=',f(m))
         </pre>
         </div>
     </div>
-    <div class="keret even">
+    <div class="keret even" id="k2">
         <b><big class="sorszam">2.</big></b>
-        <p class="keplet">\[\int \dfrac{{\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)}{x}\,{d x}=(-1)^{n}\,n!\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{n+m+1-k}(x)\ln^{k}(x)\]</p>
+        <p class="keplet">\[\int \dfrac{{\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)}{x}\,{\text{d} x}=(-1)^{n}\,n!\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{n+m+1-k}(x)\ln^{k}(x)\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
@@ -56,9 +56,9 @@ show(integrate((polylog(m,x)*ln(x)^n)/x,x,hold=True),'=',f(m,n))
         </pre>
         </div>
     </div>
-    <div class="keret odd">
+    <div class="keret odd" id="k3">
         <b><big class="sorszam">3.</big></b>
-        <p class="keplet">\[\int {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{d x}=(-1)^{n+m}\,n!\,\sum_{k=0}^{n}\dfrac{(-1)^{k}}{k!}\ln^{k}(x)\cdot\left[x\sum_{j=1}^{m}(-1)^{j}\binom{n+m-k-j}{m-j}\text{Li}_{j}(x)-x\,\binom{n+m-k}{m}+\sum_{j=1}^{n+1-k}\binom{n+m-k-j}{1+n-k-j}\text{Li}_{j}(x)\right]\]</p>
+        <p class="keplet">\[\int {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}=(-1)^{n+m}\,n!\,\sum_{k=0}^{n}\dfrac{(-1)^{k}}{k!}\ln^{k}(x)\cdot\left[x\sum_{j=1}^{m}(-1)^{j}\binom{n+m-k-j}{m-j}\text{Li}_{j}(x)-x\,\binom{n+m-k}{m}+\sum_{j=1}^{n+1-k}\binom{n+m-k-j}{1+n-k-j}\text{Li}_{j}(x)\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
@@ -77,9 +77,9 @@ show(integrate(polylog(m,x)*log(x)^n,x,hold=True),'=',f(m,n))
         </pre>
         </div>
     </div>
-     <div class="keret even">
+    <div class="keret even" id="k4">
         <b><big class="sorszam">4.</big></b>
-        <p class="keplet">\[\left.\dfrac{\partial^{p+q}}{\partial z_{1}^{p}\partial z_{2}^{q}}\mathbf{B}(z_{1},z_{2})\right|_{\begin{subarray}{c} z_{1}=1\\ \vphantom{\frac{1}{2}}z_{2}=1 \end{subarray}}=\mathbf{B}_{p,q}(1,1)=\intop_{0}^{1}\ln^{p}(t)\ln^{q}(1-t)\,\text{d}t=(-1)^{p+q}\,p!q!\sum_{i=0}^{p}\sum_{j=0}^{q}(-1)^{i+j}\binom{p+q-(i+j)}{p-i}\begin{Vmatrix}i+j\\
+        <p class="keplet">\[\left.\dfrac{\partial^{p+q}}{\partial x^{p}\partial y^{q}}\mathbf{B}(x,y)\right|_{\begin{subarray}{c} x=1\\ \vphantom{\frac{1}{2}}y=1 \end{subarray}}=\mathbf{B}_{p,q}(1,1)=\intop_{0}^{1}\ln^{p}(t)\ln^{q}(1-t)\,\text{d}t=(-1)^{p+q}\,p!q!\sum_{i=0}^{p}\sum_{j=0}^{q}(-1)^{i+j}\binom{p+q-(i+j)}{p-i}\begin{Vmatrix}i+j\\
             i \end{Vmatrix}_{x_{k}=\zeta(k)}\]
         </p>
 
