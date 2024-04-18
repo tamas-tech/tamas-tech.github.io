@@ -75,10 +75,14 @@ p.keplet {
 
 div.keret.odd p.keplet {
     background-color: #ddeee8;
+    outline: 2px solid #c0c9d0;
+    outline-offset: -6px
 }
 
 div.keret.even p.keplet {
     background-color: #ffe4e4;
+    outline: 2px solid #ffbfbf;
+    outline-offset: -6px
 }
 
 big.sorszam {
