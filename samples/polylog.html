@@ -29,7 +29,7 @@ def foo(x,m):
 def f(m):
     return foo(x,m)
 
-show(integrate(polylog(m,x),x,hold=True),'=',f(m))
+show(integrate(polylog(m,x),x,hold=True),LatexExpr(r'='),f(m))
         </pre>
         </div>
     </div>
@@ -52,7 +52,7 @@ def foo(x,m,n):
 def f(m,n):
     return foo(x,m,n)
 
-show(integrate((polylog(m,x)*ln(x)^n)/x,x,hold=True),'=',f(m,n))
+show(integrate((polylog(m,x)*ln(x)^n)/x,x,hold=True),LatexExpr(r'='),f(m,n))
         </pre>
         </div>
     </div>
@@ -73,7 +73,7 @@ def foo(x,m,n):
 def f(m,n):
     return expand(foo(x,m,n))
 
-show(integrate(polylog(m,x)*log(x)^n,x,hold=True),'=',f(m,n))
+show(integrate(polylog(m,x)*log(x)^n,x,hold=True),LatexExpr(r'='),f(m,n))
         </pre>
         </div>
     </div>
