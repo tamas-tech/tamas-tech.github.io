@@ -5,7 +5,11 @@ html {
 button.sagecell_fullScreen.sagecell_icon-resize-full {
     top: 2px;
     right: 17px;
-    opacity: 0.5;
+    opacity: 0.2;
+}
+
+button.sagecell_fullScreen.sagecell_icon-resize-full:hover {
+    opacity: 0.9
 }
 
 div.CodeMirror.cm-s-default {
