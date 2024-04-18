@@ -8,7 +8,8 @@ button.sagecell_fullScreen.sagecell_icon-resize-full {
     opacity: 0.2;
 }
 
-button.sagecell_fullScreen.sagecell_icon-resize-full:hover {
+button.sagecell_fullScreen.sagecell_icon-resize-full:hover,
+button.sagecell_fullScreen.sagecell_icon-resize-full:active {
     opacity: 0.9
 }
 
