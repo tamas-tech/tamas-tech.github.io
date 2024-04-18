@@ -95,7 +95,7 @@ var('x,y')
 def B(p,q): 
     return expand(diff(diff(beta(x,y),x,p),y,q).subs(x=1,y=1))
 
-show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'),LatexExpr(r"\dfrac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),B(p,q))</pre>
+show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'),LatexExpr(r"\dfrac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),integrate((ln(x)^p*ln(1-x)^q),x,0,1,hold=True),LatexExpr(r'='),B(p,q),LatexExpr(r'\approx'),n(B(p,q)))</pre>
         </div>
     </div>
 </body>
