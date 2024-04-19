@@ -11,7 +11,7 @@
 
 <body>
 
-    <h1>Integrals Involving Polylogarithm Function</h1>
+    <h1>Indefinite Integrals Involving Polylogarithm Function</h1>
     <div class="keret odd" id="k1">
         <b><big class="sorszam">1.</big></b>
         <p class="keplet">\[\int {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[x\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{k}(x)+\text{Li}_{1}(x)-x\right]\]</p>
@@ -96,6 +96,72 @@ def B(p,q):
     return expand(diff(diff(beta(x,y),x,p),y,q).subs(x=1,y=1))
 
 show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'),LatexExpr(r"\dfrac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),integrate((ln(x)^p*ln(1-x)^q),x,0,1,hold=True),LatexExpr(r'='),B(p,q),LatexExpr(r'\approx'),n(B(p,q)))</pre>
+        </div>
+    </div>
+
+
+    <h1>Definite Integrals Involving Polylogarithm Function</h1>
+    <div class="keret odd" id="k5">
+        <b><big class="sorszam">5.</big></b>
+        <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[\sum_{k=1}^{m}(-1)^{k}\,\zeta(x)-1\right]\:\:(m\ge 1)\]</p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+##########
+m=2
+##########
+
+def foo(m):
+    f(x) = (-1)^m*(sum([(-1)^k*zeta(k,hold=True) for k in (2..m)])-1)
+    return f(x)
+def f(m):
+    return foo(m)
+var('ern')
+ern=numerical_integral(polylog(m,x),0,1)
+show(integrate(polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),f(m),LatexExpr(r'\approx'),n(f(m)))
+show('\n')
+p=plot(polylog(m,x),x,0,1,legend_label='$\\text{Li}_'+str(m)+'(x)$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2')
+p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False)
+p += line([(1,0),(1,polylog(m,0.999))],thickness="2", color='blue')
+p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
+p += text("$\\int_{0}^1\\text{Li}_"+ str(m) +"(x) \\text{d}x \\approx"+str(n(f(m),digits=5))+" $", (0.6, 0.2), fontsize=16, color='black')
+show(p)
+show('\n')
+show('Numerical check by numererical_integral() command',fontsize=20)
+show(integrate(polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+        </pre>
+        </div>
+    </div>
+
+    <div class="keret even" id="k6">
+        <b><big class="sorszam">6.</big></b>
+        <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}=(-1)^{n+m}\,n!\,\left[\sum_{j=2}^{m}(-1)^{j}\binom{n+m-j}{n}\zeta(j)+\sum_{j=2}^{n+1}\binom{n+m-j}{m-1}\zeta(j)-\binom{n+m}{m}\right]\]</p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+##########
+m=2
+n=3
+##########
+def f(m,n):
+    return (-1)^(n+m)*factorial(n)*(sum([(-1)^j*binomial(n+m-j,n)*zeta(j,hold=True) for j in (2..m)])-binomial(n+m,m)+sum([binomial(n+m-j,m-1)*zeta(j,hold=True) for j in (2..n+1)]))
+var('er,ern')
+er=f(m,n).n()
+ern=numerical_integral(polylog(m,x)*ln(x)^n,0,1)
+show(integrate(polylog(m,x)*ln(x)^n,x,0,1,hold=True),LatexExpr(r'='),f(m,n),LatexExpr(r'\approx'),str(er))
+
+p=plot(polylog(m,x)*ln(x)^n,x,0,1,legend_label='$\\text{Li}_'+str(m)+'(x)\\cdot \\ln(x)^{'+str(n)+'}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $\\text{Li}_"+ str(m) +"(x) \\cdot \\ln(x)^{"+str(n)+"}$ on interval [0,1]")
+p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
+p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
+p += text("$\\int_{0}^1\\text{Li}_"+ str(m) +"(x) \\cdot \\ln(x)^{"+str(n)+"} \\text{d}x \\approx"+str(f(m,n).n())+"$", (0.6, er), fontsize=12, color='black')
+show('\n')
+show(p)    
+show('\n')
+show('Numerical check by numererical_integral() command',fontsize=20)
+show(integrate(polylog(m,x)*ln(x)^n,x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+        </pre>
         </div>
     </div>
 </body>
