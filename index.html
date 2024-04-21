@@ -134,11 +134,43 @@
 </head>
 
 <body>
+    <button id="menutglbtn" onclick="menuTgl();">&#8801;</button>
     <h2>SageCellCalc</h2>
     <button id="sbtglbtn" onclick="sbTgl();">⚙</button>
+    <div id="menubar">
+        <table>
+            <th colspan="2"><span style="margin-right:5px;float:left">&#8801;</span>Menu<span id="menuclose" onclick="menuTgl();">&#x274c;</span></th>
+            <tr>
+                <td style="min-width: 140px;">Upload file</td>
+                <td style="overflow:hidden;">
+                    <input type="file" id="felsorfile">
+                </td>
+            </tr>
+            <tr>
+                <td>Download file</td>
+                <td>
+                    <label onclick="downloadTxt();">
+                        <span id="dwnbtn">&#x21E9;</span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>
+                    3
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>
+                    4
+                </td>
+            </tr>
+        </table>
+    </div>
     <div id="settingbar">
         <table>
-            <th colspan="2">Settings</th>
+            <th colspan="2"><span style="margin-right:5px;float:left">⚙</span>Settings<span id="settingclose" onclick="sbTgl();">&#x274c;</span></th>
             <tr>
                 <td>Editor's theme</td>
                 <td><select id="cm-select" onchange="setCmTheme(this.value);" title="Select editor's theme">
@@ -214,7 +246,7 @@
                 <td>Editor's fontsize</td>
                 <td> <input id="font-slider" oninput="setCmFont(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:120px;vertical-align: middle;" title="set editor's fontsize"></td>
             </tr>
-             <tr>
+            <tr>
                 <td>Editor's linewrap</td>
                 <td>
                     <label class="switch">
@@ -242,7 +274,16 @@
                 </td>
             </tr>
             <tr>
-                <td>Show/hide function panel</td>
+                <td>Record history list</td>
+                <td>
+                    <label class="switch">
+                        <input id="histtglbtn" type="checkbox" checked="true">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Hide/show function panel</td>
                 <td>
                     <label class="switch">
                         <input id="fntglbtn" type="checkbox" checked="true">
@@ -251,7 +292,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Show/hide base panel</td>
+                <td>Hide/show base panel</td>
                 <td>
                     <label class="switch">
                         <input id="btglbtn" type="checkbox" checked="true">
@@ -276,6 +317,7 @@
         <div id="tabs">
             <div class="myslick">
                 <div class="fnbtn kbdbtn" data-btn="lastused" onclick="megnyitLast(this);">Recent</div>
+                <div class="fnbtn kbdbtn" data-btn="search" onclick="megnyitfn(this);">Search</div>
                 <div class="fnbtn kbdbtn active" data-btn="basic" onclick="megnyitfn(this);">⌊x⌋, ⌈x⌉</div>
                 <div class="fnbtn kbdbtn" data-btn="calculus" onclick="megnyitfn(this);">∫, ∂</div>
                 <div class="fnbtn kbdbtn" data-btn="airy" onclick="megnyitfn(this);" title="Airy functions">Ai, Bi</div>
@@ -295,7 +337,12 @@
             </div>
         </div>
 
-        <div class="container fn" id="lastused"><button id="clearbtn" onclick="clearRecent();" titleuu="Clear all  buttons in 'Recent' panel">Clear</button></div>
+        <div class="container fn" id="lastused"><button id="clearbtn" onclick="clearRecent();" title="Clear all  buttons in 'Recent' panel">Clear</button></div>
+
+        <div class="myslick fn" data-name="search" style="text-align:left;">
+            <input id="searchcmd" style="margin:5px;width: calc(100% - 70px);user-select:none;font-size:14px;line-height:14px;vertical-align:middle;">
+            <button id="searchok" onclick="searchIn();">OK</button>
+        </div>
 
         <div class="myslick fn show" data-name="basic">
             <div class="kbdbtn" data-btn="abs(x)" data-slickno="0" onclick="beilleszt(this,1);" title="The absolute value of x:&#013;abs( x )">| x |</div>
@@ -642,6 +689,17 @@
             adaptiveHeight: true,
             fade: true
         });
+        setTimeout(() => {
+            $('#searchok').css('width', '');
+            $('#searchcmd').css({
+                'margin': '5px',
+                'width': 'calc(100% - 70px)',
+                'user-select': 'none',
+                'font-size': '14px',
+                'line-height': '14px',
+                'vertical-align': 'middle'
+            });
+        }, 300)
     </script>
     <div id="sample-c">
         <div id="sample-cc">
@@ -676,7 +734,7 @@
                                         <label>Polylogarithm</label>
 
                                         <ul>
-                                           <li class="veg"><a data-src="samples/polylog.html" href="#">All</a></li>
+                                            <li class="veg"><a data-src="samples/polylog.html" href="#">All</a></li>
                                             <li class="veg"><a data-src="samples/polylog.html#k1" href="#">\(\displaystyle \int {\rm Li}_{m}(x)\,{\text{d} x}\)</a></li>
                                             <li class="veg"><a data-src="samples/polylog.html#k2" href="#">\(\displaystyle \int \dfrac{{\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)}{x}\,{\text{d} x}\)</a></li>
                                             <li class="veg"><a data-src="samples/polylog.html#k3" href="#">\(\displaystyle \int {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}\)</a></li>
@@ -697,7 +755,12 @@
                     </li>
 
                     <li>
-                        <a href="#">Contact</a>
+                        <a href="#">
+                            <div style="white-space:nowrap">
+                                <label for="felsorfilehtml" style="margin-right: 10px;">Upload other</label>
+                                <input type="file" id="felsorfilehtml" />
+                            </div>
+                        </a>
                     </li>
 
                     <li class="has-submenu">
