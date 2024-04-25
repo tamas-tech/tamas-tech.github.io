@@ -323,8 +323,6 @@ $(document).ready(function() {
     };
 
 
-
-
     document.getElementById('optlinewrap').onchange = function() {
         cmeditor.setOption('lineWrapping', this.checked)
     };
@@ -452,6 +450,8 @@ $(document).ready(function() {
             fr.readAsDataURL(this.files[0]);
         });
 
+    $('#outfont-slider').val(16)
+    setOutputFont($('#outfont-slider').val());
 
     $(function() {
         /* $('.kbdbtn:not(.fnbtn)').each(function() {
@@ -592,3 +592,19 @@ $(function() {
     })
 
 })
+
+// codemirrorWidgets
+
+function cmSj() {
+    var cmsj = document.createElement("div");
+    cmsj.style.display = 'inline-block';
+    cmsj.style.opacity = 1;
+    cmsj.style.pointerEvents = 'all';
+    cmsj.id = "cmsorjelolo";
+    cmsj.innerHTML = '<div><label for="ninp">n = </label><input id="ninp" type="number" min="1" max="20" step="1" value="10" style="width:60px;"/><label for="minp" style="margin-left:10px;">m = </label><input id="minp" type="number" min="1" max="20" step="1" value="10" style="width:60px;"/></div>'
+
+    cmSJ = cmeditor.addLineWidget(0, cmsj, {
+        coverGutter: false,
+        className: 'valami'
+    });
+}
