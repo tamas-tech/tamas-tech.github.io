@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bnm11</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
+    <script>
+        sagecell.makeSagecell({
+            inputLocation: '#mycell1',
+            outputLocation: '#ideout',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink"],
+        });
+
+        var m = 3,
+            n = 2;
+
+        function StringPlus(x, Flag) {
+            // -4 -> "-4", 5 -> "+5"
+            var flag = (Flag !== undefined) ? Flag : false;
+            var value = String(x);
+            if (x >= 0 && !flag) {
+                value = "+" + value;
+            }
+            return value;
+        }
+
+        function formulaCodeGeneric(m, n) {
+            var formulaCode = "\\[\\left.\\dfrac{\\partial^{" + (Number(n) + Number(m)) + "}}{\\partial x^{\\cssId{m}{\\class{dynamic}{" + StringPlus(m, true) + "}}}\\partial y^{\\cssId{n}{\\class{dynamic}{" + StringPlus(n, true) + "}}}}\\mathbf{B}(x,y)\\right|_{\\begin{subarray}{c} x=1\\\\ \\vphantom{\\frac{1}{2}}y=1 \\end{subarray}}\\]";
+            return formulaCode;
+        }
+    </script>
+    <link rel="stylesheet" href="samples.css">
+    <script src="samples.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+
+<body>
+    <div class="keret even" id="k1">
+        <b><big class="sorszam">1.</big></b>
+        <p class="keplet" style="width: min-content">\[\left.\dfrac{\partial^{p+q}}{\partial x^{p}\partial y^{q}}\mathbf{B}(x,y)\right|_{\begin{subarray}{c} x=1\\ \vphantom{\frac{1}{2}}y=1 \end{subarray}}=\mathbf{B}_{p,q}(1,1)=\intop_{0}^{1}\ln^{p}(t)\ln^{q}(1-t)\,\text{d}t=(-1)^{p+q}\,p!q!\sum_{i=0}^{p}\sum_{j=0}^{q}(-1)^{i+j}\binom{p+q-(i+j)}{p-i}\begin{Vmatrix}i+j\\
+            i \end{Vmatrix}_{x_{k}=\zeta(k)}\]</p>
+        <div class="inputdiv" style="padding-bottom:20px;">
+            <div></div>
+            <label for="inp_m">p = </label><input class="inpnumb" id="inp_m" type="number" min="0" max="20" step="1" value="3" style="width:50px;margin-right:10px;" />
+            <label for="inp_n">q = </label><input class="inpnumb" id="inp_n" type="number" min="0" max="20" step="1" value="2" style="width:50px;margin-right:10px;" />
+            <span class="showprecontainer">Show code<label class="switch" style="margin-left:10px;"><input id="showpre"  type="checkbox"><span class="slider round"></span></label>
+            </span>
+            <div style="height:105px;margin-bottom:30px;">
+                <div>
+                    <div id="myDiv" style="font-size:200%;z-index:100;">
+                        Here is the formula
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="precover">
+            <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+            <div class="pre-container">
+                <pre id="code">
+##########
+p=m_val
+q=n_val
+##########
+var('x,y')
+def B(p,q): 
+    return expand(diff(diff(beta(x,y),x,p),y,q).subs(x=1,y=1))
+
+show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'),LatexExpr(r"\dfrac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),integrate((ln(x)^p*ln(1-x)^q),x,0,1,hold=True),LatexExpr(r'='),B(p,q),LatexExpr(r'\approx'),n(B(p,q)))
+
+var('er,ern')
+er=B(p,q).n()
+ern=numerical_integral(ln(x)^p*ln(1-x)^q,0,1)
+
+pl=plot(ln(x)^p*ln(1-x)^q,(x,0,1),legend_label='$\\ln^{'+str(p)+'}(x)\\cdot \\ln(1-x)^{'+str(q)+'}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $\\ln^{"+ str(p) +"}(x) \\cdot \\ln(1-x)^{"+str(q)+"}$ on interval [0,1]")
+pl.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
+pl += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
+d = pl.get_axes_range()
+dd = (d['ymax']+d['ymin'])*0.5
+pl += text("$\\int_{0}^1\\ln^{"+str(p)+"}(x) \\cdot \\ln(1-x)^{"+str(q)+"} \\text{d}x \\approx"+str(er)+"$", (0.6, dd), fontsize=12, color='black')
+show('\n')
+show(pl) 
+show('\n')
+show('Checking by numererical_integral() command',fontsize=20)
+show(integrate(ln(x)^p*ln(1-x)^q,x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+        </pre>
+            </div>
+        </div>
+        <div class="outputdiv">
+            <button id="okbtn" class="otherbtn" onclick="kuldes(this);" title="Insert code into editor">OK</button><label class="switch"><input id="optwrap" type="checkbox"><span class="slider round"></span></label><input id="outfont-slider" oninput="setOutputFont(this.value);"
+                type="range" min="12" max="24" value="12" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize">
+            </span>
+
+        </div>
+        <div id="mycell1" style="margin-top:6px;" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv">
+            <div id="ideout"></div>
+        </div>
+    </div>
+</body>
+
+</html>
