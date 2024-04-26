@@ -1,9 +1,12 @@
 var opt_wrap = false;
 var opt_pre = false;
-//var m, n
 
 function kuldes(elem) {
-    var message = elem.nextElementSibling.innerText;
+    var message = elem.nextElementSibling.innerText
+    if (m !== undefined)
+        message = message.replace('m_val', m);
+    if (n !== undefined)
+        message = message.replace('n_val', n);
     window.parent.postMessage(message, '*');
 };
 
@@ -70,23 +73,6 @@ function parseIntPlus(st) {
     var value = parseInt(str);
     return (value);
 }
-
-/* function StringPlus(x, Flag) {
-    // -4 -> "-4", 5 -> "+5"
-    var flag = (Flag !== undefined) ? Flag : false;
-    var value = String(x);
-    if (x >= 0 && !flag) {
-        value = "+" + value;
-    }
-    return value;
-}
-
-function formulaCodeGeneric(m, n) {
-    var formulaCode = "\\[\\int_{0}^{1} {\\rm Li}_{\\cssId{m}{\\class{dynamic}{" + StringPlus(m, true) +
-        "}}}(x)\\cdot\\ln^{\\cssId{n}{\\class{dynamic}{" + StringPlus(n, true) +
-        "}}}\\left(x\\right)\\,{\\text{d} x}\\]";
-    return formulaCode;
-} */
 
 function addEvents() {
 
@@ -189,17 +175,17 @@ $(document).ready(function() {
     };
     if (m !== undefined)
         document.getElementById('inp_m').onchange = function() {
-            var m = this.value;
+            m = this.value;
             if (n !== undefined)
-                var n = document.getElementById('inp_n').value;
+                n = document.getElementById('inp_n').value;
             updInt(m, n)
         };
 
     if (n !== undefined)
         document.getElementById('inp_n').onchange = function() {
             if (m !== undefined)
-                var m = document.getElementById('inp_m').value;
-            var n = this.value;
+                m = document.getElementById('inp_m').value;
+            n = this.value;
             updInt(m, n)
         };
 
