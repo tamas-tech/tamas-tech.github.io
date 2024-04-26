@@ -41,7 +41,7 @@
 <body>
     <div class="keret even" id="k1">
         <b><big class="sorszam">1.</big></b>
-        <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[\sum_{k=1}^{m}(-1)^{k}\,\zeta(x)-1\right]\:\:(m\ge 1)\]</p>
+        <p class="keplet" style="width: min-content">\[\int_{0}^{1} {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[\sum_{k=2}^{m}(-1)^{k}\,\zeta(k)-1\right]\:\:(m\ge 1)\]</p>
         <div class="inputdiv">
             <div></div>
             <label for="inp_m">m = </label><input class="inpnumb" id="inp_m" type="number" min="0" max="20" step="1" value="3" style="width:50px;margin-right:10px;" />
@@ -78,7 +78,7 @@ p += line([(1,0),(1,polylog(m,0.999))],thickness="2", color='blue')
 p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
 d = p.get_axes_range()
 dd = (d['ymax']+d['ymin'])*0.5
-p += text("$\\int_{0}^1\\text{Li}_"+ str(m) +"(x) \\text{d}x \\approx"+str(n(f(m),digits=5))+" $", (0.6, dd), fontsize=16, color='black')
+p += text("$\\int_{0}^1\\text{Li}_{"+ str(m) +"}(x) \\text{d}x \\approx"+str(n(f(m),digits=5))+" $", (0.6, dd), fontsize=16, color='black')
 show(p)
 show('\n')
 show('Checking by numererical_integral() command',fontsize=20)
