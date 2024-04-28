@@ -5,7 +5,7 @@ var opt_help = false;
 var opt_wrap = false;
 var opt_wrapltx = false;
 var opt_hist = true;
-var searchCmds = ["max_symbolic(a,b,...)","abs(x)","floor(x)","ceil(x)","frac(x)","sgn(x)","min_symbolic(a,b,...)","piecewise([[(a1,b1),f1],[(a2,b2),f2],...])","integrate(f,x)","integrate(f,x,a,b)","derivative(f,x)","plot(f,x,a,b)","airy_ai(z)","airy_ai_prime(z)","airy_bi(z)","airy_bi_prime(z)","spherical_bessel_J(n,z)","spherical_bessel_Y(n,z)","spherical_hankel1(n,z)","spherical_hankel2(n,z)","bessel_J(n,z)","bessel_I(n,z)","bessel_Y(n,z)","bessel_K(n,z)","hankel1(n,z)","hankel2(n,z)","binomial(n,k)","beta(x,y)","gamma(x)","gamma_inc(a,x)","log_gamma(x)","psi(a,x)","erf(x)","factorial(x)","kronecker_delta(n,m)","dirac_delta(x)","heaviside(x)","unit_step(x)","spike_function([(x1,f1),(x2,f2),...],approx)","bernoulli(n)","zeta(x)","zeta_symmetric(x)","zetaderiv(n,x)","hurwitz_zeta(x,a)","harmonic_number(n)","harmonic_number(n,m)","atan2(x,y)","sin(z)","cos(z)","tan(z)","cot(z)","sec(z)","csc(z)","asin(z)","acos(z)","atan(z)","acot(z)","asec(z)","acsc(z)","asinh(z)","acosh(z)","atanh(z)","acoth(z)","asech(z)","acsch(z)","sinh(z)","cosh(z)","tanh(z)","coth(z)","sech(z)","csch(z)","hypergeometric([a1,...],[b1,...],z)","hypergeometric_M(a,b,z)","hypergeometric_U(a,b,z)","inverse_jacobi_ds(z,m)","inverse_jacobi_dc(z,m)","jacobi(kind,z,m)","jacobi_sn(z,m)","jacobi_cn(z,m)","jacobi_dn(z,m)","jacobi_ns(z,m)","jacobi_nc(z,m)","jacobi_nd(z,m)","jacobi_sc(z,m)","jacobi_sd(z,m)","jacobi_cs(z,m)","jacobi_cd(z,m)","jacobi_ds(z,m)","jacobi_dc(z,m)","inverse_jacobi(kind,z,m)","inverse_jacobi_sn(z,m)","inverse_jacobi_cn(z,m)","inverse_jacobi_dn(z,m)","inverse_jacobi_ns(z,m)","inverse_jacobi_nc(z,m)","inverse_jacobi_nd(z,m)","inverse_jacobi_sc(z,m)","inverse_jacobi_sd(z,m)","inverse_jacobi_cs(z,m)","inverse_jacobi_cd(z,m)","lambert_w(x)","exp(x)","exp_polar(x)","ln(x)","log(x,a)","polylog(n,x)","diloglog(x)","Si(z)","Ci(z)","Shi(z)","Chi(z)","Ei(z)","exp_integral_e1(z)","exponential_integral_1(z)","exp_integral_e(n,z)","li(z)","Li(z)","elliptic_f(z,m)","elliptic_kc(m)","elliptic_e(z,m)","elliptic_ec(z)","elliptic_eu(z,m)","elliptic_pi(n,z,m)","gen_legendre_Q(n,m,z)","spherical_harmonic(n,m,θ,φ)","chebyshev_T(n,z)","chebyshev_U(n,z)","jacobi_P(n,a,b,z)","gegenbauer(n,a,z)","hermite(n,z)","laguerre(n,z)","gen_laguerre(n,a,z)","legendre_P(n,z)","legendre_Q(n,z)","gen_legendre_P(n,m,z)","wigner_9j(j1,j2,j3,j4,j5,j6,j7,j8,j9)","clebsch_gordan(j1,j2,j3,m1,m2,m3)","racah(j1,j2,j3,j4,j5,j6)","dickman_rho(z)","elliptic_j(z)","legendre_phi(x,n)","prime_pi(x)","wigner_3j(j1,j2,j3,m1,m2,m3)","wigner_6j(j1,j2,j3,j4,j5,j6)","show(x)","latex(x)","n(x,digits=10)","pi","e","i","real(x)","imag(x)","sqrt(x)"];
+var searchCmds = ["basic","calculus","airy","bessel","gamma","zeta","gen","trig","hyperbolic","hypergeo","jacobi","log", "expint","elliptic","orthpoly","misc","max_symbolic(a,b,...)","abs(x)","floor(x)","ceil(x)","frac(x)","sgn(x)","min_symbolic(a,b,...)","piecewise([[(a1,b1),f1],[(a2,b2),f2],...])","integrate(f,x)","integrate(f,x,a,b)","derivative(f,x)","plot(f,x,a,b)","airy_ai(z)","airy_ai_prime(z)","airy_bi(z)","airy_bi_prime(z)","spherical_bessel_J(n,z)","spherical_bessel_Y(n,z)","spherical_hankel1(n,z)","spherical_hankel2(n,z)","bessel_J(n,z)","bessel_I(n,z)","bessel_Y(n,z)","bessel_K(n,z)","hankel1(n,z)","hankel2(n,z)","binomial(n,k)","beta(x,y)","gamma(x)","gamma_inc(a,x)","log_gamma(x)","psi(a,x)","erf(x)","factorial(x)","kronecker_delta(n,m)","dirac_delta(x)","heaviside(x)","unit_step(x)","spike_function([(x1,f1),(x2,f2),...],approx)","bernoulli(n)","zeta(x)","zeta_symmetric(x)","zetaderiv(n,x)","hurwitz_zeta(x,a)","harmonic_number(n)","harmonic_number(n,m)","atan2(x,y)","sin(z)","cos(z)","tan(z)","cot(z)","sec(z)","csc(z)","asin(z)","acos(z)","atan(z)","acot(z)","asec(z)","acsc(z)","asinh(z)","acosh(z)","atanh(z)","acoth(z)","asech(z)","acsch(z)","sinh(z)","cosh(z)","tanh(z)","coth(z)","sech(z)","csch(z)","hypergeometric([a1,...],[b1,...],z)","hypergeometric_M(a,b,z)","hypergeometric_U(a,b,z)","inverse_jacobi_ds(z,m)","inverse_jacobi_dc(z,m)","jacobi(kind,z,m)","jacobi_sn(z,m)","jacobi_cn(z,m)","jacobi_dn(z,m)","jacobi_ns(z,m)","jacobi_nc(z,m)","jacobi_nd(z,m)","jacobi_sc(z,m)","jacobi_sd(z,m)","jacobi_cs(z,m)","jacobi_cd(z,m)","jacobi_ds(z,m)","jacobi_dc(z,m)","inverse_jacobi(kind,z,m)","inverse_jacobi_sn(z,m)","inverse_jacobi_cn(z,m)","inverse_jacobi_dn(z,m)","inverse_jacobi_ns(z,m)","inverse_jacobi_nc(z,m)","inverse_jacobi_nd(z,m)","inverse_jacobi_sc(z,m)","inverse_jacobi_sd(z,m)","inverse_jacobi_cs(z,m)","inverse_jacobi_cd(z,m)","lambert_w(x)","exp(x)","exp_polar(x)","ln(x)","log(x,a)","polylog(n,x)","diloglog(x)","Si(z)","Ci(z)","Shi(z)","Chi(z)","Ei(z)","exp_integral_e1(z)","exponential_integral_1(z)","exp_integral_e(n,z)","li(z)","Li(z)","elliptic_f(z,m)","elliptic_kc(m)","elliptic_e(z,m)","elliptic_ec(z)","elliptic_eu(z,m)","elliptic_pi(n,z,m)","gen_legendre_Q(n,m,z)","spherical_harmonic(n,m,θ,φ)","chebyshev_T(n,z)","chebyshev_U(n,z)","jacobi_P(n,a,b,z)","gegenbauer(n,a,z)","hermite(n,z)","laguerre(n,z)","gen_laguerre(n,a,z)","legendre_P(n,z)","legendre_Q(n,z)","gen_legendre_P(n,m,z)","wigner_9j(j1,j2,j3,j4,j5,j6,j7,j8,j9)","clebsch_gordan(j1,j2,j3,m1,m2,m3)","racah(j1,j2,j3,j4,j5,j6)","dickman_rho(z)","elliptic_j(z)","legendre_phi(x,n)","prime_pi(x)","wigner_3j(j1,j2,j3,m1,m2,m3)","wigner_6j(j1,j2,j3,j4,j5,j6)","show(x)","latex(x)","n(x,digits=10)","pi","e","i","real(x)","imag(x)","sqrt(x)"];
 
 setTimeout(() => {
     if (!onlineSt)
@@ -48,15 +48,19 @@ function searchIn() {
 function searchShow() {
     var cmd = $("#searchcmd").val();
     var btn = $('.kbdbtn[data-btn="' + cmd + '"]');
-    var panelname = btn.parents('.fn').attr('data-name')
-    var panel = $('.fnbtn.kbdbtn[data-btn="' + panelname + '"]')[0];
-    if (panel !== undefined) {
-        panel.click();
-        $('.kbdbtn.searched').removeClass('searched');
-        btn.addClass('searched');
-    } else
-        $('.kbdbtn.searched').removeClass('searched');
-};
+    if (btn[0] !== undefined)
+        btn[0].click();
+    else {
+        var panelname = btn.parents('.fn').attr('data-name')
+        var panel = $('.fnbtn.kbdbtn[data-btn="' + panelname + '"]')[0];
+        if (panel !== undefined) {
+            panel.click();
+            $('.kbdbtn.searched').removeClass('searched');
+            btn.addClass('searched');
+        } else
+            $('.kbdbtn.searched').removeClass('searched');
+    }
+}
 
 var insertText = (text, n) => {
     var last = cmeditor.getSelection();
