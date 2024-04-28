@@ -48,7 +48,7 @@ function searchIn() {
 function searchShow() {
     var cmd = $("#searchcmd").val();
     var btn = $('.kbdbtn[data-btn="' + cmd + '"]');
-    if (btn[0] !== undefined)
+    if (btn.hasClass('fnbtn'))
         btn[0].click();
     else {
         var panelname = btn.parents('.fn').attr('data-name')
