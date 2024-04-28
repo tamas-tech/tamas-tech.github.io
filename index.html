@@ -340,7 +340,8 @@
         <div class="container fn" id="lastused"><button id="clearbtn" onclick="clearRecent();" title="Clear all  buttons in 'Recent' panel">Clear</button></div>
 
         <div class="myslick fn" data-name="search" style="text-align:left;">
-            <input id="searchcmd" style="margin:5px;width: calc(100% - 70px);user-select:none;font-size:14px;line-height:14px;vertical-align:middle;">
+            <input id="searchcmd" style="margin:5px;width: calc(100% - 120px);user-select:none;font-size:14px;line-height:14px;vertical-align:middle;">
+             <button id="searchshow" onclick="searchShow();">Show</button>
             <button id="searchok" onclick="searchIn();">OK</button>
         </div>
 
@@ -691,9 +692,10 @@
         });
         setTimeout(() => {
             $('#searchok').css('width', '');
+             $('#searchshow').css('width', '');
             $('#searchcmd').css({
                 'margin': '5px',
-                'width': 'calc(100% - 70px)',
+                'width': 'calc(100% - 120px)',
                 'user-select': 'none',
                 'font-size': '14px',
                 'line-height': '14px',
