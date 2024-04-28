@@ -50,6 +50,7 @@ div.sagecell_permalink {
 
 #menubar,
 #settingbar {
+    display:none;
     border: 1px solid #30363D;
     border-radius: 3px;
     padding: 2px;
