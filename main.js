@@ -24,7 +24,8 @@ function setOutputFont(v) {
 
 function setCmTheme(theme) {
     cmeditor.setOption("theme", theme);
-}
+};
+
 var beilleszt = function(x, n) {
     if (!opt_help) {
         var btntxt = x.getAttribute('data-btn');
@@ -42,53 +43,21 @@ function searchIn() {
         btn.click();
     else
         insertText(cmd, 0)
-
-}
-
-
-/* function cmsuggest(cm, option) {
-    return new Promise(function(accept) {
-        setTimeout(function() {
-            var cursor = cm.getCursor(),
-                line = cm.getLine(cursor.line)
-            var start = cursor.ch,
-                end = cursor.ch
-            while (start && /\w|\>/.test(line.charAt(start - 1))) --start
-            while (end < line.length && /\w/.test(line.charAt(end))) ++end
-            var word = line.slice(start, end);
-            var prefix = line.slice(start - 1, start);
-            var talalat = [];
-            for (var i = 0; i < cmsuggests.length; i++) {
-                var el = cmsuggests[i];
-                var ta = el;
-                var tt = el;
-                if (typeof el == "object") {
-                    ta = el.displayText;
-                    tt = el.text;
-                }
-                if (tt.startsWith(word) || tt.startsWith(">>>" + word)) {
-                    if (/\\|\>/.test(prefix) || tt.startsWith(">>>"))
-                        talalat.push(el);
-                    else
-                        talalat.push("\\" + ta);
-                }
-            }
-            console.log($('.CodeMirror-hints .CodeMirror-hint-active.multiline'))
-            return accept({
-                list: talalat,
-                from: CodeMirror.Pos(cursor.line, start),
-                to: CodeMirror.Pos(cursor.line, end)
-            })
-
-        }, 100)
-    })
 };
-setTimeout(() => {
-    cmeditor.options['hint'] = cmsuggest;
-    cmeditor.options['extraKeys']['Ctrl-Space'] = "autocomplete";
-    cmeditor.options['completeSingle'] = false
 
-}, 4000) */
+function searchShow() {
+    var cmd = $("#searchcmd").val();
+    var btn = $('.kbdbtn[data-btn="' + cmd + '"]');
+    var panelname = btn.parents('.fn').attr('data-name')
+    var panel = $('.fnbtn.kbdbtn[data-btn="' + panelname + '"]')[0];
+    if (panel !== undefined) {
+        panel.click();
+        $('.kbdbtn.searched').removeClass('searched');
+        btn.addClass('searched');
+    } else
+        $('.kbdbtn.searched').removeClass('searched');
+};
+
 var insertText = (text, n) => {
     var last = cmeditor.getSelection();
     if (last.length > 0) {
@@ -497,7 +466,8 @@ function afterResize() {
         });
         setTimeout(() => {
             $('#searchok').css('width', '');
-            $('#searchcmd').css({ 'margin': '5px', 'width': 'calc(100% - 70px)', 'user-select': 'none', 'font-size': '14px', 'line-height': '14px', 'vertical-align': 'middle' });
+             $('#searchshow').css('width', '');
+            $('#searchcmd').css({ 'margin': '5px', 'width': 'calc(100% - 120px)', 'user-select': 'none', 'font-size': '14px', 'line-height': '14px', 'vertical-align': 'middle' });
         }, 300)
 
     }
