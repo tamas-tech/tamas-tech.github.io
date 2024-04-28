@@ -91,6 +91,13 @@ table {
     line-height: 18px;
 }
 
+#searchshow {
+    width: 50px;
+    margin-left: 5px;
+    height: 24px;
+    line-height: 18px;
+}
+
 .CodeMirror-sizer {
     padding-top: 5px;
 }
@@ -161,6 +168,11 @@ table {
     overflow: hidden;
     cursor: pointer;
     letter-spacing: -0.05em;
+}
+
+.kbdbtn.searched {
+    background-color: yellow;
+    color: #4e4e05;
 }
 
 .kbdbtn.width {
