@@ -87,6 +87,13 @@ div.sagecell_permalink {
     height: 24px;
 }
 
+#searchshow {
+    width: 50px;
+    margin-left: 5px;
+    height: 24px;
+    line-height: 18px;
+}
+
 th {
     background-color: #414449;
     font-size: 20px;
@@ -194,6 +201,11 @@ table {
     overflow: hidden;
     cursor: pointer;
     letter-spacing: -0.05em;
+}
+
+.kbdbtn.searched {
+    background-color: yellow;
+    color: #4e4e05;
 }
 
 .kbdbtn.width {
