@@ -98,11 +98,33 @@ def B(p,q):
 show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'),LatexExpr(r"\dfrac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),integrate((ln(x)^p*ln(1-x)^q),x,0,1,hold=True),LatexExpr(r'='),B(p,q),LatexExpr(r'\approx'),n(B(p,q)))</pre>
         </div>
     </div>
-
-
-    <h1>Definite Integrals Involving Polylogarithm Function</h1>
     <div class="keret odd" id="k5">
         <b><big class="sorszam">5.</big></b>
+        <p class="keplet">\[\int x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[x^{n+1}\,\sum_{k=1}^{m}(-1)^{k}\,(1+n)^{k-1}\,\text{Li}_{k}(x)+(-1)^{n}\sum_{k=1}^{n+1}\frac{x^{k}}{k} -(-1)^{n}\text{Li}_{1}(x)\right]\]</p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+# x^n*Li_m(x)
+##########
+m=4
+n=2
+##########
+
+def foo(x,m,n):
+    f(x) = (-1/(1+n))^m*(x^(n+1)*sum([(-1)^k*(1+n)^(k-1)*function('Li'+str(k))(x) for k in (1..m)])+(-1)^n*sum([(x^k)/k for k in (1..n+1)])-(-1)^n*function('Li'+str(1))(x))
+    return f(x)
+def f(m,n):
+    return foo(x,m,n)
+
+show(integrate(x^n*polylog(m,x),x,hold=True),LatexExpr(r'='),f(m,n))
+        </pre>
+        </div>
+    </div>
+
+    <h1>Definite Integrals Involving Polylogarithm Function</h1>
+    <div class="keret even" id="k6">
+        <b><big class="sorszam">6.</big></b>
         <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[\sum_{k=2}^{m}(-1)^{k}\,\zeta(k)-1\right]\:\:(m\ge 1)\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
@@ -134,8 +156,8 @@ show(integrate(polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'
         </div>
     </div>
 
-    <div class="keret even" id="k6">
-        <b><big class="sorszam">6.</big></b>
+    <div class="keret odd" id="k7">
+        <b><big class="sorszam">7.</big></b>
         <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}=(-1)^{n+m}\,n!\,\left[\sum_{j=2}^{m}(-1)^{j}\binom{n+m-j}{n}\zeta(j)+\sum_{j=2}^{n+1}\binom{n+m-j}{m-1}\zeta(j)-\binom{n+m}{m}\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
