@@ -100,7 +100,7 @@ show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'
     </div>
     <div class="keret odd" id="k5">
         <b><big class="sorszam">5.</big></b>
-        <p class="keplet">\[\int x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[x^{n+1}\,\sum_{k=1}^{m}(-1)^{k}\,(1+n)^{k-1}\,\text{Li}_{k}(x)+(-1)^{n}\sum_{k=1}^{n+1}\frac{x^{k}}{k} -(-1)^{n}\text{Li}_{1}(x)\right]\]</p>
+        <p class="keplet">\[\int x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[x^{n+1}\,\sum_{k=1}^{m}(-1)^{k}\,(1+n)^{k-1}\,\text{Li}_{k}(x)-{\rm H}_{n+1}+\text{Li}_{1}(x)\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
@@ -112,7 +112,7 @@ n=2
 ##########
 
 def foo(x,m,n):
-    f(x) = (-1/(1+n))^m*(x^(n+1)*sum([(-1)^k*(1+n)^(k-1)*function('Li'+str(k))(x) for k in (1..m)])+(-1)^n*sum([(x^k)/k for k in (1..n+1)])-(-1)^n*function('Li'+str(1))(x))
+    f(x) = (-1/(1+n))^m*(x^(n+1)*sum([(-1)^k*(1+n)^(k-1)*function('Li'+str(k))(x) for k in (1..m)])-sum([(x^k)/k for k in (1..n+1)])+function('Li'+str(1))(x))
     return f(x)
 def f(m,n):
     return foo(x,m,n)
@@ -185,6 +185,39 @@ show(p)
 show('\n')
 show('Checking by numererical_integral() command',fontsize=20)
 show(integrate(polylog(m,x)*ln(x)^n,x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+        </pre>
+        </div>
+    </div>
+
+    <div class="keret even" id="k8">
+        <b><big class="sorszam">8.</big></b>
+        <p class="keplet">\[\int_{0}^{1} x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[\sum_{k=2}^{m}(-1)^{k}\,(1+n)^{k-1}\,\zeta(k)-{\rm H}_{n+1}\right]\]</p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+##########
+m=2
+n=3
+##########
+def f(m,n):
+    return (-1)^(m)/(1+n)^m*(sum([(-1)^k*(1+n)^(k-1)*zeta(k,hold=True) for k in (2..m)])-harmonic_number(n+1,hold=true))
+var('er,ern')
+er=f(m,n).n()
+ern=numerical_integral(x^n*polylog(m,x),0,1)
+show(integrate(x^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),f(m,n),LatexExpr(r'\approx'),str(er))
+
+p=plot(x^n*polylog(m,x),x,0,1,legend_label='$x^{'+str(n)+'}\\cdot\\text{Li}_{'+str(m)+'}(x)$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $x^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)$ on interval [0,1]")
+p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
+p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
+d = p.get_axes_range()
+dd = (d['ymax']+d['ymin'])*0.5
+p += text("$\\int_{0}^{1}x^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)\\text{d}x \\approx"+str(f(m,n).n())+"$", (0.6, dd), fontsize=12, color='black')
+show('\n')
+show(p)    
+show('\n')
+show('Checking by numererical_integral() command',fontsize=20)
+show(integrate(x^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
         </pre>
         </div>
     </div>
