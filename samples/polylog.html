@@ -221,6 +221,40 @@ show(integrate(x^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExp
         </pre>
         </div>
     </div>
+
+    <div class="keret odd" id="k9">
+        <b><big class="sorszam">9.</big></b>
+        <p class="keplet">\[\int_{0}^{1} (1-x)^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\sum_{l=2}^{m}\sum_{k=0}^{n}\frac{(-1)^{m+k+l}\,\binom{n}{k}\,\zeta(l)}{(1+k)^{m+1-l}}-\sum_{l=1}^{n+1}\sum_{k=l-1}^{n}\frac{(-1)^{m+k}\,\binom{n}{k}}{l\cdot(1+k)^m}\]
+        </p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+##########
+m=2
+n=3
+##########
+def f(m,n):
+    return sum([sum([(-1)^(m+k+l)*binomial(n,k,hold=True)*zeta(l,hold=True)/(1+k)^(m+1-l) for k in (0..n)]) for l in (2..m)])-sum([sum([(-1)^(m+k)*binomial(n,k,hold=True)/(l*(1+k)^(m)) for k in (l-1..n)]) for l in (1..n+1)])
+var('er,ern')
+er=f(m,n).n()
+ern=numerical_integral((1-x)^n*polylog(m,x),0,1)
+show(integrate((1-x)^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),f(m,n),LatexExpr(r'\approx'),str(er))
+
+p=plot((1-x)^n*polylog(m,x),x,0,1,legend_label='$(1-x)^{'+str(n)+'}\\cdot\\text{Li}_{'+str(m)+'}(x)$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $(1-x)^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)$ on interval [0,1]")
+p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
+p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
+d = p.get_axes_range()
+dd = (d['ymax']+d['ymin'])*0.5
+p += text("$\\int_{0}^{1}(1-x)^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)\\text{d}x \\approx"+str(f(m,n).n())+"$", (0.6, dd), fontsize=12, color='black')
+show('\n')
+show(p)    
+show('\n')
+show('Checking by numererical_integral() command',fontsize=20)
+show(integrate((1-x)^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+        </pre>
+        </div>
+    </div>
 </body>
 
 </html>
