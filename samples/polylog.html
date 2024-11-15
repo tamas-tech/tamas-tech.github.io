@@ -122,9 +122,59 @@ show(integrate(x^n*polylog(m,x),x,hold=True),LatexExpr(r'='),f(m,n))
         </div>
     </div>
 
-    <h1>Definite Integrals Involving Polylogarithm Function</h1>
     <div class="keret even" id="k6">
         <b><big class="sorszam">6.</big></b>
+        <p class="keplet">\[\int \frac{\ln^{p}(x)}{x^{n}}\,{\text{d} x}=\frac{-\,p!}{(n-1)^{p+1}\cdot x^{n-1}}\cdot\sum_{k=0}^{p}\frac{(n-1)^{k}}{k!}\,\ln^{k}(x)\hspace{2cm}\left(n \in \mathbb{Z},n\neq 1,\,p\in\mathbb{N}_{0}\right)\]
+        </p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+# ln(x)^p/x^n  n != 1
+##########
+p=4
+n=2
+##########
+
+def foo(x,p,n):
+    f(x) = -factorial(p)/((n-1)^(p+1)*x^(n-1))*sum([(n-1)^k/factorial(k)*function('ln')(x)^k for k in (0..p)])
+    return f(x)
+def f(p,n):
+    return foo(x,p,n)
+
+show(integrate(ln(x)^p/x^n,x,hold=True),LatexExpr(r'='),f(p,n))
+        </pre>
+        </div>
+    </div>
+
+    <div class="keret odd" id="k7">
+        <b><big class="sorszam">7.</big></b>
+        <p class="keplet">\[\int \frac{\ln^{p}(x)}{(1-x)^{n}}\,{\text{d} x}=\frac{(-1)^{p}\,p!}{(n-1)!}\cdot\sum_{k=0}^{p}\left\{\frac{(-1)^{k}}{k!}\,\ln^{k}(x)\cdot\sum_{l=1}^{n-1}{n-1\brack l}\text{Li}_{p+1-k-l}(x)\right\}\hspace{2cm}\left(n \in \mathbb{N},n\neq 1,\,p\in\mathbb{N}_{0}\right)\]
+        </p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+# ln(x)^p/(1-x)^n  n != 1
+##########
+p=4
+n=2
+##########
+
+def foo(x,p,n):
+    f(x) = (-1)^p*factorial(p)/factorial(n-1)*sum([(-1)^k/factorial(k)*function('ln')(x)^k*sum([stirling_number1(n-1,l)*function('Li'+str(p+1-k-l))(x) for l in (1..n-1)]) for k in (0..p)])
+    return f(x)
+def f(p,n):
+    return foo(x,p,n)
+
+show(integrate(ln(x)^p/(1-x)^n,x,hold=True),LatexExpr(r'='),f(p,n))
+        </pre>
+        </div>
+    </div>
+
+    <h1>Definite Integrals Involving Polylogarithm Function</h1>
+    <div class="keret even" id="k8">
+        <b><big class="sorszam">8.</big></b>
         <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[\sum_{k=2}^{m}(-1)^{k}\,\zeta(k)-1\right]\:\:(m\ge 1)\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
@@ -156,8 +206,8 @@ show(integrate(polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'
         </div>
     </div>
 
-    <div class="keret odd" id="k7">
-        <b><big class="sorszam">7.</big></b>
+    <div class="keret odd" id="k9">
+        <b><big class="sorszam">9.</big></b>
         <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}=(-1)^{n+m}\,n!\,\left[\sum_{j=2}^{m}(-1)^{j}\binom{n+m-j}{n}\zeta(j)+\sum_{j=2}^{n+1}\binom{n+m-j}{m-1}\zeta(j)-\binom{n+m}{m}\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
@@ -189,8 +239,8 @@ show(integrate(polylog(m,x)*ln(x)^n,x,0,1,hold=True),LatexExpr(r'='),ern[0],Late
         </div>
     </div>
 
-    <div class="keret even" id="k8">
-        <b><big class="sorszam">8.</big></b>
+    <div class="keret even" id="k10">
+        <b><big class="sorszam">10.</big></b>
         <p class="keplet">\[\int_{0}^{1} x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[\sum_{k=2}^{m}(-1)^{k}\,(1+n)^{k-1}\,\zeta(k)-{\rm H}_{n+1}\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
@@ -222,8 +272,8 @@ show(integrate(x^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExp
         </div>
     </div>
 
-    <div class="keret odd" id="k9">
-        <b><big class="sorszam">9.</big></b>
+    <div class="keret odd" id="k11">
+        <b><big class="sorszam">11.</big></b>
         <p class="keplet">\[\int_{0}^{1} (1-x)^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\sum_{l=2}^{m}\sum_{k=0}^{n}\frac{(-1)^{m+k+l}\,\binom{n}{k}\,\zeta(l)}{(1+k)^{m+1-l}}-\sum_{l=1}^{n+1}\sum_{k=l-1}^{n}\frac{(-1)^{m+k}\,\binom{n}{k}}{l\cdot(1+k)^m}\]
         </p>
 
