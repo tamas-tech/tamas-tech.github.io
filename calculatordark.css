@@ -1099,3 +1099,8 @@ button.clrhbtn {
     width: fit-content;
     min-width: calc(100% - 14px);
 }
+
+.sagecell_sliderControl.ui-slider.ui-corner-all.ui-slider-horizontal.ui-widget.ui-widget-content {
+    background: #ffffff40;
+    border: 1px solid #d3d3d382;
+}
