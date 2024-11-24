@@ -1,5 +1,5 @@
 function kuldes(elem) {
-    var message = elem.nextElementSibling.innerText
+    var message = elem.nextElementSibling.nextElementSibling.innerText
     window.parent.postMessage(message, '*');
 };
 
