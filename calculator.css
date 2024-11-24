@@ -648,6 +648,44 @@ body {
     background-image: url("https://cdn.jsdelivr.net/npm/zeynepjs@2.2.0/examples/images/submenu-arrow-active.svg");
 }
 
+/* zeynep ol */
+
+.zeynep ol {
+    padding: 0;
+    padding-left: 28px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.zeynep ol>li>a {
+    color: inherit;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 18px 20px;
+    transition: all 150ms;
+}
+
+.zeynep ol>li>a:hover {
+    background-color: #efefef;
+    border-radius: 3px;
+}
+
+.zeynep ol>li:not(:last-child)>a {
+    border-bottom: 1px solid #efefef;
+}
+
+.zeynep ol>li.has-submenu>a {
+    background-image: url("https://cdn.jsdelivr.net/npm/zeynepjs@2.2.0/examples/images/submenu-arrow.svg");
+    background-position: right 20px center;
+    background-repeat: no-repeat;
+    background-size: 8px 14px;
+}
+
+.zeynep ol>li.has-submenu>a:hover {
+    background-image: url("https://cdn.jsdelivr.net/npm/zeynepjs@2.2.0/examples/images/submenu-arrow-active.svg");
+}
+
+/* zeynep ol end */
 
 /* zeynepjs submenu styles */
 
