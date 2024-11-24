@@ -10,15 +10,16 @@
 </head>
 
 <body>
-
     <h1>Indefinite Integrals Involving Polylogarithm Function</h1>
     <div class="keret odd" id="k1">
         <b><big class="sorszam">1.</big></b>
         <p class="keplet">\[\int {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[x\,\sum_{k=1}^{m}(-1)^{k}\,\text{Li}_{k}(x)+\text{Li}_{1}(x)-x\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 1.}\\hspace{5mm}\\int {\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k1" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
 @interact
 def m_slider(m = slider(vmin=0, vmax=20, step_size=1, default=1, label='m', display_value=True)):
     def foo(x,m):
@@ -26,7 +27,6 @@ def m_slider(m = slider(vmin=0, vmax=20, step_size=1, default=1, label='m', disp
         return f(x)
     def f(m):
         return foo(x,m)
-
     show(integrate(polylog(m,x),x,hold=True),LatexExpr(r'='),f(m))
     return
         </pre>
@@ -37,8 +37,10 @@ def m_slider(m = slider(vmin=0, vmax=20, step_size=1, default=1, label='m', disp
         <p class="keplet">\[\int \dfrac{{\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)}{x}\,{\text{d} x}=(-1)^{n}\,n!\,\sum_{k=0}^{n}\frac{(-1)^{k}}{k!}\,\text{Li}_{n+m+1-k}(x)\ln^{k}(x)\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 2.}\\hspace{5mm}\\int \\frac{{\\rm Li}_{m}(x)\\cdot\\ln^{n}\\left(x\\right)}{x}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k2" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
 @interact
 def nmslider(m = slider(vmin=0, vmax=20, step_size=1, default=1, label='m', display_value=True),
              n = slider(vmin=0, vmax=20, step_size=1, default=1, label='n', display_value=True)):
@@ -58,8 +60,10 @@ def nmslider(m = slider(vmin=0, vmax=20, step_size=1, default=1, label='m', disp
         <p class="keplet">\[\int {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}=(-1)^{n+m}\,n!\,\sum_{k=0}^{n}\dfrac{(-1)^{k}}{k!}\ln^{k}(x)\cdot\left[x\sum_{j=1}^{m}(-1)^{j}\binom{n+m-k-j}{m-j}\text{Li}_{j}(x)-x\,\binom{n+m-k}{m}+\sum_{j=1}^{n+1-k}\binom{n+m-k-j}{1+n-k-j}\text{Li}_{j}(x)\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 3.}\\hspace{5mm}\\int {\\rm Li}_{m}(x)\\cdot\\ln^{n}\\left(x\\right)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k3" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
 @interact
 def nmslider(m = slider(vmin=0, vmax=10, step_size=1, default=1, label='m', display_value=True),
             n = slider(vmin=0, vmax=10, step_size=1, default=1, label='n', display_value=True)):
@@ -81,8 +85,10 @@ def nmslider(m = slider(vmin=0, vmax=10, step_size=1, default=1, label='m', disp
         </p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 4.}\\hspace{5mm}\\left.\\dfrac{\\partial^{p+q}}{\\partial x^{p}\\partial y^{q}}\\mathbf{B}(x,y)\\right|_{\\begin{subarray}{c} x=1\\\\ \\vphantom{\\frac{1}{2}}y=1 \\end{subarray}}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k4" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
 # Partial derivatives of the Beta function at point (1,1)
 @interact
 def pqslider(p = slider(vmin=0, vmax=10, step_size=1, default=1, label='p', display_value=True),
@@ -101,8 +107,10 @@ def pqslider(p = slider(vmin=0, vmax=10, step_size=1, default=1, label='p', disp
         <p class="keplet">\[\int x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[x^{n+1}\,\sum_{k=1}^{m}(-1)^{k}\,(1+n)^{k-1}\,\text{Li}_{k}(x)-\sum_{k=1}^{n+1}\frac{x^{k}}{k}+\text{Li}_{1}(x)\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 5.}\\hspace{5mm}\\int x^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k5" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
 @interact
 def nmslider(n = slider(vmin=0, vmax=12, step_size=1, default=1, label='n', display_value=True),
             m = slider(vmin=0, vmax=12, step_size=1, default=1, label='m', display_value=True)):
@@ -124,8 +132,10 @@ def nmslider(n = slider(vmin=0, vmax=12, step_size=1, default=1, label='n', disp
         </p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 6.}\\hspace{5mm}\\int \\frac{\\ln^{p}(x)}{x^{n}}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k6" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
 @interact
 def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', display_value=True),
              n = slider([-12..-1,2..12], step_size=1, default=2, label='n', display_value=True)):
@@ -147,8 +157,10 @@ def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', disp
         </p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 7.}\\hspace{5mm}\\int \\frac{\\ln^{p}(x)}{(1-x)^{n}}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k7" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
 @interact
 def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', display_value=True),
             n = slider(vmin=2, vmax=12, step_size=1, default=2, label='n', display_value=True)):
@@ -170,8 +182,10 @@ def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', disp
         </p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
-            <pre>            
+            <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 8.}\\hspace{5mm}\\int \\frac{\\ln^{p}(x)}{x^{n}\\cdot(1-x)^{m}}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k8" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))            
 @interact
 def pnmslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', display_value=True),
             n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
@@ -194,8 +208,10 @@ def pnmslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', dis
         <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[\sum_{k=2}^{m}(-1)^{k}\,\zeta(k)-1\right]\:\:(m\ge 1)\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 9.}\\hspace{5mm}\\int_{0}^{1} {\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k9" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
 @interact
 def m_slider(m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
     def foo(m):
@@ -226,8 +242,10 @@ def m_slider(m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', disp
         <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}=(-1)^{n+m}\,n!\,\left[\sum_{j=2}^{m}(-1)^{j}\binom{n+m-j}{n}\zeta(j)+\sum_{j=2}^{n+1}\binom{n+m-j}{m-1}\zeta(j)-\binom{n+m}{m}\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 10.}\\hspace{5mm}\\int_{0}^{1} {\\rm Li}_{m}(x)\\cdot\\ln^{n}\\left(x\\right)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k10" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
 @interact
 def nmslider(n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
 m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
@@ -259,8 +277,10 @@ m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=Tru
         <p class="keplet">\[\int_{0}^{1} x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[\sum_{k=2}^{m}(-1)^{k}\,(1+n)^{k-1}\,\zeta(k)-{\rm H}_{n+1}\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 11.}\\hspace{5mm}\\int_{0}^{1} x^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k11" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
 @interact
 def nmslider(n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
 m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
@@ -293,8 +313,10 @@ m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=Tru
         </p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
         <div class="pre-container">
             <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 12.}\\hspace{5mm}\\int_{0}^{1} (1-x)^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k12" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
 @interact
 def nmslider(n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
 m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
