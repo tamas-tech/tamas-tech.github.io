@@ -357,6 +357,11 @@ a.vissza {
     transform: rotate(90deg);
 }
 
+a.vissza:hover {
+    transform: scale(1.15) rotate(90deg);
+    background-color: #378891;
+}
+
 #output {
     display: inline-block;
     min-height: 20px;
