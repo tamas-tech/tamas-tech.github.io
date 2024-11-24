@@ -203,13 +203,17 @@ function sampleTgl() {
     if (txt == 'Show samples') {
         btn.text('Hide samples')
         setTimeout(() => {
-            document.querySelector('#samples').scrollIntoView({
+            document.querySelector('button.btn-open').scrollIntoView({
                 behavior: "smooth",
-                block: 'end'
             });
         }, 300)
-    } else
-        btn.text('Show samples')
+    } else {
+        btn.text('Show samples');
+        /*  setTimeout(() => {
+             cmeditor.refresh();
+         }, 500); */
+    }
+    //$('.sagecell_editor,#tarto').toggle(300);
 };
 
 function megnyitfn(x) {
@@ -366,7 +370,7 @@ $(document).ready(function() {
     document.querySelector('.sagecell_evalButton').onclick = function() {
         try {
             setOutputFont($('#outfont-slider').val());
-            var txt = cmeditor.getValue('');
+            var txt = cmeditor.getValue().replace('<h2>', '&lt;h2&gt;').replace('<a', '&lt;a').replace('>vissza</a></h2>', '&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;');
             if (opt_hist)
                 $('#historylist').prepend('<li><span class="hbtn"></span><pre>' + txt + '</pre><span class="hbtnclear" onclick="clearHistItem(this);">&#x274c;</span></li>')
         } catch {
@@ -382,7 +386,7 @@ $(document).ready(function() {
     });
 
     $(document).on('click', 'span.snapshot', function() {
-        var txt = cmeditor.getValue(txt);
+        var txt = cmeditor.getValue().replace('<h2>', '&lt;h2&gt;').replace('<a', '&lt;a').replace('>vissza</a></h2>', '&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;');
         cmeditor.execCommand('selectAll');
         setTimeout(() => { cmeditor.execCommand('goDocStart') }, 300);
         if (opt_hist)
@@ -486,6 +490,12 @@ if (window.addEventListener) {
 function displayMessage(evt) {
     var message;
     message = evt.data;
+    if (message == 'gotook') {
+        document.querySelector('.sagecell_evalButton').scrollIntoView({
+            behavior: "smooth",
+            block: 'center'
+        });
+    } else {
     cmeditor.setValue(message);
     document.querySelector('.CodeMirror').scrollIntoView({
         behavior: "smooth",
@@ -493,6 +503,13 @@ function displayMessage(evt) {
     });
     cmeditor.execCommand('selectAll');
     setTimeout(() => { cmeditor.execCommand('goDocStart') }, 700)
+    }
+};
+
+function vissza() {
+    document.querySelector('#samples').scrollIntoView({
+        behavior: "smooth"
+    });
 };
 
 function wrapSwitch() {
