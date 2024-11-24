@@ -496,13 +496,14 @@ function displayMessage(evt) {
             block: 'center'
         });
     } else {
-    cmeditor.setValue(message);
-    document.querySelector('.CodeMirror').scrollIntoView({
-        behavior: "smooth",
-        block: 'center'
-    });
-    cmeditor.execCommand('selectAll');
-    setTimeout(() => { cmeditor.execCommand('goDocStart') }, 700)
+        cmeditor.setValue(message);
+        document.querySelector('.sagecell_evalButton').scrollIntoView({
+            behavior: "smooth",
+            block: 'center'
+        });
+        cmeditor.execCommand('selectAll');
+        setTimeout(() => { cmeditor.execCommand('goDocStart') }, 700);
+        setTimeout(() => { $('button.sagecell_evalButton').trigger('click') }, 900);
     }
 };
 
