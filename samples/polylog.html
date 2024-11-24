@@ -19,17 +19,16 @@
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
-##########
-m=4
-##########
+@interact
+def m_slider(m = slider(vmin=0, vmax=20, step_size=1, default=1, label='m', display_value=True)):
+    def foo(x,m):
+        f(x) = (-1)^m*(sum([(-1)^k*x*function('Li'+str(k))(x) for k in (1..m)])+function('Li'+str(1))(x)-x)
+        return f(x)
+    def f(m):
+        return foo(x,m)
 
-def foo(x,m):
-    f(x) = (-1)^m*(sum([(-1)^k*x*function('Li'+str(k))(x) for k in (1..m)])+function('Li'+str(1))(x)-x)
-    return f(x)
-def f(m):
-    return foo(x,m)
-
-show(integrate(polylog(m,x),x,hold=True),LatexExpr(r'='),f(m))
+    show(integrate(polylog(m,x),x,hold=True),LatexExpr(r'='),f(m))
+    return
         </pre>
         </div>
     </div>
@@ -40,19 +39,17 @@ show(integrate(polylog(m,x),x,hold=True),LatexExpr(r'='),f(m))
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
-# Li_m(x)*ln(x)^n
-##########
-m=4
-n=2
-##########
+@interact
+def nmslider(m = slider(vmin=0, vmax=20, step_size=1, default=1, label='m', display_value=True),
+             n = slider(vmin=0, vmax=20, step_size=1, default=1, label='n', display_value=True)):
+    def foo(x,m,n):
+        f(x) = (-1)^n*factorial(n)*sum([(-1)^k/factorial(k)*function('Li'+str(n+m+1-k))(x)*function('ln')(x)^k for k in (0..n)])
+        return f(x)
+    def f(m,n):
+        return foo(x,m,n)
 
-def foo(x,m,n):
-    f(x) = (-1)^n*factorial(n)*sum([(-1)^k/factorial(k)*function('Li'+str(n+m+1-k))(x)*function('ln')(x)^k for k in (0..n)])
-    return f(x)
-def f(m,n):
-    return foo(x,m,n)
-
-show(integrate((polylog(m,x)*ln(x)^n)/x,x,hold=True),LatexExpr(r'='),f(m,n))
+    show(integrate((polylog(m,x)*ln(x)^n)/x,x,hold=True),LatexExpr(r'='),f(m,n))
+    return
         </pre>
         </div>
     </div>
@@ -63,17 +60,17 @@ show(integrate((polylog(m,x)*ln(x)^n)/x,x,hold=True),LatexExpr(r'='),f(m,n))
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
-##########
-m=2
-n=3
-##########
-def foo(x,m,n):
-    f(x) = (-1)^(n+m)*factorial(n)*sum([(-1)^k/factorial(k)*function('ln')(x)^k*(x*sum([(-1)^j*binomial(n+m-k-j,m-j)*function('Li'+str(j))(x) for j in (1..m)])-x*binomial(n+m-k,m)+sum([binomial(n+m-k-j,1+n-k-j)*function('Li'+str(j))(x) for j in (1..n+1-k)])) for k in (0..n)])
-    return f(x)
-def f(m,n):
-    return expand(foo(x,m,n))
+@interact
+def nmslider(m = slider(vmin=0, vmax=10, step_size=1, default=1, label='m', display_value=True),
+            n = slider(vmin=0, vmax=10, step_size=1, default=1, label='n', display_value=True)):
+    def foo(x,m,n):
+        f(x) = (-1)^(n+m)*factorial(n)*sum([(-1)^k/factorial(k)*function('ln')(x)^k*(x*sum([(-1)^j*binomial(n+m-k-j,m-j)*function('Li'+str(j))  (x) for j in (1..m)])-x*binomial(n+m-k,m)+sum([binomial(n+m-k-j,1+n-k-j)*function('Li'+str(j))(x) for j in (1..n+1-k)])) for k in (0..    n)])
+        return f(x)
+    def f(m,n):
+        return expand(foo(x,m,n))
 
-show(integrate(polylog(m,x)*log(x)^n,x,hold=True),LatexExpr(r'='),f(m,n))
+    show(integrate(polylog(m,x)*log(x)^n,x,hold=True),LatexExpr(r'='),f(m,n))
+    return
         </pre>
         </div>
     </div>
@@ -87,15 +84,16 @@ show(integrate(polylog(m,x)*log(x)^n,x,hold=True),LatexExpr(r'='),f(m,n))
         <div class="pre-container">
             <pre>
 # Partial derivatives of the Beta function at point (1,1)
-##########
-p=2
-q=3
-##########
-var('x,y')
-def B(p,q): 
-    return expand(diff(diff(beta(x,y),x,p),y,q).subs(x=1,y=1))
+@interact
+def pqslider(p = slider(vmin=0, vmax=10, step_size=1, default=1, label='p', display_value=True),
+            q = slider(vmin=0, vmax=10, step_size=1, default=1, label='q', display_value=True)):
+    var('x,y')
+    def B(p,q): 
+        return expand(diff(diff(beta(x,y),x,p),y,q).subs(x=1,y=1))
 
-show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'),LatexExpr(r"\dfrac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),integrate((ln(x)^p*ln(1-x)^q),x,0,1,hold=True),LatexExpr(r'='),B(p,q),LatexExpr(r'\approx'),n(B(p,q)))</pre>
+    show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'),LatexExpr(r"\dfrac{\partial^{"+str(p+q)+"}}{\\partial x^{"+str(p)+"}\\partial y^{"+str(q)+"}}\\mathbf{B}(1,1) = "),integrate((ln(x)^p*ln(1-x)^q),x,0,1,hold=True),LatexExpr(r'='),B(p,q),LatexExpr(r'\approx'),n(B(p,q)))
+    return
+</pre>
         </div>
     </div>
     <div class="keret odd" id="k5">
@@ -105,19 +103,17 @@ show('Partial derivatives of the Beta function at point (1,1)',LatexExpr(r'\\\\'
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
-# x^n*Li_m(x)
-##########
-m=4
-n=2
-##########
+@interact
+def nmslider(n = slider(vmin=0, vmax=12, step_size=1, default=1, label='n', display_value=True),
+            m = slider(vmin=0, vmax=12, step_size=1, default=1, label='m', display_value=True)):
+    def foo(x,m,n):
+        f(x) = (-1/(1+n))^m*(x^(n+1)*sum([(-1)^k*(1+n)^(k-1)*function('Li'+str(k))(x) for k in (1..m)])-sum([(x^k)/k for k in (1..n+1)])    +function('Li'+str(1))(x))
+        return f(x)
+    def f(m,n):
+        return foo(x,m,n)
 
-def foo(x,m,n):
-    f(x) = (-1/(1+n))^m*(x^(n+1)*sum([(-1)^k*(1+n)^(k-1)*function('Li'+str(k))(x) for k in (1..m)])-sum([(x^k)/k for k in (1..n+1)])+function('Li'+str(1))(x))
-    return f(x)
-def f(m,n):
-    return foo(x,m,n)
-
-show(integrate(x^n*polylog(m,x),x,hold=True),LatexExpr(r'='),f(m,n))
+    show(integrate(x^n*polylog(m,x),x,hold=True),LatexExpr(r'='),f(m,n))
+    return
         </pre>
         </div>
     </div>
@@ -130,19 +126,17 @@ show(integrate(x^n*polylog(m,x),x,hold=True),LatexExpr(r'='),f(m,n))
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
-# ln(x)^p/x^n  n != 1
-##########
-p=4
-n=2
-##########
+@interact
+def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', display_value=True),
+             n = slider([-12..-1,2..12], step_size=1, default=2, label='n', display_value=True)):
+    def foo(x,p,n):
+        f(x) = -factorial(p)/((n-1)^(p+1)*x^(n-1))*sum([(n-1)^k/factorial(k)*function('ln')(x)^k for k in (0..p)])
+        return f(x)
+    def f(p,n):
+        return foo(x,p,n)
 
-def foo(x,p,n):
-    f(x) = -factorial(p)/((n-1)^(p+1)*x^(n-1))*sum([(n-1)^k/factorial(k)*function('ln')(x)^k for k in (0..p)])
-    return f(x)
-def f(p,n):
-    return foo(x,p,n)
-
-show(integrate(ln(x)^p/x^n,x,hold=True),LatexExpr(r'='),f(p,n))
+    show(integrate(ln(x)^p/x^n,x,hold=True),LatexExpr(r'='),f(p,n))
+    return
         </pre>
         </div>
     </div>
@@ -155,153 +149,174 @@ show(integrate(ln(x)^p/x^n,x,hold=True),LatexExpr(r'='),f(p,n))
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
-# ln(x)^p/(1-x)^n  n != 1
-##########
-p=4
-n=2
-##########
+@interact
+def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', display_value=True),
+            n = slider(vmin=2, vmax=12, step_size=1, default=2, label='n', display_value=True)):
+    def foo(x,p,n):
+        f(x) = (-1)^p*factorial(p)/factorial(n-1)*sum([(-1)^k/factorial(k)*function('ln')(x)^k*sum([abs(stirling_number1(n-1,l))*function('Li'+str(p +1-k-l))(x) for l in (1..n-1)]) for k in (0..p)])
+        return f(x)
+    def f(p,n):
+        return foo(x,p,n)
+    show(integrate(ln(x)^p/(1-x)^n,x,hold=True),LatexExpr(r'='),f(p,n))
+    return
+        </pre>
+        </div>
+    </div>
 
-def foo(x,p,n):
-    f(x) = (-1)^p*factorial(p)/factorial(n-1)*sum([(-1)^k/factorial(k)*function('ln')(x)^k*sum([stirling_number1(n-1,l)*function('Li'+str(p+1-k-l))(x) for l in (1..n-1)]) for k in (0..p)])
-    return f(x)
-def f(p,n):
-    return foo(x,p,n)
+    <div class="keret even" id="k8">
+        <b><big class="sorszam">8.</big></b>
+        <p class="keplet">\[\int \frac{\ln^{p}(x)}{x^{n}\cdot(1-x)^{m}}\,{\text{d} x}=\binom{n+m-2}{m-1}\dfrac{\ln^{p+1}(x)}{p+1}+p!\sum_{k=0}^{p}\frac{\ln^{k}(x)}{k!}\left\{(-1)^{p+k}\sum_{t=0}^{m-1}\text{Li}_{p+1-k-t}(x)\sum_{r=t+1}^{m}\dfrac{\binom{n+m-1-r}{n-1}}{(r-1)!}{r-1\brack
+            t} -\sum_{t=2}^{n}\binom{n+m-1-t}{m-1}\dfrac{(t-1)^{k-p-1}}{x^{t-1}}\right\}\hspace{1.3cm}\left(n \in \mathbb{N},1,\,p\in\mathbb{N}_{0}\right)\]
+        </p>
 
-show(integrate(ln(x)^p/(1-x)^n,x,hold=True),LatexExpr(r'='),f(p,n))
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>            
+@interact
+def pnmslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', display_value=True),
+            n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
+            m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
+    def foo(x,p,n,m):
+        f(x) = binomial(n+m-2,m-1)/(p+1)*function('ln')(x)^(p+1)+factorial(p)*sum([function('ln')(x)^k/factorial(k)*((-1)^(p+k)*sum([function('Li'+str(p+1-k-t))(x)*sum([binomial(n+m-1-s,n-1)/factorial(s-1)*abs(stirling_number1(s-1,t)) for s in (t+1..m)]) for t in (0..m-1)])-sum([binomial(n+m-1-t,m-1)*(t-1)^(k-p-1)/x^(t-1) for t in (2..n)])) for k in (0..p)])
+        return f(x)
+    def f(p,n,m):
+        return foo(x,p,n,m)
+
+    show(integrate(ln(x)^p/(x^n*(1-x)^m),x,hold=True),LatexExpr(r'='),f(p,n,m))
+    return
         </pre>
         </div>
     </div>
 
     <h1>Definite Integrals Involving Polylogarithm Function</h1>
-    <div class="keret even" id="k8">
-        <b><big class="sorszam">8.</big></b>
+    <div class="keret odd" id="k9">
+        <b><big class="sorszam">9.</big></b>
         <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[\sum_{k=2}^{m}(-1)^{k}\,\zeta(k)-1\right]\:\:(m\ge 1)\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
-##########
-m=2
-##########
-
-def foo(m):
-    f(x) = (-1)^m*(sum([(-1)^k*zeta(k,hold=True) for k in (2..m)])-1)
-    return f(x)
-def f(m):
-    return foo(m)
-var('ern')
-ern=numerical_integral(polylog(m,x),0,1)
-show(integrate(polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),f(m),LatexExpr(r'\approx'),n(f(m)))
-show('\n')
-p=plot(polylog(m,x),x,0,1,legend_label='$\\text{Li}_{'+str(m)+'}(x)$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $\\text{Li}_{"+ str(m) +"}$ on interval [0,1]")
-p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False)
-p += line([(1,0),(1,polylog(m,0.999))],thickness="2", color='blue')
-p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
-p += text("$\\int_{0}^1\\text{Li}_{"+ str(m) +"}(x) \\text{d}x \\approx"+str(n(f(m),digits=5))+" $", (0.6, 0.2), fontsize=16, color='black')
-show(p)
-show('\n')
-show('Checking by numererical_integral() command',fontsize=20)
-show(integrate(polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
-        </pre>
-        </div>
-    </div>
-
-    <div class="keret odd" id="k9">
-        <b><big class="sorszam">9.</big></b>
-        <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}=(-1)^{n+m}\,n!\,\left[\sum_{j=2}^{m}(-1)^{j}\binom{n+m-j}{n}\zeta(j)+\sum_{j=2}^{n+1}\binom{n+m-j}{m-1}\zeta(j)-\binom{n+m}{m}\right]\]</p>
-
-        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
-        <div class="pre-container">
-            <pre>
-##########
-m=2
-n=3
-##########
-def f(m,n):
-    return (-1)^(n+m)*factorial(n)*(sum([(-1)^j*binomial(n+m-j,n)*zeta(j,hold=True) for j in (2..m)])-binomial(n+m,m)+sum([binomial(n+m-j,m-1)*zeta(j,hold=True) for j in (2..n+1)]))
-var('er,ern')
-er=f(m,n).n()
-ern=numerical_integral(polylog(m,x)*ln(x)^n,0,1)
-show(integrate(polylog(m,x)*ln(x)^n,x,0,1,hold=True),LatexExpr(r'='),f(m,n),LatexExpr(r'\approx'),str(er))
-
-p=plot(polylog(m,x)*ln(x)^n,x,0,1,legend_label='$\\text{Li}_{'+str(m)+'}(x)\\cdot \\ln(x)^{'+str(n)+'}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $\\text{Li}_{"+ str(m) +"}(x) \\cdot \\ln(x)^{"+str(n)+"}$ on interval [0,1]")
-p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
-p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
-d = p.get_axes_range()
-dd = (d['ymax']+d['ymin'])*0.5
-p += text("$\\int_{0}^1\\text{Li}_{"+ str(m) +"}(x) \\cdot \\ln(x)^{"+str(n)+"} \\text{d}x \\approx"+str(f(m,n).n())+"$", (0.6, dd), fontsize=12, color='black')
-show('\n')
-show(p)    
-show('\n')
-show('Checking by numererical_integral() command',fontsize=20)
-show(integrate(polylog(m,x)*ln(x)^n,x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+@interact
+def m_slider(m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
+    def foo(m):
+        f(x) = (-1)^m*(sum([(-1)^k*zeta(k,hold=True) for k in (2..m)])-1)
+        return f(x)
+    def f(m):
+        return foo(m)
+    var('ern')
+    ern=numerical_integral(polylog(m,x),0,1)
+    show(integrate(polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),f(m),LatexExpr(r'\approx'),n(f(m)))
+    show('\n')
+    p=plot(polylog(m,x),x,0,1,legend_label='$\\text{Li}_{'+str(m)+'}(x)$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',    thickness='2',title="Plot $\\text{Li}_{"+ str(m) +"}$ on interval [0,1]")
+    p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False)
+    p += line([(1,0),(1,polylog(m,0.999))],thickness="2", color='blue')
+    p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
+    p += text("$\\int_{0}^1\\text{Li}_{"+ str(m) +"}(x) \\text{d}x \\approx"+str(n(f(m),digits=5))+" $", (0.6, 0.2), fontsize=16,   color='black')
+    show(p)
+    show('\n')
+    show('Checking by numererical_integral() command',fontsize=20)
+    show(integrate(polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+    return
         </pre>
         </div>
     </div>
 
     <div class="keret even" id="k10">
         <b><big class="sorszam">10.</big></b>
-        <p class="keplet">\[\int_{0}^{1} x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[\sum_{k=2}^{m}(-1)^{k}\,(1+n)^{k-1}\,\zeta(k)-{\rm H}_{n+1}\right]\]</p>
+        <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}=(-1)^{n+m}\,n!\,\left[\sum_{j=2}^{m}(-1)^{j}\binom{n+m-j}{n}\zeta(j)+\sum_{j=2}^{n+1}\binom{n+m-j}{m-1}\zeta(j)-\binom{n+m}{m}\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
-##########
-m=2
-n=3
-##########
-def f(m,n):
-    return (-1)^(m)/(1+n)^m*(sum([(-1)^k*(1+n)^(k-1)*zeta(k,hold=True) for k in (2..m)])-harmonic_number(n+1,hold=true))
-var('er,ern')
-er=f(m,n).n()
-ern=numerical_integral(x^n*polylog(m,x),0,1)
-show(integrate(x^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),f(m,n),LatexExpr(r'\approx'),str(er))
+@interact
+def nmslider(n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
+m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
+    def f(m,n):
+        return (-1)^(n+m)*factorial(n)*(sum([(-1)^j*binomial(n+m-j,n)*zeta(j,hold=True) for j in (2..m)])-binomial(n+m,m)+sum([binomial(n+m-j,  m-1)*zeta(j,hold=True) for j in (2..n+1)]))
+    var('er,ern')
+    er=f(m,n).n()
+    ern=numerical_integral(polylog(m,x)*ln(x)^n,0,1)
+    show(integrate(polylog(m,x)*ln(x)^n,x,0,1,hold=True),LatexExpr(r'='),f(m,n),LatexExpr(r'\approx'),str(er))
 
-p=plot(x^n*polylog(m,x),x,0,1,legend_label='$x^{'+str(n)+'}\\cdot\\text{Li}_{'+str(m)+'}(x)$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $x^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)$ on interval [0,1]")
-p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
-p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
-d = p.get_axes_range()
-dd = (d['ymax']+d['ymin'])*0.5
-p += text("$\\int_{0}^{1}x^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)\\text{d}x \\approx"+str(f(m,n).n())+"$", (0.6, dd), fontsize=12, color='black')
-show('\n')
-show(p)    
-show('\n')
-show('Checking by numererical_integral() command',fontsize=20)
-show(integrate(x^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+    p=plot(polylog(m,x)*ln(x)^n,x,0,1,legend_label='$\\text{Li}_{'+str(m)+'}(x)\\cdot \\ln(x)^{'+str(n)+'}$',fill='axis',color='blue',  fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $\\text{Li}_{"+ str(m) +"}(x) \\cdot \\ln(x)^{"+str(n)+"}$ on interval [0,1]")
+    p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
+    p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
+    d = p.get_axes_range()
+    dd = (d['ymax']+d['ymin'])*0.5
+    p += text("$\\int_{0}^1\\text{Li}_{"+ str(m) +"}(x) \\cdot \\ln(x)^{"+str(n)+"} \\text{d}x \\approx"+str(f(m,n).n())+"$", (0.6, dd),    fontsize=12, color='black')
+    show('\n')
+    show(p)    
+    show('\n')
+    show('Checking by numererical_integral() command',fontsize=20)
+    show(integrate(polylog(m,x)*ln(x)^n,x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+    return
         </pre>
         </div>
     </div>
 
     <div class="keret odd" id="k11">
         <b><big class="sorszam">11.</big></b>
+        <p class="keplet">\[\int_{0}^{1} x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[\sum_{k=2}^{m}(-1)^{k}\,(1+n)^{k-1}\,\zeta(k)-{\rm H}_{n+1}\right]\]</p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <div class="pre-container">
+            <pre>
+@interact
+def nmslider(n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
+m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
+    def f(m,n):
+        return (-1)^(m)/(1+n)^m*(sum([(-1)^k*(1+n)^(k-1)*zeta(k,hold=True) for k in (2..m)])-harmonic_number(n+1,hold=true))
+    var('er,ern')
+    er=f(m,n).n()
+    ern=numerical_integral(x^n*polylog(m,x),0,1)
+    show(integrate(x^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),f(m,n),LatexExpr(r'\approx'),str(er))
+
+    p=plot(x^n*polylog(m,x),x,0,1,legend_label='$x^{'+str(n)+'}\\cdot\\text{Li}_{'+str(m)+'}(x)$',fill='axis',color='blue',fillcolor='blue',    fillalpha='0.2',thickness='2',title="Plot $x^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)$ on interval [0,1]")
+    p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
+    p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
+    d = p.get_axes_range()
+    dd = (d['ymax']+d['ymin'])*0.5
+    p += text("$\\int_{0}^{1}x^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)\\text{d}x \\approx"+str(f(m,n).n())+"$", (0.6, dd), fontsize=12,  color='black')
+    show('\n')
+    show(p)    
+    show('\n')
+    show('Checking by numererical_integral() command',fontsize=20)
+    show(integrate(x^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+    return
+        </pre>
+        </div>
+    </div>
+
+    <div class="keret even" id="k12">
+        <b><big class="sorszam">12.</big></b>
         <p class="keplet">\[\int_{0}^{1} (1-x)^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\sum_{l=2}^{m}\sum_{k=0}^{n}\frac{(-1)^{m+k+l}\,\binom{n}{k}\,\zeta(l)}{(1+k)^{m+1-l}}-\sum_{l=1}^{n+1}\sum_{k=l-1}^{n}\frac{(-1)^{m+k}\,\binom{n}{k}}{l\cdot(1+k)^m}\]
         </p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <div class="pre-container">
             <pre>
-##########
-m=2
-n=3
-##########
-def f(m,n):
-    return sum([sum([(-1)^(m+k+l)*binomial(n,k,hold=True)*zeta(l,hold=True)/(1+k)^(m+1-l) for k in (0..n)]) for l in (2..m)])-sum([sum([(-1)^(m+k)*binomial(n,k,hold=True)/(l*(1+k)^(m)) for k in (l-1..n)]) for l in (1..n+1)])
-var('er,ern')
-er=f(m,n).n()
-ern=numerical_integral((1-x)^n*polylog(m,x),0,1)
-show(integrate((1-x)^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),f(m,n),LatexExpr(r'\approx'),str(er))
+@interact
+def nmslider(n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
+m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
+    def f(m,n):
+        return sum([sum([(-1)^(m+k+l)*binomial(n,k,hold=True)*zeta(l,hold=True)/(1+k)^(m+1-l) for k in (0..n)]) for l in (2..m)])-sum([sum([    (-1)^(m+k)*binomial(n,k,hold=True)/(l*(1+k)^(m)) for k in (l-1..n)]) for l in (1..n+1)])
+    var('er,ern')
+    er=f(m,n).n()
+    ern=numerical_integral((1-x)^n*polylog(m,x),0,1)
+    show(integrate((1-x)^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),f(m,n),LatexExpr(r'\approx'),str(er))
 
-p=plot((1-x)^n*polylog(m,x),x,0,1,legend_label='$(1-x)^{'+str(n)+'}\\cdot\\text{Li}_{'+str(m)+'}(x)$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $(1-x)^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)$ on interval [0,1]")
-p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
-p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
-d = p.get_axes_range()
-dd = (d['ymax']+d['ymin'])*0.5
-p += text("$\\int_{0}^{1}(1-x)^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)\\text{d}x \\approx"+str(f(m,n).n())+"$", (0.6, dd), fontsize=12, color='black')
-show('\n')
-show(p)    
-show('\n')
-show('Checking by numererical_integral() command',fontsize=20)
-show(integrate((1-x)^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+    p=plot((1-x)^n*polylog(m,x),x,0,1,legend_label='$(1-x)^{'+str(n)+'}\\cdot\\text{Li}_{'+str(m)+'}(x)$',fill='axis',color='blue', fillcolor='blue',fillalpha='0.2',thickness='2',title="Plot $(1-x)^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)$ on interval [0,1]")
+    p.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=16)
+    p += line([(0,0),(1,polylog(1,0))],thickness="2", color='blue')
+    d = p.get_axes_range()
+    dd = (d['ymax']+d['ymin'])*0.5
+    p += text("$\\int_{0}^{1}(1-x)^{"+str(n)+"}\\cdot\\text{Li}_{"+ str(m) +"}(x)\\text{d}x \\approx"+str(f(m,n).n())+"$", (0.6, dd),   fontsize=12, color='black')
+    show('\n')
+    show(p)    
+    show('\n')
+    show('Checking by numererical_integral() command',fontsize=20)
+    show(integrate((1-x)^n*polylog(m,x),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\pm'),ern[1])
+    return
         </pre>
         </div>
     </div>
