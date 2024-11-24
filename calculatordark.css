@@ -343,6 +343,20 @@ h2 {
     margin-top: 10px
 }
 
+a.vissza {
+    margin-left: 20px;
+    background-color: #67a2a8;
+    border-radius: 50%;
+    width: 30px;
+    display: inline-block;
+    color: #fff0;
+    background-image: url("https://cdn.jsdelivr.net/npm/zeynepjs@2.2.0/examples/images/submenu-arrow.svg");
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    background-size: 8px 14px;
+    transform: rotate(90deg);
+}
+
 #output {
     display: inline-block;
     min-height: 20px;
@@ -1031,4 +1045,13 @@ button.clrhbtn {
     font-weight: 700;
     box-shadow: 0 0 5px 2px #384b55;
     background-color: #212E40;
+}
+
+.sagecell_interactContainer {
+    position: relative;
+    padding: 15px 5px 5px 5px;
+    border: 2px solid #67a2a870;
+    margin-bottom: 2px;
+    width: fit-content;
+    min-width: calc(100% - 14px);
 }
