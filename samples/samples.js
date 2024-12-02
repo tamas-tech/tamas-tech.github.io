@@ -54,8 +54,10 @@ function wrapSwitch() {
 function preSwitch() {
     if (opt_pre) {
         $("#precover").css("display", "block");
+        $('.pre-container').addClass('show');
     } else {
         $("#precover").css("display", "");
+        $('.pre-container').removeClass('show');
     }
 };
 
