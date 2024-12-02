@@ -17,6 +17,7 @@
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 1.}\\hspace{5mm}\\int {\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k1" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
@@ -38,6 +39,7 @@ def m_slider(m = slider(vmin=0, vmax=20, step_size=1, default=1, label='m', disp
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 2.}\\hspace{5mm}\\int \\frac{{\\rm Li}_{m}(x)\\cdot\\ln^{n}\\left(x\\right)}{x}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k2" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
@@ -61,6 +63,7 @@ def nmslider(m = slider(vmin=0, vmax=20, step_size=1, default=1, label='m', disp
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 3.}\\hspace{5mm}\\int {\\rm Li}_{m}(x)\\cdot\\ln^{n}\\left(x\\right)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k3" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
@@ -86,6 +89,7 @@ def nmslider(m = slider(vmin=0, vmax=10, step_size=1, default=1, label='m', disp
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 4.}\\hspace{5mm}\\left.\\dfrac{\\partial^{p+q}}{\\partial x^{p}\\partial y^{q}}\\mathbf{B}(x,y)\\right|_{\\begin{subarray}{c} x=1\\\\ \\vphantom{\\frac{1}{2}}y=1 \\end{subarray}}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k4" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
@@ -108,6 +112,7 @@ def pqslider(p = slider(vmin=0, vmax=10, step_size=1, default=1, label='p', disp
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 5.}\\hspace{5mm}\\int x^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k5" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
@@ -133,6 +138,7 @@ def nmslider(n = slider(vmin=0, vmax=12, step_size=1, default=1, label='n', disp
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 6.}\\hspace{5mm}\\int \\frac{\\ln^{p}(x)}{x^{n}}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k6" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
@@ -158,6 +164,7 @@ def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', disp
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 7.}\\hspace{5mm}\\int \\frac{\\ln^{p}(x)}{(1-x)^{n}}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k7" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
@@ -183,6 +190,7 @@ def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', disp
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 8.}\\hspace{5mm}\\int \\frac{\\ln^{p}(x)}{x^{n}\\cdot(1-x)^{m}}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k8" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))            
@@ -209,6 +217,7 @@ def pnmslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', dis
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 9.}\\hspace{5mm}\\int_{0}^{1} {\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k9" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
@@ -243,6 +252,7 @@ def m_slider(m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', disp
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 10.}\\hspace{5mm}\\int_{0}^{1} {\\rm Li}_{m}(x)\\cdot\\ln^{n}\\left(x\\right)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k10" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
@@ -278,6 +288,7 @@ m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=Tru
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 11.}\\hspace{5mm}\\int_{0}^{1} x^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k11" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
@@ -314,6 +325,7 @@ m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=Tru
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
         <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
 pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 12.}\\hspace{5mm}\\int_{0}^{1} (1-x)^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k12" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
