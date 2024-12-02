@@ -48,7 +48,12 @@ button.sendbtn {
     cursor: pointer;
 }
 
-button.sendbtn:hover {
+button.sendbtn.noback {
+    bottom: -15px;
+}
+
+button.sendbtn:hover,
+button.sendbtn.noback:hover {
     transform: scale(1.15);
     background-color: #5f6983;
 }
@@ -156,7 +161,7 @@ p.keplet {
 }
 
 p.keplet.noback {
-    margin-bottom: -0px;
+    margin-bottom: 0px;
 }
 
 div.keret.odd p.keplet {
