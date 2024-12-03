@@ -545,7 +545,7 @@ body {
 
 .zeynep.opened {
     position: fixed;
-    height: calc(100% + 40px);
+    height: calc(100% + 0px);
     top: 0;
     bottom: 5px;
     transform: translateX(0) translateZ(0);
