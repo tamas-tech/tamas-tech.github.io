@@ -184,6 +184,58 @@ def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', disp
 
     <div class="keret even" id="k8">
         <b><big class="sorszam">8.</big></b>
+        <p class="keplet">\[\int x^{n}\cdot\ln^{p}(1-x)\,{\text{d} x}=(-1)^{p-1}\,p!\cdot\sum_{k=0}^{p}\left\{\frac{(-1)^{k}}{k!}\,\ln^{k}(1-x)\cdot\sum_{l=0}^{n}\dfrac{(-1)^{l}}{(l+1)^{p+1-k}}\binom{n}{l}\,(1-x)^{l+1}\right\}\hspace{2cm}\left(n \in \mathbb{N}_{0}, \,p\in\mathbb{N}_{0}\right)\]
+        </p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
+        <div class="pre-container">
+            <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 8.}\\hspace{5mm}\\int x^{n}\\cdot\\ln^{p}(1-x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k8" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
+@interact
+def pnslider(p = slider(vmin=0, vmax=12, step_size=1, default=1, label='p', display_value=True),
+            n = slider(vmin=0, vmax=12, step_size=1, default=1, label='n', display_value=True)):
+    def foo(x,p,n):
+        f(x) = (-1)^(p-1)*factorial(p)*sum([(-1)^k/factorial(k)*function('ln')(1-x)^k*sum([(-1)^l*binomial(n,l)*(1-x)^(l+1)/(l+1)^(p+1-k) for l in (0..n)]) for k in (0..p)])
+        return f(x)
+    def f(p,n):
+        return expand(foo(x,p,n)).collect(ln(1-x))
+    show(integrate(x^n*ln(1-x)^p,x,hold=True),LatexExpr(r'='),f(p,n))
+    return
+        </pre>
+        </div>
+    </div>
+
+    <div class="keret odd" id="k9">
+        <b><big class="sorszam">9.</big></b>
+        <p class="keplet">\[\int \dfrac{x^{m}\ln^{p}(x)}{(1-x)^{n}}\,{\text{d} x}=(-1)^{p}\,p!\left(\sum_{j=0}^{n-1}\left\{\dfrac{(-1)^{j}\binom{m}{j}}{(n-j-1)!}\sum_{k=0}^{p}\frac{(-1)^{k}}{k!}\,\ln^{k}(x)\sum_{l=0}^{n-j-1}{n-j-1\brack l}\text{Li}_{p+1-k-l}(x)\right\}+\sum_{j=n}^{m}\left\{(-1)^{j}\binom{m}{j}\sum_{k=0}^{p}\frac{(-1)^{k}}{k!}\,\ln^{k}(x)\sum_{l=0}^{j-n}\dfrac{(-1)^{l}}{(l+1)^{p+1-k}}\binom{j-n}{l}\,x^{l+1}\right\}\right)
+            \\ \left(n \in \mathbb{N}_{0}, m \in \mathbb{N}_{0} \,p\in\mathbb{N}_{0}\right)\]
+        </p>
+
+        <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
+        <button class="vissza" onclick="kuldesgo();" title="Go back to the OK button">go OK</button>
+        <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
+        <div class="pre-container">
+            <pre>
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 9.}\\hspace{5mm}\\int \\frac{x^m\\cdot\\ln^{p}(x)}{(1-x)^{n}}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k9" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))
+@interact
+def pnslider(p = slider(vmin=0, vmax=12, step_size=1, default=1, label='p', display_value=True),
+            n = slider(vmin=0, vmax=12, step_size=1, default=1, label='n', display_value=True),
+            m = slider(vmin=0, vmax=12, step_size=1, default=1, label='m', display_value=True)):
+    def foo(x,p,n,m):
+        f(x) = (-1)^p*factorial(p)*(sum([(-1)^j*binomial(m,j)/factorial(n-j-1)*sum([(-1)^k/factorial(k)*function('ln')(x)^k*sum([abs(stirling_number1(n-j-1,l))*function('Li'+str(p +1-k-l))(x) for l in (0..n-j-1)]) for k in (0..p)]) for j in (0..n-1)])+sum([(-1)^j*binomial(m,j)*sum([(-1)^k/factorial(k)*function('ln')(x)^k*sum([(-1)^l*binomial(j-n,l)*x^(l+1)/(l+1)^(p+1-k) for l in (0..j-n)]) for k in (0..p)]) for j in (n..m)]))
+        return f(x)
+    def f(p,n,m):
+        return expand(foo(x,p,n,m)).collect(ln(x))
+    show(integrate(x^m*ln(x)^p/(1-x)^n,x,hold=True),LatexExpr(r'='),f(p,n,m))
+    return
+        </pre>
+        </div>
+    </div>
+
+    <div class="keret even" id="k10">
+        <b><big class="sorszam">10.</big></b>
         <p class="keplet">\[\int \frac{\ln^{p}(x)}{x^{n}\cdot(1-x)^{m}}\,{\text{d} x}=\binom{n+m-2}{m-1}\dfrac{\ln^{p+1}(x)}{p+1}+p!\sum_{k=0}^{p}\frac{\ln^{k}(x)}{k!}\left\{(-1)^{p+k}\sum_{t=0}^{m-1}\text{Li}_{p+1-k-t}(x)\sum_{r=t+1}^{m}\dfrac{\binom{n+m-1-r}{n-1}}{(r-1)!}{r-1\brack
             t} -\sum_{t=2}^{n}\binom{n+m-1-t}{m-1}\dfrac{(t-1)^{k-p-1}}{x^{t-1}}\right\}\hspace{1.3cm}\left(n \in \mathbb{N},1,\,p\in\mathbb{N}_{0}\right)\]
         </p>
@@ -193,7 +245,7 @@ def pnslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', disp
         <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
-pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 8.}\\hspace{5mm}\\int \\frac{\\ln^{p}(x)}{x^{n}\\cdot(1-x)^{m}}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k8" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))            
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 10.}\\hspace{5mm}\\int \\frac{\\ln^{p}(x)}{x^{n}\\cdot(1-x)^{m}}\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k10" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;'))            
 @interact
 def pnmslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', display_value=True),
             n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
@@ -211,8 +263,8 @@ def pnmslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', dis
     </div>
 
     <h1>Definite Integrals Involving Polylogarithm Function</h1>
-    <div class="keret odd" id="k9">
-        <b><big class="sorszam">9.</big></b>
+    <div class="keret odd" id="k11">
+        <b><big class="sorszam">11.</big></b>
         <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\,{\text{d} x}=(-1)^{m}\,\left[\sum_{k=2}^{m}(-1)^{k}\,\zeta(k)-1\right]\:\:(m\ge 1)\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
@@ -220,7 +272,7 @@ def pnmslider(p = slider(vmin=1, vmax=12, step_size=1, default=1, label='p', dis
         <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
-pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 9.}\\hspace{5mm}\\int_{0}^{1} {\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k9" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 11.}\\hspace{5mm}\\int_{0}^{1} {\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k11" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
 @interact
 def m_slider(m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
     def foo(m):
@@ -246,8 +298,8 @@ def m_slider(m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', disp
         </div>
     </div>
 
-    <div class="keret even" id="k10">
-        <b><big class="sorszam">10.</big></b>
+    <div class="keret even" id="k12">
+        <b><big class="sorszam">12.</big></b>
         <p class="keplet">\[\int_{0}^{1} {\rm Li}_{m}(x)\cdot\ln^{n}\left(x\right)\,{\text{d} x}=(-1)^{n+m}\,n!\,\left[\sum_{j=2}^{m}(-1)^{j}\binom{n+m-j}{n}\zeta(j)+\sum_{j=2}^{n+1}\binom{n+m-j}{m-1}\zeta(j)-\binom{n+m}{m}\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
@@ -255,7 +307,7 @@ def m_slider(m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', disp
         <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
-pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 10.}\\hspace{5mm}\\int_{0}^{1} {\\rm Li}_{m}(x)\\cdot\\ln^{n}\\left(x\\right)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k10" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 12.}\\hspace{5mm}\\int_{0}^{1} {\\rm Li}_{m}(x)\\cdot\\ln^{n}\\left(x\\right)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k12" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
 @interact
 def nmslider(n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
 m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
@@ -282,8 +334,8 @@ m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=Tru
         </div>
     </div>
 
-    <div class="keret odd" id="k11">
-        <b><big class="sorszam">11.</big></b>
+    <div class="keret odd" id="k13">
+        <b><big class="sorszam">13.</big></b>
         <p class="keplet">\[\int_{0}^{1} x^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\frac{(-1)^{m}}{(1+n)^{m}}\,\left[\sum_{k=2}^{m}(-1)^{k}\,(1+n)^{k-1}\,\zeta(k)-{\rm H}_{n+1}\right]\]</p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
@@ -291,7 +343,7 @@ m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=Tru
         <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
-pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 11.}\\hspace{5mm}\\int_{0}^{1} x^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k11" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 13.}\\hspace{5mm}\\int_{0}^{1} x^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k13" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
 @interact
 def nmslider(n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
 m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
@@ -318,8 +370,8 @@ m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=Tru
         </div>
     </div>
 
-    <div class="keret even" id="k12">
-        <b><big class="sorszam">12.</big></b>
+    <div class="keret even" id="k14">
+        <b><big class="sorszam">14.</big></b>
         <p class="keplet">\[\int_{0}^{1} (1-x)^{n}\cdot{\rm Li}_{m}(x)\,{\text{d} x}=\sum_{l=2}^{m}\sum_{k=0}^{n}\frac{(-1)^{m+k+l}\,\binom{n}{k}\,\zeta(l)}{(1+k)^{m+1-l}}-\sum_{l=1}^{n+1}\sum_{k=l-1}^{n}\frac{(-1)^{m+k}\,\binom{n}{k}}{l\cdot(1+k)^m}\]
         </p>
 
@@ -328,7 +380,7 @@ m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=Tru
         <button class="showpre" onclick="pretoggle(this);" title="Show / Hide code">Show code</button>
         <div class="pre-container">
             <pre>
-pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 12.}\\hspace{5mm}\\int_{0}^{1} (1-x)^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k12" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
+pretty_print(html('&lt;h2&gt;$\\text{Polylogarithm 14.}\\hspace{5mm}\\int_{0}^{1} (1-x)^{n}\\cdot{\\rm Li}_{m}(x)\\,{\\text{d} x}$&lt;a class=\"vissza\" href=\"samples&#47;polylog.html&#35;k14" target=\"samples\" onclick=\"vissza();\" title=\"Go to Sample\"&gt;vissza&lt;&#47;a&gt;&lt;&#47;h2&gt;')) 
 @interact
 def nmslider(n = slider(vmin=1, vmax=12, step_size=1, default=1, label='n', display_value=True),
 m = slider(vmin=1, vmax=12, step_size=1, default=1, label='m', display_value=True)):
