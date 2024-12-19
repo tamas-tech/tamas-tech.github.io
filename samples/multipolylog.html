@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MultiPolylogarithms</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="samples.css">
+    <script src="multipolylog.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+
+<body>
+
+    <h1>Indefinite Integrals Involving Polylogarithm Function</h1>
+
+    <div class="keret odd" id="k1">
+        <b><big class="sorszam">1.</big></b>
+        <p class="keplet" style="margin-bottom:10px;">\[\int \dfrac{{\rm Le}_{(a_1,\ldots,a_n)}(x) {\rm Le}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="a" style="cursor:pointer;" onclick="refreskiura();mpoutClear();"><b id="avl"  class="kiur" style="padding: 2px 7px;">a</b> = ( </label>
+            <input type="text" id="av" value="-2,4,-2" oninput="aSumRefresh();" name="a"><span> )</span>
+            <big style="margin-left:2px;">∑</big>|a|= <span id="as">8</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="b" style="cursor:pointer;" onclick="refreskiurb();mpoutClear();"><b id="bvl" style="padding: 2px 7px;">b</b> = ( </label>
+            <input type="text" id="bv" value="3,-4,2" oninput="bSumRefresh();" name="b"><span> )</span>
+            <big style="margin-left:2px;"> ∑</big>|b|= <span id="bs">9</span>
+        </div>
+
+        <div style="margin-top:2px;padding:5px;">
+            <label id="linit" onclick="lepesinit();">?</label>
+            <button class="showpre1" onclick="urites();" title="Calculate input">Calculate</button>
+            <!-- <label for="setsForma" style="margin-left:15px;"> Set output: </label> -->
+            <select id="setsForma" name="setSform" onchange="setsForma();" style="width:100px;">
+                <option value="1">Lépésekkel*</option>
+                <option value="2">Lépésekkel</option>
+                <option value="0">Tömören*</option>
+                <option value="3">Tömören</option>
+            </select>
+            <button id="sbtglbtn" onclick="sbTgl();">⚙</button>
+        </div>
+
+        <div id="settingbar" style="display:none;margin-left:5px;width:max-content;">
+            <label for="setoutputfont">&#128474;</label>
+            <input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="70" max="170" value="130" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfont">
+            <label class="switch"><input id="optwrap" type="checkbox" onchange="wrapSwitch(this);"><span class="slider round"  title="line wrap"></span></label>
+        </div>
+
+        <p id="mpout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;line-height: 170%;min-height:20px;min-width:calc(100% - 24px);width: max-content;"></p>
+    </div>
+
+
+</body>
+
+</html>
