@@ -20,7 +20,7 @@ function pretoggle(elem) {
 var lepessor = [];
 
 std = function(LL) {
-    var L = JSON.parse(JSON.stringify(LL));
+    var L = _.cloneDeep(LL);
     var a = L[0];
     var b = L[1];
     var n = a.length - 1;
@@ -32,7 +32,7 @@ std = function(LL) {
 };
 
 csokk0 = function(LL) {
-    var L = JSON.parse(JSON.stringify(LL));
+    var L = _.cloneDeep(LL);
     let a = L[0];
     let b = L[1];
     let n = a.length - 1;
@@ -46,7 +46,7 @@ csokk0 = function(LL) {
 };
 
 csokk1 = function(LL) {
-    var L = JSON.parse(JSON.stringify(LL));
+    var L = _.cloneDeep(LL);
     let a = L[0];
     let b = L[1];
     a.splice(-1);
@@ -56,7 +56,7 @@ csokk1 = function(LL) {
 }
 
 veg0 = function(LL) {
-    var L = JSON.parse(JSON.stringify(LL));
+    var L = _.cloneDeep(LL);
     let a = L[0];
     let a1 = [...a];
     let n = a.length - 1;
@@ -74,7 +74,7 @@ veg0 = function(LL) {
 };
 
 veg1 = function(LL) {
-    var L = JSON.parse(JSON.stringify(LL));
+    var L = _.cloneDeep(LL);
     let b = L[1];
     let b1 = [...b, 1];
     let n = b.length - 1;
@@ -164,26 +164,46 @@ lepesinit = function() {
     if (!bv.endsWith("]")) {
         bv = bv + "]";
     }
+
+    av = av.replaceAll("oo", oo);
+    bv = bv.replaceAll("oo", oo);
+
     try {
         av = JSON.parse(av);
         bv = JSON.parse(bv);
         ha = av.length;
         hb = bv.length;
-        if (na < nb) {
-            refreskiura();
-        } else if (na > nb) {
+
+        var aindx = av.indexOf(oo);
+        var bindx = bv.indexOf(oo);
+        if (aindx > -1 && bindx < 0) {
             refreskiurb();
-        } else if (ha < hb) {
+        } else if (bindx > -1 && aindx < 0) {
             refreskiura();
-        } else if (ha > hb) {
-            refreskiurb();
+        } else if (bindx < 0 && aindx < 0) {
+            if (na < nb) {
+                refreskiura();
+            } else if (na > nb) {
+                refreskiurb();
+            } else if (ha < hb) {
+                refreskiura();
+            } else if (ha > hb) {
+                refreskiurb();
+            } else {
+                refreskiura();
+            }
         } else {
-            refreskiura();
-        }
+            outelem.innerText = "lepesinit():try>>>\n Mind a két vektor nem tartalmazhat ∞-t";
+            outelem.style.opacity = "1";
+            outelem.style.color = "#ff2211"
+            return;
+        };
+
         if (outelem.style.color == "rgb(255, 34, 17)")
             outelem.innerText = "";
     } catch (error) {
-        outelem.innerText = "A bevitt adatok valamelyike hibás";
+
+        outelem.innerText = "lepesinit():try>>>\n A bevitt adatok valamelyike hibás";
         outelem.style.opacity = "1";
         outelem.style.color = "#ff2211"
     }
@@ -214,6 +234,22 @@ elojele = function(e) {
     return out;
 };
 
+oo2Inf = function(v) {
+    var out = v.map(function(y) {
+        if (y == oo) return Infinity;
+        else return y;
+    });
+    return out;
+};
+
+Inf2oo = function(v) {
+    var out = v.map(function(y) {
+        if (y == Infinity) return "oo";
+        else return y;
+    });
+    return out;
+};
+
 ltxformaz = function(s) {
     var x, y, l, out;
     x = s[1][0];
@@ -238,8 +274,17 @@ sformaz = function(s) {
     } else {
         l = "⌊";
     }
-    x = JSON.stringify(x).replace("[", "(").replace("]", "");
-    y = JSON.stringify(y).replace("[", "").replace("]", ")")
+
+    var xindx = x.indexOf(Infinity);
+    var yindx = y.indexOf(Infinity);
+    if (xindx > -1)
+        x = Inf2oo(x);
+    if (yindx > -1)
+        y = Inf2oo(y);
+
+    x = JSON.stringify(x).replace("[", "(").replace("]", "").replaceAll("\"oo\"", "∞");
+    y = JSON.stringify(y).replace("[", "").replace("]", ")").replaceAll("\"oo\"", "∞");
+
     out = x + l + y;
     return out;
 };
@@ -281,7 +326,15 @@ SFormaz = function(S) {
         vegtor = "\n \u00a0\u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0";
     };
 
-    var vege = ut + elojele(Math.pow(-1, n + 1)) + JSON.stringify(S[n - 1][1][0][1]).replace("[", "(").replace("]", ")") + vegtor + elojele(Math.pow(-1, n)) + JSON.stringify(S[n - 1][1][1][1]).replace("[", "(").replace("]", ")");
+    var utolso1 = S[n - 1][1][0][1];
+    var utolso2 = S[n - 1][1][1][1];
+    var indx1 = utolso1.indexOf(Infinity);
+    var indx2 = utolso2.indexOf(Infinity);
+    if (indx1 > -1)
+        utolso1 = Inf2oo(utolso1);
+    if (indx2 > -1)
+        utolso2 = Inf2oo(utolso2);
+    var vege = ut + elojele(Math.pow(-1, n + 1)) + JSON.stringify(utolso1).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞") + vegtor + elojele(Math.pow(-1, n)) + JSON.stringify(utolso2).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
     out = out + vege;
     if (sForma == 0 || sForma == 3)
         out = out.slice(3);
@@ -289,40 +342,7 @@ SFormaz = function(S) {
 };
 
 var poz = 0;
-
-uritesREGI = function() {
-    lepessor = [];
-    var av = document.getElementById("av").value;
-    var bv = document.getElementById("bv").value;
-    var outelem = document.getElementById("mpout");
-    if (!av.startsWith("[")) {
-        av = "[" + av;
-    }
-    if (!av.endsWith("]")) {
-        av = av + "]";
-    }
-    if (!bv.startsWith("[")) {
-        bv = "[" + bv;
-    }
-    if (!bv.endsWith("]")) {
-        bv = bv + "]";
-    }
-
-    var inp = "[[" + poz + ",[" + av + "," + bv + "]]]";
-    try {
-        inp = JSON.parse(inp);
-        outelem.style.color = ""
-    } catch (error) {
-        outelem.innerText = "A bevitt adatok valamelyike hibás";
-        outelem.style.opacity = "1";
-        outelem.style.color = "#ff2211"
-    }
-    var Q = sor(inp);
-    out = SFormaz(Q);
-    outelem.innerText = out;
-    outelem.style.opacity = "1";
-};
-
+const oo = 12345678912321;
 
 urites = function() {
     lepessor = [];
@@ -342,20 +362,35 @@ urites = function() {
     if (!bv.endsWith("]")) {
         bv = bv + "]";
     };
+    av = av.replaceAll("oo", oo);
+    bv = bv.replaceAll("oo", oo);
 
     try {
         av = JSON.parse(av);
         bv = JSON.parse(bv);
-        if (poz == 0) {
+
+        var aindx = av.indexOf(oo);
+        var bindx = bv.indexOf(oo);
+        if (aindx > -1)
+            av = oo2Inf(av);
+        if (bindx > -1)
+            bv[bindx] = Infinity;
+
+        if (poz == 0 && aindx < 0) {
             elem = av;
             masik = bv;
-        } else {
+        } else if (poz == 1 && bindx < 0) {
             elem = bv;
             masik = av;
+        } else {
+            outelem.innerText = "urites():try>>>\nA kiüritendő vektor nem tartalmazhat ∞-t!";
+            outelem.style.opacity = "1";
+            outelem.style.color = "#ff2211"
+            return;
         }
         outelem.style.color = "";
     } catch (error) {
-        outelem.innerText = "A bevitt adatok valamelyike hibás";
+        outelem.innerText = "urites():try>>>\nA bevitt adatok valamelyike hibás!";
         outelem.style.opacity = "1";
         outelem.style.color = "#ff2211"
     };
@@ -398,10 +433,16 @@ aSumRefresh = function() {
     if (!av.endsWith("]")) {
         av = av + "]";
     };
+    av = av.replaceAll("oo", oo);
     try {
         av = JSON.parse(av);
+        var aindx = av.indexOf(oo);
+        if (aindx > -1)
+            av[aindx] = Infinity;
         var asv = av.reduce((x, y) => Math.abs(x) + Math.abs(y), 0);
-        document.getElementById("as").innerText = JSON.stringify(asv);
+        if (asv == Infinity)
+            asv = "∞";
+        document.getElementById("as").innerText = asv;
 
     } catch {}
 };
@@ -415,10 +456,16 @@ bSumRefresh = function() {
     if (!bv.endsWith("]")) {
         bv = bv + "]";
     };
+    bv = bv.replaceAll("oo", oo);
     try {
         bv = JSON.parse(bv);
+        var bindx = bv.indexOf(oo);
+        if (bindx > -1)
+            bv[bindx] = Infinity;
         var bsv = bv.reduce((x, y) => Math.abs(x) + Math.abs(y), 0);
-        document.getElementById("bs").innerText = JSON.stringify(bsv);
+        if (bsv == Infinity)
+            bsv = "∞";
+        document.getElementById("bs").innerText = bsv;
 
     } catch {}
 };
