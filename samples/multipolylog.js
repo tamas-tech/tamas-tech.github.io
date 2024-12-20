@@ -165,8 +165,8 @@ lepesinit = function() {
         bv = bv + "]";
     }
 
-    av = av.replaceAll("oo", oo);
-    bv = bv.replaceAll("oo", oo);
+    av = av.replaceAll('oo', oo);
+    bv = bv.replaceAll('oo', oo);
 
     try {
         av = JSON.parse(av);
@@ -190,10 +190,17 @@ lepesinit = function() {
             } else if (ha > hb) {
                 refreskiurb();
             } else {
-                refreskiura();
+                if (ha + hb > 0)
+                    refreskiura();
+                else {
+                    outelem.innerText = "lepesinit():try>>>\n Mind a két vektor nem lehet ÜRES!";
+                    outelem.style.opacity = "1";
+                    outelem.style.color = "#ff2211"
+                    return;
+                }
             }
         } else {
-            outelem.innerText = "lepesinit():try>>>\n Mind a két vektor nem tartalmazhat ∞-t";
+            outelem.innerText = "lepesinit():try>>>\n Mind a két vektor nem tartalmazhat ∞-t!";
             outelem.style.opacity = "1";
             outelem.style.color = "#ff2211"
             return;
@@ -219,7 +226,6 @@ sor = function(S) {
         elem = lepes(elem);
         poz = elem[0];
         out.push(elem);
-
     };
     return out;
 };
@@ -244,7 +250,7 @@ oo2Inf = function(v) {
 
 Inf2oo = function(v) {
     var out = v.map(function(y) {
-        if (y == Infinity) return "oo";
+        if (y == Infinity) return 'oo';
         else return y;
     });
     return out;
@@ -362,8 +368,8 @@ urites = function() {
     if (!bv.endsWith("]")) {
         bv = bv + "]";
     };
-    av = av.replaceAll("oo", oo);
-    bv = bv.replaceAll("oo", oo);
+    av = av.replaceAll('oo', oo);
+    bv = bv.replaceAll('oo', oo);
 
     try {
         av = JSON.parse(av);
@@ -395,25 +401,48 @@ urites = function() {
         outelem.style.color = "#ff2211"
     };
 
-    var elast = elem[elem.length - 1];
-    var mlast = masik[masik.length - 1];
-    if (elast >= 0) {
+    var ne = elem.length;
+    var nm = masik.length;
+    console.log(ne, nm)
+    if (ne == 0 && nm == 0) {
+        outelem.innerText = "urites():try>>>\nMind a két vektor nem lehet ÜRES!";
+        outelem.style.opacity = "1";
+        outelem.style.color = "#ff2211"
+        return;
+    } else if (ne == 0 && nm > 0) {
+        var mlast = masik[nm - 1];
         var tmasik = masik.slice(0, -1)
         tmasik.push(mlast + 1);
-        inp = [
-            [0, [elem, tmasik]]
-        ];
-
-    } else {
+        tmasik = Inf2oo(tmasik);
+        console.log(tmasik)
+        out = JSON.stringify(tmasik).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
+    } else if (ne > 0 && nm == 0) {
+        var elast = elem[ne - 1];
         var telem = elem.slice(0, -1)
         telem.push(elast + 1);
-        inp = [
-            [1, [masik, telem]]
-        ];
-    };
+        telem = Inf2oo(telem);
+        console.log(telem)
+        out = JSON.stringify(telem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
+    } else {
+        var elast = elem[ne - 1];
+        var mlast = masik[nm - 1];
+        if (elast >= 0) {
+            var tmasik = masik.slice(0, -1)
+            tmasik.push(mlast + 1);
+            inp = [
+                [0, [elem, tmasik]]
+            ];
+        } else {
+            var telem = elem.slice(0, -1)
+            telem.push(elast + 1);
+            inp = [
+                [1, [masik, telem]]
+            ];
+        };
 
-    var Q = sor(inp);
-    out = SFormaz(Q);
+        var Q = sor(inp);
+        out = SFormaz(Q);
+    };
     outelem.innerText = out;
     outelem.style.opacity = "1";
 };
@@ -433,7 +462,7 @@ aSumRefresh = function() {
     if (!av.endsWith("]")) {
         av = av + "]";
     };
-    av = av.replaceAll("oo", oo);
+    av = av.replaceAll('oo', oo);
     try {
         av = JSON.parse(av);
         var aindx = av.indexOf(oo);
@@ -456,7 +485,7 @@ bSumRefresh = function() {
     if (!bv.endsWith("]")) {
         bv = bv + "]";
     };
-    bv = bv.replaceAll("oo", oo);
+    bv = bv.replaceAll('oo', oo);
     try {
         bv = JSON.parse(bv);
         var bindx = bv.indexOf(oo);
