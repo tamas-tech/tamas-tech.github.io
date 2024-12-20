@@ -374,7 +374,7 @@ urites = function() {
         if (aindx > -1)
             av = oo2Inf(av);
         if (bindx > -1)
-            bv[bindx] = Infinity;
+            bv = oo2Inf(bv);
 
         if (poz == 0 && aindx < 0) {
             elem = av;
@@ -461,7 +461,7 @@ bSumRefresh = function() {
         bv = JSON.parse(bv);
         var bindx = bv.indexOf(oo);
         if (bindx > -1)
-            bv[bindx] = Infinity;
+            bv = oo2Inf(bv);
         var bsv = bv.reduce((x, y) => Math.abs(x) + Math.abs(y), 0);
         if (bsv == Infinity)
             bsv = "∞";
