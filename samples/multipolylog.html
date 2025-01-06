@@ -6,25 +6,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="samples.css">
     <script src="multipolylog.js"></script>
-    <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script>
-    <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- from cdn -->
+    <!-- <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script> -->
+
+    <!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.9.5/function-plot.js"></script>  -->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> -->
+
+    <!-- from local -->
+
+    <script src="../MathJax-2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="../tools/lodash.min.js"></script>
+    <script src="../tools/d3.v3.min.js"></script>
+    <script src="../tools/function-plot.js"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+                preview: "none"
+            },
+        });
+    </script>
+
 </head>
 
-<body>
+<body style="overflow:scroll;">
 
-    <h1>Indefinite Integrals Involving Polylogarithm Function</h1>
+    <h1>Generalized Polylogarithm Function</h1>
 
-    <div class="keret odd" id="k1">
+    <div class="keret of odd" id="k1">
         <b><big class="sorszam">1.</big></b>
-        <p class="keplet" style="margin-bottom:10px;">\[\int \dfrac{{\rm Le}_{(a_1,\ldots,a_n)}(x) {\rm Le}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
+        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[{\rm Li}_{(a_1,\ldots,a_n)}(x)\hspace{2mm}\text{and}\hspace{2mm}{\rm Le}_{(a_1,\ldots,a_n)}(x)\]</p>
+        <fieldset style="border:1px solid #ccc;border-radius:3px;">
+            <legend>Please select a function:</legend>
+            <div>
+                <input type="radio" id="polyChoice11" name="contact1" value="Li" onchange="setMode1(this);" checked="true" />
+                <label for="polyChoice11">Li</label>
+
+                <input type="radio" id="polyChoice22" name="contact1" value="Le" style="margin-left:30px;" onchange="setMode1(this);" />
+                <label for="polyChoice22">Le</label>
+            </div>
+        </fieldset>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="avLi"><b style="padding: 2px 7px;">a</b> = ( </label>
+            <input type="text" id="avLi" value="-2,3" name="avLi"><span> )</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">N</b> = </label><span id="seriesNLi" style="display:inline-block;width:20px;">5</span>
+            <input id="series-sliderLi" type="range" min="3" max="50" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set series's length" name="setseriesLi" onchange="setNLi(this);">
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="sorfejtesLi();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="seriesLiClear();" title="Clear series">Clear</button>
+        <p class="kijelzo" id="sorLi"></p>
+        <section id="fnpl" style="display:none;max-width:calc(100vw - 30px);">
+            <div id="plotLi" style="text-align:center;"></div>
+        </section>
+    </div>
+    <script>
+        functionPlot({
+            target: '#plotLi',
+            title: '',
+            grid: true,
+            yAxis: {
+                domain: [-1, 1]
+            },
+            xAxis: {
+                domain: [-1, 1]
+            },
+        });
+    </script>
+
+    <div class="keret of even" id="k2">
+        <b><big class="sorszam">2.</big></b>
+        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[{\rm Li}_{(a_1,\ldots,a_n)}(x_0)\hspace{2mm}\text{and}\hspace{2mm}{\rm Le}_{(a_1,\ldots,a_n)}(x_0)\]</p>
+        <fieldset style="border:1px solid #ccc;border-radius:3px;">
+            <legend>Please select a function:</legend>
+            <div>
+                <input type="radio" id="polyChoice10" name="contact0" value="Li" onchange="setMode0(this);" checked="true" />
+                <label for="polyChoice10">Li</label>
+
+                <input type="radio" id="polyChoice20" name="contact0" value="Le" style="margin-left:30px;" onchange="setMode0(this);" />
+                <label for="polyChoice20">Le</label>
+            </div>
+        </fieldset>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="avLi0"><b style="padding: 2px 7px;">a</b> = ( </label>
+            <input type="text" id="avLi0" value="-2,3" name="avLi0"><span> )</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="x0"><b style="padding: 2px 7px;">x0</b> =  </label>
+            <input type="text" id="x0" value="0.5" name="x0">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">N</b> = </label><span id="seriesNLi0" style="display:inline-block;width:20px;">5</span>
+            <input id="series-sliderLi0" type="range" min="20" max="50" value="25" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set series's length" name="setseriesLi0" onchange="setNLi0(this);sorfejtesLi0();">
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="sorfejtesLi0();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="seriesLiClear0();" title="Clear series">Clear</button>
+        <p class="kijelzo" id="sorLi0"></p>
+    </div>
+
+    <div class="keret of odd" id="k3" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">3.</big></b>
+        <p class="keplet" id="keplet_k1" style="margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\hspace{2mm}\text{and}\hspace{2mm}\int \dfrac{{\rm Le}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Le}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
+        <fieldset style="border:1px solid #ccc;border-radius:3px;">
+            <legend>Please select a function:</legend>
+            <div>
+                <input type="radio" id="polyChoice1" name="contact" value="Li" onchange="setMode(this);" checked="true" />
+                <label for="polyChoice1">Li</label>
+
+                <input type="radio" id="polyChoice2" name="contact" value="Le" style="margin-left:30px;" onchange="setMode(this);" />
+                <label for="contactChoice2">Le</label>
+
+                <input type="radio" id="polyChoice3" name="contact" value="Lef" style="margin-left:30px;" onchange="setMode(this);" />
+                <label for="polyChoice3">Le*</label>
+            </div>
+        </fieldset>
         <div style="margin-left:2px;padding:3px;">
             <label for="a" style="cursor:pointer;" onclick="refreskiura();mpoutClear();"><b id="avl"  class="kiur" style="padding: 2px 7px;">a</b> = ( </label>
-            <input type="text" id="av" value="-2,4,-2" oninput="aSumRefresh();" name="a"><span> )</span>
+            <input type="text" id="av" value="-2,3" oninput="aSumRefresh();" name="a"><span> )</span>
             <big style="margin-left:2px;">∑</big>|a|= <span id="as">8</span>
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="b" style="cursor:pointer;" onclick="refreskiurb();mpoutClear();"><b id="bvl" style="padding: 2px 7px;">b</b> = ( </label>
-            <input type="text" id="bv" value="3,-4,2" oninput="bSumRefresh();" name="b"><span> )</span>
+            <input type="text" id="bv" value="-4,2,-2" oninput="bSumRefresh();" name="b"><span> )</span>
             <big style="margin-left:2px;"> ∑</big>|b|= <span id="bs">9</span>
         </div>
 
@@ -37,20 +143,42 @@
                 <option value="2">Lépésekkel</option>
                 <option value="0">Tömören*</option>
                 <option value="3">Tömören</option>
+                <option value="4">Matrix</option>
             </select>
             <button id="sbtglbtn" onclick="sbTgl();">⚙</button>
         </div>
 
         <div id="settingbar" style="display:none;margin-left:5px;width:max-content;">
             <label for="setoutputfont">&#128474;</label>
-            <input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="70" max="170" value="130" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfont">
-            <label class="switch"><input id="optwrap" type="checkbox" onchange="wrapSwitch(this);"><span class="slider round"  title="line wrap"></span></label>
+            <input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="70" max="170" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize" name="setoutputfont">
+            <label for="setmaxsor">max steps</label>
+            <input id="setmaxsor" type="number" style="width:60px;" min="10" max="500" step="10" value="100" name="setmaxsor" onchange="setMaxsor();">
+            <!--  <label class="switch"><input id="optwrap" type="checkbox" onchange="wrapSwitch(this);"><span class="slider round"  title="line wrap"></span></label> -->
         </div>
 
-        <p id="mpout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;line-height: 170%;min-height:20px;min-width:calc(100% - 24px);width: max-content;"></p>
+        <p class="keplet" id="mpout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;line-height: 170%;min-height:20px;"></p>
+        <div id="sorftarto">
+            <button class="showpre1" style="width:96px;margin-left:10px" onclick="sorfejtes();" title="Calculate series">Series</button> <button class="showpre1" style="width:76px;margin-left:3px" onclick="seriesClear();" title="Clear series">Clear</button>
+            <input id="series-slider" type="range" min="3" max="15" value="5" style="display:inline-block;width:calc(90vw - 200px);vertical-align:middle;" title="set series's length" name="setseries" onchange="setN(this);sorfejtes();"><span id="seriesN"
+                style="margin-left:10px;">5</span>
+        </div>
+        <p id="keplet_sor" class="kijelzo"></p>
+    </div>
+    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl();" title="Open/Close help">Toggle help</button>
+    <div id="helpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
+        <iframe name="helpframe" width="99%" height="100%" src="multipolylog.pdf" style="width:99%;height:100vh;border:none;"></iframe>
     </div>
 
+    <div class="keret of even" id="k4">
+        <b><big class="sorszam">4.</big></b>
+        <p class="keplet" style="padding-bottom:30px;margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x) {\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
+    </div>
 
+    <script>
+        setTimeout(() => {
+            urites();
+        }, 300);
+    </script>
 </body>
 
 </html>
