@@ -65,7 +65,6 @@ button.vissza {
     left: 65px;
     box-shadow: 0px 2px 5px 5px #b3bfbb59;
     border: 1px solid aliceblue;
-    border-radius: 5px;
     cursor: pointer;
     background-color: #67a2a8;
     border-radius: 50%;
@@ -80,7 +79,7 @@ button.vissza {
 }
 
 button.vissza:hover {
-    transform: scale(1.15)  rotate(-90deg);
+    transform: scale(1.15) rotate(-90deg);
     background-color: #48868d;
 }
 
@@ -128,12 +127,27 @@ pre {
     white-space: pre-wrap;
 }
 
+p.kijelzo {
+    margin-bottom: 5px;
+    max-width: calc(100vw);
+    overflow: auto;
+    padding: 5px 20px;
+    background-color: #f1f1f1;
+    border-top: 1px solid #d0d0d0;
+    border-bottom: 1px solid #d0d0d0;
+}
+
 div.keret {
     border: 1px solid #bebebe;
     margin-bottom: 20px;
     border-radius: 10px;
     min-width: min-content;
     padding-bottom: 20px;
+}
+
+div.keret.of {
+    overflow: auto;
+    min-width: unset;
 }
 
 div.keret.odd {
@@ -160,8 +174,12 @@ p.keplet {
     padding: 5px 10px;
 }
 
+p.keplet.fixw {
+    max-width: calc(100vw - 10px);
+}
+
 p.keplet.noback {
-    margin-bottom: 0px;
+    margin-bottom: -0px;
 }
 
 div.keret.odd p.keplet {
@@ -355,8 +373,21 @@ button.showpre1:hover {
 
 #linit:hover {
     border: 1px solid #a3a3a3;
-    background-color: #dddddd
+    background-color: #dddddd;
 }
+
+svg.function-plot {
+    border: 1px solid #9ab4be;
+    background-color: #eaf7f6
+}
+
+svg.function-plot text.title,
+svg.function-plot text.top-right-legend {
+    font-size: 20px;
+}
+
+
+/* akarmi{color:#a7004e} */
 
 
 /* FELESLEGESEK */
