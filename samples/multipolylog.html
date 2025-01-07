@@ -4,6 +4,7 @@
 <head>
     <title>MultiPolylogarithms</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
     <link rel="stylesheet" href="samples.css">
     <script src="multipolylog.js"></script>
     <!-- from cdn -->
@@ -17,6 +18,14 @@
             tex2jax: {
                 preview: "none"
             },
+        });
+        
+        sagecell.makeSagecell({
+            inputLocation: '#mycell1',
+            outputLocation: '#ideout',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink"],
         });
     </script>
 
@@ -41,7 +50,7 @@
         </fieldset>
         <div style="margin-left:2px;padding:3px;">
             <label for="avLi"><b style="padding: 2px 7px;">a</b> = ( </label>
-            <input type="text" id="avLi" value="-2,3" name="avLi"><span> )</span>
+            <input type="text" id="avLi" value="2,3" name="avLi"><span> )</span>
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">N</b> = </label><span id="seriesNLi" style="display:inline-block;width:20px;">5</span>
@@ -50,6 +59,7 @@
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="sorfejtesLi();" title="Calculate series">Calculate</button>
         <button class="showpre1" style="width:76px;margin-left:3px" onclick="seriesLiClear();" title="Clear series">Clear</button>
         <p class="kijelzo" id="sorLi"></p>
+        <p id="figy" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
         <section id="fnpl" style="display:none;max-width:calc(100vw - 30px);">
             <div id="plotLi" style="text-align:center;"></div>
         </section>
@@ -83,7 +93,7 @@
         </fieldset>
         <div style="margin-left:2px;padding:3px;">
             <label for="avLi0"><b style="padding: 2px 7px;">a</b> = ( </label>
-            <input type="text" id="avLi0" value="-2,3" name="avLi0"><span> )</span>
+            <input type="text" id="avLi0" value="2,3" name="avLi0"><span> )</span>
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="x0"><b style="padding: 2px 7px;">x0</b> =  </label>
@@ -96,6 +106,19 @@
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="sorfejtesLi0();" title="Calculate series">Calculate</button>
         <button class="showpre1" style="width:76px;margin-left:3px" onclick="seriesLiClear0();" title="Clear series">Clear</button>
         <p class="kijelzo" id="sorLi0"></p>
+        <p id="figy0" style="display:none;padding:0 10px;background-color:#ffdfdf"></p>
+        <hr>
+        <div style="padding: 10px;outline: 2px solid #a88f86;outline-offset: -6px;background-color: #f7e1d4;">
+            <button id="okbtn" class="showpre1" onclick="kuldes0(this);" title="Insert code into editor">PARI</button>
+            <label for="setoutputfont1">&#128474;</label>
+            <input id="outfont-slider1" oninput="setOutputFont1(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont1" />
+        </div>
+        <div id="mycell1" style="margin-top:6px;" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv">
+            <div id="ideout" style="text-align: center;"></div>
+        </div>
     </div>
 
     <div class="keret of odd" id="k3" style="padding-bottom:40px;margin-bottom:0;">
@@ -150,10 +173,11 @@
         <p class="keplet" id="mpout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;line-height: 170%;min-height:20px;"></p>
         <div id="sorftarto">
             <button class="showpre1" style="width:96px;margin-left:10px" onclick="sorfejtes();" title="Calculate series">Series</button> <button class="showpre1" style="width:76px;margin-left:3px" onclick="seriesClear();" title="Clear series">Clear</button>
-            <input id="series-slider" type="range" min="3" max="15" value="5" style="display:inline-block;width:calc(90vw - 200px);vertical-align:middle;" title="set series's length" name="setseries" onchange="setN(this);sorfejtes();"><span id="seriesN"
+            <input id="series-slider" type="range" min="3" max="10" value="5" style="display:inline-block;width:calc(90vw - 200px);vertical-align:middle;" title="set series's length" name="setseries" onchange="setN(this);sorfejtes();"><span id="seriesN"
                 style="margin-left:10px;">5</span>
         </div>
         <p id="keplet_sor" class="kijelzo"></p>
+        <p id="figy1" style="display:none;padding:0 10px;background-color:#ffdfdf"></p>
     </div>
     <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl();" title="Open/Close help">Toggle help</button>
     <div id="helpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
