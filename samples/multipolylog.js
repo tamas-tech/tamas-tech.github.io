@@ -452,6 +452,14 @@ oo2Inf1000 = function(v) {
     return out;
 };
 
+oo2Inf100 = function(v) {
+    var out = v.map(function(y) {
+        if (y == oo) return 100;
+        else return y;
+    });
+    return out;
+};
+
 oostr2Inf = function(v) {
     var out = v.map(function(y) {
         if (y == 'oo') return BIG;
@@ -549,6 +557,7 @@ const oo = 12345678912321;
 const BIG = 1000;
 var SOR = [];
 const pat = new RegExp("(?<=[^,])oo|oo(?=[^,])");
+const maxLi = [0, 50, 50, 50, 50, 40, 30, 20, 20];
 
 urites = function() {
     lepessor = [];
@@ -716,7 +725,12 @@ urites = function() {
 
 setsForma = function() {
     var forma = document.getElementById("setsForma").value;
+    var sf = document.getElementById("sorftarto");
     sForma = forma * 1;
+    if (sForma == 4)
+        sf.style.display = "none";
+    else
+        sf.style.display = "block";
     urites();
 };
 
@@ -863,6 +877,7 @@ function Ha(S, n) {
 function seriesLiClear() {
     var elem = document.querySelector("#sorLi");
     var elemfn = document.querySelector("#fnpl");
+    var elemfigy = document.querySelector("#figy");
     elem.innerText = "";
     functionPlot({
         target: '#plotLi',
@@ -877,17 +892,40 @@ function seriesLiClear() {
         }]
     });
     elemfn.style.display = "none";
+    elemfigy.style.display = "none";
 };
 
-function setNLi(elem) {
-    var N = elem.value;
-    var Nelem = document.getElementById("seriesNLi");
-    Nelem.innerHTML = N;
-    sorfejtesLi();
+function setfigy(str) {
+    var elem = document.getElementById("figy");
+    if (str == "")
+        elem.style.display = "none";
+    else
+        elem.style.display = "block";
+    elem.innerHTML = str;
 };
+
+function setfigy0(str) {
+    var elem = document.getElementById("figy0");
+    if (str == "")
+        elem.style.display = "none";
+    else
+        elem.style.display = "block";
+    elem.innerHTML = str;
+};
+
+function setfigy1(str) {
+    var elem = document.getElementById("figy1");
+    if (str == "")
+        elem.style.display = "none";
+    else
+        elem.style.display = "block";
+    elem.innerHTML = str;
+};
+
 
 function Li(N) {
     var av = document.getElementById("avLi").value;
+    var figy = "";
     var str1 = "";
     var fn = "";
     if (pat.test(av)) {
@@ -911,28 +949,43 @@ function Li(N) {
             av = oo2Inf1000(av);
         };
         var na = av.length;
-        var str0 = "\\text{Li}_{\\left(" + avtxt + "\\right)}\\left(x\\right)\\approx ";
+        var maxN = maxLi[na];
+        if (na > 8) {
+            figy = "Az a vektor hossza (" + na + ") meghaladja a max megengedett 8-at.";
+            str1 = "\\text{" + figy + "}";
+            fn = "0";
+            setfigy(figy);
+            return [str1, fn];
+        } else if (maxN < N) {
+            var slid = document.getElementById("series-sliderLi");
+            figy = " Egy " + na + " hosszú a vektor esetén N legnagyobb megengedett értéke: " + maxN + ". Mivel N beállított értéke (" + N + ") ezt meghaladta, ezért N értékét beállítottuk a maximálisan megengedett " + maxN + " értékre, és végig ezzel számoltunk.\n";
+            N = maxN;
+            slid.value = maxN;
+            setNLi(slid);
+        };
+        var str0 = "\\text{Li}_{\\left(" + avtxt + "\\right)}\\,\\left(x\\right)\\approx ";
         var vege = na + N + 1;
         for (var i = na; i < vege; i++) {
             var ci = Ha(av, i);
             if (i == na) {
                 str1 += ci + "\\,x^{" + i + "}";
-                fn += ci + "*x^" + i
+                fn += ci + "*x^" + i;
             } else {
                 str1 += "+" + Ha(av, i) + "\\,x^{" + i + "}";
                 fn += "+" + ci + "*x^" + i
-            }
+            };
         };
         str1 = str0 + str1;
     } catch (error) {
         sorhiba = true;
     };
-
+    setfigy(figy);
     return [str1, fn];
 };
 
 function Le(N) {
     var av = document.getElementById("avLi").value;
+    var figy = "";
     var str1 = "";
     var fn = "";
     if (pat.test(av)) {
@@ -954,7 +1007,22 @@ function Le(N) {
         var aindx = av.indexOf(oo);
         if (aindx > -1)
             av = oo2Inf1000(av);
-        var str0 = "\\text{Le}_{\\left(" + avtxt + "\\right)}\\left(x\\right)\\approx ";
+        var str0 = "\\text{Le}_{\\left(" + avtxt + "\\right)}\\,\\left(x\\right)\\approx ";
+        var na = av.length;
+        var maxN = maxLi[na];
+        if (na > 8) {
+            figy = "Az a vektor hossza (" + na + ") meghaladja a max megengedett 8-at.";
+            str1 = "\\text{" + figy + "}";
+            fn = "0";
+            setfigy(figy);
+            return [str1, fn];
+        } else if (maxN < N) {
+            var slid = document.getElementById("series-sliderLi");
+            figy = " Egy " + na + " hosszú a vektor esetén N legnagyobb megengedett értéke: " + maxN + ". Mivel N beállított értéke (" + N + ") ezt meghaladta, ezért N értékét beállítottuk a maximálisan megengedett " + maxN + " értékre, és végig ezzel számoltunk.\n";
+            N = maxN;
+            slid.value = maxN;
+            setNLi(slid);
+        };
         var vege = N + 2;
         for (var i = 1; i < vege; i++) {
             var ci = He(av, i);
@@ -973,6 +1041,7 @@ function Le(N) {
 
     return [str1, fn];
 };
+
 
 function sorfejtesLi() {
     sorhiba = false;
@@ -1028,7 +1097,9 @@ function sorfejtesLi() {
 
 function seriesLiClear0() {
     var elem = document.querySelector("#sorLi0");
+    var elemfigy = document.querySelector("#figy0");
     elem.innerText = "";
+    elemfigy.style.display = "none";
 };
 
 function setNLi0(elem) {
@@ -1037,10 +1108,24 @@ function setNLi0(elem) {
     Nelem.innerHTML = N;
 };
 
+function setNLi(elem) {
+    var N = elem.value;
+    var Nelem = document.getElementById("seriesNLi");
+    Nelem.innerHTML = N;
+    sorfejtesLi();
+};
+
+function setNLi1(elem) {
+    var N = elem.value;
+    var Nelem = document.getElementById("seriesN");
+    Nelem.innerHTML = N;
+};
+
 function Li0(N, x0) {
     var av = document.getElementById("avLi0").value;
+    var figy = "";
     var avtxt = av.replaceAll('oo', '∞');
-    var txt = "\\text{Li}_{\\left(" + avtxt + "\\right)}\\left(" + x0 + "\\right)\\approx ";
+    var txt = "\\text{Li}_{\\left(" + avtxt + "\\right)}\\,\\left(" + x0 + "\\right)\\approx ";
     var fn = 0;
     if (av == "") {
         txt = "\\text{Li}_{∅}\\approx ";
@@ -1056,6 +1141,20 @@ function Li0(N, x0) {
         av = av.replaceAll('oo', oo);
         try {
             av = JSON.parse(av);
+            var na = av.length;
+            var maxN = maxLi[na];
+            if (na > 8) {
+                figy = "Az a vektor hossza (" + na + ") meghaladja a max megengedett 8-at.";
+                txt = "\\text{" + figy + "}";
+                setfigy0(figy);
+                return txt;
+            } else if (maxN < N) {
+                var slid = document.getElementById("series-sliderLi0");
+                figy = " Egy " + na + " hosszú a vektor esetén N legnagyobb megengedett értéke: " + maxN + ". Mivel N beállított értéke (" + N + ") ezt meghaladta, ezért N értékét beállítottuk a maximálisan megengedett " + maxN + " értékre, és végig ezzel számoltunk.\n";
+                N = maxN;
+                slid.value = maxN;
+                setNLi0(slid);
+            };
             var aindx = av.indexOf(oo);
             if (aindx > -1)
                 av = oo2Inf1000(av);
@@ -1069,13 +1168,15 @@ function Li0(N, x0) {
             fn += Ha(av, i) * Math.pow(x0, i);
         };
     };
+    setfigy0(figy);
     return txt + fn;
 };
 
 function Le0(N, x0) {
     var av = document.getElementById("avLi0").value;
+    var figy = "";
     var avtxt = av.replaceAll('oo', '∞');
-    var txt = "\\text{Le}_{\\left(" + avtxt + "\\right)}\\left(" + x0 + "\\right)\\approx ";
+    var txt = "\\text{Le}_{\\left(" + avtxt + "\\right)}\\,\\left(" + x0 + "\\right)\\approx ";
     var fn = 0;
     if (av == "") {
         txt = "\\text{Li}_{∅}\\approx ";
@@ -1093,6 +1194,20 @@ function Le0(N, x0) {
         try {
             av = JSON.parse(av);
             var aindx = av.indexOf(oo);
+            var na = av.length;
+            var maxN = maxLi[na];
+            if (na > 8) {
+                figy = "Az a vektor hossza (" + na + ") meghaladja a max megengedett 8-at.";
+                txt = "\\text{" + figy + "}";
+                setfigy0(figy);
+                return txt;
+            } else if (maxN < N) {
+                var slid = document.getElementById("series-sliderLi0");
+                figy = " Egy " + na + " hosszú a vektor esetén N legnagyobb megengedett értéke: " + maxN + ". Mivel N beállított értéke (" + N + ") ezt meghaladta, ezért N értékét beállítottuk a maximálisan megengedett " + maxN + " értékre, és végig ezzel számoltunk.\n";
+                N = maxN;
+                slid.value = maxN;
+                setNLi0(slid);
+            };
             if (aindx > -1)
                 av = oo2Inf1000(av);
         } catch (error) {
@@ -1107,6 +1222,7 @@ function Le0(N, x0) {
             fn += He(av, i) * Math.pow(x0, i);
         };
     }
+    setfigy0(figy);
     return txt + fn;
 };
 
@@ -1225,7 +1341,8 @@ var sorhiba = false;
 function LiLi(N) {
     var av = document.getElementById("av").value;
     var bv = document.getElementById("bv").value;
-
+    var n = document.getElementById("series-slider").value;
+    var figy = "";
     if (pat.test(av) || pat.test(bv)) {
         sorhiba = true;
         return;
@@ -1265,13 +1382,22 @@ function LiLi(N) {
 
     var na = av.length;
     var nb = bv.length;
-    var str0 = "\\int\\frac{1}{x}\\,\\text{Li}_{\\left(" + avtxt + "\\right)}\\left(x\\right)\\cdot\\text{Li}_{\\left(" + bvtxt + "\\right)}\\left(x\\right)\\,\\text{d}x &=";
+    if ((na + nb) * n > 90) {
+        N = Math.max(3, Math.ceil(90 / (na + nb)));
+        var slid = document.getElementById("series-slider");
+        var N0 = slid.value;
+        figy = " Az adott számítás legfeljebb " + N + " értékkel megengedett. Mivel N beállított értéke (" + N0 + ") ezt meghaladta, ezért N értékét beállítottuk a maximálisan megengedett " + N + " értékre, és végig ezzel számoltunk.\n";
+        slid.value = N;
+        setNLi1(slid);
+        //return str;
+    };
+    var str0 = "\\int\\frac{1}{x}\\,\\text{Li}_{\\left(" + avtxt + "\\right)}\\,\\left(x\\right)\\cdot\\text{Li}_{\\left(" + bvtxt + "\\right)}\\,\\left(x\\right)\\,\\text{d}x &=";
     var str1 = "";
     var hezag = "";
     if (N > 4)
         hezag = "\\hspace{" + (0.05 * N + 0.1) + "cm}";
     var kezdo = na + nb;
-    var vege = kezdo + N + 1;
+    var vege = kezdo + N;
     for (var i = kezdo; i < vege; i++) {
         if (i == kezdo)
             str1 += HaIntxk(av, bv, i) + "\\,x^{" + i + "}";
@@ -1287,13 +1413,15 @@ function LiLi(N) {
             str2 += "+" + HaSORxk(i) + "\\,x^{" + i + "}";
     };
     str2 += "\\end{align}"
+    setfigy1(figy);
     return str1 + str2;
 };
 
 function LeLe(N) {
     var av = document.getElementById("av").value;
     var bv = document.getElementById("bv").value;
-
+    var n = document.getElementById("series-slider").value;
+    var figy = "";
     if (pat.test(av) || pat.test(bv)) {
         sorhiba = true;
         return;
@@ -1330,14 +1458,22 @@ function LeLe(N) {
         sorhiba = true;
         return;
     };
-
-    var str0 = "\\int\\frac{1}{x}\\,\\text{Le}_{\\left(" + avtxt + "\\right)}\\left(x\\right)\\cdot\\text{Le}_{\\left(" + bvtxt + "\\right)}\\left(x\\right)\\,\\text{d}x &=";
+    var na = av.length;
+    var nb = bv.length;
+    if ((na + nb) * n > 150) {
+        N = Math.max(3, Math.ceil(140 / (na + nb)));
+        var slid = document.getElementById("series-slider");
+        var N0 = slid.value;
+        figy = " Az adott számítás legfeljebb " + N + " értékkel megengedett. Mivel N beállított értéke (" + N0 + ") ezt meghaladta, ezért N értékét beállítottuk a maximálisan megengedett " + N + " értékre, és végig ezzel számoltunk.\n";
+        slid.value = N;
+        setNLi1(slid);
+    };
+    var str0 = "\\int\\frac{1}{x}\\,\\text{Le}_{\\left(" + avtxt + "\\right)}\\,\\left(x\\right)\\cdot\\text{Le}_{\\left(" + bvtxt + "\\right)}\\,\\left(x\\right)\\,\\text{d}x &=";
     var str1 = "";
-    var hezag = "";
     if (N > 4)
         hezag = "\\hspace{" + (0.05 * N + 1.4) + "cm}";
     var kezdo = 1;
-    var vege = kezdo + N + 1;
+    var vege = kezdo + N;
     for (var i = kezdo; i < vege; i++) {
         if (i == kezdo)
             str1 += HeIntxk(av, bv, i) + "\\,x^{" + i + "}";
@@ -1353,6 +1489,7 @@ function LeLe(N) {
             str2 += "+" + HeSORxk(i) + "\\,x^{" + i + "}";
     };
     str2 += "\\end{align}"
+    setfigy1(figy);
     return str1 + str2;
 };
 
@@ -1363,11 +1500,15 @@ function setN(elem) {
 };
 
 function sorfejtes() {
+    //var n = SOR.length;
     sorhiba = false;
     var lengtelem = document.querySelector("#series-slider");
     var elem = document.querySelector("#keplet_sor");
     var N = lengtelem.value * 1;
     var txt = "";
+    /* if (n > 30)
+        elem.innerText = "\\[\\text{Legfeljebb 30 hosszu urites sorfejtese megengedett!}\\]";
+    else  */
     if (mode == "Li") {
         txt = LiLi(N)
         if (!sorhiba)
@@ -1386,7 +1527,9 @@ function sorfejtes() {
 
 function seriesClear() {
     var elem = document.querySelector("#keplet_sor");
+    var elemfigy = document.querySelector("#figy1");
     elem.innerText = "";
+    elemfigy.style.display = "none";
 };
 
 function big2inf(x) {
@@ -1472,3 +1615,54 @@ function LiMatrix(a, b) {
     elem.innerHTML = out;
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
+
+// SageMathCell
+
+function LiLe0PARI() {
+    var av = document.getElementById("avLi0").value;
+    var x0 = document.querySelector("#x0").value * 1;
+    var pari = "";
+    var avtxt = av.replaceAll('oo', '∞');
+    var txt = "\\text{Li}_{\\left(" + avtxt + "\\right)}\\,\\left(" + x0 + "\\right) = ";
+    var kapcs = "0";
+    if (mode1 == "Le")
+        kapcs = "1";
+    if (av == "") {
+        pari = "show(LatexExpr(r'" + txt + "'),1)";
+    } else {
+        if (!av.startsWith("[")) {
+            av = "[" + av;
+        }
+        if (!av.endsWith("]")) {
+            av = av + "]";
+        };
+
+        av = av.replaceAll('oo', oo);
+        try {
+            av = JSON.parse(av);
+            var na = av.length;
+            var aindx = av.indexOf(oo);
+            if (aindx > -1)
+                av = oo2Inf100(av);
+            var xv = Array(na).fill(1);
+            xv[0] = x0;
+            pari = "a = " + "gp(\"polylogmult(" + JSON.stringify(av) + "," + JSON.stringify(xv) + "," + kapcs + ")\");show(LatexExpr(r'" + txt + "'),a)";
+        } catch (error) {
+            pari = error;
+        };
+    };
+    return pari;
+};
+
+function setOutputFont1(v) {
+    $('div.sagecell_sessionOutput,div.sagecell_sessionOutput pre').css('font-size', v + 'px');
+};
+
+$(document).ready(function() {
+    document.getElementById("okbtn").onclick = function() {
+        var txt = LiLe0PARI();
+        $('#mycell1 .sagecell_editor textarea.sagecell_commands').val(txt);
+        $('#mycell1 .sagecell_input button.sagecell_evalButton').click();
+        setOutputFont1($('#outfont-slider1').val());
+    };
+});
