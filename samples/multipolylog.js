@@ -428,6 +428,14 @@ oo2Inf = function(v) {
     return out;
 };
 
+oo2strInf = function(v) {
+    var out = v.map(function(y) {
+        if (y == oo) return "∞";
+        else return y;
+    });
+    return out;
+};
+
 Inf2oo = function(v) {
     var out = v.map(function(y) {
         if (y == Infinity) return 'oo';
@@ -557,7 +565,7 @@ const oo = 12345678912321;
 const BIG = 1000;
 var SOR = [];
 const pat = new RegExp("(?<=[^,])oo|oo(?=[^,])");
-const maxLi = [0, 50, 50, 50, 50, 40, 30, 20, 20];
+const maxLi = [100, 100, 100, 100, 100, 100, 60, 40, 30, 25, 20];
 
 urites = function() {
     lepessor = [];
@@ -834,7 +842,7 @@ function setOutputFont(v) {
 
 /*   Ha, He  implementálása  */
 
-function He(S, k) {
+function HeREGI(S, k) {
     var n, SS, h, g;
     n = S.length;
     if (n == 0)
@@ -853,10 +861,57 @@ function He(S, k) {
     return h;
 };
 
+function He(S, n) {
+    var r, SS, h, g;
+    r = S.length;
+    if (r == 0 && n == 0)
+        h = 1;
+    else if (r == 0 && n > 0)
+        h = 0;
+    else if (n == 0 && r > 0)
+        h = 0;
+    else if (r == 1)
+        h = 1 / Math.pow(n, S[0]);
+    else {
+        SS = S.slice(1);
+        var hh = 1 / Math.pow(n, S[0]);
+        g = new Array(n)
+        for (var i = 0; i < n; i++) {
+            g[i] = He(SS, i + 1);
+        };
+        h = _.sum(g) * hh;
+    }
+    return h;
+};
+
+function Hez(S, n) {
+    var r, SS, h, g;
+    r = S.length;
+    if (r == 0)
+        h = 1;
+    else if (r == 1) {
+        var S1 = S[0];
+        h = He([0, S1], n);
+    } else {
+        SS = S.slice(1);
+        var S1 = S[0];
+        g = new Array(n)
+        for (var i = 1; i < n + 1; i++) {
+            g[i] = Hez(SS, i) / Math.pow(i, S1);
+        };
+        h = _.sum(g);
+    }
+    return h;
+};
+
 function Ha(S, n) {
     var r, SS, h, g;
     r = S.length;
-    if (n < r)
+    if (r == 0 && n == 0)
+        h = 1;
+    else if (r == 0 && n > 0)
+        h = 0;
+    else if (n < r)
         h = 0;
     else if (r == 1)
         h = 1 / Math.pow(n, S[0]);
@@ -868,6 +923,28 @@ function Ha(S, n) {
             g[i] = Ha(SS, i);
         };
         h = _.sum(g) * hh;
+    }
+    return h;
+};
+
+function Haz(S, n) {
+    var r, SS, h, g;
+    r = S.length;
+    if (n < r)
+        h = 0;
+    else if (r == 0)
+        h = 1;
+    else if (r == 1) {
+        var S1 = S[0];
+        h = Ha([1, S1], n + 1) * (n + 1);
+    } else {
+        SS = S.slice(1);
+        var S1 = S[0];
+        g = new Array();
+        for (var i = r - 1; i < n + 1; i++) {
+            g[i] = Haz(SS, i - 1) / Math.pow(i, S1);
+        };
+        h = _.sum(g);
     }
     return h;
 };
@@ -950,8 +1027,8 @@ function Li(N) {
         };
         var na = av.length;
         var maxN = maxLi[na];
-        if (na > 8) {
-            figy = "Az a vektor hossza (" + na + ") meghaladja a max megengedett 8-at.";
+        if (na > 10) {
+            figy = "Az a vektor hossza (" + na + ") meghaladja a maximalisan megengedett 10-et.";
             str1 = "\\text{" + figy + "}";
             fn = "0";
             setfigy(figy);
@@ -971,7 +1048,7 @@ function Li(N) {
                 str1 += ci + "\\,x^{" + i + "}";
                 fn += ci + "*x^" + i;
             } else {
-                str1 += "+" + Ha(av, i) + "\\,x^{" + i + "}";
+                str1 += "+" + ci + "\\,x^{" + i + "}";
                 fn += "+" + ci + "*x^" + i
             };
         };
@@ -1010,8 +1087,8 @@ function Le(N) {
         var str0 = "\\text{Le}_{\\left(" + avtxt + "\\right)}\\,\\left(x\\right)\\approx ";
         var na = av.length;
         var maxN = maxLi[na];
-        if (na > 8) {
-            figy = "Az a vektor hossza (" + na + ") meghaladja a max megengedett 8-at.";
+        if (na > 10) {
+            figy = "Az a vektor hossza (" + na + ") meghaladja a maximalisan megengedett 10-et.";
             str1 = "\\text{" + figy + "}";
             fn = "0";
             setfigy(figy);
@@ -1024,13 +1101,13 @@ function Le(N) {
             setNLi(slid);
         };
         var vege = N + 2;
-        for (var i = 1; i < vege; i++) {
+        for (var i = 0; i < vege; i++) {
             var ci = He(av, i);
-            if (i == 1) {
+            if (i == 0) {
                 str1 += ci + "\\,x^{" + i + "}";
                 fn += ci + "*x^" + i
             } else {
-                str1 += "+" + He(av, i) + "\\,x^{" + i + "}";
+                str1 += "+" + ci + "\\,x^{" + i + "}";
                 fn += "+" + ci + "*x^" + i
             }
         };
@@ -1038,7 +1115,7 @@ function Le(N) {
     } catch (error) {
         sorhiba = true;
     };
-
+    setfigy(figy);
     return [str1, fn];
 };
 
@@ -1073,7 +1150,7 @@ function sorfejtesLi() {
             title: mode1 + "_a(x)",
             grid: true,
             yAxis: {
-                domain: [-1, 1]
+                domain: [-1, 1.2]
             },
             xAxis: {
                 domain: [-1, 1]
@@ -1121,6 +1198,12 @@ function setNLi1(elem) {
     Nelem.innerHTML = N;
 };
 
+function setn(elem) {
+    var n = elem.value;
+    var Nelem = document.getElementById("nkijelzo");
+    Nelem.innerHTML = n;
+};
+
 function Li0(N, x0) {
     var av = document.getElementById("avLi0").value;
     var figy = "";
@@ -1143,8 +1226,8 @@ function Li0(N, x0) {
             av = JSON.parse(av);
             var na = av.length;
             var maxN = maxLi[na];
-            if (na > 8) {
-                figy = "Az a vektor hossza (" + na + ") meghaladja a max megengedett 8-at.";
+            if (na > 10) {
+                figy = "Az a vektor hossza (" + na + ") meghaladja a maximalisan megengedett 10-et.";
                 txt = "\\text{" + figy + "}";
                 setfigy0(figy);
                 return txt;
@@ -1196,8 +1279,8 @@ function Le0(N, x0) {
             var aindx = av.indexOf(oo);
             var na = av.length;
             var maxN = maxLi[na];
-            if (na > 8) {
-                figy = "Az a vektor hossza (" + na + ") meghaladja a max megengedett 8-at.";
+            if (na > 10) {
+                figy = "Az a vektor hossza (" + na + ") meghaladja a maximalisan megengedett 10-et.";
                 txt = "\\text{" + figy + "}";
                 setfigy0(figy);
                 return txt;
@@ -1382,8 +1465,8 @@ function LiLi(N) {
 
     var na = av.length;
     var nb = bv.length;
-    if ((na + nb) * n > 90) {
-        N = Math.max(3, Math.ceil(90 / (na + nb)));
+    if ((na + nb) * n > 120) {
+        N = Math.max(3, Math.ceil(120 / (na + nb)));
         var slid = document.getElementById("series-slider");
         var N0 = slid.value;
         figy = " Az adott számítás legfeljebb " + N + " értékkel megengedett. Mivel N beállított értéke (" + N0 + ") ezt meghaladta, ezért N értékét beállítottuk a maximálisan megengedett " + N + " értékre, és végig ezzel számoltunk.\n";
@@ -1460,7 +1543,7 @@ function LeLe(N) {
     };
     var na = av.length;
     var nb = bv.length;
-    if ((na + nb) * n > 150) {
+    if ((na + nb) * n > 180) {
         N = Math.max(3, Math.ceil(140 / (na + nb)));
         var slid = document.getElementById("series-slider");
         var N0 = slid.value;
@@ -1666,3 +1749,228 @@ $(document).ready(function() {
         setOutputFont1($('#outfont-slider1').val());
     };
 });
+
+// H,ZETA
+const Hmax = 500;
+
+const binomial = (n, k) => {
+    if (Number.isNaN(n) || Number.isNaN(k)) return NaN;
+    if (k < 0 || k > n) return 0;
+    if (k === 0 || k === n) return 1;
+    if (k === 1 || k === n - 1) return n;
+    if (n - k < k) k = n - k;
+
+    let res = n;
+    for (let i = 2; i <= k; i++) res *= (n - i + 1) / i;
+    return Math.round(res);
+};
+
+function HClear() {
+    var elem = document.querySelector("#H");
+    var elem1 = document.querySelector("#Hs");
+    var elem2 = document.querySelector("#Z");
+    var elem3 = document.querySelector("#Zs");
+    var elemfigy = document.querySelector("#figyH");
+    elem.innerText = "";
+    elem1.innerText = "";
+    elem2.innerText = "";
+    elem3.innerText = "";
+    elemfigy.style.display = "none";
+};
+
+function kiszed_av(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        return [];
+    };
+    //var avtxt = av.replaceAll('oo', '∞');
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        /*  var aindx = av.indexOf(oo);
+         if (aindx > -1) {
+             av = oo2Inf1000(av);
+         }; */
+
+    } catch (error) {
+        console.log(error);
+        return;
+    };
+    return av;
+};
+
+function toABC() {
+    let sv = kiszed_av("sv");
+    let num = Math.min(6, sv[0]);
+    let ABC = ["a", "b", "c", "d", "e", "f"]
+    let str = '';
+    for (var i = 0; i < num; i++)
+        str += "\"" + ABC[i] + "\",";
+    //str += "\"s_" + (i + 1).toString() + "\",";
+    str = str.slice(0, -1);
+    document.getElementById("sv").value = str;
+};
+
+function Combnr(n, r, ism) {
+    const nv = Array.from({ length: n }, (_, i) => n - i);
+    const c = new YourCombinations(nv);
+    let cb = c.combinations(r, ism);
+    return cb;
+};
+
+function zhFormaz(nv, sv) {
+    var ooindx = sv.indexOf(oo);
+    if (ooindx > -1)
+        sv = oo2strInf(sv);
+    var txt = "+\\frac{1}{";
+    const nl = nv.length;
+    for (let i = 0; i < nl - 1; i++) {
+        txt += nv[i] + "^{" + sv[i] + "}\\cdot "
+    };
+    txt += nv[nl - 1] + "^{" + sv[nl - 1] + "}}"
+    return txt;
+};
+
+function Hltx(sv, n, ism) {
+    const r = sv.length;
+    const sv1 = sv.slice(1);
+    let n1 = n;
+    if (!ism)
+        n1 = n - 1;
+    let cb = Combnr(n1, r - 1, ism);
+    let cs = "";
+    let koz = "";
+    var Hv;
+    var meret = 1;
+    if (ism) {
+        cs = "*";
+        Hv = He(sv, n);
+        meret = binomial(n + r - 2, r - 1) * (r - 3);
+    } else {
+        Hv = Ha(sv, n);
+        meret = binomial(n - 1, r - 1) * (r - 1);
+    };
+    if (!isNaN(Hv))
+        koz = "\\approx" + Hv;
+    var ooindx = sv.indexOf(oo);
+    if (ooindx > -1)
+        sv = oo2strInf(sv);
+    const sltx = "(" + JSON.stringify(sv).replaceAll('"', '').slice(1, -1) + ")";
+    var ltx = "";
+    if (r == 0) {
+        if (n == 0)
+            ltx = 1;
+        else
+            ltx = 0;
+        ltx = "{\\rm H}_{" + n + "}^{" + cs + sltx + "}=" + ltx;
+        return ltx;
+    };
+    if (r == 1) {
+        ltx = "\\frac{1}{" + n + "^{" + sv[0] + "}}";
+        ltx = "{\\rm H}_{" + n + "}^{" + cs + sltx + "}=" + ltx + koz;
+        return ltx;
+    };
+
+    if (meret > Hmax)
+        ltx = "\\text{ Az osszeg merete meghaladja a " + Hmax + "-at}";
+    else {
+        while (true) {
+            const item = cb.next();
+            if (item.done) break;
+            ltx += zhFormaz(item.value, sv1);
+        };
+        ltx = ltx.slice(1);
+    };
+    if (ltx == "")
+        ltx = 0;
+    else
+        ltx = "\\frac{1}{" + n + "^{" + sv[0] + "}}\\left(" + ltx + "\\right)";
+    ltx = "{\\rm H}_{" + n + "}^{" + cs + sltx + "}=" + ltx + koz;
+    return ltx;
+};
+
+function zetaltx(sv, n, ism) {
+    const r = sv.length;
+    let cb = Combnr(n, r, ism);
+    let cs = "";
+    let koz = "";
+    var Zv;
+    var meret = 1;
+    if (ism) {
+        cs = "^{*}";
+        Zv = Hez(sv, n);
+        meret = binomial(n + r - 1, r) * (r - 2);
+    } else {
+        Zv = Haz(sv, n);
+        meret = binomial(n, r) * (r - 2);
+    };
+    var ooindx = sv.indexOf(oo);
+    if (ooindx > -1)
+        sv = oo2strInf(sv);
+    const sltx = "(" + JSON.stringify(sv).replaceAll('"', '').slice(1, -1) + ")";
+    var ltx = "";
+    if (r == 0) {
+        ltx = 1;
+        if (n == 1)
+            ltx = 1;
+        ltx = "{\\zeta}_{" + n + "}" + cs + "{" + sltx + "}=" + ltx;
+        return ltx;
+    };
+    if (meret > Hmax)
+        ltx = "\\text{ Az osszeg merete meghaladja a " + Hmax + "-at}";
+    else {
+        while (true) {
+            const item = cb.next();
+            if (item.done) break;
+            ltx += zhFormaz(item.value, sv);
+        };
+        ltx = ltx.slice(1);
+    }
+    if (ltx == "")
+        ltx = 0;
+    if (!isNaN(Zv))
+        koz = "\\approx" + Zv;
+    ltx = "{\\zeta}_{" + n + "}" + cs + "{" + sltx + "}=" + ltx + koz;
+    return ltx;
+};
+
+
+function kitoltH(n, ism, idfrom, idto) {
+    const sv = kiszed_av(idfrom);
+    const elemto = document.getElementById(idto);
+    let ltx = "";
+    if (sv == undefined)
+        ltx = "\\text{Hibas s vektor}";
+    else
+        ltx = Hltx(sv, n, ism);
+    elemto.innerHTML = "\\[" + ltx + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemto]);
+};
+
+function kitoltZ(n, ism, idfrom, idto) {
+    const sv = kiszed_av(idfrom);
+    const elemto = document.getElementById(idto);
+    let ltx = "";
+    if (sv == undefined)
+        ltx = "\\text{Hibas s vektor}"
+    else
+        ltx = zetaltx(sv, n, ism);
+    elemto.innerHTML = "\\[" + ltx + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemto]);
+};
+
+function HZszamitas() {
+    const n = document.getElementById("n").value * 1;
+    kitoltH(n, false, "sv", "H");
+    kitoltH(n, true, "sv", "Hs");
+    kitoltZ(n, false, "sv", "Z");
+    kitoltZ(n, true, "sv", "Zs");
+};
