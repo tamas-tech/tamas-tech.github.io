@@ -8,18 +8,29 @@
     <link rel="stylesheet" href="samples.css">
     <script src="multipolylog.js"></script>
     <!-- from cdn -->
-    <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
-    <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script> -->
 
+    <!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.9.5/function-plot.js"></script>  -->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> -->
+
+    <!-- from local -->
+
+
+    <script src="../MathJax-2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="../tools/lodash.min.js"></script>
+    <script src="../tools/d3.v3.min.js"></script>
+    <script src="../tools/function-plot.js"></script>
+    <script src="../tools/CombinationsJS/YourCombinations.js"></script>
     <script>
         MathJax.Hub.Config({
             tex2jax: {
                 preview: "none"
             },
         });
-        
+
         sagecell.makeSagecell({
             inputLocation: '#mycell1',
             outputLocation: '#ideout',
@@ -34,6 +45,28 @@
 <body style="overflow:scroll;">
 
     <h1>Generalized Polylogarithm Function</h1>
+    <div class="keret of odd" id="k0">
+        <b><big class="sorszam">0.</big></b>
+        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} {\rm H}_{n}^{(s_{1},s_{2},\ldots,s_{r})}:=\sum_{n=n_{1}>n_{2}>\cdots>n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}}\\ \\ {\rm \zeta}_{n}(s_{1},s_{2},\ldots,s_{r}):=\sum_{n\geq n_{1}>n_{2}>\cdots>n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots
+            n_{r}^{s_{r}}}\\ \\ {\rm H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})}:=\sum_{n=n_{1}\geq n_{2}\geq\cdots\geq n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}}\\ \\ {\rm \zeta}_{n}^{*}(s_{1},s_{2},\ldots,s_{r}):=\sum_{n\geq n_{1}\geq
+            n_{2}\geq\cdots\geq n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}} \end{gather*}\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="sv"><b style="padding: 2px 7px;">s</b> = ( </label>
+            <input type="text" id="sv" value="2,3" name="sv"><span> )</span><button id="ABC" onclick="toABC();" style="margin-left:5px;">ABC</button>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">n</b> = </label><span id="nkijelzo" style="display:inline-block;width:20px;">5</span>
+            <input id="n" type="range" min="0" max="12" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set n" name="n" onchange="setn(this);">
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="HZszamitas();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="HClear();" title="Clear series">Clear</button>
+        <p class="kijelzo" id="H" style="margin-bottom:2px;"></p>
+        <p class="kijelzo tomor" id="Hs"></p>
+        <p class="kijelzo tomor" id="Z"></p>
+        <p class="kijelzo tomor" id="Zs"></p>
+        <p id="figyH" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+    </div>
 
     <div class="keret of odd" id="k1">
         <b><big class="sorszam">1.</big></b>
@@ -54,7 +87,7 @@
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">N</b> = </label><span id="seriesNLi" style="display:inline-block;width:20px;">5</span>
-            <input id="series-sliderLi" type="range" min="3" max="50" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set series's length" name="setseriesLi" onchange="setNLi(this);">
+            <input id="series-sliderLi" type="range" min="3" max="100" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set series's length" name="setseriesLi" onchange="setNLi(this);">
         </div>
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="sorfejtesLi();" title="Calculate series">Calculate</button>
         <button class="showpre1" style="width:76px;margin-left:3px" onclick="seriesLiClear();" title="Clear series">Clear</button>
@@ -100,8 +133,8 @@
             <input type="text" id="x0" value="0.5" name="x0">
         </div>
         <div style="margin-left:2px;padding:3px;">
-            <label><b style="padding: 2px 7px;">N</b> = </label><span id="seriesNLi0" style="display:inline-block;width:20px;">5</span>
-            <input id="series-sliderLi0" type="range" min="20" max="50" value="25" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set series's length" name="setseriesLi0" onchange="setNLi0(this);sorfejtesLi0();">
+            <label><b style="padding: 2px 7px;">N</b> = </label><span id="seriesNLi0" style="display:inline-block;width:20px;">25</span>
+            <input id="series-sliderLi0" type="range" min="20" max="100" value="25" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set series's length" name="setseriesLi0" onchange="setNLi0(this);sorfejtesLi0();">
         </div>
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="sorfejtesLi0();" title="Calculate series">Calculate</button>
         <button class="showpre1" style="width:76px;margin-left:3px" onclick="seriesLiClear0();" title="Clear series">Clear</button>
