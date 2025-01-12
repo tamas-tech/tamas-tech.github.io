@@ -34,32 +34,66 @@
 
 <body style="overflow:scroll;">
 
-    <h1>Generalized Polylogarithm Function</h1>
-    <div class="keret of odd" id="k0">
-        <b><big class="sorszam">0.</big></b>
+     <h1>Generalized Polylogarithm Function</h1>
+    <div class="keret of odd" id="k1">
+        <b><big class="sorszam">1.</big></b>
         <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} {\rm H}_{n}^{(s_{1},s_{2},\ldots,s_{r})}:=\sum_{n=n_{1}>n_{2}>\cdots>n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}}\\ \\ {\rm \zeta}_{n}(s_{1},s_{2},\ldots,s_{r}):=\sum_{n\geq n_{1}>n_{2}>\cdots>n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots
             n_{r}^{s_{r}}}\\ \\ {\rm H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})}:=\sum_{n=n_{1}\geq n_{2}\geq\cdots\geq n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}}\\ \\ {\rm \zeta}_{n}^{*}(s_{1},s_{2},\ldots,s_{r}):=\sum_{n\geq n_{1}\geq
             n_{2}\geq\cdots\geq n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}} \end{gather*}\]
         </p>
         <div style="margin-left:2px;padding:3px;">
             <label for="sv"><b style="padding: 2px 7px;">s</b> = ( </label>
-            <input type="text" id="sv" value="2,3" name="sv"><span> )</span><button id="ABC" onclick="toABC();" style="margin-left:5px;">ABC</button>
+            <input type="text" id="sv" value="2,3" name="sv"><span> )</span><button id="ABC" onclick="toABC('sv');" style="margin-left:5px;">ABC</button>
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">n</b> = </label><span id="nkijelzo" style="display:inline-block;width:20px;">5</span>
-            <input id="n" type="range" min="0" max="12" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set n" name="n" onchange="setn(this);">
+            <input id="n" type="range" min="0" max="12" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set n" name="n" onchange="setn(this,'n');">
         </div>
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="HZszamitas();" title="Calculate series">Calculate</button>
-        <button class="showpre1" style="width:76px;margin-left:3px" onclick="HClear();" title="Clear series">Clear</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="HClear(true);" title="Clear series">Clear</button>
+        <p id="figyH" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
         <p class="kijelzo" id="H" style="margin-bottom:2px;"></p>
         <p class="kijelzo tomor" id="Hs"></p>
         <p class="kijelzo tomor" id="Z"></p>
         <p class="kijelzo tomor" id="Zs"></p>
-        <p id="figyH" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     </div>
 
-    <div class="keret of odd" id="k1">
-        <b><big class="sorszam">1.</big></b>
+    <div class="keret of even" id="k2">
+        <b><big class="sorszam">2.</big></b>
+        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} {\rm H}_{n}^{(s_{1},s_{2},\ldots,s_{r})}:=\sum_{\bullet\in\{"+",","\}}{\rm (-1)}^{|(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})|}\cdot{\rm H}_{n}^{*(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})}\\ \\ {\rm H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})}:=\sum_{\bullet\in\{"+",","\}}{\rm
+            H}_{n}^{(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})}\\ \\ {\rm \zeta}_{n}(s_{1},s_{2},\ldots,s_{r}):=\sum_{\bullet\in\{"+",","\}}{\rm (-1)}^{|(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})|}\cdot{\rm \zeta}_{n}^{*}(s_{1}\bullet s_{2}\bullet\cdots\bullet
+            s_{r})\\ \\ {\rm \zeta}_{n}^{*}(s_{1},s_{2},\ldots,s_{r}):=\sum_{\bullet\in\{"+",","\}}{\rm \zeta}_{n}(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r}) \end{gather*}\]
+        </p>
+        <fieldset style="border:1px solid #ccc;border-radius:3px;">
+            <legend>Please select a type:</legend>
+            <div>
+                <input type="radio" id="choiceH" name="choiceH" value="H" onchange="setHmode(this);" checked="true">
+                <label for="choiceH">H<sub>n</sub></label>
+                <input type="radio" id="choiceHs" name="choiceH" value="Hs" style="margin-left:30px;" onchange="setHmode(this);">
+                <label for="choiceHs">H<sub>n</sub><sup style="margin-left:-8px;">*</sup></label>
+                <input type="radio" id="choiceZ" name="choiceH" value="Z" style="margin-left:30px;" onchange="setHmode(this);">
+                <label for="choiceZ"><b>&zeta;<sub>n</sub></b></label>
+                <input type="radio" id="choiceZs" name="choiceH" value="Zs" style="margin-left:30px;" onchange="setHmode(this);">
+                <label for="choiceZs"><b>&zeta;<sub>n</sub><sup style="margin-left:-8px;">*</sup></b></label>
+            </div>
+        </fieldset>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="sv1"><b style="padding: 2px 7px;">s</b> = ( </label>
+            <input type="text" id="sv1" value="2,3,4,2,-2,3" name="sv"><span> )</span><button id="ABC1" onclick="toABC('sv1');" style="margin-left:5px;">ABC</button>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">n</b> = </label><span id="n1kijelzo" style="display:inline-block;width:20px;">5</span>
+            <input id="n1" type="range" min="0" max="12" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set n" name="n" onchange="setn(this,'n1');">
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="azonHecmplusHa();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="HcomClear();" title="Clear series">Clear</button><input id="outfont-slider1" oninput="setOutputFontHacom(this.value);" type="range" min="16" max="30" value="20" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;"
+            title="set output's fontsize" name="setoutputfont1"> <input type="checkbox" name="Hreszletes" id="Hreszlet" style="margin-left:10px;height:20px;width:20px;" onchange="setHreszletes(this);"> <label for="Hreszletes"> Részletesen </label>
+        <p id="figyHacom" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+        <p class="kijelzo" id="Hacom" style="margin-bottom:2px;font-size: 20px;"></p>
+    </div>
+
+    <div class="keret of odd" id="k3">
+        <b><big class="sorszam">3.</big></b>
         <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[{\rm Li}_{(a_1,\ldots,a_n)}(x)\hspace{2mm}\text{and}\hspace{2mm}{\rm Le}_{(a_1,\ldots,a_n)}(x)\]</p>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
             <legend>Please select a function:</legend>
@@ -101,8 +135,8 @@
         });
     </script>
 
-    <div class="keret of even" id="k2">
-        <b><big class="sorszam">2.</big></b>
+    <div class="keret of even" id="k4">
+        <b><big class="sorszam">4.</big></b>
         <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[{\rm Li}_{(a_1,\ldots,a_n)}(x_0)\hspace{2mm}\text{and}\hspace{2mm}{\rm Le}_{(a_1,\ldots,a_n)}(x_0)\]</p>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
             <legend>Please select a function:</legend>
@@ -144,8 +178,8 @@
         </div>
     </div>
 
-    <div class="keret of odd" id="k3" style="padding-bottom:40px;margin-bottom:0;">
-        <b><big class="sorszam">3.</big></b>
+    <div class="keret of odd" id="k5" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">5.</big></b>
         <p class="keplet" id="keplet_k1" style="margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\hspace{2mm}\text{and}\hspace{2mm}\int \dfrac{{\rm Le}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Le}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
             <legend>Please select a function:</legend>
@@ -207,16 +241,10 @@
         <iframe name="helpframe" width="99%" height="100%" src="multipolylog.pdf" style="width:99%;height:100vh;border:none;"></iframe>
     </div>
 
-    <div class="keret of even" id="k4">
-        <b><big class="sorszam">4.</big></b>
+    <div class="keret of even" id="k6">
+        <b><big class="sorszam">6.</big></b>
         <p class="keplet" style="padding-bottom:30px;margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x) {\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
     </div>
-
-    <script>
-        setTimeout(() => {
-            urites();
-        }, 300);
-    </script>
 </body>
 
 </html>
