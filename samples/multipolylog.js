@@ -21,6 +21,19 @@ var lepessor = [];
 var mode = "Li";
 var mode1 = "Li";
 var mode0 = "Li";
+var Hmode = "H";
+var Hmax = 500;
+var maxsor = 100;
+var maxreach = false;
+var poz = 0;
+const oo = 12345678912321;
+const BIG = 1000;
+var SOR = [];
+const pat = new RegExp("(?<=[^,])oo|oo(?=[^,])");
+const maxLi = [100, 100, 100, 100, 100, 100, 60, 40, 30, 25, 20];
+var sorhiba = false;
+var Hreszletes = false;
+
 
 function setMode(t) {
     mode = t.value;
@@ -35,6 +48,11 @@ function setMode0(t) {
 function setMode1(t) {
     mode1 = t.value;
     sorfejtesLi();
+};
+
+function setHmode(t) {
+    Hmode = t.value;
+    azonHecmplusHa();
 };
 
 std = function(LL) {
@@ -356,14 +374,14 @@ lepesinit = function() {
                 if (ha + hb > 0)
                     refreskiura();
                 else {
-                    outelem.innerText = "lepesinit():try>>>\n Mind a két vektor nem lehet ÜRES!";
+                    outelem.innerText = "Mind a két vektor nem lehet ÜRES!";
                     outelem.style.opacity = "1";
                     outelem.style.color = "#ff2211"
                     return;
                 }
             }
         } else {
-            outelem.innerText = "lepesinit():try>>>\n Mind a két vektor nem tartalmazhat ∞-t!";
+            outelem.innerText = "Mind a két vektor nem tartalmazhat ∞-t!";
             outelem.style.opacity = "1";
             outelem.style.color = "#ff2211"
             return;
@@ -372,15 +390,11 @@ lepesinit = function() {
         if (outelem.style.color == "rgb(255, 34, 17)")
             outelem.innerText = "";
     } catch (error) {
-        outelem.innerText = "lepesinit():try>>>\n A bevitt adatok valamelyike hibás";
+        outelem.innerText = "A bevitt adatok valamelyike hibás";
         outelem.style.opacity = "1";
         outelem.style.color = "#ff2211"
     }
 };
-
-var maxsor = 100;
-var maxreach = false;
-
 
 sor = function(S) {
     var poz, n, elem, out, szamlalo;
@@ -545,9 +559,7 @@ SFormaz = function(S) {
         } else {
             out = out + e + sformaz(str) + kiesik;
         }
-    }
-    var ut = "";
-    var vegtor = "";
+    };
     if (sForma == 1 || sForma == 2) {
         if (sForma == 1)
             ut = n - 1 + ". ";
@@ -560,13 +572,6 @@ SFormaz = function(S) {
     return out;
 };
 
-var poz = 0;
-const oo = 12345678912321;
-const BIG = 1000;
-var SOR = [];
-const pat = new RegExp("(?<=[^,])oo|oo(?=[^,])");
-const maxLi = [100, 100, 100, 100, 100, 100, 60, 40, 30, 25, 20];
-
 urites = function() {
     lepessor = [];
     maxreach = false;
@@ -576,7 +581,7 @@ urites = function() {
     var outelem = document.getElementById("mpout");
 
     if (pat.test(av) || pat.test(bv)) {
-        outelem.innerText = "urites()>>>\n Valamelyik ∞ jel hibás!";
+        outelem.innerText = "Valamelyik ∞ jel hibás!";
         outelem.style.opacity = "1";
         outelem.style.color = "#ff2211"
         return;
@@ -614,14 +619,14 @@ urites = function() {
             elem = bv;
             masik = av;
         } else {
-            outelem.innerText = "urites():try>>>\nA kiüritendő vektor nem tartalmazhat ∞-t!";
+            outelem.innerText = "A kiüritendő vektor nem tartalmazhat ∞-t!";
             outelem.style.opacity = "1";
             outelem.style.color = "#ff2211"
             return;
         }
         outelem.style.color = "";
     } catch (error) {
-        outelem.innerText = "urites():try>>>\nA bevitt adatok valamelyike hibás!";
+        outelem.innerText = "A bevitt adatok valamelyike hibás!";
         outelem.style.opacity = "1";
         outelem.style.color = "#ff2211";
         return;
@@ -631,12 +636,12 @@ urites = function() {
     var nm = masik.length;
     if (mode == "Lef") {
         if (ne == 0 && nm == 0) {
-            outelem.innerText = "urites():try>>>\nMind a két vektor nem lehet ÜRES!";
+            outelem.innerText = "Mind a két vektor nem lehet ÜRES!";
             outelem.style.opacity = "1";
             outelem.style.color = "#ff2211"
             return;
         } else if (sForma == 4) {
-            outelem.innerText = "urites():try>>>\nMég nem implementált";
+            outelem.innerText = "Még nem implementált";
             outelem.style.opacity = "1";
             outelem.style.color = "#ff2211"
             return;
@@ -674,7 +679,7 @@ urites = function() {
         };
     } else {
         if (ne == 0 && nm == 0) {
-            outelem.innerText = "urites():try>>>\nMind a két vektor nem lehet ÜRES!";
+            outelem.innerText = "Mind a két vektor nem lehet ÜRES!";
             outelem.style.opacity = "1";
             outelem.style.color = "#ff2211"
             return;
@@ -999,6 +1004,24 @@ function setfigy1(str) {
     elem.innerHTML = str;
 };
 
+function setfigyH(str) {
+    var elem = document.getElementById("figyH");
+    if (str == "")
+        elem.style.display = "none";
+    else
+        elem.style.display = "block";
+    elem.innerHTML = str;
+};
+
+function setfigyHacom(str) {
+    var elem = document.getElementById("figyHacom");
+    if (str == "")
+        elem.style.display = "none";
+    else
+        elem.style.display = "block";
+    elem.innerHTML = str;
+};
+
 
 function Li(N) {
     var av = document.getElementById("avLi").value;
@@ -1198,10 +1221,12 @@ function setNLi1(elem) {
     Nelem.innerHTML = N;
 };
 
-function setn(elem) {
+function setn(elem, id) {
     var n = elem.value;
-    var Nelem = document.getElementById("nkijelzo");
+    var Nelem = document.getElementById(id + "kijelzo");
     Nelem.innerHTML = n;
+    if (id == "n1")
+        azonHecmplusHa();
 };
 
 function Li0(N, x0) {
@@ -1419,7 +1444,6 @@ function HaIntxk(a, b, k) {
 
 // sorfejtes integralokra 3.
 
-var sorhiba = false;
 
 function LiLi(N) {
     var av = document.getElementById("av").value;
@@ -1472,7 +1496,6 @@ function LiLi(N) {
         figy = " Az adott számítás legfeljebb " + N + " értékkel megengedett. Mivel N beállított értéke (" + N0 + ") ezt meghaladta, ezért N értékét beállítottuk a maximálisan megengedett " + N + " értékre, és végig ezzel számoltunk.\n";
         slid.value = N;
         setNLi1(slid);
-        //return str;
     };
     var str0 = "\\int\\frac{1}{x}\\,\\text{Li}_{\\left(" + avtxt + "\\right)}\\,\\left(x\\right)\\cdot\\text{Li}_{\\left(" + bvtxt + "\\right)}\\,\\left(x\\right)\\,\\text{d}x &=";
     var str1 = "";
@@ -1583,15 +1606,11 @@ function setN(elem) {
 };
 
 function sorfejtes() {
-    //var n = SOR.length;
     sorhiba = false;
     var lengtelem = document.querySelector("#series-slider");
     var elem = document.querySelector("#keplet_sor");
     var N = lengtelem.value * 1;
     var txt = "";
-    /* if (n > 30)
-        elem.innerText = "\\[\\text{Legfeljebb 30 hosszu urites sorfejtese megengedett!}\\]";
-    else  */
     if (mode == "Li") {
         txt = LiLi(N)
         if (!sorhiba)
@@ -1741,6 +1760,10 @@ function setOutputFont1(v) {
     $('div.sagecell_sessionOutput,div.sagecell_sessionOutput pre').css('font-size', v + 'px');
 };
 
+function setOutputFontHacom(v) {
+    document.getElementById("Hacom").style.fontSize = v + "px";
+};
+
 $(document).ready(function() {
     document.getElementById("okbtn").onclick = function() {
         var txt = LiLe0PARI();
@@ -1751,9 +1774,8 @@ $(document).ready(function() {
 });
 
 // H,ZETA
-const Hmax = 500;
 
-const binomial = (n, k) => {
+function binomial(n, k) {
     if (Number.isNaN(n) || Number.isNaN(k)) return NaN;
     if (k < 0 || k > n) return 0;
     if (k === 0 || k === n) return 1;
@@ -1765,7 +1787,7 @@ const binomial = (n, k) => {
     return Math.round(res);
 };
 
-function HClear() {
+function HClear(kell) {
     var elem = document.querySelector("#H");
     var elem1 = document.querySelector("#Hs");
     var elem2 = document.querySelector("#Z");
@@ -1775,15 +1797,27 @@ function HClear() {
     elem1.innerText = "";
     elem2.innerText = "";
     elem3.innerText = "";
+    if (kell)
+        elemfigy.style.display = "none";
+};
+
+function HcomClear() {
+    var elem = document.querySelector("#Hacom");
+    var elemfigy = document.querySelector("#figyHacom");
+    elem.innerText = "";
     elemfigy.style.display = "none";
 };
 
 function kiszed_av(id) {
+    var elemfigy = document.querySelector("#figyH");
+    elemfigy.style.display = "none";
     var av = document.getElementById(id).value;
     if (pat.test(av)) {
-        return [];
+        setfigyH("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>');
+        HClear(false);
+        return "vegtelenhiba";
     };
-    //var avtxt = av.replaceAll('oo', '∞');
+
     if (!av.startsWith("[")) {
         av = "[" + av;
     }
@@ -1795,28 +1829,24 @@ function kiszed_av(id) {
 
     try {
         av = JSON.parse(av);
-        /*  var aindx = av.indexOf(oo);
-         if (aindx > -1) {
-             av = oo2Inf1000(av);
-         }; */
-
     } catch (error) {
-        console.log(error);
+        setfigyH("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>');
+        HClear(false);
         return;
     };
     return av;
 };
 
-function toABC() {
-    let sv = kiszed_av("sv");
-    let num = Math.min(6, sv[0]);
+function toABC(id) {
+    let sv = kiszed_av(id);
+    let e = sv[0];
+    let num = Math.min(6, e);
     let ABC = ["a", "b", "c", "d", "e", "f"]
     let str = '';
     for (var i = 0; i < num; i++)
         str += "\"" + ABC[i] + "\",";
-    //str += "\"s_" + (i + 1).toString() + "\",";
     str = str.slice(0, -1);
-    document.getElementById("sv").value = str;
+    document.getElementById(id).value = str;
 };
 
 function Combnr(n, r, ism) {
@@ -1878,9 +1908,8 @@ function Hltx(sv, n, ism) {
         ltx = "{\\rm H}_{" + n + "}^{" + cs + sltx + "}=" + ltx + koz;
         return ltx;
     };
-
     if (meret > Hmax)
-        ltx = "\\text{ Az osszeg merete meghaladja a " + Hmax + "-at}";
+        ltx = "\\text{ Az Összeg mérete meghaladja a " + Hmax + "-at}";
     else {
         while (true) {
             const item = cb.next();
@@ -1925,7 +1954,7 @@ function zetaltx(sv, n, ism) {
         return ltx;
     };
     if (meret > Hmax)
-        ltx = "\\text{ Az osszeg merete meghaladja a " + Hmax + "-at}";
+        ltx = "\\text{ Az összeg mérete meghaladja a " + Hmax + "-at}";
     else {
         while (true) {
             const item = cb.next();
@@ -1942,29 +1971,30 @@ function zetaltx(sv, n, ism) {
     return ltx;
 };
 
-
 function kitoltH(n, ism, idfrom, idto) {
     const sv = kiszed_av(idfrom);
     const elemto = document.getElementById(idto);
     let ltx = "";
-    if (sv == undefined)
-        ltx = "\\text{Hibas s vektor}";
-    else
+    if (sv == "vegtelenhiba" || sv == "hiba" || sv == undefined)
+        return;
+    else {
         ltx = Hltx(sv, n, ism);
-    elemto.innerHTML = "\\[" + ltx + "\\]";
-    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemto]);
+        elemto.innerHTML = "\\[" + ltx + "\\]";
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemto]);
+    }
 };
 
 function kitoltZ(n, ism, idfrom, idto) {
     const sv = kiszed_av(idfrom);
     const elemto = document.getElementById(idto);
     let ltx = "";
-    if (sv == undefined)
-        ltx = "\\text{Hibas s vektor}"
-    else
+    if (sv == "vegtelenhiba" || sv == "hiba" || sv == undefined)
+        return;
+    else {
         ltx = zetaltx(sv, n, ism);
-    elemto.innerHTML = "\\[" + ltx + "\\]";
-    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemto]);
+        elemto.innerHTML = "\\[" + ltx + "\\]";
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemto]);
+    }
 };
 
 function HZszamitas() {
@@ -1973,4 +2003,277 @@ function HZszamitas() {
     kitoltH(n, true, "sv", "Hs");
     kitoltZ(n, false, "sv", "Z");
     kitoltZ(n, true, "sv", "Zs");
+};
+
+///////
+
+function str2arr(str) {
+    if (str.indexOf('"') > -1)
+        return str;
+    str = str.replaceAll('+', ',').replaceAll('-', ',-');
+    if (str.startsWith(','))
+        str = str.slice(1);
+    str = "[" + str + "]"
+    var v = JSON.parse(str);
+    return _.sum(v);
+}
+
+function commaIndxs(str) {
+    let regexp = /,/g;
+    let matches = [...str.matchAll(regexp)];
+    let indx = [];
+    matches.forEach((match) => {
+        indx.push(match.index);
+    });
+    return indx;
+};
+
+function replaceAt(str, index, replacement) {
+    return str.substring(0, index) + replacement + str.substring(index + replacement.length);
+};
+
+function kicserel(str, indx) {
+    let k = indx.length;
+    for (var i = 0; i < k; i++) {
+        str = replaceAt(str, indx[i], '+')
+    };
+    return str.replaceAll("+-", "-");
+};
+
+function comma2plusk(str, k) {
+    let w = [];
+    if (k == 0) {
+        w = JSON.parse("[" + str + "]");
+        return [
+            [
+                [str], w
+            ]
+        ];
+    }
+    let indx = commaIndxs(str);
+    const c = new YourCombinations(indx);
+    let cb = c.combinations(k, false);
+    while (true) {
+        const item = cb.next();
+        if (item.done) break;
+        var tt = kicserel(str, item.value).split(',');
+        var t0 = tt.map(function(y) {
+            if (y.indexOf('"oo"') > -1) return y.replaceAll("'\"oo\"'", 'oo').replaceAll("-'", "&#8722;");
+            else return y
+        });
+        var ts = tt.map(function(y) {
+            if (y.indexOf('"oo"') > -1) return "oo";
+            else return y
+        });
+        var t1 = ts.map(function(z) {
+            if (z != "oo") return str2arr(z);
+            else return z
+        });
+        w.push([t0, t1]);
+    };
+    return w;
+};
+
+function comma2pluskREGI(str, k) {
+    let w = [];
+    if (k == 0) {
+        w = JSON.parse("[" + str + "]");
+        return [w]
+    }
+    let indx = commaIndxs(str);
+    const c = new YourCombinations(indx);
+    let cb = c.combinations(k, false);
+    while (true) {
+        const item = cb.next();
+        if (item.done) break;
+        w.push(kicserel(str, item.value).split(',').map(function(y) {
+            if (y.indexOf('"oo"') > -1) return "oo";
+            else return y
+        }).map(function(z) {
+            if (z != "oo") return str2arr(z);
+            else return z
+        }));
+    };
+    return w;
+};
+
+function setHreszletes(elem) {
+    Hreszletes = elem.checked;
+    azonHecmplusHa();
+    return;
+};
+
+function comma2plusHe(str, n) {
+    str = str.replaceAll("oo", "\"oo\"");
+    let sv = [];
+    let s = 0;
+    let he = 0;
+    let fejHe = "H<sub><small>" + n + "</small></sub><sup><small>*(" + str.replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup> "
+    let fejHa = "";
+    try {
+        sv = JSON.parse("[" + str + "]");
+        let ns = sv.length;
+        let w = [];
+        for (var k = 0; k < Math.max(1, ns); k++) {
+            w = comma2plusk(str, k);
+            for (let j of w) {
+                s += Ha(oostr2Inf(j[1]), n)
+                if (Hreszletes)
+                    fejHa += "H<sub><small>" + n + "</small></sub><sup><small> (" + JSON.stringify(j).slice(1, -1).replaceAll("],[", "=</span>").replaceAll(']', '</b>').replaceAll('[', '<span class=\"hr\">').replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup>+";
+                else
+                    fejHa += "H<sub><small>" + n + "</small></sub><sup><small> (" + JSON.stringify(j[1]).slice(1, -1).replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup>+";
+            }
+        };
+        fejHa = fejHa.slice(0, -1);
+        he = He(oostr2Inf(sv), n)
+    } catch (error) {
+        setfigyHacom("Hibás bemenet!");
+        return "hiba";
+    };
+    if (!isNaN(he))
+        fejHe += " = " + he;
+    if (!isNaN(s))
+        fejHa += " = " + s;
+    return fejHe + "<hr style='opacity: 0.5;border-style: dashed;'>" + fejHa;
+};
+
+function comma2plusHez(str, n) {
+    str = str.replaceAll("oo", "\"oo\"");
+    let sv = [];
+    let s = 0;
+    let he = 0;
+    let fejHe = "&zeta;<sub><small>" + n + "</small></sub><sup><small>*(" + str.replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup> "
+    let fejHa = "";
+    try {
+        sv = JSON.parse("[" + str + "]");
+        let ns = sv.length;
+        let w = [];
+        for (var k = 0; k < Math.max(1, ns); k++) {
+            w = comma2plusk(str, k);
+            for (let j of w) {
+                s += Haz(oostr2Inf(j[1]), n)
+                if (Hreszletes)
+                    fejHa += "&zeta;<sub><small>" + n + "</small></sub><sup><small> (" + JSON.stringify(j).slice(1, -1).replaceAll("],[", "=</span>").replaceAll(']', '</b>').replaceAll('[', '<span class=\"hr\">').replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup>+";
+                else
+                    fejHa += "&zeta;<sub><small>" + n + "</small></sub><sup><small> (" + JSON.stringify(j[1]).slice(1, -1).replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup>+";
+            }
+        };
+        fejHa = fejHa.slice(0, -1);
+        he = Hez(oostr2Inf(sv), n)
+    } catch (error) {
+        setfigyHacom("Hibás bemenet!");
+        return "hiba";
+    };
+    if (!isNaN(he))
+        fejHe += " = " + he;
+    if (!isNaN(s))
+        fejHa += " = " + s;
+    return fejHe + "<hr style='opacity: 0.5;border-style: dashed;'>" + fejHa;
+};
+
+function comma2plusHa(str, n) {
+    str = str.replaceAll("oo", "\"oo\"");
+    let sv = [];
+    let s = 0;
+    let ha = 0;
+    let fejHa = "H<sub><small>" + n + "</small></sub><sup><small> (" + str.replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup>"
+    let fejHe = "";
+    try {
+        sv = JSON.parse("[" + str + "]");
+        let ns = sv.length;
+        let w = [];
+        for (var k = 0; k < Math.max(1, ns); k++) {
+            if ((ns - k) % 2 == 1)
+                elojel = "&#8722;";
+            else
+                elojel = " + ";
+            w = comma2plusk(str, k);
+            for (let j of w) {
+                s += Math.pow(-1, k) * He(oostr2Inf(j[1]), n)
+                if (Hreszletes)
+                    fejHe += elojel + "H<sub><small>" + n + "</small></sub><sup><small>*(" + JSON.stringify(j).slice(1, -1).replaceAll("],[", "=</span>").replaceAll(']', '</b>').replaceAll('[', '<span class=\"hr\">').replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup>";
+                else
+                    fejHe += elojel + "H<sub><small>" + n + "</small></sub><sup><small>*(" + JSON.stringify(j[1]).slice(1, -1).replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup>";
+            }
+        };
+        if (fejHe.startsWith(" +"))
+            fejHe = fejHe.slice(3);
+        ha = Ha(oostr2Inf(sv), n)
+    } catch (error) {
+        setfigyHacom("Hibás bemenet!");
+        return "hiba";
+    };
+    if (!isNaN(ha))
+        fejHa += " = " + ha;
+    if (!isNaN(s))
+        fejHe += " = " + s;
+    return fejHa + "<hr style='opacity: 0.5;border-style: dashed;'>" + fejHe;
+};
+
+function comma2plusHaz(str, n) {
+    str = str.replaceAll("oo", "\"oo\"");
+    let sv = [];
+    let s = 0;
+    let ha = 0;
+    let fejHa = "&zeta;<sub><small>" + n + "</small></sub><sup><small> (" + str.replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup> "
+    let fejHe = "";
+    try {
+        sv = JSON.parse("[" + str + "]");
+        let ns = sv.length;
+        let w = [];
+        let elojel = " + ";
+        for (var k = 0; k < Math.max(1, ns); k++) {
+            if ((ns - k) % 2 == 1)
+                elojel = "&#8722;";
+            else
+                elojel = " + ";
+            w = comma2plusk(str, k);
+            for (let j of w) {
+                s += Math.pow(-1, k) * Hez(oostr2Inf(j[1]), n)
+                if (Hreszletes)
+                    fejHe += elojel + "&zeta;<sub><small>" + n + "</small></sub><sup><small>*(" + JSON.stringify(j).slice(1, -1).replaceAll("],[", "=</span>").replaceAll(']', '</b>').replaceAll('[', '<span class=\"hr\">').replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup>";
+                else
+                    fejHe += elojel + "&zeta;<sub><small>" + n + "</small></sub><sup><small>*(" + JSON.stringify(j[1]).slice(1, -1).replace(/[\\"\\\\"]/g, '').replaceAll("oo", "∞") + ")</small></sup>";
+            }
+        };
+        if (fejHe.startsWith(" +"))
+            fejHe = fejHe.slice(3);
+        ha = Haz(oostr2Inf(sv), n)
+    } catch (error) {
+        setfigyHacom("Hibás bemenet!");
+        return "hiba";
+    };
+    if (!isNaN(ha))
+        fejHa += " = " + ha;
+    if (!isNaN(s))
+        fejHe += " = " + s;
+    return fejHa + "<hr style='opacity: 0.5;border-style: dashed;'>" + fejHe;
+};
+
+function azonHecmplusHa() {
+    document.getElementById("figyHacom").style.display = "none";
+    let str = document.getElementById("sv1").value;
+    let n = document.getElementById("n1").value * 1;
+    var outelem = document.getElementById("Hacom");
+    var out = "";
+    if (pat.test(str)) {
+        setfigyHacom("Valamelyik ∞ jel hibás!")
+        outelem.innerHTML = "Valamelyik ∞ jel hibás: " + '<span class="outhiba">' + str + '</span>';
+        return;
+    };
+    if (Hmode == "H")
+        out = comma2plusHa(str, n);
+    else if (Hmode == "Hs")
+        out = comma2plusHe(str, n);
+    else if (Hmode == "Z")
+        out = comma2plusHaz(str, n);
+    else if (Hmode == "Zs")
+        out = comma2plusHez(str, n);
+    else
+        out = "?";
+    if (out == "hiba") {
+        out = "Hibás bemenet: " + '<span class="outhiba">' + str + '</span>';
+        setfigyHacom("Hibás bemenet!");
+    };
+    document.getElementById("Hacom").innerHTML = out;
 };
