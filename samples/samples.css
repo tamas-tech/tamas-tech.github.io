@@ -137,6 +137,11 @@ p.kijelzo {
     border-bottom: 1px solid #d0d0d0;
 }
 
+p.kijelzo.tomor {
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+
 div.keret {
     border: 1px solid #bebebe;
     margin-bottom: 20px;
