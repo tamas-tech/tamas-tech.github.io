@@ -2050,11 +2050,12 @@ function zetaltxp(sv, n, ism) {
     let cs = "";
     let cshtml = "";
     let koz = "";
-    var outelem = document.querySelector("#ideout2 .sagecell_sessionOutput");
+    var outelem = document.querySelector("#ideout2 .sagecell_sessionOutput .mtext");
     if (ism)
         cshtml = "<sup>*</sup>"
     if (outelem) {
-        var Zv = outelem.innerText.split("=")[1].replace(/\s/, '');
+        //var Zv = outelem.innerText.split("=")[1].replace(/\s/, '');
+        var Zv = outelem.replace(/\s/, '');
         console.log(Zv);
         if (Zv.startsWith("gp")) {
             setfigy("A PARI / GP nem tudta a bemenetet kiszámítani.", "figyZ");
