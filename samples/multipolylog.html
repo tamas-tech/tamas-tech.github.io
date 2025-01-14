@@ -62,7 +62,7 @@
         <p>
             <b>Néhány mezőbe betűk is bevihetők idézőjelek közé zárva</b>. Ez mindig a beviteli mező mögötti <button id="ABC" style="margin-left:5px;">ABC</button> gomb jelzi..<br/> Példák:
             <ul>
-                <li><input type="text" id="sv" value='"a","v"' readonly><span> )</span><button style="margin-left:5px;">ABC</button></li>
+                <li><input type="text" value='"a","v"' readonly><span> )</span><button style="margin-left:5px;">ABC</button></li>
                 <li>Mivel idézőjelek közé tett betűk bevitele igen fáradságos lehet, ezért az alábbi gyors beillesztést tettük elérhetővé. Ha egy (vagy több) egész számot írunk egy ilyen mezőbe majd az <button id="ABC" style="margin-left:5px;">ABC</button>                    gombra kattintunk, akkor az <b>első számnak megfelelő, de legfeljebb 6</b>, vesszővel elválsztott, idézőjelek közé tett betűt illeszt a beviteli mezőbe. Ha pédául az alábbi gombra kattintunk, akkor 3 betűt illeszt be<br> <input type="text"
                         id="test1" value="3" name="test1"><span> )</span><button id="ABCtest1" onclick="toABC('test1');" style="margin-left:5px;">ABC</button><br/>De az alábbi is három betűt fog beilleszteni, mert az első szám 3<br> <input type="text" id="test2"
                         value="3,-2,5,6" name="test2"><span> )</span><button id="ABCtest2" onclick="toABC('test2');" style="margin-left:5px;">ABC</button><br/>A következő nulla betűt fog beilleszteni , mert az első szám -3<br> <input type="text" id="test3"
