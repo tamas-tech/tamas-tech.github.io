@@ -2055,6 +2055,7 @@ function zetaltxp(sv, n, ism) {
         cshtml = "<sup>*</sup>"
     if (outelem) {
         var Zv = outelem.innerText.split("=")[1].replace(/\s/, '');
+        console.log(Zv);
         if (Zv.startsWith("gp")) {
             setfigy("A PARI / GP nem tudta a bemenetet kiszámítani.", "figyZ");
             return;
