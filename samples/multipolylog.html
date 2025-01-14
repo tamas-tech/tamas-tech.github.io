@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script>
 
-    <script>
+     <script>
         MathJax.Hub.Config({
             tex2jax: {
                 preview: "none"
@@ -28,14 +28,55 @@
             editor: 'textarea',
             hide: ["editor", "evalButton", "permalink"],
         });
+
+        sagecell.makeSagecell({
+            inputLocation: '#mycell2',
+            outputLocation: '#ideout2',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink"],
+        });
     </script>
 
 </head>
 
 <body style="overflow:scroll;">
+   <h1>Generalized Polylogarithm Function <button class="showpre1" style="width:120px;font-size:20px;margin-left:30px;font-family: inherit;border-color:#b7a4a4;box-shadow: 0px 2px 5px 5px #9da3a059;" onclick="helpTgl('helpbar0');" title="Open/Close help">Toggle help</button></h1>
 
-     <h1>Generalized Polylogarithm Function</h1>
-    <div class="keret of odd" id="k1">
+    <div id="helpbar0" style="display:none;padding:10px;background-color:#fffdf7;color:#35471d;">
+        <h2 style="color:#445827;">Ismertető a lap használatáról</h2>
+        <p>Minden szövegbeviteli mezőbe vesszővel elválasztott előjeles egész és tizedes tört számokat, illetve két kis "o" betűvel reprezentált előjel nélküli végtelen jelet lehet bevinni "oo" formában. A tizedes törteket ponttal kell jelölni: -17.235.
+            Néhány mezőben a tizedestört nem értelemes, de erről jelentést kapunk. Egy mező <b>lehet üres is.</b> Tetszőleges számú szóköz megengedett.<br/> Példák:
+
+            <ul>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value=''><span> )</span></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='2'><span> )</span></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='-12.4567'><span> )</span></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='oo'><span> )</span></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='2,-3,4,2'><span> )</span></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='    2,    -3     ,   4 ,  2   '><span> )</span></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='    -2.735,    oo     ,   -4 ,  oo   '><span> )</span></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='oo,2,3, -2.735,    oo   '><span> )</span></li>
+            </ul>
+        </p>
+        <p>
+            <b>Néhány mezőbe betűk is bevihetők idézőjelek közé zárva</b>. Ez mindig a beviteli mező mögötti <button id="ABC" style="margin-left:5px;">ABC</button> gomb jelzi..<br/> Példák:
+            <ul>
+                <li><input type="text" id="sv" value='"a","v"' readonly><span> )</span><button style="margin-left:5px;">ABC</button></li>
+                <li>Mivel idézőjelek közé tett betűk bevitele igen fáradságos lehet, ezért az alábbi gyors beillesztést tettük elérhetővé. Ha egy (vagy több) egész számot írunk egy ilyen mezőbe majd az <button id="ABC" style="margin-left:5px;">ABC</button>                    gombra kattintunk, akkor az <b>első számnak megfelelő, de legfeljebb 6</b>, vesszővel elválsztott, idézőjelek közé tett betűt illeszt a beviteli mezőbe. Ha pédául az alábbi gombra kattintunk, akkor 3 betűt illeszt be<br> <input type="text"
+                        id="test1" value="3" name="test1"><span> )</span><button id="ABCtest1" onclick="toABC('test1');" style="margin-left:5px;">ABC</button><br/>De az alábbi is három betűt fog beilleszteni, mert az első szám 3<br> <input type="text" id="test2"
+                        value="3,-2,5,6" name="test2"><span> )</span><button id="ABCtest2" onclick="toABC('test2');" style="margin-left:5px;">ABC</button><br/>A következő nulla betűt fog beilleszteni , mert az első szám -3<br> <input type="text" id="test3"
+                        value="-3,-2,5,6" name="test3"><span> )</span><button id="ABCtest3" onclick="toABC('test3');" style="margin-left:5px;">ABC</button><br/>A következő szintén nulla betűt fog beilleszteni , mert az első karakter nem is szám <br>
+                    <input type="text" id="test4" value='"a",2,3' name="test4"><span> )</span><button id="ABCtest4" onclick="toABC('test4');" style="margin-left:5px;">ABC</button><br/>Az alábbi kettő pedig 6 betűt fog beilleszteni, mert 6-nál több betűt
+                    soha nem illeszt be.
+                    <br/> <input type="text" id="test5" value='12' name="test5"><span> )</span><button id="ABCtest5" onclick="toABC('test5');" style="margin-left:5px;">ABC</button> <br style="margin-bottom:5px;" /> <input type="text" id="test6" value='oo,-3'
+                        name="test6"><span> )</span>
+                    <button id="ABCtest6" onclick="toABC('test6');" style="margin-left:5px;">ABC</button>
+            </ul>
+        </p>
+
+    </div>
+    <div class="keret of odd" id="k1" style="padding-bottom:40px;margin-bottom:0;">
         <b><big class="sorszam">1.</big></b>
         <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} {\rm H}_{n}^{(s_{1},s_{2},\ldots,s_{r})}:=\sum_{n=n_{1}>n_{2}>\cdots>n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}}\\ \\ {\rm \zeta}_{n}(s_{1},s_{2},\ldots,s_{r}):=\sum_{n\geq n_{1}>n_{2}>\cdots>n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots
             n_{r}^{s_{r}}}\\ \\ {\rm H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})}:=\sum_{n=n_{1}\geq n_{2}\geq\cdots\geq n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}}\\ \\ {\rm \zeta}_{n}^{*}(s_{1},s_{2},\ldots,s_{r}):=\sum_{n\geq n_{1}\geq
@@ -57,12 +98,75 @@
         <p class="kijelzo tomor" id="Z"></p>
         <p class="kijelzo tomor" id="Zs"></p>
     </div>
-
+    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl('helpbar1');" title="Open/Close help">Toggle help</button>
+    <div id="helpbar1" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
+        <iframe name="helpframe" width="99%" height="100%" src="zetas.pdf" style="width:99%;height:100vh;border:none;"></iframe>
+    </div>
     <div class="keret of even" id="k2">
         <b><big class="sorszam">2.</big></b>
-        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} {\rm H}_{n}^{(s_{1},s_{2},\ldots,s_{r})}:=\sum_{\bullet\in\{"+",","\}}{\rm (-1)}^{|(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})|}\cdot{\rm H}_{n}^{*(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})}\\ \\ {\rm H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})}:=\sum_{\bullet\in\{"+",","\}}{\rm
-            H}_{n}^{(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})}\\ \\ {\rm \zeta}_{n}(s_{1},s_{2},\ldots,s_{r}):=\sum_{\bullet\in\{"+",","\}}{\rm (-1)}^{|(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})|}\cdot{\rm \zeta}_{n}^{*}(s_{1}\bullet s_{2}\bullet\cdots\bullet
-            s_{r})\\ \\ {\rm \zeta}_{n}^{*}(s_{1},s_{2},\ldots,s_{r}):=\sum_{\bullet\in\{"+",","\}}{\rm \zeta}_{n}(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r}) \end{gather*}\]
+        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} {\rm \zeta}(s_{1},s_{2},\ldots,s_{r})=\lim_{n\rightarrow\infty}{\rm \zeta}_{n}(s_{1},s_{2},\ldots,s_{r})=\sum_{k=r}^{\infty}{\rm H}_{k}^{(s_{1},s_{2},\ldots,s_{r})}=\text{Li}_{{\rm \zeta}_{n}(s_{1},s_{2},\ldots,s_{r})}(1)\\ \\
+            {\rm \zeta}^{*}(s_{1},s_{2},\ldots,s_{r})=\lim_{n\rightarrow\infty}{\rm \zeta}_{n}^{*}(s_{1},s_{2},\ldots,s_{r})=\sum_{k=0}^{\infty}{\rm H}_{k}^{*(s_{1},s_{2},\ldots,s_{r})}=\text{Le}_{{\rm \zeta}_{n}(s_{1},s_{2},\ldots,s_{r})}(1) \end{gather*}\]
+        </p>
+        <fieldset style="border:1px solid #ccc;border-radius:3px;">
+            <legend>Please select a type:</legend>
+            <div>
+                <input type="radio" id="choiceZ0" name="choiceZ0" value="Z0" onchange="setZmode(this);" checked="true">
+                <label for="choiceZ0"><b>&zeta;</b></label>
+                <input type="radio" id="choiceHZ1" name="choiceZ0" value="Z1" style="margin-left:30px;" onchange="setZmode(this);">
+                <label for="choiceZ1">&zeta;<sup>*</sup></label>
+            </div>
+        </fieldset>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="sv2"><b style="padding: 2px 7px;">s</b> = ( </label>
+            <input type="text" id="sv2" value="2,3" name="sv2"><span> )</span>
+        </div>
+        <div id="mycell2" style="margin-top:6px;" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div style="padding: 10px;outline: 2px solid #a88f86;outline-offset: -6px;background-color: #f7e1d4;">
+            <button id="okbtn2" class="showpre1" title="Insert code into editor">PARI</button>
+            <label for="setoutputfont2">&#128474;</label>
+            <input id="outfont-slider2" oninput="setOutputFont2(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont1" />
+        </div>
+        <div class="outputoutdiv">
+            <div id="ideout2" style="text-align: center;"></div>
+        </div>
+        <p id="figyZ" style="display:none;padding:0 10px;background-color:#ffe3d8;"></p>
+        <button id="limbtn" style="margin: 0 5px 5px 10px;" class="showpre1" title="Insert code into editor" onclick="HZpariszamitas();"><big>&zeta;<sub>n</sub>&rarr;&zeta;</big></button>
+        <section id="fnpz" style="display:none;max-width:calc(100vw - 30px);margin-top:-35px;">
+            <div style="margin-left:100px;padding:3px;width:calc(100vw - 150px)">
+                <label><b style="padding: 2px 7px;">N</b> = </label><span id="npkijelzo" style="display:inline-block;width:30px;">30</span>
+                <input id="np" type="range" min="20" max="200" value="30" step="1" style="display:inline-block;width:calc(100vw - 250px);vertical-align:middle;" title="set np" name="np" onchange="setn(this,'np');HZpariszamitas();">
+            </div>
+            <p class="kijelzo" id="Zp" style="margin-bottom:2px;"></p>
+            <div id="plotZ" style="text-align:center;"></div>
+        </section>
+    </div>
+
+    <div class="keret of odd" id="k3">
+        <b><big class="sorszam">3.</big></b><span style="margin-left:10px;">( Duality of H<sup>*</sup>)</span>
+        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} {\rm H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})^{\ast}}=-\sum_{k=1}^{n}{\rm (-1)}^{k}\binom{n-1}{k-1}{\rm H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})}\\ \\ {\rm \zeta}^{*}(s_{1},s_{2},\ldots,s_{r})=-\sum_{k=1}^{\infty}{\rm (-1)}^{k}\binom{n}{k}{\rm
+            H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})^{\ast}} \end{gather*}\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="sd"><b style="padding: 2px 7px;">s</b> = ( </label>
+            <input type="text" id="sd" value="2,3" name="sd"><span> )</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">n</b> = </label><span id="ndkijelzo" style="display:inline-block;width:20px;">5</span>
+            <input id="nd" type="range" min="0" max="12" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set n" name="nd" onchange="setn(this,'nd');">
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="dualOfHe();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="DClear(true);" title="Clear series">Clear</button>
+        <p id="figyD" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+        <p class="kijelzo" id="D" style="margin-bottom:2px;"></p>
+    </div>
+
+    <div class="keret of even" id="k4">
+        <b><big class="sorszam">4.</big></b>
+        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} {\rm H}_{n}^{(s_{1},s_{2},\ldots,s_{r})}=\sum_{\bullet\in\{"+",","\}}{\rm (-1)}^{|(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})|}\cdot{\rm H}_{n}^{*(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})}\\ \\ {\rm H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})}=\sum_{\bullet\in\{"+",","\}}{\rm
+            H}_{n}^{(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})}\\ \\ {\rm \zeta}_{n}(s_{1},s_{2},\ldots,s_{r})=\sum_{\bullet\in\{"+",","\}}{\rm (-1)}^{|(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})|}\cdot{\rm \zeta}_{n}^{*}(s_{1}\bullet s_{2}\bullet\cdots\bullet
+            s_{r})\\ \\ {\rm \zeta}_{n}^{*}(s_{1},s_{2},\ldots,s_{r})=\sum_{\bullet\in\{"+",","\}}{\rm \zeta}_{n}(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r}) \end{gather*}\]
         </p>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
             <legend>Please select a type:</legend>
@@ -79,7 +183,7 @@
         </fieldset>
         <div style="margin-left:2px;padding:3px;">
             <label for="sv1"><b style="padding: 2px 7px;">s</b> = ( </label>
-            <input type="text" id="sv1" value="2,3,4,2,-2,3" name="sv"><span> )</span><button id="ABC1" onclick="toABC('sv1');" style="margin-left:5px;">ABC</button>
+            <input type="text" id="sv1" value="2,3,4" name="sv1"><span> )</span><button id="ABC1" onclick="toABC('sv1');" style="margin-left:5px;">ABC</button>
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">n</b> = </label><span id="n1kijelzo" style="display:inline-block;width:20px;">5</span>
@@ -92,8 +196,8 @@
         <p class="kijelzo" id="Hacom" style="margin-bottom:2px;font-size: 20px;"></p>
     </div>
 
-    <div class="keret of odd" id="k3">
-        <b><big class="sorszam">3.</big></b>
+    <div class="keret of odd" id="k5">
+        <b><big class="sorszam">5.</big></b>
         <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[{\rm Li}_{(a_1,\ldots,a_n)}(x)\hspace{2mm}\text{and}\hspace{2mm}{\rm Le}_{(a_1,\ldots,a_n)}(x)\]</p>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
             <legend>Please select a function:</legend>
@@ -135,8 +239,8 @@
         });
     </script>
 
-    <div class="keret of even" id="k4">
-        <b><big class="sorszam">4.</big></b>
+    <div class="keret of even" id="k6">
+        <b><big class="sorszam">6.</big></b>
         <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[{\rm Li}_{(a_1,\ldots,a_n)}(x_0)\hspace{2mm}\text{and}\hspace{2mm}{\rm Le}_{(a_1,\ldots,a_n)}(x_0)\]</p>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
             <legend>Please select a function:</legend>
@@ -166,7 +270,7 @@
         <p id="figy0" style="display:none;padding:0 10px;background-color:#ffdfdf"></p>
         <hr>
         <div style="padding: 10px;outline: 2px solid #a88f86;outline-offset: -6px;background-color: #f7e1d4;">
-            <button id="okbtn" class="showpre1" onclick="kuldes0(this);" title="Insert code into editor">PARI</button>
+            <button id="okbtn" class="showpre1" title="Insert code into editor">PARI</button>
             <label for="setoutputfont1">&#128474;</label>
             <input id="outfont-slider1" oninput="setOutputFont1(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont1" />
         </div>
@@ -178,8 +282,8 @@
         </div>
     </div>
 
-    <div class="keret of odd" id="k5" style="padding-bottom:40px;margin-bottom:0;">
-        <b><big class="sorszam">5.</big></b>
+    <div class="keret of odd" id="k7" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">7.</big></b>
         <p class="keplet" id="keplet_k1" style="margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\hspace{2mm}\text{and}\hspace{2mm}\int \dfrac{{\rm Le}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Le}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
             <legend>Please select a function:</legend>
@@ -224,7 +328,6 @@
             <input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="70" max="170" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize" name="setoutputfont">
             <label for="setmaxsor">max steps</label>
             <input id="setmaxsor" type="number" style="width:60px;" min="10" max="500" step="10" value="100" name="setmaxsor" onchange="setMaxsor();">
-            <!--  <label class="switch"><input id="optwrap" type="checkbox" onchange="wrapSwitch(this);"><span class="slider round"  title="line wrap"></span></label> -->
         </div>
 
         <p class="keplet" id="mpout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;line-height: 170%;min-height:20px;"></p>
@@ -236,14 +339,9 @@
         <p id="keplet_sor" class="kijelzo"></p>
         <p id="figy1" style="display:none;padding:0 10px;background-color:#ffdfdf"></p>
     </div>
-    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl();" title="Open/Close help">Toggle help</button>
+    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl('helpbar');" title="Open/Close help">Toggle help</button>
     <div id="helpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
         <iframe name="helpframe" width="99%" height="100%" src="multipolylog.pdf" style="width:99%;height:100vh;border:none;"></iframe>
-    </div>
-
-    <div class="keret of even" id="k6">
-        <b><big class="sorszam">6.</big></b>
-        <p class="keplet" style="padding-bottom:30px;margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x) {\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
     </div>
 </body>
 
