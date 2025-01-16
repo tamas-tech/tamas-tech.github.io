@@ -2543,7 +2543,7 @@ function dualOfHe() {
 
         var ov = cdualityHe(av, n);
         var cav = conjugate(av);
-        txt = "(" + av + ")^{*} = " + "(" + cav + ")\\\\[5mm]" + ov[1] + "={\\rm H}_{" + n + "}^{*(" + cav + ")} \\hspace{" + n + "mm}=\\hspace{2mm}-\\sum_{k=1}^{" + n + "}{\\rm (-1)}^{k}\\binom{" + (n - 1) + "}{k-1}{\\rm H}_{" + n + "}^{*(" + av + ")}\\hspace{2mm}=\\hspace{2mm}" + ov[0];
+        txt = "(" + av + ")^{*} = " + "(" + cav + ")\\\\[5mm]" + ov[1] + "={\\rm H}_{" + n + "}^{*(" + cav + ")} \\hspace{" + n + "mm}=\\hspace{2mm}-\\sum_{k=1}^{" + n + "}{\\rm (-1)}^{k}\\binom{" + (n - 1) + "}{k-1}{\\rm H}_{k}^{*(" + av + ")}\\hspace{2mm}=\\hspace{2mm}" + ov[0];
         elem.innerHTML = "\\[" + txt + "\\]";
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 
