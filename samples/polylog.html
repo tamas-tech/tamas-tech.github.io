@@ -209,8 +209,8 @@ def pnslider(p = slider(vmin=0, vmax=12, step_size=1, default=1, label='p', disp
 
     <div class="keret odd" id="k9">
         <b><big class="sorszam">9.</big></b>
-        <p class="keplet">\[\int \dfrac{x^{m}\ln^{p}(x)}{(1-x)^{n}}\,{\text{d} x}=(-1)^{p}\,p!\left(\sum_{j=0}^{n-1}\left\{\dfrac{(-1)^{j}\binom{m}{j}}{(n-j-1)!}\sum_{k=0}^{p}\frac{(-1)^{k}}{k!}\,\ln^{k}(x)\sum_{l=0}^{n-j-1}{n-j-1\brack l}\text{Li}_{p+1-k-l}(x)\right\}+\sum_{j=n}^{m}\left\{(-1)^{j}\binom{m}{j}\sum_{k=0}^{p}\frac{(-1)^{k}}{k!}\,\ln^{k}(x)\sum_{l=0}^{j-n}\dfrac{(-1)^{l}}{(l+1)^{p+1-k}}\binom{j-n}{l}\,x^{l+1}\right\}\right)
-            \\ \left(n \in \mathbb{N}_{0}, m \in \mathbb{N}_{0} \,p\in\mathbb{N}_{0}\right)\]
+        <p class="keplet">\[\begin{gather*}\int \dfrac{x^{m}\ln^{p}(x)}{(1-x)^{n}}\,{\text{d} x}=(-1)^{p}\,p!\left(\sum_{j=0}^{n-1}\left\{\dfrac{(-1)^{j}\binom{m}{j}}{(n-j-1)!}\sum_{k=0}^{p}\frac{(-1)^{k}}{k!}\,\ln^{k}(x)\sum_{l=0}^{n-j-1}{n-j-1\brack l}\text{Li}_{p+1-k-l}(x)\right\}+\sum_{j=n}^{m}\left\{(-1)^{j}\binom{m}{j}\sum_{k=0}^{p}\frac{(-1)^{k}}{k!}\,\ln^{k}(x)\sum_{l=0}^{j-n}\dfrac{(-1)^{l}}{(l+1)^{p+1-k}}\binom{j-n}{l}\,x^{l+1}\right\}\right)
+            \\ \left(n \in \mathbb{N}_{0}, m \in \mathbb{N}_{0} \,p\in\mathbb{N}_{0}\right)\end{gather*}\]
         </p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
@@ -236,8 +236,8 @@ def pnslider(p = slider(vmin=0, vmax=12, step_size=1, default=1, label='p', disp
 
     <div class="keret even" id="k10">
         <b><big class="sorszam">10.</big></b>
-        <p class="keplet">\[\int \frac{\ln^{p}(x)}{x^{n}\cdot(1-x)^{m}}\,{\text{d} x}=\binom{n+m-2}{m-1}\dfrac{\ln^{p+1}(x)}{p+1}+p!\sum_{k=0}^{p}\frac{\ln^{k}(x)}{k!}\left\{(-1)^{p+k}\sum_{t=0}^{m-1}\text{Li}_{p+1-k-t}(x)\sum_{r=t+1}^{m}\dfrac{\binom{n+m-1-r}{n-1}}{(r-1)!}{r-1\brack
-            t} -\sum_{t=2}^{n}\binom{n+m-1-t}{m-1}\dfrac{(t-1)^{k-p-1}}{x^{t-1}}\right\}\hspace{1.3cm}\left(n \in \mathbb{N},1,\,p\in\mathbb{N}_{0}\right)\]
+        <p class="keplet">\[\begin{gather*}\int \frac{\ln^{p}(x)}{x^{n}\cdot(1-x)^{m}}\,{\text{d} x}=\binom{n+m-2}{m-1}\dfrac{\ln^{p+1}(x)}{p+1}+p!\sum_{k=0}^{p}\frac{\ln^{k}(x)}{k!}\left\{(-1)^{p+k}\sum_{t=0}^{m-1}\text{Li}_{p+1-k-t}(x)\sum_{r=t+1}^{m}\dfrac{\binom{n+m-1-r}{n-1}}{(r-1)!}{r-1\brack
+            t} -\sum_{t=2}^{n}\binom{n+m-1-t}{m-1}\dfrac{(t-1)^{k-p-1}}{x^{t-1}}\right\} \\ \left(n \in \mathbb{N},1,\,p\in\mathbb{N}_{0}\right)\end{gather*}\]
         </p>
 
         <button class="sendbtn" onclick="kuldes(this);" title="Insert code into editor">&#x2398;</button>
