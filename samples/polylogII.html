@@ -9,13 +9,6 @@
     <script src="polylogII.js"></script>
     <!-- from cdn -->
     <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
-     <!--<script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script> -->
-
-    <!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.9.5/function-plot.js"></script>  -->
-    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> -->
-
     <script>
         MathJax.Hub.Config({
             tex2jax: {
@@ -63,20 +56,20 @@
         <h2>II. Paramáterek</h2>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">p</b> = </label><span id="pkijelzo" style="display:inline-block;width:20px;">3</span>
-            <input id="p" type="range" min="1" max="9" value="3" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set p" name="nd" onchange="setn(this,'p');elsoUpd();">
+            <input id="p" type="range" min="1" max="9" value="3" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set p" name="nd" onchange="setn(this,'p');">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">n</b> = </label><span id="nkijelzo" style="display:inline-block;width:20px;">4</span>
-            <input id="n" type="range" min="1" max="9" value="4" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set n" name="nd" onchange="setn(this,'n');elsoUpd();partialFrac();">
+            <input id="n" type="range" min="1" max="9" value="4" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set n" name="nd" onchange="setn(this,'n');kijelzoClear('partfrac');kijelzoClear('partstirl');kijelzoClear('veger');kijelzoClear('szabaly');">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">m</b> = </label><span id="mkijelzo" style="display:inline-block;width:20px;">3</span>
-            <input id="m" type="range" min="1" max="10" value="3" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set m" name="nd" onchange="setn(this,'m');elsoUpd();partialFrac();">
+            <input id="m" type="range" min="1" max="10" value="3" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set m" name="nd" onchange="setn(this,'m');kijelzoClear('partfrac');kijelzoClear('partstirl');kijelzoClear('veger');kijelzoClear('szabaly');">
         </div>
         <h2>III. Parciális törtekre bontás</h2>
         <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:5px;">\[\dfrac{1}{x^{n}\,(1-x)^{m}}=\sum_{k=1}^{n}{n+m-1-k \choose m-1}\frac{1}{x^{k}}+\sum_{k=1}^{m}{n+m-1-k \choose n-1}\frac{1}{(1-x)^{k}}\,\,\,\left(n,m\in\mathbb{N}\right) \]
         </p>
-        <button class="showpre1" style="width:96px;margin-left:10px" onclick="partialFrac();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="partialFrac();elsoUpd();" title="Calculate series">Calculate</button>
         <button class="showpre1" style="width:76px;margin-left:3px" onclick="kijelzoClear('partfrac');" title="Clear series">Clear</button>
         <p class="kijelzo" id="partfrac" style="margin-bottom:2px;"></p>
         <h2>IV. \(\dfrac{1}{(1-x)^{k}}\) tényezők átírása</h2>
@@ -91,15 +84,12 @@
         <p style="padding-left:10px;"> Az <span id="felsoint1"></span> integrál pedig már aránylag könnyen kiszámítható parciális integrálással úgy, hogy <span id="log">\(\ln^{p}(x)\)</span> kerül a D-sorba, <span>\(f(x)\)</span> pedig az I-sorba </p>
         <h2>V. A végeredmény kiszámítása</h2>
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="veger();" title="Calculate series">Calculate</button>
-        <button class="showpre1" style="width:76px;margin-left:3px" onclick="kijelzoClear('veger');" title="Clear series">Clear</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="kijelzoClear('veger');kijelzoClear('szabaly');" title="Clear series">Clear</button>
         <p class="kijelzo" id="veger" style="margin-bottom:2px;"></p>
         <p style="padding-left:10px;color:#960101;background-color: #fdddca;"><b>Észrevétel:</b> Elegendő az első sort ismerni, mert a többi ebből már már megkapható egy könnyen megjegyezhető séma szerint (első mátrix). Másrészt, az Li-k egy úgynevezett Hasse mátrixot alkotnak, ami azt jelenti, hogy a főátlóval párhuzamosan
             azonos értékek találhatók (második mátrix). Az x-ek negatív hatványai pedig oszloponként változatlanok.</p>
         <p class="kijelzo" id="szabaly" style="margin-bottom:2px;background-color:#fffd98;"></p>
     </div>
-    <script>
-        elsoUpd();
-    </script>
 </body>
 
 </html>
