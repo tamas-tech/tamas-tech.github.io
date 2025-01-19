@@ -79,8 +79,9 @@
         <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:5px;">\[\dfrac{1}{(1-x)^{n}}=\dfrac{1}{(n-1)!\cdot x}\cdot\sum_{k=0}^{n-1}\begin{bmatrix}n-1\\ k \end{bmatrix}\,\text{Li}_{-k}(x) \]
         </p>
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="partialStirl();" title="Calculate series">Calculate</button>
-        <button class="showpre1" style="width:76px;margin-left:3px" onclick="kijelzoClear('partstirl');" title="Clear series">Clear</button>
-        <p class="kijelzo" id="partstirl" style="margin-bottom:2px;"></p>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="kijelzoClear('partstirl');" title="Clear series">Clear</button><label class="switch k" style="margin-left:10px;"><input id="matrixmode" type="checkbox" onchange="partialStirl();"><span class="slider k round"></span></label>
+        <label margin-left:7px;>Matrix</label>
+        <p class="kijelzo" id="partstirl" style="margin-top:5px;margin-bottom:2px;"></p>
         <p style="padding-left:10px;"> Az <span id="felsoint1"></span> integrál pedig már aránylag könnyen kiszámítható parciális integrálással úgy, hogy <span id="log">\(\ln^{p}(x)\)</span> kerül a D-sorba, <span>\(f(x)\)</span> pedig az I-sorba </p>
         <h2>V. A végeredmény kiszámítása</h2>
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="veger();" title="Calculate series">Calculate</button>
