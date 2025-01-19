@@ -205,6 +205,26 @@ big.sorszam {
     margin-left: 10px
 }
 
+.switch.k {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 28px;
+    bottom: 4px;
+}
+
+.slider.k:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
 .switch {
     position: relative;
     display: inline-block;
