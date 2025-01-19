@@ -133,56 +133,140 @@ function elsoUpd() {
 };
 
 function partialStirl() {
+    const mode = document.getElementById("matrixmode").checked;
     const n = document.getElementById("n").value * 1;
     const m = document.getElementById("m").value * 1;
     var kijelzo = document.getElementById("partstirl");
     var keplet = "\\begin{gather*}";
-    for (var mm = 1; mm < m + 1; mm++) {
-        var b = binomial((n + m - 1 - mm), (n - 1))
-        keplet += "\\frac{" + b + "}{(1-x)^{" + mm + "}}=\\dfrac{" + b + "}{(" + mm + "-1)!}\\cdot\\left\\{";
-        for (var k = 0; k < mm; k++) {
-            keplet += "\\begin{bmatrix}" + (mm - 1) + "\\\\" + k + "\\end{bmatrix}\\,\\dfrac{\\text{Li}_{" + (-k) + "}(x)}{x}+";
+    if (mode) {
+        var cek = "{cc|";
+        for (var u = 0; u < m; u++) {
+            cek += "c";
         };
-        keplet = keplet.slice(0, -1) + "\\right\\} = \\\\ \\\\ =\\dfrac{" + b + "}{" + factorial(mm - 1) + "}\\cdot\\left\\{";
-        for (var k = 0; k < mm; k++) {
-            keplet += Stirling(mm - 1, k) + "\\,\\dfrac{\\text{Li}_{" + (-k) + "}(x)}{x}+";
+        keplet += "\\begin{array}" + cek + "}";
+        keplet += "n-1=" + (n - 1) + " & \\dfrac{1}{k!} &";
+        for (var k = 0; k < m; k++) {
+            keplet += "\\dfrac{\\text{Li}_{" + (-k) + "}(x)}{x} &";
         };
-        keplet = keplet.slice(0, -1) + "\\right\\} = \\\\ \\\\ =";
-        for (var k = 0; k < mm; k++) {
-            if (k == 0 && mm > 1)
-                keplet += "";
-            else
-                keplet += egyszerusit(b * Stirling(mm - 1, k), factorial(mm - 1)) + "\\,\\dfrac{\\text{Li}_{" + (-k) + "}(x)}{x}+";
+
+        keplet = keplet.slice(0, -1) + "\\\\ \\hline";
+        for (var j = 0; j < m; j++) {
+            for (var k = 0; k < m + 2; k++) {
+                if (k == 0)
+                    keplet += " \\dbinom{" + (n + m - 2 - j) + "}{" + (n - 1) + "} &";
+                else if (k == 1)
+                    keplet += " \\dfrac{1}{" + j + "!} &";
+                else if (k < j + 3)
+                    keplet += " \\begin{bmatrix}" + j + "\\\\" + (k - 2) + "\\end{bmatrix} &";
+                else
+                    keplet += " &";
+            };
+            keplet = keplet.slice(0, -1) + "\\\\";
         };
-        keplet = keplet.slice(0, -1) + " \\\\ \\\\ \\hline\\\\ \\\\";
-    };
-    keplet = keplet.slice(0, -5) + "\\text{Összegezve, és Li-k szerint összevonva f(x)-re az alábbit kapjuk:}\\\\ \\hline \\\\";
-    keplet += "f(x) = ";
-    for (var k = 2; k < n + 1; k++) {
-        keplet += "\\frac{" + binomial((n + m - 1 - k), (m - 1)) + "}{x^{" + k + "}}+";
-    };
-    for (var k = 1; k < m + 1; k++) {
-        keplet += "\\frac{" + binomial((n + m - 1 - k), (n - 1)) + "}{(1-x)^{" + k + "}}+";
-    };
-    keplet = keplet.slice(0, -1);
-    keplet += "= \\\\ \\\\ =";
-    for (var k = 2; k < n + 1; k++) {
-        keplet += "\\frac{" + binomial((n + m - 1 - k), (m - 1)) + "}{x^{" + k + "}}+";
-    };
-    for (var j = 0; j < m; j++) {
-        var c = 0;
-        var s = abfact(j, m);
-        for (k = j + 1; k < m + 1; k++) {
-            c += Stirling(k - 1, j) * binomial(n + m - 1 - k, n - 1) * s / factorial(k - 1)
+        keplet += " \\end{array}  \\\\ \\\\ \\downarrow\\\\ \\\\ ";
+
+        keplet += "\\begin{array}" + cek + "}";
+        keplet += " &  &";
+        for (var k = 0; k < m; k++) {
+            keplet += "\\dfrac{\\text{Li}_{" + (-k) + "}(x)}{x} &";
         };
-        keplet += egyszerusit(c, s) + "\\,\\dfrac{\\text{Li}_{" + (-j) + "}(x)}{x}+"
-    };
-    keplet = keplet.slice(0, -1);
-    keplet += "\\end{gather*}"
-    keplet = keplet.replaceAll("{(1-x)^{1}", "{1-x");
+        keplet = keplet.slice(0, -1) + "\\\\ \\hline";
+        for (var j = 0; j < m; j++) {
+            for (var k = 0; k < m + 2; k++) {
+                if (k == 0)
+                    keplet += binomial(n + m - 2 - j, n - 1) + " &";
+                else if (k == 1)
+                    keplet += " \\dfrac{1}{" + factorial(j) + "} &";
+                else if (k < j + 3)
+                    keplet += Stirling(j, k - 2) + "&";
+                else
+                    keplet += " &";
+            };
+            keplet = keplet.slice(0, -1) + "\\\\";
+        };
+        keplet += " \\end{array}  \\\\ \\\\ \\downarrow\\\\ \\\\ ";
+
+        cek = "{c|";
+        for (var u = 0; u < m; u++) {
+            cek += "c";
+        };
+        keplet += "\\begin{array}" + cek + "} &";
+        for (var k = 0; k < m; k++) {
+            keplet += "\\dfrac{\\text{Li}_{" + (-k) + "}(x)}{x} &";
+        };
+        keplet = keplet.slice(0, -2) + "\\\\ \\hline";
+
+        for (var j = 0; j < m; j++) {
+            keplet += " &";
+            for (var k = 0; k < m; k++) {
+                if (k < j + 1)
+                    keplet += egyszerusit(binomial(n + m - 2 - j, n - 1) * Stirling(j, k), factorial(j)) + "&";
+                else
+                    keplet += " &";
+            };
+            keplet = keplet.slice(0, -1) + "\\\\";
+        };
+        keplet += " \\hline \\sum &";
+        for (var k = 0; k < m; k++) {
+            var ss = abfact(1, m);
+            var s = 0;
+            for (var j = 0; j < m; j++) {
+                s += binomial(n + m - 2 - j, n - 1) * Stirling(j, k) * ss / factorial(j);
+            }
+            keplet += egyszerusit(s, ss) + " &";
+        };
+        keplet = keplet.slice(0, -1);
+        keplet += " \\end{array}";
+        keplet += "\\end{gather*}";
+    } else {
+        for (var mm = 1; mm < m + 1; mm++) {
+            var b = binomial((n + m - 1 - mm), (n - 1))
+            keplet += "\\frac{" + b + "}{(1-x)^{" + mm + "}}=\\dfrac{" + b + "}{(" + mm + "-1)!}\\cdot\\left\\{";
+            for (var k = 0; k < mm; k++) {
+                keplet += "\\begin{bmatrix}" + (mm - 1) + "\\\\" + k + "\\end{bmatrix}\\,\\dfrac{\\text{Li}_{" + (-k) + "}(x)}{x}+";
+            };
+            keplet = keplet.slice(0, -1) + "\\right\\} = \\\\ \\\\ =\\dfrac{" + b + "}{" + factorial(mm - 1) + "}\\cdot\\left\\{";
+            for (var k = 0; k < mm; k++) {
+                keplet += Stirling(mm - 1, k) + "\\,\\dfrac{\\text{Li}_{" + (-k) + "}(x)}{x}+";
+            };
+            keplet = keplet.slice(0, -1) + "\\right\\} = \\\\ \\\\ =";
+            for (var k = 0; k < mm; k++) {
+                if (k == 0 && mm > 1)
+                    keplet += "";
+                else
+                    keplet += egyszerusit(b * Stirling(mm - 1, k), factorial(mm - 1)) + "\\,\\dfrac{\\text{Li}_{" + (-k) + "}(x)}{x}+";
+            };
+            keplet = keplet.slice(0, -1) + " \\\\ \\\\ \\hline\\\\ \\\\";
+        };
+        keplet = keplet.slice(0, -5) + "\\text{Összegezve, és Li-k szerint összevonva f(x)-re az alábbit kapjuk:}\\\\ \\hline \\\\";
+        keplet += "f(x) = ";
+        for (var k = 2; k < n + 1; k++) {
+            keplet += "\\frac{" + binomial((n + m - 1 - k), (m - 1)) + "}{x^{" + k + "}}+";
+        };
+        for (var k = 1; k < m + 1; k++) {
+            keplet += "\\frac{" + binomial((n + m - 1 - k), (n - 1)) + "}{(1-x)^{" + k + "}}+";
+        };
+        keplet = keplet.slice(0, -1);
+        keplet += "= \\\\ \\\\ =";
+        for (var k = 2; k < n + 1; k++) {
+            keplet += "\\frac{" + binomial((n + m - 1 - k), (m - 1)) + "}{x^{" + k + "}}+";
+        };
+        for (var j = 0; j < m; j++) {
+            var c = 0;
+            var s = abfact(j, m);
+            for (k = j + 1; k < m + 1; k++) {
+                c += Stirling(k - 1, j) * binomial(n + m - 1 - k, n - 1) * s / factorial(k - 1)
+            };
+            keplet += egyszerusit(c, s) + "\\,\\dfrac{\\text{Li}_{" + (-j) + "}(x)}{x}+"
+        };
+        keplet = keplet.slice(0, -1);
+        keplet += "\\end{gather*}"
+        keplet = keplet.replaceAll("{(1-x)^{1}", "{1-x");
+    }
     kijelzo.innerText = "\\[" + keplet + "\\]"
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, kijelzo]);
 };
+
 
 function veger() {
     const p = document.getElementById("p").value * 1;
