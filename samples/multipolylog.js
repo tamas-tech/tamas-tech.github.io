@@ -421,7 +421,7 @@ sor = function(S) {
     return out;
 };
 
-elojel = function(e) {
+felojel = function(e) {
     var out;
     if (e < 0) {
         out = " - ";
@@ -1624,7 +1624,7 @@ function LiIndx(a, b) {
     }
     a = a.map(y => big2inf(y));
     b = b.map(y => big2inf(y));
-    var e = elojel(b[0]);
+    var e = felojel(b[0]);
     var b0 = b[0];
     if (b0 !== "∞")
         b0 = Math.abs(b[0]);
