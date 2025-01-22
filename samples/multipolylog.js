@@ -2045,6 +2045,15 @@ function HZszamitas() {
 
 //PARI-val
 
+function szamkiszedes() {
+    const szam1 = document.querySelector("#ideout2 .sagecell_sessionOutput script[type='math/tex']").innerText.split("|")[1];
+    var szam2 = document.querySelector("#ideout2 .sagecell_sessionOutput .mtext").innerText;
+    if (isNaN(szam1 * 1))
+        return szam2;
+    else
+        return szam1;
+};
+
 function zetaltxp(sv, n, ism) {
     var svtxt = sv;
     const r = sv.length;
@@ -2057,8 +2066,9 @@ function zetaltxp(sv, n, ism) {
     if (ism)
         cshtml = "<sup>*</sup>"
     if (outelem) {
-        var Zv = outelem.innerText.split("=")[1].replace(/\s/, '');
+        //var Zv = outelem.innerText.split("=")[1].replace(/\s/, '');
         //var Zv = outelem.innerText.replace(/\s/, '');  NETEN EZ KELL
+         var Zv = szamkiszedes();
         if (Zv.startsWith("gp")) {
             setfigy("A PARI / GP nem tudta a bemenetet kiszámítani.", "figyZ");
             return;
