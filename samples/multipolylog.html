@@ -62,16 +62,15 @@
         <p>
             <b>Néhány mezőbe betűk is bevihetők idézőjelek közé zárva</b>. Ez mindig a beviteli mező mögötti <button id="ABC" style="margin-left:5px;">ABC</button> gomb jelzi..<br/> Példák:
             <ul>
-                <li><input type="text" value='"a","v"' readonly><span> )</span><button style="margin-left:5px;">ABC</button></li>
+                <li><input type="text" value='"a","v"' readonly><button style="margin-left:5px;">ABC</button></li>
                 <li>Mivel idézőjelek közé tett betűk bevitele igen fáradságos lehet, ezért az alábbi gyors beillesztést tettük elérhetővé. Ha egy (vagy több) egész számot írunk egy ilyen mezőbe majd az <button id="ABC" style="margin-left:5px;">ABC</button>                    gombra kattintunk, akkor az <b>első számnak megfelelő, de legfeljebb 6</b>, vesszővel elválsztott, idézőjelek közé tett betűt illeszt a beviteli mezőbe. Ha pédául az alábbi gombra kattintunk, akkor 3 betűt illeszt be<br> <input type="text"
-                        id="test1" value="3" name="test1"><span> )</span><button id="ABCtest1" onclick="toABC('test1');" style="margin-left:5px;">ABC</button><br/>De az alábbi is három betűt fog beilleszteni, mert az első szám 3<br> <input type="text" id="test2"
-                        value="3,-2,5,6" name="test2"><span> )</span><button id="ABCtest2" onclick="toABC('test2');" style="margin-left:5px;">ABC</button><br/>A következő nulla betűt fog beilleszteni , mert az első szám -3<br> <input type="text" id="test3"
-                        value="-3,-2,5,6" name="test3"><span> )</span><button id="ABCtest3" onclick="toABC('test3');" style="margin-left:5px;">ABC</button><br/>A következő szintén nulla betűt fog beilleszteni , mert az első karakter nem is szám <br>
-                    <input type="text" id="test4" value='"a",2,3' name="test4"><span> )</span><button id="ABCtest4" onclick="toABC('test4');" style="margin-left:5px;">ABC</button><br/>Az alábbi kettő pedig 6 betűt fog beilleszteni, mert 6-nál több betűt
+                        id="test1" value="3" name="test1"><button id="ABCtest1" onclick="toABC('test1');" style="margin-left:5px;">ABC</button><br/>De az alábbi is három betűt fog beilleszteni, mert az első szám 3<br> <input type="text" id="test2"
+                        value="3,-2,5,6" name="test2"><button id="ABCtest2" onclick="toABC('test2');" style="margin-left:5px;">ABC</button><br/>A következő nulla betűt fog beilleszteni , mert az első szám -3<br> <input type="text" id="test3"
+                        value="-3,-2,5,6" name="test3"><button id="ABCtest3" onclick="toABC('test3');" style="margin-left:5px;">ABC</button><br/>A következő szintén nulla betűt fog beilleszteni , mert az első karakter nem is szám <br>
+                    <input type="text" id="test4" value='"a",2,3' name="test4"><button id="ABCtest4" onclick="toABC('test4');" style="margin-left:5px;">ABC</button><br/>Az alábbi kettő pedig 6 betűt fog beilleszteni, mert 6-nál több betűt
                     soha nem illeszt be.
-                    <br/> <input type="text" id="test5" value='12' name="test5"><span> )</span><button id="ABCtest5" onclick="toABC('test5');" style="margin-left:5px;">ABC</button> <br style="margin-bottom:5px;" /> <input type="text" id="test6" value='oo,-3'
-                        name="test6"><span> )</span>
-                    <button id="ABCtest6" onclick="toABC('test6');" style="margin-left:5px;">ABC</button>
+                    <br/> <input type="text" id="test5" value='12' name="test5"><button id="ABCtest5" onclick="toABC('test5');" style="margin-left:5px;">ABC</button> <br style="margin-bottom:5px;" /> <input type="text" id="test6" value='oo,-3'
+                        name="test6"><button id="ABCtest6" onclick="toABC('test6');" style="margin-left:5px;">ABC</button>
             </ul>
         </p>
 
