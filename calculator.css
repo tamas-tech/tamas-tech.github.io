@@ -277,10 +277,6 @@ table {
     border-color: #b3b3b3;
 }
 
-#calctglbtn:hover {
-    background-color: #407aca;
-}
-
 #settingclose,
 #menuclose {
     display: block;
