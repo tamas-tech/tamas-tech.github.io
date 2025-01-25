@@ -553,6 +553,7 @@ LTXFormaz = function(S) {
         }
     };
     out = out.slice(2);
+    if(mathfazis1 == "")
     out = setKeplet0() + " = " + out;
     return out;
 };
