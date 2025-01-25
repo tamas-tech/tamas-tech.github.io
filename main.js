@@ -159,10 +159,11 @@ var torol = function() {
 };
 
 var clearOutput = function() {
-    var outputs = document.querySelector('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
-    if (outputs)
+    var outputs = $('div.sagecell_sessionOutput *:not(img.sagecell_spinner)');
+    if (outputs){
         outputs.remove();
-    output.innerHTML = "";
+        outputs.innerHTML = "";
+    }
 };
 
 function themeSwitch() {
@@ -491,13 +492,13 @@ function displayMessage(evt) {
     var message;
     message = evt.data;
     if (message == 'gotook') {
-        document.querySelector('.sagecell_evalButton').scrollIntoView({
+        document.querySelector('#myoutput').scrollIntoView({
             behavior: "smooth",
             block: 'center'
         });
     } else {
         cmeditor.setValue(message);
-        document.querySelector('.sagecell_evalButton').scrollIntoView({
+        document.querySelector('#myoutput').scrollIntoView({
             behavior: "smooth",
             block: 'center'
         });
