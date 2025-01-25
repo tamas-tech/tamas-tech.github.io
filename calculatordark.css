@@ -294,9 +294,26 @@ table {
     height: 34px;
 }
 
-#menutglbtn:hove,
-r #sbtglbtn:hover {
+#calctglbtn {
+    position: absolute;
+    top: 14px;
+    background-color: #5B92E1;
+    cursor: pointer;
+    border: 1px solid #73a9ee96;
+    padding: 0 5px 0 8px;
+    border-radius: 5px;
+    width: 32px;
+    font-size: large;
+    right: 70px;
+}
+
+#menutglbtn:hover,
+#sbtglbtn:hover {
     background-color: #3D4C5F
+}
+
+#calctglbtn:hover {
+    background-color: #407aca;
 }
 
 #settingclose,
