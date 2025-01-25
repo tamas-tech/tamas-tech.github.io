@@ -635,11 +635,11 @@ urites = function() {
     }; // ez nem volt
     //} else if (sForma == 4) {
     if (sForma == 4) { // a felette levo helyett
-        if (mode == "Le") {
+        if (denom) {
             outelem.innerText = "Sorry, not implemented yet!";
             outelem.style.opacity = "1";
             outelem.style.color = "#ff2211";
-            if (!showmathout)
+            //if (!showmathout)
                 return;
         } else {
             var kiur = document.querySelector('.kiur').getAttribute('id').slice(0, 1);
