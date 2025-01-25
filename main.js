@@ -196,6 +196,10 @@ function sbTgl() {
     $('#settingbar').toggle(300);
 };
 
+function calcTgl() {
+    $('#calcbar').toggle(300);
+};
+
 function sampleTgl() {
     $('#sample-container').toggle(300);
     $('.btn-open').toggleClass('shown');
