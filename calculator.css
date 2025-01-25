@@ -259,9 +259,10 @@ table {
 #calctglbtn {
     position: absolute;
     top: 14px;
-    background-color: #5B92E1;
+    background-color: #e6e6e6;
+    color: #636363;
     cursor: pointer;
-    border: 1px solid #73a9ee96;
+    border: 1px solid #d8d8d8;
     padding: 0 5px 0 8px;
     border-radius: 5px;
     width: 32px;
@@ -270,7 +271,8 @@ table {
 }
 
 #menutglbtn:hover,
-#sbtglbtn:hover {
+#sbtglbtn:hover,
+#calctglbtn:hover {
     background-color: #cccccc;
     border-color: #b3b3b3;
 }
