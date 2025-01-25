@@ -568,10 +568,12 @@ urites = function() {
     var av = document.getElementById("av").value;
     var bv = document.getElementById("bv").value;
     var outelem = document.getElementById("mpout");
+    var mathelem = document.getElementById("keplet_math");
     if (pat.test(av) || pat.test(bv)) {
         outelem.innerText = "Valamelyik ∞ jel hibás!";
         outelem.style.opacity = "1";
-        outelem.style.color = "#ff2211"
+        outelem.style.color = "#ff2211";
+        mathelem.innerText = "";
         return;
     };
     seriesClear();
@@ -609,7 +611,8 @@ urites = function() {
         } else {
             outelem.innerText = "A kiüritendő vektor nem tartalmazhat ∞-t!";
             outelem.style.opacity = "1";
-            outelem.style.color = "#ff2211"
+            outelem.style.color = "#ff2211";
+            mathelem.innerText = "";
             return;
         }
         outelem.style.color = "";
@@ -617,6 +620,7 @@ urites = function() {
         outelem.innerText = "A bevitt adatok valamelyike hibás!";
         outelem.style.opacity = "1";
         outelem.style.color = "#ff2211";
+        mathelem.innerText = "";
         return;
     };
 
@@ -625,7 +629,8 @@ urites = function() {
     if (ne == 0 && nm == 0) {
         outelem.innerText = "Mind a két vektor nem lehet ÜRES!";
         outelem.style.opacity = "1";
-        outelem.style.color = "#ff2211"
+        outelem.style.color = "#ff2211";
+        mathelem.innerText = "";
         return;
     }; // ez nem volt
     //} else if (sForma == 4) {
