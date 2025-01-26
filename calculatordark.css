@@ -26,6 +26,14 @@ div.CodeMirror.cm-s-default {
     box-shadow: 0px 0px 5px 5px #465f756b;
 }
 
+#sample-c {
+    width: 44px;
+}
+
+#sample-c.opened {
+    width: unset;
+}
+
 div.sagecell_sessionOutput {
     background-color: #3e3e3e;
     color: #c1c6f9;
@@ -660,7 +668,7 @@ body {
 
 .btn-open {
     border: 0;
-    border-radius: 22.5px;
+    border-radius: 3px;
     box-shadow: 0 2px 14px 0 rgba(0, 0, 0, .05);
     display: none;
     font-size: 16px;
@@ -671,6 +679,7 @@ body {
     font-size: 1.1em;
     vertical-align: middle;
     display: none;
+    margin-right:15px;
 }
 
 .btn-open.shown {
