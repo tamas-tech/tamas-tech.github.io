@@ -107,12 +107,20 @@ function setKeplet() {
 
 function setDenom(elem) {
     denom = elem.checked;
+    const masik = document.getElementById("setarga")
+    if (denom && arga) {
+        masik.click();
+    };
     setKeplet();
     urites();
 };
 
 function setArga(elem) {
     arga = elem.checked;
+    const masik = document.getElementById("setdenom")
+    if (arga && denom) {
+        masik.click();
+    };
     setKeplet();
     urites();
 };
