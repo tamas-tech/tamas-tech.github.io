@@ -201,24 +201,22 @@ function calcTgl() {
 };
 
 function sampleTgl() {
-    $('#sample-container').toggle(300);
+    //$('#sample-container').toggle(100);
     $('.btn-open').toggleClass('shown');
     var btn = $('.sample-open');
-    var txt = btn.text();
-    if (txt == 'Show samples') {
-        btn.text('Hide samples')
+    var txt = btn.html();
+    $('#sample-c').toggleClass('opened', 300);
+    if (txt == "❭") {
+        btn.html('&#x276C;');
         setTimeout(() => {
             document.querySelector('button.btn-open').scrollIntoView({
                 behavior: "smooth",
             });
         }, 300)
     } else {
-        btn.text('Show samples');
-        /*  setTimeout(() => {
-             cmeditor.refresh();
-         }, 500); */
+        btn.html('&#x276D;');
     }
-    //$('.sagecell_editor,#tarto').toggle(300);
+    $('#sample-container').toggle(100);
 };
 
 function megnyitfn(x) {
