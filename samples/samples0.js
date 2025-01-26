@@ -1,6 +1,10 @@
 function kuldes(elem) {
     var message = elem.nextElementSibling.nextElementSibling.nextElementSibling.innerText
     window.parent.postMessage(message, '*');
+    Array.from(document.querySelectorAll('.keret.active')).forEach(
+        (el) => el.classList.remove('active')
+    );
+    elem.parentElement.classList.add('active');
 };
 
 function kuldesgo() {
