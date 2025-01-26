@@ -22,6 +22,14 @@ div.CodeMirror.cm-s-default {
     box-shadow: 0px 0px 5px 5px #94a1b04d;
 }
 
+#sample-c {
+    width: 44px;
+}
+
+#sample-c.opened {
+    width: unset;
+}
+
 div.sagecell_permalink {
     display: none;
 }
@@ -592,7 +600,7 @@ body {
 
 .btn-open {
     border: 0;
-    border-radius: 22.5px;
+    border-radius: 3px;
     box-shadow: 0 2px 14px 0 rgba(0, 0, 0, .05);
     display: none;
     font-size: 16px;
@@ -603,6 +611,7 @@ body {
     font-size: 1.1em;
     vertical-align: middle;
     display: none;
+    margin-right: 15px;
 }
 
 .btn-open.shown {
@@ -614,10 +623,13 @@ body {
 }
 
 .btn-open.first {
-    background-color: #6d778e;
-    color: #ffffff;
+    background-color: #c1c4d2;
+    color: #555;
 }
 
+.btn-open:hover {
+    background-color: #abb0c7;
+}
 
 /* zeynepjs menu styles */
 
