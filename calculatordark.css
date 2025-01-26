@@ -305,13 +305,12 @@ table {
 #calctglbtn {
     position: absolute;
     top: 14px;
-    background-color: #5B92E1;
+    background-color: #a0c4f5;
     cursor: pointer;
     border: 1px solid #73a9ee96;
-    padding: 0 5px 0 8px;
+    padding: 2px 0 2px 10px;
     border-radius: 5px;
     width: 32px;
-    font-size: large;
     right: 70px;
 }
 
@@ -321,7 +320,7 @@ table {
 }
 
 #calctglbtn:hover {
-    background-color: #407aca;
+    background-color: #7faae6;
 }
 
 #settingclose,
@@ -411,11 +410,12 @@ button.sample-open {
     padding: 0.4em 1em;
     text-decoration: none;
     font-weight: normal;
-    font-family: Verdana, Arial, sans-serif;
     font-size: 1.1em;
     vertical-align: middle;
     display: inline-block;
     margin-right: 8px;
+    height: 35px;
+    cursor: pointer;
 }
 
 button.otherbtn * {
