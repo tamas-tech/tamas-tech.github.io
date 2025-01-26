@@ -150,6 +150,11 @@ div.keret {
     padding-bottom: 20px;
 }
 
+div.keret.active {
+    outline: 3px solid #f00;
+    outline-offset: -4px;
+}
+
 div.keret.of {
     overflow: auto;
     min-width: unset;
