@@ -658,6 +658,7 @@ body {
     padding: 18px 20px;
     text-decoration: none;
     transition: all 150ms;
+    text-decoration: none;
 }
 
 .zeynep ul>li>a:hover {
@@ -695,6 +696,7 @@ body {
     font-weight: bold;
     padding: 18px 20px;
     transition: all 150ms;
+    text-decoration: none;
 }
 
 .zeynep ol>li>a:hover {
