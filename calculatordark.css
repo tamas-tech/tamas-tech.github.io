@@ -759,7 +759,7 @@ body {
     display: block;
     font-size: 14px;
     font-weight: bold;
-    padding: 7px 5px;
+    padding: 5px 7px;
     transition: all 150ms;
     text-decoration: none;
 }
