@@ -41,6 +41,27 @@ var Hreszletes = false;
 var fazis1 = "";
 var mathfazis1 = "";
 var showmathout = true;
+var showgenmathout = true;
+var mathoutformat = false;
+
+
+var amode = "Li";
+var bmode = "Li";
+var narg = false;
+var aarg = false;
+var barg = false;
+var nargtxt = "x";
+var aargtxt = "x";
+var bargtxt = "x";
+var genmaxsor = 400;
+var fazis = {
+    init: nov,
+    std: nov,
+    atv: bov,
+    veg: bov,
+};
+const fltx = { "nov": "\\boldsymbol{_{+}b}", "bov": "\\boldsymbol{^{+}b}", "mnov": "-\\left(\\boldsymbol{_{+}b}\\right)", "mbov": "-\\left(\\boldsymbol{^{+}b}\\right)", "bovnov": "\\boldsymbol{^{+}b}+\\boldsymbol{_{+}b}", "bovmnov": "\\boldsymbol{^{+}b}-\\boldsymbol{_{+}b}", "mbovnov": "\\boldsymbol{_{+}b}-\\boldsymbol{^{+}b}", "mbovmnov": "-\\left(\\boldsymbol{^{+}b}+\\boldsymbol{_{+}b}\\right)" }
+
 
 function setMode(t) {
     mode = t.value;
@@ -93,7 +114,6 @@ function setKeplet0() {
         txt1 = "{\\rm " + mode + "}_{(" + a + ")}(" + arg + ")";
     if (nb > 0)
         txt2 = "{\\rm " + mode + "}_{(" + b + ")}(x)";
-    //var txt = "\\int \\dfrac{{\\rm " + mode + "}_{(" + a + ")}(" + arg + ")\\cdot {\\rm " + mode + "}_{(" + b + ")}(x)}{" + tort + "}\\,{\\text{d} x}";
     txt = "\\int \\dfrac{" + txt1 + szorzat + txt2 + "}{" + tort + "}\\,{\\text{d} x}"
     return txt;
 };
@@ -117,7 +137,17 @@ function setDenom(elem) {
 
 function setArga(elem) {
     arga = elem.checked;
-    const masik = document.getElementById("setdenom")
+    const masik = document.getElementById("setdenom");
+    const bbtn = document.getElementById("bvl");
+    const lbtn = document.getElementById("linit");
+    if (arga) {
+        lepesinit();
+        bbtn.style.opacity = 0.2;
+        lbtn.style.opacity = 0.2;
+    } else {
+        bbtn.style.opacity = 1;
+        lbtn.style.opacity = 1;
+    }
     if (arga && denom) {
         masik.click();
     };
@@ -201,6 +231,26 @@ pozcsere = function(L) {
     return [b, a];
 };
 
+rstd = function(LL) {
+    var L = _.cloneDeep(LL);
+    var a = L[0];
+    var b = L[1];
+    a[0] = a[0] - 1;
+    b.unshift(1);
+    lepessor.push("^⋯");
+    return [a, b];
+};
+
+rcsokk1 = function(LL) {
+    var L = _.cloneDeep(LL);
+    let a = L[0];
+    let b = L[1];
+    a.shift();
+    b[0] = b[0] + 1;
+    lepessor.push("^1⌋⟶");
+    return [a, b];
+};
+
 fazis2 = false;
 
 lepes = function(LL0) {
@@ -224,15 +274,27 @@ lepes = function(LL0) {
     }
     if (poz == 0) {
         if (ut > 1) {
-            out = std(L0);
-        } else if (ut < 1) {
+            if (!arga)
+                out = std(L0);
+            else
+                out = rstd(L0);
+        } else if (ut < 1 && !arga) {
             out = pozcsere(L0);
             ujpoz = (poz + 1) % 2;
+        } else if (ut < 1 && arga) {
+            out = rstd(L0);
+            ujpoz = poz;
         } else if (ut == 1) {
             if (h > 1) {
-                out = csokk1(L0);
+                if (!arga)
+                    out = csokk1(L0);
+                else
+                    out = rcsokk1(L0);
             } else {
-                out = veg1(L0);
+                if (!arga)
+                    out = veg1(L0);
+                else
+                    out = rcsokk1(L0);
                 if (mode == "Le")
                     ujpoz = 50;
                 else
@@ -242,10 +304,16 @@ lepes = function(LL0) {
     } else {
         if (poz == 1) {
             if (ut < 0) {
-                out = std(L0);
-            } else if (ut > 0) {
+                if (!arga)
+                    out = std(L0);
+                else
+                    out = rstd(L0);
+            } else if (ut > 0 && !arga) {
                 out = pozcsere(L0);
                 ujpoz = (poz + 1) % 2;
+            } else if (ut > 0 && arga) {
+                out = rstd(L0);
+                ujpoz = poz;
             } else if (ut == 0) {
                 if (h > 1) {
                     out = csokk0(L0);
@@ -293,6 +361,10 @@ lepesinit = function() {
         ha = av.length;
         hb = bv.length;
 
+        if (arga) {
+            refreskiura();
+            return;
+        }
         var aindx = av.indexOf(oo);
         var bindx = bv.indexOf(oo);
         if (aindx > -1 && bindx < 0) {
@@ -314,7 +386,7 @@ lepesinit = function() {
                 else {
                     outelem.innerText = "Mind a két vektor nem lehet ÜRES!";
                     outelem.style.opacity = "1";
-                    outelem.style.color = "#ff2211"
+                    outelem.style.color = "#ff2211";
                     return;
                 }
             }
@@ -462,15 +534,16 @@ ltxformaz = function(s) {
     var arg = "x";
     var szorzat = "\\cdot";
     if (arga)
-        arg = "1-x";
-
+        if (s[0] == 1 && y.length == 0)
+            arg = "x";
+        else
+            arg = "1-x";
     var xindx = x.indexOf(Infinity);
     var yindx = y.indexOf(Infinity);
     if (xindx > -1)
         x = Inf2oo(x);
     if (yindx > -1)
         y = Inf2oo(y);
-
     if (x.length == 0) {
         x = "";
         szorzat = "";
@@ -504,6 +577,11 @@ SFormaz = function(S) {
         var e = elojele(Math.pow(-1, i));
         if (fazis1 !== "")
             e = elojele(Math.pow(-1, i + 1));
+        if (arga)
+            if (n > 1)
+                e = " + ";
+            else
+                e = " - ";
         var kiesik = "";
         if (lepessor[i] == "↻" || lepessor[i - 1] == "↻")
             kiesik = "*";
@@ -529,7 +607,8 @@ SFormaz = function(S) {
             ut = szamlalo + ". ";
         vegtor = "\n \u00a0\u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0";
     };
-    if (sForma == 0 || sForma == 3) {
+
+    if ((sForma == 0 || sForma == 3) && n > 1) {
         out = out.slice(3);
     };
     return out;
@@ -546,6 +625,12 @@ LTXFormaz = function(S) {
         var e = elojele(Math.pow(-1, i));
         if (fazis1 !== "")
             e = elojele(Math.pow(-1, i + 1));
+        if (arga)
+            if (n > 1)
+                e = " + ";
+            else if (S[0][0] == 0) {
+            e = " - ";
+        }
         var kiesik = false;
         if (lepessor[i] == "↻" || lepessor[i - 1] == "↻")
             kiesik = true;
@@ -560,8 +645,9 @@ LTXFormaz = function(S) {
                 out = out + e + ltxformaz(str);
         }
     };
-    out = out.slice(2);
-    if(mathfazis1 == "")
+    if (out.startsWith(" + "))
+        out = out.slice(2);
+    if (mathfazis1 == "")
         out = setKeplet0() + " = " + out;
     return out;
 };
@@ -610,6 +696,13 @@ urites = function() {
         if (bindx > -1)
             bv = oo2Inf(bv);
 
+        if (arga && av.some(v => v <= 0)) {
+            outelem.innerText = "Az a indexvektor most csak pozitív elemeket tartalmazhat!";
+            outelem.style.opacity = "1";
+            outelem.style.color = "#ff2211";
+            mathelem.innerText = "";
+            return;
+        }
         if (poz == 0 && aindx < 0) {
             elem = av;
             masik = bv;
@@ -648,7 +741,7 @@ urites = function() {
             outelem.style.opacity = "1";
             outelem.style.color = "#ff2211";
             //if (!showmathout)
-                return;
+            return;
         } else {
             var kiur = document.querySelector('.kiur').getAttribute('id').slice(0, 1);
             if (kiur == "a")
@@ -669,13 +762,13 @@ urites = function() {
             tmasik = Inf2oo(tmasik);
             uout = JSON.stringify(tmasik).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
             mathout = LTXFormaz([
-                [0, [
+                [1, [
                     tmasik, []
                 ]]
             ]);
             tmasik = oostr2Inf(tmasik)
             SOR = [
-                [0, [
+                [1, [
                     tmasik, []
                 ]]
             ];
@@ -728,17 +821,30 @@ urites = function() {
         }
     } else if (ne > 0 && nm == 0) {
         if (!denom) {
-            var efirst = elem[0];
-            var telem = elem.slice(1)
-            telem.unshift(efirst + 1);
-            telem = Inf2oo(telem);
-            uout = JSON.stringify(telem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
-            SOR = [
-                [0, [
-                    telem, []
-                ]]
-            ];
-            mathout = LTXFormaz(SOR);
+            if (mode == "Li" && arga) {
+                elem.unshift(1);
+                elem = Inf2oo(elem);
+                uout = JSON.stringify(elem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
+                SOR = [
+                    [0, [
+                        elem, []
+                    ]]
+                ];
+                uout = SFormaz(SOR);
+                mathout = LTXFormaz(SOR);
+            } else {
+                var efirst = elem[0];
+                var telem = elem.slice(1)
+                telem.unshift(efirst + 1);
+                telem = Inf2oo(telem);
+                uout = JSON.stringify(telem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
+                SOR = [
+                    [0, [
+                        telem, []
+                    ]]
+                ];
+                mathout = LTXFormaz(SOR);
+            }
         } else {
             if (mode == "Le") {
                 var efirst = elem[0];
@@ -746,7 +852,6 @@ urites = function() {
                 telem.unshift(efirst + 1);
                 telem = Inf2oo(telem);
 
-                console.log(telem)
                 elem.unshift(1);
                 elem = Inf2oo(elem);
                 uout = JSON.stringify(elem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞") + " - " + JSON.stringify(telem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
@@ -841,7 +946,6 @@ urites = function() {
         outelem.style.opacity = "1";
     };
     if (showmathout) {
-        var mathelem = document.getElementById("keplet_math");
         mathelem.innerText = "\\[" + mathout + "\\]";
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, mathelem]);
     }
@@ -936,13 +1040,17 @@ refreskiura = function() {
 };
 
 refreskiurb = function() {
+    if (arga) {
+        poz = 0;
+        return;
+    };
     poz = 1;
     document.getElementById("bvl").classList.add("kiur");
     document.getElementById("avl").classList.remove("kiur");
 };
 
-function sbTgl() {
-    var elem = document.getElementById("settingbar");
+function sbTgl(id) {
+    var elem = document.getElementById(id);
     var open = elem.style.display;
     if (open == "none")
         elem.style.display = "block";
@@ -1640,7 +1748,10 @@ function LiLi(N) {
     var den = "x";
     if (denom)
         den = "1-x"
-    var str0 = "\\int\\frac{1}{" + den + "}\\,\\text{Li}_{\\left(" + avtxt + "\\right)}\\,\\left(x\\right)\\cdot\\text{Li}_{\\left(" + bvtxt + "\\right)}\\,\\left(x\\right)\\,\\text{d}x &=";
+    var arg = "x";
+    if (arga)
+        arg = "1-x";
+    var str0 = "\\int\\frac{1}{" + den + "}\\,\\text{Li}_{\\left(" + avtxt + "\\right)}\\,\\left(" + arg + "\\right)\\cdot\\text{Li}_{\\left(" + bvtxt + "\\right)}\\,\\left(x\\right)\\,\\text{d}x &=";
     var str1 = "";
     var hezag = "";
     if (N > 4)
@@ -1763,7 +1874,7 @@ function sorfejtes() {
         txt = LiLi(N)
         if (!sorhiba)
             elem.innerText = "\\[" + txt + "\\]";
-    } else if (mode == "Le" /*&& !denom*/ ) {
+    } else if (mode == "Le") {
         txt = LeLe(N)
         if (!sorhiba)
             elem.innerText = "\\[" + txt + "\\]";
@@ -2755,3 +2866,535 @@ function dualOfHe() {
         return;
     };
 }
+
+
+// genpolylog 
+
+genClear = function() {
+    if (mathoutformat) {
+        const elemmath = document.getElementById("gen_math");
+        elemmath.innerText = "";
+    } else {
+        const elemhtml = document.getElementById("genout");
+        elemhtml.innerHTML = "";
+    }
+};
+
+function seriesgenClear() {
+    var elemfigy = document.querySelector("#figygen");
+    elemfigy.style.display = "none";
+};
+
+function setgenOutputFont(v) {
+    var elem = document.getElementById("gen_math");
+    elem.style.fontSize = v + '%';
+    setTimeout(() => {
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    }, 100);
+};
+
+function agSumRefresh() {
+    var av = document.getElementById("avg").value;
+    var asv = "";
+
+    if (av.indexOf('oo') > -1) {
+        asv = "∞";
+        document.getElementById("asg").innerText = asv;
+        setgenKeplet();
+        return;
+    } else {
+        if (!av.startsWith("[")) {
+            av = "[" + av;
+        };
+        if (!av.endsWith("]")) {
+            av = av + "]";
+        };
+
+        try {
+            av = JSON.parse(av);
+            asv = av.reduce((x, y) => Math.abs(x) + Math.abs(y), 0);
+            document.getElementById("asg").innerText = asv;
+            setKeplet();
+        } catch {}
+    };
+};
+
+function bgSumRefresh() {
+    var bv = document.getElementById("bvg").value;
+    var bsv = "";
+    if (bv.indexOf('oo') > -1) {
+        bsv = "∞";
+        document.getElementById("bsg").innerText = bsv;
+        setgenKeplet();
+        return;
+    } else {
+        if (!bv.startsWith("[")) {
+            bv = "[" + bv;
+        };
+        if (!bv.endsWith("]")) {
+            bv = bv + "]";
+        };
+        try {
+            bv = JSON.parse(bv);
+            bsv = bv.reduce((x, y) => Math.abs(x) + Math.abs(y), 0);
+            document.getElementById("bsg").innerText = bsv;
+            setKeplet();
+        } catch {}
+    };
+};
+
+function setgenKeplet0() {
+    var a = document.querySelector("#avg").value;
+    var b = document.querySelector("#bvg").value;
+    var na = a.length;
+    var nb = b.length;
+    a = a.replaceAll("oo", "∞");
+    b = b.replaceAll("oo", "∞");
+    var tort = "x";
+    if (narg)
+        tort = "1-x";
+    var arg_a = "x";
+    var arg_b = "x";
+    if (aarg)
+        arg_a = "1-x";
+    if (barg)
+        arg_b = "1-x";
+
+    totr = "1-x";
+    var txt = "";
+    var txt1 = "";
+    var txt2 = "";
+    var szorzat = "\\cdot";
+    if (na * nb == 0)
+        szorzat = "";
+    if (na > 0)
+        txt1 = "{\\rm " + amode + "}_{(" + a + ")}(" + arg_a + ")";
+    if (nb > 0)
+        txt2 = "{\\rm " + bmode + "}_{(" + b + ")}(" + arg_b + ")";
+    txt = "\\int \\dfrac{" + txt1 + szorzat + txt2 + "}{" + tort + "}\\,{\\text{d} x}"
+    txt += "\\hspace{2cm}\\begin{bmatrix}" + fltx[fazis.init.name] + " &" + fltx[fazis.std.name] + "\\\\" + fltx[fazis.atv.name] + " &" + fltx[fazis.veg.name] + "\\end{bmatrix}";
+    return txt;
+};
+
+function setgenKeplet() {
+    const elem = document.querySelector("#k1set");
+    const txt = setgenKeplet0();
+    elem.innerText = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+};
+
+function setaMode(elem) {
+    var ckd = elem.checked;
+    if (ckd)
+        amode = "Le";
+    else
+        amode = "Li";
+    setFazis();
+    setgenKeplet();
+};
+
+function setbMode(elem) {
+    var ckd = elem.checked;
+    if (ckd)
+        bmode = "Le";
+    else
+        bmode = "Li";
+    setFazis();
+    setgenKeplet();
+};
+
+function setnArg(elem) {
+    narg = elem.checked;
+    if (narg)
+        nargtxt = "1-x";
+    else
+        nargtxt = "x";
+    setFazis();
+    setgenKeplet();
+};
+
+function setaArg(elem) {
+    aarg = elem.checked;
+    if (aarg)
+        aargtxt = "1-x";
+    else
+        aargtxt = "x";
+    setFazis();
+    setgenKeplet();
+};
+
+function setbArg(elem) {
+    barg = elem.checked;
+    if (barg)
+        bargtxt = "1-x";
+    else
+        bargtxt = "x";
+    setFazis();
+    setgenKeplet();
+};
+
+function setgenOut(elem) {
+    mathoutformat = elem.checked;
+    const elemmath = document.querySelector("#gen_math");
+    const elemhtml = document.querySelector("#genout");
+    if (mathoutformat) {
+        elemhtml.innerHTML = "";
+        elemhtml.style.display = "none";
+        elemmath.style.display = "block";
+    } else {
+        elemmath.innerText = "";
+        elemhtml.style.display = "block";
+        elemmath.style.display = "none";
+    };
+};
+
+setoutMaxsor = function() {
+    var mr = document.getElementById("setgenmaxsor").value;
+    genmaxsor = mr * 1;
+    genClear();
+};
+
+// lepesek
+
+function novel(a) {
+    var out = _.cloneDeep(a);
+    out[0] = out[0] + 1;
+    return out;
+};
+
+function bovit(a) {
+    var out = _.cloneDeep(a);
+    out = [1, ...a];
+    return out;
+};
+
+function minus(a) {
+    var out = _.cloneDeep(a);
+    out = _.dropRight(a);
+    out = [...out, -1 * _.last(a)];
+    return out;
+};
+
+function bov(B) {
+    return B.map(y => bovit(y));
+};
+
+function nov(B) {
+    return B.map(y => novel(y));
+};
+
+function mbov(B) {
+    return B.map(y => minus(bovit(y)));
+};
+
+function mnov(B) {
+    return B.map(y => minus(novel(y)));
+};
+
+function bovnov(B) {
+    return [...bov(B), ...nov(B)];
+};
+
+function mbovnov(B) {
+    return [...mbov(B), ...nov(B)];
+};
+
+function bovmnov(B) {
+    return [...bov(B), ...mnov(B)];
+};
+
+function mbovmnov(B) {
+    return [...mbov(B), ...mnov(B)];
+};
+
+function bb1() {
+    return "bb1";
+};
+
+function bb2() {
+    return "bb2";
+};
+
+function setInit() {
+    var fn = nov;
+    if (bmode == "Li") {
+        if (narg && barg) {
+            fn = mnov;
+        } else if (narg && !barg) {
+            fn = bov;
+        } else if (!narg && barg) {
+            fn = mbov;
+        }
+    } else if (bmode == "Le") {
+        if (narg && barg) {
+            fn = mnov;
+        } else if (narg && !barg) {
+            fn = bovmnov;
+        } else if (!narg && barg) {
+            fn = mbovnov;
+        }
+    };
+    return fn;
+};
+
+function setStd() {
+    var fn = nov;
+    if (aarg !== barg) {
+        if (bmode == "Li") {
+            fn = mbov;
+        } else
+            fn = mbovnov;
+    }
+    return fn;
+};
+
+function setAtv() {
+    var fn = mnov;
+    if (amode == "Li") {
+        if (aarg == barg) {
+            if (bmode == "Li")
+                fn = bov;
+            else
+                fn = bovmnov;
+        };
+    } else {
+        if (bmode == "Li") {
+            if (aarg == barg)
+                fn = bovnov;
+            else
+                fn = mbovmnov;
+        } else {
+            if (aarg == barg)
+                fn = bov;
+            else
+                fn = mbov;
+        }
+    }
+    return fn;
+};
+
+function setVeg() {
+    var fn = mnov;
+    if (aarg == barg) {
+        if (bmode == "Li")
+            fn = bov;
+        else
+            fn = bovmnov;
+    };
+    return fn;
+};
+
+function setFazis() {
+    fazis.init = setInit();
+    fazis.std = setStd();
+    fazis.atv = setAtv();
+    fazis.veg = setVeg();
+};
+
+function kiszed_v(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figygen");
+        genClear();
+        return;
+    };
+
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (id == "avg" && av.some(v => v <= 0)) {
+            setfigy("Az a indexvektor most csak pozitív elemeket tartalmazhat! " + '<span class="outhiba">' + av + '</span>', "figygen");
+            genClear();
+            return;
+        } else if (id == "avg" && indx > -1) {
+            av = oo2strInf(av);
+            setfigy("A kiüritendő a vektor nem tartalmazhat ∞-t! " + '<span class="outhiba">' + av + '</span>', "figygen");
+            genClear();
+            return;
+        }
+        if (id == "bvg" && indx > -1)
+            av = oo2Inf(av);
+
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figygen");
+        genClear();
+        return;
+    };
+    return av;
+};
+
+var BSOR = [];
+var ASOR = [];
+var AFAZIS = [];
+
+function aSor() {
+    ASOR = [];
+    const a = kiszed_v("avg");
+    if (a == undefined)
+        return [];
+    const n = a.length;
+    ASOR.push(a);
+    for (var i = 0; i < n; i++) {
+        var aa = _.drop(a, i);
+        var t = aa[0];
+        var v = _.drop(aa);
+        for (var j = 0; j < t; j++) {
+            ASOR.push([aa[0] - j, ...v]);
+        };
+    };
+    ASOR.push([]);
+
+    return ASOR;
+};
+
+function kum(v) {
+    var k = [];
+    var sum = 0;
+    for (let j of v) {
+        sum += j;
+        k.push(sum);
+    }
+    return k;
+};
+
+function aFazis() {
+    AFAZIS = [];
+    const a = kiszed_v("avg");
+    if (a == undefined)
+        return;
+    AFAZIS = ["init"];
+    const k = kum(a);
+    const n = _.last(k);
+    for (var j = 1; j < n + 1; j++) {
+        if (_.includes(k, j))
+            AFAZIS.push("atv");
+        else
+            AFAZIS.push("std");
+    };
+    AFAZIS = _.dropRight(AFAZIS);
+    AFAZIS.push("veg");
+    return AFAZIS;
+};
+
+function bSor() {
+    BSOR = [];
+    const L = aFazis();
+    if (L == undefined)
+        return [];
+    var b = kiszed_v("bvg");
+    if (b == undefined)
+        return [];
+    BSOR.push([
+        [...b, 1]
+    ]);
+    for (let i of L) {
+        var fn = fazis[i];
+        BSOR.push(fn(_.last(BSOR)));;
+    };
+    return BSOR;
+};
+
+function formazb(b) {
+    return elojele(_.last(b)) + "\\left(" + _.dropRight(b) + "\\right)";
+};
+
+function genmeret() {
+    var m = AFAZIS.map(function(y) { if (fazis[y].name.length > 4) { return 2 } else { return 1 } });
+    var d = 0;
+    var p = 1;
+    for (let j of m) {
+        p *= j;
+        d += p;
+    };
+    return d;
+};
+
+function abltx(i) {
+    const a = ASOR[i + 1];
+    const b = BSOR[i + 1];
+    const n = b.length;
+    var ltx = "\\begin{array}[t]{l}" + elojele(Math.pow(-1, i)) + "\\left(" + a + "\\right)\\\\ \\hline";
+    for (var j = 0; j < n; j++) {
+        ltx += formazb(b[j]) + "\\\\";
+    }
+    ltx = ltx.slice(0, -2);
+    ltx += "\\end{array}";
+    return ltx;
+};
+
+
+function genltx() {
+    const n = BSOR.length - 1;
+    var ltx = "\\begin{array}[t]{c|l}\\text{" + amode + "}_{" + "a}(" + aargtxt + ") & \\left(" + ASOR[0] + "\\right) \\\\ \\hline\\text{" + bmode + "}_{" + "b}(" + bargtxt + ") & \\left(" + _.dropRight(BSOR[0][0]) + "\\right)\\end{array}\\overset{\\text{" + AFAZIS[0] + "}}{\\rightarrow}";
+    for (var i = 0; i < n; i++) {
+        ltx += abltx(i);
+        if (i < n - 1)
+            ltx += "\\overset{\\text{" + AFAZIS[i + 1] + "}}{\\rightarrow}"
+    };
+    ltx = ltx.replaceAll('Infinity', '∞');
+    return ltx;
+};
+
+
+function formazbhtml(b) {
+    return "<tr><td>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</tr></td>";
+};
+
+function abhtml(i) {
+    const a = ASOR[i + 1];
+    const b = BSOR[i + 1];
+    const n = b.length;
+    var ltx = "<table class='genout-sor'><tr><td style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i)) + "(" + a + ")</td></tr>";
+    for (var j = 0; j < n; j++) {
+        ltx += formazbhtml(b[j]);
+    }
+    ltx += "</table>";
+    return ltx;
+};
+
+function genhtml() {
+    const n = BSOR.length - 1;
+    var ltx = "<table class='genout-fej'><tr><td style='border-bottom:1px solid #449bd1;;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr></table>";
+    for (var i = 0; i < n; i++) {
+        ltx += abhtml(i);
+        if (i < n - 1)
+            ltx += "<table class='genout-nyil'><tr><td>" + AFAZIS[i + 1] + "</td></tr><tr><td>&rarr;</td></tr></table>"
+    };
+    ltx = ltx.replaceAll('Infinity', '∞');
+    return ltx;
+};
+
+function genoutput() {
+    const elemfigy = document.getElementById("figygen");
+    elemfigy.style.display = "none";
+    aSor();
+    bSor();
+    var txt = "HIBA";
+    if (mathoutformat) {
+        const me = genmeret();
+        if (me > genmaxsor) {
+            setfigy("A feladat mérete " + me + " meghaladja a megengedett " + genmaxsor + "-at/et!", "figygen");
+            return;
+        };
+        if (AFAZIS.length * BSOR.length * ASOR.length > 0)
+            txt = genltx();
+        const elem = document.querySelector("#gen_math");
+        elem.innerText = "\\[" + txt + "\\]";
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+
+    } else {
+        if (AFAZIS.length * BSOR.length * ASOR.length > 0)
+            txt = genhtml();
+        const elem = document.querySelector("#genout");
+        elem.innerHTML = txt;
+    }
+};
