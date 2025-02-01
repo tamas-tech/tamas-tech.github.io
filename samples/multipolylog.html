@@ -361,9 +361,71 @@
     <div id="helpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
         <iframe name="helpframe" width="99%" height="100%" src="../docs/multipolylog.pdf" style="width:99%;height:100vh;border:none;"></iframe>
     </div>
+    <div class="keret of odd" id="k8" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">8.</big></b>
+        <fieldset style="border:1px solid #ccc;border-radius:3px;">
+            <legend>Please select a function and methods:</legend>
+            <div style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+                <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{x}\)</span>
+                <label class="switch"><input  type="checkbox" onchange="setnArg(this);"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{1-x}\)</span>
+            </div>
+            <div style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+                <label for="amode" style="cursor:pointer;"><b style="padding: 2px 7px;">a</b>:</label>
+                <span style="margin-left:10px;">Li</span>
+                <label class="switch"><input  type="checkbox" onchange="setaMode(this);"><span class="slider round"></span></label> <span>Le</span>
+                <span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
+                <span style="margin-left:5px;">x</span>
+                <label class="switch"><input  type="checkbox" onchange="setaArg(this);"><span class="slider round"></span></label> <span>1-x</span>
+            </div>
+            <div style="padding-bottom:6px;padding-top:6px;">
+                <label for="bmode" style="cursor:pointer;"><b  style="padding: 2px 7px;">b</b>:</label>
+                <span style="margin-left:10px;">Li</span>
+                <label class="switch"><input  type="checkbox" onchange="setbMode(this);"><span class="slider round"></span></label> <span>Le</span>
+                <span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
+                <span style="margin-left:5px;">x</span>
+                <label class="switch"><input  type="checkbox" onchange="setbArg(this);"><span class="slider round"></span></label> <span>1-x</span>
+            </div>
+        </fieldset>
+        <p class="keplet" id="k1set" style="min-height:84px;margin-bottom:10px;background-color: #dddddd;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="avg" style="cursor:pointer;"><b id="avl"  class="kiur" style="padding: 2px 7px;">a</b> = ( </label>
+            <input type="text" id="avg" value="2,3" oninput="agSumRefresh();setgenKeplet();" name="a"><span> )</span>
+            <big style="margin-left:2px;">∑</big>|a|= <span id="asg">5</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="bvg" style="cursor:pointer;"><b id="bvl" style="padding: 2px 7px;">b</b> = ( </label>
+            <input type="text" id="bvg" value="4,1" oninput="bgSumRefresh();setgenKeplet();" name="b"><span> )</span>
+            <big style="margin-left:2px;"> ∑</big>|b|= <span id="bsg">5</span>
+        </div>
+
+        <div style="margin-top:2px;padding:5px;">
+            <button class="showpre1" onclick="genoutput();" title="Calculate input">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="genClear();" title="Clear output">Clear</button>
+            <span style="margin-left:10px;font-size:12px;">HTML</span>
+            <label class="switch"><input  type="checkbox" onchange="setgenOut(this);"><span class="slider round"></span></label> <span style="font-size:12px;">MathJax</span>
+            <button style="margin-left:10px;" id="sbtglbtn" onclick="sbTgl();">⚙</button>
+        </div>
+
+        <div id="settingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+            <div>
+                <input id="setgenmaxsor" type="number" style="width:60px;" min="200" max="500" step="10" value="350" name="setmaxsor" onchange="setoutMaxsor();">
+                <label for="setoutputfont">&#128474;</label>
+                <input id="outfont-slider" oninput="setgenOutputFont(this.value);" type="range" min="70" max="170" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize" name="setoutputfont">
+            </div>
+        </div>
+
+        <p id="figygen" style="display:none;padding:0 10px;background-color:#ffdfdf"></p>
+        <p id="genout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;"></p>
+        <p id="gen_math" class="kijelzo"></p>
+    </div>
+    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl('genhelpbar');" title="Open/Close help">Toggle help</button>
+    <div id="genhelpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
+        <iframe name="helpframe" width="99%" height="100%" src="../docs/genpolylogint.pdf" style="width:99%;height:100vh;border:none;"></iframe>
+    </div>
     <script>
         setTimeout(() => {
             setKeplet();
+            setgenKeplet();
         }, 1000);
     </script>
 </body>
