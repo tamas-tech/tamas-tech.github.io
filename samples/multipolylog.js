@@ -2886,11 +2886,16 @@ function seriesgenClear() {
 };
 
 function setgenOutputFont(v) {
-    var elem = document.getElementById("gen_math");
-    elem.style.fontSize = v + '%';
-    setTimeout(() => {
-        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
-    }, 100);
+    if (mathoutformat) {
+        var elem = document.getElementById("gen_math");
+        elem.style.fontSize = v + '%';
+        setTimeout(() => {
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+        }, 100);
+    } else {
+        var elem = document.getElementById("genout");
+        elem.style.fontSize = v + '%';
+    }
 };
 
 function agSumRefresh() {
