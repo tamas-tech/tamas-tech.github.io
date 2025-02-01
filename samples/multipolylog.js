@@ -3359,13 +3359,20 @@ function formazbhtml(b) {
     return "<tr><td>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</tr></td>";
 };
 
+function formazbhtmlsep(b) {
+    return "<tr><td class='sep'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</tr></td>";
+};
+
 function abhtml(i) {
     const a = ASOR[i + 1];
     const b = BSOR[i + 1];
     const n = b.length;
     var ltx = "<table class='genout-sor'><tr><td style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i)) + "(" + a + ")</td></tr>";
     for (var j = 0; j < n; j++) {
-        ltx += formazbhtml(b[j]);
+       if (j == (n / 2 - 1))
+            ltx += formazbhtmlsep(b[j]);
+        else
+            ltx += formazbhtml(b[j]);
     }
     ltx += "</table>";
     return ltx;
