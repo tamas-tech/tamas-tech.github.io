@@ -464,6 +464,7 @@ table.genout-fej {
     font-size: 80%;
     color: #449bd1;
     background-color: #e9e9e9;
+     text-align: center;
 }
 
 table.genout-sor tr:first-child td {
@@ -479,4 +480,11 @@ table.genout-nyil {
 table.genout-nyil tr td {
     font-size: 12px;
     text-align: center;
+}
+
+#genout div.meret {
+    font-size: 80%;
+    border-bottom: 1px solid #d6e6e6;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
 }
