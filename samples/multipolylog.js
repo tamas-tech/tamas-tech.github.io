@@ -41,7 +41,7 @@ var Hreszletes = false;
 var fazis1 = "";
 var mathfazis1 = "";
 var showmathout = true;
-var showgenmathout = true;
+var showgenmathout = false;
 var mathoutformat = false;
 
 
@@ -2871,7 +2871,7 @@ function dualOfHe() {
 // genpolylog 
 
 genClear = function() {
-    if (mathoutformat) {
+    if (showgenmathout) {
         const elemmath = document.getElementById("gen_math");
         elemmath.innerText = "";
     } else {
@@ -2886,7 +2886,7 @@ function seriesgenClear() {
 };
 
 function setgenOutputFont(v) {
-    if (mathoutformat) {
+    if (showgenmathout) {
         var elem = document.getElementById("gen_math");
         elem.style.fontSize = v + '%';
         setTimeout(() => {
@@ -2990,7 +2990,6 @@ function setgenKeplet() {
     setTimeout(() => {
         elem.style.visibility = "visible";
     }, 200);
-    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
 function setaMode(elem) {
@@ -3044,10 +3043,10 @@ function setbArg(elem) {
 };
 
 function setgenOut(elem) {
-    mathoutformat = elem.checked;
+    showgenmathout = elem.checked;
     const elemmath = document.querySelector("#gen_math");
     const elemhtml = document.querySelector("#genout");
-    if (mathoutformat) {
+    if (showgenmathout) {
         elemhtml.innerHTML = "";
         elemhtml.style.display = "none";
         elemmath.style.display = "block";
@@ -3056,6 +3055,10 @@ function setgenOut(elem) {
         elemhtml.style.display = "block";
         elemmath.style.display = "none";
     };
+};
+
+function setMathoutmode(elem) {
+    mathoutformat = elem.checked;
 };
 
 setoutMaxsor = function() {
@@ -3313,10 +3316,6 @@ function bSor() {
     return BSOR;
 };
 
-function formazb(b) {
-    return elojele(_.last(b)) + "\\left(" + _.dropRight(b) + "\\right)";
-};
-
 function genmeret() {
     var m = AFAZIS.map(function(y) { if (fazis[y].name.length > 4) { return 2 } else { return 1 } });
     var d = 0;
@@ -3326,6 +3325,10 @@ function genmeret() {
         d += p;
     };
     return d;
+};
+
+function formazb(b) {
+    return elojele(_.last(b)) + "\\left(" + _.dropRight(b) + "\\right)";
 };
 
 function abltx(i) {
@@ -3341,7 +3344,6 @@ function abltx(i) {
     return ltx;
 };
 
-
 function genltx() {
     const n = BSOR.length - 1;
     var ltx = "\\begin{array}[t]{c|l}\\text{" + amode + "}_{" + "a}(" + aargtxt + ") & \\left(" + ASOR[0] + "\\right) \\\\ \\hline\\text{" + bmode + "}_{" + "b}(" + bargtxt + ") & \\left(" + _.dropRight(BSOR[0][0]) + "\\right)\\end{array}\\overset{\\text{" + AFAZIS[0] + "}}{\\rightarrow}";
@@ -3349,6 +3351,42 @@ function genltx() {
         ltx += abltx(i);
         if (i < n - 1)
             ltx += "\\overset{\\text{" + AFAZIS[i + 1] + "}}{\\rightarrow}"
+    };
+    ltx = ltx.replaceAll('Infinity', '∞');
+    return ltx;
+};
+
+function formazbfgv(b, j) {
+    var e = elojele(_.last(b))
+    if (j == 0 && e == " + ")
+        e = "";
+    return e + "\\text{" + bmode + "}_{\\left(" + _.dropRight(b) + "\\right)}(" + bargtxt + ")";
+};
+
+function abltxfgv(i) {
+    const a = ASOR[i + 1];
+    const b = BSOR[i + 1];
+    const n = b.length;
+    if (n > 1) {
+        var ltx = elojele(Math.pow(-1, i)) + "\\text{" + amode + "}_{\\left(" + a + "\\right)}(" + aargtxt + ")\\cdot\\left[";
+        for (var j = 0; j < n; j++) {
+            ltx += formazbfgv(b[j], j);
+        }
+        ltx += "\\right]";
+    } else {
+        var e = elojele(Math.pow(-1, i) * _.last(b[0]));
+        if (i == 0 && e == " + ")
+            e = "";
+        var ltx = e + "\\text{" + amode + "}_{\\left(" + a + "\\right)}(" + aargtxt + ")\\cdot\\text{" + bmode + "}_{\\left(" + _.dropRight(b[0]) + "\\right)}(" + bargtxt + ")";
+    }
+    return ltx;
+};
+
+function genltxfgv() {
+    const n = BSOR.length - 1;
+    var ltx = "\\int\\dfrac{\\text{" + amode + "}_{\\left(" + ASOR[0] + "\\right)}(" + aargtxt + ")\\cdot\\text{" + bmode + "}_{\\left(" + BSOR[0] + "\\right)}(" + bargtxt + ")}{" + nargtxt + "}\\,\\text{d}x =";
+    for (var i = 0; i < n; i++) {
+        ltx += abltxfgv(i);
     };
     ltx = ltx.replaceAll('Infinity', '∞');
     return ltx;
@@ -3370,15 +3408,15 @@ function abhtml(i) {
     const n1 = BSOR[i].length || 0;
     var ltx = "<table class='genout-sor'><tr><td style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i)) + "(" + a + ")</td></tr>";
     for (var j = 0; j < n; j++) {
-       if (n != n1) {
+        if (n != n1) {
             if (j == (n / 2 - 1))
                 ltx += formazbhtmlsep(b[j]);
             else
                 ltx += formazbhtml(b[j]);
         } else {
             ltx += formazbhtml(b[j]);
-        };
-    };
+        }
+    }
     ltx += "</table>";
     return ltx;
 };
@@ -3401,14 +3439,17 @@ function genoutput() {
     aSor();
     bSor();
     var txt = "HIBA";
-    if (mathoutformat) {
+    if (showgenmathout) {
         const me = genmeret();
         if (me > genmaxsor) {
             setfigy("A feladat mérete " + me + " meghaladja a megengedett " + genmaxsor + "-at/et!", "figygen");
             return;
         };
         if (AFAZIS.length * BSOR.length * ASOR.length > 0)
-            txt = genltx();
+            if (mathoutformat)
+                txt = genltxfgv();
+            else
+                txt = genltx();
         const elem = document.querySelector("#gen_math");
         elem.innerText = "\\[" + txt + "\\]";
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
