@@ -460,6 +460,10 @@ table.genout-sor {
     margin-bottom: 16px;
 }
 
+table.genout-sor tr td.sep {
+    border-bottom: 1px solid #b7c5c7;
+}
+
 table.genout-fej {
     font-size: 80%;
     color: #449bd1;
