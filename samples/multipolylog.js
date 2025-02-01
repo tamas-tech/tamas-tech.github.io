@@ -2979,7 +2979,12 @@ function setgenKeplet0() {
 function setgenKeplet() {
     const elem = document.querySelector("#k1set");
     const txt = setgenKeplet0();
+    elem.style.visibility = "hidden";
     elem.innerText = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    setTimeout(() => {
+        elem.style.visibility = "visible";
+    }, 200);
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
@@ -3363,7 +3368,7 @@ function abhtml(i) {
 
 function genhtml() {
     const n = BSOR.length - 1;
-    var ltx = "<table class='genout-fej'><tr><td style='border-bottom:1px solid #449bd1;;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr></table>";
+    var ltx = "<div class='meret'>Az integrál <b>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div><table class='genout-fej'><tr><td style='border-bottom:1px solid #449bd1;;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr></table>";
     for (var i = 0; i < n; i++) {
         ltx += abhtml(i);
         if (i < n - 1)
