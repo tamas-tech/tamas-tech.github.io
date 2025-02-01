@@ -449,3 +449,33 @@ span.outhiba {
 #helpbar0 ul li {
     margin: 5px 2px;
 }
+
+table.genout-fej,
+table.genout-sor {
+    display: inline-table;
+    background-color: #cfe7ea;
+    padding: 3px;
+    border-radius: 3px;
+    border: 1px solid #b9c8d5;
+}
+
+table.genout-fej {
+    font-size: 80%;
+    color: #449bd1;
+    background-color: #e9e9e9;
+}
+
+table.genout-sor tr:first-child td {
+    text-align: center;
+}
+
+table.genout-nyil {
+    display: inline-table;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+table.genout-nyil tr td {
+    font-size: 12px;
+    text-align: center;
+}
