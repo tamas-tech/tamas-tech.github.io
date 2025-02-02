@@ -3225,12 +3225,16 @@ function kiszed_v(id) {
         av = JSON.parse(av);
         var indx = av.indexOf(oo);
         if (id == "avg" && av.some(v => v <= 0)) {
-            setfigy("Az a indexvektor most csak pozitív elemeket tartalmazhat! " + '<span class="outhiba">' + av + '</span>', "figygen");
+            setfigy("Az <b>a</b> indexvektor most csak pozitív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figygen");
             genClear();
             return;
         } else if (id == "avg" && indx > -1) {
             av = oo2strInf(av);
-            setfigy("A kiüritendő a vektor nem tartalmazhat ∞-t! " + '<span class="outhiba">' + av + '</span>', "figygen");
+            setfigy("A kiüritendő <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figygen");
+            genClear();
+            return;
+        } else if (id == "bvg" && av.length == 0 && document.getElementById("avg").value.trim() !== "") {
+            setfigy("A <b>b</b> indexvektor nem lrhet üres! " + '<span class="outhiba"> <b>b</b> = ( )</span> <br/>Ha a <b>b</b> indexvektor helyett az <b>a</b> indexvektort választja üresnek, és az <b>a</b> indexvektort jelenlegi értékét a <b>b</b> helyébe írja, akkor egy a jelenlegivel ekvivalens feladatot kap.', "figygen");
             genClear();
             return;
         }
@@ -3285,16 +3289,18 @@ function aFazis() {
     if (a == undefined)
         return;
     AFAZIS = ["init"];
-    const k = kum(a);
-    const n = _.last(k);
-    for (var j = 1; j < n + 1; j++) {
-        if (_.includes(k, j))
-            AFAZIS.push("atv");
-        else
-            AFAZIS.push("std");
-    };
-    AFAZIS = _.dropRight(AFAZIS);
-    AFAZIS.push("veg");
+    if (a.length > 0) {
+        const k = kum(a);
+        const n = _.last(k);
+        for (var j = 1; j < n + 1; j++) {
+            if (_.includes(k, j))
+                AFAZIS.push("atv");
+            else
+                AFAZIS.push("std");
+        };
+        AFAZIS = _.dropRight(AFAZIS);
+        AFAZIS.push("veg");
+    }
     return AFAZIS;
 };
 
@@ -3384,7 +3390,7 @@ function abltxfgv(i) {
 
 function genltxfgv() {
     const n = BSOR.length - 1;
-    var ltx = "\\int\\dfrac{\\text{" + amode + "}_{\\left(" + ASOR[0] + "\\right)}(" + aargtxt + ")\\cdot\\text{" + bmode + "}_{\\left(" + BSOR[0] + "\\right)}(" + bargtxt + ")}{" + nargtxt + "}\\,\\text{d}x =";
+    var ltx = "\\int\\dfrac{\\text{" + amode + "}_{\\left(" + ASOR[0] + "\\right)}(" + aargtxt + ")\\cdot\\text{" + bmode + "}_{\\left(" + _.dropRight(BSOR[0][0]) + "\\right)}(" + bargtxt + ")}{" + nargtxt + "}\\,\\text{d}x =";
     for (var i = 0; i < n; i++) {
         ltx += abltxfgv(i);
     };
@@ -3394,11 +3400,11 @@ function genltxfgv() {
 
 
 function formazbhtml(b) {
-    return "<tr><td>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</tr></td>";
+    return "<tr><td>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</td></tr>";
 };
 
 function formazbhtmlsep(b) {
-    return "<tr><td class='sep'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</tr></td>";
+    return "<tr><td class='sep'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</td></tr>";
 };
 
 function abhtml(i) {
@@ -3433,12 +3439,19 @@ function genhtml() {
     return ltx;
 };
 
+
 function genoutput() {
     const elemfigy = document.getElementById("figygen");
     elemfigy.style.display = "none";
+    const ures = document.getElementById("avg").value.trim() + document.getElementById("bvg").value.trim() == "";
+    if (ures) {
+        setfigy("Mind a két indexvektor nem lehet üres!", "figygen");
+        genClear();
+        return;
+    }
+    var txt = "HIBA";
     aSor();
     bSor();
-    var txt = "HIBA";
     if (showgenmathout) {
         const me = genmeret();
         if (me > genmaxsor) {
