@@ -36,6 +36,13 @@
             editor: 'textarea',
             hide: ["editor", "evalButton", "permalink"],
         });
+        sagecell.makeSagecell({
+            inputLocation: '#mycell3',
+            outputLocation: '#ideout3',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink"],
+        });
     </script>
 
 </head>
@@ -361,10 +368,10 @@
     <div id="helpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
         <iframe name="helpframe" width="99%" height="100%" src="../docs/multipolylog.pdf" style="width:99%;height:100vh;border:none;"></iframe>
     </div>
-    <div class="keret of odd" id="k8" style="padding-bottom:40px;margin-bottom:0;">
+  <div class="keret of odd" id="k8" style="padding-bottom:40px;margin-bottom:0;">
         <b><big class="sorszam">8.</big></b>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
-            <legend>Please select functions, denominator and arguments:</legend>
+            <legend>Please select a function and methods:</legend>
             <div style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
                 <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{x}\)</span>
                 <label class="switch"><input  type="checkbox" onchange="setnArg(this);"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{1-x}\)</span>
@@ -408,18 +415,46 @@
 
         <div id="gensettingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
             <div>
-               <label for="setgenmaxsor">Max méret</label>
+                <label for="setgenmaxsor">Max méret</label>
                 <input id="setgenmaxsor" type="number" style="width:60px;" min="200" max="500" step="10" value="350" name="setmaxsor" onchange="setoutMaxsor();">
                 <label for="showmathas" style="margin-left: 10px;"> Show math as functions </label>
                 <input type="checkbox" name="showmathas" id="showmath" style="height:20px;width:20px;" onchange="setMathoutmode(this);" />
                 <label for="setoutputfont" style="margin-left: 10px;">&#128474;</label>
-                <input id="outfont-slider" oninput="setgenOutputFont(this.value);" type="range" min="70" max="170" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize" name="setoutputfont">  
+                <input id="outfont-slider" oninput="setgenOutputFont(this.value);" type="range" min="70" max="170" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize" name="setoutputfont">
             </div>
         </div>
 
         <p id="figygen" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
         <p id="genout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;"></p>
         <p id="gen_math" class="kijelzo"></p>
+        <h2 style="color:#535353;text-align: center;border-top: 1px solid #aaa;border-bottom: 1px solid #aaa;box-shadow: 0 0 10px 2px;padding: 10px">Shuffle product</h2>
+        <div style="margin-top:2px;padding:5px;">
+            <button class="showpre1" onclick="calc_sh();" title="Calculate input">L<sub>a<span style="margin:0 3px;font-size:200%;line-height:0.3;">&#x29E2;</span>b</sub></button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="shClear();" title="Clear output">Clear</button>
+            <!--  <label>Search for vector <input id="query1" type="text" /></label> -->
+        </div>
+        <div id="searcharea">
+            <p id="figysh" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+            <p id="shout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;"></p>
+            <div id="mycell3" style="margin-top:6px;" width="100">
+                <script type="text/x-sage"></script>
+            </div>
+            <div style="padding: 10px;outline: 2px solid #a88f86;outline-offset: -6px;background-color: #f7e1d4;">
+                <button id="okbtn3" onclick="sagesh();" class="showpre1" title="Insert code into editor">SAGE</button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="out3Clear();" title="Clear output">Clear</button>
+                <label for="setoutputfont3">&#128474;</label>
+                <input id="outfont-slider3" oninput="setOutputFont2(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont3" />
+            </div>
+            <div class="outputoutdiv">
+                <div id="ideout3"></div>
+            </div>
+            <div style="margin-top:2px;padding:5px;">
+                <button id="translbtn" onclick="sageshtransf();" class="showpre1" title="Insert code into editor">Transform</button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="sagetransfClear();" title="Clear output">Clear</button>
+                <label>Search for vector <input id="query2" type="text" /></label>
+            </div>
+            <p id="sagetransf" class="searchit" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;"></p>
+        </div>
     </div>
     <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl('genhelpbar');" title="Open/Close help">Toggle help</button>
     <div id="genhelpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
