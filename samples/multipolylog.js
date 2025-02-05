@@ -3750,6 +3750,7 @@ function sageshtransf() {
 function setSearch() {
     const query = document.getElementById("query2");
     const article = document.querySelector("#searcharea");
+      const target = document.querySelector("#sagetransf")
     const treeWalker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
     const allTextNodes = [];
     let currentNode = treeWalker.nextNode();
