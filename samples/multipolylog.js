@@ -3672,7 +3672,7 @@ function calc_sh() {
             sh += "(" + a_sor.toString() + ")&#x29E2;(" + b_sor.toString() + ") = " + eshuff();
             sh = sh.slice(0, -3)
         } else {
-            sh = "<div class='meret'>A számítás <b>" + meret + "</b> mérete meghaladja a maximálisan megengedett 40 000 000-t</div>";
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 40 000 000-t</div>";
         }
     };
     elem.innerHTML = sh;
