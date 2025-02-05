@@ -3676,6 +3676,9 @@ function calc_sh() {
         }
     };
     elem.innerHTML = sh;
+      setTimeout(() => {
+        setSearch();
+    }, 1000)
 };
 
 function convertstr01(v) {
