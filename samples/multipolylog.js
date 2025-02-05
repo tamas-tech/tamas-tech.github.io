@@ -3757,11 +3757,11 @@ function setSearch() {
 
     function hh() {
         if (!CSS.highlights) {
-            const dvan = document.getElementById(hid)
+            const dvan = document.getElementById("nohighlight")
             if (dvan == undefined) {
                 let d = document.createElement('div');
                 d.style.color = "#ff2211";
-                d.id = "nohighlight2";
+                d.id = "nohighlight";
                 target.prepend(d);
                 d.prepend("CSS Custom Highlight API not supported.");
             }
