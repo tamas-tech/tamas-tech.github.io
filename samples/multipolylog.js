@@ -2541,29 +2541,6 @@ function comma2plusk(str, k) {
     return w;
 };
 
-function comma2pluskREGI(str, k) {
-    let w = [];
-    if (k == 0) {
-        w = JSON.parse("[" + str + "]");
-        return [w]
-    }
-    let indx = commaIndxs(str);
-    const c = new YourCombinations(indx);
-    let cb = c.combinations(k, false);
-    while (true) {
-        const item = cb.next();
-        if (item.done) break;
-        w.push(kicserel(str, item.value).split(',').map(function(y) {
-            if (y.indexOf('"oo"') > -1) return "oo";
-            else return y
-        }).map(function(z) {
-            if (z != "oo") return str2arr(z);
-            else return z
-        }));
-    };
-    return w;
-};
-
 function setHreszletes(elem) {
     Hreszletes = elem.checked;
     azonHecmplusHa();
@@ -3473,4 +3450,360 @@ function genoutput() {
         const elem = document.querySelector("#genout");
         elem.innerHTML = txt;
     }
+};
+
+// SHUFFLE PRODUCT
+
+function shClear() {
+    const elem = document.getElementById("shout");
+    elem.innerHTML = "";
+};
+
+function out3Clear() {
+    const elem = document.querySelector("#ideout3 .sagecell_output_elements pre");
+    elem.innerHTML = "";
+};
+
+function sagetransfClear() {
+    const elem = document.getElementById("sagetransf");
+    elem.innerHTML = "";
+};
+
+function idClear(id) {
+    const elem = document.querySelector(id);
+    elem.innerHTML = "";
+};
+
+function composition(n, callback) {
+    for (var i = 1; i < n; i++) {
+        composition(n - i, function(ret) {
+            ret.push(i);
+            callback(ret);
+        });
+    }
+    callback([n]);
+};
+
+//https://stackoverflow.com/questions/15577651/generate-all-compositions-of-an-integer-into-k-parts
+// translated from C++ code 
+
+function get_first_weak_composition(n, k, composition) {
+    /* if (n < k) {
+        return false;
+    } */
+    for (var i = 0; i < k - 1; i++) {
+        composition[i] = 0;
+    }
+    composition[k - 1] = n;
+    return true;
+};
+
+function get_next_weak_composition(n, k, composition) {
+    if (composition[0] == n) {
+        return false;
+    }
+
+    var last = k - 1;
+    while (composition[last] == 0) {
+        last--;
+    }
+
+    var z = composition[last];
+    composition[last - 1] += 1;
+    composition[last] = 0;
+    composition[k - 1] = z - 1;
+    return true;
+}
+
+function display_composition(base, composition) {
+    base.push([...composition]);
+};
+
+function comp0(n, k) {
+    allcomp0 = [];
+    if (k == 0)
+        allcomp0 = []
+    else {
+        var composition = [];
+        for (var exists = get_first_weak_composition(n, k, composition); exists; exists = get_next_weak_composition(n, k, composition)) {
+            display_composition(allcomp0, composition);
+        };
+    }
+    return allcomp0;
+};
+
+function Choose(n, k) {
+    var w = [];
+    let cb = Combnr(n, k, false);
+    while (true) {
+        const item = cb.next();
+        if (item.done) break;
+        w.push([...item.value]);
+    };
+    return w;
+};
+
+var a_sor = [];
+var b_sor = [];
+var c_sor = [];
+var sumab = 0;
+var it = [];
+var nnn = 0;
+var kk = 0;
+
+function komb(n, J) {
+    var na, nb, c, k, inc, inc1;
+    c = 1;
+    k = 0;
+    na = 0;
+    nb = 0;
+    // while (c > 0) {
+    for (var j = 1; j < n + 1 && c > 0; j++) {
+        inc = _.includes(J, j);
+        inc1 = _.includes(J, j - 1);
+        if (inc) {
+            na += 1;
+            k = k + c_sor[j - 1] - a_sor[na - 1];
+        } else {
+            nb += 1;
+            k = k + c_sor[j - 1] - b_sor[nb - 1];
+        };
+        if (j == 1) {
+            if (inc)
+                c = c * binomial(c_sor[0], a_sor[0]);
+            else
+                c = c * binomial(c_sor[0], b_sor[0]);
+        } else if (inc && inc1) {
+            c = c * binomial(c_sor[j - 1], a_sor[na - 1]);
+        } else if (!inc && !inc1) {
+            c = c * binomial(c_sor[j - 1], b_sor[nb - 1]);
+        } else
+            c = c * binomial(c_sor[j - 1], k);
+    };
+    //};
+    return c;
+};
+
+function cegyutth() {
+    var sum = 0;
+    for (let y of it) {
+        sum += komb(nnn, y);
+    }
+    if (sum == 0)
+        sum = "";
+    else if (sum == 1)
+        sum = "(" + c_sor.toString() + ") + ";
+    else
+        sum += "&centerdot;(" + c_sor.toString() + ") + ";
+    return sum;
+};
+
+function eshuff() {
+    var it;
+    var LL = "";
+    it = comp0(sumab, nnn);
+    for (var j = 1; j < it.length + 1; j++) {
+        c_sor = it[j - 1];
+        LL += cegyutth();
+    }
+    return LL;
+};
+
+function kiszed_sh(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figysh");
+        shClear();
+        return;
+    };
+
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (av.some(v => v < 0)) {
+            setfigy("Az <b>a</b>, illetve <b>b</b>  indexvektor csak nem negatív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figysh");
+            shClear();
+            return;
+        } else if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy("A kiüritendő <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figysh");
+            shClear();
+            return;
+        }
+        if (id == "bvg" && indx > -1)
+            av = oo2Inf(av);
+
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figysh");
+        shClear();
+        return;
+    };
+    return av;
+};
+
+function calc_sh() {
+    const elem1 = document.getElementById("figysh");
+    elem1.innerHTML = "";
+    const elem = document.getElementById("shout");
+    a_sor = kiszed_sh("avg");
+    b_sor = kiszed_sh("bvg");
+    var sh, meret;
+    if (a_sor == undefined || b_sor == undefined)
+        sh = "HIBA";
+    else if (a_sor.length + b_sor.length == 0)
+        sh = "( )&#x29E2;( ) = ( )";
+    else {
+        sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+        kk = a_sor.length;
+        nnn = kk + b_sor.length;
+        meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+        if (meret < 40000000) {
+            it = Choose(nnn, kk);
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b></div>";
+            sh += "(" + a_sor.toString() + ")&#x29E2;(" + b_sor.toString() + ") = " + eshuff();
+            sh = sh.slice(0, -3)
+        } else {
+            sh = "<div class='meret'>A számítás <b>" + meret + "</b> mérete meghaladja a maximálisan megengedett 40 000 000-t</div>";
+        }
+    };
+    elem.innerHTML = sh;
+};
+
+function convertstr01(v) {
+    str = "";
+    for (let i of v) {
+        for (var j = 0; j < i; j++) {
+            str += "0";
+        }
+        str += 1;
+    }
+    return str;
+};
+
+function str2vec(str) {
+    var v = "[[" + str.replace(/1/g, "],[").replace(/0(?!])/g, '0,') + "]]";
+    v = JSON.parse(v);
+    v = _.dropRight(v);
+    v = v.map(y => y.length);
+    return v;
+}
+
+function sagesh() {
+    const a = kiszed_sh("avg");
+    const b = kiszed_sh("bvg");
+    var txt = "show('HIBA');";
+    if (a != undefined && b != undefined) {
+        const astr = convertstr01(a);
+        const bstr = convertstr01(b);
+        var txt = 'from sage.combinat.shuffle import ShuffleProduct;\nfrom collections import Counter;\nL=list(ShuffleProduct(\"' + astr + '\",\"' + bstr + '\",element_constructor="".join));\nLL= Counter(L);LL;';
+    };
+    $('#mycell3 .sagecell_editor textarea.sagecell_commands').val(txt);
+    $('#mycell3 .sagecell_input button.sagecell_evalButton').click();
+    setOutputFont2($('#outfont-slider3').val());
+};
+
+
+function sageshtransf() {
+    const elem = document.getElementById("sagetransf");
+    var str = "";
+    const a = kiszed_sh("avg");
+    const b = kiszed_sh("bvg");
+    if (a == undefined || b == undefined)
+        str = "HIBA";
+    else if (a.length + b.length == 0)
+        str = "( )&#x29E2;( ) = ( )";
+    else {
+        const melem = document.querySelector("#ideout3 .sagecell_output_elements .sagecell_messages div");
+        if (melem == null)
+            str = "Előbb számítsa ki a sageMath kimenetet a 'SAGE' gombra kattintva!"
+        else {
+            var back = melem.innerHTML.match(/Counter\(.+\)/)[0].slice(8, -1).replace(/'/g, '"');
+            var obj = JSON.parse(back);
+            _.forEach(obj, function(value, key) {
+                if (value == 1)
+                    str += " + (" + str2vec(key) + ")";
+                else
+                    str += " + " + value + "&centerdot;(" + str2vec(key) + ")";
+            });
+            str = "(" + a.toString() + ")&#x29E2;(" + b.toString() + ") = " + str.slice(3);
+        }
+    };
+    elem.innerHTML = str;
+    setTimeout(() => {
+        setSearch();
+    }, 1000)
+};
+
+
+function setSearch() {
+    const query = document.getElementById("query2");
+    const article = document.querySelector("#searcharea");
+    const treeWalker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
+    const allTextNodes = [];
+    let currentNode = treeWalker.nextNode();
+    while (currentNode) {
+        allTextNodes.push(currentNode);
+        currentNode = treeWalker.nextNode();
+    }
+
+    function hh() {
+        if (!CSS.highlights) {
+            const dvan = document.getElementById(hid)
+            if (dvan == undefined) {
+                let d = document.createElement('div');
+                d.style.color = "#ff2211";
+                d.id = "nohighlight2";
+                target.prepend(d);
+                d.prepend("CSS Custom Highlight API not supported.");
+            }
+            return;
+        }
+
+        CSS.highlights.clear();
+
+        const str = query.value.trim().toLowerCase();
+        if (!str) {
+            return;
+        }
+
+        const ranges = allTextNodes
+            .map((el) => {
+                return { el, text: el.textContent.toLowerCase() };
+            })
+            .map(({ text, el }) => {
+                const indices = [];
+                let startPos = 0;
+                while (startPos < text.length) {
+                    const index = text.indexOf(str, startPos);
+                    if (index === -1) break;
+                    indices.push(index);
+                    startPos = index + str.length;
+                }
+
+                return indices.map((index) => {
+                    const range = new Range();
+                    range.setStart(el, index);
+                    range.setEnd(el, index + str.length);
+                    return range;
+                });
+            });
+
+        const searchResultsHighlight = new Highlight(...ranges.flat());
+        CSS.highlights.set("search-results", searchResultsHighlight);
+    }
+    query.addEventListener("input", () => {
+        hh();
+    });
+    query.addEventListener("focus", () => {
+        hh();
+    });
 };
