@@ -492,3 +492,8 @@ table.genout-nyil tr td {
     margin-bottom: 10px;
     padding-bottom: 5px;
 }
+
+::highlight(search-results) {
+    background-color: #f06;
+    color: white;
+}
