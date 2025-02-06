@@ -3599,11 +3599,10 @@ function cegyutth() {
 };
 
 function eshuff() {
-    var it;
+    const cek = comp0(sumab, nnn);
     var LL = "";
-    it = comp0(sumab, nnn);
-    for (var j = 1; j < it.length + 1; j++) {
-        c_sor = it[j - 1];
+    for (let c of cek) {
+        c_sor = c;
         LL += cegyutth();
     }
     return LL;
