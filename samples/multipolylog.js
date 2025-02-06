@@ -3660,6 +3660,8 @@ function calc_sh() {
         sh = "HIBA";
     else if (a_sor.length + b_sor.length == 0)
         sh = "( )&#x29E2;( ) = ( )";
+    else if (a_sor.length == 0)
+        sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
     else {
         sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
         kk = a_sor.length;
@@ -3713,7 +3715,6 @@ function sagesh() {
     setOutputFont2($('#outfont-slider3').val());
 };
 
-
 function sageshtransf() {
     const elem = document.getElementById("sagetransf");
     var str = "";
@@ -3744,7 +3745,6 @@ function sageshtransf() {
         setSearch();
     }, 1000)
 };
-
 
 function setSearch() {
     const query = document.getElementById("query2");
