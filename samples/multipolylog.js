@@ -3680,9 +3680,6 @@ function calc_sh() {
         }
     };
     elem.innerHTML = sh;
-      setTimeout(() => {
-        setSearch();
-    }, 1000)
 };
 
 function convertstr01(v) {
@@ -3744,15 +3741,12 @@ function sageshtransf() {
         }
     };
     elem.innerHTML = str;
-    setTimeout(() => {
-        setSearch();
-    }, 1000)
 };
 
 function setSearch() {
     const query = document.getElementById("query2");
     const article = document.querySelector("#searcharea");
-      const target = document.querySelector("#sagetransf")
+    const target = document.querySelector("#sagetransf");
     const treeWalker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
     const allTextNodes = [];
     let currentNode = treeWalker.nextNode();
@@ -3761,57 +3755,49 @@ function setSearch() {
         currentNode = treeWalker.nextNode();
     }
 
-    function hh() {
-        if (!CSS.highlights) {
-            const dvan = document.getElementById("nohighlight")
-            if (dvan == undefined) {
-                let d = document.createElement('div');
-                d.style.color = "#ff2211";
-                d.id = "nohighlight";
-                target.prepend(d);
-                d.prepend("CSS Custom Highlight API not supported.");
-            }
-            return;
+    if (!CSS.highlights) {
+        const dvan = document.getElementById("nohighlight")
+        if (dvan == undefined) {
+            let d = document.createElement('div');
+            d.style.color = "#ff2211";
+            d.id = "nohighlight";
+            target.prepend(d);
+            d.prepend("CSS Custom Highlight API not supported.");
         }
-
-        CSS.highlights.clear();
-
-        const str = query.value.trim().toLowerCase();
-        if (!str) {
-            return;
-        }
-
-        const ranges = allTextNodes
-            .map((el) => {
-                return { el, text: el.textContent.toLowerCase() };
-            })
-            .map(({ text, el }) => {
-                const indices = [];
-                let startPos = 0;
-                while (startPos < text.length) {
-                    const index = text.indexOf(str, startPos);
-                    if (index === -1) break;
-                    indices.push(index);
-                    startPos = index + str.length;
-                }
-
-                return indices.map((index) => {
-                    const range = new Range();
-                    range.setStart(el, index);
-                    range.setEnd(el, index + str.length);
-                    return range;
-                });
-            });
-
-        const searchResultsHighlight = new Highlight(...ranges.flat());
-        CSS.highlights.set("search-results", searchResultsHighlight);
+        return;
     }
-    query.addEventListener("input", () => {
-        hh();
-    });
-    query.addEventListener("focus", () => {
-        hh();
-    });
+
+    CSS.highlights.clear();
+
+    const str = query.value.trim().toLowerCase();
+    if (!str) {
+        return;
+    }
+
+    const ranges = allTextNodes
+        .map((el) => {
+            return { el, text: el.textContent.toLowerCase() };
+        })
+        .map(({ text, el }) => {
+            const indices = [];
+            let startPos = 0;
+            while (startPos < text.length) {
+                const index = text.indexOf(str, startPos);
+                if (index === -1) break;
+                indices.push(index);
+                startPos = index + str.length;
+            }
+
+            return indices.map((index) => {
+                const range = new Range();
+                range.setStart(el, index);
+                range.setEnd(el, index + str.length);
+                return range;
+            });
+        });
+
+    const searchResultsHighlight = new Highlight(...ranges.flat());
+    CSS.highlights.set("search-results", searchResultsHighlight);
 };
 
 function setSearch2(str) {
@@ -3868,6 +3854,9 @@ function setSearch2(str) {
     CSS.highlights.set("search-results", searchResultsHighlight);
 };
 
+$(document).on('input focus', '#query2', function() {
+    setSearch();
+});
 
 $(document).on('selectionchange', function() {
     const foo = document.querySelector('#shout')
