@@ -3662,6 +3662,8 @@ function calc_sh() {
         sh = "( )&#x29E2;( ) = ( )";
     else if (a_sor.length == 0)
         sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
+     else if (a_sor.length == 0)
+        sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
     else {
         sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
         kk = a_sor.length;
@@ -3669,9 +3671,10 @@ function calc_sh() {
         meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
         if (meret < 40000000) {
             it = Choose(nnn, kk);
-            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b></div>";
-            sh += "(" + a_sor.toString() + ")&#x29E2;(" + b_sor.toString() + ") = " + eshuff();
+            sh = "(" + a_sor.toString() + ")&#x29E2;(" + b_sor.toString() + ") = " + eshuff();
+            var db = sh.match(/ \+ /g).length;
             sh = sh.slice(0, -3)
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b> futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
         } else {
             sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 40 000 000-t</div>";
         }
