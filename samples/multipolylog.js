@@ -1021,7 +1021,7 @@ bSumRefresh = function() {
 };
 
 
-uritesClear = function() {
+function uritesClear () {
     const outelem = document.getElementById("mpout");
     const mathelem = document.getElementById("keplet_math");
     outelem.innerText = "";
@@ -1029,7 +1029,7 @@ uritesClear = function() {
     seriesClear();
 };
 
-mpoutClear = function() {
+function mpoutClear() {
     document.getElementById("mpout").style.opacity = "0.3";
 };
 
@@ -2847,7 +2847,7 @@ function dualOfHe() {
 
 // genpolylog 
 
-genClear = function() {
+ function genClear() {
     if (showgenmathout) {
         const elemmath = document.getElementById("gen_math");
         elemmath.innerText = "";
