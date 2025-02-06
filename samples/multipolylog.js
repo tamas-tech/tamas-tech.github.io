@@ -3813,3 +3813,67 @@ function setSearch() {
         hh();
     });
 };
+
+function setSearch2(str) {
+    const article = document.querySelector("#searcharea");
+    const target = document.querySelector("#sagetransf");
+    const treeWalker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
+    const allTextNodes = [];
+    let currentNode = treeWalker.nextNode();
+    while (currentNode) {
+        allTextNodes.push(currentNode);
+        currentNode = treeWalker.nextNode();
+    }
+
+    if (!CSS.highlights) {
+        const dvan = document.getElementById("nohighlight")
+        if (dvan == undefined) {
+            let d = document.createElement('div');
+            d.style.color = "#ff2211";
+            d.id = "nohighlight";
+            target.prepend(d);
+            d.prepend("CSS Custom Highlight API not supported.");
+        }
+        return;
+    }
+
+    CSS.highlights.clear();
+    if (!str) {
+        return;
+    }
+
+    const ranges = allTextNodes
+        .map((el) => {
+            return { el, text: el.textContent.toLowerCase() };
+        })
+        .map(({ text, el }) => {
+            const indices = [];
+            let startPos = 0;
+            while (startPos < text.length) {
+                const index = text.indexOf(str, startPos);
+                if (index === -1) break;
+                indices.push(index);
+                startPos = index + str.length;
+            }
+
+            return indices.map((index) => {
+                const range = new Range();
+                range.setStart(el, index);
+                range.setEnd(el, index + str.length);
+                return range;
+            });
+        });
+
+    const searchResultsHighlight = new Highlight(...ranges.flat());
+    CSS.highlights.set("search-results", searchResultsHighlight);
+};
+
+
+$(document).on('selectionchange', function() {
+    const foo = document.querySelector('#shout')
+    const foo1 = document.querySelector('#sagetransf');
+    var isin = window.getSelection().containsNode(foo, true) || window.getSelection().containsNode(foo1, true);
+    var selection = window.getSelection().toString();
+    if (isin)
+        setSearch2(selection);
+});
