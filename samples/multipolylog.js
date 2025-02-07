@@ -45,6 +45,7 @@ var showgenmathout = false;
 var mathoutformat = false;
 var reducedv = false;
 
+
 var amode = "Li";
 var bmode = "Li";
 var narg = false;
@@ -1021,7 +1022,7 @@ bSumRefresh = function() {
 };
 
 
-function uritesClear () {
+function uritesClear() {
     const outelem = document.getElementById("mpout");
     const mathelem = document.getElementById("keplet_math");
     outelem.innerText = "";
@@ -2847,7 +2848,7 @@ function dualOfHe() {
 
 // genpolylog 
 
- function genClear() {
+function genClear() {
     if (showgenmathout) {
         const elemmath = document.getElementById("gen_math");
         elemmath.innerText = "";
@@ -3047,6 +3048,7 @@ setoutMaxsor = function() {
 function setReduced(elem) {
     reducedv = elem.checked;
 };
+
 // lepesek
 
 function novel(a) {
@@ -3459,13 +3461,13 @@ function genoutput() {
 
 function shClear() {
     const elem = document.getElementById("shout");
-    if(elem)
     elem.innerHTML = "";
 };
 
 function out3Clear() {
     const elem = document.querySelector("#ideout3 .sagecell_output_elements pre");
-    elem.innerHTML = "";
+    if (elem)
+        elem.innerHTML = "";
 };
 
 function sagetransfClear() {
@@ -3668,8 +3670,6 @@ function calc_sh() {
         sh = "( )&#x29E2;( ) = ( )";
     else if (a_sor.length == 0)
         sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
-     else if (a_sor.length == 0)
-        sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
     else {
         sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
         kk = a_sor.length;
@@ -3716,8 +3716,8 @@ function sagesh() {
     var a = kiszed_sh("avg");
     var b = kiszed_sh("bvg");
     if (reducedv) {
-        a_sor = a_sor.map(y => y - 1);
-        b_sor = b_sor.map(y => y - 1);
+        a = a.map(y => y - 1);
+        b = b.map(y => y - 1);
     };
     var txt = "show('HIBA');";
     if (a != undefined && b != undefined && !a.some(v => v < 0) && !b.some(v => v < 0)) {
@@ -3730,14 +3730,15 @@ function sagesh() {
     setOutputFont2($('#outfont-slider3').val());
 };
 
+
 function sageshtransf() {
     const elem = document.getElementById("sagetransf");
     var str = "";
     var a = kiszed_sh("avg");
     var b = kiszed_sh("bvg");
     if (reducedv) {
-        a_sor = a_sor.map(y => y - 1);
-        b_sor = b_sor.map(y => y - 1);
+        a = a.map(y => y - 1);
+        b = b.map(y => y - 1);
     };
     if (a == undefined || b == undefined)
         str = "HIBA";
@@ -3880,6 +3881,7 @@ function setSearch2(str) {
 $(document).on('input focus', '#query2', function() {
     setSearch();
 });
+
 
 $(document).on('selectionchange', function() {
     const foo = document.querySelector('#shout')
