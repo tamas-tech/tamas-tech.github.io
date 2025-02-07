@@ -372,7 +372,8 @@ button.showpre1:hover {
     background-color: #8b6356
 }
 
-#sbtglbtn {
+#sbtglbtn,
+#sbtglbtn2 {
     background-color: #e6e6e6;
     color: #636363;
     cursor: pointer;
