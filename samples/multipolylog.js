@@ -3459,6 +3459,7 @@ function genoutput() {
 
 function shClear() {
     const elem = document.getElementById("shout");
+    if(elem)
     elem.innerHTML = "";
 };
 
