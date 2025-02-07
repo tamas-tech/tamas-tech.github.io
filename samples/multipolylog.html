@@ -396,12 +396,12 @@
         </fieldset>
         <p class="keplet" id="k1set" style="height:84px;margin-bottom:10px;background-color: #dddddd;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
         <div style="margin-left:2px;padding:3px;">
-            <label style="cursor:pointer;"><b id="avgl"  class="kiur" style="padding: 2px 7px;">a</b> = ( </label>
+            <label style="cursor:pointer;"><b id="avgl" onclick="pozValtas();" class="kiur" style="padding: 2px 7px;">a</b> = ( </label>
             <input type="text" id="avg" value="2,3" oninput="agSumRefresh();setgenKeplet();" name="a"><span> )</span>
             <big style="margin-left:2px;">∑</big>|a|= <span id="asg">5</span>
         </div>
         <div style="margin-left:2px;padding:3px;">
-            <label style="cursor:pointer;"><b id="bvgl" style="padding: 2px 7px;">b</b> = ( </label>
+            <label style="cursor:pointer;"><b id="bvgl" onclick="pozValtas();" style="padding: 2px 7px;">b</b> = ( </label>
             <input type="text" id="bvg" value="4,1" oninput="bgSumRefresh();setgenKeplet();" name="b"><span> )</span>
             <big style="margin-left:2px;"> ∑</big>|b|= <span id="bsg">5</span> <button style="margin-left:10px;" id="tukroz" onclick="tukrozes();">&lrhar;</button>
         </div>
