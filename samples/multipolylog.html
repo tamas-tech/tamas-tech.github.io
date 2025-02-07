@@ -48,7 +48,8 @@
 </head>
 
 <body style="overflow:scroll;">
-       <h1>Generalized Polylogarithm Function <button class="showpre1" style="width:120px;font-size:20px;margin-left:30px;font-family: inherit;border-color:#b7a4a4;box-shadow: 0px 2px 5px 5px #9da3a059;" onclick="helpTgl('helpbar0');" title="Open/Close help">Toggle help</button></h1>
+
+    <h1>Generalized Polylogarithm Function <button class="showpre1" style="width:120px;font-size:20px;margin-left:30px;font-family: inherit;border-color:#b7a4a4;box-shadow: 0px 2px 5px 5px #9da3a059;" onclick="helpTgl('helpbar0');" title="Open/Close help">Toggle help</button></h1>
 
     <div id="helpbar0" style="display:none;">
         <h2 style="color:#445827;">Ismertető a lap használatáról</h2>
@@ -197,7 +198,7 @@
         </div>
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="azonHecmplusHa();" title="Calculate series">Calculate</button>
         <button class="showpre1" style="width:76px;margin-left:3px" onclick="HcomClear();" title="Clear series">Clear</button><input id="outfont-slider1" oninput="setOutputFontHacom(this.value);" type="range" min="16" max="30" value="20" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;"
-            title="set output's fontsize" name="setoutputfont1"> <input type="checkbox" name="Hreszletes" id="Hreszlet" style="margin-left:10px;height:20px;width:20px;" onchange="setHreszletes(this);"> <label for="Hreszletes"> Részletesen </label>
+            title="set output's fontsize" name="setoutputfont1"> <input type="checkbox" name="Hreszletes" id="Hreszlet" style="margin-left:10px;height:20px;width:20px;vertical-align:middle;" onchange="setHreszletes(this);"> <label for="Hreszletes"> Részletesen </label>
         <p id="figyHacom" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
         <p class="kijelzo" id="Hacom" style="margin-bottom:2px;font-size: 20px;"></p>
     </div>
@@ -302,18 +303,18 @@
                 <input type="radio" id="polyChoice2" name="contact" value="Le" style="margin-left:30px;" onchange="setMode(this);" />
                 <label for="contactChoice2">Le</label>
 
-                 <span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
-                
+                <span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
+
                 <input type="checkbox" id="setdenom" name="contact7" value="Li" onchange="setDenom(this);" />
                 <label for="polyChoice3">\(\dfrac{1}{1-x}\)</label>
 
                 <input type="checkbox" id="setarga" name="contact7" value="Le" style="margin-left:30px;" onchange="setArga(this);" />
                 <label for="contactChoice4">\({\rm Li}_{\mathbf{a}}(1-x)\)</label>
-                <!--<span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
-                <span style="margin-left:10px;font-size:14px;">\(\dfrac{1}{x}\)</span>
+
+                <!--    <span style="margin-left:10px;font-size:14px;">\(\dfrac{1}{x}\)</span>
                 <label class="switch"><input  type="checkbox" onchange="setDenom(this);"><span class="slider round"></span></label> <span style="font-size:14px;">\(\dfrac{1}{1-x}\)</span>
                 <span style="margin-left:20px;font-size:15px;">\({\rm Li}_{\mathbf{a}}(x)\)</span>
-                <label class="switch"><input  type="checkbox" onchange="setArga(this);"><span class="slider round"></span></label> <span style="font-size:15px;">\({\rm Li}_{\mathbf{a}}(1-x)\)</span>-->
+                <label class="switch"><input  type="checkbox" onchange="setArga(this);"><span class="slider round"></span></label> <span style="font-size:15px;">\({\rm Li}_{\mathbf{a}}(1-x)\)</span> -->
             </div>
         </fieldset>
         <div style="margin-left:2px;padding:3px;">
@@ -343,14 +344,14 @@
         </div>
 
         <div id="settingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+            <div style="margin-bottom: 10px;">
+                <input id="setmaxsor" type="number" style="width:60px;" min="10" max="500" step="10" value="100" name="setmaxsor" onchange="setMaxsor();">
+                <label for="setmaxsor">max steps</label>
+                <input type="checkbox" name="showmath" id="showmath" style="margin-left:10px;height:20px;width:20px;vertical-align:middle;" onchange="showMathout(this);" checked /> <label for="showmath"> Show math output </label>
+            </div>
             <div>
                 <label for="setoutputfont">&#128474;</label>
                 <input id="outfont-slider" oninput="setOutputFont(this.value);" type="range" min="70" max="170" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize" name="setoutputfont">
-            </div>
-            <div>
-                <input id="setmaxsor" type="number" style="width:60px;" min="10" max="500" step="10" value="100" name="setmaxsor" onchange="setMaxsor();">
-                <label for="setmaxsor">max steps</label>
-                <input type="checkbox" name="showmath" id="showmath" style="margin-left:10px;height:20px;width:20px;" onchange="showMathout(this);" checked /> <label for="showmath"> Show math output </label>
             </div>
         </div>
 
@@ -368,7 +369,7 @@
     <div id="helpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
         <iframe name="helpframe" width="99%" height="100%" src="../docs/multipolylog.pdf" style="width:99%;height:100vh;border:none;"></iframe>
     </div>
-  <div class="keret of odd" id="k8" style="padding-bottom:40px;margin-bottom:0;">
+    <div class="keret of odd" id="k8" style="padding-bottom:40px;margin-bottom:0;">
         <b><big class="sorszam">8.</big></b>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
             <legend>Please select a function and methods:</legend>
@@ -410,15 +411,19 @@
             <button class="showpre1" style="width:76px;margin-left:3px" onclick="genClear();" title="Clear output">Clear</button>
             <span style="margin-left:10px;font-size:12px;">HTML</span>
             <label class="switch"><input  type="checkbox" onchange="setgenOut(this);"><span class="slider round"></span></label> <span style="font-size:12px;">MathJax</span>
-            <button style="margin-left:10px;" id="sbtglbtn" onclick="sbTgl('gensettingbar');">⚙</button>
+            <button style="margin-left:10px;" id="sbtglbtn2" onclick="sbTgl('gensettingbar');">⚙</button>
         </div>
 
         <div id="gensettingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
-            <div>
+            <div style="margin-bottom: 10px;">
                 <label for="setgenmaxsor">Max méret</label>
                 <input id="setgenmaxsor" type="number" style="width:60px;" min="200" max="500" step="10" value="350" name="setmaxsor" onchange="setoutMaxsor();">
                 <label for="showmathas" style="margin-left: 10px;"> Show math as functions </label>
-                <input type="checkbox" name="showmathas" id="showmath" style="height:20px;width:20px;" onchange="setMathoutmode(this);" />
+                <input type="checkbox" name="showmathas" id="showmath" style="height:20px;width:20px;vertical-align: middle;" onchange="setMathoutmode(this);" />
+                <label for="insonsel" style="margin-left: 10px;"> Insert on select </label>
+                <input type="checkbox" name="insonsel" id="insonsel" style="height:20px;width:20px;vertical-align:middle;" onchange="setInsertOnSelect(this);" />
+            </div>
+            <div>
                 <label for="setoutputfont" style="margin-left: 10px;">&#128474;</label>
                 <input id="outfont-slider" oninput="setgenOutputFont(this.value);" type="range" min="70" max="170" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize" name="setoutputfont">
             </div>
@@ -432,7 +437,7 @@
             <button class="showpre1" onclick="calc_sh();" title="Calculate input">a<span style="margin:0 3px;font-size:160%;line-height:0.4;">&#x29E2;</span>b</button>
             <button class="showpre1" style="width:76px;margin-left:3px" onclick="shClear();" title="Clear output">Clear</button>
             <label for="reducev" style="margin-left: 10px;"> Reduce vectors </label>
-            <input type="checkbox" name="reducev" id="reducev" style="height:20px;width:20px;" onchange="setReduced(this);" />
+            <input type="checkbox" name="reducev" id="reducev" style="height:20px;width:20px;vertical-align:middle;" onchange="setReduced(this);" />
         </div>
         <div id="searcharea">
             <p id="figysh" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
