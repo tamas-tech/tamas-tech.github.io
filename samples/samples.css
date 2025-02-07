@@ -474,6 +474,7 @@ table.genout-fej {
 
 table.genout-sor tr:first-child td {
     text-align: center;
+    background-color: #b4d2d2;
 }
 
 table.genout-nyil {
