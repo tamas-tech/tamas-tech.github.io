@@ -44,6 +44,7 @@ var showmathout = true;
 var showgenmathout = false;
 var mathoutformat = false;
 var reducedv = false;
+var insertonselect = false;
 
 
 var amode = "Li";
@@ -3049,6 +3050,10 @@ function setReduced(elem) {
     reducedv = elem.checked;
 };
 
+function setInsertOnSelect(elem) {
+    insertonselect = elem.checked;
+};
+
 // lepesek
 
 function novel(a) {
@@ -3382,11 +3387,11 @@ function genltxfgv() {
 
 
 function formazbhtml(b) {
-    return "<tr><td>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</td></tr>";
+    return "<tr><td class='bsor'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</td></tr>";
 };
 
 function formazbhtmlsep(b) {
-    return "<tr><td class='sep'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</td></tr>";
+    return "<tr><td class='bsor sep'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</td></tr>";
 };
 
 function abhtml(i) {
@@ -3394,7 +3399,7 @@ function abhtml(i) {
     const b = BSOR[i + 1];
     const n = b.length;
     const n1 = BSOR[i].length || 0;
-    var ltx = "<table class='genout-sor'><tr><td style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i)) + "(" + a + ")</td></tr>";
+    var ltx = "<table class='genout-sor'><tr><td class='asor' style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i)) + "(" + a + ")</td></tr>";
     for (var j = 0; j < n; j++) {
         if (n != n1) {
             if (j == (n / 2 - 1))
@@ -3457,6 +3462,55 @@ function genoutput() {
     }
 };
 
+$(document).on('selectionchange', function() {
+    if (insertonselect) {
+        const foo = document.querySelector('p#genout')
+        var isin = window.getSelection().containsNode(foo, true);
+        var selection = window.getSelection().toString();
+        if (isin) {
+            var cl = getElementsInSelection()
+            if (cl[0] == "asor")
+                $("#avg").val(selection).trigger('input');
+            else if (cl[0] == "bsor")
+                $("#bvg").val(selection).trigger('input');
+            else
+                return;
+        }
+    } else
+        return;
+});
+
+$(document).on('mouseup', '#genout tr td.asor,#genout tr td.bsor', function() {
+    if (insertonselect) {
+        const foo = document.querySelector('p#genout')
+        var isin = window.getSelection().containsNode(foo, true);
+        if (isin) {
+            var cl = getElementsInSelection();
+            if (cl[0] == "asor")
+                $("#avg").trigger('focus');
+            else if (cl[0] == "bsor")
+                $("#bvg").trigger('focus');
+            else
+                return;
+        }
+    } else return;
+});
+
+function getElementsInSelection() {
+    let selection = window.getSelection();
+    if (!selection.rangeCount) return [];
+    let elements = [];
+    document.querySelectorAll('*').forEach(node => {
+        if (selection.containsNode(node, true)) elements.push(node);
+    });
+    if (elements)
+        if (_.last(elements).classList)
+            return _.last(elements).classList;
+        else
+            return;
+    else
+        return;
+};
 // SHUFFLE PRODUCT
 
 function shClear() {
