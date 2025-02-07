@@ -431,7 +431,8 @@
         <div style="margin-top:2px;padding:5px;">
             <button class="showpre1" onclick="calc_sh();" title="Calculate input">a<span style="margin:0 3px;font-size:160%;line-height:0.4;">&#x29E2;</span>b</button>
             <button class="showpre1" style="width:76px;margin-left:3px" onclick="shClear();" title="Clear output">Clear</button>
-            <!--  <label>Search for vector <input id="query1" type="text" /></label> -->
+            <label for="reducev" style="margin-left: 10px;"> Reduce vectors </label>
+            <input type="checkbox" name="reducev" id="reducev" style="height:20px;width:20px;" onchange="setReduced(this);" />
         </div>
         <div id="searcharea">
             <p id="figysh" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
