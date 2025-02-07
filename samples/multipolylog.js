@@ -43,7 +43,7 @@ var mathfazis1 = "";
 var showmathout = true;
 var showgenmathout = false;
 var mathoutformat = false;
-
+var reducedv = false;
 
 var amode = "Li";
 var bmode = "Li";
@@ -3044,6 +3044,9 @@ setoutMaxsor = function() {
     genClear();
 };
 
+function setReduced(elem) {
+    reducedv = elem.checked;
+};
 // lepesek
 
 function novel(a) {
@@ -3557,7 +3560,6 @@ function komb(n, J) {
     k = 0;
     na = 0;
     nb = 0;
-    // while (c > 0) {
     for (var j = 1; j < n + 1 && c > 0; j++) {
         inc = _.includes(J, j);
         inc1 = _.includes(J, j - 1);
@@ -3580,7 +3582,6 @@ function komb(n, J) {
         } else
             c = c * binomial(c_sor[j - 1], k);
     };
-    //};
     return c;
 };
 
@@ -3655,6 +3656,10 @@ function calc_sh() {
     const elem = document.getElementById("shout");
     a_sor = kiszed_sh("avg");
     b_sor = kiszed_sh("bvg");
+    if (reducedv) {
+        a_sor = a_sor.map(y => y - 1);
+        b_sor = b_sor.map(y => y - 1);
+    };
     var sh, meret;
     if (a_sor == undefined || b_sor == undefined)
         sh = "HIBA";
@@ -3702,8 +3707,12 @@ function str2vec(str) {
 }
 
 function sagesh() {
-    const a = kiszed_sh("avg");
-    const b = kiszed_sh("bvg");
+    var a = kiszed_sh("avg");
+    var b = kiszed_sh("bvg");
+    if (reducedv) {
+        a_sor = a_sor.map(y => y - 1);
+        b_sor = b_sor.map(y => y - 1);
+    };
     var txt = "show('HIBA');";
     if (a != undefined && b != undefined) {
         const astr = convertstr01(a);
@@ -3718,8 +3727,12 @@ function sagesh() {
 function sageshtransf() {
     const elem = document.getElementById("sagetransf");
     var str = "";
-    const a = kiszed_sh("avg");
-    const b = kiszed_sh("bvg");
+    var a = kiszed_sh("avg");
+    var b = kiszed_sh("bvg");
+    if (reducedv) {
+        a_sor = a_sor.map(y => y - 1);
+        b_sor = b_sor.map(y => y - 1);
+    };
     if (a == undefined || b == undefined)
         str = "HIBA";
     else if (a.length + b.length == 0)
