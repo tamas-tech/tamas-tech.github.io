@@ -373,7 +373,8 @@ button.showpre1:hover {
 }
 
 #sbtglbtn,
-#sbtglbtn2 {
+#sbtglbtn2,
+#tukroz {
     background-color: #e6e6e6;
     color: #636363;
     cursor: pointer;
@@ -383,6 +384,9 @@ button.showpre1:hover {
     height: 30px;
     width: 30px;
     margin-right: 5px;
+    font-size: 20px;
+    line-height: 0.6;
+    vertical-align: middle;
 }
 
 #setsForma {
