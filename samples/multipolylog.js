@@ -3021,6 +3021,35 @@ function setbArg(elem) {
     setgenKeplet();
 };
 
+function tukrozes() {
+    document.getElementById("setnarg").click();
+    document.getElementById("setaarg").click();
+    document.getElementById("setbarg").click();
+    setTimeout(() => { genoutput(); }, 300);
+};
+
+function pozValtas() {
+    var a = document.getElementById("avg");
+    var b = document.getElementById("bvg");
+    var al = document.getElementById("avgl");
+    var bl = document.getElementById("bvgl");
+    //if (a.id == "avg") {
+    a.id = "bvg";
+    b.id = "avg";
+    al.id = "bvgl";
+    bl.id = "avgl";
+    al.innerText = "b";
+    bl.innerText = "a";
+    if (al.classList.contains("kiur")) {
+        al.classList.remove("kiur");
+        bl.classList.add("kiur");
+    } else {
+        bl.classList.remove("kiur");
+        al.classList.add("kiur");
+    }
+    setTimeout(() => { genoutput(); }, 300);
+};
+
 function setgenOut(elem) {
     showgenmathout = elem.checked;
     const elemmath = document.querySelector("#gen_math");
