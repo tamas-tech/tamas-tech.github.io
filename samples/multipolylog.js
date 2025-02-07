@@ -3676,10 +3676,15 @@ function calc_sh() {
         meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
         if (meret < 40000000) {
             it = Choose(nnn, kk);
-            sh = "(" + a_sor.toString() + ")&#x29E2;(" + b_sor.toString() + ") = " + eshuff();
-            var db = sh.match(/ \+ /g).length;
-            sh = sh.slice(0, -3)
-            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b> futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
+            sh = eshuff();
+            if (sh == "")
+                sh = "Nem megfelelő bemenet"
+            else {
+                sh = "(" + a_sor.toString() + ")&#x29E2;(" + b_sor.toString() + ") = " + sh;
+                var db = sh.match(/ \+ /g).length;
+                sh = sh.slice(0, -3)
+                sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b> futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
+            }
         } else {
             sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 40 000 000-t</div>";
         }
@@ -3714,7 +3719,7 @@ function sagesh() {
         b_sor = b_sor.map(y => y - 1);
     };
     var txt = "show('HIBA');";
-    if (a != undefined && b != undefined) {
+    if (a != undefined && b != undefined && !a.some(v => v < 0) && !b.some(v => v < 0)) {
         const astr = convertstr01(a);
         const bstr = convertstr01(b);
         var txt = 'from sage.combinat.shuffle import ShuffleProduct;\nfrom collections import Counter;\nL=list(ShuffleProduct(\"' + astr + '\",\"' + bstr + '\",element_constructor="".join));\nLL= Counter(L);LL;';
@@ -3742,15 +3747,19 @@ function sageshtransf() {
         if (melem == null)
             str = "Előbb számítsa ki a sageMath kimenetet a 'SAGE' gombra kattintva!"
         else {
-            var back = melem.innerHTML.match(/Counter\(.+\)/)[0].slice(8, -1).replace(/'/g, '"');
-            var obj = JSON.parse(back);
-            _.forEach(obj, function(value, key) {
-                if (value == 1)
-                    str += " + (" + str2vec(key) + ")";
-                else
-                    str += " + " + value + "&centerdot;(" + str2vec(key) + ")";
-            });
-            str = "(" + a.toString() + ")&#x29E2;(" + b.toString() + ") = " + str.slice(3);
+            var back = melem.innerHTML.match(/Counter\(.+\)/);
+            if (back) {
+                back = back[0].slice(8, -1).replace(/'/g, '"');
+                var obj = JSON.parse(back);
+                _.forEach(obj, function(value, key) {
+                    if (value == 1)
+                        str += " + (" + str2vec(key) + ")";
+                    else
+                        str += " + " + value + "&centerdot;(" + str2vec(key) + ")";
+                });
+                str = "(" + a.toString() + ")&#x29E2;(" + b.toString() + ") = " + str.slice(3);
+            } else
+                str = "HIBA";
         }
     };
     elem.innerHTML = str;
