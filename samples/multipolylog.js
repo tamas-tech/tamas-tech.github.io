@@ -3845,8 +3845,8 @@ function sageshtransf() {
             if (back) {
                 back = back[0].slice(8, -1).replace(/'/g, '"');
                 var obj = JSON.parse(back);
+                sum=0;
                 _.forEach(obj, function(value, key) {
-                    sum=0;
                     if (value == 1)
                         str += " + (" + str2vec(key) + ")";
                     else
