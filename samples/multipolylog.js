@@ -3825,6 +3825,7 @@ function sagesh() {
 function sageshtransf() {
     const elem = document.getElementById("sagetransf");
     var str = "";
+    var sum = 1;
     var a = kiszed_sh("avg");
     var b = kiszed_sh("bvg");
     if (reducedv) {
@@ -3845,17 +3846,19 @@ function sageshtransf() {
                 back = back[0].slice(8, -1).replace(/'/g, '"');
                 var obj = JSON.parse(back);
                 _.forEach(obj, function(value, key) {
+                    sum=0;
                     if (value == 1)
                         str += " + (" + str2vec(key) + ")";
                     else
                         str += " + " + value + "&centerdot;(" + str2vec(key) + ")";
+                    sum++;
                 });
                 str = "(" + a.toString() + ")&#x29E2;(" + b.toString() + ") = " + str.slice(3);
             } else
                 str = "HIBA";
         }
     };
-    elem.innerHTML = str;
+    elem.innerHTML ="<div class='meret'>A szorzat <b>" + sum + "</b> kompozíció összege.</div>" + str;
 };
 
 function setSearch() {
