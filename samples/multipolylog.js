@@ -3686,8 +3686,16 @@ function cegyutth() {
 };
 
 function eshuff() {
-    const cek = comp0(sumab, nnn);
+    const maxa = _.max(a_sor);
+    const maxb = _.max(b_sor);
+    const maxab = maxa + maxb + 1;
+    var cek = comp0(sumab, nnn);
+    var n1 = cek.length;
+    cek = cek.filter(y => y.every(v => v < maxab));
+    var n2 = cek.length;
+    javitas = (n1 / n2).toFixed(2);
     var LL = "";
+
     for (let c of cek) {
         c_sor = c;
         LL += cegyutth();
@@ -3758,7 +3766,7 @@ function calc_sh() {
         kk = a_sor.length;
         nnn = kk + b_sor.length;
         meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
-        if (meret < 40000000) {
+        if (meret < 150000000) {
             it = Choose(nnn, kk);
             sh = eshuff();
             if (sh == "")
@@ -3767,10 +3775,10 @@ function calc_sh() {
                 sh = "(" + a_sor.toString() + ")&#x29E2;(" + b_sor.toString() + ") = " + sh;
                 var db = sh.match(/ \+ /g).length;
                 sh = sh.slice(0, -3)
-                sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b> futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
+              sh = "<div class='meret'>A számítás mérete: <b>" + meret + " (gyorsítás: &#10761;" + javitas + ")</b> futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
             }
         } else {
-            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 40 000 000-t</div>";
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
         }
     };
     elem.innerHTML = sh;
