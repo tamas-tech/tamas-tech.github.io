@@ -3681,7 +3681,7 @@ function cegyutth() {
     else if (sum == 1)
         sum = "(" + c_sor.toString() + ") + ";
     else
-        sum += "&centerdot;(" + c_sor.toString() + ") + ";
+        sum += "&lowast;(" + c_sor.toString() + ") + ";
     return sum;
 };
 
@@ -3850,7 +3850,7 @@ function sageshtransf() {
                     if (value == 1)
                         str += " + (" + str2vec(key) + ")";
                     else
-                        str += " + " + value + "&centerdot;(" + str2vec(key) + ")";
+                        str += " + " + value + "&lowast;(" + str2vec(key) + ")";
                     sum++;
                 });
                 str = "(" + a.toString() + ")&#x29E2;(" + b.toString() + ") = " + str.slice(3);
