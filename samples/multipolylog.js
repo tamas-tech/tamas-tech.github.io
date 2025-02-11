@@ -4330,3 +4330,12 @@ function setSearch3() {
 $(document).on('input focus', '#mquery', function() {
     setSearch3();
 });
+
+$(document).on('selectionchange', function() {
+    const foo = document.querySelector('p#mshout')
+    var isin = window.getSelection().containsNode(foo, true);
+    var selection = window.getSelection().toString();
+    if (isin && selection != "") {
+        $("#mquery").val(selection).trigger('input');
+    }
+});
