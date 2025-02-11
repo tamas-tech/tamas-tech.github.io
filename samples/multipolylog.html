@@ -57,27 +57,29 @@
             Néhány mezőben a tizedestört nem értelemes, de erről jelentést kapunk. Egy mező <b>lehet üres is.</b> Tetszőleges számú szóköz megengedett.<br/> Példák:
 
             <ul>
-                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value=''><span> )</span></li>
-                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='2'><span> )</span></li>
-                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='-12.4567'><span> )</span></li>
-                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='oo'><span> )</span></li>
-                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='2,-3,4,2'><span> )</span></li>
-                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='    2,    -3     ,   4 ,  2   '><span> )</span></li>
-                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='    -2.735,    oo     ,   -4 ,  oo   '><span> )</span></li>
-                <li><label><b style="padding: 2px 7px;">s</b> = </label> ( <input type="text" readonly value='oo,2,3, -2.735,    oo   '><span> )</span></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value=''></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='2'></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='-12.4567'></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='oo'></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='2,-3,4,2'></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='   2,    -3   ,  4 ,  2   '></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value=' -2.735, oo  , -4 ,  oo   '></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='oo,2,3, -2.735,    oo   '></li>
             </ul>
         </p>
         <p>
             <b>Néhány mezőbe betűk is bevihetők idézőjelek közé zárva</b>. Ez mindig a beviteli mező mögötti <button id="ABC" style="margin-left:5px;">ABC</button> gomb jelzi..<br/> Példák:
             <ul>
-                <li><input type="text" value='"a","v"' readonly><button style="margin-left:5px;">ABC</button></li>
-                <li>Mivel idézőjelek közé tett betűk bevitele igen fáradságos lehet, ezért az alábbi gyors beillesztést tettük elérhetővé. Ha egy (vagy több) egész számot írunk egy ilyen mezőbe majd az <button id="ABC" style="margin-left:5px;">ABC</button>                    gombra kattintunk, akkor az <b>első számnak megfelelő, de legfeljebb 6</b>, vesszővel elválsztott, idézőjelek közé tett betűt illeszt a beviteli mezőbe. Ha pédául az alábbi gombra kattintunk, akkor 3 betűt illeszt be<br> <input type="text"
-                        id="test1" value="3" name="test1"><button id="ABCtest1" onclick="toABC('test1');" style="margin-left:5px;">ABC</button><br/>De az alábbi is három betűt fog beilleszteni, mert az első szám 3<br> <input type="text" id="test2" value="3,-2,5,6"
-                        name="test2"><button id="ABCtest2" onclick="toABC('test2');" style="margin-left:5px;">ABC</button><br/>A következő nulla betűt fog beilleszteni , mert az első szám -3<br> <input type="text" id="test3" value="-3,-2,5,6" name="test3">
+                <li><input class="inpvec" type="text" value='"a","v"' readonly><button style="margin-left:5px;">ABC</button></li>
+                <li>Mivel idézőjelek közé tett betűk bevitele igen fáradságos lehet, ezért az alábbi gyors beillesztést tettük elérhetővé. Ha egy (vagy több) egész számot írunk egy ilyen mezőbe majd az <button id="ABC" style="margin-left:5px;">ABC</button>                    gombra kattintunk, akkor az <b>első számnak megfelelő, de legfeljebb 6</b>, vesszővel elválsztott, idézőjelek közé tett betűt illeszt a beviteli mezőbe. Ha pédául az alábbi gombra kattintunk, akkor 3 betűt illeszt be<br> <input class="inpvec"
+                        type="text" id="test1" value="3" name="test1"><button id="ABCtest1" onclick="toABC('test1');" style="margin-left:5px;">ABC</button><br/>De az alábbi is három betűt fog beilleszteni, mert az első szám 3<br> <input class="inpvec" type="text"
+                        id="test2" value="3,-2,5,6" name="test2"><button id="ABCtest2" onclick="toABC('test2');" style="margin-left:5px;">ABC</button><br/>A következő nulla betűt fog beilleszteni , mert az első szám -3<br> <input class="inpvec" type="text"
+                        id="test3" value="-3,-2,5,6" name="test3">
                     <button id="ABCtest3" onclick="toABC('test3');" style="margin-left:5px;">ABC</button><br/>A következő szintén nulla betűt fog beilleszteni , mert az első karakter nem is szám <br>
-                    <input type="text" id="test4" value='"a",2,3' name="test4"><button id="ABCtest4" onclick="toABC('test4');" style="margin-left:5px;">ABC</button><br/>Az alábbi kettő pedig 6 betűt fog beilleszteni, mert 6-nál több betűt soha nem illeszt
-                    be.
-                    <br/> <input type="text" id="test5" value='12' name="test5"><button id="ABCtest5" onclick="toABC('test5');" style="margin-left:5px;">ABC</button> <br style="margin-bottom:5px;" /> <input type="text" id="test6" value='oo,-3' name="test6">
+                    <input class="inpvec" type="text" id="test4" value='"a",2,3' name="test4"><button id="ABCtest4" onclick="toABC('test4');" style="margin-left:5px;">ABC</button><br/>Az alábbi kettő pedig 6 betűt fog beilleszteni, mert 6-nál több betűt
+                    soha nem illeszt be.
+                    <br/> <input class="inpvec" type="text" id="test5" value='12' name="test5"><button id="ABCtest5" onclick="toABC('test5');" style="margin-left:5px;">ABC</button> <br style="margin-bottom:5px;" /> <input class="inpvec" type="text" id="test6"
+                        value='oo,-3' name="test6">
                     <button id="ABCtest6" onclick="toABC('test6');" style="margin-left:5px;">ABC</button>
             </ul>
         </p>
@@ -90,8 +92,8 @@
             n_{2}\geq\cdots\geq n_{r}\geq1}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}} \end{gather*}\]
         </p>
         <div style="margin-left:2px;padding:3px;">
-            <label for="sv"><b style="padding: 2px 7px;">s</b> = ( </label>
-            <input type="text" id="sv" value="2,3" name="sv"><span> )</span><button id="ABC" onclick="toABC('sv');" style="margin-left:5px;">ABC</button>
+            <label for="sv"><b style="padding: 2px 7px;">s</b> = </label>
+            <input class="inpvec" type="text" id="sv" value="2,3" name="sv"><button id="ABC" onclick="toABC('sv');" style="margin-left:5px;">ABC</button>
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">n</b> = </label><span id="nkijelzo" style="display:inline-block;width:20px;">5</span>
@@ -124,8 +126,8 @@
             </div>
         </fieldset>
         <div style="margin-left:2px;padding:3px;">
-            <label for="sv2"><b style="padding: 2px 7px;">s</b> = ( </label>
-            <input type="text" id="sv2" value="2,3" name="sv2"><span> )</span>
+            <label for="sv2"><b style="padding: 2px 7px;">s</b> = </label>
+            <input class="inpvec" type="text" id="sv2" value="2,3" name="sv2">
         </div>
         <div id="mycell2" style="margin-top:6px;" width="100">
             <script type="text/x-sage"></script>
@@ -156,8 +158,8 @@
             H}_{n}^{*(s_{1},s_{2},\ldots,s_{r})^{\ast}} \end{gather*}\]
         </p>
         <div style="margin-left:2px;padding:3px;">
-            <label for="sd"><b style="padding: 2px 7px;">s</b> = ( </label>
-            <input type="text" id="sd" value="2,3" name="sd"><span> )</span>
+            <label for="sd"><b style="padding: 2px 7px;">s</b> = </label>
+            <input class="inpvec" type="text" id="sd" value="2,3" name="sd">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">n</b> = </label><span id="ndkijelzo" style="display:inline-block;width:20px;">5</span>
@@ -189,8 +191,8 @@
             </div>
         </fieldset>
         <div style="margin-left:2px;padding:3px;">
-            <label for="sv1"><b style="padding: 2px 7px;">s</b> = ( </label>
-            <input type="text" id="sv1" value="2,3,4" name="sv1"><span> )</span><button id="ABC1" onclick="toABC('sv1');" style="margin-left:5px;">ABC</button>
+            <label for="sv1"><b style="padding: 2px 7px;">s</b> = </label>
+            <input class="inpvec" type="text" id="sv1" value="2,3,4" name="sv1"><button id="ABC1" onclick="toABC('sv1');" style="margin-left:5px;">ABC</button>
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">n</b> = </label><span id="n1kijelzo" style="display:inline-block;width:20px;">5</span>
@@ -217,8 +219,8 @@
             </div>
         </fieldset>
         <div style="margin-left:2px;padding:3px;">
-            <label for="avLi"><b style="padding: 2px 7px;">a</b> = ( </label>
-            <input type="text" id="avLi" value="2,3" name="avLi"><span> )</span>
+            <label for="avLi"><b style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="avLi" value="2,3" name="avLi">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">N</b> = </label><span id="seriesNLi" style="display:inline-block;width:20px;">5</span>
@@ -260,12 +262,12 @@
             </div>
         </fieldset>
         <div style="margin-left:2px;padding:3px;">
-            <label for="avLi0"><b style="padding: 2px 7px;">a</b> = ( </label>
-            <input type="text" id="avLi0" value="2,3" name="avLi0"><span> )</span>
+            <label for="avLi0"><b style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="avLi0" value="2,3" name="avLi0">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="x0"><b style="padding: 2px 7px;">x0</b> =  </label>
-            <input type="text" id="x0" value="0.5" name="x0">
+            <input type="text" id="x0" value="0.5" name="x0" style="width:70px;">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">N</b> = </label><span id="seriesNLi0" style="display:inline-block;width:20px;">25</span>
@@ -310,21 +312,16 @@
 
                 <input type="checkbox" id="setarga" name="contact7" value="Le" style="margin-left:30px;" onchange="setArga(this);" />
                 <label for="contactChoice4">\({\rm Li}_{\mathbf{a}}(1-x)\)</label>
-
-                <!--    <span style="margin-left:10px;font-size:14px;">\(\dfrac{1}{x}\)</span>
-                <label class="switch"><input  type="checkbox" onchange="setDenom(this);"><span class="slider round"></span></label> <span style="font-size:14px;">\(\dfrac{1}{1-x}\)</span>
-                <span style="margin-left:20px;font-size:15px;">\({\rm Li}_{\mathbf{a}}(x)\)</span>
-                <label class="switch"><input  type="checkbox" onchange="setArga(this);"><span class="slider round"></span></label> <span style="font-size:15px;">\({\rm Li}_{\mathbf{a}}(1-x)\)</span> -->
             </div>
         </fieldset>
         <div style="margin-left:2px;padding:3px;">
-            <label for="a" style="cursor:pointer;" onclick="refreskiura();mpoutClear();"><b id="avl"  class="kiur" style="padding: 2px 7px;">a</b> = ( </label>
-            <input type="text" id="av" value="-2,3" oninput="aSumRefresh();" name="a"><span> )</span>
-            <big style="margin-left:2px;">∑</big>|a|= <span id="as">5</span>
+            <label for="a" style="cursor:pointer;" onclick="refreskiura();mpoutClear();"><b id="avl"  class="kiur" style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="av" value="-2,3" oninput="aSumRefresh();" name="a">
+            <big style="margin-left:2px;">∑</big>|a| = <span id="as">5</span>
         </div>
         <div style="margin-left:2px;padding:3px;">
-            <label for="b" style="cursor:pointer;" onclick="refreskiurb();mpoutClear();"><b id="bvl" style="padding: 2px 7px;">b</b> = ( </label>
-            <input type="text" id="bv" value="4,1" oninput="bSumRefresh();" name="b"><span> )</span>
+            <label for="b" style="cursor:pointer;" onclick="refreskiurb();mpoutClear();"><b id="bvl" style="padding: 2px 7px;">b</b> = </label>
+            <input class="inpvec" type="text" id="bv" value="4,1" oninput="bSumRefresh();" name="b">
             <big style="margin-left:2px;"> ∑</big>|b|= <span id="bs">5</span>
         </div>
 
@@ -396,13 +393,13 @@
         </fieldset>
         <p class="keplet" id="k1set" style="height:84px;margin-bottom:10px;background-color: #dddddd;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
         <div style="margin-left:2px;padding:3px;">
-            <label style="cursor:pointer;"><b id="avgl" onclick="pozValtas();" class="kiur" style="padding: 2px 7px;">a</b> = ( </label>
-            <input type="text" id="avg" value="2,3" oninput="agSumRefresh();setgenKeplet();" name="a"><span> )</span>
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b id="avgl" onclick="pozValtas();" class="kiur" style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="avg" value="2,3" oninput="agSumRefresh();setgenKeplet();" name="a">
             <big style="margin-left:2px;">∑</big>|a|= <span id="asg">5</span>
         </div>
         <div style="margin-left:2px;padding:3px;">
-            <label style="cursor:pointer;"><b id="bvgl" onclick="pozValtas();" style="padding: 2px 7px;">b</b> = ( </label>
-            <input type="text" id="bvg" value="4,1" oninput="bgSumRefresh();setgenKeplet();" name="b"><span> )</span>
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b id="bvgl" onclick="pozValtas();" style="padding: 2px 7px;">b</b> = </label>
+            <input class="inpvec" type="text" id="bvg" value="4,1" oninput="bgSumRefresh();setgenKeplet();" name="b">
             <big style="margin-left:2px;"> ∑</big>|b|= <span id="bsg">5</span> <button style="margin-left:10px;" id="tukroz" onclick="tukrozes();">&lrhar;</button>
         </div>
 
@@ -432,7 +429,7 @@
         <p id="figygen" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
         <p id="genout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;"></p>
         <p id="gen_math" class="kijelzo"></p>
-        <h2 style="color:#535353;text-align: center;border-top: 1px solid #aaa;border-bottom: 1px solid #aaa;box-shadow: 0 0 10px 2px;padding: 10px">Shuffle product</h2>
+        <h2 style="color:#535353;text-align: center;border-top: 1px solid #aaa;border-bottom: 1px solid #aaa;box-shadow: 0 0 10px 2px;padding: 10px">Shuffle product of two vectors</h2>
         <div style="margin-top:2px;padding:5px;">
             <button class="showpre1" onclick="calc_sh();" title="Calculate input">a<span style="margin:0 3px;font-size:160%;line-height:0.4;">&#x29E2;</span>b</button>
             <button class="showpre1" style="width:76px;margin-left:3px" onclick="shClear();" title="Clear output">Clear</button>
@@ -441,7 +438,7 @@
         </div>
         <div id="searcharea">
             <p id="figysh" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
-            <p id="shout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;"></p>
+            <p id="shout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.3"></p>
             <div id="mycell3" style="margin-top:6px;" width="100">
                 <script type="text/x-sage"></script>
             </div>
@@ -466,6 +463,73 @@
     <div id="genhelpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
         <iframe name="helpframe" width="99%" height="100%" src="../docs/genpolylogint.pdf" style="width:99%;height:100vh;border:none;"></iframe>
     </div>
+
+    <div class="keret of even" id="k9" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">9.</big></b>
+        <fieldset style="border:1px solid #ccc;border-radius:3px;">
+            <legend>Please set the multisets:</legend>
+            <table style="margin-left:10px;font-family: Times New Roman;border-spacing: 2px 10px;">
+                <tr style="text-align:center;font-size:18px;">
+                    <td></td>
+                    <td>&alpha;<sub>1</sub></td>
+                    <td>&lowast;</td>
+                    <td><b>v</b><sub>1</sub></td>
+                    <td> + </td>
+                    <td>&alpha;<sub>2</sub></td>
+                    <td>&lowast;</td>
+                    <td><b>v</b><sub>2</sub></td>
+                    <td> + </td>
+                    <td>&alpha;<sub>3</sub></td>
+                    <td>&lowast;</td>
+                    <td><b>v</b><sub>3</sub></td>
+                </tr>
+                <tr>
+                    <td><b>m</b><sub>1</sub> = </td>
+                    <td><input class="malpha" type="number" id="ma1" value="1" /></td>
+                    <td class="msep">&lowast;</td>
+                    <td><input class="mvec" type="text" id="mav1" value="2,3" /></td>
+                    <td class="msep"> + </td>
+                    <td><input class="malpha" type="number" id="ma2" value="0" /></td>
+                    <td class="msep">&lowast;</td>
+                    <td><input class="mvec" type="text" id="mav2" value="" /></td>
+                    <td class="msep"> + </td>
+                    <td><input class="malpha" type="number" id="ma3" value="0" /></td>
+                    <td class="msep">&lowast;</td>
+                    <td><input class="mvec" type="text" id="mav3" value="" /></td>
+                </tr>
+                <tr>
+                    <td><b>m</b><sub>2</sub> = </td>
+                    <td><input class="malpha" type="number" id="mb1" value="1" /></td>
+                    <td class="msep">&lowast;</td>
+                    <td><input class="mvec" type="text" id="mbv1" value="1,3" /></td>
+                    <td class="msep"> + </td>
+                    <td><input class="malpha" type="number" id="mb2" value="0" /></td>
+                    <td class="msep">&lowast;</td>
+                    <td><input class="mvec" type="text" id="mbv2" value="" /></td>
+                    <td class="msep"> + </td>
+                    <td><input class="malpha" type="number" id="mb3" value="0" /></td>
+                    <td class="msep">&lowast;</td>
+                    <td><input class="mvec" type="text" id="mbv3" value="" /></td>
+                </tr>
+            </table>
+        </fieldset>
+        <div style="margin-top:2px;padding:5px;">
+            <button class="showpre1" onclick="mcalc_sh();" title="Calculate input"><b>m</b><sub>1</sub><span style="margin:0 3px;font-size:160%;line-height:0.4;">&#x29E2;</span><b>m</b><sub>2</sub></button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="mshClear();" title="Clear output">Clear</button>
+            <label for="mreducev" style="margin-left: 10px;"> Reduce vectors </label>
+            <input type="checkbox" name="mreducev" id="mreducev" style="height:20px;width:20px;vertical-align:middle;" onchange="setmReduced(this);" />
+            <label>Search for vector <input id="mquery" type="text"/></label>
+        </div>
+        <div id="searcharea">
+            <p id="mfigysh" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+            <p id="mshout" style="outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.3"></p>
+        </div>
+    </div>
+    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl('multihelpbar');" title="Open/Close help">Toggle help</button>
+    <div id="multihelpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
+        <iframe name="helpframe" width="99%" height="100%" src="../docs/shuffle.pdf" style="width:99%;height:100vh;border:none;"></iframe>
+    </div>
+
     <script>
         setTimeout(() => {
             setKeplet();
