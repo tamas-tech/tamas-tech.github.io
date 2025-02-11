@@ -3835,7 +3835,7 @@ function str2vec(str) {
 function sagesh() {
     var a = kiszed_sh("avg");
     var b = kiszed_sh("bvg");
-    if (reducedv) {
+    if (reducedv && a_sor !== undefined && b_sor != undefined) {
         a = a.map(y => y - 1);
         b = b.map(y => y - 1);
     };
