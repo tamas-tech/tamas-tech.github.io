@@ -3747,9 +3747,13 @@ function kiszed_sh(id) {
     try {
         av = JSON.parse(av);
         var indx = av.indexOf(oo);
-        if (av.some(v => v < 0)) {
-            setfigy("Az <b>a</b>, illetve <b>b</b>  indexvektor csak nem negatív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figysh");
+          if (reducedv && av.some(v => v < 1)) {
+            setfigy("Az <b>a</b>, illetve <b>b</b>  indexvektor csak pozitív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figysh");
             shClear();
+            return;
+        };
+        if (av.some(v => v < 0)) {
+            setfigy("'Shuffle-product'-ban egyik indexvektor sem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figysh");
             return;
         } else if (indx > -1) {
             av = oo2strInf(av);
@@ -3757,9 +3761,6 @@ function kiszed_sh(id) {
             shClear();
             return;
         }
-        if (id == "bvg" && indx > -1)
-            av = oo2Inf(av);
-
     } catch (error) {
         setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figysh");
         shClear();
@@ -3774,7 +3775,7 @@ function calc_sh() {
     const elem = document.getElementById("shout");
     a_sor = kiszed_sh("avg");
     b_sor = kiszed_sh("bvg");
-    if (reducedv) {
+    if (reducedv && a_sor !== undefined && b_sor != undefined) {
         a_sor = a_sor.map(y => y - 1);
         b_sor = b_sor.map(y => y - 1);
     };
