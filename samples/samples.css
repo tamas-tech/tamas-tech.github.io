@@ -492,7 +492,7 @@ table.genout-nyil tr td {
     text-align: center;
 }
 
-#genout div.meret {
+div.meret {
     font-size: 80%;
     border-bottom: 1px solid #d6e6e6;
     margin-bottom: 10px;
@@ -502,4 +502,58 @@ table.genout-nyil tr td {
 ::highlight(search-results) {
     background-color: #f06;
     color: white;
+}
+
+#mshout div.meret {
+    border-bottom: 1px solid #ddc7c7;
+}
+
+td input.malpha {
+    width: 50px;
+    border: none;
+    border-bottom: 1px solid #b3b3b3;
+    background: inherit;
+    text-align: center;
+    height: 22px;
+    color: #777777;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+td input.mvec {
+    width: 46px;
+    height: 22px;
+    border-right: 3px solid #444444;
+    border-left: 3px solid #444444;
+    border-top: none;
+    border-bottom: none;
+    border-radius: 7px;
+    text-align: center;
+    background-color: inherit;
+    font-size: 16px;
+}
+
+td.msep {
+    font-size: 140%;
+    line-height: 1;
+}
+
+span.bzj {
+    font-size: larger;
+    font-weight: 800;
+    vertical-align: baseline;
+}
+
+input.inpvec {
+    width: 160px;
+    height: 22px;
+    border-right: 3px solid #444444;
+    border-left: 3px solid #444444;
+    border-top: none;
+    border-bottom: none;
+    border-radius: 7px;
+    text-align: center;
+    background-color: inherit;
+    font-size: 16px;
+    vertical-align: baseline;
 }
