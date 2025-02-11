@@ -3747,20 +3747,24 @@ function kiszed_sh(id) {
     try {
         av = JSON.parse(av);
         var indx = av.indexOf(oo);
-          if (reducedv && av.some(v => v < 1)) {
+        if (reducedv && av.some(v => v < 1)) {
             setfigy("Az <b>a</b>, illetve <b>b</b>  indexvektor csak pozitív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figysh");
             shClear();
             return;
         };
         if (av.some(v => v < 0)) {
-            setfigy("'Shuffle-product'-ban egyik indexvektor sem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figysh");
+            setfigy("Az <b>a</b>, illetve <b>b</b>  indexvektor csak nem negatív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figysh");
+            shClear();
             return;
         } else if (indx > -1) {
             av = oo2strInf(av);
-            setfigy("A kiüritendő <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figysh");
+            setfigy("'Shuffle-product'-ban egyik indexvektor sem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figysh");
             shClear();
             return;
         }
+        if (id == "bvg" && indx > -1)
+            av = oo2Inf(av);
+
     } catch (error) {
         setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figysh");
         shClear();
