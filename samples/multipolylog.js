@@ -45,6 +45,7 @@ var showgenmathout = false;
 var mathoutformat = false;
 var reducedv = false;
 var insertonselect = false;
+//var fastrun = false;
 
 
 var amode = "Li";
@@ -64,6 +65,21 @@ var fazis = {
 };
 const fltx = { "nov": "\\boldsymbol{_{+}b}", "bov": "\\boldsymbol{^{+}b}", "mnov": "-\\left(\\boldsymbol{_{+}b}\\right)", "mbov": "-\\left(\\boldsymbol{^{+}b}\\right)", "bovnov": "\\boldsymbol{^{+}b}+\\boldsymbol{_{+}b}", "bovmnov": "\\boldsymbol{^{+}b}-\\boldsymbol{_{+}b}", "mbovnov": "\\boldsymbol{_{+}b}-\\boldsymbol{^{+}b}", "mbovmnov": "-\\left(\\boldsymbol{^{+}b}+\\boldsymbol{_{+}b}\\right)" }
 
+// MULTISET
+
+var msh = ""
+var mreducedv = false;
+var multierror = false;
+
+var teststr = "1∗(1,1)+(1,4) + 2∗(2,3) + 5 ∗(1,4)+3∗(2,3)+4∗(1,2,3)+(2,3)+(4,5,3) + (2,3)+ 2∗ (4,5,3)";
+var teststr1 = "1∗(1,1)+(1,4) + 2 ∗ (2,3) + 5∗(1,4)+3 ∗(2,3)+4∗(1,2,3)+2∗(2,3)+(4,5,3)+ (2,3)+2∗(4,5,3)"
+var teststr2 = "(1,1,2,2) + 3*(1,2,1,2) + 3*(1,2,2,1) + 6*(1,2,3,0) + 6*(1,3,0,2) + 3*(1,3,1,1) + 6*(1,3,2,0) + 5*(2,1,1,2) + 9*(2,1,2,1) + 18*(2,1,3,0) + 8*(2,2,0,2) + 9*(2,2,1,1) + 16*(2,2,2,0) + 6*(2,3,0,1) + 6*(2,3,1,0) + 6*(3,0,1,2) + 18*(3,0,2,1) + 36*(3,0,3,0) + 6*(3,1,0,2) + 9*(3,1,1,1) + 18*(3,1,2,0) + 6*(3,2,0,1) + 6*(3,2,1,0)+(1,2,1,2) + 4*(1,2,2,1) + 6*(1,2,3,0) + 9*(1,3,1,1) + 12*(1,3,2,0) + 12*(1,4,0,1) + 12*(1,4,1,0) + 4*(2,1,1,2) + 9*(2,1,2,1) + 18*(2,1,3,0) + 4*(2,2,0,2) + 12*(2,2,1,1) + 20*(2,2,2,0) + 12*(2,3,0,1) + 12*(2,3,1,0) + 6*(3,0,1,2) + 18*(3,0,2,1) + 36*(3,0,3,0) + 6*(3,1,0,2) + 9*(3,1,1,1) + 18*(3,1,2,0) + 6*(3,2,0,1) + 6*(3,2,1,0)"
+
+var teststr2 = "(1,1,2,2) + 3∗(1,2,1,2) + 3∗(1,2,2,1) + 6∗(1,2,3,0) + 6∗(1,3,0,2) + 3∗(1,3,1,1) + 6*(1,3,2,0) + 5*(2,1,1,2) + 9*(2,1,2,1) + 18*(2,1,3,0) + 8*(2,2,0,2) + 9*(2,2,1,1) + 16*(2,2,2,0) + 6*(2,3,0,1) + 6*(2,3,1,0) + 6*(3,0,1,2) + 18*(3,0,2,1) + 36*(3,0,3,0) + 6*(3,1,0,2) + 9*(3,1,1,1) + 18*(3,1,2,0) + 6*(3,2,0,1) + 6*(3,2,1,0)+(1,2,1,2) + 4*(1,2,2,1) + 6*(1,2,3,0) + 9*(1,3,1,1) + 12*(1,3,2,0) + 12*(1,4,0,1) + 12*(1,4,1,0) + 4*(2,1,1,2) + 9*(2,1,2,1) + 18*(2,1,3,0) + 4*(2,2,0,2) + 12*(2,2,1,1) + 20*(2,2,2,0) + 12*(2,3,0,1) + 12*(2,3,1,0) + 6*(3,0,1,2) + 18*(3,0,2,1) + 36*(3,0,3,0) + 6*(3,1,0,2) + 9*(3,1,1,1) + 18*(3,1,2,0) + 6*(3,2,0,1) + 6*(3,2,1,0)"
+
+var teststr3 = "6∗(1,2,1,2) + 24∗(1,2,2,1) + 36∗(1,2,3,0) + 54∗(1,3,1,1) + 72∗(1,3,2,0) + 72∗(1,4,0,1) + 72∗(1,4,1,0) + 24∗(2,1,1,2) + 54∗(2,1,2,1) + 108∗(2,1,3,0) + 24∗(2,2,0,2) + 72∗(2,2,1,1) + 120∗(2,2,2,0) + 72∗(2,3,0,1) + 72∗(2,3,1,0) + 36∗(3,0,1,2) + 108∗(3,0,2,1) + 216∗(3,0,3,0) + 36∗(3,1,0,2) + 54∗(3,1,1,1) + 108∗(3,1,2,0) + 36∗(3,2,0,1) + 36∗(3,2,1,0) + 2∗(1,2,1,2) + 8∗(1,2,2,1) + 12∗(1,2,3,0) + 18∗(1,3,1,1) + 24∗(1,3,2,0) + 24∗(1,4,0,1) + 24∗(1,4,1,0) + 8∗(2,1,1,2) + 18∗(2,1,2,1) + 36∗(2,1,3,0) + 8∗(2,2,0,2) + 24∗(2,2,1,1) + 40∗(2,2,2,0) + 24∗(2,3,0,1) + 24∗(2,3,1,0) + 12∗(3,0,1,2) + 36∗(3,0,2,1) + 72∗(3,0,3,0) + 12∗(3,1,0,2) + 18∗(3,1,1,1) + 36∗(3,1,2,0) + 12∗(3,2,0,1) + 12∗(3,2,1,0)"
+
+var teststr4 = "6∗(1,2,1,2) + 24∗(1,2,2,1) + 36∗(1,2,3,0) + 54∗(1,3,1,1) + 72∗(1,3,2,0) + 72∗(1,4,0,1) + 72∗(1,4,1,0) + 24∗(2,1,1,2) + 54∗(2,1,2,1) + 108∗(2,1,3,0) + 24∗(2,2,0,2) + 72∗(2,2,1,1) + 120∗(2,2,2,0) + 72∗(2,3,0,1) + 72∗(2,3,1,0) + 36∗(3,0,1,2) + 108∗(3,0,2,1) + 216∗(3,0,3,0) + 36∗(3,1,0,2) + 54∗(3,1,1,1) + 108∗(3,1,2,0) + 36∗(3,2,0,1) + 36∗(3,2,1,0) + -6∗(1,2,1,2) + -24∗(1,2,2,1) + -36∗(1,2,3,0) + -54∗(1,3,1,1) + -72∗(1,3,2,0) + -72∗(1,4,0,1) + -72∗(1,4,1,0) + -24∗(2,1,1,2) + -54∗(2,1,2,1) + -108∗(2,1,3,0) + -24∗(2,2,0,2) + -72∗(2,2,1,1) + -120∗(2,2,2,0) + -72∗(2,3,0,1) + -72∗(2,3,1,0) + -36∗(3,0,1,2) + -108∗(3,0,2,1) + -216∗(3,0,3,0) + -36∗(3,1,0,2) + -54∗(3,1,1,1) + -108∗(3,1,2,0) + -36∗(3,2,0,1) + -36∗(3,2,1,0)";
 
 function setMode(t) {
     mode = t.value;
@@ -3033,7 +3049,6 @@ function pozValtas() {
     var b = document.getElementById("bvg");
     var al = document.getElementById("avgl");
     var bl = document.getElementById("bvgl");
-    //if (a.id == "avg") {
     a.id = "bvg";
     b.id = "avg";
     al.id = "bvgl";
@@ -3079,6 +3094,10 @@ function setReduced(elem) {
     reducedv = elem.checked;
 };
 
+/* function setFustRun(elem) {
+    fastrun = elem.checked;
+};
+ */
 function setInsertOnSelect(elem) {
     insertonselect = elem.checked;
 };
@@ -3640,7 +3659,8 @@ var it = [];
 var nnn = 0;
 var kk = 0;
 
-function komb(n, J) {
+function komb(n, J, a) {
+    if (a === undefined) a = 1;
     var na, nb, c, k, inc, inc1;
     c = 1;
     k = 0;
@@ -3668,7 +3688,7 @@ function komb(n, J) {
         } else
             c = c * binomial(c_sor[j - 1], k);
     };
-    return c;
+    return a * c;
 };
 
 function cegyutth() {
@@ -3682,8 +3702,11 @@ function cegyutth() {
         sum = "(" + c_sor.toString() + ") + ";
     else
         sum += "&lowast;(" + c_sor.toString() + ") + ";
+    //sum += "*(" + c_sor.toString() + ") + ";
     return sum;
 };
+
+var javitas = 1;
 
 function eshuff() {
     const maxa = _.max(a_sor);
@@ -3691,6 +3714,7 @@ function eshuff() {
     const maxab = maxa + maxb + 1;
     var cek = comp0(sumab, nnn);
     var n1 = cek.length;
+    //if (fastrun)
     cek = cek.filter(y => y.every(v => v < maxab));
     var n2 = cek.length;
     javitas = (n1 / n2).toFixed(2);
@@ -3772,10 +3796,10 @@ function calc_sh() {
             if (sh == "")
                 sh = "Nem megfelelő bemenet"
             else {
-                sh = "(" + a_sor.toString() + ")&#x29E2;(" + b_sor.toString() + ") = " + sh;
+                sh = "(" + a_sor.toString() + ") <span style='font-size:28px;'>&#x29E2;</span> (" + b_sor.toString() + ") = " + sh;
                 var db = sh.match(/ \+ /g).length;
                 sh = sh.slice(0, -3)
-              sh = "<div class='meret'>A számítás mérete: <b>" + meret + " (gyorsítás: &#10761;" + javitas + ")</b> futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
+                sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b> (gyorsítás: &#10761;" + javitas + ") futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
             }
         } else {
             sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
@@ -3821,6 +3845,12 @@ function sagesh() {
     setOutputFont2($('#outfont-slider3').val());
 };
 
+function vadd(a, b) {
+    var sum = a.map(function(num, idx) {
+        return num + b[idx];
+    });
+    return sum;
+}
 
 function sageshtransf() {
     const elem = document.getElementById("sagetransf");
@@ -3845,7 +3875,7 @@ function sageshtransf() {
             if (back) {
                 back = back[0].slice(8, -1).replace(/'/g, '"');
                 var obj = JSON.parse(back);
-                sum=0;
+                sum = 0;
                 _.forEach(obj, function(value, key) {
                     if (value == 1)
                         str += " + (" + str2vec(key) + ")";
@@ -3853,12 +3883,12 @@ function sageshtransf() {
                         str += " + " + value + "&lowast;(" + str2vec(key) + ")";
                     sum++;
                 });
-                str = "(" + a.toString() + ")&#x29E2;(" + b.toString() + ") = " + str.slice(3);
+                str = "(" + a.toString() + " <span style='font-size:28px;'>&#x29E2;</span> " + b.toString() + ") = " + str.slice(3);
             } else
                 str = "HIBA";
         }
     };
-    elem.innerHTML ="<div class='meret'>A szorzat <b>" + sum + "</b> kompozíció összege.</div>" + str;
+    elem.innerHTML = "<div class='meret'>A szorzat <b>" + sum + "</b> kompozíció összege.</div>" + str;
 };
 
 function setSearch() {
@@ -3984,4 +4014,319 @@ $(document).on('selectionchange', function() {
     var selection = window.getSelection().toString();
     if (isin)
         setSearch2(selection);
+});
+
+
+// Multiset
+
+// (\(([^\)])+\)) az összes (2,3,1,...) vektor kivélasztása
+//       (\(([^\)])+\))$  kiválasztja az utolsó vektort
+// teststr.match(/(\d+)\*\(2,3\)|\(2,3\)/g).map(y=>y.split("*")[0].replace(/\(2,3\)/,"1")*1) 
+// ((\+?\d+)(\*)?|(\+?))\(2,3\)|\(2,3\) + jellel a vektor
+
+function mshClear() {
+    const elem = document.getElementById("mshout");
+    elem.innerHTML = "";
+};
+
+function setmReduced(elem) {
+    mreducedv = elem.checked;
+    mshClear();
+};
+
+function strSum(str) {
+    var lastv, pat1, pat2, eh = [],
+        coeff = 0,
+        newstr = "";
+    str = str.replaceAll(" ", "");
+    while (/(\(([^\)])+\))$/.test(str)) {
+        lastv = "\\" + str.match(/(\(([^\)])+\))$/g)[0].slice(0, -1) + "\\)";
+        pat1 = new RegExp(lastv);
+        pat2 = new RegExp("((\\\+? *\\\-?\\d+)(∗)?|(\\\+? *\\\-))" + lastv + "|" + lastv, "g");
+        eh = str.match(pat2).map(y => y.split("∗")[0].replace(pat1, "1").replace("+-", "-") * 1);
+        coeff = _.sum(eh);
+        if (coeff == "1")
+            coeff = "";
+        else
+            coeff += "∗";
+        if (coeff != "0∗")
+            newstr = coeff + lastv.replace(/\\/g, "") + " + " + newstr;
+        str = str.replace(pat2, "");
+    }
+    return newstr.slice(0, -3);
+};
+
+function mcegyutth(a) {
+    var sum = 0;
+    for (let y of it) {
+        sum += komb(nnn, y, a);
+    }
+    if (sum == 0)
+        sum = "";
+    else if (sum == 1)
+        sum = "(" + c_sor.toString() + ") + ";
+    else
+        sum += "∗(" + c_sor.toString() + ") + ";
+    //sum += "*(" + c_sor.toString() + ") + ";
+    return sum;
+};
+
+function meshuff(a) {
+    const maxa = _.max(a_sor);
+    const maxb = _.max(b_sor);
+    const maxab = maxa + maxb + 1;
+    var cek = comp0(sumab, nnn);
+    cek = cek.filter(y => y.every(v => v < maxab));
+    var LL = "";
+    for (let c of cek) {
+        c_sor = c;
+        LL += mcegyutth(a);
+    };
+    msh += LL;
+};
+
+function mkiszed_sh(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "mfigysh");
+        multierror = true;
+        return;
+    };
+
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (mreducedv && av.some(v => v < 1)) {
+            setfigy("Az <b>a</b>, illetve <b>b</b>  indexvektor csak pozitív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "mfigysh");
+            multierror = true;
+            return;
+        }
+        if (av.some(v => v < 0)) {
+            setfigy("Az <b>a</b>, illetve <b>b</b>  indexvektor csak nem negatív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "mfigysh");
+            multierror = true;
+            return;
+        } else if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy("Az indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "mfigysh");
+            multierror = true;
+            return;
+        }
+        if (id == "bvg" && indx > -1)
+            av = oo2Inf(av);
+
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "mfigysh");
+        multierror = true;
+        return;
+    };
+    return av;
+};
+
+function makeRunList() {
+    var lista = {};
+    var listb = {};
+
+    const ma1 = document.getElementById("ma1").value * 1;
+    var mav1;
+    if (ma1 != 0)
+        mav1 = mkiszed_sh("mav1")
+    if (mav1 && mav1.length > 0)
+        lista["a1"] = [ma1, mav1];
+
+    const ma2 = document.getElementById("ma2").value * 1;
+    var mav2;
+    if (ma2 != 0)
+        mav2 = mkiszed_sh("mav2")
+    if (mav2 && mav2.length > 0)
+        lista["a2"] = [ma2, mav2];
+
+    const ma3 = document.getElementById("ma3").value * 1;
+    var mav3;
+    if (ma3 != 0)
+        mav3 = mkiszed_sh("mav3")
+    if (mav3 && mav3.length > 0)
+        lista["a3"] = [ma3, mav3];
+
+    const mb1 = document.getElementById("mb1").value * 1;
+    var mbv1;
+    if (mb1 != 0)
+        mbv1 = mkiszed_sh("mbv1")
+    if (mbv1 && mbv1.length > 0)
+        listb["b1"] = [mb1, mbv1];
+
+    const mb2 = document.getElementById("mb2").value * 1;
+    var mbv2;
+    if (mb2 != 0)
+        mbv2 = mkiszed_sh("mbv2")
+    if (mbv2 && mbv2.length > 0)
+        listb["b2"] = [mb2, mbv2];
+
+    const mb3 = document.getElementById("mb3").value * 1;
+    var mbv3;
+    if (mb3 != 0)
+        mbv3 = mkiszed_sh("mbv3")
+    if (mbv3 && mbv3.length > 0)
+        listb["b3"] = [mb3, mbv3];
+
+    return { "lista": lista, "listb": listb };
+};
+
+function headFromList(lista) {
+    var head = "";
+    for (let i of Object.keys(lista)) {
+        var coeff = lista[i][0];
+        var vec = lista[i][1];
+        if (mreducedv) {
+            vec = vec.map(y => y - 1);
+        };
+        if (coeff == "1")
+            coeff = ""
+        else if (coeff == -1)
+            coeff = "-";
+        else
+            coeff += "∗";
+        head += coeff + "(" + vec.toString() + ") + ";
+    }
+    head.replace(/\+ *\-/g, " - ");
+    head = head.slice(0, -3);
+    if (_.size(lista) > 1)
+        head = "<span class='bzj'>[</span>" + head + "<span class='bzj'>]</span>";
+    return head;
+};
+
+function mcalc_sh() {
+    multierror = false;
+    msh = "";
+    const elem1 = document.getElementById("mfigysh");
+    elem1.innerHTML = "";
+    const elem = document.getElementById("mshout");
+    var meret = 0;
+    var osszmeret = 0;
+    const obj = makeRunList();
+    const la = obj["lista"];
+    const lb = obj["listb"];
+    const heada = headFromList(la);
+    const headb = headFromList(lb);
+    if (multierror) {
+        elem.innerHTML = "HIBA";
+        return;
+    }
+
+    for (let i of Object.keys(la)) {
+        const lai = la[i];
+        a_sor = lai[1];
+        const ma1 = lai[0];
+        if (mreducedv) {
+            a_sor = a_sor.map(y => y - 1);
+        };
+        for (let j of Object.keys(lb)) {
+            const lbj = lb[j]
+            b_sor = lbj[1];
+            const mb1 = lbj[0];
+            if (mreducedv) {
+                b_sor = b_sor.map(y => y - 1);
+            };
+            sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+            kk = a_sor.length;
+            nnn = kk + b_sor.length;
+            meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+            osszmeret += meret;
+            if (meret < 150000000) {
+                it = Choose(nnn, kk);
+                meshuff(ma1 * mb1);
+            } else {
+                msh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+                return;
+            }
+        }
+    }
+    msh = strSum(msh.slice(0, -3));
+
+    // msh kiírása
+
+    if (msh == "") {
+        db = 0
+    } else
+        var db = msh.match(/ \+ /g).length + 1;
+    if (heada == "" && headb !== "")
+        msh = "( )" + " <span style='font-size:28px;font-weight:800;'>&#x29E2;</span> " + headb + " = " + headb.replace("<span class='bzj'>[</span>", "").replace("<span class='bzj'>]</span>", "");
+    else if (heada != "" && headb == "")
+        msh = heada + " <span style='font-size:28px;font-weight:800;'>&#x29E2;</span> " + "( )" + " = " + heada.replace("<span class='bzj'>[</span>", "").replace("<span class='bzj'>]</span>", "");
+    else if (heada == "" && headb == "")
+        msh = "( )" + " <span style='font-size:28px;font-weight:800;'>&#x29E2;</span> " + "( )" + " = " + "( )";
+    else
+        msh = heada + " <span style='font-size:28px;font-weight:800;'>&#x29E2;</span> " + headb + " = " + msh;
+    msh = "<div class='meret'>A számítás mérete: <b>" + osszmeret + " </b> futás.  Az összeg <b>" + db + "</b> tagú.</div>" + msh;
+
+    msh = msh.replace(/\+ *-/g, "- ")
+    elem.innerHTML = msh;
+};
+
+function setSearch3() {
+    const query = document.getElementById("mquery");
+    const article = document.querySelector("#mshout");
+    const treeWalker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
+    const allTextNodes = [];
+    let currentNode = treeWalker.nextNode();
+    while (currentNode) {
+        allTextNodes.push(currentNode);
+        currentNode = treeWalker.nextNode();
+    }
+
+    if (!CSS.highlights) {
+        const dvan = document.getElementById("mnohighlight")
+        if (dvan == undefined) {
+            let d = document.createElement('div');
+            d.style.color = "#ff2211";
+            d.id = "mnohighlight";
+            article.prepend(d);
+            d.prepend("CSS Custom Highlight API not supported.");
+        }
+        return;
+    }
+
+    CSS.highlights.clear();
+
+    const str = query.value.trim().toLowerCase();
+    if (!str) {
+        return;
+    }
+
+    const ranges = allTextNodes
+        .map((el) => {
+            return { el, text: el.textContent.toLowerCase() };
+        })
+        .map(({ text, el }) => {
+            const indices = [];
+            let startPos = 0;
+            while (startPos < text.length) {
+                const index = text.indexOf(str, startPos);
+                if (index === -1) break;
+                indices.push(index);
+                startPos = index + str.length;
+            }
+
+            return indices.map((index) => {
+                const range = new Range();
+                range.setStart(el, index);
+                range.setEnd(el, index + str.length);
+                return range;
+            });
+        });
+
+    const searchResultsHighlight = new Highlight(...ranges.flat());
+    CSS.highlights.set("search-results", searchResultsHighlight);
+};
+
+$(document).on('input focus', '#mquery', function() {
+    setSearch3();
 });
