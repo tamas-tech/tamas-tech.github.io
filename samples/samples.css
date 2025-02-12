@@ -557,3 +557,32 @@ input.inpvec {
     font-size: 16px;
     vertical-align: baseline;
 }
+
+table thead tr th span.tsorszam {
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+    width: 21.36px;
+}
+
+table tr td span.tgomb {
+    cursor: pointer
+}
+
+table tr td span.tgomb:hover {
+    color: #999;
+}
+
+table tr.derivlast td {
+    color: red;
+}
+
+table tr td.derivkezd {
+    font-size: 18px;
+}
+
+table tr td.derivkezd span {
+    font-size: 14px;
+    vertical-align: middle;
+}
+
