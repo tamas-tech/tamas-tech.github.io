@@ -81,6 +81,12 @@ var teststr3 = "6∗(1,2,1,2) + 24∗(1,2,2,1) + 36∗(1,2,3,0) + 54∗(1,3,1,1)
 
 var teststr4 = "6∗(1,2,1,2) + 24∗(1,2,2,1) + 36∗(1,2,3,0) + 54∗(1,3,1,1) + 72∗(1,3,2,0) + 72∗(1,4,0,1) + 72∗(1,4,1,0) + 24∗(2,1,1,2) + 54∗(2,1,2,1) + 108∗(2,1,3,0) + 24∗(2,2,0,2) + 72∗(2,2,1,1) + 120∗(2,2,2,0) + 72∗(2,3,0,1) + 72∗(2,3,1,0) + 36∗(3,0,1,2) + 108∗(3,0,2,1) + 216∗(3,0,3,0) + 36∗(3,1,0,2) + 54∗(3,1,1,1) + 108∗(3,1,2,0) + 36∗(3,2,0,1) + 36∗(3,2,1,0) + -6∗(1,2,1,2) + -24∗(1,2,2,1) + -36∗(1,2,3,0) + -54∗(1,3,1,1) + -72∗(1,3,2,0) + -72∗(1,4,0,1) + -72∗(1,4,1,0) + -24∗(2,1,1,2) + -54∗(2,1,2,1) + -108∗(2,1,3,0) + -24∗(2,2,0,2) + -72∗(2,2,1,1) + -120∗(2,2,2,0) + -72∗(2,3,0,1) + -72∗(2,3,1,0) + -36∗(3,0,1,2) + -108∗(3,0,2,1) + -216∗(3,0,3,0) + -36∗(3,1,0,2) + -54∗(3,1,1,1) + -108∗(3,1,2,0) + -36∗(3,2,0,1) + -36∗(3,2,1,0)";
 
+
+var deriv_table = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
+var deriv_tableA = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
+var deriv_tableB = [1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0];
+var derivab = false;
+
 function setMode(t) {
     mode = t.value;
     setKeplet();
@@ -3773,6 +3779,7 @@ function kiszed_sh(id) {
     return av;
 };
 
+
 function calc_sh() {
     const elem1 = document.getElementById("figysh");
     elem1.innerHTML = "";
@@ -3782,7 +3789,7 @@ function calc_sh() {
     if (reducedv && a_sor !== undefined && b_sor != undefined) {
         a_sor = a_sor.map(y => y - 1);
         b_sor = b_sor.map(y => y - 1);
-    };
+    }
     var sh, meret;
     if (a_sor == undefined || b_sor == undefined)
         sh = "HIBA";
@@ -4344,3 +4351,188 @@ $(document).on('selectionchange', function() {
         $("#mquery").val(selection).trigger('input');
     }
 });
+
+// derive set
+
+function setDeriv(elem) {
+    derivab = elem.checked;
+    const n = document.getElementById('N').value * 1;
+    derivInit(n);
+};
+
+function derivSet(J) {
+    const n = J.length;
+    var dJ = [1];
+    for (var j = 1; j < n; j++) {
+        if (J[j - 1] == J[j])
+            dJ[j] = 1;
+        else
+            dJ[j] = 0;
+    };
+    return dJ;
+};
+
+function derivPath(J) {
+    const J0 = [1, ...J.slice(1)];
+    const Jc0 = [1, ...J.slice(1).map(y => (y + 1) % 2)];
+    var dJ = derivSet(J);
+    var dJs = [J, dJ];
+    while (!_.isEqual(J0, dJ) && !_.isEqual(Jc0, dJ)) {
+        dJ = derivSet(dJ);
+        dJs.push(dJ);
+    };
+    return dJs;
+};
+
+function sorKep0(sor) {
+    const n = sor.length;
+    var txt = "<td style='border-bottom:1px solid #aaaaaa'>"
+    for (var j = 0; j < n; j++) {
+        txt += "<span class='tgomb' onclick='tdat(" + j + ")'>"
+        if (sor[j] == 1)
+            txt += "&#x25CF;</span> ";
+        else
+            txt += "&#x25CB;</span> ";
+    };
+    txt += "</td></tr>";
+    return txt;
+};
+
+function sorKep(sor) {
+    var txt = "<td>"
+    for (let s of sor) {
+        if (s == 1)
+            txt += "&#x25CF; ";
+        else
+            txt += "&#x25CB; ";
+    };
+    txt += "</td></tr>";
+    return txt;
+};
+
+function derivKep(d) {
+    var n = d.length;
+    var m = d[0].length;
+    var txt = "<table style='border-collapse:collapse;'><thead ><tr><th id='dnum' style='font-size:16px;width:45px;background-color:#eee'>" + (n - 1) + "</th><th>";
+    for (var i = 1; i < m + 1; i++) {
+        txt += "<span class='tsorszam'>" + i + ".</span>";
+    };
+    txt += "</th></tr></thead>";
+    for (var i = 0; i < n; i++) {
+        if (i == 0)
+            txt += "<tr style='cursor:pointer;color:red;'><td>" + i + ".</td>" + sorKep0(d[i]);
+        else if (i == n - 1)
+            txt += "<tr class='derivlast'><td>" + i + ".</td>" + sorKep(d[i]);
+        else
+            txt += "<tr><td>" + i + ".</td>" + sorKep(d[i]);
+    };
+    txt += "</table>";
+    return txt;
+};
+
+function pathKep(J) {
+    const elem = document.getElementById("derivT");
+    const d = derivPath(J);
+    const kep = derivKep(d);
+    elem.innerHTML = kep;
+};
+
+function derivInitk(n) {
+    deriv_table = [];
+    var x;
+    for (var i = 0; i < n; i++) {
+        x = Math.round(Math.random());
+        deriv_table.push(x)
+    };
+    pathKep(deriv_table);
+}
+
+function tdat(j) {
+    var jedik = deriv_table[j];
+    deriv_table[j] = (jedik + 1) % 2;
+    pathKep(deriv_table);
+};
+
+// A B deriv
+
+function szimDiff(A, B) {
+    const n = Math.min(A.length, B.length);
+    var sd = [];
+    for (j = 0; j < n; j++)
+        if (A[j] !== B[j])
+            sd.push(1);
+        else
+            sd.push(0);
+    return sd;
+}
+
+function tdata(j) {
+    var jedik = deriv_tableA[j];
+    deriv_tableA[j] = (jedik + 1) % 2;
+    derivKepAB();
+};
+
+function tdatb(j) {
+    var jedik = deriv_tableB[j];
+    deriv_tableB[j] = (jedik + 1) % 2;
+    derivKepAB();
+};
+
+function sorKep0ab(sor, ab) {
+    const n = sor.length;
+    var txt = "<td>"
+    for (var j = 0; j < n; j++) {
+        txt += "<span class='tgomb' onclick='tdat" + ab + "(" + j + ")'>"
+        if (sor[j] == 1)
+            txt += "&#x25CF;</span> ";
+        else
+            txt += "&#x25CB;</span> ";
+    };
+    txt += "</td></tr>";
+    return txt;
+};
+
+function derivKepAB() {
+    const n = Math.min(deriv_tableA.length, deriv_tableB.length)
+    var txt = "<table style='border-collapse:collapse;'><thead ><tr><th style='font-size:16px;width:70px;background-color:#eee'> </th><th>";
+    for (var i = 1; i < n + 1; i++) {
+        txt += "<span class='tsorszam'>" + i + ".</span>";
+    };
+    txt += "</th></tr></thead>";
+    txt += "<tr style='cursor:pointer;color:#3d6c95;'><td  class='derivkezd'>A</td>" + sorKep0ab(deriv_tableA, "a");
+    txt += "<tr style='cursor:pointer;color:#df4242;'><td  class='derivkezd'>B</td>" + sorKep0ab(deriv_tableB, "b");
+    const AsB = szimDiff(deriv_tableA, deriv_tableB)
+    txt += "<tr ><td class='derivkezd'>A<span>&#x2206;</span>B</td>" + sorKep(AsB);
+    const dA = derivSet(deriv_tableA)
+    txt += "<tr><td  class='derivkezd'>∂A</td>" + sorKep(dA);
+    const dB = derivSet(deriv_tableB)
+    txt += "<tr  style='border-bottom:1px solid #aaa;'><td  class='derivkezd'>∂B</td>" + sorKep(dB);
+    txt += "<tr ><td  class='derivkezd'>∂A<span>&#x2206;</span>∂B</td>" + sorKep(szimDiff(dA, dB));
+    txt += "<tr ><td  class='derivkezd'>∂(A<span>&#x2206;</span>B)</td>" + sorKep(derivSet(AsB));
+    txt += "</table>";
+    const elem = document.getElementById("derivT");
+    elem.innerHTML = txt;
+};
+
+function derivInitAB(n) {
+    deriv_tableA = [];
+    deriv_tableB = [];
+    var x;
+    for (var i = 0; i < n; i++) {
+        x = Math.round(Math.random());
+        deriv_tableA.push(x)
+    };
+    for (var i = 0; i < n; i++) {
+        x = Math.round(Math.random());
+        deriv_tableB.push(x)
+    };
+
+    derivKepAB();
+};
+
+function derivInit(n) {
+    if (derivab)
+        derivInitAB(n);
+    else
+        derivInitk(n);
+};
