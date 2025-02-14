@@ -4750,7 +4750,6 @@ function updcJ(elem, j) {
     } else {
         target.innerHTML = "<b>(" + cJ_c.toString() + ")</b> nem szerepel <b>(" + cJ_a.toString() + ")</b><span style='margin:0 3px;font-size:160%;line-height:0.4;'>⧢</span><b>(" + cJ_b.toString() + ")</b>-ben";
     };
-     cindredclass(indx);
 };
 
 function updcJall(v) {
@@ -4784,7 +4783,8 @@ function updcJJ(j) {
     } else {
         lk.value = (indx + 1);
         lp.innerHTML = "/ " + nn;
-    }
+    };
+    cindredclass(indx);
 };
 
 function set2digit(v, n) {
