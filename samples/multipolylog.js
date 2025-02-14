@@ -86,6 +86,17 @@ var deriv_table = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
 var deriv_tableA = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
 var deriv_tableB = [1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0];
 var derivab = false;
+var cJ_a = [];
+var cJ_b = [];
+var cJ_c = [];
+var cJ_J = [];
+var cJ_it = [];
+var cJIndex = [];
+var lastindex = [
+    [],
+    []
+];
+var autoindex = false;
 
 function setMode(t) {
     mode = t.value;
@@ -2991,6 +3002,7 @@ function setgenKeplet() {
     setTimeout(() => {
         elem.style.visibility = "visible";
     }, 200);
+    cJClear();
 };
 
 function setaMode(elem) {
@@ -3098,6 +3110,7 @@ setoutMaxsor = function() {
 
 function setReduced(elem) {
     reducedv = elem.checked;
+    cJClear();
 };
 
 /* function setFustRun(elem) {
@@ -3547,7 +3560,8 @@ $(document).on('mouseup', '#genout tr td.asor,#genout tr td.bsor', function() {
             else
                 return;
         }
-    } else return;
+    } else
+        return;
 });
 
 function getElementsInSelection() {
@@ -3720,7 +3734,6 @@ function eshuff() {
     const maxab = maxa + maxb + 1;
     var cek = comp0(sumab, nnn);
     var n1 = cek.length;
-    //if (fastrun)
     cek = cek.filter(y => y.every(v => v < maxab));
     var n2 = cek.length;
     javitas = (n1 / n2).toFixed(2);
@@ -4464,7 +4477,7 @@ function szimDiff(A, B) {
         else
             sd.push(0);
     return sd;
-}
+};
 
 function tdata(j) {
     var jedik = deriv_tableA[j];
@@ -4536,3 +4549,417 @@ function derivInit(n) {
     else
         derivInitk(n);
 };
+
+//  Shuffle calculation
+
+function cJClear() {
+    const elem = document.getElementById("cwithJ");
+    const elem1 = document.getElementById("c_index");
+    elem.innerHTML = "";
+    elem1.innerHTML = "";
+};
+
+function setAutoIndex(elem) {
+    autoindex = elem.checked;
+}
+
+
+function drawBinomial(n, k) {
+    return "<span style='display:inline-block;border-left: 2px solid;border-right: 2px solid;border-radius: 30%;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td>" + n + "</td></tr><tr><td>" + k + "</td></tr></table></span>";
+}
+
+function abcJ(a, b, c, J) {
+    const n = J.length;
+    const cJ = J.map(y => (y + 1) % 2);
+    const k = kum(J);
+    const ck = kum(cJ);
+    var av = [];
+    var bv = [];
+    var cab = [];
+    for (i = 0; i < n; i++) {
+        av.push(J[i] * (a[k[i] - 1] || 0));
+        bv.push(cJ[i] * (b[ck[i] - 1] || 0));
+        cab.push(c[i] - av[i] - bv[i]);
+    };
+    var kcab = kum(cab);
+    return [av, bv, cab, kcab];
+};
+
+function drawShuffle(a, b, c, J) {
+    const elem = document.getElementById("cwithJ");
+    const f = abcJ(a, b, c, J);
+    const n = J.length;
+    const dJ = derivSet(J);
+    const av = f[0];
+    const bv = f[1];
+    const cab = f[2];
+    const kcab = f[3];
+
+    const cna = cJ_J.reduce((x, y) => x + y, 0);
+    const na = cJ_a.length;
+    const sumc = c.reduce((x, y) => x + y, 0);
+    const sumab = a.reduce((x, y) => x + y, 0) + b.reduce((x, y) => x + y, 0);
+    const diff = na - cna;
+    const sumdiff = sumab - sumc;
+    var col = "";
+    var fdiff = "";
+    var binvec = [];
+
+    if (diff !== 0) {
+        col = "#ff0000aa";
+        fdiff = diff;
+        if (fdiff > 0)
+            fdiff = "+" + fdiff;
+    };
+    var fsumdiff = "";
+    if (sumdiff !== 0) {
+        col = "#ff0000aa";
+        fsumdiff = sumdiff;
+        if (fsumdiff > 0)
+            fsumdiff = "+" + fsumdiff;
+    };
+
+    var tbl = "<table style='color:" + col + ";border-collapse:separate;border-spacing: 2px 5px;text-align:center;'><tr><td style='width:50px;'>J</td>";
+
+    for (var j = 0; j < n; j++) {
+        tbl += "<td><span class='tgomb' onclick='updcJJ" + "(" + j + ")'>"
+        if (J[j] == 1)
+            tbl += "&#x25CF;</span></td>";
+        else
+            tbl += "&#x25CB;</span></td>";
+    };
+    tbl += "<td>" + fdiff + "</td></tr><tr style='border-bottom:1px solid #777;'><td><b>c</b></td>";
+    for (var j = 0; j < n; j++) {
+        tbl += "<td><input type='text' id='ci" + j + "'class='cinput' value='" + c[j] + "' onchange='updcJ(this," + j + ");'/></td>";
+    };
+    tbl += "<td>" + fsumdiff + "</td></tr><tr><td><b>a|b</b></td>";
+    for (var j = 0; j < n; j++) {
+        if (J[j] == 1)
+            tbl += "<td style='text-decoration:underline;'>" + av[j], "</td>";
+        else
+            tbl += "<td>" + bv[j], "</td>";
+    };
+    tbl += "</tr><tr><td>Δκ</td>";
+    for (var j = 0; j < n; j++) {
+        if (dJ[j] == 1)
+            tbl += "<td style='background-color:#d1dfdd;border-radius: 4px;border: 1px solid #9bb8c1'>" + cab[j], "</td>";
+        else
+            tbl += "<td>" + cab[j], "</td>";
+    };
+    tbl += "</tr><tr><td>κ</td>";
+    for (var j = 0; j < n; j++) {
+        if (dJ[j] == 0)
+            tbl += "<td style='background-color:#d1dfdd;border-radius: 4px;border: 1px solid #9bb8c1'>" + kcab[j], "</td>";
+        else
+            tbl += "<td>" + kcab[j], "</td>";
+    };
+    tbl += "</tr><tr style='font-size:85%;'><td></td>";
+    for (var i = 0; i < n; i++) {
+        if (dJ[i] > 0) {
+            tbl += "<td>" + drawBinomial(c[i], cab[i]) + "</td>";
+            binvec[i] = binomial(c[i], cab[i]);
+        } else if (dJ[i] == 0) {
+            tbl += "<td>" + drawBinomial(c[i], kcab[i]) + "</td>";
+            binvec[i] = binomial(c[i], kcab[i]);
+        };
+    };
+    tbl += "</tr><tr><td>c(J)</td>";
+
+    for (var j = 0; j < n; j++) {
+        if (binvec[j] <= 0)
+            tbl += "<td style='border:1px solid red'>" + binvec[j], "</td>";
+        else
+            tbl += "<td>" + binvec[j], "</td>";
+    };
+    var coeff = binvec.reduce((x, y) => x * y, 1);
+    tbl += "<td style='font-weight:800;'> = " + coeff + "</td></tr></table>";
+    elem.innerHTML = tbl;
+};
+
+function initcInshuff() {
+    cJ_a = kiszed_sh("avg");
+    cJ_b = kiszed_sh("bvg");
+    if (reducedv && cJ_a !== undefined && cJ_b != undefined) {
+        cJ_a = cJ_a.map(y => y - 1);
+        cJ_b = cJ_b.map(y => y - 1);
+    };
+    const na = cJ_a.length;
+    const nb = cJ_b.length;
+    const n = na + nb;
+    cJ_it = Choose(n, na).map(y => _.reverse(y)).sort();
+    cJ_J = [];
+    cJ_c = [];
+    for (var i = 0; i < na; i++)
+        cJ_J.push(1);
+    for (var i = 0; i < nb; i++)
+        cJ_J.push(0);
+    for (var i = 0; i < na; i++)
+        cJ_c.push(cJ_a[i]);
+    for (var i = 0; i < nb; i++)
+        cJ_c.push(cJ_b[i]);
+
+    drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+
+    const lk = document.getElementById("lepeskijelzo");
+    const lp = document.getElementById("lepesall");
+    const nn = cJ_it.length;
+    lk.value = 1;
+    lp.innerHTML = "/ " + nn;
+
+    const target = document.getElementById("c_index");
+    var vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
+    if (vanindx)
+        updcJall(cJ_c);
+    else {
+        if (autoindex)
+            makeShIndex();
+        target.innerHTML = "<b>A feladathoz még nem készült index</b>.<br>A \"Make Index\" gombra kattintva készíthet indexet. Ha az \"autoindex\" jelölőnégyzetet kipipálja, akkor minden feladathoz automatikusan készül index.";
+    }
+
+};
+
+function formazIndex(v) {
+    const n = v.length;
+    var sum = 0;
+    var f = "<table style='text-align:center;order-collapse: separate;border-spacing: 10px 4px;font-size: 20px;'><thead><tr><th style='padding-right:10px;'>(" + cJ_c.toString() + ")</th>";
+    var indx = 0;
+    for (var i = 0; i < n; i++) {
+        indx = v[i][0];
+        f += "<th class='cindh' onclick='ugrik(" + indx + ")'>" + (indx + 1) + "</th>";
+    };
+    f += "</tr></thead><tr>";
+    var f2 = "";
+    for (var j = 0; j < n; j++) {
+        var cj = v[j][1];
+        f2 += "<td  class='cindd'>" + cj + "</td>";
+        sum += cj;
+    };
+    f2 = "<td style='font-weight:800'>" + sum + "</td>" + f2 + "</tr>";
+    f += f2;
+    return f;
+}
+
+function updcJ(elem, j) {
+    const cj = elem.value * 1;
+    cJ_c[j] = cj;
+    drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+    const target = document.getElementById("c_index");
+    var indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c));
+    if (indx > -1) {
+        target.innerHTML = formazIndex(cJIndex[indx][1]);
+    } else {
+        target.innerHTML = "<b>(" + cJ_c.toString() + ")</b> nem szerepel <b>(" + cJ_a.toString() + ")</b><span style='margin:0 3px;font-size:160%;line-height:0.4;'>⧢</span><b>(" + cJ_b.toString() + ")</b>-ben";
+    };
+};
+
+function updcJall(v) {
+    cJ_c = v;
+    drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+    const target = document.getElementById("c_index");
+    setTimeout(() => {
+        var indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c));
+        if (indx > -1) {
+            target.innerHTML = formazIndex(cJIndex[indx][1]);
+        } else {
+            target.innerHTML = "";
+        };
+    }, 100);
+};
+
+function updcJJ(j) {
+    var jedik = cJ_J[j];
+    cJ_J[j] = (jedik + 1) % 2;
+    drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+
+    const nn = cJ_it.length;
+    const cv = digit2set(cJ_J);
+    var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv));
+    const lk = document.getElementById("lepeskijelzo");
+    const lp = document.getElementById("lepesall");
+    if (indx == -1) {
+        lk.value = "☹";
+        lp.innerHTML = "/ " + nn;
+    } else {
+        lk.value = (indx + 1);
+        lp.innerHTML = "/ " + nn;
+    }
+};
+
+function set2digit(v, n) {
+    var d = Array(n).fill(0);
+    for (let a of v)
+        d[a - 1] = 1;
+    return d;
+};
+
+function digit2set(d) {
+    var v = [];
+    const n = d.length;
+    for (var i = 0; i < n; i++)
+        if (d[i] > 0)
+            v.push(i + 1);
+    return v;
+}
+
+function cindredclass(indx) {
+    $("th.cindh.cindred").removeClass("cindred");
+    var elem = $("th.cindh").filter(function() { return this.innerHTML == (indx + 1) });
+    if (elem != undefined)
+        elem.addClass("cindred");
+};
+
+function leptet(b) {
+    const lk = document.getElementById("lepeskijelzo");
+    const lp = document.getElementById("lepesall");
+    const n = cJ_J.length;
+    const nn = cJ_it.length;
+    const cv = digit2set(cJ_J);
+    var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv));
+    if (b) {
+        if (indx == 0)
+            indx = nn - 1;
+        else
+            indx -= 1;
+    } else {
+        if (indx == (nn - 1))
+            indx = 0;
+        else
+            indx += 1;
+    };
+    const back = cJ_it[indx];
+    if (back != undefined) {
+        cJ_J = set2digit(back, n);
+        drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+        lk.value = (indx + 1);
+        lp.innerHTML = "/ " + nn;
+        cindredclass(indx);
+    }
+};
+
+function ugrik0(indx) {
+    indx = indx * 1 - 1;
+    const lk = document.getElementById("lepeskijelzo");
+    const lp = document.getElementById("lepesall");
+    const n = cJ_J.length;
+    const nn = cJ_it.length;
+    if (indx > -1 && indx < nn) {
+        const back = cJ_it[indx];
+        if (back != undefined) {
+            cJ_J = set2digit(back, n);
+            drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+            lk.value = (indx * 1 + 1);
+            lp.innerHTML = "/ " + nn;
+        };
+    } else {
+        lk.value = "☹";
+        lp.innerHTML = "/ " + nn;
+    }
+    cindredclass(indx);
+};
+
+function ugrik(indx) {
+    const lk = document.getElementById("lepeskijelzo");
+    const lp = document.getElementById("lepesall");
+    const n = cJ_J.length;
+    const nn = cJ_it.length;
+    if (indx > -1 && indx < nn) {
+        const back = cJ_it[indx];
+        if (back != undefined) {
+            cJ_J = set2digit(back, n);
+            drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+            lk.value = (indx * 1 + 1);
+            lp.innerHTML = "/ " + nn;
+        };
+    } else {
+        lk.value = "☹";
+        lp.innerHTML = "/ " + nn;
+    };
+    cindredclass(indx);
+};
+
+// Make Index
+
+function cegyutthIndex(n) {
+    var sum = 0;
+    var cy = 0;
+    var cIk = [];
+    var y;
+    for (var i = 0; i < n; i++) {
+        y = cJ_it[i];
+        cy = komb(nnn, y);
+        sum += cy;
+        if (cy > 0)
+            cIk.push([i, cy]);
+    };
+    if (sum > 0)
+        cJIndex.push([c_sor, cIk])
+};
+
+function eshuffIndex() {
+    const n = binomial(nnn, a_sor.length);
+    const maxa = _.max(a_sor);
+    const maxb = _.max(b_sor);
+    const maxab = maxa + maxb + 1;
+    var cek = comp0(sumab, nnn);
+    cek = cek.filter(y => y.every(v => v < maxab));
+    for (let c of cek) {
+        c_sor = c;
+        cegyutthIndex(n);
+    };
+};
+
+function makeShIndex() {
+    var vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
+    if (vanindx)
+        updcJall(cJ_c);
+    else {
+        a_sor = kiszed_sh("avg");
+        b_sor = kiszed_sh("bvg");
+        if (reducedv && a_sor !== undefined && b_sor != undefined) {
+            a_sor = a_sor.map(y => y - 1);
+            b_sor = b_sor.map(y => y - 1);
+        }
+        var meret;
+        if (a_sor == undefined || b_sor == undefined)
+            sh = "HIBA";
+        else if (a_sor.length + b_sor.length == 0)
+            sh = "( )&#x29E2;( ) = ( )";
+        else if (a_sor.length == 0)
+            sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
+        else {
+            sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+            kk = a_sor.length;
+            nnn = kk + b_sor.length;
+            meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+            if (meret < 150000000) {
+                cJ_it = Choose(nnn, kk).map(y => _.reverse(y)).sort();
+                eshuffIndex();
+            };
+            lastindex[0] = a_sor;
+            lastindex[1] = b_sor;
+
+            vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
+            if (vanindx)
+                updcJall(cJ_c);
+        };
+    }
+};
+
+$(document).on('selectionchange', function() {
+    const foo = document.querySelector('p#shout')
+    var isin = window.getSelection().containsNode(foo, true);
+    var selection = window.getSelection().toString();
+    if (isin) {
+        var sv = selection.split(",").map(y => y * 1);
+        const n = sv.length;
+        const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], sv))
+        if (indx > -1 && nnn !== undefined && n == nnn) {
+            updcJall(sv);
+            setTimeout(() => {
+                for (i = 0; i < n; i++) {
+                    $('#ci' + i).trigger("input");
+                };
+            }, 100);
+        }
+    }
+});
