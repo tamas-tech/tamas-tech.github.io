@@ -586,3 +586,22 @@ table tr td.derivkezd span {
     vertical-align: middle;
 }
 
+table tr td input.cinput {
+    width: 25px;
+    text-align: center;
+    border: 1px solid #9bb8c1;
+    background-color: #d1dfdd;
+    font-size: inherit;
+}
+
+table thead tr th.cindh {
+    border: 1px solid #aaa;
+    background-color: #dde9f3;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+table thead tr th.cindh.cindred {
+    border: 1px solid #ea8585;
+    box-shadow: 0px 0px 10px 3px #eea8a8;
+}
