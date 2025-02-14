@@ -4763,6 +4763,7 @@ function updcJall(v) {
         } else {
             target.innerHTML = "";
         };
+        cindredclass(indx);
     }, 100);
 };
 
