@@ -499,13 +499,13 @@ div.meret {
     padding-bottom: 5px;
 }
 
+#mshout div.meret {
+    border-bottom: 1px solid #ddc7c7;
+}
+
 ::highlight(search-results) {
     background-color: #f06;
     color: white;
-}
-
-#mshout div.meret {
-    border-bottom: 1px solid #ddc7c7;
 }
 
 td input.malpha {
@@ -566,11 +566,29 @@ table thead tr th span.tsorszam {
 }
 
 table tr td span.tgomb {
-    cursor: pointer
+    cursor: pointer;
+}
+
+table tr#J_sora td span.tgomb {
+    cursor: pointer;
+    padding: 0 6px;
+}
+
+table tr#J_sora.active {
+    background-color: #f4d7d7;
 }
 
 table tr td span.tgomb:hover {
     color: #999;
+}
+
+table tr#c_sora.active {
+    background-color: #cbf7b7;
+}
+
+table tr#J_sora.error,
+table tr#c_sora.error {
+    color: red;
 }
 
 table tr.derivlast td {
@@ -589,12 +607,37 @@ table tr td.derivkezd span {
 table tr td input.cinput {
     width: 25px;
     text-align: center;
-    border: 1px solid #9bb8c1;
-    background-color: #d1dfdd;
+    border: 1px solid #adadad;
+    background-color: #ececec;
     font-size: inherit;
 }
 
-table thead tr th.cindh {
+table tr#c_sora.active td input.cinput {
+    width: 25px;
+    text-align: center;
+    border: 1px solid #63b169;
+    background-color: #c0e1b7;
+    font-size: inherit;
+}
+
+table tr#c_sora.error td input.cinput {
+    color: red;
+}
+
+table tr#J_sora td#fdiff,
+table tr#c_sora td#sumdiff {
+    text-align: center;
+    font-size: 16px;
+}
+
+table tr#J_sora td#fdiff.diff,
+table tr#c_sora td#sumdiff.sdiff {
+    border-radius: 5px;
+    border: 3px solid red
+}
+
+table thead tr th.cindh,
+table thead tr th.cdbindh {
     border: 1px solid #aaa;
     background-color: #dde9f3;
     padding: 0 5px;
@@ -604,4 +647,19 @@ table thead tr th.cindh {
 table thead tr th.cindh.cindred {
     border: 1px solid #ea8585;
     box-shadow: 0px 0px 10px 3px #eea8a8;
+}
+
+table thead tr th.cdbindh.cindred {
+    border: 1px solid #2eae1b;
+    box-shadow: 0px 0px 10px 3px #87d5a1;
+}
+
+#c_index.statactive {
+    box-shadow: 0px 0px 10px 3px #dd9790;
+    background-color: #f4eaea;
+}
+
+#c_indexstat.statactive {
+    box-shadow: 0px 0px 10px 3px #8cc168;
+    background-color: #cbf7b7;
 }
