@@ -97,6 +97,10 @@ var lastindex = [
     []
 ];
 var autoindex = false;
+var statmode = false;
+var cStore = {};
+var cStore_active = [];
+var statby = "length";
 
 function setMode(t) {
     mode = t.value;
@@ -2387,13 +2391,10 @@ function zetaltxp(sv, n, ism) {
     let cshtml = "";
     let koz = "";
     var outelem = document.querySelector("#ideout2 .sagecell_sessionOutput .mtext"); //NETEN EZ KELL
-    //var outelem = document.querySelector("#ideout2 .sagecell_sessionOutput");
     if (ism)
         cshtml = "<sup>*</sup>"
     if (outelem) {
-        //var Zv = outelem.innerText.split("=")[1].replace(/\s/, '');
-        //var Zv = outelem.innerText.replace(/\s/, ''); 
-        //Zv = outelem.innerText; // NETEN EZ KELL
+
         var Zv = szamkiszedes();
         if (Zv.startsWith("gp")) {
             setfigy("A PARI / GP nem tudta a bemenetet kiszámítani.", "figyZ");
@@ -3113,10 +3114,6 @@ function setReduced(elem) {
     cJClear();
 };
 
-/* function setFustRun(elem) {
-    fastrun = elem.checked;
-};
- */
 function setInsertOnSelect(elem) {
     insertonselect = elem.checked;
 };
@@ -3722,7 +3719,6 @@ function cegyutth() {
         sum = "(" + c_sor.toString() + ") + ";
     else
         sum += "&lowast;(" + c_sor.toString() + ") + ";
-    //sum += "*(" + c_sor.toString() + ") + ";
     return sum;
 };
 
@@ -4555,18 +4551,65 @@ function derivInit(n) {
 function cJClear() {
     const elem = document.getElementById("cwithJ");
     const elem1 = document.getElementById("c_index");
+    const elem2 = document.getElementById("c_indexstat");
     elem.innerHTML = "";
-    elem1.innerHTML = "";
+    elem1.innerHTML = "Index";
+    elem2.innerHTML = "Index statisztika";
 };
 
 function setAutoIndex(elem) {
     autoindex = elem.checked;
-}
+};
 
+function setStatByVal(elem) {
+    if (elem.checked) {
+        statby = "value";
+    } else {
+        statby = "length";
+    };
+    if (autoindex)
+        makeShIndex();
+    else {
+        const target = document.getElementById("c_index");
+        const target2 = document.getElementById("c_indexstat");
+        var txt = "érték"
+        if (statby == "length")
+            txt = "méret"
+        target2.innerHTML = "Index statisztika";
+        target.innerHTML = "<b>A feladathoz nins <b style='text-decoration:underline;'>" + txt + "</b> szerinti index</b>.<br>A \"Make Index\" gombra kattintva készíthet indexet. Ha az \"autoindex\" jelölőnégyzetet kipipálja, akkor minden feladathoz automatikusan készül index.";
+    };
+};
+
+function setStatMode(id) {
+    if (id == "c_indexstat")
+        statmode = true;
+    else
+        statmode = false;
+    $(".statactive").removeClass("statactive");
+    $("#" + id).addClass("statactive");
+    if (statmode) {
+        $('#J_sora').removeClass("active");
+        $('#c_sora').addClass("active");
+        $(".lepteto").css('background-color', '#cbf7b7')
+        const cindex = _.findIndex(cStore_active, y => _.isEqual(y, cJ_c));
+        const m = cStore_active.length;
+        setKijelzo(cindex + 1, m);
+
+    } else {
+        $('#J_sora').addClass("active");
+        $('#c_sora').removeClass("active");
+        $(".lepteto").css('background-color', '#eccccc')
+        const nn = cJ_it.length;
+        const cv = digit2set(cJ_J);
+        var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv));
+        setKijelzo(indx + 1, nn);
+        cindredclass(indx);
+    };
+};
 
 function drawBinomial(n, k) {
     return "<span style='display:inline-block;border-left: 2px solid;border-right: 2px solid;border-radius: 30%;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td>" + n + "</td></tr><tr><td>" + k + "</td></tr></table></span>";
-}
+};
 
 function abcJ(a, b, c, J) {
     const n = J.length;
@@ -4603,23 +4646,33 @@ function drawShuffle(a, b, c, J) {
     const sumdiff = sumab - sumc;
     var col = "";
     var fdiff = "";
+    var fdiffcls = "";
+    var sdiffcls = "";
+    var clsJ = "";
+    var clsC = "";
     var binvec = [];
 
-    if (diff !== 0) {
-        col = "#ff0000aa";
+    if (diff != 0) {
+        col = "#00000077";
+        fdiffcls = "class='diff'";
+        clsJ = "error";
         fdiff = diff;
         if (fdiff > 0)
             fdiff = "+" + fdiff;
     };
     var fsumdiff = "";
-    if (sumdiff !== 0) {
-        col = "#ff0000aa";
+    if (sumdiff != 0) {
+        col = "#00000077";
+        sdiffcls = "class='sdiff'";
+        clsC = "error";
         fsumdiff = sumdiff;
         if (fsumdiff > 0)
             fsumdiff = "+" + fsumdiff;
     };
 
-    var tbl = "<table style='color:" + col + ";border-collapse:separate;border-spacing: 2px 5px;text-align:center;'><tr><td style='width:50px;'>J</td>";
+    if (!statmode)
+        clsJ += " active";
+    var tbl = "<table style='color:" + col + ";border-collapse:separate;border-spacing: 2px 5px;text-align:center;'><tr id='J_sora' class='" + clsJ + "'><td style='width:50px;' onclick=\"setStatMode('c_index');\">J</td>";
 
     for (var j = 0; j < n; j++) {
         tbl += "<td><span class='tgomb' onclick='updcJJ" + "(" + j + ")'>"
@@ -4628,11 +4681,14 @@ function drawShuffle(a, b, c, J) {
         else
             tbl += "&#x25CB;</span></td>";
     };
-    tbl += "<td>" + fdiff + "</td></tr><tr style='border-bottom:1px solid #777;'><td><b>c</b></td>";
+
+    if (statmode)
+        clsC += " active";
+    tbl += "<td id='fdiff' onclick=\"setStatMode('c_index');\" " + fdiffcls + ">" + fdiff + "</td></tr><tr id='c_sora' class='" + clsC + "' style='border-bottom:1px solid #777;'><td  onclick=\"setStatMode('c_indexstat');\"><b>c</b></td>";
     for (var j = 0; j < n; j++) {
-        tbl += "<td><input type='text' id='ci" + j + "'class='cinput' value='" + c[j] + "' onchange='updcJ(this," + j + ");'/></td>";
+        tbl += "<td><input type='text' id='ci" + j + "'class='cinput' onclick='toStatmode();' value='" + c[j] + "' onchange='updcJ(this," + j + ");'/></td>";
     };
-    tbl += "<td>" + fsumdiff + "</td></tr><tr><td><b>a|b</b></td>";
+    tbl += "<td id='sumdiff'  onclick=\"setStatMode('c_indexstat');\" " + sdiffcls + ">" + fsumdiff + "</td></tr><tr><td><b>a|b</b></td>";
     for (var j = 0; j < n; j++) {
         if (J[j] == 1)
             tbl += "<td style='text-decoration:underline;'>" + av[j], "</td>";
@@ -4672,8 +4728,19 @@ function drawShuffle(a, b, c, J) {
             tbl += "<td>" + binvec[j], "</td>";
     };
     var coeff = binvec.reduce((x, y) => x * y, 1);
-    tbl += "<td style='font-weight:800;'> = " + coeff + "</td></tr></table>";
+    tbl += "<td style='font-weight:800;min-width:50px;'> = " + coeff + "</td></tr></table>";
     elem.innerHTML = tbl;
+};
+
+function setKijelzo(l, n) {
+    var lk = document.getElementById("lepeskijelzo");
+    var lp = document.getElementById("lepesall");
+    if (isNaN(l))
+        lk.value = l;
+    else
+        lk.value = l * 1;
+
+    lp.innerHTML = "/ " + n * 1;
 };
 
 function initcInshuff() {
@@ -4700,22 +4767,23 @@ function initcInshuff() {
 
     drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
 
-    const lk = document.getElementById("lepeskijelzo");
-    const lp = document.getElementById("lepesall");
     const nn = cJ_it.length;
-    lk.value = 1;
-    lp.innerHTML = "/ " + nn;
-
+    setKijelzo(1, nn);
     const target = document.getElementById("c_index");
     var vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
-    if (vanindx)
+    if (vanindx) {
+        indexStat();
         updcJall(cJ_c);
-    else {
+    } else {
         if (autoindex)
             makeShIndex();
         target.innerHTML = "<b>A feladathoz még nem készült index</b>.<br>A \"Make Index\" gombra kattintva készíthet indexet. Ha az \"autoindex\" jelölőnégyzetet kipipálja, akkor minden feladathoz automatikusan készül index.";
-    }
-
+    };
+    setStatMode("c_index");
+    setTimeout(() => {
+        szinkronCJ();
+        szinkronTbl();
+    }, 100);
 };
 
 function formazIndex(v) {
@@ -4737,19 +4805,31 @@ function formazIndex(v) {
     f2 = "<td style='font-weight:800'>" + sum + "</td>" + f2 + "</tr>";
     f += f2;
     return f;
-}
+};
+
+function toStatmode() {
+    if (!statmode)
+        setStatMode("c_indexstat");
+};
 
 function updcJ(elem, j) {
     const cj = elem.value * 1;
-    cJ_c[j] = cj;
+    var cJ_c0 = [...cJ_c];
+    cJ_c0[j] = cj;
+    cJ_c = [...cJ_c0];
+    //cJ_c[j] = cj; // ez érthetetlen átírás
     drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
     const target = document.getElementById("c_index");
-    var indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c));
+    const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c));
     if (indx > -1) {
         target.innerHTML = formazIndex(cJIndex[indx][1]);
     } else {
         target.innerHTML = "<b>(" + cJ_c.toString() + ")</b> nem szerepel <b>(" + cJ_a.toString() + ")</b><span style='margin:0 3px;font-size:160%;line-height:0.4;'>⧢</span><b>(" + cJ_b.toString() + ")</b>-ben";
     };
+    setTimeout(() => {
+        szinkronCJ();
+        szinkronTbl();
+    }, 100)
 };
 
 function updcJall(v) {
@@ -4761,30 +4841,30 @@ function updcJall(v) {
         if (indx > -1) {
             target.innerHTML = formazIndex(cJIndex[indx][1]);
         } else {
-            target.innerHTML = "";
+            target.innerHTML = "Index";
         };
         cindredclass(indx);
+        //cdbindredclass(indx);
     }, 100);
 };
 
 function updcJJ(j) {
+    if (statmode)
+        setStatMode("c_index");
     var jedik = cJ_J[j];
     cJ_J[j] = (jedik + 1) % 2;
     drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
 
     const nn = cJ_it.length;
     const cv = digit2set(cJ_J);
-    var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv));
-    const lk = document.getElementById("lepeskijelzo");
-    const lp = document.getElementById("lepesall");
-    if (indx == -1) {
-        lk.value = "☹";
-        lp.innerHTML = "/ " + nn;
+    var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv)) * 1;
+    if (indx == -1 || isNaN(indx)) {
+        setKijelzo("☹", nn);
     } else {
-        lk.value = (indx + 1);
-        lp.innerHTML = "/ " + nn;
+        setKijelzo(indx + 1, nn);
     };
     cindredclass(indx);
+    szinkronTbl();
 };
 
 function set2digit(v, n) {
@@ -4811,57 +4891,78 @@ function cindredclass(indx) {
 };
 
 function leptet(b) {
-    const lk = document.getElementById("lepeskijelzo");
-    const lp = document.getElementById("lepesall");
-    const n = cJ_J.length;
-    const nn = cJ_it.length;
-    const cv = digit2set(cJ_J);
-    var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv));
-    if (b) {
-        if (indx == 0)
-            indx = nn - 1;
-        else
-            indx -= 1;
+    if (statmode) {
+        document.getSelection().empty();
+        var indx = document.getElementById("lepeskijelzo").value * 1;
+        const nn = cStore_active.length;
+        if (b) {
+            if (indx == 1)
+                indx = nn;
+            else
+                indx -= 1;
+        } else {
+            if (indx == (nn))
+                indx = 1;
+            else
+                indx += 1;
+        };
+        setcINactive(indx);
     } else {
-        if (indx == (nn - 1))
-            indx = 0;
-        else
-            indx += 1;
-    };
-    const back = cJ_it[indx];
-    if (back != undefined) {
-        cJ_J = set2digit(back, n);
-        drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
-        lk.value = (indx + 1);
-        lp.innerHTML = "/ " + nn;
-        cindredclass(indx);
+        const n = cJ_J.length;
+        const nn = cJ_it.length;
+        const cv = digit2set(cJ_J);
+        var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv));
+        if (b) {
+            if (indx == 0)
+                indx = nn - 1;
+            else
+                indx -= 1;
+        } else {
+            if (indx == (nn - 1))
+                indx = 0;
+            else
+                indx += 1;
+        };
+        const back = cJ_it[indx];
+        if (back != undefined) {
+            cJ_J = set2digit(back, n);
+            drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+            setKijelzo(indx + 1, nn);
+            cindredclass(indx);
+        }
     }
+    szinkronTbl();
 };
 
 function ugrik0(indx) {
-    indx = indx * 1 - 1;
-    const lk = document.getElementById("lepeskijelzo");
-    const lp = document.getElementById("lepesall");
-    const n = cJ_J.length;
-    const nn = cJ_it.length;
-    if (indx > -1 && indx < nn) {
-        const back = cJ_it[indx];
-        if (back != undefined) {
-            cJ_J = set2digit(back, n);
-            drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
-            lk.value = (indx * 1 + 1);
-            lp.innerHTML = "/ " + nn;
-        };
+    if (statmode) {
+        const nn = cStore_active.length;
+        if (indx > 0 && indx < nn + 1) {
+            setcINactive(indx);
+        } else {
+            setKijelzo("☹", nn);
+        }
+        cdbindredclass(indx);
     } else {
-        lk.value = "☹";
-        lp.innerHTML = "/ " + nn;
+        indx = indx * 1 - 1;
+        const n = cJ_J.length;
+        const nn = cJ_it.length;
+        if (indx > -1 && indx < nn) {
+            const back = cJ_it[indx];
+            if (back != undefined) {
+                cJ_J = set2digit(back, n);
+                drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+                setKijelzo(indx * 1 + 1, nn);
+            };
+        } else {
+            setKijelzo("☹", nn);
+        }
+        cindredclass(indx);
     }
-    cindredclass(indx);
+    szinkronTbl();
 };
 
 function ugrik(indx) {
-    const lk = document.getElementById("lepeskijelzo");
-    const lp = document.getElementById("lepesall");
     const n = cJ_J.length;
     const nn = cJ_it.length;
     if (indx > -1 && indx < nn) {
@@ -4869,14 +4970,13 @@ function ugrik(indx) {
         if (back != undefined) {
             cJ_J = set2digit(back, n);
             drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
-            lk.value = (indx * 1 + 1);
-            lp.innerHTML = "/ " + nn;
+            setKijelzo(indx * 1 + 1, nn);
         };
     } else {
-        lk.value = "☹";
-        lp.innerHTML = "/ " + nn;
+        setKijelzo("☹", nn);
     };
     cindredclass(indx);
+    szinkronTbl();
 };
 
 // Make Index
@@ -4910,11 +5010,66 @@ function eshuffIndex() {
     };
 };
 
+function szinkronTbl() {
+    const e = document.getElementById("fdiff");
+    const el = document.getElementById("sumdiff");
+    const n = cJ_c.length;
+    const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c))
+    if (indx > -1 && nnn !== undefined && n == nnn) {
+        var on = 0;
+        if (statby == "length") {
+            on = cJIndex[indx][1].length;
+        } else {
+            on = _.size(_.groupBy(cJIndex[indx][1].map(y => y[1])));
+        }
+        const cStore_act = cStore[on];
+
+
+        const cindex = _.findIndex(cStore_act, y => _.isEqual(y, cJ_c)) * 1;
+        if (cindex > -1)
+            el.innerHTML = cindex + 1;
+        else
+            el.innerHTML = "☹";
+        var setJ = digit2set(cJ_J)
+        var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
+        if (indx > -1 && !e.classList.contains("diff"))
+            e.innerHTML = indx1 * 1 + 1;
+    };
+};
+
+function szinkronCJ() {
+    const n = cJ_c.length;
+    const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c))
+    if (indx > -1 && nnn !== undefined && n == nnn) {
+        var on = 0;
+        if (statby == "length") {
+            on = cJIndex[indx][1].length;
+        } else {
+            on = _.size(_.groupBy(cJIndex[indx][1].map(y => y[1])));
+        }
+        const cStore_act = cStore[on];
+        cdbindredclass(on - 1);
+
+        const cindex = _.findIndex(cStore_act, y => _.isEqual(y, cJ_c)) * 1;
+        const m = cStore_act.length;
+        if (statmode)
+            setKijelzo(cindex + 1, m);
+        var setJ = digit2set(cJ_J)
+        var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
+        cindredclass(indx1)
+    };
+};
+
 function makeShIndex() {
     var vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
-    if (vanindx)
+    if (vanindx) {
+        indexStat();
         updcJall(cJ_c);
-    else {
+        setTimeout(() => {
+            szinkronCJ();
+            szinkronTbl();
+        }, 100)
+    } else {
         a_sor = kiszed_sh("avg");
         b_sor = kiszed_sh("bvg");
         if (reducedv && a_sor !== undefined && b_sor != undefined) {
@@ -4929,6 +5084,7 @@ function makeShIndex() {
         else if (a_sor.length == 0)
             sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
         else {
+            cJIndex = [];
             sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
             kk = a_sor.length;
             nnn = kk + b_sor.length;
@@ -4939,13 +5095,21 @@ function makeShIndex() {
             };
             lastindex[0] = a_sor;
             lastindex[1] = b_sor;
-
+            indexStat();
+            setcact(1);
             vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
-            if (vanindx)
+            if (vanindx) {
+                indexStat()
                 updcJall(cJ_c);
+            };
         };
-    }
+    };
+    setTimeout(() => {
+        szinkronCJ();
+        szinkronTbl();
+    }, 100);
 };
+
 
 $(document).on('selectionchange', function() {
     const foo = document.querySelector('p#shout')
@@ -4956,6 +5120,28 @@ $(document).on('selectionchange', function() {
         const n = sv.length;
         const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], sv))
         if (indx > -1 && nnn !== undefined && n == nnn) {
+            var on = 0;
+            if (statby == "length") {
+                on = cJIndex[indx][1].length;
+                cStore_active = cStore[on];
+                cdbindredclass(on - 1);
+            } else {
+                on = _.size(_.groupBy(cJIndex[indx][1].map(y => y[1])));
+                cStore_active = cStore[on];
+                cdbindredclass(on - 1);
+            }
+
+            const cindex = _.findIndex(cStore_active, y => _.isEqual(y, sv));
+            const m = cStore_active.length;
+            if (statmode)
+                setKijelzo(cindex + 1, m);
+
+            var setJ = digit2set(cJ_J)
+            var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
+            setTimeout(() => {
+                cindredclass(indx1)
+            }, 150);
+
             updcJall(sv);
             setTimeout(() => {
                 for (i = 0; i < n; i++) {
@@ -4965,3 +5151,67 @@ $(document).on('selectionchange', function() {
         }
     }
 });
+
+function indexStat() {
+    indexGroupStat();
+    const target = document.getElementById("c_indexstat");
+    //if (statby == "length") {
+    /*  const st = _.countBy(cJIndex, y => y[1].length);
+     const h = Object.keys(st).map(y => y * 1);
+     const db = Object.values(st).map(y => y * 1); */
+
+    const h = Object.keys(cStore).map(y => y * 1);
+    const db = Object.values(cStore).map(y => y.length * 1);
+    var fej1 = "Hossz";
+    if (statby == "value")
+        fej1 = "Érték"
+    var txt = "<table style='text-align:center;order-collapse: separate;border-spacing: 10px 4px;font-size: 20px;'><thead><tr><th>" + fej1 + "</th>"
+    for (var i = 0; i < h.length; i++)
+        txt += "<th class='cdbindh' onclick='setcact(" + h[i] + ")'>" + h[i] + "</th>";
+    txt += "</tr></thead><tr><td>Darab</td>";
+    for (var j = 0; j < db.length; j++)
+        txt += "<td>" + db[j] + "</td>";
+    txt += "</tr></table>";
+    target.innerHTML = txt;
+};
+
+function indexGroupStat() {
+    if (statby == "value")
+        var st = _.groupBy(_.mapValues(cJIndex, z => [z[0], _.size(_.groupBy(z[1].map(y => y[1])))]), t => t[1]);
+    else
+        var st = _.groupBy(cJIndex.map(y => [y[0], y[1].length]), z => z[1]);
+    st = _.mapValues(st, function(value) { return value.map(y => y[0]); });
+    cStore = st;
+};
+
+function cdbindredclass(indx) {
+    $("th.cdbindh.cindred").removeClass("cindred");
+    var elem = $("th.cdbindh").filter(function() { return this.innerHTML == (indx + 1) });
+    if (elem != undefined)
+        elem.addClass("cindred");
+};
+
+function setcINactive(i) {
+    if (isNaN(i))
+        i = 1;
+    cJ_c = cStore_active[i - 1];
+    if (cJ_c) {
+        drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+        const target = document.getElementById("c_index");
+        var indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c));
+        if (indx > -1) {
+            target.innerHTML = formazIndex(cJIndex[indx][1]);
+            setKijelzo(i, cStore_active.length)
+        } else {
+            target.innerHTML = "Index";
+        };
+    } else
+        return;
+}
+
+function setcact(i) {
+    cStore_active = cStore[i];
+    setcINactive(1);
+    cdbindredclass(i - 1);
+    szinkronTbl();
+};
