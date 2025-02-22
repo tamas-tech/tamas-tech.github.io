@@ -5096,7 +5096,8 @@ function makeShIndex() {
             lastindex[0] = a_sor;
             lastindex[1] = b_sor;
             indexStat();
-            setcact(1);
+            const first = Object.keys(cStore)[0];
+            setcact(first);
             vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
             if (vanindx) {
                 indexStat()
@@ -5211,7 +5212,8 @@ function setcINactive(i) {
 
 function setcact(i) {
     cStore_active = cStore[i];
-    setcINactive(1);
+    const first = Object.keys(cStore_active)[0] + 1;
+    setcINactive(first);
     cdbindredclass(i - 1);
     szinkronTbl();
 };
