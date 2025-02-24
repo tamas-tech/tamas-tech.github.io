@@ -481,7 +481,7 @@
     </div>
 
     <div class="keret of even" id="k9" style="padding-bottom:40px;margin-bottom:0;">
-        <b><big class="sorszam">9.</big></b>
+        <div style="font-size: 18px;font-weight: 600; margin-bottom: 10px;"> <b><big class="sorszam">9.</big></b> Shuffle product of two multisets: <b>m</b><sub>1</sub><span style="margin:0 3px;">&#x29E2;</span><b>m</b><sub>2</sub></div>
         <fieldset style="border:1px solid #ccc;border-radius:3px;">
             <legend>Please set the multisets:</legend>
             <table style="margin-left:10px;font-family: Times New Roman;border-spacing: 2px 10px;">
@@ -545,7 +545,47 @@
     <div id="multihelpbar" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
         <iframe name="helpframe" width="99%" height="100%" src="../docs/shuffle.pdf" style="width:99%;height:100vh;border:none;"></iframe>
     </div>
-     <div class="keret of odd" id="k10" style="padding-bottom:40px;margin-bottom:0;">
+
+    <div class="keret of odd" id="k10" style="padding-bottom:40px;margin-bottom:10px;">
+        <div style="font-size: 18px;font-weight: 600; margin-bottom: 10px;"> <b><big class="sorszam">10.</big></b> Shuffle product of three vectors: <b>a</b><span style="margin:0 3px;">&#x29E2;</span><b>b</b><span style="margin:0 3px;">&#x29E2;</span><b>c</b></div>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="width:42px;display:inline-block;"><b style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="av3" value="1,1" oninput="agSumRefresh();" name="a">
+            <big style="margin-left:2px;">∑</big>|a| = <span id="as3">5</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="width:42px;display:inline-block;"><b style="padding: 2px 7px;">b</b> = </label>
+            <input class="inpvec" type="text" id="bv3" value="1,2" oninput="bgSumRefresh();" name="b">
+            <big style="margin-left:2px;"> ∑</big>|b| = <span id="bs3">5</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="width:42px;display:inline-block;"><b  style="padding: 2px 7px;">c</b> = </label>
+            <input class="inpvec" type="text" id="cv3" value="2,1" oninput="bgSumRefresh()" name="c">
+            <big style="margin-left:2px;"> ∑</big>|c| = <span id="cs3">5</span>
+        </div>
+
+        <div id="searcharea3">
+            <div id="mycell4" style="margin-top:6px;" width="100">
+                <script type="text/x-sage"></script>
+            </div>
+            <div style="padding: 10px;outline: 2px solid #c0c9d0;;outline-offset: -6px;background-color: #e7fdf5;;">
+                <button id="okbtn4" onclick="sagesh3();" class="showpre1" title="Insert code into editor">SAGE</button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="out4Clear();" title="Clear output">Clear</button>
+                <label for="setoutputfont4">&#128474;</label>
+                <input id="outfont-slider4" oninput="setOutputFont2(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont4" />
+            </div>
+            <div class="outputoutdiv">
+                <div id="ideout4"></div>
+            </div>
+            <div style="margin-top:2px;padding:5px;">
+                <button id="translbtn" onclick="sageshtransf3();" class="showpre1" title="Insert code into editor">Transform</button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#sagetransf3');" title="Clear output">Clear</button>
+                <label>Search for vector <input id="query3" type="text"/></label>
+            </div>
+            <p id="sagetransf3" class="searchit" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;"></p>
+        </div>
+    </div> 
+     <div class="keret of odd" id="k11" style="padding-bottom:40px;margin-bottom:0;">
         <b><big class="sorszam">10.</big></b>
         <div style="margin-left:2px;padding:3px;">
             <label for="N"><b style="padding: 2px 7px;">N</b> =  </label>
