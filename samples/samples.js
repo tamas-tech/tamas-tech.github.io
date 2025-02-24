@@ -83,9 +83,25 @@ var teststr4 = "6∗(1,2,1,2) + 24∗(1,2,2,1) + 36∗(1,2,3,0) + 54∗(1,3,1,1)
 
 
 var deriv_table = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
+var deriv_tableinS = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
 var deriv_tableA = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
 var deriv_tableB = [1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0];
 var derivab = false;
+var cJ_a = [];
+var cJ_b = [];
+var cJ_c = [];
+var cJ_J = [];
+var cJ_it = [];
+var cJIndex = [];
+var lastindex = [
+    [],
+    []
+];
+var autoindex = false;
+var statmode = false;
+var cStore = {};
+var cStore_active = [];
+var statby = "length";
 
 function setMode(t) {
     mode = t.value;
@@ -2376,13 +2392,10 @@ function zetaltxp(sv, n, ism) {
     let cshtml = "";
     let koz = "";
     var outelem = document.querySelector("#ideout2 .sagecell_sessionOutput .mtext"); //NETEN EZ KELL
-    //var outelem = document.querySelector("#ideout2 .sagecell_sessionOutput");
     if (ism)
         cshtml = "<sup>*</sup>"
     if (outelem) {
-        //var Zv = outelem.innerText.split("=")[1].replace(/\s/, '');
-        //var Zv = outelem.innerText.replace(/\s/, ''); 
-        //Zv = outelem.innerText; // NETEN EZ KELL
+
         var Zv = szamkiszedes();
         if (Zv.startsWith("gp")) {
             setfigy("A PARI / GP nem tudta a bemenetet kiszámítani.", "figyZ");
@@ -2991,6 +3004,7 @@ function setgenKeplet() {
     setTimeout(() => {
         elem.style.visibility = "visible";
     }, 200);
+    cJClear();
 };
 
 function setaMode(elem) {
@@ -3098,12 +3112,9 @@ setoutMaxsor = function() {
 
 function setReduced(elem) {
     reducedv = elem.checked;
+    cJClear();
 };
 
-/* function setFustRun(elem) {
-    fastrun = elem.checked;
-};
- */
 function setInsertOnSelect(elem) {
     insertonselect = elem.checked;
 };
@@ -3547,7 +3558,8 @@ $(document).on('mouseup', '#genout tr td.asor,#genout tr td.bsor', function() {
             else
                 return;
         }
-    } else return;
+    } else
+        return;
 });
 
 function getElementsInSelection() {
@@ -3574,6 +3586,12 @@ function shClear() {
 
 function out3Clear() {
     const elem = document.querySelector("#ideout3 .sagecell_output_elements pre");
+    if (elem)
+        elem.innerHTML = "";
+};
+
+function out4Clear() {
+    const elem = document.querySelector("#ideout4 .sagecell_output_elements pre");
     if (elem)
         elem.innerHTML = "";
 };
@@ -3646,6 +3664,25 @@ function comp0(n, k) {
     return allcomp0;
 };
 
+function kozte(v, a, f) {
+    var k = true;
+    const n = v.length;
+    for (var i = 0; i < n; i++) {
+        k = k && (a[i] - 1 < v[i]) && v[i] < (f[i] + 1);
+        if (!k)
+            return k;
+    }
+    return k;
+}
+
+function compaf(n, k, a, f) {
+    var all = comp0(n, k);
+    all = all.filter(y => kozte(y, a, f));
+    return all;
+}
+
+////////////////
+
 function Choose(n, k) {
     var w = [];
     let cb = Combnr(n, k, false);
@@ -3708,7 +3745,6 @@ function cegyutth() {
         sum = "(" + c_sor.toString() + ") + ";
     else
         sum += "&lowast;(" + c_sor.toString() + ") + ";
-    //sum += "*(" + c_sor.toString() + ") + ";
     return sum;
 };
 
@@ -3720,7 +3756,6 @@ function eshuff() {
     const maxab = maxa + maxb + 1;
     var cek = comp0(sumab, nnn);
     var n1 = cek.length;
-    //if (fastrun)
     cek = cek.filter(y => y.every(v => v < maxab));
     var n2 = cek.length;
     javitas = (n1 / n2).toFixed(2);
@@ -3842,7 +3877,7 @@ function str2vec(str) {
 function sagesh() {
     var a = kiszed_sh("avg");
     var b = kiszed_sh("bvg");
-    if (reducedv && a_sor !== undefined && b_sor != undefined) {
+    if (reducedv && a !== undefined && b != undefined) {
         a = a.map(y => y - 1);
         b = b.map(y => y - 1);
     };
@@ -3895,13 +3930,135 @@ function sageshtransf() {
                         str += " + " + value + "&lowast;(" + str2vec(key) + ")";
                     sum++;
                 });
-                str = "(" + a.toString() + " <span style='font-size:28px;'>&#x29E2;</span> " + b.toString() + ") = " + str.slice(3);
+                str = "(" + a.toString() + ") <span style='font-size:28px;font-size:800;'>&#x29E2;</span> (" + b.toString() + ") = " + str.slice(3);
             } else
                 str = "HIBA";
         }
     };
     elem.innerHTML = "<div class='meret'>A szorzat <b>" + sum + "</b> kompozíció összege.</div>" + str;
 };
+
+// Shuffle of 3 vectors
+
+function sagesh3() {
+    var a = kiszed_sh("av3");
+    var b = kiszed_sh("bv3");
+    var c = kiszed_sh("cv3");
+    var txt = "show('HIBA');";
+    if (a != undefined && b != undefined && b != undefined && !a.some(v => v < 0) && !b.some(v => v < 0) && !c.some(v => v < 0)) {
+        const astr = convertstr01(a);
+        const bstr = convertstr01(b);
+        const cstr = convertstr01(c);
+        var txt = 'from sage.combinat.shuffle import ShuffleProduct;\nfrom collections import Counter;\nL=list(ShuffleProduct(\"' + astr + '\",\"' + bstr + '\",element_constructor="".join));\nM = flatten([list(ShuffleProduct(x,\"' + cstr + '\",element_constructor="".join)) for x in L])\nLL= Counter(M);LL;';
+    };
+    $('#mycell4 .sagecell_editor textarea.sagecell_commands').val(txt);
+    $('#mycell4 .sagecell_input button.sagecell_evalButton').click();
+    setOutputFont2($('#outfont-slider4').val());
+};
+
+function sageshtransf3() {
+    const elem = document.getElementById("sagetransf3");
+    var str = "";
+    var sum = 1;
+    var a = kiszed_sh("av3");
+    var b = kiszed_sh("bv3");
+    var c = kiszed_sh("cv3");
+    if (reducedv) {
+        a = a.map(y => y - 1);
+        b = b.map(y => y - 1);
+        c = c.map(y => y - 1);
+    };
+    if (a == undefined || b == undefined || c == undefined)
+        str = "HIBA";
+    else if (a.length + b.length + c.length == 0)
+        str = "( )&#x29E2;( )&#x29E2;( ) = ( )";
+    else {
+        const melem = document.querySelector("#ideout4 .sagecell_output_elements .sagecell_messages div");
+        if (melem == null)
+            str = "Előbb számítsa ki a sageMath kimenetet a 'SAGE' gombra kattintva!"
+        else {
+            var back = melem.innerHTML.match(/Counter\(.+\)/);
+            if (back) {
+                back = back[0].slice(8, -1).replace(/'/g, '"');
+                var obj = JSON.parse(back);
+                sum = 0;
+                _.forEach(obj, function(value, key) {
+                    if (value == 1)
+                        str += " + (" + str2vec(key) + ")";
+                    else
+                        str += " + " + value + "&lowast;(" + str2vec(key) + ")";
+                    sum++;
+                });
+                str = "(" + a.toString() + ") <span style='font-size:28px;font-size:800;'>&#x29E2;</span> (" + b.toString() + ") <span style='font-size:28px;font-size:800;'>&#x29E2;</span> (" + c.toString() + ") = " + str.slice(3);
+            } else
+                str = "HIBA";
+        }
+    };
+    elem.innerHTML = "<div class='meret'>A szorzat <b>" + sum + "</b> kompozíció összege.</div>" + str;
+};
+
+function setSearch33() {
+    const query = document.getElementById("query3");
+    const article = document.querySelector("#searcharea3");
+    const target = document.querySelector("#sagetransf3");
+    const treeWalker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
+    const allTextNodes = [];
+    let currentNode = treeWalker.nextNode();
+    while (currentNode) {
+        allTextNodes.push(currentNode);
+        currentNode = treeWalker.nextNode();
+    }
+
+    if (!CSS.highlights) {
+        const dvan = document.getElementById("nohighlight")
+        if (dvan == undefined) {
+            let d = document.createElement('div');
+            d.style.color = "#ff2211";
+            d.id = "nohighlight";
+            target.prepend(d);
+            d.prepend("CSS Custom Highlight API not supported.");
+        }
+        return;
+    }
+
+    CSS.highlights.clear();
+
+    const str = query.value.trim().toLowerCase();
+    if (!str) {
+        return;
+    }
+
+    const ranges = allTextNodes
+        .map((el) => {
+            return { el, text: el.textContent.toLowerCase() };
+        })
+        .map(({ text, el }) => {
+            const indices = [];
+            let startPos = 0;
+            while (startPos < text.length) {
+                const index = text.indexOf(str, startPos);
+                if (index === -1) break;
+                indices.push(index);
+                startPos = index + str.length;
+            }
+
+            return indices.map((index) => {
+                const range = new Range();
+                range.setStart(el, index);
+                range.setEnd(el, index + str.length);
+                return range;
+            });
+        });
+
+    const searchResultsHighlight = new Highlight(...ranges.flat());
+    CSS.highlights.set("search-results", searchResultsHighlight);
+};
+
+$(document).on('input focus', '#query3', function() {
+    setSearch33();
+});
+
+/////
 
 function setSearch() {
     const query = document.getElementById("query2");
@@ -4420,11 +4577,11 @@ function derivKep(d) {
     txt += "</th></tr></thead>";
     for (var i = 0; i < n; i++) {
         if (i == 0)
-            txt += "<tr style='cursor:pointer;color:red;'><td>" + i + ".</td>" + sorKep0(d[i]);
+            txt += "<tr style='cursor:pointer;color:red;'><td>A<sup>" + i + "</sup></td>" + sorKep0(d[i]);
         else if (i == n - 1)
-            txt += "<tr class='derivlast'><td>" + i + ".</td>" + sorKep(d[i]);
+            txt += "<tr class='derivlast'><td>A<sup>" + i + "</sup></td>" + sorKep(d[i]);
         else
-            txt += "<tr><td>" + i + ".</td>" + sorKep(d[i]);
+            txt += "<tr><td>A<sup>" + i + "</sup></td>" + sorKep(d[i]);
     };
     txt += "</table>";
     return txt;
@@ -4464,7 +4621,7 @@ function szimDiff(A, B) {
         else
             sd.push(0);
     return sd;
-}
+};
 
 function tdata(j) {
     var jedik = deriv_tableA[j];
@@ -4535,4 +4692,838 @@ function derivInit(n) {
         derivInitAB(n);
     else
         derivInitk(n);
+};
+
+//  Shuffle calculation
+
+function cJClear() {
+    const elem = document.getElementById("cwithJ");
+    const elem1 = document.getElementById("c_index");
+    const elem2 = document.getElementById("c_indexstat");
+    elem.innerHTML = "";
+    elem1.innerHTML = "Index";
+    elem2.innerHTML = "Index statisztika";
+};
+
+function setAutoIndex(elem) {
+    autoindex = elem.checked;
+};
+
+function setStatByVal(elem) {
+    if (elem.checked) {
+        statby = "value";
+    } else {
+        statby = "length";
+    };
+    if (autoindex)
+        makeShIndex();
+    else {
+        const target = document.getElementById("c_index");
+        const target2 = document.getElementById("c_indexstat");
+        var txt = "érték"
+        if (statby == "length")
+            txt = "méret"
+        target2.innerHTML = "Index statisztika";
+        target.innerHTML = "<b>A feladathoz nins <b style='text-decoration:underline;'>" + txt + "</b> szerinti index</b>.<br>A \"Make Index\" gombra kattintva készíthet indexet. Ha az \"autoindex\" jelölőnégyzetet kipipálja, akkor minden feladathoz automatikusan készül index.";
+    };
+};
+
+function setStatMode(id) {
+    if (id == "c_indexstat")
+        statmode = true;
+    else
+        statmode = false;
+    $(".statactive").removeClass("statactive");
+    $("#" + id).addClass("statactive");
+    if (statmode) {
+        $('#J_sora').removeClass("active");
+        $('#c_sora').addClass("active");
+        $(".lepteto").css('background-color', '#cbf7b7')
+        const cindex = _.findIndex(cStore_active, y => _.isEqual(y, cJ_c));
+        const m = cStore_active.length;
+        setKijelzo(cindex + 1, m);
+
+    } else {
+        $('#J_sora').addClass("active");
+        $('#c_sora').removeClass("active");
+        $(".lepteto").css('background-color', '#eccccc')
+        const nn = cJ_it.length;
+        const cv = digit2set(cJ_J);
+        var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv));
+        setKijelzo(indx + 1, nn);
+        cindredclass(indx);
+    };
+};
+
+function drawBinomial(n, k) {
+    return "<span style='display:inline-block;border-left: 2px solid;border-right: 2px solid;border-radius: 30%;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td>" + n + "</td></tr><tr><td>" + k + "</td></tr></table></span>";
+};
+
+function abcJ(a, b, c, J) {
+    const n = J.length;
+    const cJ = J.map(y => (y + 1) % 2);
+    const k = kum(J);
+    const ck = kum(cJ);
+    var av = [];
+    var bv = [];
+    var cab = [];
+    for (i = 0; i < n; i++) {
+        av.push(J[i] * (a[k[i] - 1] || 0));
+        bv.push(cJ[i] * (b[ck[i] - 1] || 0));
+        cab.push(c[i] - av[i] - bv[i]);
+    };
+    var kcab = kum(cab);
+    return [av, bv, cab, kcab];
+};
+
+function drawShuffle(a, b, c, J) {
+    const elem = document.getElementById("cwithJ");
+    const f = abcJ(a, b, c, J);
+    const n = J.length;
+    const dJ = derivSet(J);
+    const av = f[0];
+    const bv = f[1];
+    const cab = f[2];
+    const kcab = f[3];
+
+    const cna = cJ_J.reduce((x, y) => x + y, 0);
+    const na = cJ_a.length;
+    const sumc = c.reduce((x, y) => x + y, 0);
+    const sumab = a.reduce((x, y) => x + y, 0) + b.reduce((x, y) => x + y, 0);
+    const diff = na - cna;
+    const sumdiff = sumab - sumc;
+    var col = "";
+    var fdiff = "";
+    var fdiffcls = "";
+    var sdiffcls = "";
+    var clsJ = "";
+    var clsC = "";
+    var binvec = [];
+
+    if (diff != 0) {
+        col = "#00000077";
+        fdiffcls = "class='diff'";
+        clsJ = "error";
+        fdiff = diff;
+        if (fdiff > 0)
+            fdiff = "+" + fdiff;
+    };
+    var fsumdiff = "";
+    if (sumdiff != 0) {
+        col = "#00000077";
+        sdiffcls = "class='sdiff'";
+        clsC = "error";
+        fsumdiff = sumdiff;
+        if (fsumdiff > 0)
+            fsumdiff = "+" + fsumdiff;
+    };
+
+    if (!statmode)
+        clsJ += " active";
+    var tbl = "<table style='color:" + col + ";border-collapse:separate;border-spacing: 2px 5px;text-align:center;'><tr id='J_sora' class='" + clsJ + "'><td style='width:50px;' onclick=\"setStatMode('c_index');\">J</td>";
+
+    for (var j = 0; j < n; j++) {
+        tbl += "<td><span class='tgomb' onclick='updcJJ" + "(" + j + ")'>"
+        if (J[j] == 1)
+            tbl += "&#x25CF;</span></td>";
+        else
+            tbl += "&#x25CB;</span></td>";
+    };
+
+    if (statmode)
+        clsC += " active";
+    tbl += "<td id='fdiff' onclick=\"setStatMode('c_index');\" " + fdiffcls + ">" + fdiff + "</td></tr><tr id='c_sora' class='" + clsC + "' style='border-bottom:1px solid #777;'><td  onclick=\"setStatMode('c_indexstat');\"><b>c</b></td>";
+    for (var j = 0; j < n; j++) {
+        tbl += "<td><input type='text' id='ci" + j + "'class='cinput' onclick='toStatmode();' value='" + c[j] + "' onchange='updcJ(this," + j + ");'/></td>";
+    };
+    tbl += "<td id='sumdiff'  onclick=\"setStatMode('c_indexstat');\" " + sdiffcls + ">" + fsumdiff + "</td></tr><tr><td><b>a|b</b></td>";
+    for (var j = 0; j < n; j++) {
+        if (J[j] == 1)
+            tbl += "<td style='text-decoration:underline;'>" + av[j], "</td>";
+        else
+            tbl += "<td>" + bv[j], "</td>";
+    };
+    tbl += "</tr><tr><td>Δκ</td>";
+    for (var j = 0; j < n; j++) {
+        if (dJ[j] == 1)
+            tbl += "<td style='background-color:#d1dfdd;border-radius: 4px;border: 1px solid #9bb8c1'>" + cab[j], "</td>";
+        else
+            tbl += "<td>" + cab[j], "</td>";
+    };
+    tbl += "</tr><tr><td>κ</td>";
+    for (var j = 0; j < n; j++) {
+        if (dJ[j] == 0)
+            tbl += "<td style='background-color:#d1dfdd;border-radius: 4px;border: 1px solid #9bb8c1'>" + kcab[j], "</td>";
+        else
+            tbl += "<td>" + kcab[j], "</td>";
+    };
+    tbl += "</tr><tr style='font-size:85%;'><td></td>";
+    for (var i = 0; i < n; i++) {
+        if (dJ[i] > 0) {
+            tbl += "<td>" + drawBinomial(c[i], cab[i]) + "</td>";
+            binvec[i] = binomial(c[i], cab[i]);
+        } else if (dJ[i] == 0) {
+            tbl += "<td>" + drawBinomial(c[i], kcab[i]) + "</td>";
+            binvec[i] = binomial(c[i], kcab[i]);
+        };
+    };
+    tbl += "</tr><tr><td>c(J)</td>";
+
+    for (var j = 0; j < n; j++) {
+        if (binvec[j] <= 0)
+            tbl += "<td style='border:1px solid red'>" + binvec[j], "</td>";
+        else
+            tbl += "<td>" + binvec[j], "</td>";
+    };
+    var coeff = binvec.reduce((x, y) => x * y, 1);
+    tbl += "<td style='font-weight:800;min-width:50px;'> = " + coeff + "</td></tr></table>";
+    elem.innerHTML = tbl;
+};
+
+function setKijelzo(l, n) {
+    var lk = document.getElementById("lepeskijelzo");
+    var lp = document.getElementById("lepesall");
+    if (isNaN(l))
+        lk.value = l;
+    else
+        lk.value = l * 1;
+
+    lp.innerHTML = "/ " + n * 1;
+};
+
+function initcInshuff() {
+    cJ_a = kiszed_sh("avg");
+    cJ_b = kiszed_sh("bvg");
+    if (reducedv && cJ_a !== undefined && cJ_b != undefined) {
+        cJ_a = cJ_a.map(y => y - 1);
+        cJ_b = cJ_b.map(y => y - 1);
+    };
+    const na = cJ_a.length;
+    const nb = cJ_b.length;
+    const n = na + nb;
+    cJ_it = Choose(n, na).map(y => _.reverse(y)).sort();
+    cJ_J = [];
+    cJ_c = [];
+    for (var i = 0; i < na; i++)
+        cJ_J.push(1);
+    for (var i = 0; i < nb; i++)
+        cJ_J.push(0);
+    for (var i = 0; i < na; i++)
+        cJ_c.push(cJ_a[i]);
+    for (var i = 0; i < nb; i++)
+        cJ_c.push(cJ_b[i]);
+
+    drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+
+    const nn = cJ_it.length;
+    setKijelzo(1, nn);
+    const target = document.getElementById("c_index");
+    var vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
+    if (vanindx) {
+        indexStat();
+        updcJall(cJ_c);
+    } else {
+        if (autoindex)
+            makeShIndex();
+        target.innerHTML = "<b>A feladathoz még nem készült index</b>.<br>A \"Make Index\" gombra kattintva készíthet indexet. Ha az \"autoindex\" jelölőnégyzetet kipipálja, akkor minden feladathoz automatikusan készül index.";
+    };
+    setStatMode("c_index");
+    setTimeout(() => {
+        szinkronCJ();
+        szinkronTbl();
+    }, 100);
+};
+
+function formazIndex(v) {
+    const n = v.length;
+    var sum = 0;
+    var f = "<table style='text-align:center;order-collapse: separate;border-spacing: 10px 4px;font-size: 20px;'><thead><tr><th style='padding-right:10px;'>(" + cJ_c.toString() + ")</th>";
+    var indx = 0;
+    for (var i = 0; i < n; i++) {
+        indx = v[i][0];
+        f += "<th class='cindh' onclick='ugrik(" + indx + ")'>" + (indx + 1) + "</th>";
+    };
+    f += "</tr></thead><tr>";
+    var f2 = "";
+    for (var j = 0; j < n; j++) {
+        var cj = v[j][1];
+        f2 += "<td  class='cindd'>" + cj + "</td>";
+        sum += cj;
+    };
+    f2 = "<td style='font-weight:800'>" + sum + "</td>" + f2 + "</tr>";
+    f += f2;
+    return f;
+};
+
+function toStatmode() {
+    if (!statmode)
+        setStatMode("c_indexstat");
+};
+
+function updcJ(elem, j) {
+    const cj = elem.value * 1;
+    var cJ_c0 = [...cJ_c];
+    cJ_c0[j] = cj;
+    cJ_c = [...cJ_c0];
+    //cJ_c[j] = cj; // ez érthetetlen átírás
+    drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+    const target = document.getElementById("c_index");
+    const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c));
+    if (indx > -1) {
+        target.innerHTML = formazIndex(cJIndex[indx][1]);
+    } else {
+        target.innerHTML = "<b>(" + cJ_c.toString() + ")</b> nem szerepel <b>(" + cJ_a.toString() + ")</b><span style='margin:0 3px;font-size:160%;line-height:0.4;'>⧢</span><b>(" + cJ_b.toString() + ")</b>-ben";
+    };
+    setTimeout(() => {
+        szinkronCJ();
+        szinkronTbl();
+    }, 100)
+};
+
+function updcJall(v) {
+    cJ_c = v;
+    drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+    const target = document.getElementById("c_index");
+    setTimeout(() => {
+        var indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c));
+        if (indx > -1) {
+            target.innerHTML = formazIndex(cJIndex[indx][1]);
+        } else {
+            target.innerHTML = "Index";
+        };
+        cindredclass(indx);
+        //cdbindredclass(indx);
+    }, 100);
+};
+
+function updcJJ(j) {
+    if (statmode)
+        setStatMode("c_index");
+    var jedik = cJ_J[j];
+    cJ_J[j] = (jedik + 1) % 2;
+    drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+
+    const nn = cJ_it.length;
+    const cv = digit2set(cJ_J);
+    var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv)) * 1;
+    if (indx == -1 || isNaN(indx)) {
+        setKijelzo("☹", nn);
+    } else {
+        setKijelzo(indx + 1, nn);
+    };
+    cindredclass(indx);
+    szinkronTbl();
+};
+
+function set2digit(v, n) {
+    var d = Array(n).fill(0);
+    for (let a of v)
+        d[a - 1] = 1;
+    return d;
+};
+
+function digit2set(d) {
+    var v = [];
+    const n = d.length;
+    for (var i = 0; i < n; i++)
+        if (d[i] > 0)
+            v.push(i + 1);
+    return v;
+}
+
+function cindredclass(indx) {
+    $("th.cindh.cindred").removeClass("cindred");
+    var elem = $("th.cindh").filter(function() { return this.innerHTML == (indx + 1) });
+    if (elem != undefined)
+        elem.addClass("cindred");
+};
+
+function leptet(b) {
+    if (statmode) {
+        document.getSelection().empty();
+        var indx = document.getElementById("lepeskijelzo").value * 1;
+        const nn = cStore_active.length;
+        if (b) {
+            if (indx == 1)
+                indx = nn;
+            else
+                indx -= 1;
+        } else {
+            if (indx == (nn))
+                indx = 1;
+            else
+                indx += 1;
+        };
+        setcINactive(indx);
+    } else {
+        const n = cJ_J.length;
+        const nn = cJ_it.length;
+        const cv = digit2set(cJ_J);
+        var indx = _.findIndex(cJ_it, y => _.isEqual(y, cv));
+        if (b) {
+            if (indx == 0)
+                indx = nn - 1;
+            else
+                indx -= 1;
+        } else {
+            if (indx == (nn - 1))
+                indx = 0;
+            else
+                indx += 1;
+        };
+        const back = cJ_it[indx];
+        if (back != undefined) {
+            cJ_J = set2digit(back, n);
+            drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+            setKijelzo(indx + 1, nn);
+            cindredclass(indx);
+        }
+    }
+    szinkronTbl();
+};
+
+function ugrik0(indx) {
+    if (statmode) {
+        const nn = cStore_active.length;
+        if (indx > 0 && indx < nn + 1) {
+            setcINactive(indx);
+        } else {
+            setKijelzo("☹", nn);
+        }
+        cdbindredclass(indx);
+    } else {
+        indx = indx * 1 - 1;
+        const n = cJ_J.length;
+        const nn = cJ_it.length;
+        if (indx > -1 && indx < nn) {
+            const back = cJ_it[indx];
+            if (back != undefined) {
+                cJ_J = set2digit(back, n);
+                drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+                setKijelzo(indx * 1 + 1, nn);
+            };
+        } else {
+            setKijelzo("☹", nn);
+        }
+        cindredclass(indx);
+    }
+    szinkronTbl();
+};
+
+function ugrik(indx) {
+    const n = cJ_J.length;
+    const nn = cJ_it.length;
+    if (indx > -1 && indx < nn) {
+        const back = cJ_it[indx];
+        if (back != undefined) {
+            cJ_J = set2digit(back, n);
+            drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+            setKijelzo(indx * 1 + 1, nn);
+        };
+    } else {
+        setKijelzo("☹", nn);
+    };
+    cindredclass(indx);
+    szinkronTbl();
+};
+
+// Make Index
+
+function cegyutthIndex(n) {
+    var sum = 0;
+    var cy = 0;
+    var cIk = [];
+    var y;
+    for (var i = 0; i < n; i++) {
+        y = cJ_it[i];
+        cy = komb(nnn, y);
+        sum += cy;
+        if (cy > 0)
+            cIk.push([i, cy]);
+    };
+    if (sum > 0)
+        cJIndex.push([c_sor, cIk])
+};
+
+function eshuffIndex() {
+    const n = binomial(nnn, a_sor.length);
+    const maxa = _.max(a_sor);
+    const maxb = _.max(b_sor);
+    const maxab = maxa + maxb + 1;
+    var cek = comp0(sumab, nnn);
+    cek = cek.filter(y => y.every(v => v < maxab));
+    for (let c of cek) {
+        c_sor = c;
+        cegyutthIndex(n);
+    };
+};
+
+function szinkronTbl() {
+    const e = document.getElementById("fdiff");
+    const el = document.getElementById("sumdiff");
+    const n = cJ_c.length;
+    const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c))
+    if (indx > -1 && nnn !== undefined && n == nnn) {
+        var on = 0;
+        if (statby == "length") {
+            on = cJIndex[indx][1].length;
+        } else {
+            on = _.size(_.groupBy(cJIndex[indx][1].map(y => y[1])));
+        }
+        const cStore_act = cStore[on];
+
+
+        const cindex = _.findIndex(cStore_act, y => _.isEqual(y, cJ_c)) * 1;
+        if (cindex > -1)
+            el.innerHTML = cindex + 1;
+        else
+            el.innerHTML = "☹";
+        var setJ = digit2set(cJ_J)
+        var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
+        if (indx > -1 && !e.classList.contains("diff"))
+            e.innerHTML = indx1 * 1 + 1;
+    };
+};
+
+function szinkronCJ() {
+    const n = cJ_c.length;
+    const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c))
+    if (indx > -1 && nnn !== undefined && n == nnn) {
+        var on = 0;
+        if (statby == "length") {
+            on = cJIndex[indx][1].length;
+        } else {
+            on = _.size(_.groupBy(cJIndex[indx][1].map(y => y[1])));
+        }
+        const cStore_act = cStore[on];
+        cdbindredclass(on - 1);
+
+        const cindex = _.findIndex(cStore_act, y => _.isEqual(y, cJ_c)) * 1;
+        const m = cStore_act.length;
+        if (statmode)
+            setKijelzo(cindex + 1, m);
+        var setJ = digit2set(cJ_J)
+        var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
+        cindredclass(indx1)
+    };
+};
+
+function makeShIndex() {
+    var vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
+    if (vanindx) {
+        indexStat();
+        updcJall(cJ_c);
+        setTimeout(() => {
+            szinkronCJ();
+            szinkronTbl();
+        }, 100)
+    } else {
+        a_sor = kiszed_sh("avg");
+        b_sor = kiszed_sh("bvg");
+        if (reducedv && a_sor !== undefined && b_sor != undefined) {
+            a_sor = a_sor.map(y => y - 1);
+            b_sor = b_sor.map(y => y - 1);
+        }
+        var meret;
+        if (a_sor == undefined || b_sor == undefined)
+            sh = "HIBA";
+        else if (a_sor.length + b_sor.length == 0)
+            sh = "( )&#x29E2;( ) = ( )";
+        else if (a_sor.length == 0)
+            sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
+        else {
+            cJIndex = [];
+            sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+            kk = a_sor.length;
+            nnn = kk + b_sor.length;
+            meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+            if (meret < 150000000) {
+                cJ_it = Choose(nnn, kk).map(y => _.reverse(y)).sort();
+                eshuffIndex();
+            };
+            lastindex[0] = a_sor;
+            lastindex[1] = b_sor;
+            indexStat();
+            const first = Object.keys(cStore)[0];
+            setcact(first);
+            vanindx = _.isEqual(cJ_a, lastindex[0]) && _.isEqual(cJ_b, lastindex[1]);
+            if (vanindx) {
+                indexStat()
+                updcJall(cJ_c);
+            };
+        };
+    };
+    setTimeout(() => {
+        szinkronCJ();
+        szinkronTbl();
+    }, 100);
+};
+
+
+$(document).on('selectionchange', function() {
+    const foo = document.querySelector('p#shout')
+    var isin = window.getSelection().containsNode(foo, true);
+    var selection = window.getSelection().toString();
+    if (isin) {
+        var sv = selection.split(",").map(y => y * 1);
+        const n = sv.length;
+        const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], sv))
+        if (indx > -1 && nnn !== undefined && n == nnn) {
+            var on = 0;
+            if (statby == "length") {
+                on = cJIndex[indx][1].length;
+                cStore_active = cStore[on];
+                cdbindredclass(on - 1);
+            } else {
+                on = _.size(_.groupBy(cJIndex[indx][1].map(y => y[1])));
+                cStore_active = cStore[on];
+                cdbindredclass(on - 1);
+            }
+
+            const cindex = _.findIndex(cStore_active, y => _.isEqual(y, sv));
+            const m = cStore_active.length;
+            if (statmode)
+                setKijelzo(cindex + 1, m);
+
+            var setJ = digit2set(cJ_J)
+            var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
+            setTimeout(() => {
+                cindredclass(indx1)
+            }, 150);
+
+            updcJall(sv);
+            setTimeout(() => {
+                for (i = 0; i < n; i++) {
+                    $('#ci' + i).trigger("input");
+                };
+            }, 100);
+        }
+    }
+});
+
+function indexStat() {
+    indexGroupStat();
+    const target = document.getElementById("c_indexstat");
+    //if (statby == "length") {
+    /*  const st = _.countBy(cJIndex, y => y[1].length);
+     const h = Object.keys(st).map(y => y * 1);
+     const db = Object.values(st).map(y => y * 1); */
+
+    const h = Object.keys(cStore).map(y => y * 1);
+    const db = Object.values(cStore).map(y => y.length * 1);
+    var fej1 = "Hossz";
+    if (statby == "value")
+        fej1 = "Érték"
+    var txt = "<table style='text-align:center;order-collapse: separate;border-spacing: 10px 4px;font-size: 20px;'><thead><tr><th>" + fej1 + "</th>"
+    for (var i = 0; i < h.length; i++)
+        txt += "<th class='cdbindh' onclick='setcact(" + h[i] + ")'>" + h[i] + "</th>";
+    txt += "</tr></thead><tr><td>Darab</td>";
+    for (var j = 0; j < db.length; j++)
+        txt += "<td>" + db[j] + "</td>";
+    txt += "</tr></table>";
+    target.innerHTML = txt;
+};
+
+function indexGroupStat() {
+    if (statby == "value")
+        var st = _.groupBy(_.mapValues(cJIndex, z => [z[0], _.size(_.groupBy(z[1].map(y => y[1])))]), t => t[1]);
+    else
+        var st = _.groupBy(cJIndex.map(y => [y[0], y[1].length]), z => z[1]);
+    st = _.mapValues(st, function(value) { return value.map(y => y[0]); });
+    cStore = st;
+};
+
+function cdbindredclass(indx) {
+    $("th.cdbindh.cindred").removeClass("cindred");
+    var elem = $("th.cdbindh").filter(function() { return this.innerHTML == (indx + 1) });
+    if (elem != undefined)
+        elem.addClass("cindred");
+};
+
+function setcINactive(i) {
+    if (isNaN(i))
+        i = 1;
+    cJ_c = cStore_active[i - 1];
+    if (cJ_c) {
+        drawShuffle(cJ_a, cJ_b, cJ_c, cJ_J);
+        const target = document.getElementById("c_index");
+        var indx = _.findIndex(cJIndex, y => _.isEqual(y[0], cJ_c));
+        if (indx > -1) {
+            target.innerHTML = formazIndex(cJIndex[indx][1]);
+            setKijelzo(i, cStore_active.length)
+        } else {
+            target.innerHTML = "Index";
+        };
+    } else
+        return;
+}
+
+function setcact(i) {
+    cStore_active = cStore[i];
+    const first = Object.keys(cStore_active)[0] + 1;
+    setcINactive(first);
+    cdbindredclass(i - 1);
+    szinkronTbl();
+};
+
+
+// Integral set
+
+function intSet(J) {
+    const n = J.length;
+    var intJ = [1];
+    for (var j = 0; j < n - 1; j++) {
+        if (J[j + 1] == 1)
+            intJ[j + 1] = intJ[j];
+        else
+            intJ[j + 1] = (intJ[j] + 1) % 2;
+    };
+    return intJ;
+};
+
+function intSetN(J, n) {
+    var intJ = [1];
+    for (var j = 0; j < n - 1; j++) {
+        if (J[j + 1] == 1)
+            intJ[j + 1] = intJ[j];
+        else
+            intJ[j + 1] = (intJ[j] + 1) % 2;
+    };
+    return intJ;
+};
+
+function Combvr(v, r, ism) {
+    const c = new YourCombinations(v);
+    let cb = c.combinations(r, ism);
+    return cb;
+};
+
+function Choosevr(v, k) {
+    var w = [];
+    let cb = Combvr(v, k, false);
+    while (true) {
+        const item = cb.next();
+        if (item.done) break;
+        w.push([...item.value]);
+    };
+    return w;
+};
+
+function powerSet(v) {
+    const your_combinations = new YourCombinations(v);
+    return [...your_combinations.powerSet(v)];
+};
+
+function derivJinS(S, n) {
+    const sp1 = _.filter(powerSet(S), y => _.includes(y, 1));
+    //const sp1 = powerSet(S);
+    var out = _.uniq(sp1.map(y => intSetN(set2digit(y, n), n))); //.sort();
+    out = [set2digit(S, n), ...out]
+    return out;
+}
+
+function sorKep0InS(sor) {
+    const n = sor.length;
+    var txt = "<td style='border-bottom:1px solid #aaaaaa'>"
+    for (var j = 0; j < n; j++) {
+        txt += "<span class='tgomb' onclick='tinSdat(" + j + ")'>"
+        if (sor[j] == 1)
+            txt += "&#x25CF;</span> ";
+        else
+            txt += "&#x25CB;</span> ";
+    };
+    txt += "</td></tr>";
+    return txt;
+};
+
+function sorKepInS(sor) {
+    var txt = "<td>"
+    for (let s of sor) {
+        if (s == 1)
+            txt += "&#x25CF; ";
+        else
+            txt += "&#x25CB; ";
+    };
+    txt += "</td></tr>";
+    return txt;
+};
+
+function derivKepInS(d) {
+    var n = d.length;
+    var m = d[0].length;
+    var txt = "<table style='border-collapse:collapse;'><thead ><tr><th id='dnum' style='font-size:16px;width:45px;background-color:#eee'>" + (n - 1) + "</th><th>";
+    for (var i = 1; i < m + 1; i++) {
+        txt += "<span class='tsorszam'>" + i + ".</span>";
+    };
+    txt += "</th></tr></thead>";
+    for (var i = 0; i < n; i++) {
+        if (i == 0)
+            txt += "<tr style='cursor:pointer;color:red;'><td>C</td>" + sorKep0InS(d[i]);
+        else
+            txt += "<tr><td>I<sub>" + i + "</sub></td>" + sorKepInS(d[i]);
+    };
+    txt += "</table>";
+    return txt;
+};
+
+function pathKepInS(J, n) {
+    const elem = document.getElementById("derivTinS");
+    const d = derivJinS(J, n);
+    const kep = derivKepInS(d);
+    elem.innerHTML = kep;
+};
+
+function derivInitInS(n) {
+    deriv_tableinS = [1];
+    for (var i = 1; i < n; i++) {
+        x = Math.round(Math.random());
+        deriv_tableinS[i] = x;
+    };
+    const S = digit2set(deriv_tableinS, n);
+    pathKepInS(S, n);
+}
+
+function tinSdat(j) {
+    const n = document.getElementById("Nn").value * 1;
+    var jedik = deriv_tableinS[j];
+    deriv_tableinS[j] = (jedik + 1) % 2;
+    const S = digit2set(deriv_tableinS, n);
+    pathKepInS(S, n);
+};
+
+
+function sumuJ(u, J) {
+    var out = [];
+    const n = u.length;
+    const ku = kum(u);
+    const d = derivSet(J);
+    for (var i = 0; i < n; i++)
+        if (d[i] == 1)
+            out[i] = u[i];
+        else
+            out[i] = ku[i];
+    return out;
+};
+
+function parcDiff(u, J) {
+    var out = [u[0]];
+    const n = u.length;
+    for (var i = 1; i < n; i++)
+        if (J[i] == 1)
+            out[i] = u[i] - u[i - 1];
+        else
+            out[i] = u[i];
+    return out;
+};
+
+function LMatrix(J) {
+    const n = J.length;
+    out = [];
+    var u = Array(n).fill(0);
+    for (var i = 0; i < n; i++) {
+        u = Array(n).fill(0);
+        u[i] = 1;
+        out[i] = sumuJ(u, J);
+    };
+    return out;
 };
