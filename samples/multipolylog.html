@@ -43,6 +43,13 @@
             editor: 'textarea',
             hide: ["editor", "evalButton", "permalink"],
         });
+               sagecell.makeSagecell({
+            inputLocation: '#mycell4',
+            outputLocation: '#ideout4',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink"],
+        });
     </script>
 
 </head>
@@ -550,18 +557,15 @@
         <div style="font-size: 18px;font-weight: 600; margin-bottom: 10px;"> <b><big class="sorszam">10.</big></b> Shuffle product of three vectors: <b>a</b><span style="margin:0 3px;">&#x29E2;</span><b>b</b><span style="margin:0 3px;">&#x29E2;</span><b>c</b></div>
         <div style="margin-left:2px;padding:3px;">
             <label style="width:42px;display:inline-block;"><b style="padding: 2px 7px;">a</b> = </label>
-            <input class="inpvec" type="text" id="av3" value="1,1" oninput="agSumRefresh();" name="a">
-            <big style="margin-left:2px;">∑</big>|a| = <span id="as3">5</span>
+            <input class="inpvec" type="text" id="av3" value="1,1" name="av3">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label style="width:42px;display:inline-block;"><b style="padding: 2px 7px;">b</b> = </label>
-            <input class="inpvec" type="text" id="bv3" value="1,2" oninput="bgSumRefresh();" name="b">
-            <big style="margin-left:2px;"> ∑</big>|b| = <span id="bs3">5</span>
+            <input class="inpvec" type="text" id="bv3" value="1,2"  name="bv3">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label style="width:42px;display:inline-block;"><b  style="padding: 2px 7px;">c</b> = </label>
-            <input class="inpvec" type="text" id="cv3" value="2,1" oninput="bgSumRefresh()" name="c">
-            <big style="margin-left:2px;"> ∑</big>|c| = <span id="cs3">5</span>
+            <input class="inpvec" type="text" id="cv3" value="2,1" name="cv3">
         </div>
 
         <div id="searcharea3">
