@@ -83,6 +83,7 @@ var teststr4 = "6∗(1,2,1,2) + 24∗(1,2,2,1) + 36∗(1,2,3,0) + 54∗(1,3,1,1)
 
 
 var deriv_table = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
+var deriv_tableinS = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
 var deriv_tableA = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1];
 var deriv_tableB = [1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0];
 var derivab = false;
@@ -3589,6 +3590,12 @@ function out3Clear() {
         elem.innerHTML = "";
 };
 
+function out4Clear() {
+    const elem = document.querySelector("#ideout4 .sagecell_output_elements pre");
+    if (elem)
+        elem.innerHTML = "";
+};
+
 function sagetransfClear() {
     const elem = document.getElementById("sagetransf");
     elem.innerHTML = "";
@@ -3656,6 +3663,25 @@ function comp0(n, k) {
     }
     return allcomp0;
 };
+
+function kozte(v, a, f) {
+    var k = true;
+    const n = v.length;
+    for (var i = 0; i < n; i++) {
+        k = k && (a[i] - 1 < v[i]) && v[i] < (f[i] + 1);
+        if (!k)
+            return k;
+    }
+    return k;
+}
+
+function compaf(n, k, a, f) {
+    var all = comp0(n, k);
+    all = all.filter(y => kozte(y, a, f));
+    return all;
+}
+
+////////////////
 
 function Choose(n, k) {
     var w = [];
@@ -3851,7 +3877,7 @@ function str2vec(str) {
 function sagesh() {
     var a = kiszed_sh("avg");
     var b = kiszed_sh("bvg");
-    if (reducedv && a_sor !== undefined && b_sor != undefined) {
+    if (reducedv && a !== undefined && b != undefined) {
         a = a.map(y => y - 1);
         b = b.map(y => y - 1);
     };
@@ -3904,13 +3930,135 @@ function sageshtransf() {
                         str += " + " + value + "&lowast;(" + str2vec(key) + ")";
                     sum++;
                 });
-                str = "(" + a.toString() + " <span style='font-size:28px;'>&#x29E2;</span> " + b.toString() + ") = " + str.slice(3);
+                str = "(" + a.toString() + ") <span style='font-size:28px;font-size:800;'>&#x29E2;</span> (" + b.toString() + ") = " + str.slice(3);
             } else
                 str = "HIBA";
         }
     };
     elem.innerHTML = "<div class='meret'>A szorzat <b>" + sum + "</b> kompozíció összege.</div>" + str;
 };
+
+// Shuffle of 3 vectors
+
+function sagesh3() {
+    var a = kiszed_sh("av3");
+    var b = kiszed_sh("bv3");
+    var c = kiszed_sh("cv3");
+    var txt = "show('HIBA');";
+    if (a != undefined && b != undefined && b != undefined && !a.some(v => v < 0) && !b.some(v => v < 0) && !c.some(v => v < 0)) {
+        const astr = convertstr01(a);
+        const bstr = convertstr01(b);
+        const cstr = convertstr01(c);
+        var txt = 'from sage.combinat.shuffle import ShuffleProduct;\nfrom collections import Counter;\nL=list(ShuffleProduct(\"' + astr + '\",\"' + bstr + '\",element_constructor="".join));\nM = flatten([list(ShuffleProduct(x,\"' + cstr + '\",element_constructor="".join)) for x in L])\nLL= Counter(M);LL;';
+    };
+    $('#mycell4 .sagecell_editor textarea.sagecell_commands').val(txt);
+    $('#mycell4 .sagecell_input button.sagecell_evalButton').click();
+    setOutputFont2($('#outfont-slider4').val());
+};
+
+function sageshtransf3() {
+    const elem = document.getElementById("sagetransf3");
+    var str = "";
+    var sum = 1;
+    var a = kiszed_sh("av3");
+    var b = kiszed_sh("bv3");
+    var c = kiszed_sh("cv3");
+    if (reducedv) {
+        a = a.map(y => y - 1);
+        b = b.map(y => y - 1);
+        c = c.map(y => y - 1);
+    };
+    if (a == undefined || b == undefined || c == undefined)
+        str = "HIBA";
+    else if (a.length + b.length + c.length == 0)
+        str = "( )&#x29E2;( )&#x29E2;( ) = ( )";
+    else {
+        const melem = document.querySelector("#ideout4 .sagecell_output_elements .sagecell_messages div");
+        if (melem == null)
+            str = "Előbb számítsa ki a sageMath kimenetet a 'SAGE' gombra kattintva!"
+        else {
+            var back = melem.innerHTML.match(/Counter\(.+\)/);
+            if (back) {
+                back = back[0].slice(8, -1).replace(/'/g, '"');
+                var obj = JSON.parse(back);
+                sum = 0;
+                _.forEach(obj, function(value, key) {
+                    if (value == 1)
+                        str += " + (" + str2vec(key) + ")";
+                    else
+                        str += " + " + value + "&lowast;(" + str2vec(key) + ")";
+                    sum++;
+                });
+                str = "(" + a.toString() + ") <span style='font-size:28px;font-size:800;'>&#x29E2;</span> (" + b.toString() + ") <span style='font-size:28px;font-size:800;'>&#x29E2;</span> (" + c.toString() + ") = " + str.slice(3);
+            } else
+                str = "HIBA";
+        }
+    };
+    elem.innerHTML = "<div class='meret'>A szorzat <b>" + sum + "</b> kompozíció összege.</div>" + str;
+};
+
+function setSearch33() {
+    const query = document.getElementById("query3");
+    const article = document.querySelector("#searcharea3");
+    const target = document.querySelector("#sagetransf3");
+    const treeWalker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
+    const allTextNodes = [];
+    let currentNode = treeWalker.nextNode();
+    while (currentNode) {
+        allTextNodes.push(currentNode);
+        currentNode = treeWalker.nextNode();
+    }
+
+    if (!CSS.highlights) {
+        const dvan = document.getElementById("nohighlight")
+        if (dvan == undefined) {
+            let d = document.createElement('div');
+            d.style.color = "#ff2211";
+            d.id = "nohighlight";
+            target.prepend(d);
+            d.prepend("CSS Custom Highlight API not supported.");
+        }
+        return;
+    }
+
+    CSS.highlights.clear();
+
+    const str = query.value.trim().toLowerCase();
+    if (!str) {
+        return;
+    }
+
+    const ranges = allTextNodes
+        .map((el) => {
+            return { el, text: el.textContent.toLowerCase() };
+        })
+        .map(({ text, el }) => {
+            const indices = [];
+            let startPos = 0;
+            while (startPos < text.length) {
+                const index = text.indexOf(str, startPos);
+                if (index === -1) break;
+                indices.push(index);
+                startPos = index + str.length;
+            }
+
+            return indices.map((index) => {
+                const range = new Range();
+                range.setStart(el, index);
+                range.setEnd(el, index + str.length);
+                return range;
+            });
+        });
+
+    const searchResultsHighlight = new Highlight(...ranges.flat());
+    CSS.highlights.set("search-results", searchResultsHighlight);
+};
+
+$(document).on('input focus', '#query3', function() {
+    setSearch33();
+});
+
+/////
 
 function setSearch() {
     const query = document.getElementById("query2");
@@ -4429,11 +4577,11 @@ function derivKep(d) {
     txt += "</th></tr></thead>";
     for (var i = 0; i < n; i++) {
         if (i == 0)
-            txt += "<tr style='cursor:pointer;color:red;'><td>" + i + ".</td>" + sorKep0(d[i]);
+            txt += "<tr style='cursor:pointer;color:red;'><td>A<sup>" + i + "</sup></td>" + sorKep0(d[i]);
         else if (i == n - 1)
-            txt += "<tr class='derivlast'><td>" + i + ".</td>" + sorKep(d[i]);
+            txt += "<tr class='derivlast'><td>A<sup>" + i + "</sup></td>" + sorKep(d[i]);
         else
-            txt += "<tr><td>" + i + ".</td>" + sorKep(d[i]);
+            txt += "<tr><td>A<sup>" + i + "</sup></td>" + sorKep(d[i]);
     };
     txt += "</table>";
     return txt;
@@ -5216,4 +5364,213 @@ function setcact(i) {
     setcINactive(first);
     cdbindredclass(i - 1);
     szinkronTbl();
+};
+
+
+// Integral set
+
+function intSet(J) {
+    const n = J.length;
+    var intJ = [1];
+    for (var j = 0; j < n - 1; j++) {
+        if (J[j + 1] == 1)
+            intJ[j + 1] = intJ[j];
+        else
+            intJ[j + 1] = (intJ[j] + 1) % 2;
+    };
+    return intJ;
+};
+
+function intSetN(J, n) {
+    var intJ = [1];
+    for (var j = 0; j < n - 1; j++) {
+        if (J[j + 1] == 1)
+            intJ[j + 1] = intJ[j];
+        else
+            intJ[j + 1] = (intJ[j] + 1) % 2;
+    };
+    return intJ;
+};
+
+function Combvr(v, r, ism) {
+    const c = new YourCombinations(v);
+    let cb = c.combinations(r, ism);
+    return cb;
+};
+
+function Choosevr(v, k) {
+    var w = [];
+    let cb = Combvr(v, k, false);
+    while (true) {
+        const item = cb.next();
+        if (item.done) break;
+        w.push([...item.value]);
+    };
+    return w;
+};
+
+function powerSet(v) {
+    const your_combinations = new YourCombinations(v);
+    return [...your_combinations.powerSet(v)];
+};
+
+function derivJinS(S, n) {
+    const sp1 = _.filter(powerSet(S), y => _.includes(y, 1));
+    //const sp1 = powerSet(S);
+    var out = _.uniq(sp1.map(y => intSetN(set2digit(y, n), n))); //.sort();
+    out = [set2digit(S, n), ...out]
+    return out;
+}
+
+function sorKep0InS(sor) {
+    const n = sor.length;
+    var txt = "<td style='border-bottom:1px solid #aaaaaa'>"
+    for (var j = 0; j < n; j++) {
+        txt += "<span class='tgomb' onclick='tinSdat(" + j + ")'>"
+        if (sor[j] == 1)
+            txt += "&#x25CF;</span> ";
+        else
+            txt += "&#x25CB;</span> ";
+    };
+    txt += "</td></tr>";
+    return txt;
+};
+
+function sorKepInS(sor) {
+    var txt = "<td>"
+    for (let s of sor) {
+        if (s == 1)
+            txt += "&#x25CF; ";
+        else
+            txt += "&#x25CB; ";
+    };
+    txt += "</td></tr>";
+    return txt;
+};
+
+function derivKepInS(d) {
+    var n = d.length;
+    var m = d[0].length;
+    var txt = "<table style='border-collapse:collapse;'><thead ><tr><th id='dnum' style='font-size:16px;width:45px;background-color:#eee'>" + (n - 1) + "</th><th>";
+    for (var i = 1; i < m + 1; i++) {
+        txt += "<span class='tsorszam'>" + i + ".</span>";
+    };
+    txt += "</th></tr></thead>";
+    for (var i = 0; i < n; i++) {
+        if (i == 0)
+            txt += "<tr style='cursor:pointer;color:red;'><td>C</td>" + sorKep0InS(d[i]);
+        else
+            txt += "<tr><td>I<sub>" + i + "</sub></td>" + sorKepInS(d[i]);
+    };
+    txt += "</table>";
+    return txt;
+};
+
+function pathKepInS(J, n) {
+    const elem = document.getElementById("derivTinS");
+    const d = derivJinS(J, n);
+    const kep = derivKepInS(d);
+    elem.innerHTML = kep;
+};
+
+function derivInitInS(n) {
+    deriv_tableinS = [1];
+    for (var i = 1; i < n; i++) {
+        x = Math.round(Math.random());
+        deriv_tableinS[i] = x;
+    };
+    const S = digit2set(deriv_tableinS, n);
+    pathKepInS(S, n);
+}
+
+function tinSdat(j) {
+    const n = document.getElementById("Nn").value * 1;
+    var jedik = deriv_tableinS[j];
+    deriv_tableinS[j] = (jedik + 1) % 2;
+    const S = digit2set(deriv_tableinS, n);
+    pathKepInS(S, n);
+};
+
+
+function sumuJ(u, J) {
+    var out = [];
+    const n = u.length;
+    const ku = kum(u);
+    const d = derivSet(J);
+    for (var i = 0; i < n; i++)
+        if (d[i] == 1)
+            out[i] = u[i];
+        else
+            out[i] = ku[i];
+    return out;
+};
+
+function parcDiff(u, J) {
+    var out = [u[0]];
+    const n = u.length;
+    for (var i = 1; i < n; i++)
+        if (J[i] == 1)
+            out[i] = u[i] - u[i - 1];
+        else
+            out[i] = u[i];
+    return out;
+};
+
+function LMatrix(J) {
+    const n = J.length;
+    out = [];
+    var u = Array(n).fill(0);
+    for (var i = 0; i < n; i++) {
+        u = Array(n).fill(0);
+        u[i] = 1;
+        out[i] = sumuJ(u, J);
+    };
+    return out;
+};
+
+// FELESLEGESEK
+
+function indxMatrixT() {
+    const sn = cJIndex.length;
+    const on = binomial(nnn, kk);
+    var txt = "<table><tr>"
+    for (var s = 0; s < sn; s++) {
+        var ind = cJIndex[s][1];
+        var ni = ind.length;
+        var indxs = [];
+        for (var j = 0; j < ni; j++)
+            indxs.push(ind[j][0]);
+        for (var o = 0; o < on; o++) {
+            if (_.includes(indxs, o))
+                txt += "<td>1</td>";
+            else
+                txt += "<td>0</td>";
+        };
+        txt += "</tr><tr>";
+    }
+    txt += "</table>"
+    document.getElementById("c_index").innerHTML = txt;
+};
+
+function indxMatrixV() {
+    const sn = cJIndex.length;
+    const on = binomial(nnn, kk);
+    var v = [];
+    for (var s = 0; s < sn; s++) {
+        var ind = cJIndex[s][1];
+        var ni = ind.length;
+        var indxs = [];
+        for (var j = 0; j < ni; j++)
+            indxs.push(ind[j][0]);
+        var vs = [];
+        for (var o = 0; o < on; o++) {
+            if (_.includes(indxs, o))
+                vs[o] = 1;
+            else
+                vs[o] = 0;
+        };
+        v[s] = vs;
+    }
+    v = v.sort();
+    document.getElementById("c_index").innerText = JSON.stringify(v);
 };
