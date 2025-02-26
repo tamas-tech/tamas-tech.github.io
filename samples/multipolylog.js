@@ -102,6 +102,7 @@ var statmode = false;
 var cStore = {};
 var cStore_active = [];
 var statby = "length";
+var ireszben = "";
 
 function setMode(t) {
     mode = t.value;
@@ -4177,9 +4178,10 @@ $(document).on('input focus', '#query2', function() {
 
 
 $(document).on('selectionchange', function() {
-    const foo = document.querySelector('#shout')
+    const foo = document.querySelector('#shout');
     const foo1 = document.querySelector('#sagetransf');
-    var isin = window.getSelection().containsNode(foo, true) || window.getSelection().containsNode(foo1, true);
+    const foo2 = document.querySelector('#iresz');
+    var isin = window.getSelection().containsNode(foo, true) || window.getSelection().containsNode(foo1, true) || window.getSelection().containsNode(foo2, true);
     var selection = window.getSelection().toString();
     if (isin)
         setSearch2(selection);
@@ -4937,7 +4939,7 @@ function initcInshuff() {
 function formazIndex(v) {
     const n = v.length;
     var sum = 0;
-    var f = "<table style='text-align:center;order-collapse: separate;border-spacing: 10px 4px;font-size: 20px;'><thead><tr><th style='padding-right:10px;'>(" + cJ_c.toString() + ")</th>";
+    var f = "<table style='text-align:center;order-collapse: separate;border-spacing: 10px 4px;font-size: 20px;user-select:none;'><thead><tr><th style='padding-right:10px;'>(" + cJ_c.toString() + ")</th>";
     var indx = 0;
     for (var i = 0; i < n; i++) {
         indx = v[i][0];
@@ -5267,26 +5269,33 @@ function makeIindex(n, J) {
         var chasI = cJIndex.filter(y => y[1].some(z => z[0] == n));
         chasI = chasI.map(y => [y[0], y[1].filter(z => z[0] == n)[0][1]]);
         const N = chasI.length;
-        var txt = "<hr style='border-color:#f4f4f4;'>A J = {" + J.toString() + "} indexhalmaz egy " + N + " darab egész koordinátájú rácspontot tartalmazó politópot határoz meg.<br> (" + a_sor + ") <span style='font-size:28px;'>⧢</span><sub>J</sub> (" + b_sor + ") = ";
+        var txt = "<hr style='border-color:#f4f4f4;'>A J = {" + J.toString() + "} " + "indexhalmaz egy " + N + " darab egész koordinátájú rácspontot tartalmazó politópot határoz meg.<br> (" + a_sor + ") <span style='font-size:28px;'>⧢</span><sub>J</sub> (" + b_sor + ") = ";
         var ce = 0;
-        var cv = [];
+        var cv = "";
         for (let j of chasI) {
-            cv = j[0]
+            cv = j[0].toString();
             ce = j[1] * 1;
             if (ce == 1)
-                txt += "(" + cv.toString() + ") + ";
+                txt += "(" + cv + ") + ";
             else
-                txt += ce + "&lowast;(" + cv.toString() + ") + ";
+                txt += ce + "&lowast;(" + cv + ") + ";
         }
         txt = txt.slice(0, -3);
+        if (txt != ireszben) {
+            eJ.innerHTML = txt;
+            ireszben = txt;
+        } else
+            return;
 
-        eJ.innerHTML = txt;
-    } else
+    } else {
         eJ.innerHTML = "";
+        ireszben = "";
+    };
 };
 
 $(document).on('selectionchange', function() {
-    const foo = document.querySelector('p#shout')
+    const foo = document.querySelector('p#shout');
+    const foo2 = document.querySelector('span#iresz') || window.getSelection().containsNode(foo2, true);
     var isin = window.getSelection().containsNode(foo, true);
     var selection = window.getSelection().toString();
     if (isin) {
@@ -5322,6 +5331,7 @@ $(document).on('selectionchange', function() {
                     $('#ci' + i).trigger("input");
                 };
             }, 100);
+            setTimeout(() => { szinkronTbl(); }, 200);
         }
     }
 });
