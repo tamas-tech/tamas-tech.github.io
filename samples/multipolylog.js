@@ -4178,7 +4178,7 @@ $(document).on('input focus', '#query2', function() {
 
 
 $(document).on('selectionchange', function() {
-    const foo = document.querySelector('#shout');
+    const foo = document.querySelector('#shout')
     const foo1 = document.querySelector('#sagetransf');
     const foo2 = document.querySelector('#iresz');
     var isin = window.getSelection().containsNode(foo, true) || window.getSelection().containsNode(foo1, true) || window.getSelection().containsNode(foo2, true);
@@ -4186,7 +4186,6 @@ $(document).on('selectionchange', function() {
     if (isin)
         setSearch2(selection);
 });
-
 
 // Multiset
 
@@ -5182,10 +5181,10 @@ function szinkronTbl() {
             el.innerHTML = "☹";
         var setJ = digit2set(cJ_J)
         var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
-        if (indx > -1 && !e.classList.contains("diff")){
+        if (indx > -1 && !e.classList.contains("diff")) {
             e.innerHTML = indx1 * 1 + 1;
             makeIindex(indx1 * 1, setJ);
-        }; 
+        }
     };
 };
 
@@ -5295,8 +5294,8 @@ function makeIindex(n, J) {
 
 $(document).on('selectionchange', function() {
     const foo = document.querySelector('p#shout');
-    const foo2 = document.querySelector('span#iresz') || window.getSelection().containsNode(foo2, true);
-    var isin = window.getSelection().containsNode(foo, true);
+    const foo2 = document.querySelector('span#iresz');
+    var isin = window.getSelection().containsNode(foo, true) || window.getSelection().containsNode(foo2, true);
     var selection = window.getSelection().toString();
     if (isin) {
         var sv = selection.split(",").map(y => y * 1);
