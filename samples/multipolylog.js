@@ -103,6 +103,7 @@ var cStore = {};
 var cStore_active = [];
 var statby = "length";
 var ireszben = "";
+var Ipolytop = [];
 
 function setMode(t) {
     mode = t.value;
@@ -5271,7 +5272,9 @@ function makeIindex(n, J) {
         var txt = "<hr style='border-color:#f4f4f4;'>A J = {" + J.toString() + "}[indexe = " + (n + 1) + "] indexhalmaz egy " + N + " darab egész koordinátájú rácspontot tartalmazó politópot határoz meg.<br> (" + a_sor + ") <span style='font-size:28px;'>⧢</span><sub>J</sub> (" + b_sor + ") = ";
         var ce = 0;
         var cv = "";
+        var polytop = [];
         for (let j of chasI) {
+            polytop.push(j);
             cv = j[0].toString();
             ce = j[1] * 1;
             if (ce == 1)
@@ -5281,14 +5284,35 @@ function makeIindex(n, J) {
         }
         txt = txt.slice(0, -3);
         if (txt != ireszben) {
+            chasI = chasI.map(y => y[0]);
+            makeIpolytop(n, chasI);
             eJ.innerHTML = txt;
             ireszben = txt;
         } else
             return;
-
     } else {
         eJ.innerHTML = "";
         ireszben = "";
+    };
+};
+
+function makeIpolytop(n, chasI) {
+    if (n > -1) {
+        //var chasI = cJIndex.filter(y => y[1].some(z => z[0] == n));
+        //chasI = chasI.map(y => y[0]);
+        var polytop = [];
+        for (let j of chasI) {
+            polytop.push(j);
+        }
+        var strpolytop = polytop = JSON.stringify(polytop);
+        Ipolytop = strpolytop;
+        var txt = "P = Polyhedron(vertices = " + strpolytop + ");\nV = P.vertices();\nVV = [list(x) for x in V];\nVV;\nNice_repr = LatexExpr(P.Hrepresentation_str(latex=True));\nshow(LatexExpr(r'P ='),VV);\nshow('\\n',LatexExpr(r'---------------------------------'));\nshow(Nice_repr);";
+
+        $('#mycell3 .sagecell_editor textarea.sagecell_commands').val(txt);
+        $('#mycell3 .sagecell_input button.sagecell_evalButton').click();
+        setOutputFont2($('#outfont-slider3').val());
+    } else {
+        return
     };
 };
 
