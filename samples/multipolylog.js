@@ -5180,8 +5180,10 @@ function szinkronTbl() {
             el.innerHTML = "☹";
         var setJ = digit2set(cJ_J)
         var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
-        if (indx > -1 && !e.classList.contains("diff"))
+        if (indx > -1 && !e.classList.contains("diff")){
             e.innerHTML = indx1 * 1 + 1;
+            makeIindex(indx1 * 1, setJ);
+        }; 
     };
 };
 
@@ -5259,6 +5261,29 @@ function makeShIndex() {
     }, 100);
 };
 
+function makeIindex(n, J) {
+    const eJ = document.getElementById("iresz");
+    if (n > -1) {
+        var chasI = cJIndex.filter(y => y[1].some(z => z[0] == n));
+        chasI = chasI.map(y => [y[0], y[1].filter(z => z[0] == n)[0][1]]);
+        const N = chasI.length;
+        var txt = "<hr style='border-color:#f4f4f4;'>A J = {" + J.toString() + "} indexhalmaz egy " + N + " darab egész koordinátájú rácspontot tartalmazó politópot határoz meg.<br> (" + a_sor + ") <span style='font-size:28px;'>⧢</span><sub>J</sub> (" + b_sor + ") = ";
+        var ce = 0;
+        var cv = [];
+        for (let j of chasI) {
+            cv = j[0]
+            ce = j[1] * 1;
+            if (ce == 1)
+                txt += "(" + cv.toString() + ") + ";
+            else
+                txt += ce + "&lowast;(" + cv.toString() + ") + ";
+        }
+        txt = txt.slice(0, -3);
+
+        eJ.innerHTML = txt;
+    } else
+        eJ.innerHTML = "";
+};
 
 $(document).on('selectionchange', function() {
     const foo = document.querySelector('p#shout')
