@@ -5268,7 +5268,7 @@ function makeIindex(n, J) {
         var chasI = cJIndex.filter(y => y[1].some(z => z[0] == n));
         chasI = chasI.map(y => [y[0], y[1].filter(z => z[0] == n)[0][1]]);
         const N = chasI.length;
-        var txt = "<hr style='border-color:#f4f4f4;'>A J = {" + J.toString() + "} "}[indexe = " + (n + 1) + "] indexhalmaz egy " + N + " darab egész koordinátájú rácspontot tartalmazó politópot határoz meg.<br> (" + a_sor + ") <span style='font-size:28px;'>⧢</span><sub>J</sub> (" + b_sor + ") = ";
+        var txt = "<hr style='border-color:#f4f4f4;'>A J = {" + J.toString() + "}[indexe = " + (n + 1) + "] indexhalmaz egy " + N + " darab egész koordinátájú rácspontot tartalmazó politópot határoz meg.<br> (" + a_sor + ") <span style='font-size:28px;'>⧢</span><sub>J</sub> (" + b_sor + ") = ";
         var ce = 0;
         var cv = "";
         for (let j of chasI) {
