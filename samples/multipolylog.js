@@ -3587,7 +3587,7 @@ function shClear() {
 };
 
 function out3Clear() {
-    const elem = document.querySelector("#ideout3 .sagecell_output_elements pre");
+    const elem = document.querySelector("#ideout3 .sagecell_output_elements div");
     if (elem)
         elem.innerHTML = "";
 };
@@ -4702,9 +4702,11 @@ function cJClear() {
     const elem = document.getElementById("cwithJ");
     const elem1 = document.getElementById("c_index");
     const elem2 = document.getElementById("c_indexstat");
+    const elem3 = document.getElementById("iresz");
     elem.innerHTML = "";
     elem1.innerHTML = "Index";
     elem2.innerHTML = "Index statisztika";
+    elem3.innerHTML = "";
 };
 
 function setAutoIndex(elem) {
@@ -5015,6 +5017,7 @@ function updcJJ(j) {
     };
     cindredclass(indx);
     szinkronTbl();
+    kiemelClear();
 };
 
 function set2digit(v, n) {
@@ -5082,6 +5085,7 @@ function leptet(b) {
         }
     }
     szinkronTbl();
+    kiemelClear();
 };
 
 function ugrik0(indx) {
@@ -5110,6 +5114,7 @@ function ugrik0(indx) {
         cindredclass(indx);
     }
     szinkronTbl();
+    kiemelClear();
 };
 
 function ugrik(indx) {
@@ -5127,6 +5132,7 @@ function ugrik(indx) {
     };
     cindredclass(indx);
     szinkronTbl();
+    kiemelClear();
 };
 
 // Make Index
@@ -5158,6 +5164,15 @@ function eshuffIndex() {
         c_sor = c;
         cegyutthIndex(n);
     };
+};
+
+function kiemelClear() {
+    const elsh = document.getElementById("shout");
+    var txtsh = elsh.innerHTML;
+    if (txtsh != "") {
+        txtsh = txtsh.replace(/(\<span style=\"background-color:(\#fbf6b0|\#ffd0cb);border-radius:12px;\"\>)(\((.*?)\))(\<\/span\>)/g, '$3');
+        elsh.innerHTML = txtsh
+    }
 };
 
 function szinkronTbl() {
@@ -5298,21 +5313,52 @@ function makeIindex(n, J) {
 
 function makeIpolytop(n, chasI) {
     if (n > -1) {
-        //var chasI = cJIndex.filter(y => y[1].some(z => z[0] == n));
-        //chasI = chasI.map(y => y[0]);
         var polytop = [];
         for (let j of chasI) {
             polytop.push(j);
         }
         var strpolytop = polytop = JSON.stringify(polytop);
         Ipolytop = strpolytop;
-        var txt = "P = Polyhedron(vertices = " + strpolytop + ");\nV = P.vertices();\nVV = [list(x) for x in V];\nVV;\nNice_repr = LatexExpr(P.Hrepresentation_str(latex=True));\nshow(LatexExpr(r'P ='),VV);\nshow('\\n',LatexExpr(r'---------------------------------'));\nshow(Nice_repr);";
+        var txt = "pretty_print(html('<button class=\\\"kiemelo\\\" onclick=\\\"boldVertices();\\\">Kiemel</button>'));\nP = Polyhedron(vertices = " + strpolytop + ");\nV = P.vertices();\nVV = [list(x) for x in V];\nVV;\nNice_repr = LatexExpr(P.Hrepresentation_str(latex=True));\nshow(LatexExpr(r'J = \\lbrace" + digit2set(cJ_J).toString() + "\\rbrace'),'\\n\\n');\nshow(LatexExpr(r'P ='),VV);\nshow('\\n',LatexExpr(r'---------------------------------'));\nshow(Nice_repr);";
 
         $('#mycell3 .sagecell_editor textarea.sagecell_commands').val(txt);
         $('#mycell3 .sagecell_input button.sagecell_evalButton').click();
         setOutputFont2($('#outfont-slider3').val());
     } else {
         return
+    };
+};
+
+function getVertices() {
+    const vert = JSON.parse($('#ideout3 .sagecell_sessionOutput script')[1].innerText.replaceAll('\\left', '').replaceAll('\\right', '').replaceAll('\\displaystyle P = ', ''));
+    return vert;
+};
+
+function boldVertices() {
+    const el = document.getElementById("iresz");
+    const vert = getVertices();
+    var txt = el.innerHTML;
+    var vstr = "";
+    for (let v of vert) {
+        vstr = "(" + v.toString() + ")";
+        txt = txt.replace(vstr, "<span style='background-color:#ffd0cb;border-radius:12px;'>" + vstr + "</span>");
+    };
+    el.innerHTML = txt;
+
+    const elsh = document.getElementById("shout");
+    var txtsh = elsh.innerHTML;
+    if (txtsh != "") {
+        txtsh = txtsh.replace(/(\<span style=\"background-color:(\#fbf6b0|\#ffd0cb);border-radius:12px;\"\>)(\((.*?)\))(\<\/span\>)/g, '$3');
+        const ip = JSON.parse(Ipolytop);
+        var vstrsh = "";
+        for (let w of ip) {
+            vstrsh = "(" + w.toString() + ")";
+            if (_.findIndex(vert, y => _.isEqual(y, w)) > -1)
+                txtsh = txtsh.replace(vstrsh, "<span style='background-color:#ffd0cb;border-radius:12px;'>" + vstrsh + "</span>");
+            else
+                txtsh = txtsh.replace(vstrsh, "<span style='background-color:#fbf6b0;border-radius:12px;'>" + vstrsh + "</span>");
+        };
+        elsh.innerHTML = txtsh;
     };
 };
 
