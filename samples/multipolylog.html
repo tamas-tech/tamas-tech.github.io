@@ -604,6 +604,54 @@
         </p>
     </div>
 
+    <div class="keret of even" id="k12" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">12.</big></b>
+        <span style="font-size:20px;display:inline-block;width:80%;text-align:center;">Le<sub><b><i>a</i></b></sub> (x)<span style="margin:0 3px;">&#x29E2;</span>Le<sub><b><i>b</i></b></sub> (x)</span>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="avle" value="2,3">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">b</b> = </label>
+            <input class="inpvec" type="text" id="bvle" value="4,1" name="b">
+        </div>
+        <div style="margin-top:2px;padding:5px;">
+            <button class="showpre1" onclick="calc_shLe();" title="Calculate input">a<span style="margin:0 3px;font-size:160%;line-height:0.4;">&#x29E2;</span>b</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#shoutLe');" title="Clear output">Clear</button>
+        </div>
+        <div id="searcharea">
+            <p id="figyshLe" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+            <p id="shoutLe" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.3"></p>
+        </div>
+    </div>
+
+    <div class="keret of odd" id="k13" style="padding-bottom:40px;margin-bottom:10px;">
+        <b><big class="sorszam">13.</big></b>
+        <p class="keplet" id="keplet_k4" style="padding-bottom:10px;margin-bottom:10px;">\[\int\frac{\ln^{p}(x)\cdot\ln^{q}(1-x)}{(1-x)^{n}} \,\text{d}x\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="p"><b style="padding: 2px 7px;">p</b> =  </label>
+            <input type="number" id="p" value="5" min="0" step="1" onchange="derivInit(this.value);" name="p" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="q"><b style="padding: 2px 7px;">q</b> =  </label>
+            <input type="number" id="q" value="3" min="0" step="1" onchange="derivInit(this.value);" name="q" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="n"><b style="padding: 2px 7px;">n</b> =  </label>
+            <input type="number" id="n" value="2" min="0" step="1" onchange="derivInit(this.value);" name="n" style="width:50px;">
+        </div>
+        <div style="padding: 10px;outline: 2px solid #c0c9d0;;outline-offset: -6px;background-color: #e7fdf5;;">
+            <button id="okbtn5" onclick="makeTable();" class="showpre1" title="Insert code into editor">OK</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#pqnout');idClear('#tsout');" title="Clear output">Clear</button>
+            <label for="setoutputfont5">&#128474;</label>
+            <input oninput="setOutputFontpq(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont5" />
+        </div>
+        <p id="figygen3" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+        <p id="pqnout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
+        <p class="kijelzo" id="tsout" style="font-size:21px;line-height:1.5;"></p>
+    </div>
+
     <script>
         setTimeout(() => {
             setKeplet();
