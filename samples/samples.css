@@ -671,3 +671,30 @@ button.kiemelo {
     border: 1px solid #dadada;
     padding: 3px 5px;
 }
+
+table#pqntbl {
+    border-spacing: 3px;
+    background-color: #dbdbdb;
+}
+
+table#pqntbl td {
+    border: 1px solid #cacaca;
+    text-align: center;
+    background-color: #e5ecec;
+    padding: 3px 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    user-select: none;
+}
+
+table#pqntbl td.active {
+    background-color: #c1d1d1;
+    border-color: #b5b5b5;
+    box-shadow: 0px 0px 5px 5px #abe1d587;
+}
+
+table#pqntbl table.tort td {
+    border-bottom: 1px solid #000000;
+    background-color: #e5ecec;
+    user-select: none;
+}
