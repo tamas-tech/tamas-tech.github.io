@@ -105,6 +105,8 @@ var statby = "length";
 var ireszben = "";
 var Ipolytop = [];
 
+var LeC = {};
+
 function setMode(t) {
     mode = t.value;
     setKeplet();
@@ -3666,6 +3668,8 @@ function comp0(n, k) {
     return allcomp0;
 };
 
+//////////////////////
+
 function kozte(v, a, f) {
     var k = true;
     const n = v.length;
@@ -5632,49 +5636,348 @@ function LMatrix(J) {
     return out;
 };
 
-// FELESLEGESEK
+//Le shuffle Le
 
-function indxMatrixT() {
-    const sn = cJIndex.length;
-    const on = binomial(nnn, kk);
-    var txt = "<table><tr>"
-    for (var s = 0; s < sn; s++) {
-        var ind = cJIndex[s][1];
-        var ni = ind.length;
-        var indxs = [];
-        for (var j = 0; j < ni; j++)
-            indxs.push(ind[j][0]);
-        for (var o = 0; o < on; o++) {
-            if (_.includes(indxs, o))
-                txt += "<td>1</td>";
-            else
-                txt += "<td>0</td>";
-        };
-        txt += "</tr><tr>";
+function vLeFormaz(obj) {
+    const keys = Object.keys(obj).sort();
+    var txt = "";
+    for (let k of keys) {
+        var val = obj[k]
+        if (val == 0)
+            val = "";
+        else if (val == 1)
+            val = " + Le<sub>(" + k + ")</sub>";
+        else if (val == -1)
+            val = " - Le<sub>(" + k + ")</sub>";
+        else if (val > 0)
+            val = " + " + val + "&lowast;Le<sub>(" + k + ")</sub>";
+        else if (val < 0)
+            val = " - " + (-1 * val) + "&lowast;Le<sub>(" + k + ")</sub>";
+        else
+            val = "HIBA";
+        txt += val;
     }
-    txt += "</table>"
-    document.getElementById("c_index").innerHTML = txt;
+    return txt;
+}
+
+function visszaLeC() {
+    const keys = Object.keys(LeC);
+    var obj = {};
+    for (let s of keys) {
+        var e = LeC[s];
+        var ns = s.split(',').length;
+        for (var k = 0; k < ns; k++) {
+            var v = comma2pluskLe(s, k);
+            var vk = Math.pow(-1, k) * e;
+            for (let st of v) {
+                st = st.toString();
+                if (obj[st])
+                    obj[st] += vk;
+                else
+                    obj[st] = vk;
+            };
+        };
+    };
+    var out = vLeFormaz(obj);
+    return out;
 };
 
-function indxMatrixV() {
-    const sn = cJIndex.length;
-    const on = binomial(nnn, kk);
-    var v = [];
-    for (var s = 0; s < sn; s++) {
-        var ind = cJIndex[s][1];
-        var ni = ind.length;
-        var indxs = [];
-        for (var j = 0; j < ni; j++)
-            indxs.push(ind[j][0]);
-        var vs = [];
-        for (var o = 0; o < on; o++) {
-            if (_.includes(indxs, o))
-                vs[o] = 1;
-            else
-                vs[o] = 0;
-        };
-        v[s] = vs;
+function calc_shLe() {
+    LeC = {};
+    const elem1 = document.getElementById("figyshLe");
+    elem1.innerHTML = "";
+    const elem = document.getElementById("shoutLe");
+    const a = document.getElementById("avle").value;
+    const b = document.getElementById("bvle").value;
+    let na = a.length;
+    let wa = [];
+    for (var k = 0; k < Math.max(1, na); k++)
+        wa.push(comma2pluskLe(a, k));
+    wa = _.flatten(wa);
+
+    let nb = b.length;
+    let wb = [];
+    for (var k = 0; k < Math.max(1, nb); k++)
+        wb.push(comma2pluskLe(b, k));
+    wb = _.flatten(wb);
+    for (let i of wa) {
+        for (let j of wb)
+            calc_shab(i, j);
     }
-    v = v.sort();
-    document.getElementById("c_index").innerText = JSON.stringify(v);
+    var str = "Le<sub>(" + a + ")</sub>&lowast;Le<sub>(" + b + ")</sub> = " + visszaLeC().slice(3);
+    //elem.innerHTML = JSON.stringify(wa) + "<br>" + JSON.stringify(wb) + "<br>" + JSON.stringify(LeC);
+    elem.innerHTML = str;
 };
+
+function comma2pluskLe(str, k) {
+    let w = [];
+    if (k == 0) {
+        w = JSON.parse("[" + str + "]");
+        return [w];
+    }
+    let indx = commaIndxs(str);
+    const c = new YourCombinations(indx);
+    let cb = c.combinations(k, false);
+    while (true) {
+        const item = cb.next();
+        if (item.done) break;
+        var tt = kicserel(str, item.value).split(',');
+        var t1 = tt.map(function(z) {
+            return str2arr(z);
+        });
+        w.push(t1);
+    };
+    return w;
+};
+
+function cegyutthLe() {
+    var sum = 0;
+    for (let y of it) {
+        sum += komb(nnn, y);
+    }
+    if (sum == 0)
+        return;
+    else {
+        var key = c_sor.map(y => y + 1).toString();
+        if (LeC[key])
+            LeC[key] += sum;
+        else
+            LeC[key] = sum;
+    }
+};
+
+function eshuffLe() {
+    const maxa = _.max(a_sor);
+    const maxb = _.max(b_sor);
+    const maxab = maxa + maxb + 1;
+    var cek = comp0(sumab, nnn);
+    cek = cek.filter(y => y.every(v => v < maxab));
+    for (let c of cek) {
+        c_sor = c;
+        cegyutthLe();
+    }
+};
+
+function calc_shab(a, b) {
+    a_sor = a.map(y => y - 1);
+    b_sor = b.map(y => y - 1);
+    var sh, meret;
+    if (a_sor == undefined || b_sor == undefined)
+        sh = "HIBA";
+    else if (a_sor.length + b_sor.length == 0)
+        sh = "( )&#x29E2;( ) = ( )";
+    else if (a_sor.length == 0)
+        sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
+    else {
+        sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+        kk = a_sor.length;
+        nnn = kk + b_sor.length;
+        meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+        if (meret < 150000000) {
+            it = Choose(nnn, kk);
+            sh = eshuffLe();
+        } else {
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+        }
+    };
+    return sh;
+};
+
+// ln^p(x)ln^q(1-x)/x^n ntegrál
+
+function setOutputFontpq(v) {
+    document.getElementById("pqnout").style.fontSize = v + "px";
+    document.getElementById("tsout").style.fontSize = v + "px";
+};
+
+function factorial(n) {
+    if (n == 0 || n == 1)
+        return 1;
+    else {
+        var f = 1;
+        for (var i = 2; i < n + 1; i++)
+            f *= i;
+        return f;
+    };
+};
+
+//https://stackoverflow.com/questions/15577651/generate-all-compositions-of-an-integer-into-k-parts
+// translated from C++ code 
+
+
+function get_first_composition(n, k, composition) {
+    if (n < k) {
+        return false;
+    }
+    for (var i = 0; i < k - 1; i++) {
+        composition[i] = 1;
+    }
+    composition[k - 1] = n - k + 1;
+    return true;
+};
+
+function get_next_composition(n, k, composition) {
+    if (composition[0] == n - k + 1) {
+        return false;
+    }
+
+    var last = k - 1;
+    while (composition[last] == 1) {
+        last--;
+    }
+
+    var z = composition[last];
+    composition[last - 1] += 1;
+    composition[last] = 1;
+    composition[k - 1] = z - 1;
+    return true;
+};
+
+function comp(n, k) {
+    allcomp = [];
+    if (k == 0)
+        allcomp = []
+    else {
+        var composition = [];
+        for (var exists = get_first_composition(n, k, composition); exists; exists = get_next_composition(n, k, composition)) {
+            display_composition(allcomp, composition);
+        };
+    }
+    return allcomp;
+};
+
+function stirlingNumber(r, n) {
+    if (n > r)
+        return -1;
+    if (n == 0)
+        return 0;
+    if (r == n)
+        return 1;
+    if (n == 1)
+        return factorial(r - 1);
+    if (r - n == 1)
+        return binomial(r, 2);
+    else
+        return stirlingNumber(r - 1, n - 1) +
+            (r - 1) * stirlingNumber(r - 1, n);
+};
+
+function addTScoeffREGI(t, s) {
+    const elem = document.getElementById("tsout");
+    const p = document.getElementById("p").value * 1;
+    const q = document.getElementById("q").value * 1;
+    const n = document.getElementById("n").value * 1;
+    const N = p + q + 1 - t - s;
+    const K = q + 1 - s;
+    //const e = p + t;
+    const ts = factorial(p) * factorial(q) / (factorial(s) * factorial(t));
+    comp(N, K);
+    var str = "";
+    const nc = allcomp.length;
+    for (var k = 0; k < n + 1; k++) {
+        var b = 0;
+        for (var m = Math.max(k, 1); m < n + 1; m++) {
+            b += Math.pow(-1, m - k) * stirlingNumber(m, k) * binomial(n - 1, m - 1) / factorial(m - 1);;
+        };
+        if (b !== 0) {
+            var elojel = " + ";
+            if (p % 2 == 1)
+                elojel = " - ";
+            for (var c = 0; c < nc; c++) {
+                let cv = [...allcomp[c]];
+                cv[K - 1] += 1 - k;
+                str += elojel + ts * b + "·Li<sub>(" + cv + ")</sub>(x)";
+            };
+        }
+    };
+    elem.innerHTML = str;
+};
+
+function fractionReduce(numerator, denominator) {
+    var a = numerator;
+    var b = denominator;
+    var c;
+    while (b) {
+        c = a % b;
+        a = b;
+        b = c;
+    }
+    return [numerator / a, denominator / a];
+};
+
+function addTScoeff(t, s) {
+    const elem = document.getElementById("tsout");
+    const p = document.getElementById("p").value * 1;
+    const q = document.getElementById("q").value * 1;
+    const n = document.getElementById("n").value * 1;
+    const N = p + q + 1 - t - s;
+    const K = q + 1 - s;
+    const ts = factorial(p) * factorial(q) / (factorial(s) * factorial(t)); //* factorial(n - 1)
+    const fn = factorial(n - 1);
+    var elojel = " + ";
+    if ((p + t) % 2 == 1)
+        elojel = " - ";
+    comp(N, K);
+    var str = "";
+    const nc = allcomp.length;
+    for (var k = 0; k < n; k++) {
+        var b = ts * stirlingNumber(n - 1, k);
+        if (b !== 0) {
+            if (b % fn == 0) {
+                var r = b / fn;
+                for (var c = 0; c < nc; c++) {
+                    let cv = [...allcomp[c]];
+                    cv[K - 1] -= k;
+                    if (r == 1)
+                        str += elojel + "Li<sub>(" + cv + ")</sub>(x)";
+                    else
+                        str += elojel + r + "·Li<sub>(" + cv + ")</sub>(x)";
+                };
+            } else {
+                var r = fractionReduce(b, fn)
+                for (var c = 0; c < nc; c++) {
+                    let cv = [...allcomp[c]];
+                    cv[K - 1] -= k;
+                    str += elojel + r[0] + "/" + r[1] + "·Li<sub>(" + cv + ")</sub>(x)";
+                };
+            }
+        };
+    };
+    if (str.startsWith(" + "))
+        str = str.slice(2);
+    elem.innerHTML = str;
+};
+
+function makeTable() {
+    const elem = document.getElementById("pqnout");
+    const p = document.getElementById("p").value * 1;
+    const q = document.getElementById("q").value * 1;
+    const n = document.getElementById("n").value * 1;
+    const nf = factorial(n - 1);
+    const fix = factorial(p) * factorial(q);
+    var tbl = "<table id='pqntbl'><tr><td><sub>t</sub>\\<sup>s</sup></td>"
+    for (var i = 0; i < q + 1; i++)
+        tbl += "<td>" + i + "</td>";
+    tbl += "</tr>";
+    for (var t = 0; t < p + 1; t++) {
+        tbl += "<tr><td>" + t + "</td>";
+        for (var s = 0; s < q + 1; s++) {
+            var hanyad = fix / (factorial(t) * factorial(s));
+            if (hanyad % nf == 0)
+                tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * hanyad + "</td>";
+            else {
+                var r = fractionReduce(hanyad, nf)
+                tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * r[0] + "/" + r[1] + "</td>";
+            }
+        }
+        tbl += "</tr>";
+    }
+    tbl += "</table>";
+    elem.innerHTML = tbl;
+};
+
+$(document).on('click', 'table#pqntbl td', function() {
+    $('table#pqntbl td.active').removeClass('active');
+    $(this).addClass('active');
+
+});
