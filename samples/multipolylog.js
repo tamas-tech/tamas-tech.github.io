@@ -6067,6 +6067,7 @@ function addTScoeffpLi(t) {
 };
 
 function addTScoeffpPlot(t) {
+    idClear('#plotpqn');
     const elemfn = document.querySelector("#fnpqn");
     elemfn.style.display = "block";
     const elem = document.getElementById("tsout");
@@ -6130,7 +6131,6 @@ function addTScoeffpPlot(t) {
         },
         data: [{
             fn: fn,
-            //graphType: 'polyline',
             range: [0, 1],
             closed: true,
             color: "#076964"
@@ -6139,6 +6139,78 @@ function addTScoeffpPlot(t) {
     var fnt = fn.replaceAll("*", " ⋅ ").replace(/\^(\d*)/g, "<sup>$1</sup>")
     elem.innerHTML = fnt;
     document.querySelector("#plotpqn svg.function-plot .canvas .content g.graph").setAttribute("opacity", "0.6")
+};
+
+function addTScoeffpPlotAll() {
+    if (pqnplot) {
+        const elemfn = document.querySelector("#fnpqn");
+        elemfn.style.display = "block";
+        const elem = document.getElementById("tsout");
+        const p = document.getElementById("p").value * 1;
+        const q = document.getElementById("q").value * 1;
+        const n = document.getElementById("n").value * 1;
+        const NN = document.getElementById("NN").value * 1;
+        var fn = "";
+        var fnt = "";
+        var elojel;
+        var ts;
+        var dat = [];
+        var hat = 0;
+        for (var t = 0; t <= p; t++) {
+            fn = "";
+            elojel = Math.pow(-1, p + q + t);
+            ts = elojel * factorial(p) * factorial(q) / factorial(t);
+            var sum;
+            for (var l = 1; l < NN + 1; l++) {
+                sum = 0;
+                for (var k = 0; k < n; k++) {
+                    let cv = [p + 1 - t];
+                    for (var j = 1; j <= k; j++)
+                        cv.push(0);
+                    for (var i = 1; i <= q; i++)
+                        cv.push(1);
+                    sum += binomial(n - 1, k) * Ha(cv, l);
+                };
+                if (sum > 0)
+                    fn += " + " + sum + "*x^" + l + "";
+                if (t == 0)
+                    if (elojel > 0)
+                        hat += sum;
+                    else
+                        hat -= sum;
+            };
+            fn = ts + "*log(x)^" + t + "*(" + fn + ")";
+            fnt += fn;
+            dat.push({ fn: fn, "range": [0, 1], "graphType": "polyline" });
+        };
+        console.log(factorial(p) * factorial(q) * hat)
+        hat = factorial(p) * factorial(q) * hat * 1.1;
+        if ((p + q) % 2 == 0) {
+            var yAx = [-0.1 * hat, hat];
+        } else
+            var yAx = [hat, -0.1 * hat, ];
+        if (fnt.startsWith(" + "))
+            fnt = fnt.slice(2);
+        functionPlot({
+            target: '#plotpqn',
+            title: "all Ψ" + "(t)",
+            grid: true,
+            disableZoom: true,
+            yAxis: {
+                domain: yAx
+            },
+            xAxis: {
+                domain: [-0.05, 1.05]
+            },
+            data: dat
+        });
+        var fnt = fnt.replaceAll("*", " ⋅ ").replace(/\^(\d*)/g, "<sup>$1</sup>")
+        elem.innerHTML = fnt;
+        $("#plotpqn svg.function-plot .canvas .content g.graph path").each(function() {
+            this.setAttribute("stroke-width", "2");
+        })
+    } else
+        return;
 };
 
 function addTScoeffp(t) {
@@ -6179,7 +6251,7 @@ function makeTable() {
         var tbl = "<table id='pqntbl'><tr><td>t</td>"
         for (var i = 0; i < p + 1; i++)
             tbl += "<td>" + i + "</td>";
-        tbl += "</tr><tr><td></td>";
+        tbl += "</tr><tr><td onclick='addTScoeffpPlotAll();'>all</td>";
         for (var t = 0; t < p + 1; t++) {
             var hanyad = fix / factorial(t);
             tbl += "<td onclick='addTScoeffp(" + t + ");'>" + Math.pow(-1, t + p + q) * hanyad + "</td>";
