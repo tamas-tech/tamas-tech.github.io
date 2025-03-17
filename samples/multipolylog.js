@@ -106,6 +106,7 @@ var ireszben = "";
 var Ipolytop = [];
 
 var LeC = {};
+var pqnplot = false;
 
 function setMode(t) {
     mode = t.value;
@@ -2140,6 +2141,10 @@ $(document).ready(function() {
             setOutputFont2($('#outfont-slider2').val());
         };
     };
+    $(document).on('click', 'table#pqntbl td', function() {
+        $('table#pqntbl td.active').removeClass('active');
+        $(this).addClass('active');
+    });
 });
 
 // H,ZETA
@@ -5790,6 +5795,18 @@ function setOutputFontpq(v) {
     document.getElementById("tsout").style.fontSize = v + "px";
 };
 
+function setPlot(elem) {
+    pqnplot = elem.checked;
+    var elemfn = document.querySelector("#fnpqn");
+    if (pqnplot)
+        elemfn.style.display = 'block';
+    else
+        elemfn.style.display = 'none';
+    const act = document.querySelector("#pqntbl td.active");
+    if (act)
+        act.click();
+};
+
 function factorial(n) {
     if (n == 0 || n == 1)
         return 1;
@@ -5801,9 +5818,26 @@ function factorial(n) {
     };
 };
 
+function pqnClear() {
+    idClear('#pqnout');
+    idClear('#tsout');
+    idClear('#plotpqn');
+};
+
+function pqnBlur() {
+    document.getElementById('pqnout').style.opacity = "0.2";
+    document.getElementById('tsout').style.opacity = "0.2";
+    document.getElementById('plotpqn').style.opacity = "0.2";
+};
+
+function pqnUnBlur() {
+    document.getElementById('pqnout').style.opacity = "1";
+    document.getElementById('tsout').style.opacity = "1";
+    document.getElementById('plotpqn').style.opacity = "1";
+};
+
 //https://stackoverflow.com/questions/15577651/generate-all-compositions-of-an-integer-into-k-parts
 // translated from C++ code 
-
 
 function get_first_composition(n, k, composition) {
     if (n < k) {
@@ -5862,37 +5896,6 @@ function stirlingNumber(r, n) {
             (r - 1) * stirlingNumber(r - 1, n);
 };
 
-function addTScoeffREGI(t, s) {
-    const elem = document.getElementById("tsout");
-    const p = document.getElementById("p").value * 1;
-    const q = document.getElementById("q").value * 1;
-    const n = document.getElementById("n").value * 1;
-    const N = p + q + 1 - t - s;
-    const K = q + 1 - s;
-    //const e = p + t;
-    const ts = factorial(p) * factorial(q) / (factorial(s) * factorial(t));
-    comp(N, K);
-    var str = "";
-    const nc = allcomp.length;
-    for (var k = 0; k < n + 1; k++) {
-        var b = 0;
-        for (var m = Math.max(k, 1); m < n + 1; m++) {
-            b += Math.pow(-1, m - k) * stirlingNumber(m, k) * binomial(n - 1, m - 1) / factorial(m - 1);;
-        };
-        if (b !== 0) {
-            var elojel = " + ";
-            if (p % 2 == 1)
-                elojel = " - ";
-            for (var c = 0; c < nc; c++) {
-                let cv = [...allcomp[c]];
-                cv[K - 1] += 1 - k;
-                str += elojel + ts * b + "·Li<sub>(" + cv + ")</sub>(x)";
-            };
-        }
-    };
-    elem.innerHTML = str;
-};
-
 function fractionReduce(numerator, denominator) {
     var a = numerator;
     var b = denominator;
@@ -5905,7 +5908,7 @@ function fractionReduce(numerator, denominator) {
     return [numerator / a, denominator / a];
 };
 
-function addTScoeff(t, s) {
+function addTScoeffLi(t, s) {
     const elem = document.getElementById("tsout");
     const p = document.getElementById("p").value * 1;
     const q = document.getElementById("q").value * 1;
@@ -5948,36 +5951,246 @@ function addTScoeff(t, s) {
     elem.innerHTML = str;
 };
 
+function addTScoeffPlot(t, s) {
+    const elemfn = document.querySelector("#fnpqn");
+    elemfn.style.display = "block";
+    const elem = document.getElementById("tsout");
+    const p = document.getElementById("p").value * 1;
+    const q = document.getElementById("q").value * 1;
+    const n = document.getElementById("n").value * 1;
+    const NN = document.getElementById("NN").value * 1;
+    const N = p + q + 1 - t - s;
+    const K = q + 1 - s;
+    const elojel = Math.pow(-1, p + t);
+    const ts = elojel * factorial(p) * factorial(q) / (factorial(s) * factorial(t) * factorial(n - 1));
+    comp(N, K);
+    var fn = "";
+    var ev = [];
+    const nc = allcomp.length;
+    for (var l = q + 1 - s; l < NN + 1; l++) {
+        for (var k = 0; k < n; k++) {
+            var sum = 0;
+            for (var c = 0; c < nc; c++) {
+                let cv = [...allcomp[c]];
+                cv[K - 1] -= k;
+                sum += Ha(cv, l);
+            };
+            sum *= stirlingNumber(n - 1, k);
+        };
+        fn += " + " + sum + "*x^" + l + "";
+        ev.push([sum, l]);
+    }
+    if (fn.startsWith(" + "))
+        fn = fn.slice(2);
+    fn = ts + "*log(x)^" + t + "*log(1-x)^" + s + "*(" + fn + ")";
+
+    var mima = [];
+
+    for (var u = 1; u < 21; u++) {
+        let z = Math.min(0.99, u / 20);
+        let sum = 0;
+        for (let c of ev) {
+            sum += c[0] * Math.pow(z, c[1]);
+        }
+        sum = elojel * sum * Math.pow(Math.log(z), t) * Math.pow(Math.log(1 - z), s);
+        mima.push(sum);
+    };
+
+    var mi = _.min(mima) * Math.abs(ts) * 1.15;
+    var ma = _.max(mima) * Math.abs(ts) * 1.15;
+    if (Math.abs(ma) > Math.abs(mi))
+        mi = -ma * 0.1;
+    else
+        ma = -mi * 0.1;
+    var yAx = [mi, ma];
+    functionPlot({
+        target: '#plotpqn',
+        title: ts + " ⋅ ln^" + t + "(x) ⋅ ln^" + s + "(1-x) ⋅ Ψ" + "(" + t + "," + s + ")",
+        grid: true,
+        disableZoom: true,
+        yAxis: {
+            domain: yAx
+        },
+        xAxis: {
+            domain: [-0.05, 1.05]
+        },
+        tip: {
+            xLine: true,
+            yLine: true,
+            renderer: function(x, y, index) {}
+        },
+        data: [{
+            fn: fn,
+            range: [0, 1],
+            closed: true,
+            color: "#076964"
+        }]
+    });
+    var fnt = fn.replaceAll("*", " ⋅ ").replace(/\^(\d*)/g, "<sup>$1</sup>")
+    elem.innerHTML = fnt;
+    document.querySelector("#plotpqn svg.function-plot .canvas .content g.graph").setAttribute("opacity", "0.6")
+};
+
+function addTScoeff(t, s) {
+    if (pqnplot)
+        addTScoeffPlot(t, s);
+    else
+        addTScoeffLi(t, s)
+};
+
+function addTScoeffpLi(t) {
+    const elem = document.getElementById("tsout");
+    const p = document.getElementById("p").value * 1;
+    const q = document.getElementById("q").value * 1;
+    const n = document.getElementById("n").value * 1;
+    const ts = factorial(p) * factorial(q) / factorial(t);
+    var q1 = "";
+    for (var j = 0; j < q; j++)
+        q1 += ",1";
+    var elojel = " + ";
+    if ((p + q + t) % 2 == 1)
+        elojel = " - ";
+    var str = "";
+    for (var k = 0; k < n; k++) {
+        var b = ts * binomial(n - 1, k);
+        var k0 = "";
+        for (var i = 0; i < k; i++)
+            k0 += ",0"
+        if (b == 1)
+            str += elojel + "Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
+        else
+            str += elojel + b + "·Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
+    };
+    if (str.startsWith(" + "))
+        str = str.slice(2);
+    elem.innerHTML = str;
+};
+
+function addTScoeffpPlot(t) {
+    const elemfn = document.querySelector("#fnpqn");
+    elemfn.style.display = "block";
+    const elem = document.getElementById("tsout");
+    const p = document.getElementById("p").value * 1;
+    const q = document.getElementById("q").value * 1;
+    const n = document.getElementById("n").value * 1;
+    const NN = document.getElementById("NN").value * 1;
+    const elojel = Math.pow(-1, p + q + t);
+    const ts = elojel * factorial(p) * factorial(q) / factorial(t);
+    var fn = "";
+    var ev = [];
+    for (var l = 1; l < NN + 1; l++) {
+        var sum = 0;
+        for (var k = 0; k < n; k++) {
+            let cv = [p + 1 - t];
+            for (var j = 1; j <= k; j++)
+                cv.push(0);
+            for (var i = 1; i <= q; i++)
+                cv.push(1);
+            sum += binomial(n - 1, k) * Ha(cv, l);
+        };
+        if (sum > 0)
+            fn += " + " + sum + "*x^" + l + "";
+        ev.push(sum);
+    };
+    var mima = [];
+    for (var u = 1; u < 11; u++) {
+        let z = u / 10;
+        let s = 0;
+        for (var l = 0; l < NN; l++) {
+            s += ev[l] * Math.pow(z, l + 1);
+        }
+        s = elojel * s * Math.pow(Math.log(z), t);
+        mima.push(s);
+    };
+    var mi = _.min(mima) * Math.abs(ts) * 1.15;
+    var ma = _.max(mima) * Math.abs(ts) * 1.15;
+    if (ma == 0)
+        ma = -mi * 0.1
+    if (mi == 0)
+        mi = -ma * 0.1
+    var yAx = [mi, ma];
+    if (fn.startsWith(" + "))
+        fn = fn.slice(2);
+    fn = ts + "*log(x)^" + t + "*(" + fn + ")";
+    functionPlot({
+        target: '#plotpqn',
+        title: ts + " ⋅ ln^" + t + "(x) ⋅ Ψ" + "(" + t + ")",
+        grid: true,
+        disableZoom: true,
+        yAxis: {
+            domain: yAx
+        },
+        xAxis: {
+            domain: [-0.05, 1.05]
+        },
+        tip: {
+            xLine: true,
+            yLine: true,
+            renderer: function(x, y, index) {}
+        },
+        data: [{
+            fn: fn,
+            //graphType: 'polyline',
+            range: [0, 1],
+            closed: true,
+            color: "#076964"
+        }]
+    });
+    var fnt = fn.replaceAll("*", " ⋅ ").replace(/\^(\d*)/g, "<sup>$1</sup>")
+    elem.innerHTML = fnt;
+    document.querySelector("#plotpqn svg.function-plot .canvas .content g.graph").setAttribute("opacity", "0.6")
+};
+
+function addTScoeffp(t) {
+    if (pqnplot)
+        addTScoeffpPlot(t);
+    else
+        addTScoeffpLi(t)
+};
+
 function makeTable() {
+    var tmode = document.getElementById("setTmode").checked;
     const elem = document.getElementById("pqnout");
     const p = document.getElementById("p").value * 1;
     const q = document.getElementById("q").value * 1;
     const n = document.getElementById("n").value * 1;
     const nf = factorial(n - 1);
     const fix = factorial(p) * factorial(q);
-    var tbl = "<table id='pqntbl'><tr><td><sub>t</sub>\\<sup>s</sup></td>"
-    for (var i = 0; i < q + 1; i++)
-        tbl += "<td>" + i + "</td>";
-    tbl += "</tr>";
-    for (var t = 0; t < p + 1; t++) {
-        tbl += "<tr><td>" + t + "</td>";
-        for (var s = 0; s < q + 1; s++) {
-            var hanyad = fix / (factorial(t) * factorial(s));
-            if (hanyad % nf == 0)
-                tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * hanyad + "</td>";
-            else {
-                var r = fractionReduce(hanyad, nf)
-                tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * r[0] + "/" + r[1] + "</td>";
-            }
-        }
+    if (tmode) {
+        var tbl = "<table id='pqntbl'><tr><td><sub>t</sub>\\<sup>s</sup></td>"
+        for (var i = 0; i < q + 1; i++)
+            tbl += "<td>" + i + "</td>";
         tbl += "</tr>";
-    }
-    tbl += "</table>";
+        for (var t = 0; t < p + 1; t++) {
+            tbl += "<tr><td>" + t + "</td>";
+            for (var s = 0; s < q + 1; s++) {
+                var hanyad = fix / (factorial(t) * factorial(s));
+                if (hanyad % nf == 0)
+                    tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * hanyad + "</td>";
+                else {
+                    var r = fractionReduce(hanyad, nf)
+                    tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * r[0] + "/" + r[1] + "</td>";
+                }
+            }
+            tbl += "</tr>";
+        }
+        tbl += "</table>";
+    } else {
+        var tbl = "<table id='pqntbl'><tr><td>t</td>"
+        for (var i = 0; i < p + 1; i++)
+            tbl += "<td>" + i + "</td>";
+        tbl += "</tr><tr><td></td>";
+        for (var t = 0; t < p + 1; t++) {
+            var hanyad = fix / factorial(t);
+            tbl += "<td onclick='addTScoeffp(" + t + ");'>" + Math.pow(-1, t + p + q) * hanyad + "</td>";
+        }
+        tbl += "</tr></table>";
+    };
+
     elem.innerHTML = tbl;
 };
 
 $(document).on('click', 'table#pqntbl td', function() {
     $('table#pqntbl td.active').removeClass('active');
     $(this).addClass('active');
-
 });
