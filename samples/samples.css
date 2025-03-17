@@ -703,3 +703,7 @@ table#pqntbl table.tort td {
 #plotpqn svg.function-plot text.top-right-legend {
     font-size: 16px;
 }
+#plotpqn svg.function-plot .canvas .content g.graph path.kiemelt {
+    stroke-width: 5px;
+    filter: blur(2px);
+}
