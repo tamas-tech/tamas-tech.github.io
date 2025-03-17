@@ -17,6 +17,14 @@ function pretoggle(elem) {
         elem.innerText = "Show code";
 };
 
+const COLORS = [
+    "#2484c1", "#65a620", "#7b6888", "#a05d56", "#961a1a", "#e98125", "#d0743c", "#635222", "#6ada6a",
+    "#0c6197", "#7d9058", "#207f33", "#44b9b0", "#bca44a", "#e4a14b", "#a3acb2", "#8cc3e9", "#69a6f9", "#5b388f",
+    "#546e91", "#8bde95", "#d2ab58", "#273c71", "#98bf6e", "#4daa4b", "#98abc5", "#cc1010", "#31383b", "#006391",
+    "#c2643f", "#b0a474", "#a5a39c", "#a9c2bc", "#22af8c", "#7fcecf", "#987ac6", "#3d3b87", "#b77b1c", "#c9c2b6",
+    "#807ece", "#8db27c", "#be66a2", "#9ed3c6", "#00644b", "#005064", "#77979f", "#77e079", "#9c73ab", "#1f79a7"
+];
+
 var lepessor = [];
 var mode = "Li";
 var mode1 = "Li";
@@ -107,6 +115,8 @@ var Ipolytop = [];
 
 var LeC = {};
 var pqnplot = false;
+var plotall = false;
+var kummode = false;
 
 function setMode(t) {
     mode = t.value;
@@ -1385,7 +1395,6 @@ function Le(N) {
     setfigy(figy, "figy");
     return [str1, fn];
 };
-
 
 function sorfejtesLi() {
     sorhiba = false;
@@ -5822,6 +5831,7 @@ function pqnClear() {
     idClear('#pqnout');
     idClear('#tsout');
     idClear('#plotpqn');
+    plotall = false;
 };
 
 function pqnBlur() {
@@ -6067,6 +6077,7 @@ function addTScoeffpLi(t) {
 };
 
 function addTScoeffpPlot(t) {
+    plotall = false;
     idClear('#plotpqn');
     const elemfn = document.querySelector("#fnpqn");
     elemfn.style.display = "block";
@@ -6142,6 +6153,7 @@ function addTScoeffpPlot(t) {
 };
 
 function addTScoeffpPlotAll() {
+    plotall = true;
     if (pqnplot) {
         const elemfn = document.querySelector("#fnpqn");
         elemfn.style.display = "block";
@@ -6151,8 +6163,11 @@ function addTScoeffpPlotAll() {
         const n = document.getElementById("n").value * 1;
         const NN = document.getElementById("NN").value * 1;
         var fn = "";
+        var fnkum = "";
+        var fnkum1 = "";
         var fnt = "";
         var elojel;
+        var hezag = "";
         var ts;
         var dat = [];
         var hat = 0;
@@ -6160,6 +6175,8 @@ function addTScoeffpPlotAll() {
             fn = "";
             elojel = Math.pow(-1, p + q + t);
             ts = elojel * factorial(p) * factorial(q) / factorial(t);
+            if (t > 0 && elojel > 0)
+                hezag = " + ";
             var sum;
             for (var l = 1; l < NN + 1; l++) {
                 sum = 0;
@@ -6179,11 +6196,18 @@ function addTScoeffpPlotAll() {
                     else
                         hat -= sum;
             };
+            if (elojel < 0) {
+                hezag = " - ";
+            };
+            fnt += "<b style='color:" + COLORS[t] + ";cursor:pointer;border-bottom: 1px solid;' onclick='kiemelfgv(" + t + ",true);'>" + hezag + Math.abs(ts) + " ⋅ log(x)^" + t + "</b> ⋅ (" + fn + ")";
             fn = ts + "*log(x)^" + t + "*(" + fn + ")";
-            fnt += fn;
-            dat.push({ fn: fn, "range": [0, 1], "graphType": "polyline" });
+            fnkum += "+" + fn;
+            if (t > 0)
+                fnkum1 += "+" + fn;
+            dat.push({ fn: fn, "range": [0, 1], "graphType": "polyline", "color": COLORS[t] });
         };
-        console.log(factorial(p) * factorial(q) * hat)
+        dat.push({ fn: fnkum, "range": [0, 1], "color": "#aaaaaa88", "closed": true });
+        dat.push({ fn: fnkum1, "range": [0, 1], "color": "#88888833", "closed": true });
         hat = factorial(p) * factorial(q) * hat * 1.1;
         if ((p + q) % 2 == 0) {
             var yAx = [-0.1 * hat, hat];
@@ -6208,9 +6232,119 @@ function addTScoeffpPlotAll() {
         elem.innerHTML = fnt;
         $("#plotpqn svg.function-plot .canvas .content g.graph path").each(function() {
             this.setAttribute("stroke-width", "2");
-        })
+        });
+        //const kum = $("#plotpqn svg.function-plot .canvas .content g.graph path.line-" + (p + 1) + "")[0]
+        // kum.setAttribute("stroke-dasharray", "3");
+        //kum.setAttribute("opacity", "0.5");
     } else
         return;
+};
+
+function addTScoeffpPlotAllkum() {
+    plotall = true;
+    if (pqnplot) {
+        const elemfn = document.querySelector("#fnpqn");
+        elemfn.style.display = "block";
+        const elem = document.getElementById("tsout");
+        const p = document.getElementById("p").value * 1;
+        const q = document.getElementById("q").value * 1;
+        const n = document.getElementById("n").value * 1;
+        const NN = document.getElementById("NN").value * 1;
+        var fn = "";
+        var elojel;
+        var kums = Array(p + 1).fill("");
+        var ts;
+        var dat = [];
+        var hat = 0;
+        for (var t = 0; t <= p; t++) {
+            fn = "";
+            elojel = Math.pow(-1, p + q + t);
+            ts = elojel * factorial(p) * factorial(q) / factorial(t);
+            if (t > 0 && elojel > 0)
+                hezag = " + ";
+            var sum;
+            for (var l = 1; l < NN + 1; l++) {
+                sum = 0;
+                for (var k = 0; k < n; k++) {
+                    let cv = [p + 1 - t];
+                    for (var j = 1; j <= k; j++)
+                        cv.push(0);
+                    for (var i = 1; i <= q; i++)
+                        cv.push(1);
+                    sum += binomial(n - 1, k) * Ha(cv, l);
+                };
+                if (sum > 0)
+                    fn += " + " + sum + "*x^" + l + "";
+                if (t == 0)
+                    if (elojel > 0)
+                        hat += sum;
+                    else
+                        hat -= sum;
+            };
+            if (elojel < 0) {
+                hezag = " - ";
+            };
+            fn = ts + "*log(x)^" + t + "*(" + fn + ")";
+            for (var j = t; j <= p; j++)
+                kums[j] += "+" + fn;
+            //dat.push({ fn: fn, "range": [0, 1], "graphType": "polyline", "color": COLORS[t] });
+        };
+        for (var l = 0; l <= p; l++)
+            dat.push({ fn: kums[l], "range": [0, 1], "graphType": "polyline", "color": COLORS[l] })
+        hat = factorial(p) * factorial(q) * hat * 1.1;
+        if ((p + q) % 2 == 0) {
+            var yAx = [-0.1 * hat, hat];
+        } else
+            var yAx = [hat, -0.1 * hat, ];
+
+        functionPlot({
+            target: '#plotpqn',
+            title: "all Ψ" + "(t)",
+            grid: true,
+            disableZoom: true,
+            yAxis: {
+                domain: yAx
+            },
+            xAxis: {
+                domain: [-0.05, 1.05]
+            },
+            data: dat
+        });
+        elem.innerHTML = "";
+        $("#plotpqn svg.function-plot .canvas .content g.graph path").each(function() {
+            this.setAttribute("stroke-width", "2");
+        });
+    } else
+        return;
+};
+
+function hakellplotAll() {
+    if (!plotall) {
+        if (kummode)
+            addTScoeffpPlotAllkum();
+        else
+            addTScoeffpPlotAll();
+    } else
+        return;
+};
+
+function kiemelfgv(t, scroll) {
+    const e = $("#plotpqn svg.function-plot .canvas .content g.graph path:nth(" + t + ")");
+    const ek = $("#plotpqn svg.function-plot .canvas .content g.graph path.kiemelt");
+    if (ek[0] == undefined)
+        $(e).addClass("kiemelt");
+    else {
+        ek.removeClass("kiemelt");
+        const nth = ek[0].classList[1].split('-')[1] * 1;
+        if (nth !== t) {
+            e.addClass("kiemelt");
+            if (scroll)
+                e[0].scrollIntoView({
+                    behavior: "smooth",
+                    block: 'center'
+                });
+        };
+    }
 };
 
 function addTScoeffp(t) {
@@ -6219,6 +6353,16 @@ function addTScoeffp(t) {
     else
         addTScoeffpLi(t)
 };
+
+function setKum(elem) {
+    plotall = false;
+    if (kummode)
+        elem.innerText = "t";
+    else
+        elem.innerText = "∑t";
+    kummode = !kummode;
+    hakellplotAll();
+}
 
 function makeTable() {
     var tmode = document.getElementById("setTmode").checked;
@@ -6248,17 +6392,16 @@ function makeTable() {
         }
         tbl += "</table>";
     } else {
-        var tbl = "<table id='pqntbl'><tr><td>t</td>"
+        var tbl = "<table id='pqntbl'><tr><td style='min-width:50px;background-color:#b5eefb;outline: 2px solid #3d7723;outline-offset: -1px;' onclick='setKum(this);'>t</td>"
         for (var i = 0; i < p + 1; i++)
-            tbl += "<td>" + i + "</td>";
-        tbl += "</tr><tr><td onclick='addTScoeffpPlotAll();'>all</td>";
+            tbl += "<td onclick='hakellplotAll();kiemelfgv(" + i + ",false);'>" + i + "</td>";
+        tbl += "</tr><tr><td onclick='hakellplotAll();'>all</td>";
         for (var t = 0; t < p + 1; t++) {
             var hanyad = fix / factorial(t);
             tbl += "<td onclick='addTScoeffp(" + t + ");'>" + Math.pow(-1, t + p + q) * hanyad + "</td>";
         }
         tbl += "</tr></table>";
     };
-
     elem.innerHTML = tbl;
 };
 
