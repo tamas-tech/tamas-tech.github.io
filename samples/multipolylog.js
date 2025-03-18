@@ -117,6 +117,7 @@ var LeC = {};
 var pqnplot = false;
 var plotall = false;
 var kummode = false;
+var kums = [];
 
 function setMode(t) {
     mode = t.value;
@@ -5805,6 +5806,7 @@ function setOutputFontpq(v) {
 };
 
 function setPlot(elem) {
+    plotall = false;
     pqnplot = elem.checked;
     var elemfn = document.querySelector("#fnpqn");
     if (pqnplot)
@@ -5814,6 +5816,7 @@ function setPlot(elem) {
     const act = document.querySelector("#pqntbl td.active");
     if (act)
         act.click();
+
 };
 
 function factorial(n) {
@@ -6036,7 +6039,7 @@ function addTScoeffPlot(t, s) {
             color: "#076964"
         }]
     });
-    var fnt = fn.replaceAll("*", " ⋅ ").replace(/\^(\d*)/g, "<sup>$1</sup>")
+    var fnt = fn.replaceAll("*", " ⋅ ").replace(/(log\(x\))\^(\d*)/g, "<b>$1<sup>$2</sup></b>").replace(/\^(\d*)/g, "<sup>$1</sup>")
     elem.innerHTML = fnt;
     document.querySelector("#plotpqn svg.function-plot .canvas .content g.graph").setAttribute("opacity", "0.6")
 };
@@ -6067,13 +6070,48 @@ function addTScoeffpLi(t) {
         for (var i = 0; i < k; i++)
             k0 += ",0"
         if (b == 1)
-            str += elojel + "Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
+            str += " + " + "Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
         else
-            str += elojel + b + "·Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
+            str += " + " + b + "·Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
     };
     if (str.startsWith(" + "))
         str = str.slice(2);
+    str = elojel + "<b>ln<sup>" + t + "</sup>(x)</b> · " + "(" + str + ")";
     elem.innerHTML = str;
+};
+
+function addTScoeffpLiKum(T) {
+    const elem = document.getElementById("tsout");
+    const p = document.getElementById("p").value * 1;
+    const q = document.getElementById("q").value * 1;
+    const n = document.getElementById("n").value * 1;
+    var kumstr = "";
+    for (var t = 0; t <= T; t++) {
+        var ts = factorial(p) * factorial(q) / factorial(t);
+        var q1 = "";
+        for (var j = 0; j < q; j++)
+            q1 += ",1";
+        var elojel = " + ";
+        if ((p + q + t) % 2 == 1)
+            elojel = " - ";
+        var str = "";
+        for (var k = 0; k < n; k++) {
+            var b = ts * binomial(n - 1, k);
+            var k0 = "";
+            for (var i = 0; i < k; i++)
+                k0 += ",0"
+            if (b == 1)
+                str += " + " + "Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
+            else
+                str += " + " + b + "·Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
+        };
+        if (str.startsWith(" + "))
+            str = str.slice(3);
+        kumstr += elojel + "<b>ln<sup>" + t + "</sup>(x)</b> · " + "(" + str + ")";
+    }
+    if (kumstr.startsWith(" + "))
+        kumstr = kumstr.slice(2);
+    elem.innerHTML = kumstr;
 };
 
 function addTScoeffpPlot(t) {
@@ -6147,7 +6185,7 @@ function addTScoeffpPlot(t) {
             color: "#076964"
         }]
     });
-    var fnt = fn.replaceAll("*", " ⋅ ").replace(/\^(\d*)/g, "<sup>$1</sup>")
+    var fnt = fn.replaceAll("*", " ⋅ ").replace(/(log\(x\))\^(\d*)/g, "<b>$1<sup>$2</sup></b>").replace(/\^(\d*)/g, "<sup>$1</sup>")
     elem.innerHTML = fnt;
     document.querySelector("#plotpqn svg.function-plot .canvas .content g.graph").setAttribute("opacity", "0.6")
 };
@@ -6199,7 +6237,7 @@ function addTScoeffpPlotAll() {
             if (elojel < 0) {
                 hezag = " - ";
             };
-            fnt += "<b style='color:" + COLORS[t] + ";cursor:pointer;border-bottom: 1px solid;' onclick='kiemelfgv(" + t + ",true);'>" + hezag + Math.abs(ts) + " ⋅ log(x)^" + t + "</b> ⋅ (" + fn + ")";
+            fnt += "<span class='allpqn num-" + t + "'><b style='color:" + COLORS[t] + ";cursor:pointer;border-bottom: 1px solid;' onclick='kiemelfgv(" + t + ",true);'>" + hezag + Math.abs(ts) + " ⋅ log(x)^" + t + "</b> ⋅ (" + fn + ")</span>";
             fn = ts + "*log(x)^" + t + "*(" + fn + ")";
             fnkum += "+" + fn;
             if (t > 0)
@@ -6252,7 +6290,7 @@ function addTScoeffpPlotAllkum() {
         const NN = document.getElementById("NN").value * 1;
         var fn = "";
         var elojel;
-        var kums = Array(p + 1).fill("");
+        kums = Array(p + 1).fill("");
         var ts;
         var dat = [];
         var hat = 0;
@@ -6260,8 +6298,6 @@ function addTScoeffpPlotAllkum() {
             fn = "";
             elojel = Math.pow(-1, p + q + t);
             ts = elojel * factorial(p) * factorial(q) / factorial(t);
-            if (t > 0 && elojel > 0)
-                hezag = " + ";
             var sum;
             for (var l = 1; l < NN + 1; l++) {
                 sum = 0;
@@ -6281,13 +6317,10 @@ function addTScoeffpPlotAllkum() {
                     else
                         hat -= sum;
             };
-            if (elojel < 0) {
-                hezag = " - ";
-            };
+            fn = fn.slice(3);
             fn = ts + "*log(x)^" + t + "*(" + fn + ")";
             for (var j = t; j <= p; j++)
-                kums[j] += "+" + fn;
-            //dat.push({ fn: fn, "range": [0, 1], "graphType": "polyline", "color": COLORS[t] });
+                kums[j] += " + " + fn;
         };
         for (var l = 0; l <= p; l++)
             dat.push({ fn: kums[l], "range": [0, 1], "graphType": "polyline", "color": COLORS[l] })
@@ -6299,7 +6332,7 @@ function addTScoeffpPlotAllkum() {
 
         functionPlot({
             target: '#plotpqn',
-            title: "all Ψ" + "(t)",
+            title: "∑{k=0..t}Ψ(k)",
             grid: true,
             disableZoom: true,
             yAxis: {
@@ -6319,11 +6352,14 @@ function addTScoeffpPlotAllkum() {
 };
 
 function hakellplotAll() {
-    if (!plotall) {
-        if (kummode)
-            addTScoeffpPlotAllkum();
-        else
-            addTScoeffpPlotAll();
+    if (pqnplot) {
+        if (!plotall) {
+            if (kummode)
+                addTScoeffpPlotAllkum();
+            else
+                addTScoeffpPlotAll();
+        } else
+            return;
     } else
         return;
 };
@@ -6344,7 +6380,36 @@ function kiemelfgv(t, scroll) {
                     block: 'center'
                 });
         };
-    }
+    };
+
+    const apq = $("#tsout .allpqn.num-" + t + "");
+    const apqk = $("#tsout .allpqn.kiemelt");
+    if (apqk[0] == undefined)
+        $(apq).addClass("kiemelt");
+    else {
+        apqk.removeClass("kiemelt");
+        const nth = apqk[0].classList[1].split('-')[1] * 1;
+        if (nth !== t) {
+            apq.addClass("kiemelt");
+        };
+    };
+
+    if (pqnplot) {
+        if (kummode) {
+            const elem = document.getElementById("tsout");
+            var fnt = "";
+            fnt += kums[t];
+            if (fnt.startsWith(" + "))
+                fnt = fnt.slice(3);
+            fnt = fnt.replaceAll("*", " ⋅ ").replace(/(log\(x\))\^(\d*)/g, "<b>$1<sup>$2</sup></b>").replace(/\^(\d*)/g, "<sup>$1</sup>").replaceAll("+ -", " - ");
+            elem.innerHTML = fnt;
+        }
+    } else {
+        if (kummode)
+            addTScoeffpLiKum(t);
+        else
+            addTScoeffpLi(t);
+    };
 };
 
 function addTScoeffp(t) {
@@ -6395,7 +6460,7 @@ function makeTable() {
         var tbl = "<table id='pqntbl'><tr><td style='min-width:50px;background-color:#b5eefb;outline: 2px solid #3d7723;outline-offset: -1px;' onclick='setKum(this);'>t</td>"
         for (var i = 0; i < p + 1; i++)
             tbl += "<td onclick='hakellplotAll();kiemelfgv(" + i + ",false);'>" + i + "</td>";
-        tbl += "</tr><tr><td onclick='hakellplotAll();'>all</td>";
+        tbl += "</tr><tr><td onclick='hakellplotAll();'>0.." + p + "</td>";
         for (var t = 0; t < p + 1; t++) {
             var hanyad = fix / factorial(t);
             tbl += "<td onclick='addTScoeffp(" + t + ");'>" + Math.pow(-1, t + p + q) * hanyad + "</td>";
