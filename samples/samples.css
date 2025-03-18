@@ -685,6 +685,7 @@ table#pqntbl td {
     cursor: pointer;
     border-radius: 4px;
     user-select: none;
+    min-width: 50px;
 }
 
 table#pqntbl td.active {
@@ -706,4 +707,15 @@ table#pqntbl table.tort td {
 #plotpqn svg.function-plot .canvas .content g.graph path.kiemelt {
     stroke-width: 5px;
     filter: blur(2px);
+}
+
+#tsout span.allpqn {
+    display: inline-block;
+    padding: 10px 5px;
+    border: 1px solid transparent;
+}
+
+#tsout span.allpqn.kiemelt {
+    background-color: #ffffc3;
+    border-color: black;
 }
