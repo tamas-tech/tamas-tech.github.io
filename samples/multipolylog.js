@@ -5835,6 +5835,7 @@ function pqnClear() {
     idClear('#tsout');
     idClear('#plotpqn');
     plotall = false;
+    kummode = false;
 };
 
 function pqnBlur() {
