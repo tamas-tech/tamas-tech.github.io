@@ -5944,7 +5944,7 @@ function addTScoeffLi(t, s) {
                 var r = b / fn;
                 for (var c = 0; c < nc; c++) {
                     let cv = [...allcomp[c]];
-                    cv[K - 1] -= k;
+                    cv[K - 1] -= (k-1);
                     if (r == 1)
                         str += elojel + "Li<sub>(" + cv + ")</sub>(x)";
                     else
@@ -5986,7 +5986,7 @@ function addTScoeffPlot(t, s) {
             var sum = 0;
             for (var c = 0; c < nc; c++) {
                 let cv = [...allcomp[c]];
-                cv[K - 1] -= k;
+                cv[K - 1] -= (k-1);
                 sum += Ha(cv, l);
             };
             sum *= stirlingNumber(n - 1, k);
