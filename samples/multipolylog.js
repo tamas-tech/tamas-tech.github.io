@@ -5898,7 +5898,10 @@ function stirlingNumber(r, n) {
     if (n > r)
         return -1;
     if (n == 0)
-        return 0;
+        if (r == 0)
+            return 1;
+        else
+            return 0;
     if (r == n)
         return 1;
     if (n == 1)
@@ -5944,7 +5947,7 @@ function addTScoeffLi(t, s) {
                 var r = b / fn;
                 for (var c = 0; c < nc; c++) {
                     let cv = [...allcomp[c]];
-                    cv[K - 1] -= (k-1);
+                    cv[K - 1] -= (k - 1);
                     if (r == 1)
                         str += elojel + "Li<sub>(" + cv + ")</sub>(x)";
                     else
@@ -5986,7 +5989,7 @@ function addTScoeffPlot(t, s) {
             var sum = 0;
             for (var c = 0; c < nc; c++) {
                 let cv = [...allcomp[c]];
-                cv[K - 1] -= (k-1);
+                cv[K - 1] -= (k - 0);
                 sum += Ha(cv, l);
             };
             sum *= stirlingNumber(n - 1, k);
@@ -6272,8 +6275,8 @@ function addTScoeffpPlotAll() {
         $("#plotpqn svg.function-plot .canvas .content g.graph path").each(function() {
             this.setAttribute("stroke-width", "2");
         });
-        //const kum = $("#plotpqn svg.function-plot .canvas .content g.graph path.line-" + (p + 1) + "")[0]
-        // kum.setAttribute("stroke-dasharray", "3");
+        //const kump = $("#plotpqn svg.function-plot .canvas .content g.graph path.line-" + (p + 1) + "")[0];
+        //kump.setAttribute("stroke-dasharray", "3");
         //kum.setAttribute("opacity", "0.5");
     } else
         return;
@@ -6475,3 +6478,63 @@ $(document).on('click', 'table#pqntbl td', function() {
     $('table#pqntbl td.active').removeClass('active');
     $(this).addClass('active');
 });
+
+// rStirling
+
+function rStClear() {
+    idClear('#rStout');
+    idClear('#figygen5');
+};
+
+function setOutputFontrSt(v) {
+    document.getElementById("rStout").style.fontSize = v + "px";
+};
+
+function r_stirlingNumber(n, k, r) {
+    if (n < 0 || r < 0 || k < r || n < r || n < k)
+        return 0;
+    else if (r == 0)
+        return stirlingNumber(n, k);
+    else {
+        var sum = 0;
+        for (j = k - r; j <= n - r; j++)
+            sum += stirlingNumber(j, k - r) * binomial(n - 1 - j, r - 1) / factorial(j);
+        sum *= factorial(n - r);
+        return Math.round(sum);
+    }
+};
+
+function rowhl(elem) {
+    $('#rStbl tr').removeClass("rowhl");
+    $(elem).addClass("rowhl");
+};
+
+function colhl(k) {
+    $('#rStbl td').removeClass("colhl");
+    const N = document.getElementById("NSt").value * 1;
+    for (var j = 0; j <= N; j++)
+        $('#rStbl tr:nth(' + j + ') td:nth(' + k + ')').addClass("colhl");
+};
+
+function makerStTable() {
+    var rstmode = document.getElementById("setrStmode").checked;
+    const elem = document.getElementById("rStout");
+    const r = document.getElementById("rSt").value * 1;
+    const N = document.getElementById("NSt").value * 1;
+    if (rstmode) {
+        var tbl = "Még nincs implementálva."
+    } else {
+        var tbl = "<table id='rStbl'><tr><td class='rstb'><sub>n</sub>\\<sup>k</sup></td>"
+        for (var k = r; k < N + r; k++)
+            tbl += "<td class='rstb' onclick='colhl(" + (k + 1 - r) + ");'><b>" + k + "</b></td>";
+        for (var n = r; n < N + r; n++) {
+            tbl += "<tr  onclick='rowhl(this);'><td class='rstb'><b>" + n + "</b></td>";
+            for (var k = r; k < N + r; k++)
+                tbl += "<td>" + r_stirlingNumber(n, k, r) + "</td>";
+            tbl += "</tr>";
+        };
+
+        tbl += "</tr></table>";
+    };
+    elem.innerHTML = tbl;
+};
