@@ -665,6 +665,31 @@
         <p class="kijelzo" id="tsout" style="font-size:21px;line-height:1.5;"></p>
     </div>
 
+     <div class="keret of even" id="k14" style="padding-bottom:40px;margin-bottom:10px;">
+        <b><big class="sorszam">14.</big> (r-Stirling numbers)</b>
+        <p class="keplet" id="keplet_k14" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left[\begin{array}{c} n\\k \end{array}\right]_{r}=(n-r)!\,\sum_{j=k-r}^{n-r}\dfrac{\dbinom{n-j-1}{r-1}\left[\begin{array}{c}j\\k-r\end{array}\right]}{j!}\\ \\ \left\{\begin{array}{c} n\\k \end{array}\right\}_{r}=\,\sum_{j=k-r}^{n-r}\dbinom{n-r}{j}\left\{\begin{array}{c}j\\k-r\end{array}\right\}\,r^{n-r-j}
+            \end{gather*}\]
+        </p>
+        <div style="margin-left:6px;padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+            <span style="margin-left:10px;margin-right:10px;">\(\displaystyle \left[\begin{array}{c} n\\k \end{array}\right]_{r}\)</span>
+            <label class="switch"><input id="setrStmode"  type="checkbox" onclick="makerStTable();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\displaystyle \left\{\begin{array}{c} n\\k \end{array}\right\}_{r}\)</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="rSt"><b style="padding: 2px 7px;">r</b> =  </label>
+            <input type="number" id="rSt" value="5" min="0" step="1" onchange="makerStTable()();" name="rSt" style="width:50px;">
+        </div>
+        <div style="padding: 10px;outline: 2px solid #c0c9d0;;outline-offset: -6px;background-color: #e7fdf5;;">
+            <button id="okbtn5" onclick="makerStTable();" class="showpre1" title="Insert code into editor">OK</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="rStClear();" title="Clear output">Clear</button>
+            <label for="setoutputfont6">&#128474;</label>
+            <input oninput="setOutputFontrSt(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont6" />
+            <label for="NSt"><b style="padding: 2px 7px;">N</b> =  </label>
+            <input onchange="makerStTable();" type="number" id="NSt" value="7" min="5" step="1" max="20" name="NSt" style="width:50px;">
+        </div>
+        <p id="figygen5" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+        <p id="rStout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
+    </div>
+    
     <script>
         setTimeout(() => {
             setKeplet();
