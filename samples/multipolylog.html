@@ -655,7 +655,7 @@
         </div>
         <div>
             <label for="setdetails" style="margin-left: 10px;"> Részletesen </label>
-            <input type="checkbox" name="setdetails" id="setdetails" style="height:20px;width:20px;vertical-align:middle;" />
+            <input type="checkbox" name="setdetails" id="setdetails" onchange="if(!pqnplot){$('#pqnout td.active').click();};" style="height:20px;width:20px;vertical-align:middle;" />
             <label for="setplot" style="margin-left: 10px;"> Plot </label>
             <input type="checkbox" name="setplot" id="setplot" style="height:20px;width:20px;vertical-align:middle;" onchange="setPlot(this);" />
             <label for="NN"><b style="padding: 2px 7px;">N</b> =  </label>
