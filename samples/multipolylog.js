@@ -5925,8 +5925,13 @@ function fractionReduce(numerator, denominator) {
     return [numerator / a, denominator / a];
 };
 
+function kvalLast(v, k) {
+    return [..._.dropRight(v), _.last(v) - k];
+}
+
 function addTScoeffLi(t, s) {
     const elem = document.getElementById("tsout");
+    const details = document.getElementById("setdetails").checked;
     const p = document.getElementById("p").value * 1;
     const q = document.getElementById("q").value * 1;
     const n = document.getElementById("n").value * 1;
@@ -5935,11 +5940,50 @@ function addTScoeffLi(t, s) {
     const ts = factorial(p) * factorial(q) / (factorial(s) * factorial(t)); //* factorial(n - 1)
     const fn = factorial(n - 1);
     var elojel = " + ";
-    if ((p + t) % 2 == 1)
+    var relojel = "";
+    if ((p + t) % 2 == 1) {
         elojel = " - ";
+        relojel = "-"
+    };
     comp(N, K);
-    var str = "";
     const nc = allcomp.length;
+    var str = "";
+    var strr = "";
+    if (details) {
+        var strcomp = allcomp.map(y => " (" + y.toString() + ")").toString();
+        var C = ts / fn;
+        if (ts % fn != 0) {
+            C = fractionReduce(ts, fn)
+            C = "\\dfrac{" + C[0] + "}{" + C[1] + "}";
+        };
+        strr += "A feladat paraméterei: <i>p</i> = " + p + ", <i>q</i> = " + q + ", <i>n</i> = " + n + ", <i>t</i> = " + t + ", <i>s</i> = " + s + "<hr/>";
+        strr += "Az \\(\\ln^{" + t + "}(x)\\cdot\\ln^{" + s + "}(1-x)\\) függvényhez tartozó \\[\\begin{gather*} \\Psi_{" + p + "," + q + "," + n + "}(" + t + "," + s + ",x) = (-1)^{p+t}\\,\\dfrac{p!\\,q!\\,t!\\,s!}{(n-1)!}\\cdot{\\sum_{k=0}^{n-1}\\,\\left[\\begin{array}{c} n-1\\\\ k \\end{array}\\right]\\sum_{\\begin{subarray}{c} C_{1}+\\cdots+C_{q+1-\\large{s}}\\,=\\,p+q+1-t-s\\\\ 1\\leq C_{1},\\ldots,C_{q+1-s} \\end{subarray}}\\text{Li}_{(C_{1},\\ldots,C_{q+1-\\large{s}}\\,-\\,k)}(x)}=\\\\= C\\cdot{\\sum_{k=0}^{" + (n - 1) + "}\\,\\left[\\begin{array}{c} " + (n - 1) + "\\\\ k \\end{array}\\right]\\sum_{\\begin{subarray}{c} C_{1}+\\cdots+C_{q+1-\\large{s}}\\,=\\," + N + "\\\\ 1\\leq C_{1},\\ldots,C_{" + K + "} \\end{subarray}}\\text{Li}_{(C_{1},\\ldots,C_{" + K + "}\\,-\\,k)}(x)}\\end{gather*}\\] függvényt kell kiszámítanunk.<hr/>";
+        strr += "<span>\\(\\displaystyle C = (-1)^{p+t}\\dfrac{p! \\cdot q!}{(n-1)!\\cdot t! \\cdot s!} = (-1)^{" + p + "+" + t + "}\\dfrac{" + p + "! \\cdot " + q + "!}{(" + n + "-1)!\\cdot " + t + "! \\cdot " + s + "!} = " + relojel + "\\dfrac{" + factorial(p) + "\\cdot " + factorial(q) + "}{" + fn + "\\cdot " + factorial(t) + " \\cdot " + factorial(s) + "} = " + relojel + C + "\\) &nbsp;(A táblázat aktuális mezőjében éppen ezen C érték van feltüntetve.)</span><hr/>";
+        strr += "A képlet szerint meg kell adnunk a <i>p</i>+<i>q</i>+1-<i>t</i>-<i>s</i> = " + p + "+" + q + "+1-" + t + "-" + s + " = <b>" + N + "</b> szám összes <i>q</i>+1-<i>s</i> = <b>" + K + "</b> hosszú felbontását. Ezek száma \\(\\displaystyle \\binom{" + N + "-1}{" + K + "-1} = \\binom{" + (N - 1) + "}{" + (K - 1) + "} =" + binomial(N - 1, K - 1) + "\\).<br/>";
+        strr += "<span class='fsor'><i>F</i> = {" + strcomp + "}</span><hr/>";
+        strr += "A <i>k</i> összegzési index  0-tól  n-1 = " + (n - 1) + "-ig fut. A képlet szerint minden egyes <i>k</i> összegzési indexhez két dolgot kell tennünk:<ol><li>A  C = " + relojel + C + " számot megszorozni a nemelőjeles  \\(\\displaystyle \\left[\\begin{array}{c} n-1\\\\k \\end{array}\\right] = \\left[\\begin{array}{c} " + (n - 1) + "\\\\k \\end{array}\\right]\\) Stirling-számmal. Ezek lesznek a <i>k</i> összegzési indexhez tartozó általánosított polilogaritmus függvények együtthatói.</li><li>A felbontások <i>F</i> halmazában minden vektor utolsó elemét a <i>k</i> összegzési indexszel csökkenteni. Ezek lesznek a <i>k</i> összegzési indexhez tartozó általánosított polilogaritmus függvények indexei.</li></ol>A szükséges számításokat az alábbi táblázatban foglaltuk össze.<br/>";
+
+        strr += "<table class='stable'><tr><th><i>k</i></th><th>\\(\\displaystyle \\left[\\begin{array}{c} n - 1 \\\\k \\end{array}\\right]\\)</th><th>\\(\\displaystyle C\\cdot\\left[\\begin{array}{c} n - 1 \\\\k \\end{array}\\right]\\)</th><th>\\(\\displaystyle \\text{Li}_{\\left(C_{1},\\ldots,C_{q+1-\\large{s}}\\,- k\\right)} = \\text{Li}_{\\left(C_{1},\\ldots,C_{" + (q + 1 - s) + "}-k\\right)}\\)</th></tr>";
+        for (var k = 0; k < n; k++) {
+            var b = ts * stirlingNumber(n - 1, k);
+            if (b % fn == 0)
+                var r = b / fn;
+            else {
+                var r = fractionReduce(b, fn);
+                r = r[0] + "/" + r[1];
+            };
+
+            if (b % fn == 0)
+                strr += "<tr>"
+            strr += "<th>" + k + "</th><td>\\(\\displaystyle \\left[\\begin{array}{c} " + (n - 1) + "\\\\" + k + "\\end{array}\\right] = " + stirlingNumber(n - 1, k) + "\\)</td><td>\\(\\displaystyle" + relojel + r + " \\)</td>";
+            var ksor = allcomp.map(y => "Li<sub>(" + kvalLast(y, k).toString() + ")</sub>(x) + ").toString();
+            ksor = ksor.replaceAll(",Li", "Li").slice(0, -3);
+            strr += "<td>" + ksor + "</td>"
+            strr += "</tr>"
+        };
+        strr += "</tr></table>";
+        strr += "<b>A  táblázat függvényeit a megfelelő együtthatókkal megszorozva, majd  összegezve, megkapjuk a végeredményt:</b><br/>"
+    }
     for (var k = 0; k < n; k++) {
         var b = ts * stirlingNumber(n - 1, k);
         if (b !== 0) {
@@ -5947,7 +5991,7 @@ function addTScoeffLi(t, s) {
                 var r = b / fn;
                 for (var c = 0; c < nc; c++) {
                     let cv = [...allcomp[c]];
-                    cv[K - 1] -= (k - 1);
+                    cv[K - 1] -= k;
                     if (r == 1)
                         str += elojel + "Li<sub>(" + cv + ")</sub>(x)";
                     else
@@ -5965,7 +6009,10 @@ function addTScoeffLi(t, s) {
     };
     if (str.startsWith(" + "))
         str = str.slice(2);
-    elem.innerHTML = str;
+    strr += str;
+    elem.innerHTML = strr;
+    if (details)
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
 function addTScoeffPlot(t, s) {
@@ -5989,7 +6036,7 @@ function addTScoeffPlot(t, s) {
             var sum = 0;
             for (var c = 0; c < nc; c++) {
                 let cv = [...allcomp[c]];
-                cv[K - 1] -= (k - 0);
+                cv[K - 1] -= k;
                 sum += Ha(cv, l);
             };
             sum *= stirlingNumber(n - 1, k);
@@ -6444,17 +6491,19 @@ function makeTable() {
     if (tmode) {
         var tbl = "<table id='pqntbl'><tr><td><sub>t</sub>\\<sup>s</sup></td>"
         for (var i = 0; i < q + 1; i++)
-            tbl += "<td>" + i + "</td>";
+            tbl += "<td><b>" + i + "</b></td>";
         tbl += "</tr>";
         for (var t = 0; t < p + 1; t++) {
-            tbl += "<tr><td>" + t + "</td>";
+            tbl += "<tr><td><b>" + t + "</b></td>";
             for (var s = 0; s < q + 1; s++) {
                 var hanyad = fix / (factorial(t) * factorial(s));
+                var meret = +binomial(p + q - t - s, q - s) * Math.max(n - 1, 1)
+
                 if (hanyad % nf == 0)
-                    tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * hanyad + "</td>";
+                    tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * (hanyad / nf) + "<sub style='color:blue;'>(" + meret + ")</sub></td>";
                 else {
                     var r = fractionReduce(hanyad, nf)
-                    tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * r[0] + "/" + r[1] + "</td>";
+                    tbl += "<td onclick='addTScoeff(" + t + "," + s + ");'>" + Math.pow(-1, t + p) * r[0] + "/" + r[1] + "<sub style='color:blue;'>(" + meret + ")</sub></td>";
                 }
             }
             tbl += "</tr>";
