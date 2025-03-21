@@ -5943,7 +5943,7 @@ function addTScoeffLi(t, s) {
     var relojel = "";
     if ((p + t) % 2 == 1) {
         elojel = " - ";
-        relojel = "-"
+        relojel = " - "
     };
     comp(N, K);
     const nc = allcomp.length;
@@ -5973,9 +5973,9 @@ function addTScoeffLi(t, s) {
                 r = r[0] + "/" + r[1];
             };
 
-            if (b % fn == 0)
-                strr += "<tr>"
-            strr += "<th>" + k + "</th><td>\\(\\displaystyle \\left[\\begin{array}{c} " + (n - 1) + "\\\\" + k + "\\end{array}\\right] = " + stirlingNumber(n - 1, k) + "\\)</td><td>\\(\\displaystyle" + relojel + r + " \\)</td>";
+            //if (b % fn == 0)
+            //    strr += "<tr>"
+            strr += "<tr><th>" + k + "</th><td>\\(\\displaystyle \\left[\\begin{array}{c} " + (n - 1) + "\\\\" + k + "\\end{array}\\right] = " + stirlingNumber(n - 1, k) + "\\)</td><td>\\(\\displaystyle" + relojel + C + "\\cdot " + stirlingNumber(n - 1, k) + " = " + relojel + r + " \\)</td>";
             var ksor = allcomp.map(y => "Li<sub>(" + kvalLast(y, k).toString() + ")</sub>(x) + ").toString();
             ksor = ksor.replaceAll(",Li", "Li").slice(0, -3);
             strr += "<td>" + ksor + "</td>"
@@ -6104,6 +6104,7 @@ function addTScoeff(t, s) {
 
 function addTScoeffpLi(t) {
     const elem = document.getElementById("tsout");
+    const details = document.getElementById("setdetails").checked;
     const p = document.getElementById("p").value * 1;
     const q = document.getElementById("q").value * 1;
     const n = document.getElementById("n").value * 1;
@@ -6112,23 +6113,48 @@ function addTScoeffpLi(t) {
     for (var j = 0; j < q; j++)
         q1 += ",1";
     var elojel = " + ";
-    if ((p + q + t) % 2 == 1)
+    var relojel = "";
+    if ((p + q + t) % 2 == 1) {
         elojel = " - ";
+        relojel = " - ";
+    }
     var str = "";
+    var strr = "";
+
+    if (details) {
+        strr += "A feladat paraméterei: <i>p</i> = " + p + ", <i>q</i> = " + q + ", <i>n</i> = " + n + ", <i>t</i> = " + t + "<hr/>";
+        strr += "Az \\(\\ln^{" + t + "}(x)\\) függvényhez tartozó \\[\\begin{gather*}\\Psi_{" + p + "," + q + "," + n + "}(" + t + ",x) = (-1)^{p+q+t}\\,\\dfrac{\\,p!\\,q!}{t!}\\,\\sum_{k=0}^{n-1}\\,\\binom{n-1}{k}\\,\\text{Li}_{\\left(p+1-t,0^{k},1^{q}\\right)}(x) =\\\\= C\\cdot\\sum_{k=0}^{" + (n - 1) + "}\\,\\binom{" + (n - 1) + "}{k}\\,\\text{Li}_{\\left(" + (p + 1 - t) + ",0^{k}" + q1 + "\\right)}(x)  \\end{gather*}\\] függvényt kell kiszámítanunk.<hr/>";
+        strr += "<span>\\(\\displaystyle C = (-1)^{p+q+t}\\cdot \\dfrac{p! \\cdot q!}{t!} = (-1)^{" + p + "+" + q + "+" + t + "}\\cdot\\dfrac{" + p + "! \\cdot " + q + "!}{" + t + "!} = " + relojel + "\\dfrac{" + factorial(p) + "\\cdot " + factorial(q) + "}{" + factorial(t) + "} = " + relojel + ts + "\\) &nbsp;(A táblázat aktuális mezőjében éppen ezen C érték van feltüntetve.)</span><hr/>";
+        strr += "A <i>k</i> összegzési index  0-tól  n-1 = " + (n - 1) + "-ig fut. A képlet szerint minden egyes <i>k</i> összegzési indexhez két dolgot kell tennünk:<ol><li>A  C = " + relojel + ts + " számot megszorozni a \\(\\displaystyle \\binom{n-1}{k} = \\binom{" + (n - 1) + "}{k}\\) binomiális együtthatóval. Ez lesz a <i>k</i> összegzési indexhez tartozó általánosított polilogaritmus függvény együtthatója.</li><li>A \\(\\left(p+1-t,0^{k},1^{q}\\right)=\\left(" + (p + 1 - t) + ",0^{k}" + q1 + "\\right)\\) vektort megadni. Ez lesz a <i>k</i> összegzési indexhez tartozó általánosított polilogaritmus függvény indexe.</li></ol>A szükséges számításokat az alábbi táblázatban foglaltuk össze.<br/>";
+        strr += "<table class='stable'><tr><th><i>k</i></th><th>\\(\\displaystyle \\binom{n-1}{k}\\)</th><th>\\(\\displaystyle C\\cdot\\binom{n-1}{k}\\)</th><th>\\(\\displaystyle \\text{Li}_{\\left(p+1-t,0^{k},1^{q}\\right)} = \\text{Li}_{\\left(" + (p + 1 - t) + ",0^{k}" + q1 + "\\right)}\\)</th></tr>";
+        for (var k = 0; k < n; k++) {
+            var k0 = "";
+            for (var i = 0; i < k; i++)
+                k0 += ",0"
+            strr += "<tr><th>" + k + "</th><td>\\(\\displaystyle \\binom{" + (n - 1) + "}{" + k + "} = " + binomial(n - 1, k) + "\\)</td><td>\\(\\displaystyle" + relojel + binomial(n - 1, k) * ts + " \\)</td>";
+            strr += "<td>\\(\\text{Li}_{\\left(" + (p + 1 - t) + k0 + q1 + "\\right)}(x)\\)</td>"
+            strr += "</tr>"
+        };
+        strr += "</tr></table>";
+        strr += "<b>A  táblázat függvényeit a megfelelő együtthatókkal megszorozva, majd  összegezve, megkapjuk a végeredményt:</b><br/>"
+    };
+
     for (var k = 0; k < n; k++) {
         var b = ts * binomial(n - 1, k);
         var k0 = "";
         for (var i = 0; i < k; i++)
             k0 += ",0"
         if (b == 1)
-            str += " + " + "Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
+            str += elojel + "Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
         else
-            str += " + " + b + "·Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
+            str += elojel + b + "·Li<sub>(" + (p + 1 - t) + k0 + q1 + ")</sub>(x)";
     };
     if (str.startsWith(" + "))
         str = str.slice(2);
-    str = elojel + "<b>ln<sup>" + t + "</sup>(x)</b> · " + "(" + str + ")";
-    elem.innerHTML = str;
+    strr += str;
+    elem.innerHTML = strr;
+    if (details)
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
 function addTScoeffpLiKum(T) {
