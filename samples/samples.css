@@ -740,3 +740,30 @@ table#rStbl td.rstb:not(.colh) {
     background-color: #bdbdbd;
     border: 1px solid #8c8c8c;
 }
+
+table.stable {
+    border-collapse: collapse;
+}
+
+table.stable th,
+table.stable td {
+    border: 1px solid #bbb;
+    padding: 5px;
+    text-align: center;
+}
+
+#tsout hr {
+    border-color: #ececec;
+}
+
+#tsout th {
+    background-color: #e8e8e8;
+}
+
+#tsout span.fsor {
+    border: 1px solid #bbb;
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #fffec4;
+    margin-top: 7px;
+}
