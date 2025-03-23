@@ -135,6 +135,7 @@ p.kijelzo {
     background-color: #f1f1f1;
     border-top: 1px solid #d0d0d0;
     border-bottom: 1px solid #d0d0d0;
+    font-size: 130%;
 }
 
 p.kijelzo.tomor {
@@ -182,6 +183,7 @@ p.keplet {
     margin-top: 0;
     margin-bottom: -76px;
     padding: 5px 10px;
+    font-size: 130%
 }
 
 p.keplet.fixw {
@@ -766,4 +768,14 @@ table.stable td {
     padding: 5px 10px;
     background-color: #fffec4;
     margin-top: 7px;
+}
+
+#pzout sub {
+    font-size: 70%;
+    vertical-align: -40%;
+}
+
+#pzout sup {
+    font-size: 70%;
+    margin-left: -0.5em;
 }
