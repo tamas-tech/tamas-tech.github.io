@@ -3545,24 +3545,24 @@ function genoutput() {
         elem.innerHTML = txt;
     }
 };
-
-$(document).on('selectionchange', function() {
-    if (insertonselect) {
-        const foo = document.querySelector('p#genout')
-        var isin = window.getSelection().containsNode(foo, true);
-        var selection = window.getSelection().toString();
-        if (isin) {
-            var cl = getElementsInSelection()
-            if (cl[0] == "asor")
-                $("#avg").val(selection).trigger('input');
-            else if (cl[0] == "bsor")
-                $("#bvg").val(selection).trigger('input');
-            else
-                return;
-        }
-    } else
-        return;
-});
+if (console.log(document.title != "Explicit formula"))
+    $(document).on('selectionchange', function() {
+        if (insertonselect) {
+            const foo = document.querySelector('p#genout')
+            var isin = window.getSelection().containsNode(foo, true);
+            var selection = window.getSelection().toString();
+            if (isin) {
+                var cl = getElementsInSelection()
+                if (cl[0] == "asor")
+                    $("#avg").val(selection).trigger('input');
+                else if (cl[0] == "bsor")
+                    $("#bvg").val(selection).trigger('input');
+                else
+                    return;
+            }
+        } else
+            return;
+    });
 
 $(document).on('mouseup', '#genout tr td.asor,#genout tr td.bsor', function() {
     if (insertonselect) {
@@ -4196,16 +4196,16 @@ $(document).on('input focus', '#query2', function() {
     setSearch();
 });
 
-
-$(document).on('selectionchange', function() {
-    const foo = document.querySelector('#shout')
-    const foo1 = document.querySelector('#sagetransf');
-    const foo2 = document.querySelector('#iresz');
-    var isin = window.getSelection().containsNode(foo, true) || window.getSelection().containsNode(foo1, true) || window.getSelection().containsNode(foo2, true);
-    var selection = window.getSelection().toString();
-    if (isin)
-        setSearch2(selection);
-});
+if (console.log(document.title != "Explicit formula"))
+    $(document).on('selectionchange', function() {
+        const foo = document.querySelector('#shout')
+        const foo1 = document.querySelector('#sagetransf');
+        const foo2 = document.querySelector('#iresz');
+        var isin = window.getSelection().containsNode(foo, true) || window.getSelection().containsNode(foo1, true) || window.getSelection().containsNode(foo2, true);
+        var selection = window.getSelection().toString();
+        if (isin)
+            setSearch2(selection);
+    });
 
 // Multiset
 
@@ -4520,15 +4520,15 @@ function setSearch3() {
 $(document).on('input focus', '#mquery', function() {
     setSearch3();
 });
-
-$(document).on('selectionchange', function() {
-    const foo = document.querySelector('p#mshout')
-    var isin = window.getSelection().containsNode(foo, true);
-    var selection = window.getSelection().toString();
-    if (isin && selection != "") {
-        $("#mquery").val(selection).trigger('input');
-    }
-});
+if (document.title != "Explicit formula")
+    $(document).on('selectionchange', function() {
+        const foo = document.querySelector('p#mshout')
+        var isin = window.getSelection().containsNode(foo, true);
+        var selection = window.getSelection().toString();
+        if (isin && selection != "") {
+            $("#mquery").val(selection).trigger('input');
+        }
+    });
 
 // derive set
 
@@ -5381,48 +5381,49 @@ function boldVertices() {
     };
 };
 
-$(document).on('selectionchange', function() {
-    const foo = document.querySelector('p#shout');
-    const foo2 = document.querySelector('span#iresz');
-    var isin = window.getSelection().containsNode(foo, true) || window.getSelection().containsNode(foo2, true);
-    var selection = window.getSelection().toString();
-    if (isin) {
-        var sv = selection.split(",").map(y => y * 1);
-        const n = sv.length;
-        const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], sv))
-        if (indx > -1 && nnn !== undefined && n == nnn) {
-            var on = 0;
-            if (statby == "length") {
-                on = cJIndex[indx][1].length;
-                cStore_active = cStore[on];
-                cdbindredclass(on - 1);
-            } else {
-                on = _.size(_.groupBy(cJIndex[indx][1].map(y => y[1])));
-                cStore_active = cStore[on];
-                cdbindredclass(on - 1);
+if (document.title != "Explicit formula")
+    $(document).on('selectionchange', function() {
+        const foo = document.querySelector('p#shout');
+        const foo2 = document.querySelector('span#iresz');
+        var isin = window.getSelection().containsNode(foo, true) || window.getSelection().containsNode(foo2, true);
+        var selection = window.getSelection().toString();
+        if (isin) {
+            var sv = selection.split(",").map(y => y * 1);
+            const n = sv.length;
+            const indx = _.findIndex(cJIndex, y => _.isEqual(y[0], sv))
+            if (indx > -1 && nnn !== undefined && n == nnn) {
+                var on = 0;
+                if (statby == "length") {
+                    on = cJIndex[indx][1].length;
+                    cStore_active = cStore[on];
+                    cdbindredclass(on - 1);
+                } else {
+                    on = _.size(_.groupBy(cJIndex[indx][1].map(y => y[1])));
+                    cStore_active = cStore[on];
+                    cdbindredclass(on - 1);
+                }
+
+                const cindex = _.findIndex(cStore_active, y => _.isEqual(y, sv));
+                const m = cStore_active.length;
+                if (statmode)
+                    setKijelzo(cindex + 1, m);
+
+                var setJ = digit2set(cJ_J)
+                var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
+                setTimeout(() => {
+                    cindredclass(indx1)
+                }, 150);
+
+                updcJall(sv);
+                setTimeout(() => {
+                    for (i = 0; i < n; i++) {
+                        $('#ci' + i).trigger("input");
+                    };
+                }, 100);
+                setTimeout(() => { szinkronTbl(); }, 200);
             }
-
-            const cindex = _.findIndex(cStore_active, y => _.isEqual(y, sv));
-            const m = cStore_active.length;
-            if (statmode)
-                setKijelzo(cindex + 1, m);
-
-            var setJ = digit2set(cJ_J)
-            var indx1 = _.findIndex(cJ_it, y => _.isEqual(y, setJ));
-            setTimeout(() => {
-                cindredclass(indx1)
-            }, 150);
-
-            updcJall(sv);
-            setTimeout(() => {
-                for (i = 0; i < n; i++) {
-                    $('#ci' + i).trigger("input");
-                };
-            }, 100);
-            setTimeout(() => { szinkronTbl(); }, 200);
         }
-    }
-});
+    });
 
 function indexStat() {
     indexGroupStat();
@@ -6612,4 +6613,281 @@ function makerStTable() {
         tbl += "</tr></table>";
     };
     elem.innerHTML = tbl;
+};
+
+
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+const hasElementGreaterThanOne = (array = []) => {
+    let begin = array.length - 2;
+    let result = false;
+    if (begin > 0) {
+        for (let i = begin; i > 0; i--) {
+            if (array[i] > 1) {
+                result = i;
+                break;
+            }
+        }
+    }
+    return result;
+};
+
+function part(num1) {
+    let a = num1;
+    let singleSum = [];
+    let result = [];
+    let b;
+    while (a > 0) {
+        singleSum.push(a);
+        if (singleSum.reduce(reducer) === num1) {
+            result.push([...singleSum]);
+            if (singleSum[singleSum.length - 1] > 1) {
+                a = singleSum[singleSum.length - 1] - 1;
+                singleSum.pop();
+            } else if (
+                singleSum[singleSum.length - 1] === 1 &&
+                hasElementGreaterThanOne(singleSum)
+            ) {
+                let idx = hasElementGreaterThanOne(singleSum);
+                singleSum = [...singleSum.slice(0, idx + 1)];
+                a = singleSum[singleSum.length - 1] - 1;
+                singleSum.pop();
+            } else if (singleSum[0] >= 1) {
+                a = singleSum[0] - 1;
+                singleSum = [];
+            } else {
+                a--;
+                singleSum = [];
+            }
+        } else if (singleSum.reduce(reducer) < num1) {
+            if (singleSum.length < num1) {
+                continue;
+            } else if (singleSum.length === num1) {
+                singleSum.pop();
+                continue;
+            }
+        } else if (singleSum.reduce(reducer) > num1) {
+            singleSum.pop();
+            a--;
+        }
+    }
+    return result;
+}
+
+function formazCy(data) {
+    var str = "";
+    var c = 1;
+    _.forEach(data, function(key, value) {
+        c *= Math.pow(value, key) * factorial(key * 1);
+        str += "x<sub>" + value + "</sub><sup>" + key + "</sup>*"
+    });
+    str = "1/" + c + "*" + str;
+    str = str.slice(0, -1);
+    return str;
+}
+
+function cycleIndex(n) {
+    var parts = part(n);
+    parts = parts.map(y => _.countBy(y));
+    parts = parts.map(y => formazCy(y)).join(" + ");
+    document.getElementById("shoutLe").innerHTML = parts;
+};
+
+// Pz implementacioja 
+
+function twofracAdd(a, b) {
+    return fractionReduce(a[0] * b[1] + b[0] * a[1], a[1] * b[1]);
+};
+
+function fracsAdd(L) {
+    const n = L.length;
+    if (n == 1)
+        return fractionReduce(L[0][0], L[0][1])
+    else {
+        var fr = [0, 1];
+        for (var i = 0; i < n; i++) {
+            var v = L.shift();
+            fr = twofracAdd(fr, v)
+        }
+        return fr;
+    };
+};
+
+function cartesian(arr) {
+    return arr.reduce(function(a, b) {
+        return a.map(function(x) {
+            return b.map(function(y) {
+                return x.concat([y]);
+            })
+        }).reduce(function(a, b) { return a.concat(b) }, [])
+    }, [
+        []
+    ])
+}
+
+function toBinom(a, v) {
+    const gr = _.countBy(v);
+    var frac = 1;
+    var binom = 1;
+    _.forEach(gr, function(key, value) {
+        frac *= factorial(key * 1);
+        binom *= Math.pow(binomial(a, value), key);
+    });
+    return [binom, frac];
+}
+
+function grp(s, a, f) {
+    var out = [];
+    for (var i = f; i <= f * (a - 1); i++) {
+        var parts = part(i);
+        parts = parts.filter(y => (_.sum(y) == s && y.length == f)).map(z => _.reverse(z));
+        parts = parts.filter(v => v.every(y => y < a));
+        var np = parts.length;
+        for (k = 0; k < np; k++) {
+            out.push(parts[k]);
+        }
+    };
+    return out;
+};
+
+function grps(cv, av, fv) {
+    var out = [];
+    for (var i = 0; i < cv.length; i++)
+        out.push(grp(cv[i], av[i], fv[i]).map(y => toBinom(av[i], y)));
+    out = cartesian(out);
+    return out;
+}
+
+function vlistProd(L) {
+    var frac = 1;
+    var binom = 1;
+    for (let v of L) {
+        binom *= v[0]
+        frac *= v[1];
+    };
+    return [binom, frac];
+}
+
+function elocomp(n, av, fv) {
+    const r = av.length;
+    var comps = comp(n, r);
+    for (var i = 0; i < r; i++)
+        comps = comps.filter(y => fv[i] <= y[i] && y[i] <= fv[i] * (av[i] - 1));
+    //comps = _.flatten(comps.map(y => grps(y, av, fv))).map(z => vlistProd(z));
+    comps = fracsAdd(_.flatten(comps.map(y => grps(y, av, fv))).map(z => vlistProd(z)));
+    return comps;
+};
+
+function prCoeff(k, n, av, fv) {
+    const N = av.length;
+    var elojel = " + ";
+    if (((k + n + _.sum(fv)) % 2) == 1)
+        elojel = " - ";
+    var oszto = 1;
+    for (var i = 0; i < N; i++)
+        oszto *= Math.pow(av[i], fv[i]);
+    var s = elocomp(n, av, fv);
+    s = fractionReduce(s[0], s[1] * oszto);
+    return [elojel, s];
+};
+
+
+function formazottTortHTML(a, b) {
+    var txt = "";
+    if (b == 1 && a !== 1)
+        txt = a;
+    else if (b > 1)
+        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:80%;margin-right: -0.2em;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
+    return txt;
+};
+
+function formazottExpHTML(a) {
+    var txt = "";
+    if (a != 1)
+        txt = "<sup>" + a + "</sup>";
+    return txt;
+};
+
+
+function PzHTML(k, n) {
+    var p = "";
+    var parts = part(k, n);
+    parts = parts.map(y => _.countBy(y)).map(z => [Object.keys(z).map(t => 1 * t), Object.values(z)]);
+    for (let v of parts) {
+        var av = v[0];
+        var fv = v[1];
+        var c = prCoeff(k, n, av, fv);
+        if (c[1][0] != 0) {
+            var m = "";
+            for (var i = 0; i < av.length; i++)
+                m += "&zwj;x<sub>" + av[i] + "</sub>" + formazottExpHTML(fv[i]);
+            p += c[0] + formazottTortHTML(c[1][0], c[1][1]) + "&nbsp;" + m;
+        };
+    };
+
+    if (p.startsWith(" + "))
+        p = p.slice(2);
+    return p;
+};
+
+function formazottTort(a, b) {
+    var ltx = "";
+    if (b == 1)
+        ltx = a + "\\,";
+    else
+        ltx = "\\frac{" + a + "}{" + b + "}\\,";
+    return ltx;
+};
+
+function formazottExp(a) {
+    var ltx = "";
+    if (a != 1)
+        ltx = "^{" + a + "}";
+    return ltx;
+};
+
+function PzLatex(k, n) {
+    var p = "";
+    var parts = part(k, n);
+    parts = parts.map(y => _.countBy(y)).map(z => [Object.keys(z).map(t => 1 * t), Object.values(z)]);
+    for (let v of parts) {
+        var av = v[0];
+        var fv = v[1];
+        var c = prCoeff(k, n, av, fv);
+        if (c[1][0] != 0) {
+            var m = "";
+            for (var i = 0; i < av.length; i++)
+                m += "x_{" + av[i] + "}" + formazottExp(fv[i]);
+            p += c[0] + formazottTort(c[1][0], c[1][1]) + m;
+        };
+    };
+    if (p.startsWith(" + "))
+        p = p.slice(2);
+    return p;
+};
+
+function Pz() {
+    const k = document.querySelector("#k1 #k").value * 1;
+    const n = document.querySelector("#k1 #n").value * 1;
+    const ltx = document.getElementById("setPzmode").checked;
+    const elem = document.getElementById("pzout");
+
+    if (ltx) {
+        const p = PzLatex(k, n);
+        elem.innerHTML = "\\[" + p + "\\]";
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    } else {
+        const p = PzHTML(k, n);
+        elem.innerHTML = p;
+    }
+};
+
+function setOutputFontPz(v) {
+    var elem = document.getElementById("pzout");
+    elem.style.fontSize = v + '%';
+    const ltx = document.getElementById("setPzmode").checked;
+    if (ltx)
+        setTimeout(() => {
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+        }, 100);
 };
