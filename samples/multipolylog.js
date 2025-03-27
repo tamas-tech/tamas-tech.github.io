@@ -118,6 +118,7 @@ var pqnplot = false;
 var plotall = false;
 var kummode = false;
 var kums = [];
+var int01ertek = "";
 
 function setMode(t) {
     mode = t.value;
@@ -484,7 +485,7 @@ sor = function(S) {
 felojel = function(e) {
     var out;
     if (e < 0) {
-        out = " - ";
+        out = " − ";
     } else {
         out = " + ";
     }
@@ -496,7 +497,7 @@ elojele = function(e) {
     if (e == 1) {
         out = " + ";
     } else {
-        out = " - ";
+        out = " − ";
     }
     return out;
 };
@@ -637,7 +638,7 @@ SFormaz = function(S) {
             if (n > 1)
                 e = " + ";
             else
-                e = " - ";
+                e = " − ";
         var kiesik = "";
         if (lepessor[i] == "↻" || lepessor[i - 1] == "↻")
             kiesik = "*";
@@ -685,7 +686,7 @@ LTXFormaz = function(S) {
             if (n > 1)
                 e = " + ";
             else if (S[0][0] == 0) {
-            e = " - ";
+            e = " − ";
         }
         var kiesik = false;
         if (lepessor[i] == "↻" || lepessor[i - 1] == "↻")
@@ -837,7 +838,7 @@ urites = function() {
 
                 masik.unshift(1);
                 masik = Inf2oo(masik);
-                uout = JSON.stringify(masik).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞") + " - " + JSON.stringify(tmasik).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
+                uout = JSON.stringify(masik).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞") + " − " + JSON.stringify(tmasik).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
                 mathout = LTXFormaz([
                     [0, [
                         masik, []
@@ -910,7 +911,7 @@ urites = function() {
 
                 elem.unshift(1);
                 elem = Inf2oo(elem);
-                uout = JSON.stringify(elem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞") + " - " + JSON.stringify(telem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
+                uout = JSON.stringify(elem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞") + " − " + JSON.stringify(telem).replace("[", "(").replace("]", ")").replaceAll("\"oo\"", "∞");
                 mathout = LTXFormaz([
                     [0, [
                         elem, []
@@ -2161,6 +2162,10 @@ $(document).ready(function() {
 
 function binomial(n, k) {
     if (Number.isNaN(n) || Number.isNaN(k)) return NaN;
+    if (k == 0) return 1;
+    if (n == 0 && k != 0) return 0;
+    if (n < 0 && k > 0) return Math.pow(-1, k) * binomial(-n + k - 1, -n - 1);
+    if (n < 0 && k < 0) return Math.pow(-1, k + n) * binomial(-k - 1, -n - 1);
     if (k < 0 || k > n) return 0;
     if (k === 0 || k === n) return 1;
     if (k === 1 || k === n - 1) return n;
@@ -3545,7 +3550,7 @@ function genoutput() {
         elem.innerHTML = txt;
     }
 };
-if (console.log(document.title != "Explicit formula"))
+if (document.title != "Explicit formula")
     $(document).on('selectionchange', function() {
         if (insertonselect) {
             const foo = document.querySelector('p#genout')
@@ -3611,6 +3616,12 @@ function out3Clear() {
 
 function out4Clear() {
     const elem = document.querySelector("#ideout4 .sagecell_output_elements pre");
+    if (elem)
+        elem.innerHTML = "";
+};
+
+function out01Clear() {
+    const elem = document.querySelector("#ideout01 .sagecell_sessionOutput")
     if (elem)
         elem.innerHTML = "";
 };
@@ -4196,7 +4207,7 @@ $(document).on('input focus', '#query2', function() {
     setSearch();
 });
 
-if (console.log(document.title != "Explicit formula"))
+if (document.title != "Explicit formula")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('#shout')
         const foo1 = document.querySelector('#sagetransf');
@@ -4386,7 +4397,7 @@ function headFromList(lista) {
             coeff += "∗";
         head += coeff + "(" + vec.toString() + ") + ";
     }
-    head.replace(/\+ *\-/g, " - ");
+    head.replace(/\+ *\-/g, " − ");
     head = head.slice(0, -3);
     if (_.size(lista) > 1)
         head = "<span class='bzj'>[</span>" + head + "<span class='bzj'>]</span>";
@@ -5668,7 +5679,7 @@ function vLeFormaz(obj) {
         else if (val > 0)
             val = " + " + val + "&lowast;Le<sub>(" + k + ")</sub>";
         else if (val < 0)
-            val = " - " + (-1 * val) + "&lowast;Le<sub>(" + k + ")</sub>";
+            val = " − " + (-1 * val) + "&lowast;Le<sub>(" + k + ")</sub>";
         else
             val = "HIBA";
         txt += val;
@@ -5943,8 +5954,8 @@ function addTScoeffLi(t, s) {
     var elojel = " + ";
     var relojel = "";
     if ((p + t) % 2 == 1) {
-        elojel = " - ";
-        relojel = " - "
+        elojel = " − ";
+        relojel = " − "
     };
     comp(N, K);
     const nc = allcomp.length;
@@ -6116,8 +6127,8 @@ function addTScoeffpLi(t) {
     var elojel = " + ";
     var relojel = "";
     if ((p + q + t) % 2 == 1) {
-        elojel = " - ";
-        relojel = " - ";
+        elojel = " − ";
+        relojel = " − ";
     }
     var str = "";
     var strr = "";
@@ -6171,7 +6182,7 @@ function addTScoeffpLiKum(T) {
             q1 += ",1";
         var elojel = " + ";
         if ((p + q + t) % 2 == 1)
-            elojel = " - ";
+            elojel = " − ";
         var str = "";
         for (var k = 0; k < n; k++) {
             var b = ts * binomial(n - 1, k);
@@ -6313,7 +6324,7 @@ function addTScoeffpPlotAll() {
                         hat -= sum;
             };
             if (elojel < 0) {
-                hezag = " - ";
+                hezag = " − ";
             };
             fnt += "<span class='allpqn num-" + t + "'><b style='color:" + COLORS[t] + ";cursor:pointer;border-bottom: 1px solid;' onclick='kiemelfgv(" + t + ",true);'>" + hezag + Math.abs(ts) + " ⋅ log(x)^" + t + "</b> ⋅ (" + fn + ")</span>";
             fn = ts + "*log(x)^" + t + "*(" + fn + ")";
@@ -6479,7 +6490,7 @@ function kiemelfgv(t, scroll) {
             fnt += kums[t];
             if (fnt.startsWith(" + "))
                 fnt = fnt.slice(3);
-            fnt = fnt.replaceAll("*", " ⋅ ").replace(/(log\(x\))\^(\d*)/g, "<b>$1<sup>$2</sup></b>").replace(/\^(\d*)/g, "<sup>$1</sup>").replaceAll("+ -", " - ");
+            fnt = fnt.replaceAll("*", " ⋅ ").replace(/(log\(x\))\^(\d*)/g, "<b>$1<sup>$2</sup></b>").replace(/\^(\d*)/g, "<sup>$1</sup>").replaceAll("+ -", " − ");
             elem.innerHTML = fnt;
         }
     } else {
@@ -6781,8 +6792,8 @@ function elocomp(n, av, fv) {
 function prCoeff(k, n, av, fv) {
     const N = av.length;
     var elojel = " + ";
-    if (((k + n + _.sum(fv)) % 2) == 1)
-        elojel = " - ";
+    if (((k + _.sum(fv)) % 2) == 1)
+        elojel = " − ";
     var oszto = 1;
     for (var i = 0; i < N; i++)
         oszto *= Math.pow(av[i], fv[i]);
@@ -6791,13 +6802,12 @@ function prCoeff(k, n, av, fv) {
     return [elojel, s];
 };
 
-
 function formazottTortHTML(a, b) {
     var txt = "";
     if (b == 1 && a !== 1)
         txt = a;
     else if (b > 1)
-        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:80%;margin-right: -0.2em;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
+        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
     return txt;
 };
 
@@ -6807,7 +6817,6 @@ function formazottExpHTML(a) {
         txt = "<sup>" + a + "</sup>";
     return txt;
 };
-
 
 function PzHTML(k, n) {
     var p = "";
@@ -6821,6 +6830,7 @@ function PzHTML(k, n) {
             var m = "";
             for (var i = 0; i < av.length; i++)
                 m += "&zwj;x<sub>" + av[i] + "</sub>" + formazottExpHTML(fv[i]);
+            m = "<span class='pzjelento' onclick='pzJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ");'>" + m + "</span>"
             p += c[0] + formazottTortHTML(c[1][0], c[1][1]) + "&nbsp;" + m;
         };
     };
@@ -6890,4 +6900,179 @@ function setOutputFontPz(v) {
         setTimeout(() => {
             MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
         }, 100);
+};
+
+function grpsForm(cv, av, fv) {
+    var out = [];
+    for (var i = 0; i < cv.length; i++)
+        out.push(grp(cv[i], av[i], fv[i]));
+    out = cartesian(out);
+    return out;
+}
+
+function pzJelent(k, n, av, fv) {
+    const r = av.length;
+    var comps = comp(n, r);
+    for (var i = 0; i < r; i++) {
+        comps = comps.filter(y => fv[i] <= y[i] && y[i] <= fv[i] * (av[i] - 1));
+    }
+    //console.log(comps.map(y => grpsForm(y, av, fv)));
+};
+
+// int01
+
+function setOutputFontpqn01(v) {
+    document.getElementById("pqn01out").style.fontSize = v + "px";
+};
+
+
+function W1(L, q, j) {
+    var W = 0;
+    for (var w = 1; w < L + 1; w++) {
+        var nu = Math.pow(-1, w) * binomial(L, w);
+        var de = Math.pow(w, q - j);
+        W += nu / de;
+    };
+    return W;
+};
+
+function Cpqnp1q1(p, q, n, p1, q1) {
+    var sum = Math.pow(-1, p + q - p1 - q1 + 1) * (n - 1) * binomial(p + q - p1 - q1, p - p1);
+    var W = 0;
+    for (var L = 1; L < n; L++) {
+        for (var k = p1; k < p + 1; k++) {
+            for (var j = q1 - 1; j < q + 1; j++) {
+                var W = 0;
+                for (var w = 1; w < L + 1; w++) {
+                    var nu = Math.pow(-1, w) * binomial(L, w);
+                    var de = Math.pow(w, q - j);
+                    W += nu / de;
+                };
+                var nuu = Math.pow(-1, L + k + j + p1 + q1) * binomial(n, L + 1) * binomial(k + j - p1 - q1, k - p1) * r_stirlingNumber(L + 2, p - k + 2, 2);
+
+                var os = 0;
+                var dee = factorial(L);
+                var e = nuu / dee;
+                os += e * W;
+                sum += os;
+            };
+        };
+    };
+    sum *= factorial(p) * factorial(q);
+    return sum;
+};
+
+function Cpqnp1q1Q(p, q, n, p1, q1) {
+    var sum = Fraction(Math.pow(-1, p + q - p1 - q1 + 1) * (n - 1) * binomial(p + q - p1 - q1, p - p1), 1);
+    for (var L = 1; L < n; L++) {
+        for (var k = p1; k < p + 1; k++) {
+            for (var j = q1 - 1; j < q + 1; j++) {
+                var W = Fraction(0, 1);
+                for (var w = 1; w < L + 1; w++) {
+                    var nu = Math.pow(-1, w) * binomial(L, w);
+                    var de = Math.pow(w, q - j);
+                    W = W.add(Fraction(nu, de));
+                };
+                var nnu = Fraction(Math.pow(-1, L + k + j + p1 + q1) * binomial(n, L + 1) * binomial(k + j - p1 - q1, k - p1) * r_stirlingNumber(L + 2, p - k + 2, 2), 1);
+                var os = Fraction(0, 1);
+                var dee = factorial(L);
+                var e = Fraction(nnu, dee);
+                os = e.mul(W);
+                sum = sum.add(os);
+            };
+        };
+    };
+    return sum;
+};
+
+function p1q1Coeff(k, n, av, fv) {
+    const N = av.length;
+    const elojel = Math.pow(-1, k + _.sum(fv));
+    var oszto = 1;
+    for (var i = 0; i < N; i++)
+        oszto *= Math.pow(av[i], fv[i]);
+    var s = elocomp(n, av, fv);
+    s = Fraction(elojel * s[0], s[1] * oszto);
+    return s;
+};
+
+function pqnCoeff(p, q, n, m) {
+    const av = m[0];
+    const fv = m[1];
+    const sf = _.sum(fv);
+    const fakt = factorial(p) * factorial(q);
+    var saf = 0;
+    var sum = Fraction(0);
+    for (var t = 0; t < av.length; t++)
+        saf += av[t] * fv[t];
+    for (var q1 = 1; q1 <= q + 1; q1++) {
+        for (var p1 = p + 1 - n; p1 <= p; p1++) {
+            var p1q1 = Math.min(p1, q1);
+            const k = p1 + q1;
+            if (saf == k && sf <= p1q1) {
+                var c = p1q1Coeff(k, p1, av, fv).mul(Cpqnp1q1Q(p, q, n, p1, q1));
+                sum = sum.add(c);
+            }
+        };
+    };
+    sum = sum.mul(fakt);
+    return sum;
+};
+
+function zetamonom(av, fv) {
+    const n = av.length;
+    var out = "";
+    for (i = 0; i < n; i++)
+        if (fv[i] == 1)
+            out += "zeta(" + [av[i]] + ")*";
+        else
+            out += "zeta(" + [av[i]] + ")^" + fv[i] + "*";
+    out = out.slice(0, -1);
+    return out;
+};
+
+function int01() {
+    var elem = document.getElementById("pqn01out");
+    const p = document.getElementById("p01").value * 1;
+    const q = document.getElementById("q01").value * 1;
+    const n = document.getElementById("n01").value * 1;
+    var txt = "<span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup class=''>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'><span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup class=''>" + n + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = ";
+    var ertek = "";
+    for (var k = 1; k <= p + q; k++) {
+        var parts = part(k);
+        parts = parts.map(y => _.countBy(y)).map(z => [Object.keys(z).map(t => 1 * t), Object.values(z)]);
+        for (let m of parts) {
+            var coeff = pqnCoeff(p, q, n, m);
+            if (coeff != 0) {
+                var av = m[0];
+                var fv = m[1];
+                var elojel = " + ";
+                if (coeff.s == -1)
+                    elojel = " − ";
+                ertek += "+" + coeff.toFraction() + "*" + zetamonom(av, fv);
+                var ms = "";
+                for (var i = 0; i < av.length; i++)
+                    ms += "&zwj;&zeta;(" + av[i] + ")" + formazottExpHTML(fv[i]);
+                ms = "<span class='pzjelento' onclick='pzJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ");'>" + ms + "</span>";
+                txt += elojel + formazottTortHTML(coeff.n, coeff.d) + "&lowast;" + ms;
+                //txt += elojel + formazottTortHTML(coeff.n, coeff.d) + " " + ms;
+            };
+        };
+    }
+    ertek = ertek.replaceAll("+-", " - ");
+
+    ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",0,1)\nshow(" + ertek + ",LatexExpr(r'='),n(" + ertek + ",digits = 40))";
+    ertek += "\nshow('\\n')\nshow('Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])";
+    int01ertek = ertek;
+    elem.innerHTML = txt;
+};
+
+function setOutputFontpqn011(v) {
+    $('#ideout01 .sagecell_sessionOutput').css('font-size', v + 'px');
+};
+
+function sagepqn01() {
+    $('#mycell01 .sagecell_editor textarea.sagecell_commands').val(int01ertek);
+    $('#mycell01 .sagecell_input button.sagecell_evalButton').click();
+    setOutputFontpqn011($('#outfont-sliderpqn011').val());
 };
