@@ -8,6 +8,7 @@
     <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
     <link rel="stylesheet" href="samples.css">
     <script src="multipolylog.js"></script>
+    <script src="../tools/FractionJS/dist/fraction.min.js"></script>
     <!-- from cdn -->
     <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
     <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script>
@@ -16,9 +17,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.9.5/function-plot.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> 
-
+     <script>
+        sagecell.makeSagecell({
+            inputLocation: '#mycell01',
+            outputLocation: '#ideout01',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink"],
+        });
+    </script>
 </head>
-
 <body style="overflow:scroll;">
     <div class="keret of odd" id="k1" style="padding-bottom:40px;margin-bottom:10px;">
         <b><big class="sorszam">1.</big></b>
@@ -29,10 +37,10 @@
             <label class="switch"><input id="setPzmode"  type="checkbox" onchange="Pz();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\LaTeX\)</span>
         </div>
         <div style="margin-left:2px;padding:3px;">
-            <label for="k"><b style="user-select:none;padding: 2px 7px;">k</b> =  </label>
-            <input type="number" id="k" value="7" min="0" step="1" onchange="Pz();" name="k" style="user-select:none;width:50px;">
-            <label for="n"><b style="user-select:none;padding: 2px 7px;">n</b> =  </label>
-            <input onchange="Pz();" type="number" id="n" value="3" min="0" step="1" max="20" name="n" style="user-select:none;width:50px;">
+            <label for="kpz"><b style="user-select:none;padding: 2px 7px;">k</b> =  </label>
+            <input type="number" id="kpz" value="20" min="0" step="1" onchange="Pz();" name="kpz" style="user-select:none;width:50px;">
+            <label for="npz"><b style="user-select:none;padding: 2px 7px;">n</b> =  </label>
+            <input onchange="Pz();" type="number" id="npz" value="8" min="0" step="1" max="20" name="npz" style="user-select:none;width:50px;">
         </div>
         <div style="padding: 10px;outline: 2px solid #c0c9d0;;outline-offset: -6px;background-color: #e7fdf5;">
             <button id="okbtn5" onclick="Pz();" class="showpre1" title="Insert code into editor">Calculate</button>
@@ -87,6 +95,44 @@
         <p class="kijelzo" id="tsout" style="font-size:21px;line-height:2;"></p>
     </div>
 
+    <div class="keret of odd" id="k3" style="padding-bottom:40px;margin-bottom:10px;">
+        <b><big class="sorszam">3.</big></b>
+        <p class="keplet" id="keplet_k13" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\int\frac{\ln^{p}(x)\cdot\ln^{q}(1-x)}{(1-x)^{n}} \,\text{d}x = (-1)^{p+q}\,p!\,q!\,{\sum_{t=0}^{p}\,\dfrac{(-1)^{t}}{t!}\,\ln^{t}(x)\cdot\sum_{k=0}^{n-1}\,\binom{n-1}{k}\,\text{Li}_{\left(p+1-t,0^{k},1^{q}\right)}(x)} =\\ \\
+            = (-1)^{p}\,\dfrac{p!\,q!}{(n-1)!}{\sum_{t=0}^{p}\sum_{s=0}^{q}\dfrac{\ln^{t}(x)\ln^{s}(1-x)}{t!\,s!}(-1)^{t}\,\sum_{k=0}^{n-1}\,\left[\begin{array}{c} n-1\\ k \end{array}\right]\sum_{\begin{subarray}{c} C_{1}+\cdots+C_{q+1-s}=p+q+1-t-s\\
+            \\ 1\leq C_{1},\ldots,C_{q+1-s} \end{subarray}}\text{Li}_{(C_{1},\ldots,C_{q+1-s}-k)}(x)}\end{gather*}\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="p01"><b style="padding: 2px 7px;">p</b> =  </label>
+            <input type="number" id="p01" value="5" min="0" step="1" onchange="idClear('#pqn01out');" name="p01" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="q01"><b style="padding: 2px 7px;">q</b> =  </label>
+            <input type="number" id="q01" value="3" min="0" step="1" onchange="idClear('#pqn01out');" name="q01" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="n01"><b style="padding: 2px 7px;">n</b> =  </label>
+            <input type="number" id="n01" value="2" min="1" step="1" onchange="idClear('#pqn01out');" name="n01" style="width:50px;">
+        </div>
+        <div style="padding: 10px;outline: 2px solid #d6ddee;outline-offset: -6px;background-color: #e7fdf7;">
+            <button id="okbtn01" onclick="int01();" class="showpre1" title="Insert code into editor">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#pqn01out');" title="Clear output">Clear</button>
+            <label for="setoutputfont01">&#128474;</label>
+            <input oninput="setOutputFontpqn01(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont01" />
+        </div>
+        <p id="pqn01out" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
+        <div id="mycell01" style="margin-top:6px;" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div style="padding: 10px;outline: 2px solid #c0c9d0;;outline-offset: -6px;background-color: #e7fdf5;;">
+            <button id="okbtn4" onclick="sagepqn01();" class="showpre1" title="Insert code into editor">SAGE</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="out01Clear();" title="Clear output">Clear</button>
+            <label for="soutfontsliderpqn011">&#128474;</label>
+            <input id="outfont-sliderpqn011" oninput="setOutputFontpqn011(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="outfontsliderpqn011"
+            />
+        </div>
+        <div class="outputoutdiv">
+            <div id="ideout01"></div>
+        </div>
+    </div>
 </body>
-
 </html>
