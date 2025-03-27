@@ -6877,8 +6877,8 @@ function PzLatex(k, n) {
 };
 
 function Pz() {
-    const k = document.querySelector("#k1 #k").value * 1;
-    const n = document.querySelector("#k1 #n").value * 1;
+    const k = document.querySelector("#kpz").value * 1;
+    const n = document.querySelector("#npz").value * 1;
     const ltx = document.getElementById("setPzmode").checked;
     const elem = document.getElementById("pzout");
 
