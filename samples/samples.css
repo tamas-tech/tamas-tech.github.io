@@ -779,3 +779,93 @@ table.stable td {
     font-size: 70%;
     margin-left: -0.5em;
 }
+
+#pzout span.pzjelento,
+#pqn01outt span.pzjelento {
+    cursor: pointer;
+    padding: 5px 0;
+    letter-spacing: 0.05em;
+}
+
+#pzout span.pzjelento:hover,
+#pqn01out span.pzjelento:hover {
+    color: #205cff;
+    background-color: #dae4ff
+}
+
+.sqrt-prefix {
+    display: -moz-inline-box!important;
+    display: inline-block!important;
+    padding-top: 0;
+    position: relative;
+    /*border-top: 1px solid transparent;*/
+    top: -0.6em;
+    line-height: inherit;
+    vertical-align: top;
+    -webkit-transform-origin: top;
+    -moz-transform-origin: top;
+    -ms-transform-origin: top;
+    -o-transform-origin: top;
+    transform-origin: top;
+    font-family: 'Symbola', Times, serif!important;
+}
+
+.block sub.sdefint {
+    display: -moz-inline-box!important;
+    display: inline-block!important;
+    padding-top: 0;
+    position: relative;
+    vertical-align: bottom;
+    bottom: -2em;
+}
+
+.block sup.sdefint {
+    display: -moz-inline-box!important;
+    display: inline-block!important;
+    padding-top: 0;
+    position: relative;
+    vertical-align: top;
+    bottom: 1.45em;
+}
+
+.fraction {
+    display: -moz-inline-box!important;
+    display: inline-block!important;
+    font-size: 90%;
+    text-align: center;
+    vertical-align: -.5em;
+    padding: 0 .2em
+}
+
+.fraction,
+x:-moz-any-link {
+    display: -moz-groupbox
+}
+
+.fraction,
+x:-moz-any-link,
+x:default {
+    display: inline-block
+}
+
+.numerator,
+.denominator {
+    display: block
+}
+
+.numerator {
+    padding: .1em
+}
+
+.denominator {
+    border-top: 1px solid;
+    float: right;
+    width: 100%;
+    padding: .1em .1em 0
+}
+
+.block {
+    display: -moz-inline-box!important;
+    display: inline-block!important;
+}
+
