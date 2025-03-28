@@ -7101,8 +7101,8 @@ function int01() {
         ertek += txtp[1];
         ertek = ertek.replaceAll("−", "-");
     };
-    ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",0,1)\nshow(" + ertek + ",LatexExpr(r'='),n(" + ertek + ",digits = 40))";
-    ertek += "\nshow('\\n')\nshow('Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])";
+    ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",0,1)\nshow('1. The exact value with zetas:',fontsize=20)\nshow('\\n')\nshow(" + ertek + ",LatexExpr(r'='),n(" + ertek + ",digits = 40))";
+    ertek += "\nshow('\\n')\nshow('2. Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])\nshow('\\n')\np=plot(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,legend_label='$\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^" + n + "}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title=\"Plot $\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^{" + n + "}}$ on interval [0,1]\")\np += line([(0,0),(1,0)],thickness=\"2\", color='blue')\np.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=20)\nd = p.get_axes_range()\ndd = (d['ymax']+d['ymin'])*0.5\np += text(\"$\\\\int_{0}^{1}\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^{" + n + "}}\\\\text{ d}x \\\\approx\"+str(ern[0])+\"$\", (0.6, dd), fontsize=12,  color='black')\nshow('3. Plotting the function:',fontsize=20)\nshow('\\n')\nshow(p)";
     int01ertek = ertek;
     elem.innerHTML = txtfej + txt;
 };
