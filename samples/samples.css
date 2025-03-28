@@ -770,12 +770,14 @@ table.stable td {
     margin-top: 7px;
 }
 
-#pzout sub {
+#pzout sub,
+#pzoutr sub {
     font-size: 70%;
     vertical-align: -40%;
 }
 
-#pzout sup {
+#pzout sup,
+#pzoutr sup {
     font-size: 70%;
     margin-left: -0.5em;
 }
@@ -867,5 +869,52 @@ x:default {
 .block {
     display: -moz-inline-box!important;
     display: inline-block!important;
+}
+
+table#pqnrtbl {
+    border-collapse: collapse;
+}
+
+table#pqnrtbl tr td {
+    text-align: center;
+    padding: 1px 2px;
+}
+
+table#pqnrtbl tr:first-child th:first-child {
+    border-right: 1px solid;
+}
+
+table#pqnrtbl tr:first-child th {
+    border-bottom: 1px solid;
+}
+
+#pzoutr sup.binh {
+    font-size: 80%;
+    vertical-align: top;
+    position: relative;
+    left: 0.3em;
+    top: -0.5em;
+    margin-right: 5px;
+}
+
+#pzoutr sup.binh1 {
+    font-size: 80%;
+    vertical-align: top;
+    position: relative;
+    left: 0.4em;
+    top: -0.5em;
+    margin-right: 5px;
+}
+
+#pzoutr span.tblpr {
+    vertical-align: -0.85em;
+}
+
+#pzoutr span.tblpr1 {
+    vertical-align: -0.15em;
+}
+
+.pzjelento.monom-active {
+    box-shadow: 0 0 10px 5px #49d1df;
 }
 
