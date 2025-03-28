@@ -4790,7 +4790,7 @@ function setStatMode(id) {
 };
 
 function drawBinomial(n, k) {
-    return "<span style='display:inline-block;border-left: 2px solid;border-right: 2px solid;border-radius: 30%;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td>" + n + "</td></tr><tr><td>" + k + "</td></tr></table></span>";
+    return "<span style='margin-right:3px;display:inline-block;border-left: 2px solid;border-right: 2px solid;border-radius: 30%;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td>" + n + "</td></tr><tr><td>" + k + "</td></tr></table></span>";
 };
 
 function abcJ(a, b, c, J) {
@@ -6784,7 +6784,6 @@ function elocomp(n, av, fv) {
     var comps = comp(n, r);
     for (var i = 0; i < r; i++)
         comps = comps.filter(y => fv[i] <= y[i] && y[i] <= fv[i] * (av[i] - 1));
-    //comps = _.flatten(comps.map(y => grps(y, av, fv))).map(z => vlistProd(z));
     comps = fracsAdd(_.flatten(comps.map(y => grps(y, av, fv))).map(z => vlistProd(z)));
     return comps;
 };
@@ -6902,20 +6901,225 @@ function setOutputFontPz(v) {
         }, 100);
 };
 
-function grpsForm(cv, av, fv) {
+function grps0(cv, av, fv) {
     var out = [];
     for (var i = 0; i < cv.length; i++)
         out.push(grp(cv[i], av[i], fv[i]));
     out = cartesian(out);
     return out;
-}
+};
+
+
+function formazottExpHTMLb(a) {
+    var txt = "<sup class='binh'>" + a + "</sup>";
+    return txt;
+};
+
+function formazottExpHTMLb1(a) {
+    var txt = "<sup class='binh1'>" + a + "</sup>&lowast;";
+    return txt;
+};
+
+function grpsForm(cv, av, fv) {
+    var out = [];
+    for (var i = 0; i < cv.length; i++)
+        out.push(grp(cv[i], av[i], fv[i]).map(y => toBinomForm(av[i], y, COLORS[i] + "45")));
+    out = cartesian(out);
+    return out;
+};
+
+function toBinomForm(a, v, color) {
+    const gr = _.countBy(v);
+    var frac = "";
+    var binom = "";
+    _.forEach(gr, function(key, value) {
+        frac += (key * 1) + "!&lowast;";
+        binom += drawBinomial(a, value) + formazottExpHTMLb(key)
+    });
+    frac = frac.slice(0, -8);
+    const txt = "<span style='box-shadow:inset  0 0 15px 10px " + color + ";padding-top:7px;border-radius:7px;display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td style='border-bottom:1px solid;'>" + binom + "</td></tr><tr><td>" + frac + "</td></tr></table></span><span class='tblpr'>&lowast;</span>"
+    return txt;
+};
+
+function grpsForm1(cv, av, fv) {
+    var out = [];
+    for (var i = 0; i < cv.length; i++)
+        out.push(grp(cv[i], av[i], fv[i]).map(y => toBinomForm1(av[i], y, COLORS[i] + "45")));
+    out = cartesian(out);
+    return out;
+};
+
+function toBinomForm1(a, v, color) {
+    const gr = _.countBy(v);
+    var frac = "";
+    var binom = "";
+    _.forEach(gr, function(key, value) {
+        frac += factorial(key * 1) + "&lowast;";
+        binom += binomial(a, value) + formazottExpHTMLb1(key)
+    });
+    frac = frac.slice(0, -8);
+    binom = binom.slice(0, -8);
+    const txt = "<span style='box-shadow:inset  0 0 10px 7px " + color + ";padding-top:7px;border-radius:7px;display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td style='border-bottom:1px solid;'>" + binom + "</td></tr><tr><td>" + frac + "</td></tr></table></span><span class='tblpr1'>&lowast;</span>"
+    return txt;
+};
+
+
+function grpsForm2(cv, av, fv) {
+    var out = [];
+    for (var i = 0; i < cv.length; i++)
+        out.push(grp(cv[i], av[i], fv[i]).map(y => toBinomForm2(av[i], y, COLORS[i] + "45")));
+    out = cartesian(out);
+    return out;
+};
+
+function toBinomForm2(a, v, color) {
+    const gr = _.countBy(v);
+    var frac = 1;
+    var binom = 1;
+    _.forEach(gr, function(key, value) {
+        frac *= factorial(key * 1);
+        binom *= Math.pow(binomial(a, value), key)
+    });
+    const txt = "<span style='box-shadow:inset 0 0 15px 10px " + color + ";padding-top:7px;border-radius:7px;display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td style='border-bottom:1px solid;'>" + binom + "</td></tr><tr><td>" + frac + "</td></tr></table></span><span class='tblpr1'>&lowast;</span>"
+    return txt;
+};
+
+function grpsForm3(cv, av, fv) {
+    var out = [];
+    for (var i = 0; i < cv.length; i++)
+        out.push(grp(cv[i], av[i], fv[i]).map(y => toBinomForm3(av[i], y)));
+    out = cartesian(out);
+    return out;
+};
+
+function toBinomForm3(a, v) {
+    const gr = _.countBy(v);
+    var frac = 1;
+    var binom = 1;
+    _.forEach(gr, function(key, value) {
+        frac *= factorial(key * 1);
+        binom *= Math.pow(binomial(a, value), key)
+    });
+    return Fraction(binom, frac);
+};
+
+$(document).on('click', '.pzjelento', function() {
+    console.log($(this));
+    $('.pzjelento.monom-active').removeClass("monom-active");
+    $(this).addClass("monom-active");
+});
 
 function pzJelent(k, n, av, fv) {
+    elem = document.getElementById("pzoutr");
+    const kums = kum(fv);
+    var txt = "";
+    var m = "";
+    for (var i = 0; i < av.length; i++)
+        m += "&zwj;x<sub>" + av[i] + "</sub>" + formazottExpHTML(fv[i]);
+
+    //txt += "Az " + m + " monom együtthatóját szeretnénk kiszámítani a(z) " + "\\(\\displaystyle \\left|\\left|\\begin{array}{c} " + k + "\\\\" + n + " \\end{array}\\right|\\right|\\)" + " alappolinomban.<br/>";
+    txt += "Az " + m + " monom együtthatóját szeretnénk kiszámítani a P(" + k + "," + n + ") alappolinomban.<br/>";
     const r = av.length;
     var comps = comp(n, r);
     for (var i = 0; i < r; i++) {
         comps = comps.filter(y => fv[i] <= y[i] && y[i] <= fv[i] * (av[i] - 1));
+    };
+    var sorokv = [];
+    var sorokv1 = [];
+    var sorokv2 = [];
+    var sorokv3 = [];
+    var sorok = [];
+    var sorokbf = [];
+    var sorokbf1 = [];
+    var sorokbf2 = [];
+    var sorokbf3 = [];
+    for (let y of comps) {
+        var v = grps0(y, av, fv);
+        sorokv.push(grpsForm(y, av, fv));
+        sorokv1.push(grpsForm1(y, av, fv));
+        sorokv2.push(grpsForm2(y, av, fv));
+        sorokv3.push(grpsForm3(y, av, fv));
+        sorok.push(v.map(y => _.flatten(y)));
     }
+    sorokv = _.flatten(sorokv);
+    sorokv1 = _.flatten(sorokv1);
+    sorokv2 = _.flatten(sorokv2);
+    sorokv3 = _.flatten(sorokv3);
+    sorok = _.flatten(sorok);
+    for (let c of sorokv) {
+        var bf = "";
+        for (let y of c) {
+            bf += y;
+        }
+        bf = bf.slice(0, -36);
+        sorokbf.push(bf);
+    };
+    for (let c of sorokv1) {
+        var bf = "";
+        for (let y of c) {
+            bf += y;
+        }
+        bf = bf.slice(0, -36);
+        sorokbf1.push(bf);
+    };
+    for (let c of sorokv2) {
+        var bf = "";
+        for (let y of c) {
+            bf += y;
+        }
+        bf = bf.slice(0, -36);
+        sorokbf2.push(bf);
+    };
+    for (let c of sorokv3) {
+        var bf = Fraction(1, 1);
+        for (let y of c) {
+            bf = bf.mul(y);
+        }
+        sorokbf3.push(bf);
+    };
+    var ns = sorok.length;
+    txt += "<br/><table id='pqnrtbl'><tr style='border-top:2px solid;border-bottom:2px solid;'><th></th>";
+    var szinszml0 = 0;
+    for (var i = 0; i < av.length; i++) {
+        var color = COLORS[szinszml0] + "35";
+        for (var j = 0; j < fv[i]; j++) {
+            if (j == fv[i] - 1) {
+                txt += "<th style='border-right:1px solid;background-color:" + color + ";'>" + av[i] + "</th>";
+                szinszml0++;
+            } else
+                txt += "<th style='background-color:" + color + ";'>" + av[i] + "</th>";
+        }
+    };
+    txt += "<th colspan='4' style='border-right:1px solid;'>Számítások</th>"
+    txt += "</tr>";
+    for (var i = 0; i < ns; i++) {
+        var szamlalo = 0;
+        var szinszml = 0;
+        txt += "<tr style='border-bottom:2px solid'><td style='text-align:center;border-right:1px solid;padding-right:5px;font-weight:800;'>" + (i + 1) + ". </td>";
+        for (let y of sorok[i]) {
+            szamlalo++;
+            var color = COLORS[szinszml] + "35";
+            if (kums.includes(szamlalo)) {
+                txt += "<td style='border-right:1px solid;background-color:" + color + ";'>" + y + "</td>";
+                szinszml++;
+            } else
+                txt += "<td style='background-color:" + color + ";'>" + y + "</td>";
+        };
+        txt += "<td style='padding:10px;border-right:1px solid;'>" + sorokbf[i] + "</td>";
+        txt += "<td style='padding:10px;border-right:1px solid;'>" + sorokbf1[i] + "</td>";
+        txt += "<td style='padding:10px;border-right:1px solid;'>" + sorokbf2[i] + "</td>";
+        var bf = sorokbf3[i];
+        txt += "<td style='padding:10px;border-right:1px solid;'>" + formazottTortHTML(bf.n, bf.d) + "</td>";
+        txt += "</tr>";
+    };
+    var sum = Fraction(0);
+    for (let t of sorokbf3)
+        sum = sum.add(t);
+    sum = formazottTortHTML(sum.n, sum.d);
+    txt += "<tr><td colspan='" + (_.last(kums) + 4) + "' style='text-align:right;'>&sum; = </td><td style='border:2px solid;background-color: #d7d7d7;padding: 5px 2px;'>" + sum + "</td></tr>";
+    txt += "</table><br/>"
+    elem.innerHTML = txt;
+    // MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
 // int01
