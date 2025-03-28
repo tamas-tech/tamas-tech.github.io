@@ -6916,7 +6916,6 @@ function pzJelent(k, n, av, fv) {
     for (var i = 0; i < r; i++) {
         comps = comps.filter(y => fv[i] <= y[i] && y[i] <= fv[i] * (av[i] - 1));
     }
-    //console.log(comps.map(y => grpsForm(y, av, fv)));
 };
 
 // int01
@@ -7031,12 +7030,47 @@ function zetamonom(av, fv) {
     return out;
 };
 
+function PzZeta(k, n) {
+    var txt = "";
+    var ertek = ""
+    const fakt = factorial(n) * factorial(k - n - 1);
+    var parts = part(k, n);
+    parts = parts.map(y => _.countBy(y)).map(z => [Object.keys(z).map(t => 1 * t), Object.values(z)]);
+    for (let v of parts) {
+        var av = v[0];
+        var fv = v[1];
+        var c = prCoeff(k, n, av, fv);
+        c[1] = fractionReduce(c[1][0] * fakt, c[1][1]);
+        if (c[1][0] != 0) {
+            var m = "";
+            for (var i = 0; i < av.length; i++)
+                m += "&zwj;&zeta;(" + av[i] + ")" + formazottExpHTML(fv[i]);
+            m = "<span class='pzjelento' onclick='pzJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ");'>" + m + "</span>"
+            if (c[1][0] * c[1][1] != 1) {
+                txt += c[0] + formazottTortHTML(c[1][0], c[1][1]) + "&lowast;" + m;
+                ertek += c[0] + "(" + c[1][0] + "/" + c[1][1] + ")*" + zetamonom(av, fv);
+            } else {
+                txt += c[0] + m;
+                ertek += c[0] + zetamonom(av, fv);
+            }
+        };
+    };
+
+    if (txt.startsWith(" + "))
+        txt = txt.slice(2);
+    return [txt, ertek];
+};
+
 function int01() {
     var elem = document.getElementById("pqn01out");
     const p = document.getElementById("p01").value * 1;
     const q = document.getElementById("q01").value * 1;
     const n = document.getElementById("n01").value * 1;
-    var txt = "<span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup class=''>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'><span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup class=''>" + n + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = ";
+    var txt = "";
+    var txtfej = "";
+    if (n > p)
+        txtfej += "<span style='color:red;font-size:140%;'>A képlet csak akkor ad helyes eredményt, ha az 'n' ( = " + n + ") paraméter értéke nem haladja meg a 'p' ( = " + p + ") paraméter értékét. (<b>Ha n > p, akkor az integrál értéke ∞</b>, ami nem egyezik a zetákkal számított véges értékkel.)</span><hr/>";
+    txtfej += "<span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup class=''>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'><span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup class=''>" + n + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = ";
     var ertek = "";
     for (var k = 1; k <= p + q; k++) {
         var parts = part(k);
@@ -7060,11 +7094,17 @@ function int01() {
         };
     }
     ertek = ertek.replaceAll("+-", " - ");
-
+    //console.log(txt)
+    if (txt == "") {
+        var txtp = PzZeta(p + q + 1, p);
+        txt += txtp[0];
+        ertek += txtp[1];
+        ertek = ertek.replaceAll("−", "-");
+    };
     ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",0,1)\nshow(" + ertek + ",LatexExpr(r'='),n(" + ertek + ",digits = 40))";
     ertek += "\nshow('\\n')\nshow('Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])";
     int01ertek = ertek;
-    elem.innerHTML = txt;
+    elem.innerHTML = txtfej + txt;
 };
 
 function setOutputFontpqn011(v) {
