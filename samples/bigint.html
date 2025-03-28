@@ -94,13 +94,13 @@
         <p class="kijelzo" id="tsout" style="font-size:21px;line-height:2;"></p>
     </div>
 
-    <div class="keret of odd" id="k3" style="padding-bottom:40px;margin-bottom:10px;">
+   <div class="keret of odd" id="k3" style="padding-bottom:40px;margin-bottom:10px;">
         <b><big class="sorszam">3.</big></b>
-        <p class="keplet" id="keplet_k13" style="padding-bottom:10px;margin-bottom:10px;">\[\int_{0}^{1}\frac{\ln^{p}(x)\cdot\ln^{q}(1-x)}{(1-x)^{n}} \,\text{d}x\]
+        <p class="keplet" id="keplet_k13" style="padding-bottom:10px;margin-bottom:10px;">\[\int_{0}^{1}\frac{\ln^{p}(x)\cdot\ln^{q}(1-x)}{(1-x)^{n}} \,\text{d}x \hspace{2cm} (1 \leq n\leq p)\]
         </p>
         <div style="margin-left:2px;padding:3px;">
             <label for="p01"><b style="padding: 2px 7px;">p</b> =  </label>
-            <input type="number" id="p01" value="5" min="0" step="1" onchange="idClear('#pqn01out');" name="p01" style="width:50px;">
+            <input type="number" id="p01" value="5" min="1" step="1" onchange="idClear('#pqn01out');" name="p01" style="width:50px;">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="q01"><b style="padding: 2px 7px;">q</b> =  </label>
