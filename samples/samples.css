@@ -776,8 +776,7 @@ table.stable td {
     vertical-align: -40%;
 }
 
-#pzout sup,
-#pzoutr sup {
+#pzout sup {
     font-size: 70%;
     margin-left: -0.5em;
 }
@@ -872,12 +871,22 @@ x:default {
 }
 
 table#pqnrtbl {
+    margin: 10px;
     border-collapse: collapse;
 }
 
 table#pqnrtbl tr td {
     text-align: center;
     padding: 1px 2px;
+    min-width: max-content;
+}
+
+table#pqnrtbl td.sorkezdo {
+    text-align: center;
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+    padding: 5px;
+    font-weight: 800;
 }
 
 table#pqnrtbl tr:first-child th:first-child {
@@ -901,9 +910,36 @@ table#pqnrtbl tr:first-child th {
     font-size: 80%;
     vertical-align: top;
     position: relative;
-    left: 0.4em;
-    top: -0.5em;
+    left: 0.45em;
+    top: -0.4em;
     margin-right: 5px;
+}
+
+#pzoutr sup.binh2 {
+    font-size: 80%;
+    vertical-align: top;
+    position: relative;
+    left: 0.25em;
+    top: -0.2em;
+    margin-right: 2px;
+}
+
+#pzoutr sup.binh4 {
+    font-size: 80%;
+    vertical-align: top;
+    position: relative;
+    left: 0.55em;
+    margin-right: 5px;
+}
+
+#pzoutr sup.binh5 {
+    font-size: 80%;
+    vertical-align: top;
+    position: relative;
+    left: 0.4em;
+    margin-right: 5px;
+    top: 0.35em;
+    line-height: 0px;
 }
 
 #pzoutr span.tblpr {
@@ -915,6 +951,24 @@ table#pqnrtbl tr:first-child th {
 }
 
 .pzjelento.monom-active {
-    box-shadow: 0 0 10px 5px #49d1df;
+    box-shadow: 0 0 10px 5px #c6c6c6;
 }
 
+#pzoutr {
+    display: block;
+    outline: 2px solid #d6d4b9;
+    outline-offset: -2px;
+    background-color: #e8e8e8;
+    margin: 5px 0;
+    padding: 7px;
+    font-size: 20px;
+    max-width: calc(100vw);
+    overflow: auto;
+}
+
+#nyil {
+    margin-left: 5px;
+    color: #2d2d2d;
+    font-size: 140%;
+    vertical-align: middle;
+}
