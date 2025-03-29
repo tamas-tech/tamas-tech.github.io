@@ -6805,8 +6805,8 @@ function formazottTortHTML(a, b) {
     var txt = "";
     if (b == 1 && a !== 1)
         txt = a;
-    else if (b > 1)
-        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
+    else if (b > 1 || typeof(b) == 'string')
+        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
     return txt;
 };
 
@@ -6829,7 +6829,7 @@ function PzHTML(k, n) {
             var m = "";
             for (var i = 0; i < av.length; i++)
                 m += "&zwj;x<sub>" + av[i] + "</sub>" + formazottExpHTML(fv[i]);
-            m = "<span class='pzjelento' onclick='pzJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ");'>" + m + "</span>"
+            m = "<span class='pzjelento' onclick='pzJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ",this);'>" + m + "</span>"
             p += c[0] + formazottTortHTML(c[1][0], c[1][1]) + "&nbsp;" + m;
         };
     };
@@ -6893,7 +6893,9 @@ function Pz() {
 
 function setOutputFontPz(v) {
     var elem = document.getElementById("pzout");
+    var elemr = document.getElementById("pzoutr");
     elem.style.fontSize = v + '%';
+    elemr.style.fontSize = v * 0.8 + '%';
     const ltx = document.getElementById("setPzmode").checked;
     if (ltx)
         setTimeout(() => {
@@ -6926,6 +6928,10 @@ function grpsForm(cv, av, fv) {
         out.push(grp(cv[i], av[i], fv[i]).map(y => toBinomForm(av[i], y, COLORS[i] + "45")));
     out = cartesian(out);
     return out;
+};
+
+function drawPz(n, k) {
+    return "<span style='margin:0 5px;padding: 0 0.12em;display:inline-block;border-left: 1px solid;border-right: 1px solid;vertical-align:middle'><table style='text-align:center;border-collapse: collapse;border-left: 1px solid;border-right: 1px solid;'><tr><td style='padding: 0 3px;'>" + n + "</td></tr><tr><td>" + k + "</td></tr></table></span>";
 };
 
 function toBinomForm(a, v, color) {
@@ -7004,22 +7010,45 @@ function toBinomForm3(a, v) {
 };
 
 $(document).on('click', '.pzjelento', function() {
-    console.log($(this));
-    $('.pzjelento.monom-active').removeClass("monom-active");
-    $(this).addClass("monom-active");
+    if ($(this).hasClass("monom-active")) {
+        $('#pzoutr,#nyil').remove();
+        $(this).removeClass("monom-active");
+    } else {
+        $('#pzoutr,#nyil').remove();
+        $(this).after('<span id="nyil">▶</span><p id="pzoutr"></p>');
+        $('.pzjelento.monom-active').removeClass("monom-active");
+        $(this).addClass("monom-active");
+        pzjelkell = false;
+    }
 });
 
-function pzJelent(k, n, av, fv) {
-    elem = document.getElementById("pzoutr");
+function pzJelent(k, n, av, fv, el) {
+    if (el.classList.contains("monom-active"))
+        return;
+    var elojel = "";
+    if (((k + _.sum(fv)) % 2) == 1)
+        elojel = "−";
     const kums = kum(fv);
+    const r = av.length;
     var txt = "";
     var m = "";
-    for (var i = 0; i < av.length; i++)
+    for (var i = 0; i < r; i++)
         m += "&zwj;x<sub>" + av[i] + "</sub>" + formazottExpHTML(fv[i]);
-
-    //txt += "Az " + m + " monom együtthatóját szeretnénk kiszámítani a(z) " + "\\(\\displaystyle \\left|\\left|\\begin{array}{c} " + k + "\\\\" + n + " \\end{array}\\right|\\right|\\)" + " alappolinomban.<br/>";
-    txt += "Az " + m + " monom együtthatóját szeretnénk kiszámítani a P(" + k + "," + n + ") alappolinomban.<br/>";
-    const r = av.length;
+    const elojelstr = "<span style='line-height:1;display: inline-block;'>(-1)<sup class='binh5'>k + &sum;<var><b>f</b></var></sup></span>";
+    const Cnk = "<span style='line-height:1;display: inline-block;'>C<sub>n</sub>(<var><b>a</b></var>;<var><b>f</b></var> )</span>";
+    const aonf = "<span style='line-height:1;display: inline-block;'><var><b>a</b></var><sup class='binh4'><var><b>f</b></var></sup></span>";
+    const astr = "(" + av.toString() + ")";
+    const fstr = "(" + fv.toString() + ")";
+    var oszto = 1;
+    var ostr = "";
+    var ostrab = "";
+    for (var i = 0; i < r; i++) {
+        oszto *= Math.pow(av[i], fv[i]);
+        ostr += av[i] + "<sup class='binh1'>" + fv[i] + "</sup>&lowast;"
+        ostrab += "a<sub>" + (i + 1) + "</sub><sup class='binh2'>f<sub>" + (i + 1) + "</sub></sup> &lowast;"
+    };
+    ostr = ostr.slice(0, -8);
+    ostrab = ostrab.slice(0, -8);
     var comps = comp(n, r);
     for (var i = 0; i < r; i++) {
         comps = comps.filter(y => fv[i] <= y[i] && y[i] <= fv[i] * (av[i] - 1));
@@ -7078,7 +7107,23 @@ function pzJelent(k, n, av, fv) {
         sorokbf3.push(bf);
     };
     var ns = sorok.length;
-    txt += "<br/><table id='pqnrtbl'><tr style='border-top:2px solid;border-bottom:2px solid;'><th></th>";
+    var sum = Fraction(0);
+    for (let t of sorokbf3)
+        sum = sum.add(t);
+    var cer = sum.mul(Fraction(1, oszto));
+    sum = formazottTortHTML(sum.n, sum.d);
+
+
+    txt += "Az " + m + " monom <b>C = " + elojel + formazottTortHTML(cer.n, cer.d) + "</b> együtthatóját szeretnénk kiszámítani a(z) " + drawPz(k, n) + "alappolinomban. A C együttható három tényező szorzata:<div style='text-align:center;margin: 15px 0;'><span style='padding:15px 20px 20px 17px;outline:2px solid #535353;'> C = Előjel &lowast; " + formazottTortHTML(1, "Osztó") + " &lowast; Kombinatorikus tag = " + elojelstr + "  &nbsp;&lowast; " + formazottTortHTML(1, aonf) + " &nbsp;&lowast; " + Cnk + "</span></div>";
+    txt += "A monom alsó indexeiből, illetve kitevőiből képezhető az <var><b>a</b></var> = " + astr + " indexvektor, illetve az <var><b>f</b></var> = " + fstr + " kitevővektor.";
+    txt += "<ol><li><b>Előjel:</b> " + elojelstr + "  = (-1)<sup class='binh5'>" + k + " + " + fstr.replace("(", "").replace(")", "").replaceAll(",", " + ") + "</sup> =  (-1)<sup class='binh5'>" + (k + _.last(kums)) + "</sup> = " + elojel + "1";
+    txt += "</li><li><b>Osztó:</b> " + aonf + "  &nbsp;= " + ostrab + " = " + ostr + " = " + oszto;
+    txt += "</li><li><b>Kombinatorikus tag:</b> " + Cnk + "  &nbsp;= C<sub>" + n + "</sub>(" + astr + ";" + fstr + ")</li></ol>"
+    txt += "A " + Cnk + " kombinatorikus tag kiszámításához a Pascal-háromszög a<sub>i</sub>-edik sorából (a legszélső elemeket elhagyva) f<sub>i</sub> darab binomiális együtthatót kell (<i>ismétlődést is megengedve</i>) kiválasztani az összes lehetséges módon  úgy, hogy az alsó számok összege  n legyen (a felső számok összege ekkor már biztosan k lesz). Minden egyes kiválasztásban a kiválasztott binomiális együtthatókat összeszorozzuk és osztunk az ismétlődések számának faktoriálisaival. A " + Cnk + " kombinatorikus tag az így nyert számok összege. A jelen példában a szélek elhagyásával kapott Pascal-háromszög  <ul>";
+    for (var i = 0; i < r; i++)
+        txt += "<li> " + av[i] + ". sorából " + fv[i] + " elemet";
+    txt += "</ul>  kell  kiválasztani (ismétlődést is megengedve) úgy, hogy az alsó számok összege  n = " + n + " legyen. A lehetséges kiválasztásokat és  az azokhoz kiszámított szorzatokat találjuk az alábbi táblázatban."
+    txt += "<br/><table id='pqnrtbl'><tr style='border-top:2px solid;border-bottom:2px solid;'><th style=';border-left:2px solid;;border-right:2px solid;'></th>";
     var szinszml0 = 0;
     for (var i = 0; i < av.length; i++) {
         var color = COLORS[szinszml0] + "35";
@@ -7095,7 +7140,7 @@ function pzJelent(k, n, av, fv) {
     for (var i = 0; i < ns; i++) {
         var szamlalo = 0;
         var szinszml = 0;
-        txt += "<tr style='border-bottom:2px solid'><td style='text-align:center;border-right:1px solid;padding-right:5px;font-weight:800;'>" + (i + 1) + ". </td>";
+        txt += "<tr style='border-bottom:2px solid'><td class='sorkezdo'>" + (i + 1) + ". </td>";
         for (let y of sorok[i]) {
             szamlalo++;
             var color = COLORS[szinszml] + "35";
@@ -7112,13 +7157,27 @@ function pzJelent(k, n, av, fv) {
         txt += "<td style='padding:10px;border-right:1px solid;'>" + formazottTortHTML(bf.n, bf.d) + "</td>";
         txt += "</tr>";
     };
-    var sum = Fraction(0);
-    for (let t of sorokbf3)
-        sum = sum.add(t);
-    sum = formazottTortHTML(sum.n, sum.d);
-    txt += "<tr><td colspan='" + (_.last(kums) + 4) + "' style='text-align:right;'>&sum; = </td><td style='border:2px solid;background-color: #d7d7d7;padding: 5px 2px;'>" + sum + "</td></tr>";
-    txt += "</table><br/>"
-    elem.innerHTML = txt;
+
+    txt += "<tr><td colspan='" + (_.last(kums) + 4) + "' style='text-align:right;'>C<sub>" + n + "</sub>(" + astr + ";" + fstr + ") = &sum; = </td><td style='border:2px solid;background-color: #d7d7d7;padding: 5px 2px;'>" + sum + "</td></tr>";
+    txt += "</table><br/><br/>";
+    txt += " A monom együtthatója: C = " + elojelstr + "  &nbsp;&lowast; " + formazottTortHTML(1, aonf) + " &nbsp;&lowast; " + Cnk + " = " + elojel + formazottTortHTML(1, oszto) + " &lowast;" + sum + " = ";
+    txt += "<span style='margin-left:7px;display:inline-block;outline:4px solid #444444;outline-offset:2px;padding:2px 10px 0 10px;'>" + elojel + formazottTortHTML(cer.n, cer.d) + "</span><br/>&nbsp;";
+    var elem;
+    setTimeout(() => {
+        elem = document.getElementById("pzoutr");
+        elem.innerHTML = txt;
+        elem.scrollIntoView({
+            behavior: "smooth",
+            block: 'start'
+        });
+    }, 100)
+
+
+    /* elem.scrollIntoView({
+        behavior: "smooth",
+        block: 'start'
+    }); */
+    //return txt;
     // MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
@@ -7298,7 +7357,6 @@ function int01() {
         };
     }
     ertek = ertek.replaceAll("+-", " - ");
-    //console.log(txt)
     if (txt == "") {
         var txtp = PzZeta(p + q + 1, p);
         txt += txtp[0];
