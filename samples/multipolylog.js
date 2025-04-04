@@ -7399,7 +7399,7 @@ function intJelent(k, n, av, fv, el) {
     for (var i = ah; i <= fh; i++)
         indx.push(i);
     const indxstr = "[" + indx.toString() + "]";
-    const N = Math.max(q + 2 - k - n + _.max(indx), 0);
+    const N = Math.max(q + 2 - k - n + fh, 0);
     const tbl = makeCpqnTbl(p, q, n, N);
     const fakt = factorial(p) * factorial(q);
     var sum = Fraction(0);
@@ -7415,7 +7415,7 @@ function intJelent(k, n, av, fv, el) {
     txt += "A C(p,q,n,p<sub>1</sub>,q<sub>1</sub>) menyiségek nagyon bonyolultan számíthatók:";
     //txt+" <p class='keplet'  style='padding-bottom:10px;margin-bottom:10px;'>\[\begin{gather*}\left[\begin{array}{c} n\\k \end{array}\right]_{r}=(n-r)!\,\sum_{j=k-r}^{n-r}\dfrac{\dbinom{n-j-1}{r-1}\left[\begin{array}{c}j\\k-r\end{array}\right]}{j!}\\ \\ \left\{\begin{array}{c} n\\k \end{array}\right\}_{r}=\,\sum_{j=k-r}^{n-r}\dbinom{n-r}{j}\left\{\begin{array}{c}j\\k-r\end{array}\right\}\,r^{n-r-j}\end{gather*}\]</p>"//
     txt += "<div id='cpgnform' style='margin: 10px 0;background-color: #d9d9d9;padding: 5px;border: 2px solid black;width: max-content;'>\\[C(p,q,n,p_{1},q_{1}) = \\sum_{L=1}^{n-1}\\dfrac{(-1)^{L}}{L!}\\dbinom{n}{L+1}\\sum_{k=p_{1}}^{p}(-1)^{k}\\left[\\begin{array}{c} L+2\\\\ p-k+2 \\end{array}\\right]_{2}\\sum_{j=q_{1}-1}^{q}(-1)^{j}\\dbinom{k+j-p_{1}-q_{1}}{k-p_{1}}\\sum_{w=1}{L}\\dfrac{(-1)^{w}}{w^{q-j}}\\dbinom{L}{w}-(-1)^{p+q-p_{1}-q_{1}}\\max(1,n-1)\\dbinom{p+q-p_{1}-q_{1}}{p-p_{1}}\\]</div>"
-    txt += "A C<sub>" + p + "," + q + "," + n + "</sub>(k," + k + "-k) együtthatók értékükeit az alábbi táblázatból kereshetjük ki: <div style='text-align:center;'>" + tbl + "</div>";
+    txt += "A C<sub>" + p + "," + q + "," + n + "</sub>(k," + k + "-k) együtthatók értékeit az alábbi táblázatból kereshetjük ki: <div style='text-align:center;'>" + tbl + "</div>";
     txt += "<br/>A <span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz(k, 'k') + " együtthatókat pedig már a korábban megismert módon számíthatjuk. A képletben szereplő összeg  tagjait az alábbi táblázatban rendeztük el:<br/><table id='pqnrtbl'><tr style='border:2px solid black;'><td style='padding:5px 7px;'>k</th><td style='border-left:2px solid black;padding:5px 7px;'>C(k) = C(" + p + "," + q + "," + n + ",k," + k + "-k) </td><td style='border-left:2px solid black;padding:5px 7px;'> P(k) = <span style='display: inline-block;transform: scale(1.2,1.5);'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.5);'>]</span>" + drawPz(k, 'k') + "</td><td style='border-left:2px solid black;padding:5px 7px;'>C(k)&lowast;P(k)</td></tr>";
     for (let j of indx) {
         var c = Cpqnp1q1Q(p, q, n, j, k - j) //.mul(fakt);
