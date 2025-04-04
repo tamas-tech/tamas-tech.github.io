@@ -6829,7 +6829,7 @@ function PzHTML(k, n) {
             var m = "";
             for (var i = 0; i < av.length; i++)
                 m += "&zwj;x<sub>" + av[i] + "</sub>" + formazottExpHTML(fv[i]);
-            m = "<span class='pzjelento' onclick='pzJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ",this);'>" + m + "</span>"
+            m = "<span class='pzjelento' onclick='pzJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ",this,true);'>" + m + "</span>"
             p += c[0] + formazottTortHTML(c[1][0], c[1][1]) + "&nbsp;" + m;
         };
     };
@@ -7022,7 +7022,7 @@ $(document).on('click', '.pzjelento', function() {
     }
 });
 
-function pzJelent(k, n, av, fv, el) {
+function pzJelent(k, n, av, fv, el, b) {
     if (el.classList.contains("monom-active"))
         return;
     var elojel = "";
@@ -7163,9 +7163,13 @@ function pzJelent(k, n, av, fv, el) {
     txt += " A monom együtthatója: C = " + elojelstr + "  &nbsp;&lowast; " + formazottTortHTML(1, aonf) + " &nbsp;&lowast; " + Cnk + " = " + elojel + formazottTortHTML(1, oszto) + " &lowast;" + sum + " = ";
     txt += "<span style='margin-left:7px;display:inline-block;outline:4px solid #444444;outline-offset:2px;padding:2px 10px 0 10px;'>" + elojel + formazottTortHTML(cer.n, cer.d) + "</span><br/>&nbsp;";
     var elem;
+    var id = "pzoutr";
+    if (!b)
+        id = "pzoutr01";
     setTimeout(() => {
-        elem = document.getElementById("pzoutr");
+        elem = document.getElementById(id);
         elem.innerHTML = txt;
+        $(elem).css({ 'background-color': '#f1ffe1', 'padding': '5px 10px' });
         elem.scrollIntoView({
             behavior: "smooth",
             block: 'start'
@@ -7258,6 +7262,8 @@ function p1q1Coeff(k, n, av, fv) {
     return s;
 };
 
+//var pqnvec = [];
+
 function pqnCoeff(p, q, n, m) {
     const av = m[0];
     const fv = m[1];
@@ -7274,6 +7280,7 @@ function pqnCoeff(p, q, n, m) {
             if (saf == k && sf <= p1q1) {
                 var c = p1q1Coeff(k, p1, av, fv).mul(Cpqnp1q1Q(p, q, n, p1, q1));
                 sum = sum.add(c);
+                //pqnvec.push([p1, q1, Cpqnp1q1Q(p, q, n, p1, q1).toFraction()]);
             }
         };
     };
@@ -7324,49 +7331,180 @@ function PzZeta(k, n) {
     return [txt, ertek];
 };
 
+$(document).on('click', '.int01jelento', function() {
+    if ($(this).hasClass("monom-active")) {
+        $('#pzoutr01,#int01nyil').remove();
+        $(this).removeClass("monom-active");
+    } else {
+        $('#pzoutr01,#int01nyil').remove();
+        $(this).after('<span id="int01nyil">▶</span><p id="pzoutr01"></p>');
+        $('.int01jelento.monom-active').removeClass("monom-active");
+        $(this).addClass("monom-active");
+        pzjelkell = false;
+    }
+});
+
+function makeCpqnTbl(p, q, n, N) {
+    var txt = "<table id='Cpqntbl'><tr><th>p1/q1</th>";
+    for (var j = 0 - N; j < n + N; j++)
+        txt += "<th class='rstb'>" + (q + 1 - j) + "</th>";
+    txt += "</tr>";
+    for (var p1 = 0 - N; p1 < n + N; p1++) {
+        txt += "<tr><th class='rstb'>" + (p - p1) + "</th>";
+        for (var q1 = 0 - N; q1 < n + N; q1++) {
+            var ert = Cpqnp1q1Q(p, q, n, p - p1, q + 1 - q1);
+            var elojel = "";
+            if (ert.s == -1)
+                elojel = "&minus;";
+            txt += "<td style='text-align:center;border: 1px solid #d2d2d2;min-width:max-content;'>" + elojel + formazottTortHTML(ert.n, ert.d) + "</td>";
+        }
+        txt += "</tr>";
+    };
+    txt += "</table>";
+    return txt;
+}
+
+function formazottExpHTMLb2(a) {
+    var txt = "<sup class='binh6'>" + a + "</sup>";
+    return txt;
+};
+
+function intJelent(k, n, av, fv, el) {
+    if (el.classList.contains("monom-active"))
+        return;
+    const p = document.getElementById("p01").value * 1;
+    const q = document.getElementById("q01").value * 1;
+    const txtint = "I<sub>" + p + "," + q + "," + n + "</sub> = <span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint' style='vertical-align: -120%;'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup class=''>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'><span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup class=''>" + n + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span>";
+    const kums = kum(fv);
+    const sf = _.last(kums);
+    const r = av.length;
+    const astr = "(" + av.toString() + ")";
+    const fstr = "(" + fv.toString() + ")";
+    var absum = "<b>a</b><b>f</b> = &sum;a<sub>i</sub>&lowast;b<sub>i</sub> = ";
+    for (var h = 0; h < r; h++)
+        absum += av[h] + "&lowast;" + fv[h] + " + ";
+    absum = absum.slice(0, -3)
+    absum += " = " + k;
+    const fsum = "&sum;<b>f</b> = " + fstr.replace("(", "").replace(")", "").replaceAll(",", " + ") + " = " + sf;
+    var txt = "";
+    var m = "";
+    for (var i = 0; i < r; i++)
+        m += "&zwj;&zeta;(" + av[i] + ")" + formazottExpHTML(fv[i]);
+    var mx = "";
+    for (var i = 0; i < r; i++)
+        mx += "&zwj;x<sub>" + av[i] + "</sub>" + formazottExpHTMLb2(fv[i]);
+    const ah = Math.max(k - q - 1, p + 1 - n, sf);
+    const fh = Math.min(k - sf, p);
+    var indx = [];
+    for (var i = ah; i <= fh; i++)
+        indx.push(i);
+    const indxstr = "[" + indx.toString() + "]";
+    const N = Math.max(q + 2 - k - n + _.max(indx), 0);
+    const tbl = makeCpqnTbl(p, q, n, N);
+    const fakt = factorial(p) * factorial(q);
+    var sum = Fraction(0);
+    var cer = pqnCoeff(p, q, n, [av, fv]);
+    var elojeler = "";
+    if (cer.s < 0)
+        elojeler = " −";
+    txt += "Az " + m + " monom <b>C = " + elojeler + formazottTortHTML(cer.n, cer.d) + "</b> együtthatóját szeretnénk kiszámítani az " + txtint + "határozott integrálban.<br/>";
+    txt += "A monom alsó indexeiből, illetve kitevőiből képezhető az <b>a</b> = " + astr + " indexvektor, illetve az <b>f</b> = " + fstr + " kitevővektor.<br/>Az I<sub>" + p + "," + q + "," + n + "</sub> integrál az alábbi képlettel számítható:"
+    txt += "<div style='text-align:center;margin: 15px 0;'><span style='padding:20px;outline:2px solid #535353;'> I<sub>" + p + "," + q + "," + n + "</sub> = p! q!&lowast;&sum;<sub>k&in;T</sub> C<sub>p,q,n</sub>(k,<b>a</b><b>f</b>-k)&lowast;<span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup><span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + "</span></div>";
+    txt += "Ahol <ul><li>p! q! = " + p + "! " + q + "! = " + factorial(p) + "&lowast;" + factorial(q) + " = " + fakt + ";</li><li>" + fsum + ";</li><li>" + absum + ";</li><li>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup> = " + mx + ";</li><li>A T indexhalmaz a [max(<b>a</b><b>f</b> - q - 1, p + 1 - n, &sum;<b>f</b>); min(<b>a</b><b>f</b> - &sum;<b>f</b>, p)] = [max(" + k + " - " + q + " - 1, " + p + " + 1 - " + n + ", " + sf + "); min(" + k + " - " + sf + ", " + p + ")] = [max(" + (k - q - 1) + ", " + (p + 1 - n) + ", " + sf + "); min(" + (k - sf) + ", " + p + ")] = " + indxstr + " zárt intervallum;</li><li><span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup><span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + ": Az x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup> monomnak az " + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + " alappolinombeli együtthatóját jelenti;</li></ul>";
+    txt += " A most kiszámított mennyiségeket behelyettesítve: <div style='text-align:center;margin: 15px 0;'><span style='padding:20px;outline:2px solid #535353;'> I<sub>" + p + "," + q + "," + n + "</sub> = " + fakt + "&lowast;&sum;<sub>k&in;" + indxstr + "</sub> C<sub>" + p + "," + q + "," + n + "</sub>(k," + k + "-k)&lowast;<span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz(k, 'k') + "</span></div>";
+    txt += "A C(p,q,n,p<sub>1</sub>,q<sub>1</sub>) menyiségek nagyon bonyolultan számíthatók:";
+    //txt+" <p class='keplet'  style='padding-bottom:10px;margin-bottom:10px;'>\[\begin{gather*}\left[\begin{array}{c} n\\k \end{array}\right]_{r}=(n-r)!\,\sum_{j=k-r}^{n-r}\dfrac{\dbinom{n-j-1}{r-1}\left[\begin{array}{c}j\\k-r\end{array}\right]}{j!}\\ \\ \left\{\begin{array}{c} n\\k \end{array}\right\}_{r}=\,\sum_{j=k-r}^{n-r}\dbinom{n-r}{j}\left\{\begin{array}{c}j\\k-r\end{array}\right\}\,r^{n-r-j}\end{gather*}\]</p>"//
+    txt += "<div id='cpgnform' style='margin: 10px 0;background-color: #d9d9d9;padding: 5px;border: 2px solid black;width: max-content;'>\\[C(p,q,n,p_{1},q_{1}) = \\sum_{L=1}^{n-1}\\dfrac{(-1)^{L}}{L!}\\dbinom{n}{L+1}\\sum_{k=p_{1}}^{p}(-1)^{k}\\left[\\begin{array}{c} L+2\\\\ p-k+2 \\end{array}\\right]_{2}\\sum_{j=q_{1}-1}^{q}(-1)^{j}\\dbinom{k+j-p_{1}-q_{1}}{k-p_{1}}\\sum_{w=1}{L}\\dfrac{(-1)^{w}}{w^{q-j}}\\dbinom{L}{w}-(-1)^{p+q-p_{1}-q_{1}}\\max(1,n-1)\\dbinom{p+q-p_{1}-q_{1}}{p-p_{1}}\\]</div>"
+    txt += "A C<sub>" + p + "," + q + "," + n + "</sub>(k," + k + "-k) együtthatók értékükeit az alábbi táblázatból kereshetjük ki: <div style='text-align:center;'>" + tbl + "</div>";
+    txt += "<br/>A <span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz(k, 'k') + " együtthatókat pedig már a korábban megismert módon számíthatjuk. A képletben szereplő összeg  tagjait az alábbi táblázatban rendeztük el:<br/><table id='pqnrtbl'><tr style='border:2px solid black;'><td style='padding:5px 7px;'>k</th><td style='border-left:2px solid black;padding:5px 7px;'>C(k) = C(" + p + "," + q + "," + n + ",k," + k + "-k) </td><td style='border-left:2px solid black;padding:5px 7px;'> P(k) = <span style='display: inline-block;transform: scale(1.2,1.5);'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.5);'>]</span>" + drawPz(k, 'k') + "</td><td style='border-left:2px solid black;padding:5px 7px;'>C(k)&lowast;P(k)</td></tr>";
+    for (let j of indx) {
+        var c = Cpqnp1q1Q(p, q, n, j, k - j) //.mul(fakt);
+        var elojel = "";
+        if (c.s < 0)
+            elojel = " −";
+        var pr = p1q1Coeff(k, j, av, fv);
+        var elojel1 = "";
+        if (pr.s < 0)
+            elojel1 = " −";
+        var cpr = c.mul(pr);
+        sum = sum.add(cpr);
+        var elojel2 = "";
+        if (cpr.s < 0)
+            elojel2 = " −";
+        txt += "<tr><th style='border-left:2px solid;'>" + j + "</th><td  style='border-left:2px solid black;padding:5px 10px;'>C(" + j + "," + (k - j) + ") = " + elojel + formazottTortHTML(c.n, c.d) + "</td><td class='int01jelento' style='border-left:2px solid black;cursor:pointer;' onclick='pzJelent(" + k + "," + j + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ",this,false);'>" + elojel1 + formazottTortHTML(pr.n, pr.d) + "</td><td style='border-left:2px solid;border-right:2px solid black;'>" + elojel2 + formazottTortHTML(cpr.n, cpr.d) + "</td></tr>";
+    };
+    var ee = ""
+    if (sum.s < 0)
+        ee = " −";
+    txt += "<tr><td colspan='3' style='text-align:right;border-top:2px solid black;'> &sum; = </td><td style='border:2px solid black;background-color: #d7d7d7;padding: 5px 2px;'>" + ee + formazottTortHTML(sum.n, sum.d) + "</td></tr>";
+    txt += "</table><br/><br/>";
+    txt += "C = " + ee + formazottTortHTML(sum.n, sum.d) + " &lowast;" + fakt + " = <span style='margin-left:7px;display:inline-block;outline:4px solid #444444;outline-offset:2px;padding:2px 10px 0 10px;'>" + elojeler + formazottTortHTML(cer.n, cer.d) + "</span><br/>&nbsp;";
+    var elem;
+    setTimeout(() => {
+        elem = document.getElementById("pzoutr");
+        elem2 = document.getElementById("pqnform");
+        elem.innerHTML = txt;
+        elem.scrollIntoView({
+            behavior: "smooth",
+            block: 'start'
+        });
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem2]);
+        for (let j of indx) {
+            console.log(p - j + 2, j - q + 3)
+            $('#Cpqntbl tr:nth-child(' + (p - j + 2 + N) + ')  td:nth-child(' + (q - k + j + 3 + N) + ')').css({ 'background-color': ' #fde8a7' });
+        }
+    }, 100)
+};
+
 function int01() {
     var elem = document.getElementById("pqn01out");
     const p = document.getElementById("p01").value * 1;
     const q = document.getElementById("q01").value * 1;
     const n = document.getElementById("n01").value * 1;
+    const tblmode = document.getElementById("settblmode").checked;
     var txt = "";
     var txtfej = "";
-    if (n > p)
-        txtfej += "<span style='color:red;font-size:140%;'>A képlet csak akkor ad helyes eredményt, ha az 'n' ( = " + n + ") paraméter értéke nem haladja meg a 'p' ( = " + p + ") paraméter értékét. (<b>Ha n > p, akkor az integrál értéke ∞</b>, ami nem egyezik a zetákkal számított véges értékkel.)</span><hr/>";
-    txtfej += "<span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup class=''>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'><span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup class=''>" + n + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = ";
-    var ertek = "";
-    for (var k = 1; k <= p + q; k++) {
-        var parts = part(k);
-        parts = parts.map(y => _.countBy(y)).map(z => [Object.keys(z).map(t => 1 * t), Object.values(z)]);
-        for (let m of parts) {
-            var coeff = pqnCoeff(p, q, n, m);
-            if (coeff != 0) {
-                var av = m[0];
-                var fv = m[1];
-                var elojel = " + ";
-                if (coeff.s == -1)
-                    elojel = " − ";
-                ertek += "+" + coeff.toFraction() + "*" + zetamonom(av, fv);
-                var ms = "";
-                for (var i = 0; i < av.length; i++)
-                    ms += "&zwj;&zeta;(" + av[i] + ")" + formazottExpHTML(fv[i]);
-                ms = "<span class='pzjelento' onclick='pzJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ");'>" + ms + "</span>";
-                txt += elojel + formazottTortHTML(coeff.n, coeff.d) + "&lowast;" + ms;
-                //txt += elojel + formazottTortHTML(coeff.n, coeff.d) + " " + ms;
+    if (tblmode) {
+        const N = document.getElementById("Nc").value * 1;
+        txt += makeCpqnTbl(p, q, n, N);
+    } else {
+        if (n > p)
+            txtfej += "<span style='color:red;font-size:140%;'>A képlet csak akkor ad helyes eredményt, ha az 'n' ( = " + n + ") paraméter értéke nem haladja meg a 'p' ( = " + p + ") paraméter értékét. (<b>Ha n > p, akkor az integrál értéke ∞</b>, ami nem egyezik a zetákkal számított véges értékkel.)</span><hr/>";
+        txtfej += "<span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup class=''>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'><span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup class=''>" + n + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = ";
+        var ertek = "";
+        for (var k = 1; k <= p + q; k++) {
+            var parts = part(k);
+            parts = parts.map(y => _.countBy(y)).map(z => [Object.keys(z).map(t => 1 * t), Object.values(z)]);
+            for (let m of parts) {
+                var coeff = pqnCoeff(p, q, n, m);
+                if (coeff != 0) {
+                    var av = m[0];
+                    var fv = m[1];
+                    var elojel = " + ";
+                    if (coeff.s == -1)
+                        elojel = " − ";
+                    ertek += "+" + coeff.toFraction() + "*" + zetamonom(av, fv);
+                    var ms = "";
+                    for (var i = 0; i < av.length; i++)
+                        ms += "&zwj;&zeta;(" + av[i] + ")" + formazottExpHTML(fv[i]);
+                    ms = "<span class='pzjelento' onclick='intJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ",this);'>" + ms + "</span>";
+                    txt += elojel + formazottTortHTML(coeff.n, coeff.d) + "&lowast;" + ms;
+                    //txt += elojel + formazottTortHTML(coeff.n, coeff.d) + " " + ms;
+                };
             };
+        }
+        ertek = ertek.replaceAll("+-", " - ");
+        if (txt == "") {
+            var txtp = PzZeta(p + q + 1, p);
+            txt += txtp[0];
+            ertek += txtp[1];
+            ertek = ertek.replaceAll("−", "-");
         };
-    }
-    ertek = ertek.replaceAll("+-", " - ");
-    if (txt == "") {
-        var txtp = PzZeta(p + q + 1, p);
-        txt += txtp[0];
-        ertek += txtp[1];
-        ertek = ertek.replaceAll("−", "-");
+        ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",0,1)\nshow('1. The exact value with zetas:',fontsize=20)\nshow('\\n')\nshow(" + ertek + ",LatexExpr(r'='),n(" + ertek + ",digits = 40))";
+        ertek += "\nshow('\\n')\nshow('2. Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])\nshow('\\n')\np=plot(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,legend_label='$\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^" + n + "}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title=\"Plot $\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^{" + n + "}}$ on interval [0,1]\")\np += line([(0,0),(1,0)],thickness=\"2\", color='blue')\np.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=20)\nd = p.get_axes_range()\ndd = (d['ymax']+d['ymin'])*0.5\np += text(\"$\\\\int_{0}^{1}\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^{" + n + "}}\\\\text{ d}x \\\\approx\"+str(ern[0])+\"$\", (0.6, dd), fontsize=12,  color='black')\nshow('3. Plotting the function:',fontsize=20)\nshow('\\n')\nshow(p)";
+        int01ertek = ertek;
     };
-    ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",0,1)\nshow('1. The exact value with zetas:',fontsize=20)\nshow('\\n')\nshow(" + ertek + ",LatexExpr(r'='),n(" + ertek + ",digits = 40))";
-    ertek += "\nshow('\\n')\nshow('2. Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])\nshow('\\n')\np=plot(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,legend_label='$\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^" + n + "}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title=\"Plot $\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^{" + n + "}}$ on interval [0,1]\")\np += line([(0,0),(1,0)],thickness=\"2\", color='blue')\np.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=20)\nd = p.get_axes_range()\ndd = (d['ymax']+d['ymin'])*0.5\np += text(\"$\\\\int_{0}^{1}\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^{" + n + "}}\\\\text{ d}x \\\\approx\"+str(ern[0])+\"$\", (0.6, dd), fontsize=12,  color='black')\nshow('3. Plotting the function:',fontsize=20)\nshow('\\n')\nshow(p)";
-    int01ertek = ertek;
-    elem.innerHTML = txtfej + txt;
+    elem.innerHTML = txtfej + txt; //+ JSON.stringify(pqnvec);
 };
 
 function setOutputFontpqn011(v) {
