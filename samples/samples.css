@@ -972,3 +972,24 @@ table#pqnrtbl tr:first-child th {
     font-size: 140%;
     vertical-align: middle;
 }
+
+#pqn01out table#pqnrtbl {
+    margin: 10px;
+    border-collapse: collapse;
+}
+
+.int01jelento.monom-active {
+    box-shadow: 0 0 10px 5px #c6c6c6;
+    box-shadow: inset 0 0 10px 5px #54babf;
+}
+
+#int01nyil {
+    margin-left: 5px;
+    color: #2d2d2d;
+    font-size: 140%;
+    vertical-align: middle;
+}
+
+#pzoutr sup.binh6 {
+    margin-left: -0.5em;
+}
