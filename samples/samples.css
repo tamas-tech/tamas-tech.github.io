@@ -723,6 +723,11 @@ table#pqntbl table.tort td {
     border-color: black;
 }
 
+table#Cpqntbl {
+    min-width: max-content;
+}
+
+table#Cpqntbl th,
 table#rStbl td {
     border: 1px solid #d2d2d2;
     text-align: center;
