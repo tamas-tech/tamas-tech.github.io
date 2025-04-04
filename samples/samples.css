@@ -677,6 +677,7 @@ button.kiemelo {
 table#pqntbl {
     border-spacing: 3px;
     background-color: #dbdbdb;
+    min-width: max-content;
 }
 
 table#pqntbl td {
@@ -873,6 +874,7 @@ x:default {
 table#pqnrtbl {
     margin: 10px;
     border-collapse: collapse;
+    min-width: max-content;
 }
 
 table#pqnrtbl tr td {
@@ -976,6 +978,7 @@ table#pqnrtbl tr:first-child th {
 #pqn01out table#pqnrtbl {
     margin: 10px;
     border-collapse: collapse;
+    min-width: max-content;
 }
 
 .int01jelento.monom-active {
