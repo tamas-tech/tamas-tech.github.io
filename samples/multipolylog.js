@@ -117,6 +117,7 @@ var plotall = false;
 var kummode = false;
 var kums = [];
 var int01ertek = "";
+var intd01ertek = "";
 
 function setMode(t) {
     mode = t.value;
@@ -7542,7 +7543,7 @@ function intd01() {
     ertek = ertek.replaceAll("+-", " - ");
     ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^" + n + "*(1-x)^" + m + "),0,1)\nshow('1. The exact value with zetas:',fontsize=20)\nshow('\\n')\nshow(n(" + ertek + ",digits = 40),LatexExpr(r'=')," + ertek + ")";
     ertek += "\nshow('\\n')\nshow('2. Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^" + n + "*(1-x)^" + m + "),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])\nshow('\\n')\np=plot(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^" + n + "*(1-x)^" + m + "),x,0,1,legend_label='$\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(x^" + n + "*(1-x)^" + m + ")}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',plot_points=" + 300 + ",adaptive_recursion=" + 10 + ",adaptive_tolerance=" + 0.001 + ",title=\"Plot $\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{x^{" + n + "}\\\\cdot (1-x)^{" + m + "}}$ on interval [0,1]\")\np += line([(0,0),(1,0)],thickness=\"2\", color='blue')\np.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=20)\nd = p.get_axes_range()\ndd = (d['ymax']+d['ymin'])*0.5\np += text(\"$\\\\int_{0}^{1}\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{x^{" + n + "}\\\\cdot (1-x)^{" + m + "}}\\\\text{ d}x \\\\approx\"+str(ern[0])+\"$\", (0.6, dd), fontsize=12,  color='black')\nshow('3. Plotting the function:',fontsize=20)\nshow('\\n')\nshow(p)";
-    int01ertek = ertek;
+    intd01ertek = ertek;
     elem.innerHTML = txtfej + txt;
 };
 
@@ -7561,7 +7562,7 @@ function setOutputFontpqnd011(v) {
 };
 
 function sagepqnd01() {
-    $('#mycelld01 .sagecell_editor textarea.sagecell_commands').val(int01ertek);
+    $('#mycelld01 .sagecell_editor textarea.sagecell_commands').val(intd01ertek);
     $('#mycelld01 .sagecell_input button.sagecell_evalButton').click();
     setOutputFontpqnd011($('#outfont-sliderpqnd011').val());
 };
