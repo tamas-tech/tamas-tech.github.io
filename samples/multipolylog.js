@@ -7189,16 +7189,6 @@ function setOutputFontpqnd01(v) {
     document.getElementById("pqnd01out").style.fontSize = v + "px";
 };
 
-function W1(L, q, j) {
-    var W = 0;
-    for (var w = 1; w < L + 1; w++) {
-        var nu = Math.pow(-1, w) * binomial(L, w);
-        var de = Math.pow(w, q - j);
-        W += nu / de;
-    };
-    return W;
-};
-
 function Cpqnp1q1(p, q, n, p1, q1) {
     var sum = Math.pow(-1, p + q - p1 - q1 + 1) * (n - 1) * binomial(p + q - p1 - q1, p - p1);
     var W = 0;
@@ -7343,6 +7333,7 @@ $(document).on('click', '.int01jelento', function() {
 });
 
 function makeCpqnTbl(p, q, n, N) {
+
     var txt = "<table id='Cpqntbl'><tr><th>p1/q1</th>";
     for (var j = 0 - N; j < n + N; j++)
         txt += "<th class='rstb'>" + (q + 1 - j) + "</th>";
@@ -7412,7 +7403,7 @@ function intJelent(k, n, av, fv, el, spec) {
     if (cer.s < 0)
         elojeler = " −";
     if (spec)
-        txt += "<div style='outline:2px solid red;'>Az n =1 speciális eset, amely jelentősen eltér az n > 0 esttől, és még nem teljesen implementált. Az esetek többségében helyesen működik!</div>"
+        txt += "<div style='outline:2px solid red;'>Az n =1 speciális eset, amely jelentősen eltér az n > 0 esttől, és még nem teljesen implementált. Az esetek többségében helyesen működik, de előjelhibák előfordulhatnak!</div>"
     txt += "Az " + m + " monom <b>C = " + elojeler + formazottTortHTML(cer.n, cer.d) + "</b> együtthatóját szeretnénk kiszámítani az " + txtint + "határozott integrálban.<br/>";
     txt += "A monom alsó indexeiből, illetve kitevőiből képezhető az <b>a</b> = " + astr + " indexvektor, illetve az <b>f</b> = " + fstr + " kitevővektor.<br/>Az I<sub>" + p + "," + q + "," + nsp + "</sub> integrál az alábbi képlettel számítható:"
     txt += "<div style='text-align:center;margin: 15px 0;'><span style='padding:20px;outline:2px solid #535353;'> I<sub>" + p + "," + q + "," + nsp + "</sub> = p! q!&lowast;&sum;<sub>k&in;T</sub> C<sub>p,q,n</sub>(k,<b>a</b><b>f</b>-k)&lowast;<span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup><span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + "</span></div>";
@@ -7511,12 +7502,67 @@ function int01() {
     elem.innerHTML = txtfej + txt;
 };
 
+function W1(L, q) {
+    var W = Fraction(0);
+    for (var w = 1; w < L + 1; w++) {
+        var nu = Math.pow(-1, w) * binomial(L, w);
+        var de = Math.pow(w, q);
+        W = W.add(Fraction(nu, de));
+    };
+    return W;
+};
+
+function def1(p, q, n) {
+    var sum = Fraction(0);
+    const e = Fraction(Math.pow(-1, p + q), factorial(n));
+    const K = Math.min(n, p + 1) + 1;
+    for (var k = 1; k < K; k++) {
+        var t = Math.pow(-1, k) * stirlingNumber(n, k) * binomial(p + q + 1 - k, q);
+        t = W1(n, p + q + 1 - k).mul(t);
+        sum = sum.add(t);
+    }
+    sum = sum.mul(e);
+    return sum;
+}
+
+function poztag(p, q, n, m, av, fv) {
+    var sum = Fraction(0);
+    var saf = 0;
+    for (var t = 0; t < av.length; t++)
+        saf += av[t] * fv[t];
+    const K = -n - m;
+    for (var k = 0; k <= K; k++) {
+        var e = Math.pow(-1, n + k) * binomial(-m, -n - m - k);
+        var s = Fraction(0);
+        for (var p1 = 1; p1 <= p; p1++) {
+            for (var q1 = 1; q1 <= q; q1++) {
+                if (saf == (p1 + q1)) {
+                    s = s.add(def1(p - p1, q - q1, k + 1).mul(p1q1Coeff(p1 + q1, p1, av, fv)));
+                }
+            }
+        }
+        sum = sum.add(s.mul(e));
+    }
+    return sum;
+}
+
+function consttag(p, q, n, m) {
+    const K = -n - m;
+    var sum = Fraction(0);
+    for (var k = 0; k <= K; k++) {
+        var e = Math.pow(-1, n + k) * binomial(-m, -n - m - k);
+        sum = sum.add(def1(p, q, k + 1).mul(e));
+    }
+    return sum;
+}
+
 function intd01() {
     var elem = document.getElementById("pqnd01out");
     const p = document.getElementById("pp01").value * 1;
     const q = document.getElementById("qq01").value * 1;
     const n = document.getElementById("nn01").value * 1;
     const m = document.getElementById("mm01").value * 1;
+    const fakt = factorial(p) * factorial(q);
     var txt = "";
     var txtfej = "";
 
@@ -7533,6 +7579,8 @@ function intd01() {
                 coeff = coeff.add(binomial(n + m - 1 - k, m - 1) * pqnCoeff(q, p, k, t));
             for (var k = 1; k <= m; k++)
                 coeff = coeff.add(binomial(n + m - 1 - k, n - 1) * pqnCoeff(p, q, k, t));
+            if (n < 0 || m < 0)
+                coeff = coeff.add(poztag(p, q, n, m, t[0], t[1]).mul(fakt));
             if (coeff != 0) {
                 var av = t[0];
                 var fv = t[1];
@@ -7548,8 +7596,16 @@ function intd01() {
             };
         };
     }
+    var ee = " + "
+    const ktag = consttag(p, q, n, m).mul(fakt);
+    if (ktag != 0) {
+        if (ktag.s < 0)
+            ee = " - ";
+        txt += ee + formazottTortHTML(ktag.n, ktag.d)
+        ertek += ktag.toFraction();
+    };
     ertek = ertek.replaceAll("+-", " - ");
-    ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^" + n + "*(1-x)^" + m + "),0,1)\nshow('1. The exact value with zetas:',fontsize=20)\nshow('\\n')\nshow(n(" + ertek + ",digits = 40),LatexExpr(r'=')," + ertek + ")";
+    ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^(" + n + ")*(1-x)^(" + m + ")),0,1)\nshow('1. The exact value with zetas:',fontsize=20)\nshow('\\n')\nshow(n(" + ertek + ",digits = 40),LatexExpr(r'=')," + ertek + ")";
     ertek += "\nshow('\\n')\nshow('2. Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^" + n + "*(1-x)^" + m + "),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])\nshow('\\n')\np=plot(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^" + n + "*(1-x)^" + m + "),x,0,1,legend_label='$\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(x^" + n + "*(1-x)^" + m + ")}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',plot_points=" + 300 + ",adaptive_recursion=" + 10 + ",adaptive_tolerance=" + 0.001 + ",title=\"Plot $\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{x^{" + n + "}\\\\cdot (1-x)^{" + m + "}}$ on interval [0,1]\")\np += line([(0,0),(1,0)],thickness=\"2\", color='blue')\np.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=20)\nd = p.get_axes_range()\ndd = (d['ymax']+d['ymin'])*0.5\np += text(\"$\\\\int_{0}^{1}\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{x^{" + n + "}\\\\cdot (1-x)^{" + m + "}}\\\\text{ d}x \\\\approx\"+str(ern[0])+\"$\", (0.6, dd), fontsize=12,  color='black')\nshow('3. Plotting the function:',fontsize=20)\nshow('\\n')\nshow(p)";
     intd01ertek = ertek;
     elem.innerHTML = txtfej + txt;
