@@ -53,8 +53,6 @@ var showgenmathout = false;
 var mathoutformat = false;
 var reducedv = false;
 var insertonselect = false;
-//var fastrun = false;
-
 
 var amode = "Li";
 var bmode = "Li";
@@ -3626,6 +3624,12 @@ function out01Clear() {
         elem.innerHTML = "";
 };
 
+function outd01Clear() {
+    const elem = document.querySelector("#ideoutd01 .sagecell_sessionOutput")
+    if (elem)
+        elem.innerHTML = "";
+};
+
 function sagetransfClear() {
     const elem = document.getElementById("sagetransf");
     elem.innerHTML = "";
@@ -6360,9 +6364,6 @@ function addTScoeffpPlotAll() {
         $("#plotpqn svg.function-plot .canvas .content g.graph path").each(function() {
             this.setAttribute("stroke-width", "2");
         });
-        //const kump = $("#plotpqn svg.function-plot .canvas .content g.graph path.line-" + (p + 1) + "")[0];
-        //kump.setAttribute("stroke-dasharray", "3");
-        //kum.setAttribute("opacity", "0.5");
     } else
         return;
 };
@@ -7175,14 +7176,6 @@ function pzJelent(k, n, av, fv, el, b) {
             block: 'start'
         });
     }, 100)
-
-
-    /* elem.scrollIntoView({
-        behavior: "smooth",
-        block: 'start'
-    }); */
-    //return txt;
-    // MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
 // int01
@@ -7191,6 +7184,9 @@ function setOutputFontpqn01(v) {
     document.getElementById("pqn01out").style.fontSize = v + "px";
 };
 
+function setOutputFontpqnd01(v) {
+    document.getElementById("pqnd01out").style.fontSize = v + "px";
+};
 
 function W1(L, q, j) {
     var W = 0;
@@ -7280,10 +7276,11 @@ function pqnCoeff(p, q, n, m) {
             if (saf == k && sf <= p1q1) {
                 var c = p1q1Coeff(k, p1, av, fv).mul(Cpqnp1q1Q(p, q, n, p1, q1));
                 sum = sum.add(c);
-                //pqnvec.push([p1, q1, Cpqnp1q1Q(p, q, n, p1, q1).toFraction()]);
             }
         };
     };
+    if (saf == p + q + 1)
+        sum = sum.add(p1q1Coeff(p + q + 1, p, av, fv))
     sum = sum.mul(fakt);
     return sum;
 };
@@ -7399,7 +7396,7 @@ function intJelent(k, n, av, fv, el) {
     for (var i = ah; i <= fh; i++)
         indx.push(i);
     const indxstr = "[" + indx.toString() + "]";
-    const N = Math.max(q + 2 - k - n + fh, 0);
+    const N = Math.max(k - fh - n + 1, 0);
     const tbl = makeCpqnTbl(p, q, n, N);
     const fakt = factorial(p) * factorial(q);
     var sum = Fraction(0);
@@ -7413,12 +7410,11 @@ function intJelent(k, n, av, fv, el) {
     txt += "Ahol <ul><li>p! q! = " + p + "! " + q + "! = " + factorial(p) + "&lowast;" + factorial(q) + " = " + fakt + ";</li><li>" + fsum + ";</li><li>" + absum + ";</li><li>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup> = " + mx + ";</li><li>A T indexhalmaz a [max(<b>a</b><b>f</b> - q - 1, p + 1 - n, &sum;<b>f</b>); min(<b>a</b><b>f</b> - &sum;<b>f</b>, p)] = [max(" + k + " - " + q + " - 1, " + p + " + 1 - " + n + ", " + sf + "); min(" + k + " - " + sf + ", " + p + ")] = [max(" + (k - q - 1) + ", " + (p + 1 - n) + ", " + sf + "); min(" + (k - sf) + ", " + p + ")] = " + indxstr + " zárt intervallum;</li><li><span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup><span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + ": Az x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup> monomnak az " + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + " alappolinombeli együtthatóját jelenti;</li></ul>";
     txt += " A most kiszámított mennyiségeket behelyettesítve: <div style='text-align:center;margin: 15px 0;'><span style='padding:20px;outline:2px solid #535353;'> I<sub>" + p + "," + q + "," + n + "</sub> = " + fakt + "&lowast;&sum;<sub>k&in;" + indxstr + "</sub> C<sub>" + p + "," + q + "," + n + "</sub>(k," + k + "-k)&lowast;<span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz(k, 'k') + "</span></div>";
     txt += "A C(p,q,n,p<sub>1</sub>,q<sub>1</sub>) menyiségek nagyon bonyolultan számíthatók:";
-    //txt+" <p class='keplet'  style='padding-bottom:10px;margin-bottom:10px;'>\[\begin{gather*}\left[\begin{array}{c} n\\k \end{array}\right]_{r}=(n-r)!\,\sum_{j=k-r}^{n-r}\dfrac{\dbinom{n-j-1}{r-1}\left[\begin{array}{c}j\\k-r\end{array}\right]}{j!}\\ \\ \left\{\begin{array}{c} n\\k \end{array}\right\}_{r}=\,\sum_{j=k-r}^{n-r}\dbinom{n-r}{j}\left\{\begin{array}{c}j\\k-r\end{array}\right\}\,r^{n-r-j}\end{gather*}\]</p>"//
     txt += "<div id='cpgnform' style='margin: 10px 0;background-color: #d9d9d9;padding: 5px;border: 2px solid black;width: max-content;'>\\[C(p,q,n,p_{1},q_{1}) = \\sum_{L=1}^{n-1}\\dfrac{(-1)^{L}}{L!}\\dbinom{n}{L+1}\\sum_{k=p_{1}}^{p}(-1)^{k}\\left[\\begin{array}{c} L+2\\\\ p-k+2 \\end{array}\\right]_{2}\\sum_{j=q_{1}-1}^{q}(-1)^{j}\\dbinom{k+j-p_{1}-q_{1}}{k-p_{1}}\\sum_{w=1}{L}\\dfrac{(-1)^{w}}{w^{q-j}}\\dbinom{L}{w}-(-1)^{p+q-p_{1}-q_{1}}\\max(1,n-1)\\dbinom{p+q-p_{1}-q_{1}}{p-p_{1}}\\]</div>"
     txt += "A C<sub>" + p + "," + q + "," + n + "</sub>(k," + k + "-k) együtthatók értékeit az alábbi táblázatból kereshetjük ki: <div style='text-align:center;'>" + tbl + "</div>";
     txt += "<br/>A <span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz(k, 'k') + " együtthatókat pedig már a korábban megismert módon számíthatjuk. A képletben szereplő összeg  tagjait az alábbi táblázatban rendeztük el:<br/><table id='pqnrtbl'><tr style='border:2px solid black;'><td style='padding:5px 7px;'>k</th><td style='border-left:2px solid black;padding:5px 7px;'>C(k) = C(" + p + "," + q + "," + n + ",k," + k + "-k) </td><td style='border-left:2px solid black;padding:5px 7px;'> P(k) = <span style='display: inline-block;transform: scale(1.2,1.5);'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.5);'>]</span>" + drawPz(k, 'k') + "</td><td style='border-left:2px solid black;padding:5px 7px;'>C(k)&lowast;P(k)</td></tr>";
     for (let j of indx) {
-        var c = Cpqnp1q1Q(p, q, n, j, k - j) //.mul(fakt);
+        var c = Cpqnp1q1Q(p, q, n, j, k - j)
         var elojel = "";
         if (c.s < 0)
             elojel = " −";
@@ -7488,8 +7484,7 @@ function int01() {
                     for (var i = 0; i < av.length; i++)
                         ms += "&zwj;&zeta;(" + av[i] + ")" + formazottExpHTML(fv[i]);
                     ms = "<span class='pzjelento' onclick='intJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ",this);'>" + ms + "</span>";
-                    txt += elojel + formazottTortHTML(coeff.n, coeff.d) + "&lowast;" + ms;
-                    //txt += elojel + formazottTortHTML(coeff.n, coeff.d) + " " + ms;
+                    txt += elojel + formazottTortHTML(coeff.n, coeff.d) + "&zwj;&lowast;" + ms;
                 };
             };
         }
@@ -7500,11 +7495,55 @@ function int01() {
             ertek += txtp[1];
             ertek = ertek.replaceAll("−", "-");
         };
-        ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",0,1)\nshow('1. The exact value with zetas:',fontsize=20)\nshow('\\n')\nshow(" + ertek + ",LatexExpr(r'='),n(" + ertek + ",digits = 40))";
+        ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",0,1)\nshow('1. The exact value with zetas:',fontsize=20)\nshow('\\n')\nshow(n(" + ertek + ",digits = 40),LatexExpr(r'=')," + ertek + ")";
         ertek += "\nshow('\\n')\nshow('2. Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])\nshow('\\n')\np=plot(ln(x)^" + p + "*ln(1-x)^" + q + "/(1-x)^" + n + ",x,0,1,legend_label='$\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^" + n + "}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',title=\"Plot $\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^{" + n + "}}$ on interval [0,1]\")\np += line([(0,0),(1,0)],thickness=\"2\", color='blue')\np.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=20)\nd = p.get_axes_range()\ndd = (d['ymax']+d['ymin'])*0.5\np += text(\"$\\\\int_{0}^{1}\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(1-x)^{" + n + "}}\\\\text{ d}x \\\\approx\"+str(ern[0])+\"$\", (0.6, dd), fontsize=12,  color='black')\nshow('3. Plotting the function:',fontsize=20)\nshow('\\n')\nshow(p)";
         int01ertek = ertek;
     };
-    elem.innerHTML = txtfej + txt; //+ JSON.stringify(pqnvec);
+    elem.innerHTML = txtfej + txt;
+};
+
+function intd01() {
+    var elem = document.getElementById("pqnd01out");
+    const p = document.getElementById("pp01").value * 1;
+    const q = document.getElementById("qq01").value * 1;
+    const n = document.getElementById("nn01").value * 1;
+    const m = document.getElementById("mm01").value * 1;
+    var txt = "";
+    var txtfej = "";
+
+    if (m > p || n > q)
+        txtfej += "<span style='color:red;font-size:140%;'>A képlet csak akkor ad helyes eredményt, ha az 'm' ( = " + m + ") paraméter értéke nem haladja meg a 'p' ( = " + p + ") paraméter értékét, és az 'n' ( = " + n + ") paraméter értéke nem haladja meg a 'q' ( = " + q + ") paraméter értékét. (<b>Ellenkező esetben az integrál értéke ∞</b>, ami nem egyezik a zetákkal számított véges értékkel.)</span><hr/>";
+    txtfej += "<span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'>x<sup>" + n + "</sup>&lowast;<span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup>" + m + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = ";
+    var ertek = "";
+    for (var l = 1; l <= p + q + 1; l++) {
+        var parts = part(l);
+        parts = parts.map(y => _.countBy(y)).map(z => [Object.keys(z).map(t => 1 * t), Object.values(z)]);
+        for (let t of parts) {
+            var coeff = Fraction(0);
+            for (var k = 1; k <= n; k++)
+                coeff = coeff.add(binomial(n + m - 1 - k, m - 1) * pqnCoeff(q, p, k, t));
+            for (var k = 1; k <= m; k++)
+                coeff = coeff.add(binomial(n + m - 1 - k, n - 1) * pqnCoeff(p, q, k, t));
+            if (coeff != 0) {
+                var av = t[0];
+                var fv = t[1];
+                var elojel = " + ";
+                if (coeff.s == -1)
+                    elojel = " − ";
+                ertek += "+" + coeff.toFraction() + "*" + zetamonom(av, fv);
+                var ms = "";
+                for (var i = 0; i < av.length; i++)
+                    ms += "&zwj;&zeta;(" + av[i] + ")" + formazottExpHTML(fv[i]);
+                ms = "<span class='pzjelento'>" + ms + "</span>";
+                txt += elojel + formazottTortHTML(coeff.n, coeff.d) + "&zwj;&lowast;" + ms;
+            };
+        };
+    }
+    ertek = ertek.replaceAll("+-", " - ");
+    ertek = "var('ern')\nern = numerical_integral(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^" + n + "*(1-x)^" + m + "),0,1)\nshow('1. The exact value with zetas:',fontsize=20)\nshow('\\n')\nshow(n(" + ertek + ",digits = 40),LatexExpr(r'=')," + ertek + ")";
+    ertek += "\nshow('\\n')\nshow('2. Checking by numererical_integral() command',fontsize=20)\nshow('\\n')\nshow(integrate(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^" + n + "*(1-x)^" + m + "),x,0,1,hold=True),LatexExpr(r'='),ern[0],LatexExpr(r'\\pm'),ern[1])\nshow('\\n')\np=plot(ln(x)^" + p + "*ln(1-x)^" + q + "/(x^" + n + "*(1-x)^" + m + "),x,0,1,legend_label='$\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{(x^" + n + "*(1-x)^" + m + ")}$',fill='axis',color='blue',fillcolor='blue',fillalpha='0.2',thickness='2',plot_points=" + 300 + ",adaptive_recursion=" + 10 + ",adaptive_tolerance=" + 0.001 + ",title=\"Plot $\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{x^{" + n + "}\\\\cdot (1-x)^{" + m + "}}$ on interval [0,1]\")\np += line([(0,0),(1,0)],thickness=\"2\", color='blue')\np.set_legend_options(back_color=(0.9,0.9,0.9), shadow=False,fontsize=20)\nd = p.get_axes_range()\ndd = (d['ymax']+d['ymin'])*0.5\np += text(\"$\\\\int_{0}^{1}\\\\dfrac{\\\\ln^{" + p + "}(x)\\\\cdot\\\\ln^{" + q + "}(1-x)}{x^{" + n + "}\\\\cdot (1-x)^{" + m + "}}\\\\text{ d}x \\\\approx\"+str(ern[0])+\"$\", (0.6, dd), fontsize=12,  color='black')\nshow('3. Plotting the function:',fontsize=20)\nshow('\\n')\nshow(p)";
+    int01ertek = ertek;
+    elem.innerHTML = txtfej + txt;
 };
 
 function setOutputFontpqn011(v) {
@@ -7515,4 +7554,14 @@ function sagepqn01() {
     $('#mycell01 .sagecell_editor textarea.sagecell_commands').val(int01ertek);
     $('#mycell01 .sagecell_input button.sagecell_evalButton').click();
     setOutputFontpqn011($('#outfont-sliderpqn011').val());
+};
+
+function setOutputFontpqnd011(v) {
+    $('#ideoutd01 .sagecell_sessionOutput').css('font-size', v + 'px');
+};
+
+function sagepqnd01() {
+    $('#mycelld01 .sagecell_editor textarea.sagecell_commands').val(int01ertek);
+    $('#mycelld01 .sagecell_input button.sagecell_evalButton').click();
+    setOutputFontpqnd011($('#outfont-sliderpqnd011').val());
 };
