@@ -7313,7 +7313,7 @@ function PzZeta(k, n) {
             var m = "";
             for (var i = 0; i < av.length; i++)
                 m += "&zwj;&zeta;(" + av[i] + ")" + formazottExpHTML(fv[i]);
-            m = "<span class='pzjelento' onclick='pzJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ");'>" + m + "</span>"
+            m = "<span class='pzjelento' onclick='intJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ",this,true);'>" + m + "</span>"
             if (c[1][0] * c[1][1] != 1) {
                 txt += c[0] + formazottTortHTML(c[1][0], c[1][1]) + "&lowast;" + m;
                 ertek += c[0] + "(" + c[1][0] + "/" + c[1][1] + ")*" + zetamonom(av, fv);
@@ -7367,12 +7367,15 @@ function formazottExpHTMLb2(a) {
     return txt;
 };
 
-function intJelent(k, n, av, fv, el) {
+function intJelent(k, n, av, fv, el, spec) {
     if (el.classList.contains("monom-active"))
         return;
     const p = document.getElementById("p01").value * 1;
     const q = document.getElementById("q01").value * 1;
-    const txtint = "I<sub>" + p + "," + q + "," + n + "</sub> = <span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint' style='vertical-align: -120%;'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup class=''>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'><span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup class=''>" + n + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span>";
+    var nsp = n;
+    if (spec)
+        nsp = 1;
+    const txtint = "I<sub>" + p + "," + q + "," + nsp + "</sub> = <span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint' style='vertical-align: -120%;'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup class=''>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'><span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup class=''>" + nsp + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span>";
     const kums = kum(fv);
     const sf = _.last(kums);
     const r = av.length;
@@ -7397,23 +7400,28 @@ function intJelent(k, n, av, fv, el) {
     for (var i = ah; i <= fh; i++)
         indx.push(i);
     const indxstr = "[" + indx.toString() + "]";
-    const N = Math.max(k - fh - n + 1, 0);
+    //const N = Math.max(k - fh - n + 1, 0);
+    const N = Math.max(q + 2 - n - k + fh, 0);
     const tbl = makeCpqnTbl(p, q, n, N);
     const fakt = factorial(p) * factorial(q);
     var sum = Fraction(0);
     var cer = pqnCoeff(p, q, n, [av, fv]);
+    if (spec)
+        cer = p1q1Coeff(p + q + 1, p, av, fv).mul(fakt);
     var elojeler = "";
     if (cer.s < 0)
         elojeler = " −";
+    if (spec)
+        txt += "<div style='outline:2px solid red;'>Az n =1 speciális eset, amely jelentősen eltér az n > 0 esttől, és még nem teljesen implementált. Az esetek többségében helyesen működik!</div>"
     txt += "Az " + m + " monom <b>C = " + elojeler + formazottTortHTML(cer.n, cer.d) + "</b> együtthatóját szeretnénk kiszámítani az " + txtint + "határozott integrálban.<br/>";
-    txt += "A monom alsó indexeiből, illetve kitevőiből képezhető az <b>a</b> = " + astr + " indexvektor, illetve az <b>f</b> = " + fstr + " kitevővektor.<br/>Az I<sub>" + p + "," + q + "," + n + "</sub> integrál az alábbi képlettel számítható:"
-    txt += "<div style='text-align:center;margin: 15px 0;'><span style='padding:20px;outline:2px solid #535353;'> I<sub>" + p + "," + q + "," + n + "</sub> = p! q!&lowast;&sum;<sub>k&in;T</sub> C<sub>p,q,n</sub>(k,<b>a</b><b>f</b>-k)&lowast;<span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup><span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + "</span></div>";
-    txt += "Ahol <ul><li>p! q! = " + p + "! " + q + "! = " + factorial(p) + "&lowast;" + factorial(q) + " = " + fakt + ";</li><li>" + fsum + ";</li><li>" + absum + ";</li><li>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup> = " + mx + ";</li><li>A T indexhalmaz a [max(<b>a</b><b>f</b> - q - 1, p + 1 - n, &sum;<b>f</b>); min(<b>a</b><b>f</b> - &sum;<b>f</b>, p)] = [max(" + k + " - " + q + " - 1, " + p + " + 1 - " + n + ", " + sf + "); min(" + k + " - " + sf + ", " + p + ")] = [max(" + (k - q - 1) + ", " + (p + 1 - n) + ", " + sf + "); min(" + (k - sf) + ", " + p + ")] = " + indxstr + " zárt intervallum;</li><li><span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup><span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + ": Az x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup> monomnak az " + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + " alappolinombeli együtthatóját jelenti;</li></ul>";
-    txt += " A most kiszámított mennyiségeket behelyettesítve: <div style='text-align:center;margin: 15px 0;'><span style='padding:20px;outline:2px solid #535353;'> I<sub>" + p + "," + q + "," + n + "</sub> = " + fakt + "&lowast;&sum;<sub>k&in;" + indxstr + "</sub> C<sub>" + p + "," + q + "," + n + "</sub>(k," + k + "-k)&lowast;<span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz(k, 'k') + "</span></div>";
+    txt += "A monom alsó indexeiből, illetve kitevőiből képezhető az <b>a</b> = " + astr + " indexvektor, illetve az <b>f</b> = " + fstr + " kitevővektor.<br/>Az I<sub>" + p + "," + q + "," + nsp + "</sub> integrál az alábbi képlettel számítható:"
+    txt += "<div style='text-align:center;margin: 15px 0;'><span style='padding:20px;outline:2px solid #535353;'> I<sub>" + p + "," + q + "," + nsp + "</sub> = p! q!&lowast;&sum;<sub>k&in;T</sub> C<sub>p,q,n</sub>(k,<b>a</b><b>f</b>-k)&lowast;<span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup><span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + "</span></div>";
+    txt += "Ahol <ul><li>p! q! = " + p + "! " + q + "! = " + factorial(p) + "&lowast;" + factorial(q) + " = " + fakt + ";</li><li>" + fsum + ";</li><li>" + absum + ";</li><li>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup> = " + mx + ";</li><li>A T indexhalmaz a [max(<b>a</b><b>f</b> - q - 1, p + 1 - n, &sum;<b>f</b>); min(<b>a</b><b>f</b> - &sum;<b>f</b>, p)] = [max(" + k + " - " + q + " - 1, " + p + " + 1 - " + nsp + ", " + sf + "); min(" + k + " - " + sf + ", " + p + ")] = [max(" + (k - q - 1) + ", " + (p + 1 - n) + ", " + sf + "); min(" + (k - sf) + ", " + p + ")] = " + indxstr + " zárt intervallum;</li><li><span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup><span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + ": Az x<sub><b>a</b></sub><sup style='margin-left:-0.2em;font-size:80%;'><b>f</b></sup> monomnak az " + drawPz('<b>a</b><b style=\"margin-right:3px;\">f</b>', 'k') + " alappolinombeli együtthatóját jelenti;</li></ul>";
+    txt += " A most kiszámított mennyiségeket behelyettesítve: <div style='text-align:center;margin: 15px 0;'><span style='padding:20px;outline:2px solid #535353;'> I<sub>" + p + "," + q + "," + nsp + "</sub> = " + fakt + "&lowast;&sum;<sub>k&in;" + indxstr + "</sub> C<sub>" + p + "," + q + "," + nsp + "</sub>(k," + k + "-k)&lowast;<span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz(k, 'k') + "</span></div>";
     txt += "A C(p,q,n,p<sub>1</sub>,q<sub>1</sub>) menyiségek nagyon bonyolultan számíthatók:";
     txt += "<div id='cpgnform' style='margin: 10px 0;background-color: #d9d9d9;padding: 5px;border: 2px solid black;width: max-content;'>\\[C(p,q,n,p_{1},q_{1}) = \\sum_{L=1}^{n-1}\\dfrac{(-1)^{L}}{L!}\\dbinom{n}{L+1}\\sum_{k=p_{1}}^{p}(-1)^{k}\\left[\\begin{array}{c} L+2\\\\ p-k+2 \\end{array}\\right]_{2}\\sum_{j=q_{1}-1}^{q}(-1)^{j}\\dbinom{k+j-p_{1}-q_{1}}{k-p_{1}}\\sum_{w=1}^{L}\\dfrac{(-1)^{w}}{w^{q-j}}\\dbinom{L}{w}-(-1)^{p+q-p_{1}-q_{1}}\\max(1,n-1)\\dbinom{p+q-p_{1}-q_{1}}{p-p_{1}}\\]</div>"
-    txt += "A C<sub>" + p + "," + q + "," + n + "</sub>(k," + k + "-k) együtthatók értékeit az alábbi táblázatból kereshetjük ki: <div style='text-align:center;'>" + tbl + "</div>";
-    txt += "<br/>A <span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz(k, 'k') + " együtthatókat pedig már a korábban megismert módon számíthatjuk. A képletben szereplő összeg  tagjait az alábbi táblázatban rendeztük el:<br/><table id='pqnrtbl'><tr style='border:2px solid black;'><td style='padding:5px 7px;'>k</th><td style='border-left:2px solid black;padding:5px 7px;'>C(k) = C(" + p + "," + q + "," + n + ",k," + k + "-k) </td><td style='border-left:2px solid black;padding:5px 7px;'> P(k) = <span style='display: inline-block;transform: scale(1.2,1.5);'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.5);'>]</span>" + drawPz(k, 'k') + "</td><td style='border-left:2px solid black;padding:5px 7px;'>C(k)&lowast;P(k)</td></tr>";
+    txt += "A C<sub>" + p + "," + q + "," + nsp + "</sub>(k," + k + "-k) együtthatók értékeit az alábbi táblázatból kereshetjük ki: <div style='text-align:center;'>" + tbl + "</div>";
+    txt += "<br/>A <span style='display: inline-block;transform: scale(1.2,1.7);margin-right: 0.2em;'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.7);margin-left: 0.2em;'>]</span>" + drawPz(k, 'k') + " együtthatókat pedig már a korábban megismert módon számíthatjuk. A képletben szereplő összeg  tagjait az alábbi táblázatban rendeztük el:<br/><table id='pqnrtbl'><tr style='border:2px solid black;'><td style='padding:5px 7px;'>k</th><td style='border-left:2px solid black;padding:5px 7px;'>C(k) = C(" + p + "," + q + "," + nsp + ",k," + k + "-k) </td><td style='border-left:2px solid black;padding:5px 7px;'> P(k) = <span style='display: inline-block;transform: scale(1.2,1.5);'>[</span>" + mx + "<span style='display: inline-block;transform: scale(1.2,1.5);'>]</span>" + drawPz(k, 'k') + "</td><td style='border-left:2px solid black;padding:5px 7px;'>C(k)&lowast;P(k)</td></tr>";
     for (let j of indx) {
         var c = Cpqnp1q1Q(p, q, n, j, k - j)
         var elojel = "";
@@ -7484,7 +7492,7 @@ function int01() {
                     var ms = "";
                     for (var i = 0; i < av.length; i++)
                         ms += "&zwj;&zeta;(" + av[i] + ")" + formazottExpHTML(fv[i]);
-                    ms = "<span class='pzjelento' onclick='intJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ",this);'>" + ms + "</span>";
+                    ms = "<span class='pzjelento' onclick='intJelent(" + k + "," + n + "," + JSON.stringify(av) + "," + JSON.stringify(fv) + ",this,false);'>" + ms + "</span>";
                     txt += elojel + formazottTortHTML(coeff.n, coeff.d) + "&zwj;&lowast;" + ms;
                 };
             };
