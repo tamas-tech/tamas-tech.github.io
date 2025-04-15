@@ -1001,3 +1001,36 @@ table#pqnrtbl tr:first-child th {
 #pzoutr sup.binh6 {
     margin-left: -0.5em;
 }
+
+table.fpntbl,
+table.fpntbl {
+    height: 100%;
+    width: 100%;
+    min-width: max-content;
+    min-height: max-content;
+    border: 1px solid #303030;
+}
+
+table.fpntblc td {
+    cursor: pointer;
+}
+
+table.fpntbl td.fpnact {
+    background-color: #d7e9ea;
+    border: 1px solid #000000!important;
+}
+
+table.fpntbl td.fpnact1 {
+    background-color: #f2f2bc;
+    border: 1px solid #000000!important;
+}
+
+table.fpntblc td.fpnact {
+    background-color: #eeccb9;
+}
+
+#fpnoutsor span.parenfpn {
+    transform: scaleY(2.3);
+    display: inline-block;
+    transform-origin: center;
+}
