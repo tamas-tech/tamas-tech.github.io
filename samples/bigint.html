@@ -183,5 +183,40 @@
             <div id="ideoutd01"></div>
         </div>
     </div>
+
+    <div class="keret of odd" id="k5" style="padding-bottom:40px;margin-bottom:10px;">
+        <b><big class="sorszam">5.</big></b>
+        <p class="keplet" id="keplet_k3" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\mathbf{A}_{l,k}(p,n) = \mathbf{A}_{l,k}^{(0)}(p,n) = (-1)^{p+k+l}\,\dfrac{(p-l)!}{n}\,\dbinom{p-1}{l-1}\dbinom{n}{k}\,\sum_{s=k}^{n}\,\dfrac{(-1)^{s}}{s^{p-l}}\dbinom{n-k}{s-k}\\ \mathbf{A}_{l,k}^{(r+1)}(p,n) = \sum_{i=l}^{p}\,\sum_{j=k}^{n}\,\mathbf{A}_{l,k}(i,j)\,\mathbf{A}_{i,j}^{(r)}(p,n)
+            \end{gather*}\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="fpnp"><b style="padding: 2px 7px;">p</b> =  </label>
+            <input type="number" id="fpnp" value="4" min="1" step="1" onchange="idClear('#fpnout');" name="fpnp" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="fpnn"><b style="padding: 2px 7px;">n</b> =  </label>
+            <input type="number" id="fpnn" value="3" min="0" step="1" onchange="idClear('#fpnout');" name="fpnn" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="fpnr"><b style="padding: 2px 8px;">r</b> =  </label>
+            <input type="number" id="fpnr" value="0" min="0" step="1" onchange="idClear('#fpnout');" name="fpnr" style="width:50px;">
+        </div>
+        <div style="padding: 10px;outline: 2px solid #d6ddee;outline-offset: -6px;background-color: #e7fdf7;">
+            <button id="okbtnfpn" onclick="fpnTbl();" class="showpre1" title="Insert code into editor">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#fpnout');" title="Clear output">Clear</button>
+            <label for="setoutputfontfpn">&#128474;</label>
+            <input oninput="setOutputFontfpn(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfontfpn" />
+        </div>
+        <div style="margin-left:6px;padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+            <label for="settblmode" style="margin-left: 10px;">Részletesen</label>
+            <input type="checkbox" name="setfpnmode" id="setfpnmode" onchange="fpnTbl();" style="height:20px;width:20px;vertical-align:middle;" />
+            <span style="margin-left:10px;margin-right:2px;"><b>A</b></span>
+            <label class="switch" style="vertical-align: top;"><input id="setABmode"  type="checkbox" onclick="fpnTbl();"><span class="slider round"></span></label> <span style="margin-left:2px;margin-right:10px;"><b>B</b></span>
+        </div>
+        <p id="fpnout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;overflow-x: auto;min-width:max-content;"></p>
+        <div id="mycell01" style="margin-top:6px;" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+    </div>
 </body>
 </html>
