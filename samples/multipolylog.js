@@ -7447,7 +7447,6 @@ function intJelent(k, n, av, fv, el, spec) {
         });
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem2]);
         for (let j of indx) {
-            console.log(p - j + 2, j - q + 3)
             $('#Cpqntbl tr:nth-child(' + (p - j + 2 + N) + ')  td:nth-child(' + (q - k + j + 3 + N) + ')').css({ 'background-color': ' #fde8a7' });
         }
     }, 100)
@@ -7571,7 +7570,6 @@ function intd01() {
         txtfej += "<span style='color:red;font-size:140%;'>A képlet csak akkor ad helyes eredményt, ha az 'm' ( = " + m + ") paraméter értéke nem haladja meg a 'p' ( = " + p + ") paraméter értékét, és az 'n' ( = " + n + ") paraméter értéke nem haladja meg a 'q' ( = " + q + ") paraméter értékét. (<b>Ellenkező esetben az integrál értéke ∞</b>, ami nem egyezik a zetákkal számított véges értékkel.)</span><hr/>";
     txtfej += "<span class='block' style='margin:25px 10px;'><span class='sqrt-prefix sdefint' style='right: -0.7em;transform: scale(1.38424, 3.1);'>∫</span><sub class='sdefint'><span>0</span></sub><sup class='sdefint' style='left:0.15em;'><span>1</span></sup> <span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>ln<sup>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>&lowast;</span>ln<sup>" + q + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='denominator'>x<sup>" + n + "</sup>&lowast;<span class='block'><span class='paren' style='transform: scale(1.00202, 1.06061);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(1.00202, 1.06061);'>)</span></span> <sup>" + m + "</sup> </span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = ";
     txtfej = txtfej.replace(/\<sup\>1\<\/sup\>/g, "<sup></sup>");
-    console.log(txtfej)
     var ertek = "";
     for (var l = 1; l <= p + q + 1; l++) {
         var parts = part(l);
@@ -7607,7 +7605,6 @@ function intd01() {
         txt += ee + formazottTortHTML(ktag.n, ktag.d)
         ertek += "+" + ktag.toFraction();
     };
-    console.log(txt);
     txt = txt.replace(/− 1(&zwj;)?&lowast;/g, " −").replace(/1(&zwj;)?&lowast;/g, "");
     txt = txt.replace(/\&lowast\;\<span class\=\'block\'\>\<span class\=\'paren\' style\=\'transform\: scale\(1\.00202\, 1\.06061\)\;\'\>\(\<\/span\>\<span class\=\'block\'\>1\<span class\=\'binary\-operator\'\>\−\<\/span\>x\<\/span\>\<span class\=\'paren\' style\=\'transform\: scale\(1\.00202\, 1\.06061\)\;\'\>\)\<\/span\>\<\/span\> \<sup\>0\<\/sup\> \<\/span\>/, '')
     if (txt.startsWith(" + ")) {
@@ -7639,4 +7636,236 @@ function sagepqnd01() {
     $('#mycelld01 .sagecell_editor textarea.sagecell_commands').val(intd01ertek);
     $('#mycelld01 .sagecell_input button.sagecell_evalButton').click();
     setOutputFontpqnd011($('#outfont-sliderpqnd011').val());
+};
+
+// ln^p(x)*ln^q(1-x)*x^n
+
+function fpn(p, n, l, k) {
+    var sum = Fraction(0);
+    if (l <= p && k <= n) {
+        for (var s = k; s <= n; s++) {
+            var n1 = Math.pow(-1, s) * binomial(n - k, s - k);
+            var d1 = Math.pow(s, p - l);
+            sum = sum.add(Fraction(n1, d1));
+        };
+        const n2 = Math.pow(-1, p + k + l) * factorial(p - l) * binomial(p - 1, l - 1) * binomial(n, k);
+        const pr = Fraction(n2, n);
+        sum = sum.mul(pr);
+    };
+
+    return sum;
+};
+
+function fpnMat(p, n) {
+    var mat = [];
+    var b = [];
+    for (var l = 1; l <= p; l++) {
+        var sor = [];
+        var sum = Fraction(0);
+        var fakt = Math.pow(-1, l) * factorial(l - 1);
+        for (var k = 1; k <= n; k++) {
+            var er = fpn(p, n, l, k);
+            sor.push(er);
+            sum = sum.add(er);
+        };
+        mat.push(sor);
+        b.push(sum.mul(fakt));
+    };
+
+    return [mat, [b]];
+};
+
+function fpnIter(matb) {
+    const mat = matb[0];
+    var b = matb[1];
+    const p = mat.length;
+    const n = mat[0].length;
+    var out = [];
+    var bnew = [];
+    for (var l = 1; l <= p; l++) {
+        var sor = [];
+        var sumb = Fraction(0);
+        var fakt = Math.pow(-1, l) * factorial(l - 1);
+        for (var k = 1; k <= n; k++) {
+            var sum = Fraction(0);
+            for (var i = l; i <= p; i++) {
+                for (var j = k; j <= n; j++) {
+                    var er = fpn(i, j, l, k).mul(mat[i - 1][j - 1]);
+                    sum = sum.add(er);
+                }
+            }
+            sumb = sumb.add(sum);
+            sor.push(sum);
+
+        }
+        bnew.push(sumb.mul(fakt));
+        out.push(sor);
+    };
+    b.push(bnew);
+    return [out, b];
+};
+
+function stranspose(mat) {
+    const r = mat.length;
+    const c = mat[0].length;
+    var tmat = [];
+    for (var j = 0; j < c; j++) {
+        var sor = [];
+        for (var i = r - 1; i >= 0; i--)
+            sor.push(mat[i][j]);
+        tmat.push(sor);
+    };
+    return tmat;
+};
+
+function fpnIterK(p, n, K) {
+    var mat = fpnMat(p, n);
+    for (var k = 1; k <= K; k++)
+        mat = fpnIter(mat);
+    mat[1] = stranspose(mat[1]);
+    return mat;
+};
+
+function setOutputFontfpn(v) {
+    document.getElementById("fpnout").style.fontSize = v + "px";
+};
+
+function fpntbl(mat) {
+    const p = mat.length;
+    const n = mat[0].length;
+    var tbl = "<table id='fpn_" + p + "_" + n + "' class='fpntbl'>";
+    for (i = 1; i <= p; i++) {
+        tbl += "<tr>";
+        for (j = 1; j <= n; j++) {
+            var val = mat[i - 1][j - 1];
+            var elojel = "";
+            if (val.s == -1)
+                elojel = " −";
+            tbl += "<td id='fpn_" + i + "_" + j + "' style='text-align: center;border: 1px solid #d2d2d2; min-width: max-content;padding:0 3px;'>" + elojel + formazottTortHTML(val.n, val.d) + "</td>"
+        };
+        tbl += "</tr>";
+    };
+    tbl += "</table>";
+    return tbl;
+};
+
+function fpntblClick(mat) {
+    const p = mat.length;
+    const n = mat[0].length;
+    var tbl = "<table id='fpn_" + p + "_" + n + "' class='fpntblc'>";
+    for (i = 1; i <= p; i++) {
+        tbl += "<tr>";
+        for (j = 1; j <= n; j++) {
+            var val = mat[i - 1][j - 1];
+            var elojel = "";
+            if (val.s == -1)
+                elojel = " −";
+            tbl += "<td id='fpnc_" + i + "_" + j + "' onclick='fpnhl(" + i + "," + j + ");' style='text-align: center;border: 1px solid #d2d2d2; min-width: max-content;padding:0 3px;'>" + elojel + formazottTortHTML(val.n, val.d) + "</td>"
+        };
+        tbl += "</tr>";
+    };
+    tbl += "</table>";
+    return tbl;
+};
+
+function fpntblAll(p, n) {
+    var tbl = "<table class='fpntblall'><tr><th></th>";
+    for (var j = 1; j <= n; j++) {
+        tbl += "<th>" + j + "</th>";
+    }
+    tbl += "</tr>";
+    for (var i = 1; i <= p; i++) {
+        tbl += "<tr>";
+        tbl += "<th>" + i + "</th>";
+        for (var j = 1; j <= n; j++) {
+            var mat = fpnMat(i, j)[0];
+            tbl += "<td style='height: 100%;'>" + fpntbl(mat) + "</td>"
+        };
+        tbl += "</tr>";
+    };
+    tbl += "</table>";
+    return tbl;
+};
+
+function szorzotbl(p) {
+    var tbl = "<table class='fpntbl'>";
+    for (var i = 0; i < p; i++) {
+        var elojel = "";
+        if (i % 2 == 0)
+            elojel = " −";
+        tbl += "<tr><td style='text-align: center;'> / " + elojel + i + "!</td></tr>";
+    };
+    tbl += "</table>";
+    return tbl;
+}
+
+function fpntblAllB(p, n, r) {
+    var tbl = "<table class='fpntblall'><tr>";
+    for (var j = 0; j <= r; j++)
+        tbl += "<td style='text-align: center;'><b>A</b><sup>(" + j + ")</sup>(" + p + "," + n + ")" + "</td>";
+    tbl += "<td style='text-align: center;'>&lowast;</td></tr><tr>";
+    for (var i = 0; i <= r; i++)
+        tbl += "<td style='height: 100%;'>" + fpntbl(fpnIterK(p, n, i)[0]) + "</td>";
+    tbl += "<td>" + szorzotbl(p) + "</td></tr><tr>";
+    for (var i = 0; i < r; i++)
+        tbl += "<td style='height: 100%;'>" + fpntbl(fpnIterK(p, n, i)[1]) + "</td>";
+    tbl += "<td style='height: 100%;border:1px solid red;background-color: beige;'>" + fpntbl(fpnIterK(p, n, r)[1]) + "</td>";
+    tbl += "<td style='height: 100%;'> = <b>B</b><sup>(" + r + ")</sup>(" + p + "," + n + ")" + "</td>";;
+    tbl += "</tr></table>";
+    return tbl;
+};
+
+function fpnhl(p, n) {
+    const P = document.getElementById("fpnp").value * 1;
+    const N = document.getElementById("fpnn").value * 1;
+    $('.fpntblc td.fpnact').removeClass('fpnact');
+    $('td#fpnc_' + p + '_' + n + '').addClass('fpnact');
+    $('table.fpntblall .fpntbl td.fpnact').removeClass('fpnact');
+    $('table.fpntblall td#fpn_' + p + '_' + n + '').addClass('fpnact');
+    $('.fpntbl td.fpnact1').removeClass('fpnact1');
+    for (var i = p; i <= P; i++)
+        for (var j = n; j <= N; j++)
+            $('table#fpn_' + P + '_' + N + ':nth(1) td#fpn_' + i + '_' + j + '').addClass('fpnact1');
+    $('#fpnout #fpnoutsor').remove();
+    var txt = "";
+    const e = Object.values($('.fpntblall .fpnact')).slice(0, -4).map(y => y.innerHTML);
+    const m = Object.values($('.fpnact1')).slice(0, -4).map(y => y.innerHTML);
+    const em = $('.fpntblc .fpnact')[0].innerHTML;
+    const ne = e.length;
+    for (var t = 0; t < ne; t++)
+        txt += " + " + e[t] + "&lowast;" + m[t];
+    txt = txt.replaceAll(" +  −", " −");
+    txt = txt.replace(/&lowast; (−.*?)(\+|\−)/g, "&lowast; <span class='parenfpn'>(</span>$1<span class='parenfpn'>)</span>$2")
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+    txt = "<div id='fpnoutsor' style='margin:12px;background-color:#e6e6e6;padding:10px;'>" + txt + "&nbsp; = <b>" + em + "</b></div>";
+    $('#fpnout').append(txt);
+};
+
+function fpnTbl() {
+    var elem = document.getElementById("fpnout");
+    const p = document.getElementById("fpnp").value * 1;
+    const n = document.getElementById("fpnn").value * 1;
+    const r = document.getElementById("fpnr").value * 1;
+    const tblmode = document.getElementById("setfpnmode").checked;
+    const abmode = document.getElementById("setABmode").checked;
+    var txt = "";
+    if (tblmode) {
+        if (abmode) {
+            txt += fpntblAllB(p, n, r);
+        } else if (r == 0) {
+            txt += "r értéke legalább 1 legyen!";
+        } else {
+            txt += "<span style='display: inline-block;vertical-align: middle;'>"
+            txt += fpntblAll(p, n, r - 1);
+            txt += "</span> &times; <span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + (r - 1) + ")</sup>(" + p + "," + n + ")</td></tr><tr><td>" + fpntbl(fpnIterK(p, n, r - 1)[0]) + "</td></tr></table></span>";
+            txt += " = </span><span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ")</td></tr><tr><td style='outline:2px solid #ff5555;'>" + fpntblClick(fpnIterK(p, n, r)[0]) + "</td></tr></table></span>";
+            txt += "<br/>";
+        };
+    } else {
+        var mat = fpnIterK(p, n, r)[0];
+        txt += "<b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ") = <span style='display: inline-block;vertical-align: middle;'>";
+        txt += fpntbl(mat) + "</span>";
+    }
+    elem.innerHTML = txt;
 };
