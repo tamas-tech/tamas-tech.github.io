@@ -6808,7 +6808,7 @@ function formazottTortHTML(a, b) {
     if (b == 1 && a !== 1)
         txt = a;
     else if (b != 1 || typeof(b) == 'string')
-        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
+        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
     return txt;
 };
 
@@ -7728,6 +7728,8 @@ function fpnIterK(p, n, K) {
 
 function setOutputFontfpn(v) {
     document.getElementById("fpnout").style.fontSize = v + "px";
+    $('.fpntblall table:not(.tort) td').css('height', (v * 2 + 9) + 'px');
+    $('.fpntblall table.tort td').css('height', '');
 };
 
 function fpntbl(mat) {
@@ -7868,4 +7870,5 @@ function fpnTbl() {
         txt += fpntbl(mat) + "</span>";
     }
     elem.innerHTML = txt;
+    $('#setoutputfontfpn').trigger('input');
 };
