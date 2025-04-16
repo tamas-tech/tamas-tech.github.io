@@ -7830,8 +7830,10 @@ function fpnhl(p, n) {
             $('table#fpn_' + P + '_' + N + ':nth(1) td#fpn_' + i + '_' + j + '').addClass('fpnact1');
     $('#fpnout #fpnoutsor').remove();
     var txt = "";
-    const e = Object.values($('.fpntblall .fpnact')).slice(0, -4).map(y => y.innerHTML);
-    const m = Object.values($('.fpnact1')).slice(0, -4).map(y => y.innerHTML);
+    //const e = Object.values($('.fpntblall .fpnact')).slice(0, -4).map(y => y.innerHTML);
+    //const m = Object.values($('.fpnact1')).slice(0, -4).map(y => y.innerHTML);
+    const e = _.remove(Object.values($('.fpntblall .fpnact')).map(y => y.innerHTML), z => z != undefined);
+    const m = _.remove(Object.values($('.fpnact1')).map(y => y.innerHTML), z => z != undefined);
     const em = $('.fpntblc .fpnact')[0].innerHTML;
     const ne = e.length;
     for (var t = 0; t < ne; t++)
