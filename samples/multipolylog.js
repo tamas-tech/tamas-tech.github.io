@@ -7830,8 +7830,6 @@ function fpnhl(p, n) {
             $('table#fpn_' + P + '_' + N + ':nth(1) td#fpn_' + i + '_' + j + '').addClass('fpnact1');
     $('#fpnout #fpnoutsor').remove();
     var txt = "";
-    //const e = Object.values($('.fpntblall .fpnact')).slice(0, -4).map(y => y.innerHTML);
-    //const m = Object.values($('.fpnact1')).slice(0, -4).map(y => y.innerHTML);
     const e = _.remove(Object.values($('.fpntblall .fpnact')).map(y => y.innerHTML), z => z != undefined);
     const m = _.remove(Object.values($('.fpnact1')).map(y => y.innerHTML), z => z != undefined);
     const em = $('.fpntblc .fpnact')[0].innerHTML;
@@ -7867,9 +7865,15 @@ function fpnTbl() {
             txt += "<br/>";
         };
     } else {
-        var mat = fpnIterK(p, n, r)[0];
-        txt += "<b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ") = <span style='display: inline-block;vertical-align: middle;'>";
-        txt += fpntbl(mat) + "</span>";
+        if (abmode) {
+            var mat = fpnIterK(p, n, r)[1];
+            txt += "<b>B</b><sup>(" + r + ")</sup>(" + p + "," + n + ") = <span style='display: inline-block;vertical-align: middle;'>";
+            txt += fpntbl(mat) + "</span>";
+        } else {
+            var mat = fpnIterK(p, n, r)[0];
+            txt += "<b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ") = <span style='display: inline-block;vertical-align: middle;'>";
+            txt += fpntbl(mat) + "</span>";
+        }
     }
     elem.innerHTML = txt;
     $('#setoutputfontfpn').trigger('input');
