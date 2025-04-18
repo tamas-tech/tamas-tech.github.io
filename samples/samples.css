@@ -1003,7 +1003,7 @@ table#pqnrtbl tr:first-child th {
 }
 
 table.fpntbl,
-table.fpntbl {
+table.fpntblc {
     height: 100%;
     width: 100%;
     min-width: max-content;
