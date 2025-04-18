@@ -7751,6 +7751,24 @@ function fpntbl(mat) {
     return tbl;
 };
 
+function fpntbl0(mat) {
+    const p = mat.length;
+    const n = mat[0].length;
+    var tbl = "<table id='fpn_" + p + "_" + n + "' class='fpntbl'>";
+    for (i = 1; i <= p; i++) {
+        tbl += "<tr>";
+        for (j = 1; j <= n; j++) {
+            var ertek = "0";
+            if (i == p && j == n)
+                ertek = "1";
+            tbl += "<td id='fpn_" + i + "_" + j + "' style='text-align: center;border: 1px solid #d2d2d2; min-width: max-content;padding:0 3px;'>" + ertek + "</td>";
+        };
+        tbl += "</tr>";
+    };
+    tbl += "</table>";
+    return tbl;
+};
+
 function fpntblClick(mat) {
     const p = mat.length;
     const n = mat[0].length;
@@ -7799,7 +7817,8 @@ function szorzotbl(p) {
     };
     tbl += "</table>";
     return tbl;
-}
+};
+
 
 function fpntblAllB(p, n, r) {
     var tbl = "<table class='fpntblall'><tr>";
@@ -7844,6 +7863,99 @@ function fpnhl(p, n) {
     $('#fpnout').append(txt);
 };
 
+
+function fpnhl2(p, n) {
+    $('.fpntblc td.fpnact').removeClass('fpnact');
+    $('.fpntblc td.fpnact2').removeClass('fpnact2');
+    $('td#fpnc_' + p + '_' + n + '').addClass('fpnact');
+    $('td#fpnc_' + p + '_' + (n + 1) + '').addClass('fpnact2');
+    $('td#fpnc_' + (p + 1) + '_' + n + '').addClass('fpnact2');
+    $('table.fpntblall .fpntbl td.fpnact').removeClass('fpnact');
+    $('table.fpntblall td#fpn_' + p + '_' + n + '').addClass('fpnact');
+    $('table.fpntblall td#fpn_' + p + '_' + (n + 1) + '').addClass('fpnact');
+    $('.fpntbl td.fpnact3').removeClass('fpnact3');
+    $('.szorzotbl td:nth(' + p + ')' + '').addClass('fpnact3');
+    $('.hszorzotbl td:nth(' + n + ')' + '').addClass('fpnact3');
+    $('#fpnout #fpnoutsor').remove();
+    var txt = "";
+    const e = _.remove(Object.values($('.fpntblall .fpntbl .fpnact')).map(y => y.innerHTML), z => z != undefined);
+    const m = _.remove(Object.values($('.fpnact2')).map(y => y.innerHTML), z => z != undefined);
+    const ml = m.length;
+    const em = $('.fpntblc .fpnact')[0].innerHTML;
+    const szorzo = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>" + 1 + "</td></tr><tr><td>" + n + "</td></tr></table></span>";
+    txt += szorzo + "&lowast; <span class='parenfpn'>(</span>" + e[0];
+    if (e[1] != undefined)
+        txt += " − " + e[1];
+    if (ml == 2)
+        txt += " + <span style='color:blue;'>" + (n + 1) + "</span>&lowast;" + m[0] + " − <span style='color:red;'>" + p + "</span>&lowast;" + m[1];
+    else if (ml == 1)
+        txt += " − <span style='color:red;'>" + p + "</span>&lowast;" + m[0];
+    txt += "&nbsp;<span class='parenfpn'>)</span>";
+    txt = txt.replaceAll(" +  −", " −");
+    txt = txt.replace(/&lowast; (−.*?)(\+|\−|\&nbsp;)/g, "&lowast; <span class='parenfpn'>(</span>$1<span class='parenfpn'>)</span>$2");
+    txt = txt.replace(/&lowast; (−.*?)(\+|\−|\&nbsp;)/g, "&lowast; <span class='parenfpn'>(</span>$1<span class='parenfpn'>)</span>$2");
+    txt = txt.replace(/ −  (−.*?)(\+|\−|\&nbsp;)/g, " − <span class='parenfpn'>(</span>$1<span class='parenfpn'>)</span>$2");
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+    txt = "<div id='fpnoutsor' style='margin:12px;background-color:#e6e6e6;padding:10px;'>" + txt + "&nbsp; = <b>" + em + "</b></div>";
+    $('#fpnout').append(txt);
+};
+
+function szorzotbl2(p) {
+    var tbl = "<table class='fpntbl szorzotbl'><tr><td></td></tr>";
+    for (var i = 2; i <= p; i++) {
+        tbl += "<tr><td style='text-align: center;color:red;'> &uparrow; −" + (i - 1) + " &times;</td></tr>";
+    };
+    tbl += "</table>";
+    return tbl;
+};
+
+function hszorzotbl2(n) {
+    var tbl = "<table class='fpntbl hszorzotbl'><tr>";
+    for (var i = 1; i <= n; i++) {
+        tbl += "<td style='text-align: center;color:blue;'> &leftarrow;" + i + " &times;</td>";
+    };
+    tbl += "</tr></table>";
+    return tbl;
+};
+
+
+function fpntblClick2(mat) {
+    const p = mat.length;
+    const n = mat[0].length;
+    var tbl = "<table id='fpn_" + p + "_" + n + "' class='fpntblc'>";
+    for (i = 1; i <= p; i++) {
+        tbl += "<tr>";
+        for (j = 1; j <= n; j++) {
+            var val = mat[i - 1][j - 1];
+            var elojel = "";
+            if (val.s == -1)
+                elojel = " −";
+            tbl += "<td id='fpnc_" + i + "_" + j + "' onclick='fpnhl2(" + i + "," + j + ");' style='text-align: center;border: 1px solid #d2d2d2; min-width: max-content;padding:0 3px;'>" + elojel + formazottTortHTML(val.n, val.d) + "</td>"
+        };
+        tbl += "</tr>";
+    };
+    tbl += "</table>";
+    return tbl;
+};
+
+function fpntbl2(p, n, r) {
+    var tbl = "<table class='fpntblall'><tr>";
+    for (var j = r - 1; j <= r; j++)
+        tbl += "<td style='text-align: center;'><b>A</b><sup>(" + j + ")</sup>(" + p + "," + n + ")" + "</td>";
+    tbl += "<td style='text-align: center;'>&lowast;</td></tr><tr>";
+    if (r == 0)
+        tbl += "<td style='height: 100%;'>" + fpntbl0(fpnIterK(p, n, r - 1)[0]) + "</td>";
+    else
+        tbl += "<td style='height: 100%;'>" + fpntbl(fpnIterK(p, n, r - 1)[0]) + "</td>";
+    tbl += "<td style='height: 100%;'>" + fpntblClick2(fpnIterK(p, n, r)[0]) + "</td>";
+    tbl += "<td>" + szorzotbl2(p) + "</td></tr>";
+    //tbl += "<tr><td></td><td>" + hszorzotbl1(n) + "</td></tr>";
+    tbl += "<tr><td></td><td>" + hszorzotbl2(n) + "</td></tr>";
+    tbl += "</table>";
+    return tbl;
+};
+
 function fpnTbl() {
     var elem = document.getElementById("fpnout");
     const p = document.getElementById("fpnp").value * 1;
@@ -7851,18 +7963,29 @@ function fpnTbl() {
     const r = document.getElementById("fpnr").value * 1;
     const tblmode = document.getElementById("setfpnmode").checked;
     const abmode = document.getElementById("setABmode").checked;
+    const mode12 = document.getElementById("set12mode").checked;
     var txt = "";
     if (tblmode) {
         if (abmode) {
             txt += fpntblAllB(p, n, r);
-        } else if (r == 0) {
-            txt += "r értéke legalább 1 legyen!";
         } else {
-            txt += "<span style='display: inline-block;vertical-align: middle;'>"
-            txt += fpntblAll(p, n, r - 1);
-            txt += "</span> &times; <span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + (r - 1) + ")</sup>(" + p + "," + n + ")</td></tr><tr><td>" + fpntbl(fpnIterK(p, n, r - 1)[0]) + "</td></tr></table></span>";
-            txt += " = </span><span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ")</td></tr><tr><td style='outline:2px solid #ff5555;'>" + fpntblClick(fpnIterK(p, n, r)[0]) + "</td></tr></table></span>";
-            txt += "<br/>";
+            if (mode12) {
+                if (r < -1) {
+                    txt += "r értéke legalább -1 legyen!";
+                } else {
+                    txt += fpntbl2(p, n, r);
+                };
+            } else {
+                if (r == 0) {
+                    txt += "r értéke legalább 1 legyen!";
+                } else {
+                    txt += "<span style='display: inline-block;vertical-align: middle;'>"
+                    txt += fpntblAll(p, n, r - 1);
+                    txt += "</span> &times; <span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + (r - 1) + ")</sup>(" + p + "," + n + ")</td></tr><tr><td>" + fpntbl(fpnIterK(p, n, r - 1)[0]) + "</td></tr></table></span>";
+                    txt += " = </span><span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ")</td></tr><tr><td style='outline:2px solid #ff5555;'>" + fpntblClick(fpnIterK(p, n, r)[0]) + "</td></tr></table></span>";
+                    txt += "<br/>";
+                };
+            };
         };
     } else {
         if (abmode) {
@@ -7877,4 +8000,23 @@ function fpnTbl() {
     }
     elem.innerHTML = txt;
     $('#setoutputfontfpn').trigger('input');
+};
+
+function arpn(i, j, p, n, r) {
+    //fordított indexeléssel: i -> p+1-i  és  j -> n+1-j
+    var out = Fraction(0);
+    if (r < -1 || i < 1 || j < 1)
+        out = Fraction(0);
+    else if (r == -1) {
+        if (i == 1 && j == 1)
+            out = Fraction(1);
+        else
+            out = Fraction(0);
+    } else {
+        out = arpn(i, j, p, n, r - 1).sub(arpn(i, j - 1, p, n, r - 1));
+        out = out.add(arpn(i, j - 1, p, n, r).mul(n + 2 - j));
+        out = out.sub(arpn(i - 1, j, p, n, r).mul(p + 1 - i));
+        out = out.mul(Fraction(1, n + 1 - j));
+    }
+    return out;
 };
