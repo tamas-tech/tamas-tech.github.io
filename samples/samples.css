@@ -1029,6 +1029,19 @@ table.fpntblc td.fpnact {
     background-color: #eeccb9;
 }
 
+table.fpntblc td.fpnact2 {
+    background-color: #d7e9ea;
+    border: 1px solid #000000!important;
+}
+
+table.fpntbl.szorzotbl td.fpnact3 {
+    background-color: #fff3e8;
+}
+
+table.fpntbl.hszorzotbl td.fpnact3 {
+    background-color: #dae4ff;
+}
+
 #fpnoutsor span.parenfpn {
     transform: scaleY(2.3);
     display: inline-block;
