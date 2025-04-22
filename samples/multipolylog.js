@@ -6803,9 +6803,20 @@ function prCoeff(k, n, av, fv) {
     return [elojel, s];
 };
 
+function sformazottTortHTML(a, b) {
+    var txt = "";
+    if (b == 1 && a == -1)
+        txt = " − ";
+    else if (b == 1 && a != 1 && a != -1)
+        txt = a;
+    else if (b != 1 || typeof(b) == 'string')
+        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
+    return txt;
+};
+
 function formazottTortHTML(a, b) {
     var txt = "";
-    if (b == 1 && a !== 1)
+    if (b == 1 && a != 1)
         txt = a;
     else if (b != 1 || typeof(b) == 'string')
         txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
@@ -7956,6 +7967,72 @@ function fpntbl2(p, n, r) {
     return tbl;
 };
 
+function setintmode(elem) {
+    const e = document.getElementById("swtarto");
+    var outelem = document.getElementById("fpnout");
+    if (elem.checked) {
+        e.style.display = "none";
+        outelem.style.minWidth = "fit-content";
+    } else {
+        e.style.display = "inline-block";
+        outelem.style.minWidth = "max-content";
+    }
+};
+
+function fpnint(p, n, r) {
+    var txt = "<span class='sqrt-prefix sdefint' style='transform: scale(1, 2);vertical-align: middle;'>(</span><span class='block'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><span class='fraction'><span class='numerator'><span>1</span></span><span class='denominator'>x</span><span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='sqrt-prefix sdefint' style='transform: scale(1, 2);vertical-align: middle;'>)</span><sup style='vertical-align:1em;margin-left: -0.15em'>" + r + "</sup><span class='sqrt-prefix sdefint' style='transform: scale(1.3, 2.2);vertical-align: middle;top:-0.9em;margin-left:4px'>[</span><span class='block' style='margin:25px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>x<sup class=''><span>" + n + "</span></sup>·ln<sup class=''><span>" + p + "</span></sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'><span>1</span><span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='block' style='position:relative;'>dx</span></span><span class='sqrt-prefix sdefint' style='transform: scale(1.3, 2.2);vertical-align: middle;top:-0.9em;margin-left:4px'>]</span> =";
+    p += 1;
+    n += 1;
+    const pnrM = fpnIterK(p, n, r);
+    const pnrA = pnrM[0];
+    const pnrB = pnrM[1];
+    // var cc = Fraction(0);
+    for (var i = 1; i <= p; i++)
+        for (var j = 1; j <= n; j++) {
+            var cij = pnrA[i - 1][j - 1];
+            var elojel = " +&nbsp;";
+            if (cij.s == -1)
+                elojel = " −&nbsp;";
+            if (cij.n != 0) {
+                if (j == 1) {
+                    if (i == 1)
+                        txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x";
+                    else if (i == 2)
+                        txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln(1 − x)";
+                    else
+                        txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln<sup>" + (i - 1) + "</sup>(1 − x)";
+                } else {
+                    if (i == 1)
+                        txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>";
+                    else if (i == 2)
+                        txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln(1 − x)";
+                    else
+                        txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln<sup>" + (i - 1) + "</sup>(1 − x)";
+                };
+            };
+        };
+    for (var i = 1; i <= p; i++)
+        for (var j = 1; j <= r + 1; j++) {
+            var cij = pnrB[i - 1][j - 1];
+            var elojel = " +&nbsp;";
+            if (cij.s == -1)
+                elojel = " −&nbsp;";
+            if (cij.n != 0) {
+                if (i == 1)
+                    txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;Li<sub>( )</sub>";
+                else if (i == 2)
+                    txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;Li<sub>(" + j + ")</sub>(x)";
+                else
+                    txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;Li<sub>(" + j + ",&nbsp;{1}<sup>" + (i - 2) + "</sup>)</sub>(x)";
+            };
+        };
+    /*  var ccelojel = " +&nbsp;";
+     if (cc.s == -1)
+         ccelojel = " −&nbsp;";
+     txt += txt + ccelojel + formazottTortHTML(cc.n, cc.d); */
+    return txt;
+};
+
 function fpnTbl() {
     var elem = document.getElementById("fpnout");
     const p = document.getElementById("fpnp").value * 1;
@@ -7964,39 +8041,44 @@ function fpnTbl() {
     const tblmode = document.getElementById("setfpnmode").checked;
     const abmode = document.getElementById("setABmode").checked;
     const mode12 = document.getElementById("set12mode").checked;
+    const intmode = document.getElementById("setintmode").checked;
     var txt = "";
-    if (tblmode) {
-        if (abmode) {
-            txt += fpntblAllB(p, n, r);
-        } else {
-            if (mode12) {
-                if (r < -1) {
-                    txt += "r értéke legalább -1 legyen!";
-                } else {
-                    txt += fpntbl2(p, n, r);
-                };
+    if (intmode) {
+        txt += fpnint(p, n, r);
+    } else {
+        if (tblmode) {
+            if (abmode) {
+                txt += fpntblAllB(p, n, r);
             } else {
-                if (r == 0) {
-                    txt += "r értéke legalább 1 legyen!";
+                if (mode12) {
+                    if (r < -1) {
+                        txt += "Most r értéke legalább -1 legyen!";
+                    } else {
+                        txt += fpntbl2(p, n, r);
+                    };
                 } else {
-                    txt += "<span style='display: inline-block;vertical-align: middle;'>"
-                    txt += fpntblAll(p, n, r - 1);
-                    txt += "</span> &times; <span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + (r - 1) + ")</sup>(" + p + "," + n + ")</td></tr><tr><td>" + fpntbl(fpnIterK(p, n, r - 1)[0]) + "</td></tr></table></span>";
-                    txt += " = </span><span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ")</td></tr><tr><td style='outline:2px solid #ff5555;'>" + fpntblClick(fpnIterK(p, n, r)[0]) + "</td></tr></table></span>";
-                    txt += "<br/>";
+                    if (r == 0) {
+                        txt += "Most r értéke legalább 1 legyen!";
+                    } else {
+                        txt += "<span style='display: inline-block;vertical-align: middle;'>"
+                        txt += fpntblAll(p, n, r - 1);
+                        txt += "</span> &times; <span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + (r - 1) + ")</sup>(" + p + "," + n + ")</td></tr><tr><td>" + fpntbl(fpnIterK(p, n, r - 1)[0]) + "</td></tr></table></span>";
+                        txt += " = </span><span style='display: inline-block;vertical-align: middle;margin-left:10px;'><table><tr><td style='text-align:center;padding-bottom: 10px;'><b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ")</td></tr><tr><td style='outline:2px solid #ff5555;'>" + fpntblClick(fpnIterK(p, n, r)[0]) + "</td></tr></table></span>";
+                        txt += "<br/>";
+                    };
                 };
             };
-        };
-    } else {
-        if (abmode) {
-            var mat = fpnIterK(p, n, r)[1];
-            txt += "<b>B</b><sup>(" + r + ")</sup>(" + p + "," + n + ") = <span style='display: inline-block;vertical-align: middle;'>";
-            txt += fpntbl(mat) + "</span>";
         } else {
-            var mat = fpnIterK(p, n, r)[0];
-            txt += "<b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ") = <span style='display: inline-block;vertical-align: middle;'>";
-            txt += fpntbl(mat) + "</span>";
-        }
+            if (abmode) {
+                var mat = fpnIterK(p, n, r)[1];
+                txt += "<b>B</b><sup>(" + r + ")</sup>(" + p + "," + n + ") = <span style='display: inline-block;vertical-align: middle;'>";
+                txt += fpntbl(mat) + "</span>";
+            } else {
+                var mat = fpnIterK(p, n, r)[0];
+                txt += "<b>A</b><sup>(" + r + ")</sup>(" + p + "," + n + ") = <span style='display: inline-block;vertical-align: middle;'>";
+                txt += fpntbl(mat) + "</span>";
+            };
+        };
     }
     elem.innerHTML = txt;
     $('#setoutputfontfpn').trigger('input');
@@ -8019,4 +8101,157 @@ function arpn(i, j, p, n, r) {
         out = out.mul(Fraction(1, n + 1 - j));
     }
     return out;
+};
+
+function setOutputFontifpn(v) {
+    document.getElementById("ifpnout").style.fontSize = v + "px";
+};
+
+function fpqnint() {
+    var elem = document.getElementById("ifpnout");
+    const p = document.getElementById("ifpnp").value * 1;
+    const q = document.getElementById("ifpnq").value * 1 + 1;
+    const n = document.getElementById("ifpnn").value * 1 + 1;
+    var txtx = "",
+        txtln = "",
+        txtln1 = "";
+    if (n == 2)
+        txtx = "x";
+    else if (n > 2)
+        txtx = "x<sup>" + (n - 1) + "</sup>";
+    if (n >= 2 && (p > 0 || q > 1))
+        txtx += '·';
+
+    if (p == 1)
+        txtln = "ln<span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>"
+    else if (p > 1)
+        txtln = "ln<sup>" + p + "</sup><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>";
+    if (p >= 1 && (q > 1))
+        txtln += '·';
+
+    if (q == 2)
+        txtln1 = "ln<span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span>1<span class='binary-operator'>−</span>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>"
+    else if (q > 2)
+        txtln1 = "ln<sup>" + (q - 1) + "</sup><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span>1<span class='binary-operator'>−</span>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>";
+
+    var txt = "<span class='block' style='margin:25px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>" + txtx + txtln + txtln1 + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> =";
+    //var txt = "<span class='block' style='margin:25px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>x<sup class=''>" + (n - 1) + "</sup>·ln<sup class=''>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>·ln<sup class=''>" + (q - 1) + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='block' style='position:relative;'>dx</span></span></span> =";
+    var txtA = "";
+    var txtB = "";
+    //var cc = Fraction(0);
+    var szamlalo = 0;
+    for (var r = 0; r <= p; r++) {
+        var pnrM = fpnIterK(q, n, r);
+        var pnrA = pnrM[0];
+        var pnrB = pnrM[1];
+        var cr = Fraction(Math.pow(-1, r) * factorial(p), factorial(p - r));
+        for (var i = 1; i <= q; i++)
+            for (var j = 1; j <= n; j++) {
+                var cij = pnrA[i - 1][j - 1].mul(cr);
+                var elojel = " +&nbsp;";
+                if (cij.s == -1)
+                    elojel = " −&nbsp;";
+                if (cij.n != 0) {
+                    szamlalo++;
+                    if (r == p) {
+                        if (j == 1) {
+                            if (i == 1)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x";
+                            else if (i == 2)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln(1 − x)";
+                            else
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln<sup>" + (i - 1) + "</sup>(1 − x)";
+                        } else {
+                            if (i == 1)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>";
+                            else if (i == 2)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln(1 − x)";
+                            else
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln<sup>" + (i - 1) + "</sup>(1 − x)";
+                        };
+                    } else if (r == p - 1) {
+                        if (j == 1) {
+                            if (i == 1)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln(x)";
+                            else if (i == 2)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln(x)·ln(1 − x)";
+                            else
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln(x)·ln<sup>" + (i - 1) + "</sup>(1 − x)";
+                        } else {
+                            if (i == 1)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln(x)";
+                            else if (i == 2)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln(x)·ln(1 − x)";
+                            else
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln(x)·ln<sup>" + (i - 1) + "</sup>(1 − x)";
+                        };
+                    } else {
+                        if (j == 1) {
+                            if (i == 1)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln<sup>" + (p - r) + "</sup>(x)";
+                            else if (i == 2)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln<sup>" + (p - r) + "</sup>(x)·ln(1 − x)";
+                            else
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x·ln<sup>" + (p - r) + "</sup>(x)·ln<sup>" + (i - 1) + "</sup>(1 − x)";
+                        } else {
+                            if (i == 1)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln<sup>" + (p - r) + "</sup>(x)";
+                            else if (i == 2)
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln<sup>" + (p - r) + "</sup>(x)·ln(1 − x)";
+                            else
+                                txtA += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;x<sup>" + j + "</sup>·ln<sup>" + (p - r) + "</sup>(x)·ln<sup>" + (i - 1) + "</sup>(1 − x)";
+                        };
+                    }
+                };
+            };
+        for (var i = 2; i <= q; i++)
+            for (var j = 1; j <= r + 1; j++) {
+                var cij = pnrB[i - 1][j - 1].mul(cr);
+                var elojel = " +&nbsp;";
+                if (cij.s == -1)
+                    elojel = " −&nbsp;";
+                if (cij.n != 0) {
+                    szamlalo++;
+                    if (r == p) {
+                        if (i == 1) {
+                            cc = cc.add(cij);
+                            szamlalo--;
+                        } else if (i == 2)
+                            txtB += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;Li<sub>(" + j + ")</sub>(x)";
+                        else
+                            txtB += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;Li<sub>(" + j + ",&nbsp;{1}<sup>" + (i - 2) + "</sup>)</sub>(x)";
+                    } else if (r == p - 1) {
+                        if (i == 1) {
+                            txtB += ""; //elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;ln(x)";
+                            szamlalo--;
+                        } else if (i == 2)
+                            txtB += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;ln(x)·Li<sub>(" + j + ")</sub>(x)";
+                        else
+                            txtB += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;ln(x)·Li<sub>(" + j + ",&nbsp;{1}<sup>" + (i - 2) + "</sup>)</sub>(x)";
+                    } else {
+                        if (i == 1) {
+                            txtB += ""; //elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;ln<sup>" + (p - r) + "</sup>(x)";
+                            szamlalo--;
+                        } else if (i == 2)
+                            txtB += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;ln<sup>" + (p - r) + "</sup>(x)·Li<sub>(" + j + ")</sub>(x)";
+                        else
+                            txtB += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;ln(x)<sup>" + (p - r) + "</sup>·Li<sub>(" + j + ",&nbsp;{1}<sup>" + (i - 2) + "</sup>)</sub>(x)";
+                    }
+                };
+            };
+    };
+    if (txtA.startsWith(" +&nbsp;"))
+        txtA = txtA.slice(2);
+    txt = "<div style='color: #777;font-family: consolas;font-size: 80%;'>Az integrál " + szamlalo + " függvény összege:</div>" + txt;
+    txt += txtA + txtB;
+
+    /* var ccelojel = " +&nbsp;";
+    if (cc.s == -1)
+        ccelojel = " −&nbsp;";
+    if (cc.n == 1, cc.d == 1)
+        txt += ccelojel + cc.n;
+    else
+        txt += ccelojel + formazottTortHTML(cc.n, cc.d); */
+
+    elem.innerHTML = txt;
 };
