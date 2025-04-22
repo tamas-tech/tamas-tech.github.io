@@ -224,21 +224,23 @@
         <p class="keplet" id="keplet_k3" style="padding-bottom:10px;margin-bottom:10px;">\[\int x^{n}\ln^{p}(1-x)\ln^{q}(1-x)\,\text{d}x = p!\sum_{r=0}^{p}\dfrac{(-1)^{r}}{(p-r)!}\ln^{p-r}(x)\left(\int\frac{1}{x}\right)^{(r)}\left[\int x^{n}\ln^{q}(1-x)\,\text{d}x\right]\]</p>
         <div style="margin-left:2px;padding:3px;">
             <label for="ifpnp"><b style="padding: 2px 7px;">p</b> =  </label>
-            <input type="number" id="ifpnp" value="4" min="0" step="1" onchange="idClear('#ifpnout');fpqnint();" name="ifpnp" style="width:50px;">
+            <input type="number" id="ifpnp" value="4" min="0" step="1" onchange="idClear('#ifpnout');fpqnInt();" name="ifpnp" style="width:50px;">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="ifpnq"><b style="padding: 2px 7px;">q</b> =  </label>
-            <input type="number" id="ifpnq" value="3" min="0" step="1" onchange="idClear('#ifpnout');fpqnint();" name="ifpnq" style="width:50px;">
+            <input type="number" id="ifpnq" value="3" min="0" step="1" onchange="idClear('#ifpnout');fpqnInt();" name="ifpnq" style="width:50px;">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="ifpnn"><b style="padding: 2px 8px;">n</b> =  </label>
-            <input type="number" id="ifpnn" value="2" min="0" step="1" onchange="idClear('#ifpnout');fpqnint();" name="ifpnn" style="width:50px;">
+            <input type="number" id="ifpnn" value="2" min="0" step="1" onchange="idClear('#ifpnout');fpqnInt();" name="ifpnn" style="width:50px;">
         </div>
         <div style="padding: 10px;outline: 2px solid #e3c7c7;outline-offset: -6px;background-color: #fde7e7;">
-            <button id="okbtnifpn" onclick="fpqnint();" class="showpre1" title="Insert code into editor">Calculate</button>
+            <button id="okbtnifpn" onclick="fpqnInt();" class="showpre1" title="Insert code into editor">Calculate</button>
             <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#ifpnout');" title="Clear output">Clear</button>
             <label for="setoutputfontifpn" style="margin-right:-10px;">&#128474;</label>
             <input oninput="setOutputFontifpn(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontifpn" name="setoutputfontifpn" />
+            <label for="settblmodeint" style="margin-left: 10px;">Egy sorban</label>
+            <input type="checkbox" name="settblmodeint" id="settblmodeint" onchange="fpqnInt();" style="height:20px;width:20px;vertical-align:middle;" />
         </div>
         <p id="ifpnout" style="font-family:Cambria Math;outline: 2px solid #e3c7c7;outline-offset: -2px;background-color: #fde7e7;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
     </div>
