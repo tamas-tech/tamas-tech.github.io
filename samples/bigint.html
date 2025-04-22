@@ -183,11 +183,9 @@
             <div id="ideoutd01"></div>
         </div>
     </div>
-
-    <div class="keret of odd" id="k5" style="padding-bottom:40px;margin-bottom:10px;">
+<div class="keret of odd" id="k5" style="padding-bottom:40px;margin-bottom:10px;">
         <b><big class="sorszam">5.</big></b>
-        <p class="keplet" id="keplet_k3" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}(1.a)\hspace{1cm}\mathbf{A}_{l,k}(p,n) = \mathbf{A}_{l,k}^{(0)}(p,n) = (-1)^{p+k+l}\,\dfrac{(p-l)!}{n}\,\dbinom{p-1}{l-1}\dbinom{n}{k}\,\sum_{s=k}^{n}\,\dfrac{(-1)^{s}}{s^{p-l}}\dbinom{n-k}{s-k}\\ (1.b) \hspace{1cm}\mathbf{A}_{l,k}^{(r+1)}(p,n)=\sum_{i=l}^{p}\,\sum_{j=k}^{n}\,\mathbf{A}_{l,k}(i,j)\,\mathbf{A}_{i,j}^{(r)}(p,n)\\ \\ \hline\\(2.a)\hspace{1cm}\mathbf{A}^{(-1)}_{l,k}(p,n)=\delta_{l,p}\cdot\delta_{k,n} \\ (2.b) \hspace{1cm}\mathbf{A}^{(r)}_{l,k-1}(p,n)=\dfrac{\mathbf{A}^{(r-1)}_{l,k-1}-\mathbf{A}^{(r-1)}_{l,k}+k\cdot\mathbf{A}^{(r)}_{l,k}-l\cdot\mathbf{A}^{(r)}_{l+1,k-1}}{k-1}\end{gather*}\]
-        </p>
+        <p class="keplet" id="keplet_k3" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}(1.a)\hspace{1cm}\mathbf{A}_{l,k}(p,n) = \mathbf{A}_{l,k}^{(0)}(p,n) = (-1)^{p+k+l}\,\dfrac{(p-l)!}{n}\,\dbinom{p-1}{l-1}\dbinom{n}{k}\,\sum_{s=k}^{n}\,\dfrac{(-1)^{s}}{s^{p-l}}\dbinom{n-k}{s-k}\\ (1.b) \hspace{1cm}\mathbf{A}_{l,k}^{(r+1)}(p,n)=\sum_{i=l}^{p}\,\sum_{j=k}^{n}\,\mathbf{A}_{l,k}(i,j)\,\mathbf{A}_{i,j}^{(r)}(p,n)\\ \\ \hline\\(2.a)\hspace{1cm}\mathbf{A}^{(-1)}_{l,k}(p,n)=\delta_{l,p}\cdot\delta_{k,n} \\ (2.b) \hspace{1cm}\mathbf{A}^{(r)}_{l,k}(p,n)=\dfrac{\mathbf{A}^{(r-1)}_{l,k}-\mathbf{A}^{(r-1)}_{l,k+1}+(k+1)\cdot\mathbf{A}^{(r)}_{l,k+1}-l\cdot\mathbf{A}^{(r)}_{l+1,k}}{k}\\ \\ \hline \\ \mathbf{B}^{(r)}_{l,k}(p,n) = (-1)^{l-1}(l-1)!\sum_{j=1}^{n}\mathbf{A}^{(r+1-k)}_{l,j}(p,n) \hspace{1cm} (1\leq l\leq p,\, 1\leq k\leq r+1)\\ \\ \hline \\ \left(\int\frac{1}{x}\right)^{(r)}\left[\int x^{n-1}\ln^{p-1}(1-x)\,\text{d}x\right] = \\ =\left(\ln^{0}(1-x),\ln^{1}(1-x),\ldots,\ln^{p}(1-x)\right)\mathbf{A}^{(r)}(p,n)\begin{pmatrix}x^{1}\\x^{2}\\x^{3}\\\vdots\\x^{n}\\x^{n+1}\end{pmatrix}+\mathbf{B}^{(r)}(p,n)\odot\begin{pmatrix}\text{Li}_{(\,)} & \text{Li}_{(\,)} & \ldots & \text{Li}_{(\,)}\\\text{Li}_{(1)} & \text{Li}_{(2)} & \ldots & \text{Li}_{(r)}\\\text{Li}_{(1,1)} & \text{Li}_{(2,1)} & \ldots & \text{Li}_{(r,1)}\\\text{Li}_{(1,1,1)} & \text{Li}_{(2,1,1)} & \ldots & \text{Li}_{(r,1,1)}\\ \vdots & \vdots & \ddots & \vdots \\ \text{Li}_{(1,\lbrace 1\rbrace^{p-1})} & \text{Li}_{(2,\lbrace 1\rbrace^{p-1})} & \ldots & \text{Li}_{(r,\lbrace 1\rbrace^{p-1})}\end{pmatrix}\end{gather*}\]</p>
         <div style="margin-left:2px;padding:3px;">
             <label for="fpnp"><b style="padding: 2px 7px;">p</b> =  </label>
             <input type="number" id="fpnp" value="4" min="1" step="1" onchange="idClear('#fpnout');fpnTbl();" name="fpnp" style="width:50px;">
@@ -207,14 +205,42 @@
             <input oninput="setOutputFontfpn(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontfpn" name="setoutputfontfpn" />
         </div>
         <div style="margin-left:6px;padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+            <span style="margin-left:10px;margin-right:2px;"><b>A,B</b></span>
+            <label class="switch" style="vertical-align: top;"><input id="setintmode"  onchange="setintmode(this);" type="checkbox" onclick="fpnTbl();"><span class="slider round"></span></label> <span style="margin-left:2px;margin-right:10px;"><b>&int;</b></span>
+            <span id="swtarto" style="display:inline-block;">
             <label for="settblmode" style="margin-left: 10px;">Részletesen</label>
             <input type="checkbox" name="setfpnmode" id="setfpnmode" onchange="fpnTbl();" style="height:20px;width:20px;vertical-align:middle;" />
             <span style="margin-left:10px;margin-right:2px;"><b>A</b></span>
             <label class="switch" style="vertical-align: top;"><input id="setABmode"  type="checkbox" onclick="fpnTbl();"><span class="slider round"></span></label> <span style="margin-left:2px;margin-right:10px;"><b>B</b></span>
             <span style="margin-left:10px;margin-right:2px;"><b>(1)</b></span>
             <label class="switch" style="vertical-align: top;"><input id="set12mode"  type="checkbox" onclick="fpnTbl();"><span class="slider round"></span></label> <span style="margin-left:2px;margin-right:10px;"><b>(2)</b></span>
+            </span>
         </div>
         <p id="fpnout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;overflow-x: auto;min-width:max-content;"></p>
+    </div>
+
+    <div class="keret of even" id="k6" style="padding-bottom:40px;margin-bottom:10px;">
+        <b><big class="sorszam">6.</big></b>
+        <p class="keplet" id="keplet_k3" style="padding-bottom:10px;margin-bottom:10px;">\[\int x^{n}\ln^{p}(1-x)\ln^{q}(1-x)\,\text{d}x = p!\sum_{r=0}^{p}\dfrac{(-1)^{r}}{(p-r)!}\ln^{p-r}(x)\left(\int\frac{1}{x}\right)^{(r)}\left[\int x^{n}\ln^{q}(1-x)\,\text{d}x\right]\]</p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="ifpnp"><b style="padding: 2px 7px;">p</b> =  </label>
+            <input type="number" id="ifpnp" value="4" min="0" step="1" onchange="idClear('#ifpnout');fpqnint();" name="ifpnp" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="ifpnq"><b style="padding: 2px 7px;">q</b> =  </label>
+            <input type="number" id="ifpnq" value="3" min="0" step="1" onchange="idClear('#ifpnout');fpqnint();" name="ifpnq" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="ifpnn"><b style="padding: 2px 8px;">n</b> =  </label>
+            <input type="number" id="ifpnn" value="2" min="0" step="1" onchange="idClear('#ifpnout');fpqnint();" name="ifpnn" style="width:50px;">
+        </div>
+        <div style="padding: 10px;outline: 2px solid #e3c7c7;outline-offset: -6px;background-color: #fde7e7;">
+            <button id="okbtnifpn" onclick="fpqnint();" class="showpre1" title="Insert code into editor">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#ifpnout');" title="Clear output">Clear</button>
+            <label for="setoutputfontifpn" style="margin-right:-10px;">&#128474;</label>
+            <input oninput="setOutputFontifpn(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontifpn" name="setoutputfontifpn" />
+        </div>
+        <p id="ifpnout" style="font-family:Cambria Math;outline: 2px solid #e3c7c7;outline-offset: -2px;background-color: #fde7e7;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
     </div>
 </body>
 </html>
