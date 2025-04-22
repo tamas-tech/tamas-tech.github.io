@@ -1027,6 +1027,7 @@ table.fpntbl td.fpnact1 {
 
 table.fpntblc td.fpnact {
     background-color: #eeccb9;
+    border: 1px solid #c73a3a!important;
 }
 
 table.fpntblc td.fpnact2 {
