@@ -8514,7 +8514,7 @@ function fpntblBLatex(mat) {
     cek += "}"
     var tbl = "\\begin{array}" + cek;
     for (var j = 1; j <= n; j++)
-        tbl += "u & \\text{Li}_{(" + j + ",\\bullet)}";
+        tbl += " & \\text{Li}_{(" + j + ",\\bullet)}";
     tbl += "\\\\ \\hline";
     for (i = 2; i <= p; i++) {
         tbl += " \\text{Li}_{(\\bullet,\\lbrace 1 \\rbrace ^{" + (i - 2) + "})}";
