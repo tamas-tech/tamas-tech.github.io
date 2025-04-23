@@ -8132,22 +8132,20 @@ function fpqnint() {
         txtx += '·';
 
     if (p == 1)
-        txtln = "ln<span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>"
+        txtln = "ln(x)";
     else if (p > 1)
-        txtln = "ln<sup>" + p + "</sup><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>";
+        txtln = "ln<sup>" + p + "</sup>(x)";
     if (p >= 1 && (q > 1))
         txtln += '·';
 
     if (q == 2)
-        txtln1 = "ln<span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span>1<span class='binary-operator'>−</span>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>"
+        txtln1 = "ln(1−x)";
     else if (q > 2)
-        txtln1 = "ln<sup>" + (q - 1) + "</sup><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span>1<span class='binary-operator'>−</span>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>";
+        txtln1 = "ln<sup>" + (q - 1) + "</sup>(1−x)";
 
     var txt = "<span class='block' style='margin:25px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>" + txtx + txtln + txtln1 + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> =";
-    //var txt = "<span class='block' style='margin:25px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>x<sup class=''>" + (n - 1) + "</sup>·ln<sup class=''>" + p + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>x<span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span>·ln<sup class=''>" + (q - 1) + "</sup><span class='block'><span class='paren' style='transform: scale(0.99697, 1.03409);'>(</span><span class='block'>1<span class='binary-operator'>−</span>x</span><span class='paren' style='transform: scale(0.99697, 1.03409);'>)</span></span></span><span class='block' style='position:relative;'>dx</span></span></span> =";
     var txtA = "";
     var txtB = "";
-    //var cc = Fraction(0);
     var szamlalo = 0;
     for (var r = 0; r <= p; r++) {
         var pnrM = fpnIterK(q, n, r);
@@ -8253,16 +8251,142 @@ function fpqnint() {
         txtA = txtA.slice(2);
     txt = "<div style='color: #777;font-family: consolas;font-size: 80%;'>Az integrál " + szamlalo + " függvény összege:</div>" + txt;
     txt += txtA + txtB;
-
-    /* var ccelojel = " +&nbsp;";
-    if (cc.s == -1)
-        ccelojel = " −&nbsp;";
-    if (cc.n == 1, cc.d == 1)
-        txt += ccelojel + cc.n;
-    else
-        txt += ccelojel + formazottTortHTML(cc.n, cc.d); */
-
     elem.innerHTML = txt;
+};
+
+
+function fpqnintLatex() {
+    var elem = document.getElementById("ifpnout");
+    const p = document.getElementById("ifpnp").value * 1;
+    const q = document.getElementById("ifpnq").value * 1 + 1;
+    const n = document.getElementById("ifpnn").value * 1 + 1;
+    var txtx = "",
+        txtln = "",
+        txtln1 = "";
+    if (n == 2)
+        txtx = "x";
+    else if (n > 2)
+        txtx = "x^{" + (n - 1) + "}";
+    if (n >= 2 && (p > 0 || q > 1))
+        txtx += '\\cdot ';
+
+    if (p == 1)
+        txtln = "\\ln(x)"
+    else if (p > 1)
+        txtln = "\\ln^{" + p + "}(x)";
+    if (p >= 1 && (q > 1))
+        txtln += '·';
+
+    if (q == 2)
+        txtln1 = "\\ln(1-x)"
+    else if (q > 2)
+        txtln1 = "\\ln^{" + (q - 1) + "}(1-x)";
+
+    var txt = " \\int{" + txtx + txtln + txtln1 + "}\\,\\text{d}x = ";
+    var txtA = "";
+    var txtB = "";
+    for (var r = 0; r <= p; r++) {
+        var pnrM = fpnIterK(q, n, r);
+        var pnrA = pnrM[0];
+        var pnrB = pnrM[1];
+        var cr = Fraction(Math.pow(-1, r) * factorial(p), factorial(p - r));
+        for (var i = 1; i <= q; i++)
+            for (var j = 1; j <= n; j++) {
+                var cij = pnrA[i - 1][j - 1].mul(cr);
+                var elojel = "+";
+                if (cij.s == -1)
+                    elojel = "";
+                var er = elojel + cij.toLatex();
+                if (cij.n != 0) {
+                    if (r == p) {
+                        if (j == 1) {
+                            if (i == 1)
+                                txtA += er + "\\,x";
+                            else if (i == 2)
+                                txtA += er + "\\,x\\cdot\\ln(1-x)";
+                            else
+                                txtA += er + "\\,x\\,\\ln^{" + (i - 1) + "}(1-x)";
+                        } else {
+                            if (i == 1)
+                                txtA += er + "\\,x^{" + j + "}";
+                            else if (i == 2)
+                                txtA += er + "\\,x^{" + j + "}\\cdot\\ln(1-x)";
+                            else
+                                txtA += er + "\\,x^{" + j + "}\\cdot\\ln^{" + (i - 1) + "}(1-x)";
+                        };
+                    } else if (r == p - 1) {
+                        if (j == 1) {
+                            if (i == 1)
+                                txtA += er + "\\,x\\cdot\\ln(x)";
+                            else if (i == 2)
+                                txtA += er + "\\,x\\cdot\\ln(x)\\cdot\\ln(1-x)";
+                            else
+                                txtA += er + "\\,x\\cdot\\ln(x)\\cdot\\ln^{" + (i - 1) + "}(1-x)";
+                        } else {
+                            if (i == 1)
+                                txtA += er + "\\,x^{" + j + "}\\cdot\\ln(x)";
+                            else if (i == 2)
+                                txtA += er + "\\,x^{" + j + "}\\cdot\\ln(x)\\cdot\\ln(1-x)";
+                            else
+                                txtA += er + "\\,x^{" + j + "}\\cdot\\ln(x)\\cdot\\ln^{" + (i - 1) + "}(1-x)";
+                        };
+                    } else {
+                        if (j == 1) {
+                            if (i == 1)
+                                txtA += er + "\\,x\\cdot\\ln^{" + (p - r) + "}(x)";
+                            else if (i == 2)
+                                txtA += er + "\\,x\\cdot\\ln^{" + (p - r) + "}(x)\\cdot\\ln(1-x)";
+                            else
+                                txtA += er + "\\,x\\cdot\\ln^{" + (p - r) + "}(x)\\cdot\\ln^{" + (i - 1) + "}(1-x)";
+                        } else {
+                            if (i == 1)
+                                txtA += er + "\\,x^{" + j + "}\\cdot\\ln^{" + (p - r) + "}(x)";
+                            else if (i == 2)
+                                txtA += er + "\\,x^{" + j + "}\\cdot\\ln^{" + (p - r) + "}(x)\\cdot\\ln(1-x)";
+                            else
+                                txtA += er + "\\,x^{" + j + "}\\cdot\\ln^{" + (p - r) + "}(x)\\cdot\\ln^{" + (i - 1) + "}(1-x)";
+                        };
+                    }
+                };
+            };
+        for (var i = 2; i <= q; i++)
+            for (var j = 1; j <= r + 1; j++) {
+                var cij = pnrB[i - 1][j - 1].mul(cr);
+                var elojel = "+";
+                if (cij.s == -1)
+                    elojel = "";
+                var er = elojel + cij.toLatex();
+                if (cij.n != 0) {
+                    if (r == p) {
+                        if (i == 1) {
+                            cc = cc.add(cij);
+                        } else if (i == 2)
+                            txtB += er + "\\,\\text{Li}_{(" + j + ")}(x)";
+                        else
+                            txtB += er + "\\,\\text{Li}_{(" + j + ",\\,\\lbrace 1 \\rbrace^{" + (i - 2) + "})}(x)";
+                    } else if (r == p - 1) {
+                        if (i == 1) {
+                            txtB += ""; //er + "&nbsp;ln(x)";
+                        } else if (i == 2)
+                            txtB += er + "\\, \\ln(x)\\cdot\\text{Li}_{(" + j + ")}(x)";
+                        else
+                            txtB += er + "\\,\\ln(x)·\\text{Li}_{(" + j + ",\\,\\lbrace 1 \\rbrace^{" + (i - 2) + "})}";
+                    } else {
+                        if (i == 1) {
+                            txtB += ""; //er + "&nbsp;ln<sup>" + (p - r) + "</sup>(x)";
+                        } else if (i == 2)
+                            txtB += er + "\\,\\ln^{" + (p - r) + "}(x)·\\text{Li}_{(" + j + ")}(x)";
+                        else
+                            txtB += er + "\\,\\ln(x)^{" + (p - r) + "}\\cdot\\text{Li}_{(" + j + ",\\,\\lbrace 1 \\rbrace^{" + (i - 2) + "})}(x)";
+                    }
+                };
+            };
+    };
+    if (txtA.startsWith("+"))
+        txtA = txtA.slice(1);
+    txt += txtA + txtB;
+    elem.innerHTML = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
 function fpntblA(mat) {
@@ -8338,7 +8462,7 @@ function fpqnintM() {
     else if (q > 2)
         txtln1 = "ln<sup>" + (q - 1) + "</sup>(1−x)";
 
-    var txt = "<span class='block' style='margin:25px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>" + txtx + txtln + txtln1 + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> =";
+    var txt = "";
     for (var r = 0; r <= p; r++) {
         var pnrM = fpnIterK(q, n, r);
         var pnrA = pnrM[0];
@@ -8350,15 +8474,121 @@ function fpqnintM() {
         var Btabla = "";
         if (q > 1)
             Btabla = "<span style='display:block;text-align:center;'> + </span>" + fpntblB(pnrB)
-        txt += elojel + formazottTortHTML(cr.n, cr.d) + "&nbsp;" + "ln<sup>" + (p - r) + "</sup>(x)·<span style='display:inline-block;vertical-align:middle;border-left:2px solid #777;border-right:2px solid #777;border-radius:0.5em;padding:2px 5px;'>" + fpntblA(pnrA) + Btabla + "</span>";
+        txt += elojel + formazottTortHTML(cr.n, cr.d) + "&nbsp;" + "ln<sup>" + (p - r) + "</sup>(x)·<span style='display:inline-block;vertical-align:middle;border-left:2px solid #777;border-right:2px solid #777;border-radius:0.5em;padding:2px 5px;margin:10px 2px;'>" + fpntblA(pnrA) + Btabla + "</span>";
     };
+    if (txt.startsWith(" +&nbsp;"))
+        txt = txt.slice(2);
+    txt = "<span class='block' style='margin:25px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>" + txtx + txtln + txtln1 + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> =" + txt;
     elem.innerHTML = txt;
+};
+
+function fpntblALatex(mat) {
+    const p = mat.length;
+    const n = mat[0].length;
+    var cek = "{c|";
+    for (var k = 1; k < n; k++)
+        cek += "c";
+    cek += "}"
+    var tbl = "\\begin{array}" + cek;
+    for (var j = 1; j <= n; j++)
+        tbl += " & x^{" + j + "}";
+    tbl += "\\\\ \\hline";
+    for (i = 1; i <= p; i++) {
+        tbl += "\\ln^{" + (i - 1) + "}(1-x)";
+        for (j = 1; j <= n; j++) {
+            var val = mat[i - 1][j - 1];
+            tbl += "& " + val.toLatex();
+        };
+        tbl += "\\\\";
+    };
+    tbl += "\\end{array}";
+    return tbl;
+};
+
+function fpntblBLatex(mat) {
+    const p = mat.length;
+    const n = mat[0].length;
+    var cek = "{c|";
+    for (var k = 1; k < n + 1; k++)
+        cek += "c";
+    cek += "}"
+    var tbl = "\\begin{array}" + cek;
+    for (var j = 1; j <= n; j++)
+        tbl += "u & \\text{Li}_{(" + j + ",\\bullet)}";
+    tbl += "\\\\ \\hline";
+    for (i = 2; i <= p; i++) {
+        tbl += " \\text{Li}_{(\\bullet,\\lbrace 1 \\rbrace ^{" + (i - 2) + "})}";
+        for (j = 1; j <= n; j++) {
+            var val = mat[i - 1][j - 1];;
+            tbl += " & " + val.toLatex();
+        };
+        tbl += " \\\\ ";
+    };
+    tbl += " \\end{array}";
+    return tbl;
+};
+
+function fpqnintMLatex() {
+    var elem = document.getElementById("ifpnout");
+    const p = document.getElementById("ifpnp").value * 1;
+    const q = document.getElementById("ifpnq").value * 1 + 1;
+    const n = document.getElementById("ifpnn").value * 1 + 1;
+    var txtx = "",
+        txtln = "",
+        txtln1 = "";
+    if (n == 2)
+        txtx = "x";
+    else if (n > 2)
+        txtx = "x^{" + (n - 1) + "}";
+    if (n >= 2 && (p > 0 || q > 1))
+        txtx += '\\cdot';
+
+    if (p == 1)
+        txtln = "\\ln(x)"
+    else if (p > 1)
+        txtln = "\\ln^{" + p + "}(x)";
+    if (p >= 1 && (q > 1))
+        txtln += '\\cdot';
+
+    if (q == 2)
+        txtln1 = "\\ln(1-x)"
+    else if (q > 2)
+        txtln1 = "\\ln^{" + (q - 1) + "}(1-x)";
+
+    var txt = "";
+    for (var r = 0; r <= p; r++) {
+        var pnrM = fpnIterK(q, n, r);
+        var pnrA = pnrM[0];
+        var pnrB = pnrM[1];
+        var cr = Fraction(Math.pow(-1, r) * factorial(p), factorial(p - r));
+        var elojel = "+";
+        if (cr.s == -1)
+            elojel = ""
+        var Btabla = "";
+        if (q > 1)
+            Btabla = fpntblBLatex(pnrB)
+        txt += elojel + cr.toLatex() + "\\cdot\\ln^{" + (p - r) + "}(x)\\cdot\\left[\\begin{array}{c}" + fpntblALatex(pnrA) + " \\\\ + \\\\ " + Btabla + " \\end{array}\\right]";
+    };
+    if (txt.startsWith("+"))
+        txt = txt.slice(1);
+    txt = "\\int{" + txtx + txtln + txtln1 + "}\\,\\text{d}x = " + txt;
+    elem.innerHTML = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
 function fpqnInt() {
     const mode = document.getElementById("settblmodeint").checked;
-    if (mode)
-        fpqnint();
-    else
-        fpqnintM();
+    const lmode = document.getElementById("setpqnLmode").checked;
+
+    if (mode) {
+        if (lmode)
+            fpqnintLatex();
+        else
+            fpqnint();
+    } else {
+        if (lmode)
+            fpqnintMLatex();
+        else
+            fpqnintM();
+    };
 };
