@@ -782,7 +782,8 @@ table.stable td {
     vertical-align: -40%;
 }
 
-#pzout sup {
+#pzout sup,
+#pzoutr01 sup {
     font-size: 70%;
     margin-left: -0.5em;
 }
