@@ -788,6 +788,10 @@ table.stable td {
     margin-left: -0.5em;
 }
 
+#pqn01out #pzoutr01 {
+    width: 80vw;
+}
+
 #pzout span.pzjelento,
 #pqn01outt span.pzjelento {
     cursor: pointer;
