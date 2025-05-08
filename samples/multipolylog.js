@@ -6816,7 +6816,7 @@ function sformazottTortHTML(a, b) {
 
 function formazottTortHTML(a, b) {
     var txt = "";
-    if (b == 1 && a != 1)
+    if (b == 1 && a !== 1)
         txt = a;
     else if (b != 1 || typeof(b) == 'string')
         txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
