@@ -6819,7 +6819,7 @@ function formazottTortHTML(a, b) {
     if (b == 1 && a !== 1)
         txt = a;
     else if (b != 1 || typeof(b) == 'string')
-        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
+        txt = "<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>" + a + "</td></tr><tr><td>" + b + "</td></tr></table></span>";
     return txt;
 };
 
@@ -8143,7 +8143,7 @@ function fpqnint() {
     else if (q > 2)
         txtln1 = "ln<sup>" + (q - 1) + "</sup>(1−x)";
 
-    var txt = "<span class='block' style='margin:25px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>" + txtx + txtln + txtln1 + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> =";
+    var txt = "<span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>" + txtx + txtln + txtln1 + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> =";
     var txtA = "";
     var txtB = "";
     var szamlalo = 0;
@@ -8251,6 +8251,7 @@ function fpqnint() {
         txtA = txtA.slice(2);
     txt = "<div style='color: #777;font-family: consolas;font-size: 80%;'>Az integrál " + szamlalo + " függvény összege:</div>" + txt;
     txt += txtA + txtB;
+    elem.style.minWidth = "fit-content";
     elem.innerHTML = txt;
 };
 
@@ -8385,6 +8386,7 @@ function fpqnintLatex() {
     if (txtA.startsWith("+"))
         txtA = txtA.slice(1);
     txt += txtA + txtB;
+    elem.style.minWidth = "max-content";
     elem.innerHTML = "\\[" + txt + "\\]";
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
@@ -8478,7 +8480,8 @@ function fpqnintM() {
     };
     if (txt.startsWith(" +&nbsp;"))
         txt = txt.slice(2);
-    txt = "<span class='block' style='margin:25px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>" + txtx + txtln + txtln1 + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> =" + txt;
+    txt = "<span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>" + txtx + txtln + txtln1 + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> =" + txt;
+    elem.style.minWidth = "max-content";
     elem.innerHTML = txt;
 };
 
@@ -8572,6 +8575,7 @@ function fpqnintMLatex() {
     if (txt.startsWith("+"))
         txt = txt.slice(1);
     txt = "\\int{" + txtx + txtln + txtln1 + "}\\,\\text{d}x = " + txt;
+    elem.style.minWidth = "max-content";
     elem.innerHTML = "\\[" + txt + "\\]";
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
@@ -8668,6 +8672,8 @@ function xnlIntHTML() {
         const sum2 = vv[4];
         const v1m1 = v1.map(y => y - 1);
         const v2m1 = v2.map(y => y - 1);
+        const rv1m1 = [...v1m1].reverse();
+        const rv2m1 = [...v2m1].reverse();
         var elojel2 = " + ";
         if ((1 + sum2) % 2 == 1)
             elojel2 = " −&nbsp;"
@@ -8681,24 +8687,24 @@ function xnlIntHTML() {
             if (mode) {
                 var v1m1h = [i]
                 if (v1m1.length > 0)
-                    v1m1h = [i, ...v1m1.toReversed()];
+                    v1m1h = [i, ...rv1m1];
                 txt1 += elojel1 + "Li<sub  class='xlns'>(" + v3t + ")</sub>(x)&lowast;" + IsHTML(v1m1h, n + 1);
             } else {
                 var v1m1t = i;
                 if (v1m1.length > 0)
-                    v1m1t = i + "," + v1m1.toReversed().toString();
+                    v1m1t = i + "," + rv1m1.toString();
                 txt1 += elojel1 + "Li<sub  class='xlns'>(" + v3t + ")</sub>(x)&lowast;<span class='pzjelento' onclick='xnlJelent([" + v1m1t + "]," + (n + 1) + ");'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v1m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
             }
         };
         if (mode) {
             var v2m1h = [];
             if (v2m1.length > 0)
-                v2m1h = [0, ...v2m1.toReversed()];
+                v2m1h = [0, ...rv2m1];
             txt1 += elojel2 + "Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)&lowast;" + IsHTML(v2m1h, n + 1);
         } else {
             var v2m1t = "";
             if (v2m1.length > 0)
-                v2m1t = "0," + v2m1.toReversed().toString();
+                v2m1t = "0," + rv2m1.toString();
             txt1 += elojel2 + "Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)&lowast;<span class='pzjelento' onclick='xnlJelent([" + v2m1t + "]," + (n + 1) + ");'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v2m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
         }
     };
@@ -8713,11 +8719,13 @@ function xnlJelent(s, n) {
     setTimeout(() => {
         var elem = document.getElementById("pzoutr");
         const txt = IsHTML(s, n);
-        elem.innerHTML = txt;
-        elem.scrollIntoView({
-            behavior: "smooth",
-            block: 'start'
-        });
+        if (elem) {
+            elem.innerHTML = txt;
+            elem.scrollIntoView({
+                behavior: "smooth",
+                block: 'start'
+            });
+        }
     }, 100)
 };
 
@@ -8780,6 +8788,8 @@ function xnlIntLatex() {
         const sum2 = vv[4];
         const v1m1 = v1.map(y => y - 1);
         const v2m1 = v2.map(y => y - 1);
+        const rv1m1 = [...v1m1].reverse();
+        const rv2m1 = [...v2m1].reverse();
         var elojel2 = " + ";
         if ((1 + sum2) % 2 == 1)
             elojel2 = " - "
@@ -8793,24 +8803,24 @@ function xnlIntLatex() {
             if (mode) {
                 var v1m1h = [i]
                 if (v1m1.length > 0)
-                    v1m1h = [i, ...v1m1.toReversed()];
+                    v1m1h = [i, ...rv1m1];
                 txt1 += elojel1 + "\\text{Li}_{(" + v3t + ")}(x)\\," + IsLatex(v1m1h, n + 1);
             } else {
                 var v1m1t = i;
                 if (v1m1.length > 0)
-                    v1m1t = i + "," + v1m1.toReversed().toString();
+                    v1m1t = i + "," + rv1m1.toString();
                 txt1 += elojel1 + "\\text{Li}_{(" + v3t + ")}(x)\\mathscr{J}_{(" + v1m1t + ")}\\left[ x^{" + (n + 1) + "}\\right]";
             }
         };
         if (mode) {
             var v2m1h = [];
             if (v2m1.length > 0)
-                v2m1h = [0, ...v2m1.toReversed()];
+                v2m1h = [0, ...rv2m1];
             txt1 += elojel2 + "\\text{Li}_{(" + v3.toString() + ")}(x)\\," + IsLatex(v2m1h, n + 1);
         } else {
             var v2m1t = "";
             if (v2m1.length > 0)
-                v2m1t = "0," + v2m1.toReversed().toString();
+                v2m1t = "0," + rv2m1.toString();
             txt1 += elojel2 + "\\text{Li}_{(" + v3.toString() + ")}(x)\\mathscr{J}_{(" + v2m1t + ")}\\left[ x^{" + (n + 1) + "}\\right]";
         }
     };
