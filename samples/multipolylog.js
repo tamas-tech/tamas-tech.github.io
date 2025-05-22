@@ -8592,3 +8592,240 @@ function fpqnInt() {
             fpqnintM();
     };
 };
+
+// x^n*Li(s1,s2,...,sr)(x) integráltja 
+
+function setOutputFontxnl(v) {
+    document.getElementById("xnlout").style.fontSize = v + "px";
+};
+
+function IsHTML(S, n) {
+    const r = S.length;
+    var s = _.dropRight(S).map(y => y + 1);
+    var s1 = [];
+    const e = _.last(S);
+    const szorzo = formazottTortHTML(1, Math.pow(n, e));
+    var txt = "";
+    if (r == 1) {
+        txt += szorzo + " x<sup>" + n + "</sup>";
+    } else {
+        var elojels = " + ";
+        if (Math.pow(-1, r + 1) == -1)
+            elojels = " −&nbsp;"
+        var txtveg = elojels + "<sub  class='xlns'>" + n + "</sub><span style='border-top:2px solid;'>Le</span><sub  class='xlns'>(" + _.reverse(s) + ")</sub>(x)";
+        s = _.reverse(s);
+        for (var k = 2; k <= r; k++) {
+            var elojel = " + ";
+            if (Math.pow(-1, k) == -1)
+                elojel = " −&nbsp;"
+            txt += elojel + "&zeta;<sup>*</sup><sub  class='xlns1'>" + n + "</sub>(" + s1.toString() + ")·Li<sub  class='xlns'>(" + s + ")</sub>(x)";
+            var csere = _.last(s);
+            s = _.dropRight(s);
+            s1.push(csere);
+        };
+        if (txt.startsWith(" + "))
+            txt = txt.slice(2);
+        txt = szorzo + "&nbsp;&lowast;<span class='paren1'>[</span>" + txt + txtveg + "<span class='paren1'>]</span>";
+    }
+    return txt;
+};
+
+function jvagas(v, j) {
+    const v1 = _.take(v, j - 1);
+    const v2 = _.take(v, j);
+    const v3 = _.drop(v, j);
+    const sum1 = _.sum(v1);
+    const sum2 = _.sum(v2);
+
+    return [v1, v2, v3, sum1, sum2];
+};
+
+function xnlIntHTML() {
+    const elem = document.getElementById("xnlout");
+    const mode = document.getElementById("setmodexnl").checked;
+    const s = document.getElementById("xnls").value;
+    const n = document.getElementById("xnln").value * 1;
+    var txtx = "",
+        txts = "Li<sub class='xlns'>(" + s + ")</sub>(x)";
+    if (n == 1)
+        txtx = "x";
+    else if (n > 1)
+        txtx = "x<sup>" + n + "</sup>";
+    if (n > 0)
+        txtx += '·';
+
+    var txt = "<span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.71818);vertical-align: middle;'>∫</span><sub class='sdefint empty'></sub><sup class='sdefint empty' style='bottom: 13.2px; left: -5.84545px;'></sup><span class='block' style='position:relative;'>" + txtx + txts + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> =";
+    var txt1 = "";
+    var sv = JSON.parse("[" + s + "]");
+    sv[0] = sv[0] + 1;
+    const r = sv.length;
+    for (var j = 1; j <= r; j++) {
+        const vv = jvagas(sv, j);
+        const v1 = vv[0];
+        const v2 = vv[1];
+        const v3 = vv[2];
+        const sum1 = vv[3];
+        const sum2 = vv[4];
+        const v1m1 = v1.map(y => y - 1);
+        const v2m1 = v2.map(y => y - 1);
+        var elojel2 = " + ";
+        if ((1 + sum2) % 2 == 1)
+            elojel2 = " −&nbsp;"
+        for (var i = 1; i < sv[j - 1]; i++) {
+            var elojel1 = " + ";
+            var v3t = _.last(v2) - i;
+            if ((1 + i + sum1) % 2 == 1)
+                elojel1 = " −&nbsp;"
+            if (v3.length > 0)
+                v3t = (_.last(v2) - i) + "," + v3.toString();
+            if (mode) {
+                var v1m1h = [i]
+                if (v1m1.length > 0)
+                    v1m1h = [i, ...v1m1.toReversed()];
+                txt1 += elojel1 + "Li<sub  class='xlns'>(" + v3t + ")</sub>(x)&lowast;" + IsHTML(v1m1h, n + 1);
+            } else {
+                var v1m1t = i;
+                if (v1m1.length > 0)
+                    v1m1t = i + "," + v1m1.toReversed().toString();
+                txt1 += elojel1 + "Li<sub  class='xlns'>(" + v3t + ")</sub>(x)&lowast;<span class='pzjelento' onclick='xnlJelent([" + v1m1t + "]," + (n + 1) + ");'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v1m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
+            }
+        };
+        if (mode) {
+            var v2m1h = [];
+            if (v2m1.length > 0)
+                v2m1h = [0, ...v2m1.toReversed()];
+            txt1 += elojel2 + "Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)&lowast;" + IsHTML(v2m1h, n + 1);
+        } else {
+            var v2m1t = "";
+            if (v2m1.length > 0)
+                v2m1t = "0," + v2m1.toReversed().toString();
+            txt1 += elojel2 + "Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)&lowast;<span class='pzjelento' onclick='xnlJelent([" + v2m1t + "]," + (n + 1) + ");'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v2m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
+        }
+    };
+    if (txt1.startsWith(" + "))
+        txt1 = txt1.slice(2);
+    txt += txt1;
+    elem.style.minWidth = "fit-content";
+    elem.innerHTML = txt;
+};
+
+function xnlJelent(s, n) {
+    setTimeout(() => {
+        var elem = document.getElementById("pzoutr");
+        const txt = IsHTML(s, n);
+        elem.innerHTML = txt;
+        elem.scrollIntoView({
+            behavior: "smooth",
+            block: 'start'
+        });
+    }, 100)
+};
+
+function IsLatex(S, n) {
+    const r = S.length;
+    var s = _.dropRight(S).map(y => y + 1);
+    var s1 = [];
+    const e = _.last(S);
+    const szorzo = "\\frac{1}{" + Math.pow(n, e) + "}";
+    var txt = "";
+    if (r == 1) {
+        txt += szorzo + "\\; x^{" + n + "}";
+    } else {
+        var elojels = " + ";
+        if (Math.pow(-1, r + 1) == -1)
+            elojels = " - "
+        var txtveg = elojels + " {_{" + n + "}}\\widehat{\\text{Le}}_{(" + _.reverse(s) + ")}(x)";
+        s = _.reverse(s);
+        for (var k = 2; k <= r; k++) {
+            var elojel = " + ";
+            if (Math.pow(-1, k) == -1)
+                elojel = " - "
+            txt += elojel + "\\zeta^{*}_{" + n + "}(" + s1.toString() + ")\\;\\text{Li}_{(" + s + ")}(x)";
+            var csere = _.last(s);
+            s = _.dropRight(s);
+            s1.push(csere);
+        };
+        if (txt.startsWith(" + "))
+            txt = txt.slice(2);
+        txt = szorzo + "\\left[" + txt + txtveg + "\\right]";
+    }
+    return txt;
+};
+
+function xnlIntLatex() {
+    const elem = document.getElementById("xnlout");
+    const mode = document.getElementById("setmodexnl").checked;
+    const s = document.getElementById("xnls").value;
+    const n = document.getElementById("xnln").value * 1;
+    var txtx = "",
+        txts = "\\text{Li}_{(" + s + ")}(x)";
+    if (n == 1)
+        txtx = "x";
+    else if (n > 1)
+        txtx = "x^{" + n + "}";
+    if (n > 0)
+        txtx += '\\;';
+
+    var txt = "\\int " + txtx + txts + "\\text{d}x = ";
+    var txt1 = "";
+    var sv = JSON.parse("[" + s + "]");
+    sv[0] = sv[0] + 1;
+    const r = sv.length;
+    for (var j = 1; j <= r; j++) {
+        const vv = jvagas(sv, j);
+        const v1 = vv[0];
+        const v2 = vv[1];
+        const v3 = vv[2];
+        const sum1 = vv[3];
+        const sum2 = vv[4];
+        const v1m1 = v1.map(y => y - 1);
+        const v2m1 = v2.map(y => y - 1);
+        var elojel2 = " + ";
+        if ((1 + sum2) % 2 == 1)
+            elojel2 = " - "
+        for (var i = 1; i < sv[j - 1]; i++) {
+            var elojel1 = " + ";
+            var v3t = _.last(v2) - i;
+            if ((1 + i + sum1) % 2 == 1)
+                elojel1 = " - "
+            if (v3.length > 0)
+                v3t = (_.last(v2) - i) + "," + v3.toString();
+            if (mode) {
+                var v1m1h = [i]
+                if (v1m1.length > 0)
+                    v1m1h = [i, ...v1m1.toReversed()];
+                txt1 += elojel1 + "\\text{Li}_{(" + v3t + ")}(x)\\," + IsLatex(v1m1h, n + 1);
+            } else {
+                var v1m1t = i;
+                if (v1m1.length > 0)
+                    v1m1t = i + "," + v1m1.toReversed().toString();
+                txt1 += elojel1 + "\\text{Li}_{(" + v3t + ")}(x)\\mathscr{J}_{(" + v1m1t + ")}\\left[ x^{" + (n + 1) + "}\\right]";
+            }
+        };
+        if (mode) {
+            var v2m1h = [];
+            if (v2m1.length > 0)
+                v2m1h = [0, ...v2m1.toReversed()];
+            txt1 += elojel2 + "\\text{Li}_{(" + v3.toString() + ")}(x)\\," + IsLatex(v2m1h, n + 1);
+        } else {
+            var v2m1t = "";
+            if (v2m1.length > 0)
+                v2m1t = "0," + v2m1.toReversed().toString();
+            txt1 += elojel2 + "\\text{Li}_{(" + v3.toString() + ")}(x)\\mathscr{J}_{(" + v2m1t + ")}\\left[ x^{" + (n + 1) + "}\\right]";
+        }
+    };
+    if (txt1.startsWith(" + "))
+        txt1 = txt1.slice(2);
+    txt += txt1;
+    elem.style.minWidth = "max-content";
+    elem.innerHTML = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+};
+
+function xnlInt() {
+    const latex = document.getElementById("setxnlLmode").checked;
+    if (latex)
+        xnlIntLatex();
+    else
+        xnlIntHTML();
+};
