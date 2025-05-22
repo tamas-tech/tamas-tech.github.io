@@ -793,14 +793,16 @@ table.stable td {
 }
 
 #pzout span.pzjelento,
-#pqn01outt span.pzjelento {
+#pqn01out span.pzjelento,
+#xnlout span.pzjelento {
     cursor: pointer;
     padding: 5px 0;
     letter-spacing: 0.05em;
 }
 
 #pzout span.pzjelento:hover,
-#pqn01out span.pzjelento:hover {
+#pqn01out span.pzjelento:hover,
+#xnlout span.pzjelento:hover {
     color: #205cff;
     background-color: #dae4ff
 }
@@ -973,7 +975,7 @@ table#pqnrtbl tr:first-child th {
     background-color: #e8e8e8;
     margin: 5px 0;
     padding: 7px;
-    font-size: 20px;
+    font-size: inherit;
     max-width: calc(100vw);
     overflow: auto;
 }
