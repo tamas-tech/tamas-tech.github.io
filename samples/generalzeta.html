@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Generalized zeta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../../../Redmentor/jquery-1.12.1.min.js"></script>
+    <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
+    <link rel="stylesheet" href="samples.css">
+    <script src="multipolylog.js"></script>
+    <!-- from cdn -->
+    <!--  <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.9.5/function-plot.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> -->
+
+    <!-- from local -->
+
+
+    <script src="../MathJax-2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="../tools/lodash.min.js"></script>
+    <script src="../tools/FractionJS/dist/fraction.min.js"></script>
+    <script src="../tools/d3.v3.min.js"></script>
+    <script src="../tools/function-plot.js"></script>
+    <script src="../tools/CombinationsJS/YourCombinations.js"></script>
+
+</head>
+
+<body style="overflow:scroll;">
+
+    <h1>Generalized Zeta values <button class="showpre1" style="width:120px;font-size:20px;margin-left:30px;font-family: inherit;border-color:#b7a4a4;box-shadow: 0px 2px 5px 5px #9da3a059;" onclick="helpTgl('helpbar0');" title="Open/Close help">Toggle help</button></h1>
+
+    <div id="helpbar0" style="display:none;">
+        <h2 style="color:#445827;">Ismertető a lap használatáról</h2>
+        <p>Minden szövegbeviteli mezőbe vesszővel elválasztott előjeles egész és tizedes tört számokat, illetve két kis "o" betűvel reprezentált előjel nélküli végtelen jelet lehet bevinni "oo" formában. A tizedes törteket ponttal kell jelölni: -17.235.
+            Néhány mezőben a tizedestört nem értelemes, de erről jelentést kapunk. Egy mező <b>lehet üres is.</b> Tetszőleges számú szóköz megengedett.<br/> Példák:
+
+            <ul>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value=''></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='2'></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='-12.4567'></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='oo'></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='2,-3,4,2'></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='   2,    -3   ,  4 ,  2   '></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value=' -2.735, oo  , -4 ,  oo   '></li>
+                <li><label><b style="padding: 2px 7px;">s</b> = </label> <input class="inpvec" type="text" readonly value='oo,2,3, -2.735,    oo   '></li>
+            </ul>
+        </p>
+        <p>
+            <b>Néhány mezőbe betűk is bevihetők idézőjelek közé zárva</b>. Ez mindig a beviteli mező mögötti <button id="ABC" style="margin-left:5px;">ABC</button> gomb jelzi..<br/> Példák:
+            <ul>
+                <li><input class="inpvec" type="text" value='"a","v"' readonly><button style="margin-left:5px;">ABC</button></li>
+                <li>Mivel idézőjelek közé tett betűk bevitele igen fáradságos lehet, ezért az alábbi gyors beillesztést tettük elérhetővé. Ha egy (vagy több) egész számot írunk egy ilyen mezőbe majd az <button id="ABC" style="margin-left:5px;">ABC</button>                    gombra kattintunk, akkor az <b>első számnak megfelelő, de legfeljebb 6</b>, vesszővel elválsztott, idézőjelek közé tett betűt illeszt a beviteli mezőbe. Ha pédául az alábbi gombra kattintunk, akkor 3 betűt illeszt be<br> <input class="inpvec"
+                        type="text" id="test1" value="3" name="test1"><button id="ABCtest1" onclick="toABC('test1');" style="margin-left:5px;">ABC</button><br/>De az alábbi is három betűt fog beilleszteni, mert az első szám 3<br> <input class="inpvec" type="text"
+                        id="test2" value="3,-2,5,6" name="test2"><button id="ABCtest2" onclick="toABC('test2');" style="margin-left:5px;">ABC</button><br/>A következő nulla betűt fog beilleszteni , mert az első szám -3<br> <input class="inpvec" type="text"
+                        id="test3" value="-3,-2,5,6" name="test3">
+                    <button id="ABCtest3" onclick="toABC('test3');" style="margin-left:5px;">ABC</button><br/>A következő szintén nulla betűt fog beilleszteni , mert az első karakter nem is szám <br>
+                    <input class="inpvec" type="text" id="test4" value='"a",2,3' name="test4"><button id="ABCtest4" onclick="toABC('test4');" style="margin-left:5px;">ABC</button><br/>Az alábbi kettő pedig 6 betűt fog beilleszteni, mert 6-nál több betűt
+                    soha nem illeszt be.
+                    <br/> <input class="inpvec" type="text" id="test5" value='12' name="test5"><button id="ABCtest5" onclick="toABC('test5');" style="margin-left:5px;">ABC</button> <br style="margin-bottom:5px;" /> <input class="inpvec" type="text" id="test6"
+                        value='oo,-3' name="test6">
+                    <button id="ABCtest6" onclick="toABC('test6');" style="margin-left:5px;">ABC</button>
+            </ul>
+        </p>
+    </div>
+
+    <div class="keret of odd" id="k1" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">1.</big></b>
+        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\require{cancel}\begin{gather*} {\phantom{\zeta}_{a}{\zeta}_{b}}(s_{1},s_{2},\ldots,s_{r}):=\sum_{b\geq n_{1}>n_{2}>\cdots>n_{r}\geq a}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}}\\ \\ {\phantom{\zeta}_{a}{\zeta}_{b}^{*}(s_{1},s_{2},\ldots,s_{r})}:=\sum_{b\geq
+            n_{1}\geq n_{2}\geq\cdots\geq n_{r}\geq a}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}} \end{gather*}\]
+        </p>
+        <div style="margin-left:6px;padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;margin-bottom:5px;">
+            <span style="margin-left:10px;margin-right:10px;">HTML</span>
+            <label class="switch"><input id="setgZLmode"  type="checkbox" onchange="gZClear(true);gZszamitas();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\LaTeX\)</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="sv"><b style="padding: 2px 7px;">s</b> = </label>
+            <input class="inpvec" type="text" id="sv" value="2,3" name="sv"><button id="ABC" onclick="toABC('sv');" style="margin-left:5px;">ABC</button>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">a</b> = </label><span id="akijelzo" style="display:inline-block;width:20px;">3</span>
+            <input id="a" type="range" min="1" max="12" value="3" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set a" name="a" onchange="setn(this,'a');">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">b</b> = </label><span id="bkijelzo" style="display:inline-block;width:20px;">5</span>
+            <input id="b" type="range" min="1" max="12" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set b" name="b" onchange="setn(this,'b');">
+
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="gZszamitas();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="gZClear(true);" title="Clear series">Clear</button>
+        <label for="setoutputfontpz">&#128474;</label>
+        <input oninput="setOutputFontgZ(this.value);" type="range" min="50" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfontpz" />
+        <p id="figygZ" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+        <!--  <p id="gZ" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
+        <p id="gZe" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p> -->
+        <p class="kijelzo tomor" style="font-family:Cambria Math;" id="gZ"></p>
+        <p class="kijelzo tomor" style="font-family:Cambria Math;" id="gZe"></p>
+    </div>
+    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl('helpbar1');" title="Open/Close help">Toggle help</button>
+    <div id="helpbar1" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
+        <iframe name="helpframe" width="99%" height="100%" src="../docs/zetas.pdf" style="width:99%;height:100vh;border:none;"></iframe>
+    </div>
+
+
+    <!--  <script>
+        setTimeout(() => {
+            setKeplet();
+            setgenKeplet();
+        }, 1000);
+    </script> -->
+</body>
+
+</html>
