@@ -2130,27 +2130,31 @@ function setOutputFontHacom(v) {
 };
 
 $(document).ready(function() {
-    document.getElementById("okbtn").onclick = function() {
-        var txt = LiLe0PARI();
-        $('#mycell1 .sagecell_editor textarea.sagecell_commands').val(txt);
-        $('#mycell1 .sagecell_input button.sagecell_evalButton').click();
-        setOutputFont1($('#outfont-slider1').val());
-    };
-    document.getElementById("okbtn2").onclick = function() {
-        var outelem = document.querySelector('#ideout2 .sagecell_sessionOutput');
-        var txt = HZPARI();
-        if (txt == "vegtelenhiba") {
-            if (outelem)
-                outelem.innerHTML = "<span class='outhiba'>Valamelyik ∞ jel hibás!</span>";
-        } else if (txt == "hiba") {
-            if (outelem)
-                outelem.innerHTML = "<span class='outhiba'>Hibás bemenet!</span>";
-        } else {
-            $('#mycell2 .sagecell_editor textarea.sagecell_commands').val(txt);
-            $('#mycell2 .sagecell_input button.sagecell_evalButton').click();
-            setOutputFont2($('#outfont-slider2').val());
+    const elem1 = document.getElementById("okbtn");
+    const elem2 = document.getElementById("okbtn2");
+    if (elem1)
+        elem1.onclick = function() {
+            var txt = LiLe0PARI();
+            $('#mycell1 .sagecell_editor textarea.sagecell_commands').val(txt);
+            $('#mycell1 .sagecell_input button.sagecell_evalButton').click();
+            setOutputFont1($('#outfont-slider1').val());
         };
-    };
+    if (elem2)
+        elem2.onclick = function() {
+            var outelem = document.querySelector('#ideout2 .sagecell_sessionOutput');
+            var txt = HZPARI();
+            if (txt == "vegtelenhiba") {
+                if (outelem)
+                    outelem.innerHTML = "<span class='outhiba'>Valamelyik ∞ jel hibás!</span>";
+            } else if (txt == "hiba") {
+                if (outelem)
+                    outelem.innerHTML = "<span class='outhiba'>Hibás bemenet!</span>";
+            } else {
+                $('#mycell2 .sagecell_editor textarea.sagecell_commands').val(txt);
+                $('#mycell2 .sagecell_input button.sagecell_evalButton').click();
+                setOutputFont2($('#outfont-slider2').val());
+            };
+        };
     $(document).on('click', 'table#pqntbl td', function() {
         $('table#pqntbl td.active').removeClass('active');
         $(this).addClass('active');
@@ -2198,7 +2202,8 @@ function HcomClear() {
 
 function kiszed_av(id) {
     var elemfigy = document.querySelector("#figyH");
-    elemfigy.style.display = "none";
+    if (elemfigy)
+        elemfigy.style.display = "none";
     var av = document.getElementById(id).value;
     if (pat.test(av)) {
         if (id == "sv2")
@@ -4212,7 +4217,7 @@ $(document).on('input focus', '#query2', function() {
     setSearch();
 });
 
-if (document.title != "Explicit formula")
+if (document.title != "Explicit formula" && document.title != "Generalized zeta")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('#shout')
         const foo1 = document.querySelector('#sagetransf');
@@ -4536,7 +4541,7 @@ function setSearch3() {
 $(document).on('input focus', '#mquery', function() {
     setSearch3();
 });
-if (document.title != "Explicit formula")
+if (document.title != "Explicit formula" && document.title != "Generalized zeta")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('p#mshout')
         var isin = window.getSelection().containsNode(foo, true);
@@ -5397,7 +5402,7 @@ function boldVertices() {
     };
 };
 
-if (document.title != "Explicit formula")
+if (document.title != "Explicit formula" && document.title != "Generalized zeta")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('p#shout');
         const foo2 = document.querySelector('span#iresz');
@@ -8629,7 +8634,7 @@ function IsHTML(S, n) {
         };
         if (txt.startsWith(" + "))
             txt = txt.slice(2);
-        txt = szorzo + "&nbsp;&lowast;<span class='paren1'>[</span>" + txt + txtveg + "<span class='paren1'>]</span>";
+        txt = szorzo + " &lowast; <span class='paren1'>[</span>" + txt + txtveg + "<span class='paren1'>]</span>";
     }
     return txt;
 };
@@ -8838,4 +8843,314 @@ function xnlInt() {
         xnlIntLatex();
     else
         xnlIntHTML();
+};
+
+// zeta[a,b](s1,s2,..,sr) és zeta*[a,b](s1,s2,..,sr)
+
+gZe = function(S, a, b) {
+    var n = S.length,
+        p = Fraction(0),
+        h = Fraction(0),
+        e = 0;
+    const l = _.last(S);
+    const SS = _.dropRight(S);
+    if (n == 0)
+        h = Fraction(1);
+    else if (b < a || a <= 0)
+        h = Fraction(0);
+    else {
+        for (var k = a; k <= b; k++) {
+            e = Math.pow(k, l);
+            p = gZe(SS, k, b).div(e);
+            h = h.add(p);
+        }
+    }
+
+    return h;
+};
+
+gZef = function(S, a, b) {
+    var n = S.length,
+        p = 0,
+        h = 0;
+    const SS = _.dropRight(S);
+    const l = _.last(S);
+    if (n == 0)
+        h += 1;
+    else if (b < a || a <= 0)
+        h = 0;
+    else {
+        for (var k = a; k <= b; k++) {
+            var e = Math.pow(k, l);
+            p = gZe(SS, k, b);
+            h += p / e;
+        }
+    }
+    return h;
+};
+
+function Harmonic(k, n) {
+    var sum = Fraction(0);
+    for (var j = 1; j <= k; j++) {
+        sum = sum.add(Fraction(1, Math.pow(j, n)));
+    }
+    return sum;
+};
+
+gZ = function(S, a, b) {
+    var n = S.length,
+        p = Fraction(0),
+        h = Fraction(0),
+        e = 0;
+
+    const f = _.first(S);
+    const l = _.last(S);
+    const SS = _.dropRight(S);
+    if (n == 0)
+        h = Fraction(1);
+    else if (b < a || a <= 0)
+        h = Fraction(0);
+    else if (n == 1)
+        h = Harmonic(b, f).sub(Harmonic(a - 1, f));
+    else {
+        for (var k = a; k <= b; k++) {
+            e = Math.pow(k, l);
+            p = gZ(SS, k + 1, b).div(e);
+            h = h.add(p);
+        }
+    }
+
+    return h;
+};
+
+function kiszed_avbv(id) {
+    var elemfigy = document.querySelector("#figygZ");
+    elemfigy.style.display = "none";
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figygZ");
+        gZClear(false);
+        return "vegtelenhiba";
+    };
+
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figygZ");
+        gZClear(false);
+        return;
+    };
+    return av;
+};
+
+function gZClear(kell) {;
+    var elem = document.querySelector("#gZ");
+    var elem1 = document.querySelector("#gZe");
+    var elemfigy = document.querySelector("#figygZ");
+    elem.innerText = "";
+    elem1.innerText = "";
+    if (kell)
+        elemfigy.style.display = "none";
+};
+
+function setOutputFontgZ(v) {
+    var elem = document.getElementById("gZ");
+    var elemr = document.getElementById("gZe");
+    elem.style.fontSize = v + '%';
+    elemr.style.fontSize = v + '%';
+
+    setTimeout(() => {
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemr]);
+    }, 100);
+
+};
+
+function gzetaltx(sv, a, b, ism) {
+    const r = sv.length;
+    var ooindx = sv.indexOf(oo);
+    var hasstr = _.findIndex(sv, y => typeof y == 'string') > -1
+    var ab = [];
+    for (var j = a; j <= b; j++)
+        ab.push(j);
+    let cb = Combvr(ab, r, ism);
+    let cs = "";
+    let koz = "";
+    var Zv;
+    var meret = 1;
+    if (ism) {
+        cs = "^{*}";
+        if (!hasstr) {
+            if (ooindx > -1)
+                if (a == 1) {
+                    var sv1 = sv.slice(0, ooindx)
+                    Zv = gZe(sv1, 1, b)
+                        //Zv = Fraction(Hez(sv, b));
+                } else
+                    Zv = Fraction(0);
+            else
+                Zv = gZe(sv, a, b);
+        }
+        meret = binomial(b - a + r - 1, r) * (r - 2);
+    } else {
+        if (!hasstr) {
+            if (ooindx > -1)
+                if (a == 1 && ooindx == r - 1) {
+                    var sv1 = _.dropRight(sv)
+                    Zv = gZ(sv1, 2, b) //Haz(sv, b);
+                } else
+                    Zv = Fraction(0);
+            else
+                Zv = gZ(sv, a, b);
+        }
+        meret = binomial(b - a, r) * (r - 2);
+    };
+    if (ooindx > -1)
+        sv = oo2strInf(sv);
+    const sltx = "(" + JSON.stringify(sv).replaceAll('"', '').slice(1, -1) + ")";
+    var ltx = "";
+    if (r == 0) {
+        ltx = 1;
+        if (b == 1 && a == 1)
+            ltx = 1;
+        ltx = "\\phantom{\\zeta}_{" + a + "}{\\zeta}_{" + b + "}" + cs + "{" + sltx + "}=" + ltx;
+        return ltx;
+    };
+    if (meret > Hmax)
+        ltx = "\\text{ Az összeg mérete meghaladja a " + Hmax + "-at}";
+    else {
+        while (true) {
+            const item = cb.next();
+            if (item.done) break;
+            ltx += zhFormaz([...item.value].reverse(), sv);
+            // ltx += zhFormaz(item.value, sv);
+        };
+        ltx = ltx.slice(1);
+    }
+    if (ltx == "")
+        ltx = 0;
+    if (!isNaN(Zv) && !hasstr)
+        koz = " = " + Zv.toLatex() + "\\approx" + Zv;
+    ltx = "\\phantom{\\zeta}_{" + a + "}{\\zeta}_{" + b + "}" + cs + "{" + sltx + "}=" + ltx + koz;
+    return ltx;
+};
+
+function htmlFormaz(nv, sv) {
+    var ooindx = sv.indexOf(oo);
+    if (ooindx > -1)
+        sv = oo2strInf(sv);
+    var txt = "";
+    const nl = nv.length;
+    for (let i = 0; i < nl - 1; i++) {
+        txt += nv[i] + "<sup>" + sv[i] + "</sup>·"
+    };
+    txt += nv[nl - 1] + "<sup>" + sv[nl - 1] + "</sup>"
+    txt = " + " + formazottTortHTML(1, txt);
+    return txt;
+};
+
+function gzetaHTML(sv, a, b, ism) {
+    const r = sv.length;
+    var ooindx = sv.indexOf(oo);
+    var hasstr = _.findIndex(sv, y => typeof y == 'string') > -1
+    var ab = [];
+    var dd = 0;
+    for (var j = a; j <= b; j++)
+        ab.push(j);
+    let cb = Combvr(ab, r, ism);
+    let cs = "";
+    let koz = "";
+    var Zv;
+    var meret = 1;
+    if (ism) {
+        cs = "<sup>*</sup>";
+        dd = -0.4;
+        if (!hasstr) {
+            if (ooindx > -1)
+                if (a == 1) {
+                    var sv1 = sv.slice(0, ooindx)
+                    Zv = gZe(sv1, 1, b)
+                        //Zv = Fraction(Hez(sv, b));
+                } else
+                    Zv = Fraction(0);
+            else
+                Zv = gZe(sv, a, b);
+        }
+        meret = binomial(b - a + r - 1, r) * (r - 2);
+    } else {
+        if (!hasstr) {
+            if (ooindx > -1)
+                if (a == 1 && ooindx == r - 1) {
+                    var sv1 = _.dropRight(sv)
+                    Zv = gZ(sv1, 2, b) //Haz(sv, b);
+                } else
+                    Zv = Fraction(0);
+            else
+                Zv = gZ(sv, a, b);
+        }
+        meret = binomial(b - a, r) * (r - 2);
+    };
+    if (ooindx > -1)
+        sv = oo2strInf(sv);
+    const sltx = "(" + JSON.stringify(sv).replaceAll('"', '').slice(1, -1) + ")";
+    var ltx = "";
+    if (r == 0) {
+        ltx = 1;
+        if (b == 1 && a == 1)
+            ltx = 1;
+        ltx = "<sub>" + a + "</sub>&zeta;<sub>" + b + "</sub>" + cs + sltx + " = " + ltx;
+        return ltx;
+    };
+    if (meret > Hmax)
+        ltx = "Az összeg mérete meghaladja a " + Hmax + "-at";
+    else {
+        while (true) {
+            const item = cb.next();
+            if (item.done) break;
+            ltx += htmlFormaz([...item.value].reverse(), sv);
+            // ltx += zhFormaz(item.value, sv);
+        };
+        ltx = ltx.slice(2);
+    }
+    if (ltx == "")
+        ltx = 0;
+    if (!isNaN(Zv) && !hasstr)
+        koz = " = " + formazottTortHTML(Zv.n, Zv.d) + " &approx; " + Zv;
+    ltx = "<sub>" + a + "</sub>&zeta;" + cs + "<sub style='margin-left:" + dd + "em;'>" + b + "</sub>" + sltx + " = " + ltx + koz;
+    return ltx;
+};
+
+function kitoltgZ(a, b, ism, idfrom, idto) {
+    const sv = kiszed_avbv(idfrom);
+    const elemto = document.getElementById(idto);
+    const latex = document.getElementById("setgZLmode").checked;
+    let ltx = "";
+    if (sv == "vegtelenhiba" || sv == "hiba" || sv == undefined)
+        return;
+    else {
+        if (latex) {
+            ltx = gzetaltx(sv, a, b, ism);
+            elemto.innerHTML = "\\[" + ltx + "\\]";
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemto]);
+        } else {
+            ltx = gzetaHTML(sv, a, b, ism);
+            elemto.innerHTML = ltx;
+        }
+    }
+};
+
+function gZszamitas() {
+    const a = document.getElementById("a").value * 1;
+    const b = document.getElementById("b").value * 1;
+    kitoltgZ(a, b, false, "sv", "gZ");
+    kitoltgZ(a, b, true, "sv", "gZe");
 };
