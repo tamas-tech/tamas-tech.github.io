@@ -59,14 +59,14 @@
         </p>
     </div>
 
-    <div class="keret of odd" id="k1" style="padding-bottom:40px;margin-bottom:0;">
+   <div class="keret of odd" id="k1" style="padding-bottom:40px;margin-bottom:0;">
         <b><big class="sorszam">1.</big></b>
         <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\require{cancel}\begin{gather*} {\phantom{\zeta}_{a}{\zeta}_{b}}(s_{1},s_{2},\ldots,s_{r}):=\sum_{b\geq n_{1}>n_{2}>\cdots>n_{r}\geq a}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}}\\ \\ {\phantom{\zeta}_{a}{\zeta}_{b}^{*}(s_{1},s_{2},\ldots,s_{r})}:=\sum_{b\geq
             n_{1}\geq n_{2}\geq\cdots\geq n_{r}\geq a}\dfrac{1}{n_{1}^{s_{1}}n_{2}^{s_{2}}\cdots n_{r}^{s_{r}}} \end{gather*}\]
         </p>
         <div style="margin-left:6px;padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;margin-bottom:5px;">
             <span style="margin-left:10px;margin-right:10px;">HTML</span>
-            <label class="switch"><input id="setgZLmode"  type="checkbox" onchange="gZClear(true);gZszamitas();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\LaTeX\)</span>
+            <label class="switch"><input id="setgZLmode"  type="checkbox" onchange="gZClear(true,'figygZ');gZszamitas();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\LaTeX\)</span>
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="sv"><b style="padding: 2px 7px;">s</b> = </label>
@@ -79,15 +79,12 @@
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">b</b> = </label><span id="bkijelzo" style="display:inline-block;width:20px;">5</span>
             <input id="b" type="range" min="1" max="12" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set b" name="b" onchange="setn(this,'b');">
-
         </div>
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="gZszamitas();" title="Calculate series">Calculate</button>
-        <button class="showpre1" style="width:76px;margin-left:3px" onclick="gZClear(true);" title="Clear series">Clear</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="gZClear(true,'figygZ');" title="Clear series">Clear</button>
         <label for="setoutputfontpz">&#128474;</label>
         <input oninput="setOutputFontgZ(this.value);" type="range" min="50" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfontpz" />
         <p id="figygZ" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
-        <!--  <p id="gZ" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
-        <p id="gZe" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p> -->
         <p class="kijelzo tomor" style="font-family:Cambria Math;" id="gZ"></p>
         <p class="kijelzo tomor" style="font-family:Cambria Math;" id="gZe"></p>
     </div>
@@ -96,13 +93,40 @@
         <iframe name="helpframe" width="99%" height="100%" src="../docs/zetas.pdf" style="width:99%;height:100vh;border:none;"></iframe>
     </div>
 
-
-    <!--  <script>
-        setTimeout(() => {
-            setKeplet();
-            setgenKeplet();
-        }, 1000);
-    </script> -->
+    <div class="keret of even" id="k2" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">2.</big></b>
+        <p class="keplet" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} {\vphantom{\zeta}_{a}{\zeta}_{b}(s_{1},\ldots,\dot{s_{j}},\ldots,s_{r})(x)} = \sum_{k=a}^{b}\dfrac{{\vphantom{\zeta}_{a}{\zeta}_{k-1}}(s_{j+1},\ldots,s_{r})\cdot{\vphantom{\zeta}_{k+1}{\zeta}_{b}}(s_{1},\ldots,s_{j-1})}{k^{s_j}}\;
+            x^{k}\\ \\ {\vphantom{\zeta}_{a}{\zeta}_{b}^{*}(s_{1},\ldots,\dot{s_{j}},\ldots,s_{r})(x)} = \sum_{k=a}^{b}\dfrac{{\vphantom{\zeta}_{a}{\zeta}_{k}}(s_{j+1},\ldots,s_{r})\cdot{\vphantom{\zeta}_{k}{\zeta}_{b}}(s_{1},\ldots,s_{j-1})}{k^{s_j}}\;
+            x^{k} \end{gather*}\]
+        </p>
+        <div style="margin-left:6px;padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;margin-bottom:5px;">
+            <span style="margin-left:10px;margin-right:10px;">HTML</span>
+            <label class="switch"><input id="setgZjLmode"  type="checkbox" onchange="gZClear(true,'figygZj');gZjszamitas();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\LaTeX\)</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="jsv"><b style="padding: 2px 7px;">s</b> = </label>
+            <input class="inpvec" type="text" id="jsv" value="2,3" name="jsv">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="j"><b style="padding: 2px 7px;">j</b> =  </label>
+            <input type="number" id="j" value="1" min="-3" step="1" onchange="gZjszamitas();;" name="p" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">a</b> = </label><span id="jakijelzo" style="display:inline-block;width:20px;">3</span>
+            <input id="ja" type="range" min="1" max="12" value="3" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set a" name="ja" onchange="setn(this,'ja');gZjszamitas();">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">b</b> = </label><span id="jbkijelzo" style="display:inline-block;width:20px;">5</span>
+            <input id="jb" type="range" min="1" max="12" value="5" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set b" name="jb" onchange="setn(this,'jb');gZjszamitas();">
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="gZjszamitas();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="gZClear(true,'figygZj');" title="Clear series">Clear</button>
+        <label for="setoutputfontpz">&#128474;</label>
+        <input oninput="setOutputFontgZj(this.value);" type="range" min="50" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfontpz" />
+        <p id="figygZj" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+        <p class="kijelzo tomor" style="font-family:Cambria Math;" id="gZj"></p>
+        <p class="kijelzo tomor" style="font-family:Cambria Math;" id="gZje"></p>
+    </div>
 </body>
 
 </html>
