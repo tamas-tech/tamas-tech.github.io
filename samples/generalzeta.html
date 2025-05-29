@@ -133,11 +133,11 @@
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="Hsv"><b style="padding: 2px 7px;">s</b> = </label>
-            <input class="inpvec" type="text" id="Hsv" value="2,3,4,2" name="Hsv">
+            <input class="inpvec" type="text" id="Hsv" oninput="Hj_igazitas(this.value);Hk_igazitas();" value="2,3,4,2" name="Hsv">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="Hj"><b style="padding: 2px 7px;">j</b> =  </label>
-            <input type="number" id="Hj" value="3" min="-3" step="1" onchange="gHszamitas();" name="Hj" style="width:50px;">
+            <input type="number" id="Hj" value="3" min="1" step="1" max="4" onchange="Hk_igazitas();gHszamitas();" name="Hj" style="width:50px;">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="Hk"><b style="padding: 2px 2px 2px  7px;">k</b> =  </label>
@@ -145,11 +145,11 @@
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">a</b> = </label><span id="Hakijelzo" style="display:inline-block;width:20px;">3</span>
-            <input id="Ha" type="range" min="1" max="12" value="3" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set a" name="Ha" onchange="setn(this,'Ha');gHszamitas();">
+            <input id="Ha" type="range" min="1" max="12" value="3" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set a" name="Ha" onchange="setn(this,'Ha');Hk_igazitas();gHszamitas();">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label><b style="padding: 2px 7px;">b</b> = </label><span id="Hbkijelzo" style="display:inline-block;width:20px;">5</span>
-            <input id="Hb" type="range" min="1" max="12" value="8" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set b" name="Hb" onchange="setn(this,'Hb');gHszamitas();">
+            <input id="Hb" type="range" min="1" max="12" value="8" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set b" name="Hb" onchange="setn(this,'Hb');Hk_igazitas();gHszamitas();">
         </div>
         <button class="showpre1" style="width:96px;margin-left:10px" onclick="gHszamitas();" title="Calculate series">Calculate</button>
         <button class="showpre1" style="width:76px;margin-left:3px" onclick="gZClear(true,'figygH');" title="Clear series">Clear</button>
@@ -159,6 +159,7 @@
         <p class="kijelzo tomor" style="font-family:Cambria Math;" id="gH"></p>
         <p class="kijelzo tomor" style="font-family:Cambria Math;" id="gHe"></p>
     </div>
+    
 </body>
 
 </html>
