@@ -8893,11 +8893,12 @@ function Harmonic(k, n) {
     var sum = Fraction(0);
     if (n >= 0)
         for (var j = 1; j <= k; j++) {
-            sum = sum.add(Fraction(1, Math.pow(j, n)));
+            //sum = sum.add(Fraction(1, Math.pow(j, n)));
+            sum = sum.add(Fraction(1).div(Fraction(Math.pow(j, n))));
         }
     else
         for (var j = 1; j <= k; j++) {
-            sum = sum.add(Fraction(Math.pow(j, Math.abs(n)), 1));
+            sum = sum.add(Fraction(Math.pow(j, Math.abs(n))));
         }
     return sum;
 };
@@ -8952,7 +8953,6 @@ function kiszed_avbv(id, figyid) {
     } catch (error) {
         setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', figyid);
         gZClear(false, figyid);
-        console.log(av)
         return;
     };
     return av;
@@ -9402,6 +9402,30 @@ function gZjszamitas() {
 
 //gH gHe
 
+function Hj_igazitas(val) {
+    var elem = document.getElementById("Hj");
+    var r = val.split(",").length;
+    elem.setAttribute("max", r);
+    if (elem.value > r)
+        elem.value = r;
+};
+
+function Hk_igazitas() {
+    var elem = document.getElementById("Hk");
+    var j = document.getElementById("Hj").value * 1;
+    var r = document.getElementById("Hsv").value.split(",").length;
+    var a = document.getElementById("Ha").value * 1;
+    var b = document.getElementById("Hb").value * 1;
+    var ma = b - j + 1;
+    var mi = a + r - j;
+    elem.setAttribute("max", ma);
+    elem.setAttribute("min", mi);
+    if (elem.value > ma)
+        elem.value = ma;
+    if (elem.value < mi)
+        elem.value = mi;
+};
+
 function setOutputFontgH(v) {
     var elem = document.getElementById("gH");
     var elemr = document.getElementById("gHe");
@@ -9468,12 +9492,7 @@ function gHltx(sv, a, b, jj, kk, ism) {
 
     var r = sv.length;
     if (jj > r0 || jj < 1) {
-        if (ism)
-            ltx = gZe(sv, 1, b).toLatex();
-        else
-            ltx = gZ(sv, 2, b).toLatex();
-        //ltx = "\\phantom{\\text{H}}_{" + a + "}{\\text{H}}_{" + b + "}" + cs + "{" + sltx + "}=" + ltx;
-        ltx = "?";
+        ltx = "\\text{A j = " + jj + " paraméter értékének az [a,b] = [" + a + "," + b + "] intervallumba kell esnie.}";
         return ltx;
     } else if (ooindx > -1 && jj > ooindx) {
         if (ism)
@@ -9492,12 +9511,12 @@ function gHltx(sv, a, b, jj, kk, ism) {
             var coeff = gZe(svv, a, kk).mul(gZe(sve, kk, b));
             coeff = coeff.div(Math.pow(kk, svj));
             if (!coeff.equals(0))
-                ltx += "+" + coeff.toLatex();
+                ltx += "+" + coeff.toLatex() + "\\approx " + coeff;
         } else {
             var coeff = gZ(svv, a, kk - 1).mul(gZ(sve, kk + 1, b));
             coeff = coeff.div(Math.pow(kk, svj));
             if (!coeff.equals(0))
-                ltx += "+" + coeff.toLatex();
+                ltx += "+" + coeff.toLatex() + "\\approx " + coeff;
         }
         ltx = ltx.slice(1);
         if (ltx == "")
@@ -9562,13 +9581,7 @@ function gHHTML(sv, a, b, jj, kk, ism) {
 
     var r = sv.length;
     if (jj > r0 || jj < 1) {
-        if (ism)
-            var s = gZe(sv, 1, b);
-        else
-            var s = gZ(sv, 2, b);
-        /*ltx = formazottTortHTML(s.n, s.d)
-        ltx = "<sub>" + a + "</sub>H<sub style='margin-left:" + dd + "em;'>" + b + "</sub>" + cs + sltx + " = " + ltx;*/
-        ltx = "?";
+        ltx = "A j = " + jj + " paraméter értékének az [a,b] = [" + a + "," + b + "] intervallumba kell esnie.";
         return ltx;
     } else if (ooindx > -1 && jj > ooindx) {
         if (ism)
@@ -9587,13 +9600,13 @@ function gHHTML(sv, a, b, jj, kk, ism) {
             var coeff = gZe(svv, a, kk).mul(gZe(sve, kk, b));
             coeff = coeff.div(Math.pow(kk, svj));
             if (!coeff.equals(0)) {
-                ltx += " + " + formazottTortHTML(coeff.n, coeff.d);
+                ltx += " + " + formazottTortHTML(coeff.n, coeff.d) + " &approx; " + coeff;
             };
         } else {
             var coeff = gZ(svv, a, kk - 1).mul(gZ(sve, kk + 1, b));
             coeff = coeff.div(Math.pow(kk, svj));
             if (!coeff.equals(0)) {
-                ltx += " + " + formazottTortHTML(coeff.n, coeff.d);
+                ltx += " + " + formazottTortHTML(coeff.n, coeff.d) + " &approx; " + coeff;
             };
         }
         ltx = ltx.slice(2);
