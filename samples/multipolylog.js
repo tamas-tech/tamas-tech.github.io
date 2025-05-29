@@ -8962,9 +8962,12 @@ function gZClear(kell, figyid) {
     if (figyid == "figygZ") {
         var elem = document.querySelector("#gZ");
         var elem1 = document.querySelector("#gZe");
-    } else {
+    } else if (figyid == "figygZj") {
         var elem = document.querySelector("#gZj");
         var elem1 = document.querySelector("#gZje");
+    } else {
+        var elem = document.querySelector("#gH");
+        var elem1 = document.querySelector("#gHe");
     }
     var elemfigy = document.querySelector("#" + figyid);
     elem.innerText = "";
@@ -9090,7 +9093,6 @@ function gzetaHTML(sv, a, b, ism) {
                 if (a == 1) {
                     var sv1 = sv.slice(0, ooindx)
                     Zv = gZe(sv1, 1, b)
-                        //Zv = Fraction(Hez(sv, b));
                 } else
                     Zv = Fraction(0);
             else
@@ -9102,7 +9104,7 @@ function gzetaHTML(sv, a, b, ism) {
             if (ooindx > -1)
                 if (a == 1 && ooindx == r - 1) {
                     var sv1 = _.dropRight(sv)
-                    Zv = gZ(sv1, 2, b) //Haz(sv, b);
+                    Zv = gZ(sv1, 2, b)
                 } else
                     Zv = Fraction(0);
             else
@@ -9396,4 +9398,236 @@ function gZjszamitas() {
     const j = document.getElementById("j").value * 1;
     kitoltgZj(a, b, j, false, "jsv", "gZj");
     kitoltgZj(a, b, j, true, "jsv", "gZje");
+};
+
+//gH gHe
+
+function setOutputFontgH(v) {
+    var elem = document.getElementById("gH");
+    var elemr = document.getElementById("gHe");
+    elem.style.fontSize = v + '%';
+    elemr.style.fontSize = v + '%';
+
+    setTimeout(() => {
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemr]);
+    }, 100);
+
+};
+
+function gHltx(sv, a, b, jj, kk, ism) {
+    var r0 = sv.length;
+    var sv0 = [...sv];
+    var ooindx = sv.indexOf(oo);
+    var ab = [];
+    for (var j = a; j <= b; j++)
+        ab.push(j);
+    let cs = "";
+    if (ism)
+        cs = "^{*}";
+    var ltx = "";
+
+    if (ooindx > -1)
+        sv0 = oo2strInf(sv0)
+    const sve0 = sv0.slice(0, jj - 1);
+    const svj0 = sv0[jj - 1];
+    const svv0 = sv0.slice(jj, r0);
+    const sltx1 = JSON.stringify(sve0).slice(1, -1);
+    const sltxj = "\\overline{" + svj0 + "^{" + kk + "}}";
+    const sltx2 = JSON.stringify(svv0).slice(1, -1);
+    if (1 <= jj && jj <= r0)
+        var sltx = sltx1 + "," + sltxj + "," + sltx2;
+    else if (jj <= 1)
+        var sltx = JSON.stringify(sv0).slice(1, -1);
+    else
+        var sltx = sltx1 + "," + sltx2;
+    if (sltx.startsWith(","))
+        sltx = sltx.slice(1);
+    if (sltx.endsWith(","))
+        sltx = sltx.slice(0, -1);
+    sltx = "^{(" + sltx + ")}";
+    if (ooindx > -1)
+        sltx = sltx.replaceAll('"', '');
+
+    if (ooindx > -1) {
+        if (a > 1) {
+            ltx = Fraction(0);
+            ltx = "\\phantom{\\text{H}}_{" + a + "}{\\text{H}}_{" + b + "}" + cs + "{" + sltx + "}=" + ltx;
+            return ltx;
+        } else if (ism) {
+            sv = sv.slice(0, ooindx);
+        } else if (!ism && ooindx == r0 - 1) {
+            sv = sv.slice(0, ooindx);
+            a++;
+        } else {
+            ltx = Fraction(0);
+            ltx = "\\phantom{\\text{H}}_{" + a + "}{\\text{H}}_{" + b + "}" + cs + "{" + sltx + "}=" + ltx;
+            return ltx;
+        }
+    }
+
+    var r = sv.length;
+    if (jj > r0 || jj < 1) {
+        if (ism)
+            ltx = gZe(sv, 1, b).toLatex();
+        else
+            ltx = gZ(sv, 2, b).toLatex();
+        //ltx = "\\phantom{\\text{H}}_{" + a + "}{\\text{H}}_{" + b + "}" + cs + "{" + sltx + "}=" + ltx;
+        ltx = "?";
+        return ltx;
+    } else if (ooindx > -1 && jj > ooindx) {
+        if (ism)
+            ltx = gZe(sv, 1, b).toLatex();
+        else
+            ltx = gZ(sv, 2, b).toLatex();
+        //ltx = "\\phantom{\\text{H}}_{" + a + "}{\\text{H}}_{" + b + "}" + cs + "{" + sltx + "}=" + ltx;
+        ltx = "?";
+        return ltx;
+    } else {
+        const sve = sv.slice(0, jj - 1);
+        const svj = sv[jj - 1] || 0;
+        const svv = sv.slice(jj, r);
+
+        if (ism) {
+            var coeff = gZe(svv, a, kk).mul(gZe(sve, kk, b));
+            coeff = coeff.div(Math.pow(kk, svj));
+            if (!coeff.equals(0))
+                ltx += "+" + coeff.toLatex();
+        } else {
+            var coeff = gZ(svv, a, kk - 1).mul(gZ(sve, kk + 1, b));
+            coeff = coeff.div(Math.pow(kk, svj));
+            if (!coeff.equals(0))
+                ltx += "+" + coeff.toLatex();
+        }
+        ltx = ltx.slice(1);
+        if (ltx == "")
+            ltx = 0;
+        ltx = "\\phantom{\\text{H}}_{" + a + "}{\\text{H}}_{" + b + "}" + cs + "{" + sltx + "}=" + ltx;
+    }
+    return ltx;
+};
+
+function gHHTML(sv, a, b, jj, kk, ism) {
+    var r0 = sv.length;
+    var sv0 = [...sv];
+    var ooindx = sv.indexOf(oo);
+    var ab = [];
+    var dd = 0;
+    for (var j = a; j <= b; j++)
+        ab.push(j);
+    let cs = "";
+    if (ism)
+        cs = "<sup style='margin-left:-0.4em;'>*</sup>";
+    var ltx = "";
+
+    if (ooindx > -1)
+        sv0 = oo2strInf(sv0)
+    const sve0 = sv0.slice(0, jj - 1);
+    const svj0 = sv0[jj - 1];
+    const svv0 = sv0.slice(jj, r0);
+    const sltx1 = JSON.stringify(sve0).slice(1, -1);
+    //const sltxj = "<span style='border-top:2px solid;padding-top:2px;'>" + svj0 + "</span>" + "| k<sub>" + jj + "</sub> = " + kk;
+    const sltxj = "<span style='border-top:0.1em solid;padding-top:0.25em;'>" + svj0 + "<sup>" + kk + "</sup></span>";
+    const sltx2 = JSON.stringify(svv0).slice(1, -1);
+    if (1 <= jj && jj <= r0)
+        var sltx = sltx1 + "," + sltxj + "," + sltx2;
+    else if (jj <= 1)
+        var sltx = JSON.stringify(sv0).slice(1, -1);
+    else
+        var sltx = sltx1 + "," + sltx2;
+    if (sltx.startsWith(","))
+        sltx = sltx.slice(1);
+    if (sltx.endsWith(","))
+        sltx = sltx.slice(0, -1);
+    sltx = "<sup>(" + sltx + ")</sup>";
+    if (ooindx > -1)
+        sltx = sltx.replaceAll('"', '');
+
+    if (ooindx > -1) {
+        if (a > 1) {
+            ltx = Fraction(0);
+            ltx = "<sub>" + a + "</sub>H<sub style='margin-left:" + dd + "em;'>" + b + "</sub>" + cs + sltx + " = " + ltx;
+            return ltx;
+        } else if (ism) {
+            sv = sv.slice(0, ooindx);
+        } else if (!ism && ooindx == (r0 - 1)) {
+            sv = sv.slice(0, ooindx);
+            a++;
+        } else {
+            ltx = Fraction(0);
+            ltx = "<sub>" + a + "</sub>H<sub style='margin-left:" + dd + "em;'>" + b + "</sub>" + cs + sltx + " = " + ltx;
+            return ltx;
+        }
+    }
+
+    var r = sv.length;
+    if (jj > r0 || jj < 1) {
+        if (ism)
+            var s = gZe(sv, 1, b);
+        else
+            var s = gZ(sv, 2, b);
+        /*ltx = formazottTortHTML(s.n, s.d)
+        ltx = "<sub>" + a + "</sub>H<sub style='margin-left:" + dd + "em;'>" + b + "</sub>" + cs + sltx + " = " + ltx;*/
+        ltx = "?";
+        return ltx;
+    } else if (ooindx > -1 && jj > ooindx) {
+        if (ism)
+            var s = gZe(sv, 1, b);
+        else
+            var s = gZ(sv, 2, b);
+        /* ltx = formazottTortHTML(s.n, s.d);
+        ltx = "<sub>" + a + "</sub>H<sub style='margin-left:" + dd + "em;'>" + b + "</sub>" + cs + sltx + " = " + ltx; */
+        ltx = "?";
+        return ltx;
+    } else {
+        const sve = sv.slice(0, jj - 1);
+        const svj = sv[jj - 1] || 0;
+        const svv = sv.slice(jj, r);
+        if (ism) {
+            var coeff = gZe(svv, a, kk).mul(gZe(sve, kk, b));
+            coeff = coeff.div(Math.pow(kk, svj));
+            if (!coeff.equals(0)) {
+                ltx += " + " + formazottTortHTML(coeff.n, coeff.d);
+            };
+        } else {
+            var coeff = gZ(svv, a, kk - 1).mul(gZ(sve, kk + 1, b));
+            coeff = coeff.div(Math.pow(kk, svj));
+            if (!coeff.equals(0)) {
+                ltx += " + " + formazottTortHTML(coeff.n, coeff.d);
+            };
+        }
+        ltx = ltx.slice(2);
+        if (ltx == "")
+            ltx = 0;
+        ltx = "<sub>" + a + "</sub>H<sub style='margin-left:" + dd + "em;'>" + b + "</sub>" + cs + sltx + " = " + ltx;
+    }
+    return ltx;
+};
+
+function kitoltgH(a, b, j, k, ism, idfrom, idto) {
+    const sv = kiszed_avbv(idfrom, "figygH");
+    const elemto = document.getElementById(idto);
+    const latex = document.getElementById("setgHLmode").checked;
+    let ltx = "";
+    if (sv == "vegtelenhiba" || sv == "hiba" || sv == undefined)
+        return;
+    else {
+        if (latex) {
+            ltx = gHltx(sv, a, b, j, k, ism);
+            elemto.innerHTML = "\\[" + ltx + "\\]";
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemto]);
+        } else {
+            ltx = gHHTML(sv, a, b, j, k, ism);
+            elemto.innerHTML = ltx;
+        }
+    }
+};
+
+function gHszamitas() {
+    const a = document.getElementById("Ha").value * 1;
+    const b = document.getElementById("Hb").value * 1;
+    const j = document.getElementById("Hj").value * 1;
+    const k = document.getElementById("Hk").value * 1;
+    kitoltgH(a, b, j, k, false, "Hsv", "gH");
+    kitoltgH(a, b, j, k, true, "Hsv", "gHe");
 };
