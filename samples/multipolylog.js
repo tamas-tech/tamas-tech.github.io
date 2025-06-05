@@ -9416,7 +9416,7 @@ function Hk_igazitas() {
     var r = document.getElementById("Hsv").value.split(",").length;
     var a = document.getElementById("Ha").value * 1;
     var b = document.getElementById("Hb").value * 1;
-    var ma = b - j + 1;
+    var ma = b - j + 2;
     var mi = a + r - j;
     elem.setAttribute("max", ma);
     elem.setAttribute("min", mi);
@@ -9643,4 +9643,82 @@ function gHszamitas() {
     const k = document.getElementById("Hk").value * 1;
     kitoltgH(a, b, j, k, false, "Hsv", "gH");
     kitoltgH(a, b, j, k, true, "Hsv", "gHe");
+};
+
+// poset of compositions
+
+function setOutputFontc(v) {
+    var elem = document.getElementById("cout");
+    elem.style.fontSize = v + 'px';
+};
+
+function allcomps(n) {
+    var out = [];
+    for (var k = 1; k <= n; k++) {
+        var c = comp(n, k);
+        for (let v of c)
+            out.push(v);
+    };
+    return out;
+};
+
+function invPv(v) {
+    var c = [],
+        out = [];
+    for (let k of v)
+        c.push(allcomps(k));
+    out = cartesian(c);
+    out = out.map(y => _.flatten(y));
+    return out;
+};
+
+function kiszed_c(id) {
+    var av = document.getElementById(id).value;
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (av.some(v => v <= 0)) {
+            setfigy("Az <b>a</b> indexvektor most csak pozitív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figyC");
+            idClear('#cout')
+            return "Hibás bemenet";
+        } else if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy("A kiüritendő <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
+            idClear('#cout')
+            return "Hibás bemenet";
+        }
+
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    return av;
+};
+
+function cFiner() {
+    const elem = document.getElementById("cout");
+    const c = kiszed_c('cvec');
+    var txt = "";
+    if (c == "Hibás bemenet")
+        txt += c;
+    else {
+        const s = _.sum(c);
+        const r = c.length;
+        const ctxt = JSON.stringify(c).replaceAll("[", "(").replaceAll("]", ")");
+        var out = invPv(c);
+        txt += "A<span style='color:#888;'>(z)</span> " + ctxt + " vektornál finomabb vektorok száma: " + 2 + "<sup>" + s + "  −&nbsp;" + r + "</sup> = 2<sup>" + (s - r) + "</sup> = " + Math.pow(2, s - r) + ".";
+        txt += "<br> {<b>k</b> | <b>k</b> &succeq; " + ctxt + "} = ";
+        txt += JSON.stringify(out).replaceAll("],[", "), (").replace("[[", "{(").replace("]]", ")}");
+    }
+    elem.innerHTML = txt;
 };
