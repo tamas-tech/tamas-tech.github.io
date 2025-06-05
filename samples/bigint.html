@@ -276,6 +276,24 @@
         </div>
         <p id="xnlout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
     </div>
+
+      <div class="keret of even" id="k8" style="padding-bottom:40px;margin-bottom:10px;">
+        <b><big class="sorszam">8.</big></b>
+        <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\left\{ \mathbf{k} | \mathbf{k} \succeq \mathbf{c}\right\} \]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
+            <input class="inpvec" type="text" id="cvec" value="2,5,3" onchange="idClear('#cout');cFiner();">
+        </div>
+        <div style="padding: 10px;outline: 2px solid #e3c7c7;outline-offset: -6px;background-color: #fde7e7;">
+            <button id="okbtc" onclick="cFiner();" class="showpre1" title="Insert code into editor">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#cout');" title="Clear output">Clear</button>
+            <label for="setoutputfontc" style="margin-right:-10px;">&#128474;</label>
+            <input oninput="setOutputFontc(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontc" name="setoutputfontc" />
+        </div>
+        <p id="figyC" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+        <p id="cout" style="font-family:Cambria Math;outline: 2px solid #e3c7c7;outline-offset: -2px;background-color: #fde7e7;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
+    </div>
     
 </body>
 </html>
