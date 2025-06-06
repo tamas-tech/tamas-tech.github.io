@@ -9674,6 +9674,11 @@ function invPv(v) {
 
 function kiszed_c(id) {
     var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
     if (!av.startsWith("[")) {
         av = "[" + av;
     }
@@ -9687,12 +9692,12 @@ function kiszed_c(id) {
         av = JSON.parse(av);
         var indx = av.indexOf(oo);
         if (av.some(v => v <= 0)) {
-            setfigy("Az <b>a</b> indexvektor most csak pozitív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figyC");
+            setfigy("Az <b>a</b> vektor nem tartalmazhat negatív elemet vagy 0-át! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figyC");
             idClear('#cout')
             return "Hibás bemenet";
         } else if (indx > -1) {
             av = oo2strInf(av);
-            setfigy("A kiüritendő <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
+            setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
             idClear('#cout')
             return "Hibás bemenet";
         }
