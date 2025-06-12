@@ -490,7 +490,7 @@ table.genout-nyil {
 }
 
 table.genout-nyil tr td {
-    font-size: 12px;
+    font-size: calc(max(60%, 12px));
     text-align: center;
 }
 
