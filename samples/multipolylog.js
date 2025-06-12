@@ -3314,7 +3314,7 @@ function kiszed_v(id) {
             genClear();
             return;
         } else if (id == "bvg" && av.length == 0 && document.getElementById("avg").value.trim() !== "") {
-            setfigy("A <b>b</b> indexvektor nem lrhet üres! " + '<span class="outhiba"> <b>b</b> = ( )</span> <br/>Ha a <b>b</b> indexvektor helyett az <b>a</b> indexvektort választja üresnek, és az <b>a</b> indexvektort jelenlegi értékét a <b>b</b> helyébe írja, akkor egy a jelenlegivel ekvivalens feladatot kap.', "figygen");
+            setfigy("A <b>b</b> indexvektor nem lehet üres! " + '<span class="outhiba"> <b>b</b> = ( )</span> <br/>Ha a <b>b</b> indexvektor helyett az <b>a</b> indexvektort választja üresnek, és az <b>a</b> indexvektort jelenlegi értékét a <b>b</b> helyébe írja, akkor egy a jelenlegivel ekvivalens feladatot kap.', "figygen");
             genClear();
             return;
         }
@@ -3509,7 +3509,7 @@ function abhtml(i) {
 
 function genhtml() {
     const n = BSOR.length - 1;
-    var ltx = "<div class='meret'>Az integrál <b>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div><table class='genout-fej'><tr><td style='border-bottom:1px solid #449bd1;;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr></table>";
+    var ltx = "<div class='meret'>Az integrál <b style='margin:0 5px;'>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div><table class='genout-fej'><tr><td style='border-bottom:1px solid #449bd1;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr></table>";
     for (var i = 0; i < n; i++) {
         ltx += abhtml(i);
         if (i < n - 1)
@@ -3554,6 +3554,7 @@ function genoutput() {
         elem.innerHTML = txt;
     }
 };
+
 if (document.title != "Explicit formula")
     $(document).on('selectionchange', function() {
         if (insertonselect) {
@@ -9726,4 +9727,424 @@ function cFiner() {
         txt += JSON.stringify(out).replaceAll("],[", "), (").replace("[[", "{(").replace("]]", ")}");
     }
     elem.innerHTML = txt;
+};
+
+
+///// x^n*Li(x)*Li(1-x)
+function setOutputFontxll(v) {
+    document.getElementById("genout").style.fontSize = v + "px";
+};
+
+function setgenKeplet10() {
+    const xinter = document.querySelector("#setxllinter").checked;
+    if (!xinter) {
+        var a = document.querySelector("#avg").value;
+        var b = document.querySelector("#bvg").value;
+    } else {
+        var b = document.querySelector("#avg").value;
+        var a = document.querySelector("#bvg").value;
+    }
+    var na = a.length;
+    var nb = b.length;
+    a = a.replaceAll("oo", "∞");
+    b = b.replaceAll("oo", "∞");
+    var tort = "x";
+    var arg_a = "1-x";
+    var arg_b = "\\frac{x}{x-1}";
+    if (xinter) {
+        tort = "1-x";
+        arg_b = "\\frac{x-1}{x}";
+        arg_a = "x";
+    }
+
+    var txt = "";
+    var txt1 = "";
+    var txt2 = "";
+    var szorzat = "\\cdot";
+    if (na * nb == 0)
+        szorzat = "";
+    if (na > 0)
+        txt1 = "{\\rm " + amode + "}_{(" + a + ")}(" + arg_a + ")";
+    if (nb > 0)
+        txt2 = "{\\rm " + bmode + "}_{(" + b + ")}(" + arg_b + ")";
+    txt = "\\int \\dfrac{" + txt1 + szorzat + txt2 + "}{" + tort + "}\\,{\\text{d} x}"
+    txt += "\\hspace{2cm}\\begin{bmatrix}" + fltx[fazis.init.name] + " &" + fltx[fazis.std.name] + "\\\\" + fltx[fazis.atv.name] + " &" + fltx[fazis.veg.name] + "\\end{bmatrix}";
+    return txt;
+};
+
+function setgenKeplet1() {
+    const elem = document.querySelector("#k1set");
+    const txt = setgenKeplet10();
+    elem.style.visibility = "hidden";
+    elem.innerText = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    setTimeout(() => {
+        elem.style.visibility = "visible";
+    }, 200);
+};
+
+function toldas() {
+    const N = document.getElementById("xlln").value * 1;
+    const xinter = document.getElementById("setxllinter").checked;
+    const lat = "<span style='font-size:80%;opacity:0.6'> (+1)<span>";
+    var kitevo = N;
+    if (xinter)
+        kitevo = "L";
+    const xv = "<span style='color:red;'>,{0}<sup>" + kitevo + lat + "</sup>,<b>k</b></span>";
+    return xv
+};
+
+function formazbhtml1(b, told) {
+    return "<tr><td class='bsor'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + told + ")</td></tr>";
+};
+
+function formazbhtmlsep1(b, told) {
+    return "<tr><td class='bsor sep'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + told + ")</td></tr>";
+};
+
+function abhtml1(i, reszl) {
+    const a = ASOR[i + 1];
+    const b = BSOR[i + 1];
+    const n = b.length;
+    const n1 = BSOR[i].length || 0;
+    var told = "";
+    if (reszl) {
+        told = toldas();
+    }
+    var ltx = "<table class='genout-sor'><tr><td class='asor' style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i)) + "(" + a + ")</td></tr>";
+    for (var j = 0; j < n; j++) {
+        if (n != n1) {
+            if (j == (n / 2 - 1))
+                ltx += formazbhtmlsep1(b[j], told);
+            else
+                ltx += formazbhtml1(b[j], told);
+        } else {
+            ltx += formazbhtml1(b[j], told);
+        }
+    }
+    ltx += "</table>";
+    return ltx;
+};
+
+function cFiner1(vec) {
+    const c = kiszed_c(vec);
+    var txt = "";
+    if (c == "Hibás bemenet")
+        txt += c;
+    else {
+        const s = _.sum(c);
+        const r = c.length;
+        const ctxt = JSON.stringify(c).replaceAll("[", "(").replaceAll("]", ")");
+        var out = invPv(c);
+        txt += "<div style='margin:10px 0;padding-bottom:10px;border-bottom: 1px solid #bac6c6;'>A<span style='color:#888;'>(z)</span> " + ctxt + " vektornál finomabb vektorok száma: " + 2 + "<sup>" + s + "  −&nbsp;" + r + "</sup> = 2<sup>" + (s - r) + "</sup> = " + Math.pow(2, s - r) + ".";
+        txt += "<br><b>K</b> =  {<b>k</b> | <b>k</b> &succeq; " + ctxt + "} = ";
+        txt += JSON.stringify(out).replaceAll("],[", "), (").replace("[[", "{(").replace("]]", ")}") + "</div>";
+    }
+    return txt;
+};
+
+function makeFej(mode) {
+    const n = document.getElementById("xlln").value * 1;
+    const a = document.getElementById("avg").value;
+    const b = document.getElementById("bvg").value;
+    const bl = b.split(',').length;
+    const al = a.split(',').length;
+    var txtx = "",
+        txts = "Li<sub>(" + a + ")</sub>(1−x)&lowast;Li<sub>(" + b + ")</sub>(x)";
+    if (n == 1)
+        txtx = "x";
+    else if (n > 1)
+        txtx = "x<sup>" + n + "</sup>";
+    if (n > 0)
+        txtx += '&nbsp;';
+    if (mode)
+        bontas = cFiner1("avg");
+    else
+        bontas = cFiner1("bvg");
+    if (!mode)
+        var txt = "<div style='min-width:max-content;margin:10px 0;padding:20px 0 10px 0;text-align:center;background-color: #dbdbdd;border: 1px solid #bac6c6;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>x<sup>n</sup>Li<sub><b>a</b></sub>(1−x)&lowast;Li<sub><b>b</b></sub>(x)</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = (-1)<sup>|<b>b</b>|+n+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;<b>b</b></sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub><b>a</b></sub><span class='block'>(<span class='block'>1−x</span>)&lowast;</span>Li<sub>({0}<sup>n+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>";
+    else
+        var txt = "<div style='min-width:max-content;margin:10px 0;padding:20px 0 10px 0;text-align:center;background-color: #dbdbdd;border: 1px solid #bac6c6;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>x<sup>n</sup>Li<sub><b>a</b></sub>(1−x)&lowast;Li<sub><b>b</b></sub>(x)</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = (-1)<sup>|<b>a</b>|+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'>0&leq;L&leq;n</sub><span style='vertical-align:-1em;margin:0 5px;'>" + drawBinomial('n', 'L') + "</span><span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;<b>a</b></sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub><b>b</b></sub><span class='block'>(<span class='block'>x</span>)&lowast;</span>Li<sub>({0}<sup>L+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>1−x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>"
+
+    txt += "<div style='min-width:max-content;margin:10px 0;padding:10px 0;border-bottom: 1px solid #bac6c6;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>" + txtx + txts + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = ";
+    var told = toldas();
+    if (!mode)
+        txt += "(-1)<sup>" + bl + "+" + n + "+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;(" + b + ")</sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub><span class='block'>(<span class='block'>1−x</span>)&lowast;</span>Li<sub>({0}<sup>" + n + "+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>" + bontas + "<div style='margin:10px 0;padding:10px 0;border-bottom: 1px solid #bac6c6;'>Elegendő az &nbsp;&nbsp; I = <span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub>(<span class='block'>1−x</span>)&lowast;Li<sub>(0)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span> integrált kiszámítani, majd az integrálósorban minden egyes vektort  megtoldani az <i style='text-decoration:underline;'>összes</i> (..." + told + ") vektorral, ahol <b>k</b>&in;<b>K</b>.</div>";
+    else
+        txt += "(-1)<sup>" + al + "+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'>0&leq;L&leq;" + n + "</sub><span style='vertical-align:-1em;margin:0 5px;'>" + drawBinomial(n, 'L') + "</span><span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;(" + a + ")</sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub><span class='block'>(<span class='block'>x</span>)&lowast;</span>Li<sub>({0}<sup>L+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>1−x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>" + bontas + "<div style='margin:10px 0;padding:10px 0;border-bottom: 1px solid #bac6c6;'>Elegendő az &nbsp;&nbsp; I = <span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub><span class='block'>(<span class='block'>x</span>)&lowast;</span>Li<sub>(0)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>1−x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span> integrált kiszámítani, majd az integrálósorban minden egyes vektort megtoldani az <i style='text-decoration:underline;'>összes</i> (..." + told + ") vektorral, ahol 0&leq;L&leq;" + n + ", és  <b>k</b>&in;<b>K</b>.</div>";
+    return txt;
+}
+
+function genhtml1(mode, reszl) {
+    const n = BSOR.length - 1;
+    var fej = "";
+    if (reszl)
+        fej = makeFej(mode);
+    var ltx = "<div class='meret'>Az integrál <b style='margin:0 5px;'>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<table class='genout-fej'  style='vertical-align: top;'><tr><td style='border-bottom:1px solid #449bd1;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr></table>";
+    if (mode)
+        ltx = "<div class='meret'>Az integrál <b style='margin:0 5px;'>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<table class='genout-fej' style='vertical-align: top;'><tr><td style='border-right:1px solid #449bd1;border-bottom:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr></table>";
+    for (var i = 0; i < n; i++) {
+        ltx += abhtml1(i, reszl);
+        if (i < n - 1)
+            ltx += "<table class='genout-nyil'><tr><td>" + AFAZIS[i + 1] + "</td></tr><tr><td>&rarr;</td></tr></table>"
+    };
+    ltx = ltx.replaceAll('Infinity', '∞');
+    return ltx;
+};
+
+function kiszed_v1(id, mode, reszl) {
+    if (mode)
+        if (id == "avg")
+            id = "bvg";
+        else
+            id = "avg";
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figygen");
+        genClear();
+        return;
+    };
+
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    if (reszl)
+        if (!mode && id == "bvg")
+            var av = "[0]";
+        else if (mode && id == "avg")
+        var av = "[0]";
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (!mode) {
+            if (id == "avg" && av.some(v => v < 0)) {
+                setfigy("Az <b>a</b> indexvektor most csak nem negatív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figygen");
+                genClear();
+                return;
+            } else if (id == "avg" && indx > -1) {
+                av = oo2strInf(av);
+                setfigy("A kiüritendő <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figygen");
+                genClear();
+                return;
+            } else if (id == "bvg" && av.length == 0 && document.getElementById("avg").value.trim() !== "") {
+                setfigy("Az <b>a</b> indexvektor nem lehet üres! " + '<span class="outhiba"> <b>a</b> = ( )</span>', "figygen");
+                genClear();
+                return;
+            }
+            if (id == "bvg" && indx > -1)
+                av = oo2Inf(av);
+        } else if (mode) {
+            if (id == "bvg" && av.some(v => v < 0)) {
+                setfigy("A <b>b</b> indexvektor most csak nem negatív elemeket tartalmazhat! " + '<span class="outhiba"><b>b</b> = (' + av + ')</span>', "figygen");
+                genClear();
+                return;
+            } else if (id == "bvg" && indx > -1) {
+                av = oo2strInf(av);
+                setfigy("A kiüritendő <b>b</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>b</b> = (' + av + ')</span>', "figygen");
+                genClear();
+                return;
+            } else if (id == "avg" && av.length == 0 && document.getElementById("bvg").value.trim() !== "") {
+                setfigy("A <b>b</b> indexvektor nem lehet üres! " + '<span class="outhiba"> <b>b</b> = ( )</span>', "figygen");
+                genClear();
+                return;
+            }
+            if (id == "avg" && indx > -1)
+                av = oo2Inf(av);
+        }
+
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figygen");
+        genClear();
+        return;
+    };
+    return av;
+};
+
+function aFazis1(mode, reszl) {
+    AFAZIS = [];
+    const a = kiszed_v1("avg", mode, reszl);
+    if (a == undefined)
+        return;
+    AFAZIS = ["init"];
+    if (a.length > 0) {
+        const k = kum(a);
+        const n = _.last(k);
+        for (var j = 1; j < n + 1; j++) {
+            if (_.includes(k, j))
+                AFAZIS.push("atv");
+            else
+                AFAZIS.push("std");
+        };
+        AFAZIS = _.dropRight(AFAZIS);
+        AFAZIS.push("veg");
+    }
+    return AFAZIS;
+};
+
+function aSor1(mode, reszl) {
+    ASOR = [];
+    const a = kiszed_v1("avg", mode, reszl);
+    if (a == undefined)
+        return [];
+    const n = a.length;
+    ASOR.push(a);
+    for (var i = 0; i < n; i++) {
+        var aa = _.drop(a, i);
+        var t = aa[0];
+        var v = _.drop(aa);
+        for (var j = 0; j < t; j++) {
+            ASOR.push([aa[0] - j, ...v]);
+        };
+    };
+    ASOR.push([]);
+
+    return ASOR;
+};
+
+function bSor1(mode, reszl) {
+    BSOR = [];
+    const L = aFazis1(mode, reszl);
+    if (L == undefined)
+        return [];
+    const b = kiszed_v1("bvg", mode, reszl);
+    if (b == undefined)
+        return [];
+    BSOR.push([
+        [...b, 1]
+    ]);
+    for (let i of L) {
+        var fn = fazis[i];
+        BSOR.push(fn(_.last(BSOR)));;
+    };
+    return BSOR;
+};
+
+function pozValtas1() {
+    var a = document.getElementById("avg");
+    var b = document.getElementById("bvg");
+    var al = document.getElementById("avgl");
+    var bl = document.getElementById("bvgl");
+    a.id = "bvg";
+    b.id = "avg";
+    al.id = "bvgl";
+    bl.id = "avgl";
+    al.innerText = "b";
+    bl.innerText = "a";
+    if (al.classList.contains("kiur")) {
+        al.classList.remove("kiur");
+        bl.classList.add("kiur");
+    } else {
+        bl.classList.remove("kiur");
+        al.classList.add("kiur");
+    }
+    setTimeout(() => { genoutput1(); }, 300);
+};
+
+function genoutput1s() {
+    const elemfigy = document.getElementById("figygen");
+    const xinter = document.querySelector("#setxllinter").checked;
+    elemfigy.style.display = "none";
+    const ures = document.getElementById("avg").value.trim() + document.getElementById("bvg").value.trim() == "";
+    if (ures) {
+        setfigy("Mind a két indexvektor nem lehet üres!", "figygen");
+        genClear();
+        return;
+    }
+    var txt = "HIBA";
+    fazis.init = bovnov;
+    fazis.std = bov;
+    fazis.atv = mbovmnov;
+    fazis.veg = mbovmnov;
+    aargtxt = "1−x";
+    bargtxt = formazottTortHTML("x", "x−1");
+    if (xinter) {
+        fazis.init = mbovmnov;
+        aargtxt = formazottTortHTML("x−1", "x");
+        bargtxt = "x";
+    }
+    aSor1(xinter, false);
+    bSor1(xinter, false);
+    if (showgenmathout) {
+        const me = genmeret();
+        if (me > genmaxsor) {
+            setfigy("A feladat mérete " + me + " meghaladja a megengedett " + genmaxsor + "-at/et!", "figygen");
+            return;
+        };
+        if (AFAZIS.length * BSOR.length * ASOR.length > 0)
+            if (mathoutformat)
+                txt = genltxfgv();
+            else
+                txt = genltx();
+        const elem = document.querySelector("#gen_math");
+        elem.innerText = "\\[" + txt + "\\]";
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+
+    } else {
+        if (AFAZIS.length * BSOR.length * ASOR.length > 0)
+            txt = genhtml1(xinter, false);
+        const elem = document.querySelector("#genout");
+        elem.innerHTML = txt;
+    }
+};
+
+function genoutput1r() {
+    const elemfigy = document.getElementById("figygen");
+    const xinter = document.querySelector("#setxllinter").checked;
+    elemfigy.style.display = "none";
+    const ures = document.getElementById("avg").value.trim() + document.getElementById("bvg").value.trim() == "";
+    if (ures) {
+        setfigy("Mind a két indexvektor nem lehet üres!", "figygen");
+        genClear();
+        return;
+    }
+    var txt = "HIBA";
+    fazis.init = nov;
+    fazis.std = bov;
+    fazis.atv = mbovmnov;
+    fazis.veg = mbovmnov;
+    aargtxt = "1−x";
+    bargtxt = formazottTortHTML("x", "x−1");
+    if (xinter) {
+        fazis.init = mnov;
+        aargtxt = formazottTortHTML("x−1", "x");
+        bargtxt = "x";
+    }
+    aSor1(xinter, true);
+    bSor1(xinter, true);
+    if (showgenmathout) {
+        const me = genmeret();
+        if (me > genmaxsor) {
+            setfigy("A feladat mérete " + me + " meghaladja a megengedett " + genmaxsor + "-at/et!", "figygen");
+            return;
+        };
+        if (AFAZIS.length * BSOR.length * ASOR.length > 0)
+            if (mathoutformat)
+                txt = genltxfgv();
+            else
+                txt = genltx();
+        const elem = document.querySelector("#gen_math");
+        elem.innerText = "\\[" + txt + "\\]";
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+
+    } else {
+        if (AFAZIS.length * BSOR.length * ASOR.length > 0)
+            txt = genhtml1(xinter, true);
+        const elem = document.querySelector("#genout");
+        elem.innerHTML = txt;
+    }
+};
+
+function genoutput1() {
+    const reszletes = document.querySelector("#setmodexll").checked;
+    if (reszletes)
+        genoutput1r();
+    else
+        genoutput1s();
 };
