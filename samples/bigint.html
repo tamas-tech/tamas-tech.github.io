@@ -294,6 +294,48 @@
         <p id="figyC" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
         <p id="cout" style="font-family:Cambria Math;outline: 2px solid #e3c7c7;outline-offset: -2px;background-color: #fde7e7;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
     </div>
-    
+
+    <div class="keret of odd" id="k9" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">9.</big></b>
+        <p class="keplet" id="k1set" style="height:95px;margin-bottom:10px;background-color: #dddddd;">\[\int {\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)\,{\text{d} x}\]</p>
+        <div style="margin-left:6px;padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;margin-bottom:5px;">
+            <span style="margin-left:10px;margin-right:10px;">HTML</span>
+            <label class="switch" style="bottom:2px;"><input id="setxnlLmode"  type="checkbox" onchange="genoutput1();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\LaTeX\)</span>
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="xlln"><b style="padding: 2px 8px;">n</b> =  </label>
+            <input type="number" id="xlln" value="2" min="0" step="1" onchange="genoutput1();" name="xnln" style="width:50px;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="width:42px;display:inline-block;" onclick="pozValtas1();setgenKeplet1();"><b id="avgl" class="kiur" style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="avg" value="2,3" oninput="setgenKeplet1();genClear();" name="a">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="width:42px;display:inline-block;" onclick="pozValtas1();setgenKeplet1();"><b id="bvgl" style="padding: 2px 7px;">b</b> = </label>
+            <input class="inpvec" type="text" id="bvg" value="4,1" oninput="setgenKeplet1();genClear();" name="b">
+        </div>
+        <div style="margin-left:6px;padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;margin-bottom:5px;">
+            <span style="margin-left:10px;margin-right:10px;">0&leq;x&leq;1/2</span>
+            <label class="switch" style="bottom:2px;"><input id="setxllinter"  type="checkbox" onchange="genClear();genoutput1();setgenKeplet1()"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">1/2&leq;x&leq;1</span>
+        </div>
+        <div style="margin-top:2px;padding:5px;">
+            <button class="showpre1" onclick="genoutput1();" title="Calculate input">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="genClear();" title="Clear output">Clear</button>
+            <label for="setoutputfontxnl" style="margin-right:-10px;">&#128474;</label>
+            <input oninput="setOutputFontxll(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontxll" name="setoutputfontxll" />
+            <label for="setmodexll" style="margin-left: 10px;">Részletesen</label>
+            <input type="checkbox" name="setmodexll" id="setmodexll" onchange="genoutput1();setgenKeplet1();" style="height:20px;width:20px;vertical-align:middle;" />
+        </div>
+        <p id="figygen" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+        <p id="genout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;width:fit-content;min-width:calc(100% - 25px)"></p>
+    </div>
+    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTgl('helpbar1');" title="Open/Close help">Toggle help</button>
+    <div id="helpbar1" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
+        <iframe name="helpframe" width="99%" height="100%" src="../docs/int_xnLixLi1_x.pdf" style="width:99%;height:100vh;border:none;"></iframe>
+    </div>
+    <script>
+        genoutput1();
+        setgenKeplet1();
+    </script>
 </body>
 </html>
