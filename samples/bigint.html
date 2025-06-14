@@ -324,7 +324,8 @@
             <label for="setoutputfontxnl" style="margin-right:-10px;">&#128474;</label>
             <input oninput="setOutputFontxll(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontxll" name="setoutputfontxll" />
             <label for="setmodexll" style="margin-left: 10px;">Részletesen</label>
-            <input type="checkbox" name="setmodexll" id="setmodexll" onchange="genoutput1();setgenKeplet1();" style="height:20px;width:20px;vertical-align:middle;" />
+            <input type="checkbox" name="setmodexll" id="setmodexll" onchange="setTblfx(this.checked);genoutput1();setgenKeplet1();" style="height:20px;width:20px;vertical-align:middle;" /><span id="tblfx" style="display:inline-block;opacity:0.3;pointer-events: none;"><label for='settblfx' style='margin-left: 10px;'>Egy sorban</label><input type='checkbox' name='settblmfx' id='settblfx' onchange='genoutput1();' style='height:20px;width:20px;vertical-align:middle;' /></span>
+
         </div>
         <p id="figygen" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
         <p id="genout" style="outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:130%;;min-height:20px;width:fit-content;min-width:calc(100% - 25px)"></p>
