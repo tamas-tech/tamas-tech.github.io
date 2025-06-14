@@ -4801,7 +4801,7 @@ function setStatMode(id) {
 };
 
 function drawBinomial(n, k) {
-    return "<span style='margin-right:3px;display:inline-block;border-left: 2px solid;border-right: 2px solid;border-radius: 30%;'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td>" + n + "</td></tr><tr><td>" + k + "</td></tr></table></span>";
+    return "<span style='margin-right:3px;display:inline-block;border-left: 2px solid;border-right: 2px solid;border-radius: calc(min(30%,10px));'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td>" + n + "</td></tr><tr><td>" + k + "</td></tr></table></span>";
 };
 
 function abcJ(a, b, c, J) {
@@ -9787,10 +9787,10 @@ function toldas() {
     const N = document.getElementById("xlln").value * 1;
     const xinter = document.getElementById("setxllinter").checked;
     const lat = "<span style='font-size:80%;opacity:0.6'> (+1)<span>";
-    var kitevo = N;
+    var kitevo = N + lat;
     if (xinter)
         kitevo = "L";
-    const xv = "<span style='color:red;'>,{0}<sup>" + kitevo + lat + "</sup>,<b>k</b></span>";
+    const xv = "<span style='color:#bb0909;'>,{0}<sup>" + kitevo + "</sup>,<b>k</b></span>";
     return xv
 };
 
@@ -9802,7 +9802,7 @@ function formazbhtmlsep1(b, told) {
     return "<tr><td class='bsor sep'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + told + ")</td></tr>";
 };
 
-function abhtml1(i, reszl) {
+function abhtml1(i, reszl, eloj) {
     const a = ASOR[i + 1];
     const b = BSOR[i + 1];
     const n = b.length;
@@ -9811,7 +9811,7 @@ function abhtml1(i, reszl) {
     if (reszl) {
         told = toldas();
     }
-    var ltx = "<table class='genout-sor'><tr><td class='asor' style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i)) + "(" + a + ")</td></tr>";
+    var ltx = "<table class='genout-sor'><tr><td class='asor' style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i) * eloj) + "(" + a + ")</td></tr>";
     for (var j = 0; j < n; j++) {
         if (n != n1) {
             if (j == (n / 2 - 1))
@@ -9826,7 +9826,7 @@ function abhtml1(i, reszl) {
     return ltx;
 };
 
-function cFiner1(vec) {
+function cFiner1(vec, n, mode) {
     const c = kiszed_c(vec);
     var txt = "";
     if (c == "Hibás bemenet")
@@ -9839,39 +9839,210 @@ function cFiner1(vec) {
         txt += "<div style='margin:10px 0;padding-bottom:10px;border-bottom: 1px solid #bac6c6;'>A<span style='color:#888;'>(z)</span> " + ctxt + " vektornál finomabb vektorok száma: " + 2 + "<sup>" + s + "  −&nbsp;" + r + "</sup> = 2<sup>" + (s - r) + "</sup> = " + Math.pow(2, s - r) + ".";
         txt += "<br><b>K</b> =  {<b>k</b> | <b>k</b> &succeq; " + ctxt + "} = ";
         txt += JSON.stringify(out).replaceAll("],[", "), (").replace("[[", "{(").replace("]]", ")}") + "</div>";
+        if (!mode) {
+            const v0 = Array(n).fill(0);
+            out = out.map(y => _.concat(v0, y));
+            out = [...out, ...out.map(y => _.concat(0, y))];
+        }
     }
-    return txt;
+    return [txt, out];
+};
+
+function formazbhtml2(bp) {
+    const b = bp[0];
+    const p = bp[1];
+    return "<tr><td class='bsor'>" + elojele(_.last(b)) + "(<b>" + _.dropRight(b) + "</b>,<span class='bsorh'>" + p + "</span>)</td></tr>";
+};
+
+function formazbhtmlsep2(bp) {
+    const b = bp[0];
+    const p = bp[1];
+    return "<tr><td class='bsor sep'>" + elojele(_.last(b)) + "(<b>" + _.dropRight(b) + "</b>,<span class='bsorh'>" + p + "</span>)</td></tr>";
+};
+
+function formazbhtml3(bp) {
+    const e = bp[0];
+    const b = bp[1];
+    const p = bp[2];
+    var coeff = ""
+    if (e != 1)
+        coeff = e + "&lowast;";
+    return "<tr><td class='bsor'>" + elojele(_.last(b)) + coeff + "(<b>" + _.dropRight(b) + "</b>,<span class='bsorh'>" + p + "</span>)</td></tr>";
+};
+
+function abhtml2tbl(i, P, al, bl, np, mode) {
+    const a = ASOR[i + 1];
+    const b = BSOR[i + 1];
+    const n = b.length;
+    const np2 = np / 2;
+    const N = document.getElementById("xlln").value * 1;
+    if (!mode)
+        var se = elojele(Math.pow(-1, i + bl + N + 1));
+    else
+        var se = elojele(Math.pow(-1, i + al + 1));
+    var ltx = "<table class='genout-sor'><tr><td class='asor' style='border-bottom:1px solid #777;'>" + se + "(" + a + ")</td></tr>";
+    if (!mode) {
+        var s = 0;
+        for (var j = 0; j < n; j++) {
+            s = 0;
+            for (let p of P) {
+                s++
+                if (s % np2 == 0)
+                    ltx += formazbhtmlsep2([b[j], p]);
+                else
+                    ltx += formazbhtml2([b[j], p]);
+            }
+        };
+    } else {
+        for (var j = 0; j < n; j++) {
+            var nv = [];
+            for (var t = 0; t <= N + 1; t++) {
+                nv = Array(t).fill(0);
+                var P0 = [...P.map(y => _.concat(nv, y))];
+                for (let p of P0) {
+                    ltx += formazbhtml3([binomial(N + 1, t), b[j], p]);
+                }
+            }
+        };
+    }
+    ltx += "</table>";
+    return ltx;
+};
+
+function genhtml2tbl(P, al, bl, np, mode) {
+    const n = BSOR.length - 1;
+    if (!mode) {
+        const N = document.getElementById("xlln").value * 1;
+        var eloj = Math.pow(-1, bl + N + 1);
+    } else
+        var eloj = Math.pow(-1, al + 1);
+    var ltx = "<table class='genout-fej'  style='vertical-align: top;'><tr><td style='border-bottom:1px solid #449bd1;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr><tr><td class='tdeloj'>" + elojele(eloj) + "</td></tr></table>";
+    if (mode)
+        ltx = "<table class='genout-fej' style='vertical-align: top;'><tr><td style='border-right:1px solid #449bd1;border-bottom:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr><tr><td class='tdeloj'>" + elojele(eloj) + "</td></tr></table>"
+    for (var i = 0; i < n; i++) {
+        ltx += abhtml2tbl(i, P, al, bl, np, mode);
+        if (i < n - 1)
+            ltx += "<table class='genout-nyil'><tr><td>" + AFAZIS[i + 1] + "</td></tr><tr><td>&rarr;</td></tr></table>"
+    };
+    ltx = ltx.replaceAll('Infinity', '∞');
+    return ltx;
+};
+
+function abhtml2fx(i, P, al, bl, mode) {
+    const a = ASOR[i + 1];
+    const b = BSOR[i + 1];
+    const n = b.length;
+    const N = document.getElementById("xlln").value * 1;
+    if (!mode)
+        var se = elojele(_.last(b[0]) * Math.pow(-1, i + bl + N + 1));
+    else
+        var se = elojele(_.last(b[0]) * Math.pow(-1, i + al + 1));
+    var ltx = "";
+    if (!mode) {
+        for (var j = 0; j < n; j++) {
+            for (let p of P) {
+                ltx += " + Li<sub>(" + _.dropRight(b[j]) + "," + p + ")</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span>";
+            }
+        };
+        ltx = se + "<span style='background-color:#fffd9b;padding:5px;'>Li<sub>(" + a + ")</sub>(1−x)</span>&lowast;<span style='display: inline-block;transform: scale(1.3, 2.3);margin-left: 2px;'>[</span>" + ltx.slice(3) +
+            "<span style='display: inline-block;transform: scale(1.3, 2.3);margin-left: 2px;'>]</span>";
+    } else {
+        for (var j = 0; j < n; j++) {
+            var nv = [];
+            for (var t = 0; t <= N + 1; t++) {
+                nv = Array(t).fill(0);
+                var P0 = [...P.map(y => _.concat(nv, y))];
+                var coeff = "";
+                var s = binomial(N + 1, t);
+                if (s != 1)
+                    coeff = s + "&lowast;"
+                for (let p of P0) {
+                    ltx += " + " + coeff + "Li<sub>(" + _.dropRight(b[j]) + "," + p + ")</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span>";
+                }
+            }
+        };
+        ltx = se + "<span style='background-color:#fffd9b;padding:5px;'>Li<sub>(" + a + ")</sub>(x)</span>&lowast;<span style='display: inline-block;transform: scale(1.3, 2.3);margin-left: 2px;'>[</span>" + ltx.slice(3) +
+            "<span style='display: inline-block;transform: scale(1.3, 2.3);margin-left: 2px;'>]</span>";
+    }
+    return ltx;
+};
+
+function genhtml2fx(P, al, bl, mode) {
+    const n = BSOR.length - 1;
+    var ltx = "";
+    for (var i = 0; i < n; i++) {
+        ltx += abhtml2fx(i, P, al, bl, mode);
+    };
+    ltx = ltx.replaceAll('Infinity', '∞');
+    return ltx;
+};
+
+function setTblfx(v) {
+    const elem = document.getElementById("tblfx");
+    if (v) {
+        elem.style.opacity = 1;
+        elem.style.pointerEvents = "all";
+    } else {
+        elem.style.opacity = 0.3;
+        elem.style.pointerEvents = "none";
+    }
+};
+
+function setKepletes() {
+    const elemr = document.getElementById("totalis");
+    const elemk = document.getElementById("kepletes");
+    const kepletes = elemk.style.display == "block";
+    if (kepletes) {
+        elemk.style.display = "none";
+        elemr.style.display = "block";
+    } else {
+        elemr.style.display = "none";
+        elemk.style.display = "block";
+    }
 };
 
 function makeFej(mode) {
     const n = document.getElementById("xlln").value * 1;
     const a = document.getElementById("avg").value;
     const b = document.getElementById("bvg").value;
+    const fx = document.getElementById("settblfx").checked;
     const bl = b.split(',').length;
     const al = a.split(',').length;
     var txtx = "",
         txts = "Li<sub>(" + a + ")</sub>(1−x)&lowast;Li<sub>(" + b + ")</sub>(x)";
     if (n == 1)
-        txtx = "x";
+        txtx = "x&lowast;";
     else if (n > 1)
-        txtx = "x<sup>" + n + "</sup>";
+        txtx = "x<sup>" + n + "</sup>&lowast;";
     if (n > 0)
         txtx += '&nbsp;';
-    if (mode)
-        bontas = cFiner1("avg");
-    else
-        bontas = cFiner1("bvg");
+    if (mode) {
+        var bontas2 = cFiner1("avg", n, mode);
+    } else {
+        var bontas2 = cFiner1("bvg", n, mode);
+    }
+    var bontas = bontas2[0];
+    var P = bontas2[1];
     if (!mode)
-        var txt = "<div style='min-width:max-content;margin:10px 0;padding:20px 0 10px 0;text-align:center;background-color: #dbdbdd;border: 1px solid #bac6c6;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>x<sup>n</sup>Li<sub><b>a</b></sub>(1−x)&lowast;Li<sub><b>b</b></sub>(x)</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = (-1)<sup>|<b>b</b>|+n+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;<b>b</b></sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub><b>a</b></sub><span class='block'>(<span class='block'>1−x</span>)&lowast;</span>Li<sub>({0}<sup>n+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>";
+        var txt = "<div style='min-width:max-content;margin:10px 0;padding:20px 0 10px 0;text-align:center;background-color: #dbdbdd;border: 1px solid #bac6c6;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>x<sup>n</sup>&lowast;Li<sub><b>a</b></sub>(1−x)&lowast;Li<sub><b>b</b></sub>(x)</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = (-1)<sup>|<b>b</b>|+n+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;<b>b</b></sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span><span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub><b>a</b></sub><span class='block'>(<span class='block'>1−x</span>)&lowast;</span>Li<sub>({0}<sup>n+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>";
     else
-        var txt = "<div style='min-width:max-content;margin:10px 0;padding:20px 0 10px 0;text-align:center;background-color: #dbdbdd;border: 1px solid #bac6c6;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>x<sup>n</sup>Li<sub><b>a</b></sub>(1−x)&lowast;Li<sub><b>b</b></sub>(x)</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = (-1)<sup>|<b>a</b>|+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'>0&leq;L&leq;n</sub><span style='vertical-align:-1em;margin:0 5px;'>" + drawBinomial('n', 'L') + "</span><span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;<b>a</b></sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub><b>b</b></sub><span class='block'>(<span class='block'>x</span>)&lowast;</span>Li<sub>({0}<sup>L+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>1−x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>"
+        var txt = "<div style='min-width:max-content;margin:10px 0;padding:20px 0 10px 0;text-align:center;background-color: #dbdbdd;border: 1px solid #bac6c6;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>x<sup>n</sup>&lowast;Li<sub><b>a</b></sub>(1−x)&lowast;Li<sub><b>b</b></sub>(x)</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = (-1)<sup>|<b>a</b>|+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'>0&leq;L&leq;n+1</sub><span style='vertical-align:-1em;margin:0 5px;'>" + drawBinomial('n+1', 'L') + "</span><span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;<b>a</b></sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span><sub style='vertical-align: -2.5em;'>*</sub><span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub><b>b</b></sub><span class='block'>(<span class='block'>x</span>)&lowast;</span>Li<sub>({0}<sup>L+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>1−x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>"
 
     txt += "<div style='min-width:max-content;margin:10px 0;padding:10px 0;border-bottom: 1px solid #bac6c6;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>" + txtx + txts + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = ";
     var told = toldas();
     if (!mode)
-        txt += "(-1)<sup>" + bl + "+" + n + "+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;(" + b + ")</sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub><span class='block'>(<span class='block'>1−x</span>)&lowast;</span>Li<sub>({0}<sup>" + n + "+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>" + bontas + "<div style='margin:10px 0;padding:10px 0;border-bottom: 1px solid #bac6c6;'>Elegendő az &nbsp;&nbsp; I = <span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub>(<span class='block'>1−x</span>)&lowast;Li<sub>(0)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span> integrált kiszámítani, majd az integrálósorban minden egyes vektort  megtoldani az <i style='text-decoration:underline;'>összes</i> (..." + told + ") vektorral, ahol <b>k</b>&in;<b>K</b>.</div>";
+        txt += "<span style=' background-color: #9ee844; #9ee844;padding: 1.5em 0.2em;border-radius: 50%;'>(-1)<sup>" + bl + "+" + n + "+1</sup></span>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;(" + b + ")</sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub><span class='block'>(<span class='block'>1−x</span>)&lowast;</span>Li<sub>({0}<sup>" + n + "+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>" + bontas + "<div style='margin:10px 0;padding:10px 0;border-bottom: 1px solid #bac6c6;'>Elegendő az &nbsp;&nbsp; I = <span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span><sub style='vertical-align: -2.5em;'>*</sub><span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub>(<span class='block'>1−x</span>)&lowast;Li<sub>(0)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span> integrált kiszámítani, majd az integrálósorban minden egyes vektort  megtoldani az <i style='text-decoration:underline;'>összes</i> (..." + told + ") vektorral, ahol <b>k</b>&in;<b>K</b>.</div>";
     else
-        txt += "(-1)<sup>" + al + "+1</sup>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'>0&leq;L&leq;" + n + "</sub><span style='vertical-align:-1em;margin:0 5px;'>" + drawBinomial(n, 'L') + "</span><span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;(" + a + ")</sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub><span class='block'>(<span class='block'>x</span>)&lowast;</span>Li<sub>({0}<sup>L+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>1−x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>" + bontas + "<div style='margin:10px 0;padding:10px 0;border-bottom: 1px solid #bac6c6;'>Elegendő az &nbsp;&nbsp; I = <span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span> <span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub><span class='block'>(<span class='block'>x</span>)&lowast;</span>Li<sub>(0)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>1−x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span> integrált kiszámítani, majd az integrálósorban minden egyes vektort megtoldani az <i style='text-decoration:underline;'>összes</i> (..." + told + ") vektorral, ahol 0&leq;L&leq;" + n + ", és  <b>k</b>&in;<b>K</b>.</div>";
+        txt += "<span style=' background-color: #9ee844;padding: 1.1em 0.2em;border-radius: 50%;'>(-1)<sup>" + al + "+1</sup></span>&nbsp;<span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'>0&leq;L&leq;" + (n + 1) + "</sub><span style='vertical-align:-1em;margin:0 5px;'>" + drawBinomial(n + 1, 'L') + "</span><span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'><b>k</b>&succeq;(" + a + ")</sub><span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span><sub style='vertical-align: -2.5em;'>*</sub><span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub><span class='block'>(<span class='block'>x</span>)&lowast;</span>Li<sub>({0}<sup>L+1</sup>,<b>k</b>)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>1−x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span></div>" + bontas + "<div style='margin:10px 0;padding:10px 0;border-bottom: 1px solid #bac6c6;'>Elegendő az &nbsp;&nbsp; I = <span class='block' style='margin:5px;position:relative;top:0.2em;vertical-align: middle;'><span class='sqrt-prefix sdefint' style='right: -0.1em;transform: scale(1.38424, 3.2) translateY(-0.1em);'>∫</span><sub style='vertical-align: -2.5em;'>*</sub><span class='block' style='position:relative;bottom: 0.9em;'><span class='fraction'><span class='numerator'>Li<sub>(" + ASOR[0] + ")</sub><span class='block'>(<span class='block'>x</span>)&lowast;</span>Li<sub>(0)</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></span><span class='denominator'><span class='block'>1−x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span><span class='block' style='position:relative;top:0.9em;left:-0.2em'>dx</span></span> integrált kiszámítani, majd az integrálósorban minden egyes vektort megtoldani az <i style='text-decoration:underline;'>összes</i> (..." + told + ") vektorral, és megszorozni <span style='vertical-align:middle;display:inline-block;'>" + drawBinomial(n + 1, 'L') + "</span>-el, ahol 0&leq;L&leq;" + (n + 1) + ", és  <b>k</b>&in;<b>K</b>.</div>";
+    const np = P.length;
+    var lab = "Mind kiírva (Táblázatban)";
+    if (fx)
+        lab = "Mind kiírva (Egy sorban)";
+    txt += "<div style='margin-bottom:5px;border-bottom:1px solid #ddd;padding-bottom:5px;'><span style='font-size:85%;margin-left:5px;margin-right:5px;'>Képletesen</span> <label class='switch'><input id='setxllinter'  type='checkbox' onchange='setKepletes();'><span class='slider round'></span></label> <span style='font-size:85%;margin-left:5px;margin-right:5px;'>" + lab + "</span></div>";
+    if (fx)
+        txt += "<div id='totalis' style='display:none;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>" + txtx + txts + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = " + genhtml2fx(P, al, bl, mode) + "</div>";
+    else
+        txt += "<div id='totalis' style='display:none;'>" + genhtml2tbl(P, al, bl, np, mode) + "</div>";
     return txt;
 }
 
@@ -9880,14 +10051,22 @@ function genhtml1(mode, reszl) {
     var fej = "";
     if (reszl)
         fej = makeFej(mode);
-    var ltx = "<div class='meret'>Az integrál <b style='margin:0 5px;'>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<table class='genout-fej'  style='vertical-align: top;'><tr><td style='border-bottom:1px solid #449bd1;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr></table>";
+    if (!mode) {
+        const b = document.getElementById("bvg").value;
+        const N = document.getElementById("xlln").value * 1;
+        const bl = b.split(',').length;
+        var eloj = Math.pow(-1, bl + N + 1);
+    } else
+        var eloj = Math.pow(-1, ASOR[0].length + 1);
+    var ltx = "<div class='meret'>Az integrál <b style='margin:0 5px;'>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<div id='kepletes' style='display:block;'><table class='genout-fej'  style='vertical-align: top;'><tr><td style='border-bottom:1px solid #449bd1;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr><tr><td class='tdeloj'>" + elojele(eloj) + "</td></tr></table>";
     if (mode)
-        ltx = "<div class='meret'>Az integrál <b style='margin:0 5px;'>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<table class='genout-fej' style='vertical-align: top;'><tr><td style='border-right:1px solid #449bd1;border-bottom:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr></table>";
+        ltx = "<div class='meret'>Az integrál <b style='margin:0 5px;'>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<div id='kepletes' style='display:block;'><table class='genout-fej' style='vertical-align: top;'><tr><td style='border-right:1px solid #449bd1;border-bottom:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr><tr><td class='tdeloj'>" + elojele(eloj) + "</td></tr></table>";
     for (var i = 0; i < n; i++) {
-        ltx += abhtml1(i, reszl);
+        ltx += abhtml1(i, reszl, eloj);
         if (i < n - 1)
             ltx += "<table class='genout-nyil'><tr><td>" + AFAZIS[i + 1] + "</td></tr><tr><td>&rarr;</td></tr></table>"
     };
+    ltx += "</div>"
     ltx = ltx.replaceAll('Infinity', '∞');
     return ltx;
 };
