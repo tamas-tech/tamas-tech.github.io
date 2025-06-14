@@ -118,6 +118,7 @@ var kummode = false;
 var kums = [];
 var int01ertek = "";
 var intd01ertek = "";
+var xllmeret = 0;
 
 function setMode(t) {
     mode = t.value;
@@ -9860,6 +9861,8 @@ function formazbhtmlsep2(bp) {
     return "<tr><td class='bsor sep'>" + elojele(_.last(b)) + "(<b>" + _.dropRight(b) + "</b>,<span class='bsorh'>" + p + "</span>)</td></tr>";
 };
 
+//var sss = 0;
+
 function formazbhtml3(bp) {
     const e = bp[0];
     const b = bp[1];
@@ -9867,8 +9870,10 @@ function formazbhtml3(bp) {
     var coeff = ""
     if (e != 1)
         coeff = e + "&lowast;";
+    //sss++;
     return "<tr><td class='bsor'>" + elojele(_.last(b)) + coeff + "(<b>" + _.dropRight(b) + "</b>,<span class='bsorh'>" + p + "</span>)</td></tr>";
 };
+
 
 function abhtml2tbl(i, P, al, bl, np, mode) {
     const a = ASOR[i + 1];
@@ -9995,6 +10000,8 @@ function setKepletes() {
     if (kepletes) {
         elemk.style.display = "none";
         elemr.style.display = "block";
+        if (xllmeret > 10000)
+            elemr.innerHTML = "<span style='color:red'> A feladat mérete: " + xllmeret + " meghaladja a 10 000-et.</span>";
     } else {
         elemr.style.display = "none";
         elemk.style.display = "block";
@@ -10038,7 +10045,7 @@ function makeFej(mode) {
     var lab = "Mind kiírva (Táblázatban)";
     if (fx)
         lab = "Mind kiírva (Egy sorban)";
-    txt += "<div style='margin-bottom:5px;border-bottom:1px solid #ddd;padding-bottom:5px;'><span style='font-size:85%;margin-left:5px;margin-right:5px;'>Képletesen</span> <label class='switch'><input id='setxllinter'  type='checkbox' onchange='setKepletes();'><span class='slider round'></span></label> <span style='font-size:85%;margin-left:5px;margin-right:5px;'>" + lab + "</span></div>";
+    txt += "<div style='margin-bottom:5px;border-bottom:1px solid #ddd;padding-bottom:5px;'><span style='font-size:85%;margin-left:5px;margin-right:5px;'>Képletesen</span> <label class='switch'><input type='checkbox' onchange='setKepletes();'><span class='slider round'></span></label> <span style='font-size:85%;margin-left:5px;margin-right:5px;'>" + lab + "</span></div>";
     if (fx)
         txt += "<div id='totalis' style='display:none;'><span class='block' style='margin:5px 0;'><span class='sqrt-prefix sdefint' style='transform: scale(1, 1.8);vertical-align: middle;'>∫</span><span class='block' style='position:relative;'>" + txtx + txts + "</span><span class='block' style='position:relative;margin-left:3px;'>dx</span></span> = " + genhtml2fx(P, al, bl, mode) + "</div>";
     else
@@ -10046,21 +10053,73 @@ function makeFej(mode) {
     return txt;
 }
 
+function calcMeretab(a, b) {
+    const al = a.length;
+    const bl = b.length;
+    const ma = Math.pow(2, _.sum(a) - al);
+    var mb = 0;
+    for (var i = 1; i <= bl; i++)
+        mb += Math.pow(2, i) * b[i - 1];
+    return ma * (mb + Math.pow(2, bl + 1));
+};
+
+
+
+function calcMeret() {
+    const N = document.getElementById("xlln").value * 1;
+    const a = kiszed_v1("avg");
+    const b = kiszed_v1("bvg");
+    const reszl = document.getElementById("setmodexll").checked;
+    const mode = document.getElementById("setxllinter").checked;
+    if (!reszl)
+        var meret = genmeret();
+    else if (!mode) {
+        var meret = calcMeretab(b, a);
+    } else
+        var meret = calcMeretab(a, b) * (N + 2) / 2;
+    xllmeret = meret;
+    return meret;
+};
+
+function calcForm(a) {
+    var txt = "2<sup>|<b>" + a + "</b>|+1</sup> + <span class='sqrt-prefix' style='transform: scale(1.8) translateX(0.2em);vertical-align: middle;'>&sum;</span><sub style='vertical-align:-0.5em;margin-left: 1em;'>1&leq;k&leq;|<b>" + a + "</b>|</sub>&nbsp;2<sup>k</sup>&lowast;" + a + "<sub>k</sub>";
+    return txt;
+};
+
 function genhtml1(mode, reszl) {
     const n = BSOR.length - 1;
+    const N = document.getElementById("xlln").value * 1;
+    const a = kiszed_v1("avg");
+    const b = kiszed_v1("bvg");
     var fej = "";
     if (reszl)
         fej = makeFej(mode);
-    if (!mode) {
-        const b = document.getElementById("bvg").value;
-        const N = document.getElementById("xlln").value * 1;
-        const bl = b.split(',').length;
-        var eloj = Math.pow(-1, bl + N + 1);
-    } else
+    if (mode) {
         var eloj = Math.pow(-1, ASOR[0].length + 1);
-    var ltx = "<div class='meret'>Az integrál <b style='margin:0 5px;'>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<div id='kepletes' style='display:block;'><table class='genout-fej'  style='vertical-align: top;'><tr><td style='border-bottom:1px solid #449bd1;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr><tr><td class='tdeloj'>" + elojele(eloj) + "</td></tr></table>";
+    }
+    if (!reszl)
+        var meret = genmeret();
+    else if (!mode) {
+        const bl = b.length;
+        var eloj = Math.pow(-1, bl + N + 1);
+        var meret = calcMeretab(b, a);
+    } else
+        var meret = calcMeretab(a, b) * (N + 2) / 2;
+    var mform = "";
+    if (mode) {
+        if (reszl)
+            mform = "2<sup>&sum;<b>a</b>−|<b>a</b>|−1</sup>&lowast;(n+2)&lowast;<span style='display: inline-block;transform: scale(1, 2.3);margin-right: 2px;'>(</span>" + calcForm("b") + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span>";
+        else
+            mform = calcForm("b");
+    } else {
+        if (reszl)
+            mform = "2<sup>&sum;<b>b</b>−|<b>b</b>|</sup>&lowast;<span style='display: inline-block;transform: scale(1, 2.3);margin-right: 2px;'>(</span>" + calcForm("a") + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span>";
+        else
+            mform = calcForm("a");
+    };
+    var ltx = "<div class='meret style='font-size:100%;'>Az integrál " + mform + " = <b style='margin:0 5px;'>" + meret + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<div id='kepletes' style='display:block;'><table class='genout-fej'  style='vertical-align: top;'><tr><td style='border-bottom:1px solid #449bd1;border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub>(" + aargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + bmode + "<sub>b</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + bargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr><tr><td class='tdeloj'>" + elojele(eloj) + "</td></tr></table>";
     if (mode)
-        ltx = "<div class='meret'>Az integrál <b style='margin:0 5px;'>" + genmeret() + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<div id='kepletes' style='display:block;'><table class='genout-fej' style='vertical-align: top;'><tr><td style='border-right:1px solid #449bd1;border-bottom:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr><tr><td class='tdeloj'>" + elojele(eloj) + "</td></tr></table>";
+        ltx = "<div class='meret' style='font-size:100%;'>Az integrál " + mform + " = <b style='margin:0 5px;'>" + meret + "</b> általánosított polilogaritmus függvény szorzatösszege:</div>" + fej + "<div id='kepletes' style='display:block;'><table class='genout-fej' style='vertical-align: top;'><tr><td style='border-right:1px solid #449bd1;border-bottom:1px solid #449bd1;'>" + bmode + "<sub>b</sub>(" + bargtxt + ")</td><td style='border-bottom:1px solid #449bd1;'>(" + ASOR[0] + ")</td></tr><tr><td style='border-right:1px solid #449bd1;'>" + amode + "<sub>a</sub><span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>(</span>" + aargtxt + "<span style='display: inline-block;transform: scale(1, 2.3);margin-left: 2px;'>)</span></td><td>(" + _.dropRight(BSOR[0][0]) + ")</td></tr></table><table class='genout-nyil'><tr><td>" + AFAZIS[0] + "</td></tr><tr><td>&rarr;</td></tr><tr><td class='tdeloj'>" + elojele(eloj) + "</td></tr></table>";
     for (var i = 0; i < n; i++) {
         ltx += abhtml1(i, reszl, eloj);
         if (i < n - 1)
@@ -10313,7 +10372,10 @@ function genoutput1r() {
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 
     } else {
-        if (AFAZIS.length * BSOR.length * ASOR.length > 0)
+        var meret = calcMeret();
+        if (meret > 100000)
+            txt = "A feladat mérete meghaladja a 100 000-et.";
+        else if (AFAZIS.length * BSOR.length * ASOR.length > 0)
             txt = genhtml1(xinter, true);
         const elem = document.querySelector("#genout");
         elem.innerHTML = txt;
@@ -10321,9 +10383,11 @@ function genoutput1r() {
 };
 
 function genoutput1() {
+    //sss = 0
     const reszletes = document.querySelector("#setmodexll").checked;
     if (reszletes)
         genoutput1r();
     else
         genoutput1s();
+    //console.log(sss)
 };
