@@ -471,6 +471,10 @@ table.genout-sor tr td.sep {
     border-bottom: 1px solid #b7c5c7;
 }
 
+table.genout-sor tr td .bsorh {
+    color: #bb0909;
+}
+
 table.genout-fej {
     font-size: 80%;
     color: #449bd1;
@@ -492,6 +496,12 @@ table.genout-nyil {
 table.genout-nyil tr td {
     font-size: calc(max(60%, 12px));
     text-align: center;
+}
+
+table.genout-nyil tr td.tdeloj {
+    background-color: #9ee844;
+    border-radius: 50%;
+    padding: 3px 1px;
 }
 
 div.meret {
