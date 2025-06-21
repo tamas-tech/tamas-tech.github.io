@@ -1065,3 +1065,15 @@ table.fpntbl.hszorzotbl td.fpnact3 {
     display: inline-block;
     transform-origin: center;
 }
+
+.id1.hl {
+    color: red;
+}
+
+.id2.hl {
+    color: #001aff;
+}
+
+#sf_show .id1.finer {
+    border-bottom: 1px solid red;
+}
