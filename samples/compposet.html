@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Explicit formula</title>
+    <script src="../../../Redmentor/jquery-1.12.1.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
+    <link rel="stylesheet" href="samples.css">
+    <script src="multipolylog.js"></script>
+    <script src="compposet.js"></script>
+    <!-- from cdn -->
+    <!--  <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.9.5/function-plot.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> -->
+
+    <!-- from local -->
+
+    <script src="../MathJax-2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="../tools/lodash.min.js"></script>
+    <script src="../tools/FractionJS/dist/fraction.min.js"></script>
+    <script src="../tools/d3.v3.min.js"></script>
+    <script src="../tools/function-plot.js"></script>
+    <script src="../tools/CombinationsJS/YourCombinations.js"></script>
+</head>
+
+<div class="keret of even" id="k1" style="padding-bottom:40px;margin-bottom:10px;">
+    <b><big class="sorszam">1.</big></b>
+    <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left\{ \mathbf{k} | \left(c_{1},c_{2},\ldots,c_{r}\right)\preceq \mathbf{k} \right\} =\left\{ \mathbf{k}:\sum\mathbf{k}=c_{1}\right\} \times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{2}\right\} \times\cdots\times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{r}\right\}\\
+        \left\{ \mathbf{k} |\left(c_{1},c_{2},\ldots,c_{r}\right)\succeq\mathbf{k} \right\}=\sum_{\bullet\in\{"+",","\}}(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})\\(\text{id1})\hspace{1cm} \sum_{\mathbf{c}\preceq\mathbf{k}} (-1)^{|\mathbf{k}|}\;\sum_{\mathbf{t}\preceq\mathbf{k}}(-1)^{|\mathbf{t}|}\text{A}_{\mathbf{t}}
+        =(-1)^{\sum\mathbf{s}}\cdot\sum_{\mathbf{c}^{*}\preceq\mathbf{k}} (-1)^{|\mathbf{k}|}\text{A}_{\mathbf{k}} \end{gather*}\]
+    </p>
+    <div style="margin-left:2px;padding:3px;">
+        <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
+        <input class="inpvec" type="text" id="cvec" value="2,5,3" onchange="idClear('#cout');cFiner();"><span id="knr" style="display:inline-block;height:25px;border:1px solid #eac2c2;padding:0 10px 3px 10px;margin:0 10px;vertical-align: middle;margin-bottom:5px;cursor:pointer;background-color:#ffe6e6;border-radius: 4px;font-size:120%;font-weight: 800;"
+            onclick="kisebbnagyobb(this);cFiner();" data-a="nagyobb">&preceq;</span><b>k</b>
+    </div>
+
+    <div style="padding: 10px;outline: 2px solid #e3c7c7;outline-offset: -6px;background-color: #fde7e7;">
+        <button id="okbtc" onclick="cFiner();" class="showpre1" title="Insert code into editor">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#cout');" title="Clear output">Clear</button>
+        <label for="setoutputfontc" style="margin-right:-10px;">&#128474;</label>
+        <input oninput="setOutputFontc(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontc" name="setoutputfontc" />
+        <div style="margin-top:7px;"><button class="showpre1" onclick="posetid1()">id1</button></div>
+    </div>
+    <p id="figyC" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+    <p id="cout" style="font-family:Cambria Math;outline: 2px solid #e3c7c7;outline-offset: -2px;background-color: #fde7e7;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
+</div>
+
+
+</body>
+
+</html>
