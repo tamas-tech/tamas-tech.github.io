@@ -118,6 +118,7 @@ var kummode = false;
 var kums = [];
 var int01ertek = "";
 var intd01ertek = "";
+var mapleertek = "";
 var xllmeret = 0;
 
 function setMode(t) {
@@ -1118,9 +1119,11 @@ function sbTgl(id) {
 function helpTgl(id) {
     var elem = document.getElementById(id);
     var open = elem.style.display;
-    if (open == "none")
+    var doc = elem.childNodes[1].src;
+    if (open == "none" || !doc.endsWith("int_xnLixLi1_x.pdf")) {
+        elem.childNodes[1].src = "../docs/int_xnLixLi1_x.pdf";
         elem.style.display = "block";
-    else
+    } else
         elem.style.display = "none";
 };
 
@@ -3398,7 +3401,7 @@ function bSor() {
     ]);
     for (let i of L) {
         var fn = fazis[i];
-        BSOR.push(fn(_.last(BSOR)));;
+        BSOR.push(fn(_.last(BSOR)));
     };
     return BSOR;
 };
@@ -3662,9 +3665,6 @@ function composition(n, callback) {
 // translated from C++ code 
 
 function get_first_weak_composition(n, k, composition) {
-    /* if (n < k) {
-        return false;
-    } */
     for (var i = 0; i < k - 1; i++) {
         composition[i] = 0;
     }
@@ -5451,11 +5451,6 @@ if (document.title != "Explicit formula" && document.title != "Generalized zeta"
 function indexStat() {
     indexGroupStat();
     const target = document.getElementById("c_indexstat");
-    //if (statby == "length") {
-    /*  const st = _.countBy(cJIndex, y => y[1].length);
-     const h = Object.keys(st).map(y => y * 1);
-     const db = Object.values(st).map(y => y * 1); */
-
     const h = Object.keys(cStore).map(y => y * 1);
     const db = Object.values(cStore).map(y => y.length * 1);
     var fej1 = "Hossz";
@@ -5961,7 +5956,7 @@ function addTScoeffLi(t, s) {
     const n = document.getElementById("n").value * 1;
     const N = p + q + 1 - t - s;
     const K = q + 1 - s;
-    const ts = factorial(p) * factorial(q) / (factorial(s) * factorial(t)); //* factorial(n - 1)
+    const ts = factorial(p) * factorial(q) / (factorial(s) * factorial(t));
     const fn = factorial(n - 1);
     var elojel = " + ";
     var relojel = "";
@@ -5997,8 +5992,6 @@ function addTScoeffLi(t, s) {
                 r = r[0] + "/" + r[1];
             };
 
-            //if (b % fn == 0)
-            //    strr += "<tr>"
             strr += "<tr><th>" + k + "</th><td>\\(\\displaystyle \\left[\\begin{array}{c} " + (n - 1) + "\\\\" + k + "\\end{array}\\right] = " + stirlingNumber(n - 1, k) + "\\)</td><td>\\(\\displaystyle" + relojel + C + "\\cdot " + stirlingNumber(n - 1, k) + " = " + relojel + r + " \\)</td>";
             var ksor = allcomp.map(y => "Li<sub>(" + kvalLast(y, k).toString() + ")</sub>(x) + ").toString();
             ksor = ksor.replaceAll(",Li", "Li").slice(0, -3);
@@ -7152,7 +7145,7 @@ function pzJelent(k, n, av, fv, el, b) {
     for (var i = 0; i < r; i++)
         txt += "<li> " + av[i] + ". sorából " + fv[i] + " elemet";
     txt += "</ul>  kell  kiválasztani (ismétlődést is megengedve) úgy, hogy az alsó számok összege  n = " + n + " legyen. A lehetséges kiválasztásokat és  az azokhoz kiszámított szorzatokat találjuk az alábbi táblázatban."
-    txt += "<br/><table id='pqnrtbl'><tr style='border-top:2px solid;border-bottom:2px solid;'><th style=';border-left:2px solid;;border-right:2px solid;'></th>";
+    txt += "<br/><table id='pqnrtbl'><tr style='border-top:2px solid;border-bottom:2px solid;'><th style=';border-left:2px solid;border-right:2px solid;'></th>";
     var szinszml0 = 0;
     for (var i = 0; i < av.length; i++) {
         var color = COLORS[szinszml0] + "35";
@@ -7276,8 +7269,6 @@ function p1q1Coeff(k, n, av, fv) {
     return s;
 };
 
-//var pqnvec = [];
-
 function pqnCoeff(p, q, n, m) {
     const av = m[0];
     const fv = m[1];
@@ -7289,9 +7280,8 @@ function pqnCoeff(p, q, n, m) {
         saf += av[t] * fv[t];
     for (var q1 = 1; q1 <= q + 1; q1++) {
         for (var p1 = p + 1 - n; p1 <= p; p1++) {
-            //var p1q1 = Math.min(p1, q1);
             const k = p1 + q1;
-            if (saf == k /*&& sf <= p1q1*/ ) {
+            if (saf == k) {
                 var c = p1q1Coeff(k, p1, av, fv).mul(Cpqnp1q1Q(p, q, n, p1, q1));
                 sum = sum.add(c);
             }
@@ -7419,7 +7409,6 @@ function intJelent(k, n, av, fv, el, spec) {
     for (var i = ah; i <= fh; i++)
         indx.push(i);
     const indxstr = "[" + indx.toString() + "]";
-    //const N = Math.max(k - fh - n + 1, 0);
     const N = Math.max(q + 2 - n - k + fh, 0);
     const tbl = makeCpqnTbl(p, q, n, N);
     const fakt = factorial(p) * factorial(q);
@@ -7858,7 +7847,7 @@ function fpntblAllB(p, n, r) {
     for (var i = 0; i < r; i++)
         tbl += "<td style='height: 100%;'>" + fpntbl(fpnIterK(p, n, i)[1]) + "</td>";
     tbl += "<td style='height: 100%;border:1px solid red;background-color: beige;'>" + fpntbl(fpnIterK(p, n, r)[1]) + "</td>";
-    tbl += "<td style='height: 100%;'> = <b>B</b><sup>(" + r + ")</sup>(" + p + "," + n + ")" + "</td>";;
+    tbl += "<td style='height: 100%;'> = <b>B</b><sup>(" + r + ")</sup>(" + p + "," + n + ")" + "</td>";
     tbl += "</tr></table>";
     return tbl;
 };
@@ -7977,7 +7966,6 @@ function fpntbl2(p, n, r) {
         tbl += "<td style='height: 100%;'>" + fpntbl(fpnIterK(p, n, r - 1)[0]) + "</td>";
     tbl += "<td style='height: 100%;'>" + fpntblClick2(fpnIterK(p, n, r)[0]) + "</td>";
     tbl += "<td>" + szorzotbl2(p) + "</td></tr>";
-    //tbl += "<tr><td></td><td>" + hszorzotbl1(n) + "</td></tr>";
     tbl += "<tr><td></td><td>" + hszorzotbl2(n) + "</td></tr>";
     tbl += "</table>";
     return tbl;
@@ -8002,7 +7990,6 @@ function fpnint(p, n, r) {
     const pnrM = fpnIterK(p, n, r);
     const pnrA = pnrM[0];
     const pnrB = pnrM[1];
-    // var cc = Fraction(0);
     for (var i = 1; i <= p; i++)
         for (var j = 1; j <= n; j++) {
             var cij = pnrA[i - 1][j - 1];
@@ -8042,10 +8029,6 @@ function fpnint(p, n, r) {
                     txt += elojel + formazottTortHTML(cij.n, cij.d) + "&nbsp;Li<sub>(" + j + ",&nbsp;{1}<sup>" + (i - 2) + "</sup>)</sub>(x)";
             };
         };
-    /*  var ccelojel = " +&nbsp;";
-     if (cc.s == -1)
-         ccelojel = " −&nbsp;";
-     txt += txt + ccelojel + formazottTortHTML(cc.n, cc.d); */
     return txt;
 };
 
@@ -8101,7 +8084,6 @@ function fpnTbl() {
 };
 
 function arpn(i, j, p, n, r) {
-    //fordított indexeléssel: i -> p+1-i  és  j -> n+1-j
     var out = Fraction(0);
     if (r < -1 || i < 1 || j < 1)
         out = Fraction(0);
@@ -8374,14 +8356,14 @@ function fpqnintLatex() {
                             txtB += er + "\\,\\text{Li}_{(" + j + ",\\,\\lbrace 1 \\rbrace^{" + (i - 2) + "})}(x)";
                     } else if (r == p - 1) {
                         if (i == 1) {
-                            txtB += ""; //er + "&nbsp;ln(x)";
+                            txtB += "";
                         } else if (i == 2)
                             txtB += er + "\\, \\ln(x)\\cdot\\text{Li}_{(" + j + ")}(x)";
                         else
                             txtB += er + "\\,\\ln(x)·\\text{Li}_{(" + j + ",\\,\\lbrace 1 \\rbrace^{" + (i - 2) + "})}";
                     } else {
                         if (i == 1) {
-                            txtB += ""; //er + "&nbsp;ln<sup>" + (p - r) + "</sup>(x)";
+                            txtB += "";
                         } else if (i == 2)
                             txtB += er + "\\,\\ln^{" + (p - r) + "}(x)·\\text{Li}_{(" + j + ")}(x)";
                         else
@@ -8529,7 +8511,7 @@ function fpntblBLatex(mat) {
     for (i = 2; i <= p; i++) {
         tbl += " \\text{Li}_{(\\bullet,\\lbrace 1 \\rbrace ^{" + (i - 2) + "})}";
         for (j = 1; j <= n; j++) {
-            var val = mat[i - 1][j - 1];;
+            var val = mat[i - 1][j - 1];
             tbl += " & " + val.toLatex();
         };
         tbl += " \\\\ ";
@@ -8895,7 +8877,6 @@ function Harmonic(k, n) {
     var sum = Fraction(0);
     if (n >= 0)
         for (var j = 1; j <= k; j++) {
-            //sum = sum.add(Fraction(1, Math.pow(j, n)));
             sum = sum.add(Fraction(1).div(Fraction(Math.pow(j, n))));
         }
     else
@@ -9009,8 +8990,7 @@ function gzetaltx(sv, a, b, ism) {
             if (ooindx > -1)
                 if (a == 1) {
                     var sv1 = sv.slice(0, ooindx)
-                    Zv = gZe(sv1, 1, b)
-                        //Zv = Fraction(Hez(sv, b));
+                    Zv = gZe(sv1, 1, b);
                 } else
                     Zv = Fraction(0);
             else
@@ -9590,8 +9570,6 @@ function gHHTML(sv, a, b, jj, kk, ism) {
             var s = gZe(sv, 1, b);
         else
             var s = gZ(sv, 2, b);
-        /* ltx = formazottTortHTML(s.n, s.d);
-        ltx = "<sub>" + a + "</sub>H<sub style='margin-left:" + dd + "em;'>" + b + "</sub>" + cs + sltx + " = " + ltx; */
         ltx = "?";
         return ltx;
     } else {
@@ -9647,93 +9625,13 @@ function gHszamitas() {
     kitoltgH(a, b, j, k, true, "Hsv", "gHe");
 };
 
-// poset of compositions
-
-function setOutputFontc(v) {
-    var elem = document.getElementById("cout");
-    elem.style.fontSize = v + 'px';
-};
-
-function allcomps(n) {
-    var out = [];
-    for (var k = 1; k <= n; k++) {
-        var c = comp(n, k);
-        for (let v of c)
-            out.push(v);
-    };
-    return out;
-};
-
-function invPv(v) {
-    var c = [],
-        out = [];
-    for (let k of v)
-        c.push(allcomps(k));
-    out = cartesian(c);
-    out = out.map(y => _.flatten(y));
-    return out;
-};
-
-function kiszed_c(id) {
-    var av = document.getElementById(id).value;
-    if (pat.test(av)) {
-        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
-        idClear('#cout')
-        return "Hibás bemenet";
-    };
-    if (!av.startsWith("[")) {
-        av = "[" + av;
-    }
-    if (!av.endsWith("]")) {
-        av = av + "]";
-    };
-
-    av = av.replaceAll('oo', oo);
-
-    try {
-        av = JSON.parse(av);
-        var indx = av.indexOf(oo);
-        if (av.some(v => v <= 0)) {
-            setfigy("Az <b>a</b> vektor nem tartalmazhat negatív elemet vagy 0-át! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figyC");
-            idClear('#cout')
-            return "Hibás bemenet";
-        } else if (indx > -1) {
-            av = oo2strInf(av);
-            setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
-            idClear('#cout')
-            return "Hibás bemenet";
-        }
-
-    } catch (error) {
-        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
-        idClear('#cout')
-        return "Hibás bemenet";
-    };
-    return av;
-};
-
-function cFiner() {
-    const elem = document.getElementById("cout");
-    const c = kiszed_c('cvec');
-    var txt = "";
-    if (c == "Hibás bemenet")
-        txt += c;
-    else {
-        const s = _.sum(c);
-        const r = c.length;
-        const ctxt = JSON.stringify(c).replaceAll("[", "(").replaceAll("]", ")");
-        var out = invPv(c);
-        txt += "A<span style='color:#888;'>(z)</span> " + ctxt + " vektornál finomabb vektorok száma: " + 2 + "<sup>" + s + "  −&nbsp;" + r + "</sup> = 2<sup>" + (s - r) + "</sup> = " + Math.pow(2, s - r) + ".";
-        txt += "<br> {<b>k</b> | <b>k</b> &succeq; " + ctxt + "} = ";
-        txt += JSON.stringify(out).replaceAll("],[", "), (").replace("[[", "{(").replace("]]", ")}");
-    }
-    elem.innerHTML = txt;
-};
-
-
 ///// x^n*Li(x)*Li(1-x)
 function setOutputFontxll(v) {
     document.getElementById("genout").style.fontSize = v + "px";
+};
+
+function setOutputFontxll02(v) {
+    $('#ideout02 .sagecell_sessionOutput').css('font-size', v + 'px');
 };
 
 function setgenKeplet10() {
@@ -9861,7 +9759,6 @@ function formazbhtmlsep2(bp) {
     return "<tr><td class='bsor sep'>" + elojele(_.last(b)) + "(<b>" + _.dropRight(b) + "</b>,<span class='bsorh'>" + p + "</span>)</td></tr>";
 };
 
-//var sss = 0;
 
 function formazbhtml3(bp) {
     const e = bp[0];
@@ -9872,6 +9769,12 @@ function formazbhtml3(bp) {
         coeff = e + "&lowast;";
     //sss++;
     return "<tr><td class='bsor'>" + elojele(_.last(b)) + coeff + "(<b>" + _.dropRight(b) + "</b>,<span class='bsorh'>" + p + "</span>)</td></tr>";
+};
+
+function out02Clear() {
+    const elem = document.querySelector("#ideout02 .sagecell_sessionOutput")
+    if (elem)
+        elem.innerHTML = "";
 };
 
 
@@ -9982,6 +9885,140 @@ function genhtml2fx(P, al, bl, mode) {
     return ltx;
 };
 
+function sagexnll02() {
+    $('#mycell02 .sagecell_editor textarea.sagecell_commands').val(mapleertek);
+    $('#mycell02 .sagecell_input button.sagecell_evalButton').click();
+    setOutputFontxll02($('#outfont-sliderxnll02').val());
+};
+
+
+function hatarIgazitas(v) {
+    const also = document.getElementById("maplea");
+    const felso = document.getElementById("mapleb");
+    if (v) {
+        also.value = 0.55;
+        felso.value = 0.9;
+    } else {
+        also.value = 0.05;
+        felso.value = 0.45;
+    }
+}
+
+function plotfx() {
+    const elem = document.querySelector("#genout");
+    const n = document.getElementById("xlln").value * 1;
+    const Digits = document.getElementById("mapleDigits").value * 1;
+    const N = document.getElementById("mapleNN").value * 1;
+    const also = document.getElementById("maplea").value * 1;
+    const felso = document.getElementById("mapleb").value * 1;
+    const a = document.getElementById("avg").value;
+    const b = document.getElementById("bvg").value;
+    const bl = b.split(',').length;
+    const al = a.split(',').length;
+    const xinter = document.querySelector("#setxllinter").checked;
+    fazis.init = nov;
+    fazis.std = bov;
+    fazis.atv = mbovmnov;
+    fazis.veg = mbovmnov;
+    aargtxt = "1−x";
+    bargtxt = formazottTortHTML("x", "x−1");
+    if (xinter) {
+        fazis.init = mnov;
+        aargtxt = formazottTortHTML("x−1", "x");
+        bargtxt = "x";
+    }
+    aSor1(xinter, true);
+    bSor1(xinter, true);
+
+    if (!xinter)
+        var bontas2 = cFiner1("bvg", n, false);
+    else
+        var bontas2 = cFiner1("avg", n, true);
+    var P = bontas2[1];
+
+    const nb = BSOR.length - 1;
+    var ltx = "";
+    for (var i = 0; i < nb; i++) {
+        var ai = ASOR[i + 1];
+        var bi = BSOR[i + 1];
+        var ni = bi.length;
+        //var se = elojele(_.last(bi[0]) * Math.pow(-1, i + bl + n + 1));
+        if (!xinter)
+            var se = elojele(_.last(bi[0]) * Math.pow(-1, i + bl + n + 1));
+        else
+            var se = elojele(_.last(bi[0]) * Math.pow(-1, i + al + 1));
+        /////
+        var ltxi = "";
+        if (!xinter) {
+            for (var j = 0; j < ni; j++) {
+                for (let p of P) {
+                    ltxi += " + Ls([" + _.dropRight(bi[j]) + "," + p + "],x/(x-1),NN)";
+                };
+            };
+            ltx += se + "Ls([" + ai + "],1-x,NN)*(" + ltxi.slice(3) + ")";
+        } else {
+            for (var j = 0; j < ni; j++) {
+                var nv = [];
+                for (var t = 0; t <= n + 1; t++) {
+                    nv = Array(t).fill(0);
+                    var P0 = [...P.map(y => _.concat(nv, y))];
+                    var coeff = "";
+                    var s = binomial(n + 1, t);
+                    if (s != 1)
+                        coeff = s + "*"
+                    for (let p of P0) {
+                        ltxi += " + " + coeff + "Ls([" + _.dropRight(bi[j]) + "," + p + "],(x-1)/x,NN)";
+                    }
+                }
+            };
+            ltx += se + "Ls([" + ai + "],x,NN)*(" + ltxi.slice(3) + ")";
+        }
+
+        //ltx += se + "Ls([" + ai + "],x,NN)*(" + ltxi.slice(3) + ")";
+
+        //ltx += abhtml2fx(i, P, al, bl, false);
+    };
+    ltx = ltx.replaceAll('−', '-').replaceAll(' ', '');
+    if (!xinter)
+    //ltx = "Digits:=" + Digits + ":\nNN:=" + N + ":\nff:=sorba(" + ltx + ",0,NN+1):\ngg:=sorba(x^" + n + "*Ls([" + b + "],x,NN)*Ls([" + a + "],1-x,NN),0,NN):\nigg:=int(gg,x):\nalso:=" + also + ":\nfelso:=" + felso + ":\nprint(Int(x^" + n + "*LLi[[" + b + "]](x)*LLi[[" + a + "]](1-x),x));\nplot([ff,gg,igg],x=also..felso,color=[\"Red\",\"Blue\",\"Green\"]);";
+        ltx = "Digits:=" + Digits + ":\nNN:=" + N + ";\nff:=sorba(" + ltx + ",0,NN+1):\ngg:=sorba(x^" + n + "*Ls([" + b + "],x,NN)*Ls([" + a + "],1-x,NN),0,NN):\nigg:=int(gg,x):\nalso:=" + also + ":\nfelso:=" + felso + ":\nprint(Int(x^" + n + "*LLi[[" + b + "]](x)*LLi[[" + a + "]](1-x),x));\nplot([ff,gg,igg],x=also..felso,color=[\"Red\",\"Blue\",\"Green\"]);";
+    else
+        ltx = "Digits:=" + Digits + ":\nNN:=" + N + ":\nff:=sorba(" + ltx + ",1,NN+1):\ngg0:=x^" + n + "*Ls([" + b + "],x,NN)*Ls([" + a + "],1-x,NN):\ngg:=sorba(x^" + n + "*Ls([" + b + "],x,NN)*Ls([" + a + "],1-x,NN),1,NN):\nalso:=" + also + ":\nfelso:=" + felso + ":\ncg:=subs(x = 1, igg):\ncf:=subs(x = 1, ff):\nigg:=int(gg,x):\nprint(Int(x^" + n + "*LLi[[" + b + "]](x)*LLi[[" + a + "]](1-x),x));\ncc0:=evalf(int(gg0,x=0..1)):\ncc:=evalf(subs(x=1,igg)):\nplot([ff-cf+cc+cc0,gg,igg-cg+cc+cc0,cc+cc0,0],x=also..felso,color=[\"Red\",\"Blue\",\"Green\",\"Yellow\",\"White\"]);";
+    mapleertek = ltx;
+    elem.innerHTML = "<h2 style='color:#0023dd;text-align:center;'>Maple input</h2><p style='color:#0023dd;'>The content below is copied to clipboard.</p>" + ltx;
+    elem.style.backgroundColor = "#f7e8b0";
+    navigator.clipboard.writeText(ltx);
+};
+
+function viewTgl(id) {
+    var elem = document.getElementById(id);
+    var open = elem.style.display;
+    var doc = elem.childNodes[1].src;
+    if (open == "none" || !doc.endsWith("plot_seged.pdf")) {
+        elem.childNodes[1].src = "../mapleout/plot_seged.pdf";
+        elem.style.display = "block";
+    } else
+        elem.style.display = "none";
+};
+
+const normalizeLineEndings = (str, normalized = '\r\n') =>
+    str.replace(/\r?\n/g, normalized);
+
+function downloadmapleTxt() {
+    var str = normalizeLineEndings(mapleertek);
+    const aletolt = document.createElement("a");
+    aletolt.href = URL.createObjectURL(new Blob([str], {
+        type: "text/plain"
+    }));
+    aletolt.setAttribute("download", "mapleinput.txt");
+    document.body.appendChild(aletolt);
+    aletolt.addEventListener('click', (e) => {
+        setTimeout(() => URL.revokeObjectURL(aletolt.href), 30 * 1000);
+    });
+    aletolt.click();
+    document.body.removeChild(aletolt);
+};
+
 function setTblfx(v) {
     const elem = document.getElementById("tblfx");
     if (v) {
@@ -10062,8 +10099,6 @@ function calcMeretab(a, b) {
         mb += Math.pow(2, i) * b[i - 1];
     return ma * (mb + Math.pow(2, bl + 1));
 };
-
-
 
 function calcMeret() {
     const N = document.getElementById("xlln").value * 1;
@@ -10259,7 +10294,7 @@ function bSor1(mode, reszl) {
     ]);
     for (let i of L) {
         var fn = fazis[i];
-        BSOR.push(fn(_.last(BSOR)));;
+        BSOR.push(fn(_.last(BSOR)));
     };
     return BSOR;
 };
@@ -10328,6 +10363,7 @@ function genoutput1s() {
         if (AFAZIS.length * BSOR.length * ASOR.length > 0)
             txt = genhtml1(xinter, false);
         const elem = document.querySelector("#genout");
+        elem.style.backgroundColor = "#e7fdf5";
         elem.innerHTML = txt;
     }
 };
@@ -10378,16 +10414,15 @@ function genoutput1r() {
         else if (AFAZIS.length * BSOR.length * ASOR.length > 0)
             txt = genhtml1(xinter, true);
         const elem = document.querySelector("#genout");
+        elem.style.backgroundColor = "#e7fdf5";
         elem.innerHTML = txt;
     }
 };
 
 function genoutput1() {
-    //sss = 0
     const reszletes = document.querySelector("#setmodexll").checked;
     if (reszletes)
         genoutput1r();
     else
         genoutput1s();
-    //console.log(sss)
 };
