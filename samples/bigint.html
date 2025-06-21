@@ -7,6 +7,7 @@
     <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
     <link rel="stylesheet" href="samples.css">
     <script src="multipolylog.js"></script>
+      <script src="compposet.js"></script>
     <script src="../tools/fraction.min.js"></script>
     <script src="../tools/YourCombinations.js"></script>
     <!-- from cdn -->
@@ -279,12 +280,15 @@
 
       <div class="keret of even" id="k8" style="padding-bottom:40px;margin-bottom:10px;">
         <b><big class="sorszam">8.</big></b>
-        <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\left\{ \mathbf{k} | \mathbf{k} \succeq \left(c_{1},c_{2},\ldots,c_{r}\right)\right\} =\left\{ \mathbf{k}:\sum\mathbf{k}=c_{1}\right\} \times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{2}\right\} \times\cdots\times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{r}\right\}\]
+        <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left\{ \mathbf{k} | \left(c_{1},c_{2},\ldots,c_{r}\right)\preceq \mathbf{k} \right\} =\left\{ \mathbf{k}:\sum\mathbf{k}=c_{1}\right\} \times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{2}\right\} \times\cdots\times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{r}\right\}\\
+            \left\{ \mathbf{k} |\left(c_{1},c_{2},\ldots,c_{r}\right)\succeq\mathbf{k} \right\}=\sum_{\bullet\in\{"+",","\}}(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r}) \end{gather*}\]
         </p>
         <div style="margin-left:2px;padding:3px;">
             <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
-            <input class="inpvec" type="text" id="cvec" value="2,5,3" onchange="idClear('#cout');cFiner();">
+            <input class="inpvec" type="text" id="cvec" value="2,5,3" onchange="idClear('#cout');cFiner();"><span id="knr" style="display:inline-block;height:25px;border:1px solid #eac2c2;padding:0 10px 3px 10px;margin:0 10px;vertical-align: middle;margin-bottom:5px;cursor:pointer;background-color:#ffe6e6;border-radius: 4px;font-size:120%;font-weight: 800;"
+                onclick="kisebbnagyobb(this);cFiner();" data-a="nagyobb">&preceq;</span><b>k</b>
         </div>
+
         <div style="padding: 10px;outline: 2px solid #e3c7c7;outline-offset: -6px;background-color: #fde7e7;">
             <button id="okbtc" onclick="cFiner();" class="showpre1" title="Insert code into editor">Calculate</button>
             <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#cout');" title="Clear output">Clear</button>
