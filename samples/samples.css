@@ -1074,6 +1074,72 @@ table.fpntbl.hszorzotbl td.fpnact3 {
     color: #001aff;
 }
 
-#sf_show .id1.finer {
-    border-bottom: 1px solid red;
+.allid.hl {
+    color: #ffe5e5;
+    background: #f732b3;
+    border-radius: 0.5em;
+    padding: 2px 0;
+}
+
+.allid.conj {
+    color: #f732b3;
+    background: #ffe5e5;
+    border-radius: 0.5em;
+    padding: 2px 0;
+}
+
+.allid.cfiner {
+    border-bottom: 2px solid #ffaeae;
+    border-top: 2px dotted #060606;
+}
+
+.allid.ckoveto {
+    border-bottom: 6px double #ffaeae;
+    border-top: 2px dotted #060606;
+}
+
+.allid.ccoarser {
+    border-bottom: 2px solid #9c9cff;
+    border-top: 2px dotted #060606;
+}
+
+.allid.celozo {
+    border-bottom: 6px double #9c9cff;
+    border-top: 2px dotted #060606;
+}
+
+#sf_show .id1.finer,
+.allid.finer {
+    border-bottom: 2px solid red;
+}
+
+.allid.koveto {
+    border-bottom: 6px double red;
+}
+
+.allid.coarser {
+    border-bottom: 2px solid blue;
+}
+
+.allid.elozo {
+    border-bottom: 6px double blue;
+}
+
+.allcdiv {
+    border: 1px solid #b7b7dd;
+    border-radius: 4px;
+    padding: 0 5px;
+    background-color: #e5ebf7;
+    margin-bottom: 5px;
+}
+
+table#calltbl {
+    min-width: max-content;
+    min-height: max-content;
+}
+
+table#calltbl tr td {
+    padding: 3px 5px;
+    font-size: 120%;
+    text-align: center;
 }
