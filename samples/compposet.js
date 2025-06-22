@@ -101,8 +101,12 @@ function idckovUPD(setckov) {
                 f.removeClass('finer');
                 f.addClass('koveto');
             };
-        } else
+        } else {
+            const setcsuc = document.getElementById("csuc").checked;
+            if (setcsuc)
+                $('.allid.koveto').addClass('finer');
             $('.allid.koveto').removeClass('koveto');
+        }
     };
 };
 
@@ -135,8 +139,12 @@ function idcelzUPD(setcelz) {
                 f.removeClass('coarser');
                 f.addClass('elozo');
             };
-        } else
+        } else {
+            const setcprec = document.getElementById("cprec").checked;
+            if (setcprec)
+                $('.allid.elozo').addClass('coarser');
             $('.allid.elozo').removeClass('elozo');
+        }
     };
 };
 
@@ -171,8 +179,12 @@ function idcckovUPD(setcckov) {
                 f.removeClass('cfiner');
                 f.addClass('ckoveto');
             };
-        } else
+        } else {
+            const setccsuc = document.getElementById("ccsuc").checked;
+            if (setccsuc)
+                $('.allid.ckoveto').addClass('cfiner');
             $('.allid.ckoveto').removeClass('ckoveto');
+        };
     };
 };
 
@@ -207,8 +219,12 @@ function idccelzUPD(setccelz) {
                 f.removeClass('ccoarser');
                 f.addClass('celozo');
             };
-        } else
+        } else {
+            const setccprec = document.getElementById("ccprec").checked;
+            if (setccprec)
+                $('.allid.celozo').addClass('ccoarser');
             $('.allid.celozo').removeClass('celozo');
+        }
     };
 };
 
@@ -322,11 +338,91 @@ function hlallid(elem) {
     $(elem).addClass('hl');
     const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
 
+    /*  const setcsuc = document.getElementById("csuc").checked;
+     const setckov = document.getElementById("ckov").checked;
+     const setcprec = document.getElementById("cprec").checked;
+     const setcelz = document.getElementById("celz").checked;
+     const setccsuc = document.getElementById("ccsuc").checked;
+     const setcckov = document.getElementById("cckov").checked;
+     const setccprec = document.getElementById("ccprec").checked;
+     const setccelz = document.getElementById("ccelz").checked;
+
+     if (setcsuc) {
+         const fine = _.tail(invPv(vec));
+         const ff = fine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+         $('.allid.finer').removeClass('finer');
+         for (let f of ff)
+             f.addClass('finer');
+     };
+
+     if (setckov) {
+         const kov = kovetoje(vec);
+         const fk = kov.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+         $('.allid.koveto').removeClass('koveto');
+         for (let f of fk) {
+             f.removeClass('finer');
+             f.addClass('koveto');
+         };
+     };
+
+     if (setcprec) {
+         const coa = _.tail(coarser(vec));
+         const fd = coa.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+         $('.allid.coarser').removeClass('coarser');
+         for (let f of fd)
+             f.addClass('coarser');
+     };
+
+     if (setcelz) {
+         const megel = elozoje(vec);
+         const fe = megel.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+         $('.allid.elozo').removeClass('elozo');
+         for (let f of fe) {
+             f.removeClass('coarser');
+             f.addClass('elozo');
+         };
+     }; */
+
     const cvec = conjugate(vec);
     const fc = $('.allid[data-id="' + JSON.stringify(cvec).slice(1, -1).replaceAll(",", "_") + '"]');
     $('.allid.conj').removeClass('conj');
     fc.addClass('conj');
-    
+
+    /*  if (setccsuc) {
+         const cfine = _.tail(invPv(cvec));
+         const cff = cfine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+         $('.allid.cfiner').removeClass('cfiner');
+         for (let f of cff)
+             f.addClass('cfiner');
+     };
+
+     if (setcckov) {
+         const ckov = kovetoje(cvec);
+         const cfk = ckov.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+         $('.allid.ckoveto').removeClass('ckoveto');
+         for (let f of cfk) {
+             f.removeClass('cfiner');
+             f.addClass('ckoveto');
+         };
+     };
+
+     if (setccprec) {
+         const ccoa = _.tail(coarser(cvec));
+         const cfd = ccoa.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+         $('.allid.ccoarser').removeClass('ccoarser');
+         for (let f of cfd)
+             f.addClass('ccoarser');
+     };
+
+     if (setccelz) {
+         const cmegel = elozoje(cvec);
+         const cfe = cmegel.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+         $('.allid.celozo').removeClass('celozo');
+         for (let f of cfe) {
+             f.removeClass('ccoarser');
+             f.addClass('celozo');
+         };
+     }; */
     callidUPD();
 };
 
