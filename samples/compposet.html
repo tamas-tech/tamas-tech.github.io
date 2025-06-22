@@ -17,9 +17,88 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> 
 </head>
+<div class="keret of odd" id="k1" style="padding-bottom:40px;margin-bottom:10px;">
+    <b><big class="sorszam">1.</big> Base concepts</b>
+    <div style="margin-left:2px;padding:3px;">
+        <label for="cn"><b style="padding: 2px 8px;">n</b> =  </label>
+        <input type="number" id="cn" value="4" min="1" step="1" onchange="" name="cn" style="width:50px;">
+    </div>
+    <div>
+        <table id="calltbl">
+            <tr>
+                <td><b>c</b>&preceq;</td>
+                <td><b>c</b>&rightarrowtail;</td>
+                <td>&preceq;<b>c</b></td>
+                <td>&rightarrowtail;<b>c</b></td>
+                <td><b>c</b>*&preceq;</td>
+                <td><b>c</b>*&rightarrowtail;</td>
+                <td>&preceq;<b>c</b>*</td>
+                <td>&rightarrowtail;<b>c</b>*</td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="switch" style="bottom:2px;">
+                        <input id="csuc"  type="checkbox" onchange="idcsucUPD(this.checked);">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td>
+                    <label class="switch" style="bottom:2px;">
+                        <input id="ckov"  type="checkbox" onchange="idckovUPD(this.checked);">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td>
+                    <label class="switch" style="bottom:2px;">
+                        <input id="cprec"  type="checkbox" onchange="idcprecUPD(this.checked);">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td>
+                    <label class="switch" style="bottom:2px;">
+                        <input id="celz"  type="checkbox" onchange="idcelzUPD(this.checked);">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td>
+                    <label class="switch" style="bottom:2px;">
+                        <input id="ccsuc"  type="checkbox" onchange="idccsucUPD(this.checked);">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td>
+                    <label class="switch" style="bottom:2px;">
+                        <input id="cckov"  type="checkbox" onchange="idcckovUPD(this.checked);">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td>
+                    <label class="switch" style="bottom:2px;">
+                        <input id="ccprec"  type="checkbox" onchange="idccprecUPD(this.checked);">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td>
+                    <label class="switch" style="bottom:2px;">
+                        <input id="ccelz"  type="checkbox" onchange="idccelzUPD(this.checked);">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
+        <button id="okbtcall" onclick="cPoset();" class="showpre1" title="Insert code into editor">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#callout');" title="Clear output">Clear</button>
+        <label for="setoutputfontcall" style="margin-right:-10px;">&#128474;</label>
+        <input oninput="setOutputFontcall(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontcall" name="setoutputfontcall" />
+    </div>
+    <p id="figycall" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+    <p id="callout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
+</div>
 
-<div class="keret of even" id="k1" style="padding-bottom:40px;margin-bottom:10px;">
-    <b><big class="sorszam">1.</big></b>
+<div class="keret of even" id="k2" style="padding-bottom:40px;margin-bottom:10px;">
+    <b><big class="sorszam">2.</big></b>
     <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left\{ \mathbf{k} | \left(c_{1},c_{2},\ldots,c_{r}\right)\preceq \mathbf{k} \right\} =\left\{ \mathbf{k}:\sum\mathbf{k}=c_{1}\right\} \times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{2}\right\} \times\cdots\times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{r}\right\}\\
         \left\{ \mathbf{k} |\left(c_{1},c_{2},\ldots,c_{r}\right)\succeq\mathbf{k} \right\}=\sum_{\bullet\in\{"+",","\}}(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})\\(\text{id1})\hspace{1cm} \sum_{\mathbf{c}\preceq\mathbf{k}} (-1)^{|\mathbf{k}|}\;\sum_{\mathbf{t}\preceq\mathbf{k}}(-1)^{|\mathbf{t}|}\text{A}_{\mathbf{t}}
         =(-1)^{\sum\mathbf{s}}\cdot\sum_{\mathbf{c}^{*}\preceq\mathbf{k}} (-1)^{|\mathbf{k}|}\text{A}_{\mathbf{k}} \end{gather*}\]
@@ -40,8 +119,5 @@
     <p id="figyC" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     <p id="cout" style="font-family:Cambria Math;outline: 2px solid #e3c7c7;outline-offset: -2px;background-color: #fde7e7;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
 </div>
-
-
 </body>
-
 </html>
