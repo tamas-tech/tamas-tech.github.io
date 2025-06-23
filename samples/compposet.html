@@ -24,8 +24,10 @@
     <div style="margin-left:2px;padding:3px;">
         <label for="cn"><b style="padding: 2px 8px;">n</b> =  </label>
         <input type="number" id="cn" value="4" min="1" step="1" name="cn" style="width:50px;">
-        <label for="setrepr" style="margin-left: 10px;">Halmaz reprezentálás </label>
+        <label for="setrepr" style="margin-left: 10px;">Set </label>
         <input type="checkbox" name="setrepr" id="setrepr" onchange="cPoset();" style="height:20px;width:20px;vertical-align:middle;">
+        <label for="setgraph" style="margin-left: 10px;">Graph </label>
+        <input type="checkbox" name="setgraph" id="setgraph" onchange="cPoset();" style="height:20px;width:20px;vertical-align:middle;">
     </div>
     <div>
         <table id="calltbl">
@@ -93,12 +95,13 @@
     </div>
     <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
         <button id="okbtcall" onclick="cPoset();" class="showpre1" title="Insert code into editor">Calculate</button>
-        <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#callout');" title="Clear output">Clear</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="callOutClear();" title="Clear output">Clear</button>
         <label for="setoutputfontcall" style="margin-right:-10px;">&#128474;</label>
         <input oninput="setOutputFontcall(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontcall" name="setoutputfontcall" />
     </div>
     <p id="figycall" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     <p id="callout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
+
 </div>
     
 <div class="keret of even" id="k2" style="padding-bottom:40px;margin-bottom:10px;">
