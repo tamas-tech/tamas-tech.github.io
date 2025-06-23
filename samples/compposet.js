@@ -338,104 +338,30 @@ function hlallid(elem) {
     $(elem).addClass('hl');
     const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
 
-    /*  const setcsuc = document.getElementById("csuc").checked;
-     const setckov = document.getElementById("ckov").checked;
-     const setcprec = document.getElementById("cprec").checked;
-     const setcelz = document.getElementById("celz").checked;
-     const setccsuc = document.getElementById("ccsuc").checked;
-     const setcckov = document.getElementById("cckov").checked;
-     const setccprec = document.getElementById("ccprec").checked;
-     const setccelz = document.getElementById("ccelz").checked;
-
-     if (setcsuc) {
-         const fine = _.tail(invPv(vec));
-         const ff = fine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
-         $('.allid.finer').removeClass('finer');
-         for (let f of ff)
-             f.addClass('finer');
-     };
-
-     if (setckov) {
-         const kov = kovetoje(vec);
-         const fk = kov.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
-         $('.allid.koveto').removeClass('koveto');
-         for (let f of fk) {
-             f.removeClass('finer');
-             f.addClass('koveto');
-         };
-     };
-
-     if (setcprec) {
-         const coa = _.tail(coarser(vec));
-         const fd = coa.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
-         $('.allid.coarser').removeClass('coarser');
-         for (let f of fd)
-             f.addClass('coarser');
-     };
-
-     if (setcelz) {
-         const megel = elozoje(vec);
-         const fe = megel.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
-         $('.allid.elozo').removeClass('elozo');
-         for (let f of fe) {
-             f.removeClass('coarser');
-             f.addClass('elozo');
-         };
-     }; */
-
     const cvec = conjugate(vec);
     const fc = $('.allid[data-id="' + JSON.stringify(cvec).slice(1, -1).replaceAll(",", "_") + '"]');
     $('.allid.conj').removeClass('conj');
     fc.addClass('conj');
 
-    /*  if (setccsuc) {
-         const cfine = _.tail(invPv(cvec));
-         const cff = cfine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
-         $('.allid.cfiner').removeClass('cfiner');
-         for (let f of cff)
-             f.addClass('cfiner');
-     };
-
-     if (setcckov) {
-         const ckov = kovetoje(cvec);
-         const cfk = ckov.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
-         $('.allid.ckoveto').removeClass('ckoveto');
-         for (let f of cfk) {
-             f.removeClass('cfiner');
-             f.addClass('ckoveto');
-         };
-     };
-
-     if (setccprec) {
-         const ccoa = _.tail(coarser(cvec));
-         const cfd = ccoa.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
-         $('.allid.ccoarser').removeClass('ccoarser');
-         for (let f of cfd)
-             f.addClass('ccoarser');
-     };
-
-     if (setccelz) {
-         const cmegel = elozoje(cvec);
-         const cfe = cmegel.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
-         $('.allid.celozo').removeClass('celozo');
-         for (let f of cfe) {
-             f.removeClass('ccoarser');
-             f.addClass('celozo');
-         };
-     }; */
     callidUPD();
 };
 
 function cPoset() {
     const elem = document.getElementById("callout");
     const n = document.getElementById("cn").value * 1;
+    const setrepr = document.getElementById("setrepr").checked;
     var txt = "";
     var comps = _.groupBy(allcomps(n), y => y.length);
     for (var i = 1; i <= n; i++) {
-        var ci = comps[i];
+        var ci = comps[n - i + 1];
         var txti = "<div class='allcdiv'>";
         for (let k of ci) {
-            txti += "<span class='allid' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlallid(this);'>(" + k + ")</span>,";
+            if (!setrepr)
+                txti += "<span class='allid' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlallid(this);'>(" + k + ")</span>,";
+            else {
+                var h = setRepr(k, n - 1)
+                txti += "<span class='chalv'>(" + k + ")&rarr;</span><span class='allid' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlallid(this);'>{" + h + "}</span>,";
+            }
         };
         txt += txti.slice(0, -1) + "</div>";
     };
@@ -479,7 +405,6 @@ function kiszed_c(id) {
     };
     return av;
 };
-
 
 function kisebbnagyobb(elem) {
     var s = elem.dataset.a;
@@ -598,4 +523,12 @@ function kivvec(elem) {
     coa = "{" + coa + "}";
     coa = coa.replaceAll("[", "(").replaceAll("]", ")");
     $('#kivecd').html(coa);
+};
+
+// set reprezentation
+
+function setRepr(c) {
+    c = _.dropRight(c);
+    //return set2digit(kum(c), n);
+    return kum(c);
 };
