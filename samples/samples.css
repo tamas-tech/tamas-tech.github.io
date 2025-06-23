@@ -1143,3 +1143,7 @@ table#calltbl tr td {
     font-size: 120%;
     text-align: center;
 }
+.chalv {
+    opacity: 0.4;
+    font-size: smaller;
+}
