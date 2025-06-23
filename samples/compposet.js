@@ -62,6 +62,15 @@ function setOutputFontcall(v) {
     elem.style.fontSize = v + 'px';
 };
 
+function callOutClear() {
+    idClear('#callout');
+    const cobj = window.cy;
+    if (cobj != undefined) {
+        window.cy.destroy();
+        $('cy').remove();
+    }
+};
+
 function allcomps(n) {
     var out = [];
     for (var k = 1; k <= n; k++) {
@@ -346,26 +355,105 @@ function hlallid(elem) {
     callidUPD();
 };
 
+function drawGraph(n, elem) {
+    $(elem).empty();
+    $(elem).append("<div id='cy'></div>");
+    var nodes0 = [];
+    var edges0 = [];
+    const comps = allcomps(n);
+    for (let c of comps) {
+        nodes0.push({ data: { id: '(' + c + ')', foo: 3, bar: 5, baz: 2 } });
+        var targets = kovetoje(c);
+        for (let t of targets)
+            edges0.push({ data: { id: '(' + c + '_' + t + ')', weight: 1, source: '(' + c + ')', target: '(' + t + ')' } });
+    }
+
+    cytoscape({
+        container: document.getElementById('cy'),
+
+        style: cytoscape.stylesheet('#cy {position: relative;}')
+
+            .selector('node')
+            .css({
+                'position': 'relative',
+                'width': '60px',
+                'height': '60px',
+                'content': 'data(id)',
+                'stripe-size': '100%',
+                'stripe-direction': 'vertical',
+                'stripe-1-background-color': '#E8747C',
+                'stripe-1-background-size': 'mapData(foo, 0, 10, 0, 100)',
+                'stripe-2-background-color': '#74CBE8',
+                'stripe-2-background-size': 'mapData(bar, 0, 10, 0, 100)',
+                'stripe-3-background-color': '#74E883',
+                'stripe-3-background-size': 'mapData(baz, 0, 10, 0, 100)'
+            })
+            .selector('edge')
+            .css({
+                'curve-style': 'bezier',
+                'width': 4,
+                'target-arrow-shape': 'triangle',
+                'opacity': 0.5
+            })
+            .selector(':selected')
+            .css({
+                'background-color': 'black',
+                'line-color': 'black',
+                'target-arrow-color': 'black',
+                'source-arrow-color': 'black',
+                'opacity': 1
+            })
+            .selector('.faded')
+            .css({
+                'opacity': 0.25,
+                'text-opacity': 0
+            }),
+
+        elements: {
+            nodes: nodes0,
+
+            edges: edges0,
+        },
+
+        layout: {
+            name: 'circle',
+            padding: 10
+        },
+
+        ready: function() {
+            window.cy = this;
+        }
+    });
+    $("#cy").css({
+        position: 'relative'
+    })
+};
+
 function cPoset() {
     const elem = document.getElementById("callout");
     const n = document.getElementById("cn").value * 1;
     const setrepr = document.getElementById("setrepr").checked;
+    const setgraph = document.getElementById("setgraph").checked;
     var txt = "";
     var comps = _.groupBy(allcomps(n), y => y.length);
-    for (var i = 1; i <= n; i++) {
-        var ci = comps[n - i + 1];
-        var txti = "<div class='allcdiv'>";
-        for (let k of ci) {
-            if (!setrepr)
-                txti += "<span class='allid' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlallid(this);'>(" + k + ")</span>,";
-            else {
-                var h = setRepr(k, n - 1)
-                txti += "<span class='chalv'>(" + k + ")&rarr;</span><span class='allid' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlallid(this);'>{" + h + "}</span>,";
-            }
+    if (setgraph)
+        drawGraph(n, elem)
+    else {
+        for (var i = 1; i <= n; i++) {
+            var ci = comps[n - i + 1];
+            var txti = "<div class='allcdiv'>";
+            for (let k of ci) {
+                if (!setrepr)
+                    txti += "<span class='allid' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlallid(this);'>(" + k + ")</span>,";
+                else {
+                    var h = setRepr(k, n - 1)
+                    txti += "<span class='chalv'>(" + k + ")&rarr;</span><span class='allid' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlallid(this);'>{" + h + "}</span>,";
+                }
+            };
+            txt += txti.slice(0, -1) + "</div>";
         };
-        txt += txti.slice(0, -1) + "</div>";
-    };
-    elem.innerHTML = txt;
+        elem.innerHTML = txt;
+    }
 };
 
 function kiszed_c(id) {
@@ -531,4 +619,94 @@ function setRepr(c) {
     c = _.dropRight(c);
     //return set2digit(kum(c), n);
     return kum(c);
+};
+
+$(document).on("doubleclick,dbltap", "#cy div canvas", function() {
+    idClear('#callout');
+    const cobj = window.cy;
+    if (cobj != undefined) {
+        window.cy.destroy();
+        $('cy').remove();
+    }
+})
+
+function drawGraph() {
+    const n = document.getElementById("cn").value * 1;
+    var elem = document.getElementById('callout');
+    $(elem).empty();
+    $(elem).append("<div id='cy'></div>");
+    var nodes0 = [];
+    var edges0 = [];
+    const comps = allcomps(n);
+    for (let c of comps) {
+        nodes0.push({ data: { id: '(' + c + ')', foo: 3, bar: 5, baz: 2 } });
+        var targets = kovetoje(c);
+        for (let t of targets)
+            edges0.push({ data: { id: '(' + c + '_' + t + ')', weight: 1, source: '(' + c + ')', target: '(' + t + ')' } });
+    }
+    /* if (setcsuc) {
+        const fine = _.tail(invPv(vec));
+        const ff = fine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+        $('.allid.finer').removeClass('finer');
+        for (let f of ff)
+            f.addClass('finer'); */
+    cytoscape({
+        container: document.getElementById('cy'),
+
+        style: cytoscape.stylesheet('#cy {position: relative;}')
+
+            .selector('node')
+            .css({
+                'position': 'relative',
+                'width': '60px',
+                'height': '60px',
+                'content': 'data(id)',
+                'stripe-size': '100%',
+                'stripe-direction': 'vertical',
+                'stripe-1-background-color': '#E8747C',
+                'stripe-1-background-size': 'mapData(foo, 0, 10, 0, 100)',
+                'stripe-2-background-color': '#74CBE8',
+                'stripe-2-background-size': 'mapData(bar, 0, 10, 0, 100)',
+                'stripe-3-background-color': '#74E883',
+                'stripe-3-background-size': 'mapData(baz, 0, 10, 0, 100)'
+            })
+            .selector('edge')
+            .css({
+                'curve-style': 'bezier',
+                'width': 4,
+                'target-arrow-shape': 'triangle',
+                'opacity': 0.5
+            })
+            .selector(':selected')
+            .css({
+                'background-color': 'black',
+                'line-color': 'black',
+                'target-arrow-color': 'black',
+                'source-arrow-color': 'black',
+                'opacity': 1
+            })
+            .selector('.faded')
+            .css({
+                'opacity': 0.25,
+                'text-opacity': 0
+            }),
+
+        elements: {
+            nodes: nodes0,
+
+            edges: edges0,
+        },
+
+        layout: {
+            name: 'circle',
+            padding: 10
+        },
+
+        ready: function() {
+            window.cy = this;
+        }
+    });
+    $("#cy").css({
+        position: 'relative'
+    })
 };
