@@ -1,4 +1,5 @@
 // poset of compositions
+var ra = undefined;
 
 function invPv(v) {
     var c = [],
@@ -49,8 +50,6 @@ function elozoje(c) {
     const n = c.length - 1;
     return coarser(c).filter(y => y.length == n);
 };
-
-
 
 function setOutputFontc(v) {
     var elem = document.getElementById("cout");
@@ -639,17 +638,11 @@ function drawGraph() {
     var edges0 = [];
     const comps = allcomps(n);
     for (let c of comps) {
-        nodes0.push({ data: { id: '(' + c + ')', foo: 3, bar: 5, baz: 2 } });
+        nodes0.push({ data: { id: '(' + c + ')' } });
         var targets = kovetoje(c);
         for (let t of targets)
             edges0.push({ data: { id: '(' + c + '_' + t + ')', weight: 1, source: '(' + c + ')', target: '(' + t + ')' } });
     }
-    /* if (setcsuc) {
-        const fine = _.tail(invPv(vec));
-        const ff = fine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
-        $('.allid.finer').removeClass('finer');
-        for (let f of ff)
-            f.addClass('finer'); */
     cytoscape({
         container: document.getElementById('cy'),
 
@@ -709,4 +702,209 @@ function drawGraph() {
     $("#cy").css({
         position: 'relative'
     })
+};
+
+// master integral
+
+function setOutputFontintc(v) {
+    var elem = document.getElementById("derivJ");
+    elem.style.fontSize = v + '%';
+    $('.tsorszam-s').css({ "width": v * 0.01 * 1.38 + "em" })
+};
+
+function cdat(el, s, o) {
+    $('.tgomb.hl').html('&#x25CB;');
+    $('.tgomb.hl').removeClass('hl');
+    $(el).html('&#x25CF;');
+    $(el).addClass('hl');
+
+    const c = kiszed_c('intc');
+    const r = c.length;
+    var e = _.take(c, s - 1);
+    if (s <= r)
+        e.push(o);
+    else
+        e.push(1);
+    var h = _.takeRight(c, r - s);
+
+    if (s <= r)
+        h.unshift(c[s - 1] - o + 1);
+    else
+        h = ["( )"];
+    $('.tsorszam-w').css("visibility", "hidden");
+    $('.tsorszam-w.corr').html($('.tsorszam-w.corr').attr('data-n'));
+    $('.tsorszam-w.corr').removeClass('corr');
+    var d = 0;
+    if (barg && aarg)
+        d = 1;
+    if (aarg == barg) {
+        for (var t = 1 - d; t <= s + Math.floor(s / (r + 1)); t++)
+            $('.tsorszam-w:nth(' + t + ')').css("visibility", "visible");
+        if (s == r + 1)
+            $('.tsorszam-w:nth(' + (s) + ')').html(1).addClass("corr");
+        else
+            $('.tsorszam-w:nth(' + (s) + ')').html(o).addClass("corr");
+    }
+
+    $('.tsorszam-e').css("visibility", "hidden");
+    $('.tsorszam-e.corr').html($('.tsorszam-e.corr').attr('data-n'));
+    $('.tsorszam-e.corr').removeClass('corr');
+    for (var t = s - 1; t < r + Math.floor(s / (r + 1)); t++)
+        $('.tsorszam-e:nth(' + t + ')').css("visibility", "visible");
+    $('.tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
+
+    $('.tsorszam-s').css("visibility", "hidden");
+    if (aarg != barg) {
+        const ce = conjugate(e);
+        if (!aarg)
+            $('.tsorszam-s:nth(0)').css("visibility", "visible").html(0);
+        for (var t = 0; t < ce.length; t++)
+            $('.tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").html(ce[t]);
+    };
+    var bv = [];
+    var keplet = "";
+    if (aarg) {
+        if (barg) {
+            bv = e.reverse();
+            bv.push(0);
+        } else {
+            bv = conjugate(e).reverse();
+        }
+    } else {
+        if (barg) {
+            bv = conjugate(e).reverse();
+            bv.push(0);
+        } else {
+            bv = e.reverse();
+        }
+    };
+    keplet = "Li<sub>(" + h + ")</sub>(" + aargtxt + ")&lowast;Li<sub>(" + bv + ")</sub>(" + bargtxt + ")";
+    keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
+    const elem = document.getElementById("cintkeplet");
+    elem.innerHTML = keplet;
+};
+
+function cdatUPD() {
+    const elem = $('.tgomb.hl');
+    if (elem)
+        elem.trigger('click');
+};
+
+function ribbonGraph() {
+    const elem = document.getElementById("derivJ");
+    const c = kiszed_c('intc');
+    const kc = kum(c);
+    const r = c.length;
+    var k = [0];
+    for (var i = 1; i < r; i++) {
+        k.push(kc[i - 1] - i);
+    };
+
+    var kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "<th style='width:21.36px'></th></th></tr></thead>";
+    for (var j = 0; j < r; j++) {
+        kep += "<tr><th><span class='tsorszam-w' data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div>";
+        for (var t = 0; t < k[j]; t++) {
+            kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
+        };
+        for (var t = k[j]; t < k[j] + c[j]; t++) {
+            kep += "<span class='tgomb shown' onclick='cdat(this," + ((j + 1) + "," + (t - k[j] + 1)) + ")'>&#x25CB;</span> ";
+        };
+        kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th>";
+    };
+    kep += "<tr><th><span class='tsorszam-w' data-n='1' >1</span></th><td><div>";
+    var L = _.last(k) + _.last(c);
+    for (var t = 0; t < L - 1; t++)
+        kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
+    kep += "<span class='tgomb shown' style='background-color:#d5d5d5;border-radius: 50%;padding: 0 0.31em;margin-left: -0.31em;' onclick='cdat(this," + (r + 1) + "," + L + ")'>&#x25CB;</span></div></td><th><span class='tsorszam-e' data-n='( )'>( )</span></th>";
+    kep += "</tr><tr><th><span class='tsorszam-s' data-n='0' style='color:red;'>0</span></th><th><div style='margin-left:-0.3em'>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-s' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "</div></th><th style='width:21.36px'></th></tr></table>";
+    kep += "<div id='cintkeplet'></div>"
+    elem.innerHTML = kep;
+    setOutputFontintc(document.getElementById("setoutputfontintc").value);
+};
+
+function ribbonAnimate() {
+    const N = $('.tgomb.shown').length;
+    const t = document.getElementById("t").value * 1;
+    if (N > 0) {
+        var i = 0;
+        ra = setInterval(() => {
+            $('.tgomb.shown:nth(' + i + ')').click();
+            i++;
+            if (i == N) {
+                clearInterval(ra);
+            }
+        }, t);
+    } else
+        return;
+}
+
+function setgenKeplet0c() {
+    var a = document.querySelector("#intc").value;
+    var b = "0";
+    var na = a.length;
+    var nb = b.length;
+    a = a.replaceAll("oo", "∞");
+    b = b.replaceAll("oo", "∞");
+    var tort = "x";
+    if (narg)
+        tort = "1-x";
+    var arg_a = "x";
+    var arg_b = "x";
+    if (aarg)
+        arg_a = "1-x";
+    if (barg)
+        arg_b = "1-x";
+
+    totr = "1-x";
+    var txt = "";
+    var txt1 = "";
+    var txt2 = "";
+    var szorzat = "\\cdot";
+    if (na * nb == 0)
+        szorzat = "";
+    if (na > 0)
+        txt1 = "{\\rm " + amode + "}_{(" + a + ")}(" + arg_a + ")";
+    if (nb > 0)
+        txt2 = "{\\rm " + bmode + "}_{(" + b + ")}(" + arg_b + ")";
+    txt = "\\int \\dfrac{" + txt1 + szorzat + txt2 + "}{" + tort + "}\\,{\\text{d} x}"
+    return txt;
+};
+
+function setgenKepletc() {
+    const elem = document.querySelector("#k1set");
+    const txt = setgenKeplet0c();
+    elem.style.visibility = "hidden";
+    elem.innerText = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    setTimeout(() => {
+        elem.style.visibility = "visible";
+    }, 200);
+};
+
+function setaArgc(elem) {
+    aarg = elem.checked;
+    if (aarg)
+        aargtxt = "1-x";
+    else
+        aargtxt = "x";
+    //setFazis();
+    setgenKepletc();
+};
+
+function setbArgc(elem) {
+    barg = elem.checked;
+    if (barg)
+        bargtxt = "1-x";
+    else
+        bargtxt = "x";
+    //setFazis();
+    setgenKepletc();
 };
