@@ -1197,13 +1197,11 @@ table#calltbl tr td {
     font-size: smaller;
 }
 
-#cintkeplet {
-    border: 1px solid #959db0;
-    padding: 5px 7px;
-    margin-top: 10px;
-    border-radius: 5px;
-    background-color: #d5d3db;
-    color: #203471;
-    min-height: 30px;
+.cintkeplet {
+    border: 1px solid #c1cfec;
+    padding: 0 10px;
+    margin-left: 4em;
+    background-color: #fff;
     text-align: center;
+    font-size: 70%;
 }
