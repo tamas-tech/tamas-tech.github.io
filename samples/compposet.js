@@ -1,6 +1,5 @@
 // poset of compositions
 var ra = undefined;
-var cN = 1;
 
 function invPv(v) {
     var c = [],
@@ -485,7 +484,6 @@ function kiszed_c(id) {
             idClear('#cout')
             return "Hibás bemenet";
         }
-         cN = _.sum(av) + 1 - av.length || 1;
     } catch (error) {
         setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
         idClear('#cout')
@@ -710,8 +708,7 @@ function drawGraph() {
 function setOutputFontintc(v) {
     var elem = document.getElementById("derivJ");
     elem.style.fontSize = v + '%';
-      $('.tsorszam-s').width(20);
-    $('.tsorszam-s').width(($('.tsorszam-s').parent('div').width() - 10) / cN);
+     $('.tsorszam-s').width(($('.tgomb.shown').width()));
 };
 
 function cdat(el, s, o) {
