@@ -782,10 +782,11 @@ function cdat(el, s, o) {
             bv = e.reverse();
         }
     };
-    keplet = "Li<sub>(" + h + ")</sub>(" + aargtxt + ")&lowast;Li<sub>(" + bv + ")</sub>(" + bargtxt + ")";
+    keplet = "&rightarrow;&nbsp;Li<sub>(" + h + ")</sub>(" + aargtxt + ")&lowast;Li<sub>(" + bv + ")</sub>(" + bargtxt + ")";
     keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
-    const elem = document.getElementById("cintkeplet");
-    elem.innerHTML = keplet;
+    //const elem = document.getElementById("cintkeplet");
+    $('.cintkeplet').html('').removeClass('cintkeplet');
+    $("#ebbe-" + s).html(keplet).addClass('cintkeplet');
 };
 
 function cdatUPD() {
@@ -808,7 +809,7 @@ function ribbonGraph() {
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
     };
-    kep += "<th style='width:21.36px'></th></th></tr></thead>";
+    kep += "<th style='width:21.36px'></th></th><td></td></tr></thead>";
     for (var j = 0; j < r; j++) {
         kep += "<tr><th><span class='tsorszam-w' data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div>";
         for (var t = 0; t < k[j]; t++) {
@@ -817,19 +818,18 @@ function ribbonGraph() {
         for (var t = k[j]; t < k[j] + c[j]; t++) {
             kep += "<span class='tgomb shown' onclick='cdat(this," + ((j + 1) + "," + (t - k[j] + 1)) + ")'>&#x25CB;</span> ";
         };
-        kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th>";
+        kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
     };
     kep += "<tr><th><span class='tsorszam-w' data-n='1' >1</span></th><td><div>";
     var L = _.last(k) + _.last(c);
     for (var t = 0; t < L - 1; t++)
         kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
-    kep += "<span class='tgomb shown' style='background-color:#d5d5d5;border-radius: 50%;padding: 0 0.31em;margin-left: -0.31em;' onclick='cdat(this," + (r + 1) + "," + L + ")'>&#x25CB;</span></div></td><th><span class='tsorszam-e' data-n='( )'>( )</span></th>";
+    kep += "<span class='tgomb shown' style='background-color:#d5d5d5;border-radius: 50%;padding: 0 0.31em;margin-left: -0.31em;' onclick='cdat(this," + (r + 1) + "," + L + ")'>&#x25CB;</span></div></td><th><span class='tsorszam-e' data-n='( )'>( )</span></th><td><div  id='ebbe-" + (r + 1) + "'></div></td>";
     kep += "</tr><tr><th><span class='tsorszam-s' data-n='0' style='color:red;'>0</span></th><th><div style='margin-left:-0.3em'>";
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-s' data-n='" + i + "'>" + i + "</span>";
     };
     kep += "</div></th><th style='width:21.36px'></th></tr></table>";
-    kep += "<div id='cintkeplet'></div>"
     elem.innerHTML = kep;
     setOutputFontintc(document.getElementById("setoutputfontintc").value);
 };
