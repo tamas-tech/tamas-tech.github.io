@@ -577,6 +577,18 @@ table thead tr th span.tsorszam {
     width: 21.36px;
 }
 
+table tr th span.tsorszam-n,
+table tr th span.tsorszam-e,
+table tr th span.tsorszam-s,
+table tr th span.tsorszam-w {
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+    width: 21.36px;
+    visibility: hidden;
+    vertical-align: middle;
+}
+
 table tr td span.tgomb {
     cursor: pointer;
 }
@@ -592,6 +604,10 @@ table tr#J_sora.active {
 
 table tr td span.tgomb:hover {
     color: #999;
+}
+
+table tr td span.tgomb.hl {
+    color: #d30000;
 }
 
 table tr#c_sora.active {
@@ -1066,6 +1082,38 @@ table.fpntbl.hszorzotbl td.fpnact3 {
     transform-origin: center;
 }
 
+#fpnoutsor span.parenfpn {
+    transform: scaleY(2.3);
+    display: inline-block;
+    transform-origin: center;
+}
+
+#xnlout sub.xlns {
+    vertical-align: -0.5em;
+    font-size: 80%;
+}
+
+#xnlout sub.xlns1 {
+    vertical-align: -0.5em;
+    font-size: 80%;
+    margin-left: -0.4em;
+}
+
+#xnlout span.paren {
+    transform: scaleY(1.4);
+    display: inline-block;
+    transform-origin: center;
+    padding: 0 2px;
+}
+
+#xnlout span.paren1 {
+    transform: scaleY(2.2);
+    display: inline-block;
+    transform-origin: center;
+    padding: 0 2px;
+}
+
+
 .id1.hl {
     color: red;
 }
@@ -1143,7 +1191,19 @@ table#calltbl tr td {
     font-size: 120%;
     text-align: center;
 }
+
 .chalv {
     opacity: 0.4;
     font-size: smaller;
+}
+
+#cintkeplet {
+    border: 1px solid #959db0;
+    padding: 5px 7px;
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: #d5d3db;
+    color: #203471;
+    min-height: 30px;
+    text-align: center;
 }
