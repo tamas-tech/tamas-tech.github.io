@@ -711,7 +711,7 @@ function setOutputFontintc(v) {
     var elem = document.getElementById("derivJ");
     elem.style.fontSize = v + '%';
 
-    $('.tsorszam-s').width(20);
+    $('.tsorszam-s').width(15);
     $('.tsorszam-s').width(($('.tsorszam-s').parent('div').width() - 10) / cN);
 };
 
