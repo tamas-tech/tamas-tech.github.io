@@ -708,11 +708,12 @@ function drawGraph() {
 // master integral
 
 function setOutputFontintc(v) {
-    var elem = document.getElementById("derivJ");
+    var elem = document.getElementById("derivT");
     elem.style.fontSize = v + '%';
 
-    $('.tsorszam-s').width(15);
+    $('.tsorszam-s').width(20);
     $('.tsorszam-s').width(($('.tsorszam-s').parent('div').width() - 10) / cN);
+    $('.tsorszam-s,.tsorszam-w,.tsorszam-e').css({ 'font-size': v * 0.01 * 12 + "px" });
 };
 
 function cdat(el, s, o) {
@@ -794,7 +795,7 @@ function cdatUPD() {
 };
 
 function ribbonGraph() {
-    const elem = document.getElementById("derivJ");
+    const elem = document.getElementById("derivT");
     const c = kiszed_c('intc');
     const kc = kum(c);
     const r = c.length;
