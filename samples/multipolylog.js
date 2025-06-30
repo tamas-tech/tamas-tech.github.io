@@ -3559,7 +3559,7 @@ function genoutput() {
     }
 };
 
-if (document.title != "Explicit formula")
+if (document.title != "Explicit formula" && document.title != "Poset of Compositions")
     $(document).on('selectionchange', function() {
         if (insertonselect) {
             const foo = document.querySelector('p#genout')
@@ -3865,6 +3865,7 @@ function calc_sh() {
     const elem = document.getElementById("shout");
     a_sor = kiszed_sh("avg");
     b_sor = kiszed_sh("bvg");
+    reducedv = document.getElementById("reducev").checked;
     if (reducedv && a_sor !== undefined && b_sor != undefined) {
         a_sor = a_sor.map(y => y - 1);
         b_sor = b_sor.map(y => y - 1);
@@ -4219,7 +4220,7 @@ $(document).on('input focus', '#query2', function() {
     setSearch();
 });
 
-if (document.title != "Explicit formula" && document.title != "Generalized zeta")
+if (document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('#shout')
         const foo1 = document.querySelector('#sagetransf');
@@ -4543,7 +4544,7 @@ function setSearch3() {
 $(document).on('input focus', '#mquery', function() {
     setSearch3();
 });
-if (document.title != "Explicit formula" && document.title != "Generalized zeta")
+if (document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('p#mshout')
         var isin = window.getSelection().containsNode(foo, true);
@@ -5404,7 +5405,7 @@ function boldVertices() {
     };
 };
 
-if (document.title != "Explicit formula" && document.title != "Generalized zeta")
+if (document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('p#shout');
         const foo2 = document.querySelector('span#iresz');
@@ -5716,6 +5717,81 @@ function visszaLeC() {
     return out;
 };
 
+function cegyutthli() {
+    var sum = 0;
+    for (let y of it) {
+        sum += komb(nnn, y);
+    }
+    if (sum == 0)
+        sum = "";
+    else if (sum == 1) {
+        sum = "Li<sub>(" + c_sor.map(y => y + 1).toString() + ")</sub>(x) + ";
+    } else
+        sum += "&lowast;Li<sub>(" + c_sor.map(y => y + 1).toString() + ")</sub>(x) + ";
+    return sum;
+};
+
+function eshuffli() {
+    const maxa = _.max(a_sor);
+    const maxb = _.max(b_sor);
+    const maxab = maxa + maxb + 1;
+    var cek = comp0(sumab, nnn);
+    var n1 = cek.length;
+    cek = cek.filter(y => y.every(v => v < maxab));
+    var n2 = cek.length;
+    javitas = (n1 / n2).toFixed(2);
+    var LL = "";
+
+    for (let c of cek) {
+        c_sor = c;
+        LL += cegyutthli();
+    }
+    return LL;
+};
+
+function calc_shLi() {
+    const elem1 = document.getElementById("figyshLi");
+    elem1.innerHTML = "";
+    const elem = document.getElementById("shoutLi");
+
+    var a_sor0 = kiszed_sh("avli");
+    var b_sor0 = kiszed_sh("bvli");
+    if (a_sor0 !== undefined && b_sor0 != undefined) {
+        a_sor = a_sor0.map(y => y - 1);
+        b_sor = b_sor0.map(y => y - 1);
+    }
+
+    var sh, meret;
+    if (a_sor == undefined || b_sor == undefined)
+        sh = "HIBA";
+    else if (a_sor.length + b_sor.length == 0)
+        sh = "( )&#x29E2;( ) = ( )";
+    else if (a_sor.length == 0)
+        sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
+    else {
+        sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+        kk = a_sor.length;
+        nnn = kk + b_sor.length;
+        meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+        if (meret < 150000000) {
+            it = Choose(nnn, kk);
+            sh = eshuffli();
+            if (sh == "")
+                sh = "Nem megfelelő bemenet"
+            else {
+                sh = "Li<sub>(" + a_sor0.toString() + ")</sub>(x)&lowast;Li<sub>(" + b_sor0.toString() + ")</sub>(x) = Li<sub>[(" + a_sor0.toString() + ")ˇ<span style='font-size:28px;'>&#x29E2;</span>(" + b_sor0.toString() + ")ˇ]^</sub> (x) = Li<sub>[(" + a_sor.toString() + ")<span style='font-size:28px;'>&#x29E2;</span>(" + b_sor.toString() + ")]^</sub> (x) = <br/><br/>= " + sh;
+                var db = sh.match(/ \+ /g).length;
+                sh = sh.slice(0, -3)
+                sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b> (gyorsítás: &#10761;" + javitas + ") futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
+            }
+        } else {
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+        }
+    };
+
+    elem.innerHTML = sh;
+};
+
 function calc_shLe() {
     LeC = {};
     const elem1 = document.getElementById("figyshLe");
@@ -5739,7 +5815,6 @@ function calc_shLe() {
             calc_shab(i, j);
     }
     var str = "Le<sub>(" + a + ")</sub>&lowast;Le<sub>(" + b + ")</sub> = " + visszaLeC().slice(3);
-    //elem.innerHTML = JSON.stringify(wa) + "<br>" + JSON.stringify(wb) + "<br>" + JSON.stringify(LeC);
     elem.innerHTML = str;
 };
 
