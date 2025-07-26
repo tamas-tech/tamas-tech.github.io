@@ -8664,7 +8664,7 @@ function fpqnInt() {
 // x^n*Li(s1,s2,...,sr)(x) integráltja 
 
 function setOutputFontxnl(v) {
-    document.getElementById("xnlout").style.fontSize = v + "px";
+    document.getElementById("xnlout").style.fontSize = v + "%";
 };
 
 function IsHTML(S, n) {
@@ -8675,18 +8675,19 @@ function IsHTML(S, n) {
     const szorzo = formazottTortHTML(1, Math.pow(n, e));
     var txt = "";
     if (r == 1) {
-        txt += szorzo + " x<sup>" + n + "</sup>";
+        txt += "<span class='xnLix' onclick='xnLiiback(1);'>" + szorzo + " x<sup>" + n + "</sup></span>";
     } else {
         var elojels = " + ";
         if (Math.pow(-1, r + 1) == -1)
             elojels = " −&nbsp;"
-        var txtveg = elojels + "<sub  class='xlns'>" + n + "</sub><span style='border-top:2px solid;'>Le</span><sub  class='xlns'>(" + _.reverse(s) + ")</sub>(x)";
+            //var txtveg = elojels + "<span class='xnLe' onclick='xnLiiback(" + (r + 1) + ");'><sub  class='xlns'>" + n + "</sub><span style='border-top:2px solid;'>Le</span><sub  class='xlns'>(" + _.reverse(s) + ")</sub>(x)<span>";
+        var txtveg = elojels + "<span class='xnLe' onclick='xnLiiback(" + (r + 1) + ");'>&zeta;*<sub  class='xlns1'>" + n + "</sub><span class='xlns'>(" + _.reverse(s) + ")</span>(x)<span>";
         s = _.reverse(s);
         for (var k = 2; k <= r; k++) {
             var elojel = " + ";
             if (Math.pow(-1, k) == -1)
                 elojel = " −&nbsp;"
-            txt += elojel + "&zeta;<sup>*</sup><sub  class='xlns1'>" + n + "</sub>(" + s1.toString() + ")·Li<sub  class='xlns'>(" + s + ")</sub>(x)";
+            txt += elojel + "<span class='xnLii' onclick='xnLiiback(" + k + ");'>&zeta;*<sub  class='xlns1'>" + n + "</sub>(" + s1.toString() + ")·Li<sub  class='xlns'>(" + s + ")</sub>(x)</span>";
             var csere = _.last(s);
             s = _.dropRight(s);
             s1.push(csere);
@@ -8705,7 +8706,7 @@ function jvagas(v, j) {
     const sum1 = _.sum(v1);
     const sum2 = _.sum(v2);
 
-    return [v1, v2, v3, sum1, sum2];
+    return [v1, v2, v3, sum1, sum2, j];
 };
 
 function xnlIntHTML() {
@@ -8752,24 +8753,24 @@ function xnlIntHTML() {
                 var v1m1h = [i]
                 if (v1m1.length > 0)
                     v1m1h = [i, ...rv1m1];
-                txt1 += elojel1 + "Li<sub  class='xlns'>(" + v3t + ")</sub>(x)&lowast;" + IsHTML(v1m1h, n + 1);
+                txt1 += elojel1 + "<span class='xnLi'>Li<sub  class='xlns'>(" + v3t + ")</sub>(x)</span>&lowast;" + IsHTML(v1m1h, n + 1);
             } else {
                 var v1m1t = i;
                 if (v1m1.length > 0)
                     v1m1t = i + "," + rv1m1.toString();
-                txt1 += elojel1 + "Li<sub  class='xlns'>(" + v3t + ")</sub>(x)&lowast;<span class='pzjelento' onclick='xnlJelent([" + v1m1t + "]," + (n + 1) + ");'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v1m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
+                txt1 += elojel1 + "<span class='xnLi'>Li<sub  class='xlns'>(" + v3t + ")</sub>(x)</span>&lowast;<span class='pzjelento' onclick='xnlJelent([" + v1m1t + "]," + (n + 1) + ",this);'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v1m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
             }
         };
         if (mode) {
             var v2m1h = [];
             if (v2m1.length > 0)
                 v2m1h = [0, ...rv2m1];
-            txt1 += elojel2 + "Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)&lowast;" + IsHTML(v2m1h, n + 1);
+            txt1 += elojel2 + "<span class='xnLi'>Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)</span>&lowast;" + IsHTML(v2m1h, n + 1);
         } else {
             var v2m1t = "";
             if (v2m1.length > 0)
                 v2m1t = "0," + rv2m1.toString();
-            txt1 += elojel2 + "Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)&lowast;<span class='pzjelento' onclick='xnlJelent([" + v2m1t + "]," + (n + 1) + ");'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v2m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
+            txt1 += elojel2 + "<span class='xnLi'>Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)</span>&lowast;<span class='pzjelento' onclick='xnlJelent([" + v2m1t + "]," + (n + 1) + ",this);'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v2m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
         }
     };
     if (txt1.startsWith(" + "))
@@ -8779,18 +8780,45 @@ function xnlIntHTML() {
     elem.innerHTML = txt;
 };
 
-function xnlJelent(s, n) {
+var kellclick = true;
+var kellclick2 = true;
+
+function xnlJelent(s, n, elem) {
+    var indx = $(elem).children('sub.xlns')[0].innerHTML;
+    indx = JSON.parse("[" + indx.slice(1, -1) + "]");
+    var sor = indx.length;
+    var oszlop = indx[0];
+    if (sor > 1)
+        oszlop++;
+    const c = kiszed_c('xnls');
+    const r = c.length;
+    const veg = sor > r;
+    if (veg) {
+        const kc = kum(c);
+        var k = [0];
+        for (var i = 1; i < r; i++) {
+            k.push(kc[i - 1] - i);
+        };
+        var L = _.last(k) + _.last(c);
+        sor = r + 1;
+        oszlop = L;
+    }
     setTimeout(() => {
         var elem = document.getElementById("pzoutr");
         const txt = IsHTML(s, n);
         if (elem) {
             elem.innerHTML = txt;
-            elem.scrollIntoView({
-                behavior: "smooth",
-                block: 'start'
-            });
+            if (kellclick2)
+                $(".xnLi").removeClass('hl');
+            kellclick = false;
+            if (kellclick2)
+                $('.tgomb.shown[onclick="cdat_xn(this,' + sor + ',' + oszlop + ')"]').trigger('click');
         }
-    }, 100)
+    }, 100);
+    setTimeout(() => {
+        kellclick = true;
+        kellclick2 = true;
+    }, 150);
 };
 
 function IsLatex(S, n) {
@@ -9819,6 +9847,7 @@ function cFiner1(vec, n, mode) {
             out = [...out, ...out.map(y => _.concat(0, y))];
         }
     }
+
     return [txt, out];
 };
 
