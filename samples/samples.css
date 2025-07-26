@@ -589,6 +589,20 @@ table tr th span.tsorszam-w {
     vertical-align: middle;
 }
 
+.tsorszam-s.hl,
+.tsorszam-w.hl {
+    background-color: #f0cccc;
+    box-shadow: 0 0 10px 5px #d7b8b8;
+}
+
+#derivT table tr th {
+    text-align: center;
+}
+
+#derivT table tr th.hl {
+    border-top: 1px solid
+}
+
 table tr td span.tgomb {
     cursor: pointer;
 }
@@ -1204,4 +1218,24 @@ table#calltbl tr td {
     background-color: #fff;
     text-align: center;
     font-size: 70%;
+}
+
+.xnLe,
+.xnLii,
+.xnLix {
+    cursor: pointer;
+}
+
+.xnLi.hl {
+    background-color: #bdcfe1;
+    box-shadow: 0 0 10px 5px #d4e0bc;
+    padding: 5px 0px;
+}
+
+.xnLe.hl,
+.xnLii.hl,
+.xnLix.hl {
+    background-color: #e1c7bd;
+    box-shadow: 0 0 10px 5px #e0c6bc;
+    padding: 5px 0px;
 }
