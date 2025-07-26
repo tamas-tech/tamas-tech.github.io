@@ -8681,7 +8681,7 @@ function IsHTML(S, n) {
         if (Math.pow(-1, r + 1) == -1)
             elojels = " −&nbsp;"
             //var txtveg = elojels + "<span class='xnLe' onclick='xnLiiback(" + (r + 1) + ");'><sub  class='xlns'>" + n + "</sub><span style='border-top:2px solid;'>Le</span><sub  class='xlns'>(" + _.reverse(s) + ")</sub>(x)<span>";
-        var txtveg = elojels + "<span class='xnLe' onclick='xnLiiback(" + (r + 1) + ");'>&zeta;*<sub  class='xlns1'>" + n + "</sub><span class='xlns'>(" + _.reverse(s) + ")</span>(x)<span>";
+        var txtveg = elojels + "<span class='xnLe' onclick='xnLiiback(" + (r + 1) + ");'>&zeta;*<sub  class='xlns1'>" + n + "</sub><span class='xlns'>(" + _.reverse(s) + ")</span>(x)</span>";
         s = _.reverse(s);
         for (var k = 2; k <= r; k++) {
             var elojel = " + ";
