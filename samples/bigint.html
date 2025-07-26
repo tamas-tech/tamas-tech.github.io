@@ -251,31 +251,36 @@
         <p id="ifpnout" style="font-family:Cambria Math;outline: 2px solid #e3c7c7;outline-offset: -2px;background-color: #fde7e7;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
     </div>
 
-    <div class="keret of odd" id="k7" style="padding-bottom:40px;margin-bottom:10px;">
+     <div class="keret of odd" id="k7" style="padding-bottom:40px;margin-bottom:10px;">
         <b><big class="sorszam">7.</big></b>
         <p class="keplet" id="keplet_k3" style="padding-bottom:10px;margin-bottom:10px;">\[\int x^{n}\,\text{Li}_{(s_{1},s_{2},\ldots,s_{r})}(x)\,\text{d}x\]
         </p>
         <div style="margin-left:6px;padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;margin-bottom:5px;">
             <span style="margin-left:10px;margin-right:10px;">HTML</span>
-            <label class="switch"><input id="setxnlLmode"  type="checkbox" onchange="idClear('#xnlout');xnlInt();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\LaTeX\)</span>
+            <label class="switch" style="bottom:2px;"><input id="setxnlLmode"  type="checkbox" onchange="idClear('#xnlout');idClear('#derivT');xnlInt();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\LaTeX\)</span>
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
-            <input class="inpvec" type="text" id="xnls" value="2,5,3" onchange="idClear('#xnlout');xnlInt();">
+            <input class="inpvec" type="text" id="xnls" value="3,4,5,2,3" onchange="idClear('#xnlout');idClear('#derivT');xnlInt();">
         </div>
         <div style="margin-left:2px;padding:3px;">
             <label for="xnln"><b style="padding: 2px 8px;">n</b> =  </label>
-            <input type="number" id="xnln" value="2" min="0" step="1" onchange="idClear('#xnlout');xnlInt();" name="xnln" style="width:50px;">
+            <input type="number" id="xnln" value="2" min="0" step="1" onchange="idClear('#xnlout');idClear('#derivT');xnlInt();" name="xnln" style="width:50px;">
         </div>
         <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
-            <button id="okbtnxnl" onclick="xnlInt();" class="showpre1" title="Insert code into editor">Calculate</button>
-            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#xnlout');" title="Clear output">Clear</button>
+            <button id="okbtnxnl" onclick="ribbonGraph_xn();xnlInt();" class="showpre1" title="Insert code into editor">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#xnlout');idClear('#derivT');" title="Clear output">Clear</button>
             <label for="setoutputfontxnl" style="margin-right:-10px;">&#128474;</label>
-            <input oninput="setOutputFontxnl(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontxnl" name="setoutputfontxnl" />
+            <input oninput="setOutputFontxnl(this.value);setOutputFontintc(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontxnl"
+                name="setoutputfontxnl" />
             <label for="setmodexnl" style="margin-left: 10px;">Kibontva</label>
             <input type="checkbox" name="setmodexnl" id="setmodexnl" onchange="xnlInt();" style="height:20px;width:20px;vertical-align:middle;" />
         </div>
-        <p id="xnlout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
+        <p class="kijelzo" id="derivJ" style="font-family:Symbola,Cambria Math;">
+            <span id="derivT" class="MathJax"></span>
+        </p>
+        <p id="xnlout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8">
+        </p>
     </div>
 
       <div class="keret of even" id="k8" style="padding-bottom:40px;margin-bottom:10px;">
