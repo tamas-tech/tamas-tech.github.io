@@ -926,6 +926,7 @@ function cdat_xn(el, s, o) {
     const c = kiszed_c('xnls');
     const n = document.getElementById("xnln").value * 1;
     const r = c.length;
+    const mode = document.getElementById("setmodexnl").checked;
     var e = _.take(c, s - 1);
     if (s <= r)
         e.push(o);
@@ -971,7 +972,9 @@ function cdat_xn(el, s, o) {
     var keplet = "";
 
     bv = _.dropRight(e.reverse());
-    keplet = "&rightarrow;&nbsp;Li<sub>(" + h + ")</sub>(x)&lowast;&sum;Li&rightarrow;(" + bv + ")&leftarrow;&zeta;*<sub class='xlns1'>" + n + "</sub>";
+
+    keplet = "&rightarrow;&nbsp;Li<sub>(" + h + ")</sub>(x)&lowast;&sum;&zeta;*<sub class='xlns1'>" + (n + 1) + "</sub>&rightarrow;(" + [...bv].reverse() + ")&leftarrow;Li";
+
     keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
     $('.cintkeplet').html('').removeClass('cintkeplet');
     $("#ebbe-" + s).html(keplet).addClass('cintkeplet');
@@ -980,46 +983,106 @@ function cdat_xn(el, s, o) {
     var htxt = [...h];
     if (_.last(h) == "( )")
         htxt = "";
-
+    if (mode) {
+        $('.pznext').removeClass('pznext');
+        $(".xnLii,.xnLe,.xnLix").removeClass('hl');
+        $(".xnLi .xlns:contains('(" + htxt + ")')").parent('.xnLi').next('.pzoutblock').addClass('pznext');
+    }
     if (kellclick)
         $(".pzjelento.monom-active").trigger("click");
     $(".xnLi").removeClass('hl');
+    $('.zLi.shown').removeClass('shown');
     $(".xnLi .xlns:contains('(" + htxt + ")')").parent('.xnLi').addClass('hl');
-
 };
 
 function Lihl(j) {
     const n = Lihlvec.length + 2;
-
+    const mode = document.getElementById("setmodexnl").checked;
+    // const N = document.getElementById("xnln").value * 1 + 1;
     $('.tsorszam-w.hl,.tsorszam-s.hl').removeClass('hl');
+    $('.zLi.shown').removeClass('shown');
     $('.tsorszam-w:nth(' + j + ')').addClass('hl');
     $('#derivT table tr th.hl').removeClass('hl');
     $('#derivT table tr .tsorszam-w:nth(' + j + ')').parent('th').addClass('hl');
+    if (j > 1) {
+        $('.tsorszam-w:nth(' + j + ')').parent('th').next('.zLi').html('&uparrow;Li').addClass('shown'); //uj
+        $('.tsorszam-w:nth(' + (j - 1) + ')').parent('th').next('.zLi').html('&downarrow;&zeta;*').addClass('shown'); //uj
+    } else {
+        $('.tsorszam-w:nth(' + j + ')').parent('th').next('.zLi').html('&downarrow;x<sup>n</sup>').addClass('shown');
+    }
+
     const helem = $(".xnLi.hl");
-    const jelem = helem.next('.pzjelento');
-    kellclick2 = true;
-    if (!jelem.hasClass('monom-active'))
-        jelem.trigger('click');
     var htxt = _.take(Lihlvec, n - j);
-    $(".xnLii,.xnLe,.xnLix").removeClass('hl');
-    if (j == 1)
-        setTimeout(() => { $('#pzoutr span.xnLix').addClass('hl') }, 100);
-    else {
-        if (htxt.length == 0) {
-            htxt = [...Lihlvec].reverse();
-            setTimeout(() => { $(".xnLe .xlns:contains('(" + htxt + ")')").parent('.xnLe').addClass('hl'); }, 100);
-        } else
-            setTimeout(() => { $(".xnLii .xlns:contains('(" + htxt + ")')").parent('.xnLii').addClass('hl'); }, 100);
-    };
-    kellclick2 = false;
-    setTimeout(() => { kellclick2 = true; }, 200);
+    var keplet = "";
+    if (mode) {
+        const jelem = helem.next('.pzoutblock');
+        // console.log(jelem)
+        $('.pznext').removeClass('pznext');
+        jelem.addClass('pznext')
+        $(".xnLii,.xnLe,.xnLix").removeClass('hl');
+        if (j == 1) {
+            $('.pznext span.xnLix').addClass('hl');
+            keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLix.hl').html();
+            $('.cintkeplet').html(keplet);
+        } else {
+            if (htxt.length == 0) {
+                htxt = [...Lihlvec].reverse();
+                $(".pznext .xnLe .xlns:contains('(" + htxt + ")')").parent('.xnLe').addClass('hl');
+                keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLe.hl').html();
+                $('.cintkeplet').html(keplet);
+            } else {
+                $(".pznext .xnLii .xlns:contains('(" + htxt + ")')").parent('.xnLii').addClass('hl');
+                keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLii.hl').html();
+                $('.cintkeplet').html(keplet);
+            }
+        };
+    } else {
+        const jelem = helem.next('.pzjelento');
+
+        kellclick2 = true;
+        if (!jelem.hasClass('monom-active'))
+            jelem.trigger('click');
+
+        $(".xnLii,.xnLe,.xnLix").removeClass('hl');
+        if (j == 1)
+            setTimeout(() => {
+                $('#pzoutr span.xnLix').addClass('hl');
+                keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLix.hl').html();
+                $('.cintkeplet').html(keplet);
+            }, 100);
+        else {
+            if (htxt.length == 0) {
+                htxt = [...Lihlvec].reverse();
+                setTimeout(() => {
+                    $(".xnLe .xlns:contains('(" + htxt + ")')").parent('.xnLe').addClass('hl');
+                    keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLe.hl').html();
+                    $('.cintkeplet').html(keplet);
+                }, 100);
+            } else
+                setTimeout(() => {
+                    $(".xnLii .xlns:contains('(" + htxt + ")')").parent('.xnLii').addClass('hl');
+                    keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLii.hl').html();
+                    $('.cintkeplet').html(keplet);
+                }, 100);
+        };
+        kellclick2 = false;
+        setTimeout(() => { kellclick2 = true; }, 200);
+    }
 };
 
 function Lihlveg(j) {
     $('.tsorszam-s.hl,.tsorszam-w.hl').removeClass('hl');
     $('.tsorszam-s[data-n=0]').addClass('hl');
     $('#derivT table tr th.hl').removeClass('hl');
+    $('.zLi.shown').removeClass('shown');
     $('#derivT table tr .tsorszam-s[data-n=0]').parent('th').addClass('hl');
+    var keplet = "";
+    if (j > 1) {
+        $('#derivT table tr .tsorszam-s[data-n=0]').parent('th').next('.zLi').html('&uparrow;Li').addClass('shown'); //uj
+        $('.tsorszam-w:nth(' + (j - 1) + ')').parent('th').next('.zLi').html('&downarrow;&zeta;*').addClass('shown'); //uj
+    } else {
+        $('#derivT table tr .tsorszam-s[data-n=0]').parent('th').next('.zLi').html('&downarrow;x<sup>n</sup>').addClass('shown');
+    }
     const helem = $(".xnLi.hl");
     const jelem = helem.next('.pzjelento');
     kellclick2 = true;
@@ -1027,7 +1090,13 @@ function Lihlveg(j) {
         jelem.trigger('click');
     $(".xnLii,.xnLe,.xnLix").removeClass('hl');
     var htxt = [...Lihlvec].reverse();
-    setTimeout(() => { $(".xnLe .xlns:contains('(" + htxt + ")')").parent('.xnLe').addClass('hl'); }, 100);
+
+    setTimeout(() => {
+        $(".xnLe .xlns:contains('(" + htxt + ")')").parent('.xnLe').addClass('hl');
+        keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLe.hl').html();
+        $('.cintkeplet').html(keplet);
+    }, 100);
+
     kellclick2 = false;
     setTimeout(() => { kellclick2 = true; }, 200);
 };
@@ -1042,13 +1111,13 @@ function ribbonGraph_xn() {
         k.push(kc[i - 1] - i);
     };
 
-    var kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th>";
+    var kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><td class='zLi'></td><th>";
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
     };
     kep += "<th style='width:21.36px'></th></th><td></td></tr></thead>";
     for (var j = 0; j < r; j++) {
-        kep += "<tr><th><span class='tsorszam-w' style='cursor:pointer;' onclick='Lihl(" + (j + 1) + ");' data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div>";
+        kep += "<tr><th><span class='tsorszam-w' style='cursor:pointer;' onclick='Lihl(" + (j + 1) + ");' data-n='" + c[j] + "'>" + c[j] + "</span></th><td class='zLi'></td><td><div>";
         for (var t = 0; t < k[j]; t++) {
             kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
         };
@@ -1057,23 +1126,26 @@ function ribbonGraph_xn() {
         };
         kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
     };
-    kep += "<tr><th><span class='tsorszam-w' data-n='1' onclick='Lihl(" + (r + 1) + ");' style='cursor:pointer;'>1</span></th><td><div>";
+    kep += "<tr><th><span class='tsorszam-w' data-n='1' onclick='Lihl(" + (r + 1) + ");' style='cursor:pointer;'>1</span></th><td class='zLi'></td><td><div>";
     var L = _.last(k) + _.last(c);
     for (var t = 0; t < L - 1; t++)
         kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
     kep += "<span class='tgomb shown' style='background-color:#d5d5d5;border-radius: 50%;padding: 0 0.31em;margin-left: -0.31em;' onclick='cdat_xn(this," + (r + 1) + "," + L + ")'>&#x25CB;</span></div></td><th><span class='tsorszam-e' data-n='( )'>( )</span></th><td><div  id='ebbe-" + (r + 1) + "'></div></td>";
-    kep += "</tr><tr><th><span class='tsorszam-s' data-n='0' style='color:red;cursor:pointer;'onclick='Lihlveg(" + (r + 2) + ");'>0</span></th><th><div style='margin-left:-0.3em'>";
+    kep += "</tr><tr><th><span class='tsorszam-s' data-n='0' style='color:red;cursor:pointer;'onclick='Lihlveg(" + (r + 2) + ");'>0</span></th><td class='zLi'></td><th><div style='margin-left:-0.3em'>";
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-s' data-n='" + i + "'>" + i + "</span>";
     };
     kep += "</div></th><th style='width:21.36px'></th></tr></table>";
     elem.innerHTML = kep;
     setOutputFontintc(document.getElementById("setoutputfontxnl").value);
-    $('#derivT table tr:nth(1) td:nth(0),#derivT table tr:nth(1) th').css('border-bottom', '1px dashed #70808e');
+    $('#derivT table tr:nth(1) td:nth(0),#derivT table tr:nth(1) th,#derivT table tr:nth(1) td:nth(1)').css('border-bottom', '1px dashed #70808e');
 };
 
-function xnLiiback(j) {
+function xnLiiback(j, el) {
+    const mode = document.getElementById("setmodexnl").checked;
     const gomb = $('.tsorszam-w[onclick="Lihl(' + j + ');"]');
+    if (mode && !$(el).parent().prev().hasClass('hl'))
+        return;
     if (gomb.length != 0)
         gomb.trigger('click');
     else {
