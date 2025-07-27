@@ -8675,26 +8675,25 @@ function IsHTML(S, n) {
     const szorzo = formazottTortHTML(1, Math.pow(n, e));
     var txt = "";
     if (r == 1) {
-        txt += "<span class='xnLix' onclick='xnLiiback(1);'>" + szorzo + " x<sup>" + n + "</sup></span>";
+        txt += "<span class='pzoutblock'>" + szorzo + "<span class='xnLix' onclick='xnLiiback(1,this);'>x<sup>" + n + "</sup></span></span>";
     } else {
         var elojels = " + ";
         if (Math.pow(-1, r + 1) == -1)
             elojels = " −&nbsp;"
-            //var txtveg = elojels + "<span class='xnLe' onclick='xnLiiback(" + (r + 1) + ");'><sub  class='xlns'>" + n + "</sub><span style='border-top:2px solid;'>Le</span><sub  class='xlns'>(" + _.reverse(s) + ")</sub>(x)<span>";
-        var txtveg = elojels + "<span class='xnLe' onclick='xnLiiback(" + (r + 1) + ");'>&zeta;*<sub  class='xlns1'>" + n + "</sub><span class='xlns'>(" + _.reverse(s) + ")</span>(x)</span>";
+        var txtveg = elojels + "<span class='xnLe' onclick='xnLiiback(" + (r + 1) + ",this);'>&zeta;*<sub  class='xlns1'>" + n + "</sub><span class='xlns'>(" + _.reverse(s) + ")</span>(x)</span>";
         s = _.reverse(s);
         for (var k = 2; k <= r; k++) {
             var elojel = " + ";
             if (Math.pow(-1, k) == -1)
                 elojel = " −&nbsp;"
-            txt += elojel + "<span class='xnLii' onclick='xnLiiback(" + k + ");'>&zeta;*<sub  class='xlns1'>" + n + "</sub>(" + s1.toString() + ")·Li<sub  class='xlns'>(" + s + ")</sub>(x)</span>";
+            txt += elojel + "<span class='xnLii' onclick='xnLiiback(" + k + ",this);'>&zeta;*<sub  class='xlns1'>" + n + "</sub>(" + s1.toString() + ")·Li<sub  class='xlns'>(" + s + ")</sub>(x)</span>";
             var csere = _.last(s);
             s = _.dropRight(s);
             s1.push(csere);
         };
         if (txt.startsWith(" + "))
             txt = txt.slice(2);
-        txt = szorzo + " &lowast; <span class='paren1'>[</span>" + txt + txtveg + "<span class='paren1'>]</span>";
+        txt = "<span class='pzoutblock'>" + szorzo + " &lowast;<span class='paren1'>[</span>" + txt + txtveg + "<span class='paren1'>]</span></span>";
     }
     return txt;
 };
@@ -8753,24 +8752,24 @@ function xnlIntHTML() {
                 var v1m1h = [i]
                 if (v1m1.length > 0)
                     v1m1h = [i, ...rv1m1];
-                txt1 += elojel1 + "<span class='xnLi'>Li<sub  class='xlns'>(" + v3t + ")</sub>(x)</span>&lowast;" + IsHTML(v1m1h, n + 1);
+                txt1 += elojel1 + "<span class='xnLi' onclick='xnlJelent1(this);'>Li<sub  class='xlns'>(" + v3t + ")</sub>(x)</span>&lowast;" + IsHTML(v1m1h, n + 1);
             } else {
                 var v1m1t = i;
                 if (v1m1.length > 0)
                     v1m1t = i + "," + rv1m1.toString();
-                txt1 += elojel1 + "<span class='xnLi'>Li<sub  class='xlns'>(" + v3t + ")</sub>(x)</span>&lowast;<span class='pzjelento' onclick='xnlJelent([" + v1m1t + "]," + (n + 1) + ",this);'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v1m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
+                txt1 += elojel1 + "<span class='xnLi' onclick='xnlJelent1(this);'>Li<sub  class='xlns'>(" + v3t + ")</sub>(x)</span>&lowast;<span class='pzjelento' onclick='xnlJelent([" + v1m1t + "]," + (n + 1) + ",this);'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v1m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
             }
         };
         if (mode) {
             var v2m1h = [];
             if (v2m1.length > 0)
                 v2m1h = [0, ...rv2m1];
-            txt1 += elojel2 + "<span class='xnLi'>Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)</span>&lowast;" + IsHTML(v2m1h, n + 1);
+            txt1 += elojel2 + "<span class='xnLi' onclick='xnlJelent1(this);'>Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)</span>&lowast;" + IsHTML(v2m1h, n + 1);
         } else {
             var v2m1t = "";
             if (v2m1.length > 0)
                 v2m1t = "0," + rv2m1.toString();
-            txt1 += elojel2 + "<span class='xnLi'>Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)</span>&lowast;<span class='pzjelento' onclick='xnlJelent([" + v2m1t + "]," + (n + 1) + ",this);'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v2m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
+            txt1 += elojel2 + "<span class='xnLi' onclick='xnlJelent1(this);'>Li<sub  class='xlns'>(" + v3.toString() + ")</sub>(x)</span>&lowast;<span class='pzjelento' onclick='xnlJelent([" + v2m1t + "]," + (n + 1) + ",this);'><span style='font-size:116%;'>\u{1d4d9}</span><sub  class='xlns'>(" + v2m1t + ")</sub><span class='paren'>[</span>x<sup>" + (n + 1) + "</sup><span class='paren'>]</span></span>";
         }
     };
     if (txt1.startsWith(" + "))
@@ -8808,8 +8807,10 @@ function xnlJelent(s, n, elem) {
         const txt = IsHTML(s, n);
         if (elem) {
             elem.innerHTML = txt;
-            if (kellclick2)
+            if (kellclick2) {
                 $(".xnLi").removeClass('hl');
+                $('.zLi.shown').removeClass('shown');
+            }
             kellclick = false;
             if (kellclick2)
                 $('.tgomb.shown[onclick="cdat_xn(this,' + sor + ',' + oszlop + ')"]').trigger('click');
@@ -8819,6 +8820,31 @@ function xnlJelent(s, n, elem) {
         kellclick = true;
         kellclick2 = true;
     }, 150);
+};
+
+function xnlJelent1(elem) {
+    $('.zLi.shown').removeClass('shown');
+    const c = kiszed_c('xnls');
+    const r = c.length;
+    var indx = $(elem).children('sub.xlns')[0].innerHTML;
+    indx = JSON.parse("[" + indx.slice(1, -1) + "]");
+    var sor = r + 1 - indx.length;
+    var oszlop = c[sor - 1] + 1 - indx[0] * 1;
+    const veg = sor > r;
+    if (veg) {
+        const kc = kum(c);
+        var k = [0];
+        for (var i = 1; i < r; i++) {
+            k.push(kc[i - 1] - i);
+        };
+        var L = _.last(k) + _.last(c);
+        sor = r + 1;
+        oszlop = L;
+    }
+    var ne = $(elem).next('.pzoutblock');
+    setTimeout(() => { ne.addClass('pznext'); }, 100);
+    $(".xnLii,.xnLe,.xnLix").removeClass('hl');
+    $('.tgomb.shown[onclick="cdat_xn(this,' + sor + ',' + oszlop + ')"]').trigger('click');
 };
 
 function IsLatex(S, n) {
