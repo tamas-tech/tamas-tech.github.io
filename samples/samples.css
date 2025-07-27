@@ -1220,6 +1220,7 @@ table#calltbl tr td {
     font-size: 70%;
 }
 
+.xnLi,
 .xnLe,
 .xnLii,
 .xnLix {
@@ -1238,4 +1239,23 @@ table#calltbl tr td {
     background-color: #e1c7bd;
     box-shadow: 0 0 10px 5px #e0c6bc;
     padding: 5px 0px;
+}
+
+.pzoutblock {
+    display: inline-block;
+}
+
+.pznext {
+    background-color: #fffcd0;
+    box-shadow: 0 0 10px 5px #fff0e0;
+}
+
+.zLi {
+    visibility: hidden;
+    width: 35px;
+    font-size: 70%;
+}
+
+.zLi.shown {
+    visibility: visible;
 }
