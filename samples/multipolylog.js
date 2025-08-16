@@ -69,6 +69,7 @@ var fazis = {
     atv: bov,
     veg: bov,
 };
+var haspv = false;
 const fltx = { "nov": "\\boldsymbol{_{+}b}", "bov": "\\boldsymbol{^{+}b}", "mnov": "-\\left(\\boldsymbol{_{+}b}\\right)", "mbov": "-\\left(\\boldsymbol{^{+}b}\\right)", "bovnov": "\\boldsymbol{^{+}b}+\\boldsymbol{_{+}b}", "bovmnov": "\\boldsymbol{^{+}b}-\\boldsymbol{_{+}b}", "mbovnov": "\\boldsymbol{_{+}b}-\\boldsymbol{^{+}b}", "mbovmnov": "-\\left(\\boldsymbol{^{+}b}+\\boldsymbol{_{+}b}\\right)" }
 
 // MULTISET
@@ -3114,7 +3115,7 @@ function pozValtas() {
         bl.classList.remove("kiur");
         al.classList.add("kiur");
     }
-    setTimeout(() => { genoutput(); }, 300);
+    setTimeout(() => { genoutput(); }, 30);
 };
 
 function setgenOut(elem) {
@@ -3491,12 +3492,39 @@ function formazbhtmlsep(b) {
     return "<tr><td class='bsor sep'>" + elojele(_.last(b)) + "(" + _.dropRight(b) + ")</td></tr>";
 };
 
+function toribbon(el, i) {
+    const zz = document.getElementById("derivJ2");
+    const $el = $(el);
+    if (zz == undefined) {
+        return;
+    } else {
+        if ($el.hasClass("zztbl")) {
+            console.log("zztbl elem")
+            return;
+        } else {
+            const aa = _.sum(kiszed_c('avg'));
+            const bb = _.sum(kiszed_c('bvg'));
+            if (!haspv) {
+                if (egyezes == 1 && narg != aarg)
+                    $('#derivT2 .tgomb.shown:nth(' + (aa + 1 - i) + ')').trigger('click');
+                else
+                    $('#derivT2 .tgomb.shown:nth(' + (bb + i) + ')').trigger('click');
+            } else {
+                if (egyezes == 1 && narg != barg)
+                    $('#derivT2 .tgomb.shown:nth(' + (bb + i) + ')').trigger('click');
+                else
+                    $('#derivT2 .tgomb.shown:nth(' + (aa + 1 - i) + ')').trigger('click');
+            }
+        }
+    }
+};
+
 function abhtml(i) {
     const a = ASOR[i + 1];
     const b = BSOR[i + 1];
     const n = b.length;
     const n1 = BSOR[i].length || 0;
-    var ltx = "<table class='genout-sor'><tr><td class='asor' style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i)) + "(" + a + ")</td></tr>";
+    var ltx = "<table class='genout-sor' onclick='toribbon(this," + (i + 1) + ");'><tr><td class='asor' style='border-bottom:1px solid #777;'>" + elojele(Math.pow(-1, i)) + "(" + a + ")</td></tr>";
     for (var j = 0; j < n; j++) {
         if (n != n1) {
             if (j == (n / 2 - 1))
