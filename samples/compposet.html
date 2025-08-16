@@ -20,143 +20,214 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> 
 </head>
 <body>
-<div class="keret of odd" id="k1" style="padding-bottom:40px;margin-bottom:10px;">
-    <b><big class="sorszam">1.</big> Base concepts</b>
-    <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left(c_{1},c_{2},\ldots,c_{n-1},c_{n}\right)\rightarrow\lbrace c_{1},c_{1}+c_{2},\ldots,c_{1}+c_{2}+\cdots+c_{n-1}\rbrace\\\lbrace c_{1},c_{1}+c_{2},\ldots,c_{1}+c_{2}+\cdots+c_{n-1}\rbrace \rightarrow \left(c_{1},c_{2}-c_{1},\ldots,c_{n-1}-c_{n-2},n-c_{n-1}\right)\end{gather*}\]
-    </p>
-    <div style="margin-left:2px;padding:3px;">
-        <label for="cn"><b style="padding: 2px 8px;">n</b> =  </label>
-        <input type="number" id="cn" value="4" min="1" step="1" name="cn" style="width:50px;">
-        <label for="setrepr" style="margin-left: 10px;">Set </label>
-        <input type="checkbox" name="setrepr" id="setrepr" onchange="cPoset();" style="height:20px;width:20px;vertical-align:middle;">
-        <label for="setgraph" style="margin-left: 10px;">Hasse Diagram </label>
-        <input type="checkbox" name="setgraph" id="setgraph" onchange="cPoset();" style="height:20px;width:20px;vertical-align:middle;">
-    </div>
-    <div>
-        <table id="calltbl">
-            <tr>
-                <td><b>c</b>&preceq;</td>
-                <td><b>c</b>&rightarrowtail;</td>
-                <td>&preceq;<b>c</b></td>
-                <td>&rightarrowtail;<b>c</b></td>
-                <td><b>c</b>*&preceq;</td>
-                <td><b>c</b>*&rightarrowtail;</td>
-                <td>&preceq;<b>c</b>*</td>
-                <td>&rightarrowtail;<b>c</b>*</td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="switch" style="bottom:2px;">
+ <div class="keret of odd" id="k1" style="padding-bottom:40px;margin-bottom:10px;">
+        <b><big class="sorszam">1.</big> Base concepts</b>
+        <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left(c_{1},c_{2},\ldots,c_{n-1},c_{n}\right)\rightarrow\lbrace c_{1},c_{1}+c_{2},\ldots,c_{1}+c_{2}+\cdots+c_{n-1}\rbrace\\\lbrace c_{1},c_{1}+c_{2},\ldots,c_{1}+c_{2}+\cdots+c_{n-1}\rbrace \rightarrow \left(c_{1},c_{2}-c_{1},\ldots,c_{n-1}-c_{n-2},n-c_{n-1}\right)\end{gather*}\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="cn"><b style="padding: 2px 8px;">n</b> =  </label>
+            <input type="number" id="cn" value="4" min="1" step="1" name="cn" style="width:50px;">
+            <label for="setrepr" style="margin-left: 10px;">Set </label>
+            <input type="checkbox" name="setrepr" id="setrepr" onchange="cPoset();" style="height:20px;width:20px;vertical-align:middle;">
+            <label for="setgraph" style="margin-left: 10px;">Hasse Diagram </label>
+            <input type="checkbox" name="setgraph" id="setgraph" onchange="cPoset();" style="height:20px;width:20px;vertical-align:middle;">
+        </div>
+        <div>
+            <table id="calltbl">
+                <tr>
+                    <td><b>c</b>&preceq;</td>
+                    <td><b>c</b>&rightarrowtail;</td>
+                    <td>&preceq;<b>c</b></td>
+                    <td>&rightarrowtail;<b>c</b></td>
+                    <td><b>c</b>*&preceq;</td>
+                    <td><b>c</b>*&rightarrowtail;</td>
+                    <td>&preceq;<b>c</b>*</td>
+                    <td>&rightarrowtail;<b>c</b>*</td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="switch" style="bottom:2px;">
                         <input id="csuc"  type="checkbox" onchange="idcsucUPD(this.checked);">
                         <span class="slider round"></span>
                     </label>
-                </td>
-                <td>
-                    <label class="switch" style="bottom:2px;">
+                    </td>
+                    <td>
+                        <label class="switch" style="bottom:2px;">
                         <input id="ckov"  type="checkbox" onchange="idckovUPD(this.checked);">
                         <span class="slider round"></span>
                     </label>
-                </td>
-                <td>
-                    <label class="switch" style="bottom:2px;">
+                    </td>
+                    <td>
+                        <label class="switch" style="bottom:2px;">
                         <input id="cprec"  type="checkbox" onchange="idcprecUPD(this.checked);">
                         <span class="slider round"></span>
                     </label>
-                </td>
-                <td>
-                    <label class="switch" style="bottom:2px;">
+                    </td>
+                    <td>
+                        <label class="switch" style="bottom:2px;">
                         <input id="celz"  type="checkbox" onchange="idcelzUPD(this.checked);">
                         <span class="slider round"></span>
                     </label>
-                </td>
-                <td>
-                    <label class="switch" style="bottom:2px;">
+                    </td>
+                    <td>
+                        <label class="switch" style="bottom:2px;">
                         <input id="ccsuc"  type="checkbox" onchange="idccsucUPD(this.checked);">
                         <span class="slider round"></span>
                     </label>
-                </td>
-                <td>
-                    <label class="switch" style="bottom:2px;">
+                    </td>
+                    <td>
+                        <label class="switch" style="bottom:2px;">
                         <input id="cckov"  type="checkbox" onchange="idcckovUPD(this.checked);">
                         <span class="slider round"></span>
                     </label>
-                </td>
-                <td>
-                    <label class="switch" style="bottom:2px;">
+                    </td>
+                    <td>
+                        <label class="switch" style="bottom:2px;">
                         <input id="ccprec"  type="checkbox" onchange="idccprecUPD(this.checked);">
                         <span class="slider round"></span>
                     </label>
-                </td>
-                <td>
-                    <label class="switch" style="bottom:2px;">
+                    </td>
+                    <td>
+                        <label class="switch" style="bottom:2px;">
                         <input id="ccelz"  type="checkbox" onchange="idccelzUPD(this.checked);">
                         <span class="slider round"></span>
                     </label>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
-        <button id="okbtcall" onclick="cPoset();" class="showpre1" title="Insert code into editor">Calculate</button>
-        <button class="showpre1" style="width:76px;margin-left:3px" onclick="callOutClear();" title="Clear output">Clear</button>
-        <label for="setoutputfontcall" style="margin-right:-10px;">&#128474;</label>
-        <input oninput="setOutputFontcall(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontcall" name="setoutputfontcall" />
-    </div>
-    <p id="figycall" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
-    <p id="callout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
-
-</div>
-
-<div class="keret of even" id="k2" style="padding-bottom:40px;margin-bottom:10px;">
-    <b><big class="sorszam">2.</big></b>
-    <p class="keplet" id="keplet_k2" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left\{ \mathbf{k} | \left(c_{1},c_{2},\ldots,c_{r}\right)\preceq \mathbf{k} \right\} =\left\{ \mathbf{k}:\sum\mathbf{k}=c_{1}\right\} \times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{2}\right\} \times\cdots\times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{r}\right\}\\
-        \left\{ \mathbf{k}:\left(c_{1},c_{2},\ldots,c_{r}\right)\succeq\mathbf{k} \right\}=\sum_{\bullet\in\{"+",","\}}(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})\\(\text{id1})\hspace{1cm} \sum_{\mathbf{c}\preceq\mathbf{k}} (-1)^{|\mathbf{k}|}\;\sum_{\mathbf{t}\preceq\mathbf{k}}(-1)^{|\mathbf{t}|}\text{A}_{\mathbf{t}}
-        =(-1)^{\sum\mathbf{s}}\cdot\sum_{\mathbf{c}^{*}\preceq\mathbf{k}} (-1)^{|\mathbf{k}|}\text{A}_{\mathbf{k}} \end{gather*}\]
-    </p>
-    <div style="margin-left:2px;padding:3px;">
-        <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
-        <input class="inpvec" type="text" id="cvec" value="2,5,3" onchange="idClear('#cout');cFiner();"><span id="knr" style="display:inline-block;height:25px;border:1px solid #eac2c2;padding:0 10px 3px 10px;margin:0 10px;vertical-align: middle;margin-bottom:5px;cursor:pointer;background-color:#ffe6e6;border-radius: 4px;font-size:120%;font-weight: 800;"
-            onclick="kisebbnagyobb(this);cFiner();" data-a="nagyobb">&preceq;</span><b>k</b>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
+            <button id="okbtcall" onclick="cPoset();" class="showpre1" title="Insert code into editor">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="callOutClear();" title="Clear output">Clear</button>
+            <label for="setoutputfontcall" style="margin-right:-10px;">&#128474;</label>
+            <input oninput="setOutputFontcall(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontcall" name="setoutputfontcall" />
+        </div>
+        <p id="figycall" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+        <p id="callout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
     </div>
 
-    <div style="padding: 10px;outline: 2px solid #e3c7c7;outline-offset: -6px;background-color: #fde7e7;">
-        <button id="okbtc" onclick="cFiner();" class="showpre1" title="Insert code into editor">Calculate</button>
-        <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#cout');" title="Clear output">Clear</button>
-        <label for="setoutputfontc" style="margin-right:-10px;">&#128474;</label>
-        <input oninput="setOutputFontc(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontc" name="setoutputfontc" />
-        <div style="margin-top:7px;"><button class="showpre1" onclick="posetid1()">id1</button></div>
-    </div>
-    <p id="figyC" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
-    <p id="cout" style="font-family:Cambria Math;outline: 2px solid #e3c7c7;outline-offset: -2px;background-color: #fde7e7;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
-</div>
+    <div class="keret of even" id="k2" style="padding-bottom:40px;margin-bottom:10px;">
+        <b><big class="sorszam">2.</big></b>
+        <p class="keplet" id="keplet_k2" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left\{ \mathbf{k}: \left(c_{1},c_{2},\ldots,c_{r}\right)\preceq \mathbf{k} \right\} =\left\{ \mathbf{k}:\sum\mathbf{k}=c_{1}\right\} \times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{2}\right\} \times\cdots\times\left\{ \mathbf{k}:\sum\mathbf{k}=c_{r}\right\}\\
+            \left\{ \mathbf{k}:\left(c_{1},c_{2},\ldots,c_{r}\right)\succeq\mathbf{k} \right\}=\sum_{\bullet\in\{"+",","\}}(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})\\(\text{id1})\hspace{1cm} \sum_{\mathbf{c}\preceq\mathbf{k}} (-1)^{|\mathbf{k}|}\;\sum_{\mathbf{t}\preceq\mathbf{k}}(-1)^{|\mathbf{t}|}\text{A}_{\mathbf{t}}
+            =(-1)^{\sum\mathbf{s}}\cdot\sum_{\mathbf{c}^{*}\preceq\mathbf{k}} (-1)^{|\mathbf{k}|}\text{A}_{\mathbf{k}} \end{gather*}\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
+            <input class="inpvec" type="text" id="cvec" value="2,5,3" onchange="idClear('#cout');cFiner();"><span id="knr" style="display:inline-block;height:25px;border:1px solid #eac2c2;padding:0 10px 3px 10px;margin:0 10px;vertical-align: middle;margin-bottom:5px;cursor:pointer;background-color:#ffe6e6;border-radius: 4px;font-size:120%;font-weight: 800;"
+                onclick="kisebbnagyobb(this);cFiner();" data-a="nagyobb">&preceq;</span><b>k</b>
+        </div>
 
-<div class="keret of odd" id="k3" style="padding-bottom:40px;margin-bottom:0;">
-    <b><big class="sorszam">3.</big></b>
-    <p class="keplet" id="k1set" style="height:84px;margin-bottom:10px;background-color: #dddddd;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(0)}(x)}{x}\,{\text{d} x}\]</p>
-    <div style="margin-left:2px;padding:3px;">
-        <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
-        <input class="inpvec" type="text" id="intc" value="3,2,1,4,1,2" oninput="idClear('#derivT');setgenKepletc();">
+        <div style="padding: 10px;outline: 2px solid #e3c7c7;outline-offset: -6px;background-color: #fde7e7;">
+            <button id="okbtc" onclick="cFiner();" class="showpre1" title="Insert code into editor">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#cout');" title="Clear output">Clear</button>
+            <label for="setoutputfontc" style="margin-right:-10px;">&#128474;</label>
+            <input oninput="setOutputFontc(this.value);" type="range" min="10" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontc" name="setoutputfontc" />
+            <div style="margin-top:7px;"><button class="showpre1" onclick="posetid1()">id1</button></div>
+        </div>
+        <p id="figyC" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+        <p id="cout" style="font-family:Cambria Math;outline: 2px solid #e3c7c7;outline-offset: -2px;background-color: #fde7e7;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
     </div>
-    <div style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
-        <label for="amode" style="cursor:pointer;"><b style="padding: 2px 7px;">a</b>:</label>
-        <span style="margin-left:5px;">x</span>
-        <label class="switch"><input  id="setaarg" type="checkbox" onchange="setaArgc(this);cdatUPD();"><span class="slider round"></span></label> <span>1-x</span>
-        <span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
-        <label for="bmode" style="cursor:pointer;"><b  style="padding: 2px 7px;">b</b>:</label>
-        <span style="margin-left:5px;">x</span>
-        <label class="switch"><input id="setbarg" type="checkbox" onchange="setbArgc(this);cdatUPD();"><span class="slider round"></span></label> <span>1-x</span>
+
+    <div class="keret of odd" id="k3" style="padding-bottom:40px;margin-bottom:10px;">
+        <b><big class="sorszam">3.</big></b>
+        <p class="keplet" id="k1set" style="height:84px;margin-bottom:10px;background-color: #dddddd;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(0)}(x)}{x}\,{\text{d} x}\]</p>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
+            <input class="inpvec" type="text" id="intc" value="3,2,1,4,1,2" oninput="idClear('#derivT');setgenKepletc();">
+        </div>
+        <div style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+            <label for="amode" style="cursor:pointer;"><b style="padding: 2px 7px;">a</b>:</label>
+            <span style="margin-left:5px;">x</span>
+            <label class="switch"><input  id="setaarg" type="checkbox" onchange="setaArgc(this);cdatUPD();"><span class="slider round"></span></label> <span>1-x</span>
+            <span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
+            <label for="bmode" style="cursor:pointer;"><b  style="padding: 2px 7px;">b</b>:</label>
+            <span style="margin-left:5px;">x</span>
+            <label class="switch"><input id="setbarg" type="checkbox" onchange="setbArgc(this);cdatUPD();"><span class="slider round"></span></label> <span>1-x</span>
+        </div>
+        <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
+            <button id="okbtintc" onclick="ribbonGraph();" class="showpre1" title="Insert code into editor">Calculate</button><span class="lepteto" onclick="ribbonAnimate();" style="display:inline-block;padding:5px 5px 5px 7px;margin:4px 0 4px 5px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;">▶</span>
+            <label for="t"><b style="padding: 2px 8px;">t</b> = </label>
+            <input type="number" id="t" value="1000" min="100" step="100" name="t" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
+            <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#derivT');" title="Clear output">Clear</button>
+            <label for="setoutputfontintc" style="margin-right:-10px;">&#128474;</label>
+            <input oninput="setOutputFontintc(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontintc" name="setoutputfontintc">
+        </div>
+        <p class="kijelzo" id="derivJ" style="font-family:Symbola,Cambria Math;">
+            <span id="derivT" class="MathJax"></span>
+        </p>
     </div>
-    <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
-        <button id="okbtintc" onclick="ribbonGraph();" class="showpre1" title="Insert code into editor">Calculate</button><span class="lepteto" onclick="ribbonAnimate();" style="display:inline-block;padding:5px 5px 5px 7px;margin:4px 0 4px 5px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;">▶</span>
-        <label for="t"><b style="padding: 2px 8px;">t</b> = </label>
-        <input type="number" id="t" value="1000" min="100" step="100" name="t" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
-        <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#derivT');" title="Clear output">Clear</button>
-        <label for="setoutputfontintc" style="margin-right:-10px;">&#128474;</label>
-        <input oninput="setOutputFontintc(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontintc" name="setoutputfontintc">
+
+
+    <!--  INNEN  -->
+    <div class="keret of even" id="k4" style="padding-bottom:40px;margin-bottom:0;">
+        <b><big class="sorszam">4.</big></b>
+        <div id="burkolo">
+            <fieldset style="border:1px solid #ccc;border-radius:3px;">
+                <legend>Please select arguments:</legend>
+                <div style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+                    <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{x}\)</span>
+                    <label class="switch"><input id="setnarg2"  type="checkbox" onchange="setnArg2(this);genClear();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{1-x}\)</span>
+                </div>
+                <div style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+                    <label for="amode" style="cursor:pointer;"><b style="padding: 2px 7px;">a</b>:
+                <span style="margin-left:5px;">x</span>
+                <label class="switch"><input  id="setaarg2" type="checkbox" onchange="setaArg2(this);genClear();"><span class="slider round"></span></label> <span>1-x</span>
+                    <span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
+                    <label for="bmode" style="cursor:pointer;"><b  style="padding: 2px 7px;">b</b>:
+                    <span style="margin-left:5px;">x</span>
+                    <label class="switch"><input id="setbarg2" type="checkbox" onchange="setbArg2(this);genClear();"><span class="slider round"></span></label> <span>1-x</span>
+                </div>
+            </fieldset>
+            <p class="keplet" id="k2set" style="height:84px;margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
+            <div style="margin-left:2px;padding:3px;">
+                <label style="cursor:pointer;width:42px;display:inline-block;" onclick="pozValtas2();"><b id="avgl"  class="kiur" style="padding: 2px 7px;">a</b> = </label>
+                <input class="inpvec" type="text" id="avg" value="3,4" oninput="agSumRefresh();setgenKeplet2();" name="a">
+                <big style="margin-left:2px;">∑</big>|a| = <span id="asg">5</span>
+            </div>
+            <div style="margin-left:2px;padding:3px;">
+                <label style="cursor:pointer;width:42px;display:inline-block;" onclick="pozValtas2();"><b id="bvgl" style="padding: 2px 7px;">b</b> = </label>
+                <input class="inpvec" type="text" id="bvg" value="2,3,1,1,3" oninput="bgSumRefresh();setgenKeplet2();" name="b">
+                <big style="margin-left:2px;"> ∑</big>|b| = <span id="bsg">5</span> <button style="margin-left:10px;" id="tukroz" onclick="tukrozes();">&lrhar;</button>
+            </div>
+
+            <div style="margin-top:2px;padding:5px;">
+                <button id="ribbonbtn" class="showpre1" onclick="set_abmode();genoutput();ribbonGraph2()" title="Calculate input">Calculate</button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="genClear();idClear('#derivT2')" title="Clear output">Clear</button>
+                <span style="margin-left:10px;font-size:12px;">HTML</span>
+                <label class="switch"><input  type="checkbox" onchange="setgenOut(this);"><span class="slider round"></span></label> <span style="font-size:12px;">MathJax</span>
+                <button style="margin-left:10px;" id="sbtglbtn2" onclick="sbTgl('gensettingbar');">⚙</button>
+            </div>
+            <div id="gensettingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+                <div style="margin-bottom: 10px;">
+                    <label for="setgenmaxsor">Max méret</label>
+                    <input id="setgenmaxsor" type="number" style="width:60px;" min="200" max="500" step="10" value="350" name="setmaxsor" onchange="setoutMaxsor();">
+                    <label for="showmathas" style="margin-left: 10px;"> Show math as functions </label>
+                    <input type="checkbox" name="showmathas" id="showmath" style="height:20px;width:20px;vertical-align: middle;" onchange="setMathoutmode(this);" />
+                    <label for="insonsel" style="margin-left: 10px;"> Insert on select </label>
+                    <input type="checkbox" name="insonsel" id="insonsel" style="height:20px;width:20px;vertical-align:middle;" onchange="setInsertOnSelect(this);" />
+                </div>
+                <div>
+                    <label for="setoutputfont" style="margin-left: 10px;">&#128474;</label>
+                    <input id="outfont-slider" oninput="setgenOutputFont(this.value);setOutputFontintc2(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize"
+                        name="setoutputfont">
+                </div>
+            </div>
+        </div>
+        <span id="jelento">A zár akkor old fel, ha egy nem halvány gombot jelöl ki.<button  onclick="burkoloki();" style="margin-left: 20px;">Felold</button></span>
+        <span id="szamitofelhivas">Ujraszámítás szükséges! A feloldáshoz kattintson a  <button id="ribbonbtn2" class="showpre1" onclick="set_abmode();genoutput();ribbonGraph2()" title="Calculate input">Calculate</button> gombra.</span>
+        <p id="figygen" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+        <p class="kijelzo" id="derivJ2" style="font-family:Symbola,Cambria Math;font-size:130%;margin-top:10px;">
+            <span id="derivT2" class="MathJax"></span>
+        </p>
+        <p id="genout" style="outline: 2px solid #cfcfcf;;outline-offset: -2px;background-color:  #e3e3e3;margin:5px;padding:7px;font-size:130%;;min-height:20px;"></p>
+        <p id="gen_math" class="kijelzo"></p>
     </div>
-    <p class="kijelzo" id="derivJ" style="font-size:130%;font-family: Symbola,Cambria Math;">
-         <span id="derivT" class="MathJax"></span>
-    </p>
-</div>
+    <script>
+        setTimeout(() => {
+            setgenKeplet2()
+        }, 1000)
+    </script>
 </body>
 </html>
+
