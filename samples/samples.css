@@ -475,6 +475,10 @@ table.genout-sor tr td .bsorh {
     color: #bb0909;
 }
 
+table.genout-sor.zztbl {
+    outline: 2px solid red;
+}
+
 table.genout-fej {
     font-size: 80%;
     color: #449bd1;
@@ -610,6 +614,24 @@ table tr td span.tgomb {
 table tr#J_sora td span.tgomb {
     cursor: pointer;
     padding: 0 6px;
+}
+
+table tr td span.tgomb.illesztoveg {
+    border-bottom: 1px solid #222;
+    border-right: 1px solid #222;
+}
+
+table tr td span.tgomb.illesztokezd {
+    border-left: 1px solid #222;
+    border-top: 1px solid #222;
+}
+
+table tr td span.tgomb.ori {
+    color: #c7c6d9;
+}
+
+table tr td span.tgomb.szelso {
+    content: '&#x25A1;';
 }
 
 table tr#J_sora.active {
@@ -1258,4 +1280,53 @@ table#calltbl tr td {
 
 .zLi.shown {
     visibility: visible;
+}
+
+#burkolo {
+    pointer-events: all;
+    filter: none;
+    background-color: transparent;
+    margin-bottom: -20px;
+}
+
+#burkolo.on {
+    pointer-events: none;
+    filter: blur(3px) contrast(0.7);
+    background-color: #BDB9B9;
+}
+
+#jelento {
+    background-color: #0a29a6;
+    color: rgb(241, 241, 241);
+    text-align: center;
+    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+    width: 100vw;
+    display: inline-block;
+    position: relative;
+    top: -10px;
+    visibility: hidden;
+    padding: 10px 0;
+    margin-bottom: -20px;
+}
+
+#jelento.on {
+    visibility: visible;
+}
+
+#szamitofelhivas {
+    background-color: #0a29a6;
+    color: rgb(241, 241, 241);
+    text-align: center;
+    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+    width: 100vw;
+    display: inline-block;
+    position: relative;
+    top: -10px;
+    display: none;
+    padding: 10px 0;
+    margin-bottom: -20px;
+}
+
+#szamitofelhivas.on {
+    display: inline-block;
 }
