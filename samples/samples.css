@@ -1300,7 +1300,7 @@ table#calltbl tr td {
     color: rgb(241, 241, 241);
     text-align: center;
     text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
-    width: 100vw;
+    width: 97.1vw;
     display: inline-block;
     position: relative;
     top: -10px;
@@ -1330,3 +1330,4 @@ table#calltbl tr td {
 #szamitofelhivas.on {
     display: inline-block;
 }
+
