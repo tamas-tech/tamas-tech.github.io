@@ -1,6 +1,8 @@
 // poset of compositions
 var ra = undefined;
 var cN = 1;
+var cN2 = 1;
+var egyezes = 2;
 
 function invPv(v) {
     var c = [],
@@ -711,15 +713,19 @@ function setOutputFontintc(v) {
     var elem = document.getElementById("derivT");
     elem.style.fontSize = v + '%';
 
-    $('.tsorszam-s').width(20);
-    $('.tsorszam-s').width(($('.tsorszam-s').parent('div').width() - 10) / cN);
-    $('.tsorszam-s,.tsorszam-w,.tsorszam-e').css({ 'font-size': v * 0.01 * 12 + "px" });
+    $('#derivT .tsorszam-s').width(20);
+    $('#derivT .tsorszam-s').width(($('#derivT .tsorszam-s').parent('div').width() - 10) / cN);
+    $('#derivT .tsorszam-s,#derivT .tsorszam-w,#derivT .tsorszam-e').css({ 'font-size': v * 0.01 * 12 + "px" });
 };
 
 function cdat(el, s, o) {
-    $('.tgomb.hl').html('&#x25CB;');
+    $('.tgomb.hl:not(.szelso)').html('&#x25CB;');
+    $('.tgomb.hl.szelso').html('&#x25CE;');
     $('.tgomb.hl').removeClass('hl');
-    $(el).html('&#x25CF;');
+    if ($(el).hasClass('szelso'))
+        $(el).html('&#x25C9;');
+    else
+        $(el).html('&#x25CF;');
     $(el).addClass('hl');
 
     const c = kiszed_c('intc');
@@ -1016,7 +1022,6 @@ function Lihl(j) {
     var keplet = "";
     if (mode) {
         const jelem = helem.next('.pzoutblock');
-        // console.log(jelem)
         $('.pznext').removeClass('pznext');
         jelem.addClass('pznext')
         $(".xnLii,.xnLe,.xnLix").removeClass('hl');
@@ -1152,4 +1157,385 @@ function xnLiiback(j, el) {
         const gomb2 = $('.tsorszam-s[onclick="Lihlveg(' + j + ');"]');
         gomb2.trigger('click');
     }
+};
+
+// ZIG-ZAG INTEGRATE
+
+function setOutputFontintc2(v) {
+    var elem = document.getElementById("derivT2");
+    elem.style.fontSize = v + '%';
+
+    $('#derivT2 .tsorszam-n').width(20);
+    $('#derivT2 .tsorszam-n').width(($('#derivT2 .tsorszam-n').parent('div').width() * 1 + 10) / cN2);
+    $('#derivT2 .tsorszam-n,#derivT2 .tsorszam-w,#derivT2 .tsorszam-e').css({ 'font-size': v * 0.01 * 12 + "px" });
+};
+
+function homalyosit() {
+    $('#derivT2,#genout').css({ 'filter': 'blur(3px) contrast(0.5)', 'pointer-events': 'none' });
+    $('#szamitofelhivas').addClass('on');
+};
+
+function dehomalyosit() {
+    $('#derivT2,#genout').css({ 'filter': 'none', 'pointer-events': 'all' });
+    $('#szamitofelhivas').removeClass('on');
+};
+
+function set_abmode() {
+    amode = "Li";
+    bmode = "Li";
+};
+
+function setnArg2(elem) {
+    narg = elem.checked;
+    if (narg)
+        nargtxt = "1-x";
+    else
+        nargtxt = "x";
+    setFazis();
+    setgenKeplet2();
+    homalyosit();
+};
+
+function setaArg2(elem) {
+    aarg = elem.checked;
+    if (aarg)
+        aargtxt = "1-x";
+    else
+        aargtxt = "x";
+    setFazis();
+    setgenKeplet2();
+    homalyosit();
+};
+
+function setbArg2(elem) {
+    barg = elem.checked;
+    if (barg)
+        bargtxt = "1-x";
+    else
+        bargtxt = "x";
+    setFazis();
+    setgenKeplet2();
+    homalyosit();
+};
+
+function setegyezes() {
+    var e = 1;
+    if (aarg == barg) {
+        if (narg == aarg)
+            e = 2
+        else
+            e = 0
+    };
+    egyezes = e;
+};
+
+function setgenKeplet20() {
+    setegyezes();
+    set_abmode();
+    var a = document.querySelector("#avg").value;
+    var b = document.querySelector("#bvg").value;
+    var na = a.length;
+    var nb = b.length;
+    a = a.replaceAll("oo", "∞");
+    b = b.replaceAll("oo", "∞");
+    var tort = "x";
+    if (narg)
+        tort = "1-x";
+    var arg_a = "x";
+    var arg_b = "x";
+    if (aarg)
+        arg_a = "1-x";
+    if (barg)
+        arg_b = "1-x";
+
+    totr = "1-x";
+    var txt = "";
+    var txt1 = "";
+    var txt2 = "";
+    var szorzat = "\\cdot";
+    if (na * nb == 0)
+        szorzat = "";
+    if (na > 0)
+        txt1 = "{\\rm " + amode + "}_{(" + a + ")}(" + arg_a + ")";
+    if (nb > 0)
+        txt2 = "{\\rm " + bmode + "}_{(" + b + ")}(" + arg_b + ")";
+    txt = "\\text{Egyezés: }" + egyezes + ";\\;\\hspace{1cm}\\int \\dfrac{" + txt1 + szorzat + txt2 + "}{" + tort + "}\\,{\\text{d} x}"
+    txt += "\\hspace{2cm}\\begin{bmatrix}" + fltx[fazis.init.name] + " &" + fltx[fazis.std.name] + "\\\\" + fltx[fazis.atv.name] + " &" + fltx[fazis.veg.name] + "\\end{bmatrix}";
+    return txt;
+};
+
+function setgenKeplet2() {
+    const elem = document.querySelector("#k2set");
+    const txt = setgenKeplet20();
+    elem.style.visibility = "hidden";
+    elem.innerText = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    setTimeout(() => {
+        elem.style.visibility = "visible";
+    }, 200);
+};
+
+function near_concat(a, b) {
+    return [..._.dropRight(a), _.last(a) + _.first(b), ..._.drop(b)];
+}
+
+function abillesztes(a, b) {
+    a.push(1);
+    b.push(1);
+    setegyezes();
+    const rb = [...b].reverse();
+    var sorszam = _.sum(b);
+    // var ill = "fole";
+    var ori = "le";
+    var c = near_concat(rb, a);
+    if (egyezes == 1) {
+        //ill = "melle";
+        if (aarg == narg) {
+            c = near_concat(conjugate(rb), a);
+        } else {
+            c = near_concat(conjugate([...a].reverse()), b);
+            sorszam = _.sum(a);
+            ori = "fel";
+        }
+    } else if (egyezes == 0) {
+        c = _.concat(rb, a);
+    }
+    return [c, sorszam, ori];
+}
+
+function pozValtas2() {
+    var a = document.getElementById("avg");
+    var b = document.getElementById("bvg");
+    var al = document.getElementById("avgl");
+    var bl = document.getElementById("bvgl");
+    var eaarg = document.getElementById("setaarg2").checked;
+    var ebarg = document.getElementById("setbarg2").checked;
+    if (eaarg != ebarg) {
+        document.getElementById("setaarg2").click();
+        document.getElementById("setbarg2").click();
+        dehomalyosit();
+        // document.getElementById("setaarg2").checked = !eaarg;
+        // document.getElementById("setbarg2").checked = !ebarg;
+        /* var eaargtxt = aargtxt;
+        var ebargtxt = bargtxt;
+        aargtxt = ebargtxt;
+        bargtxt = eaargtxt; */
+    }
+    a.id = "bvg";
+    b.id = "avg";
+    al.id = "bvgl";
+    bl.id = "avgl";
+    al.innerText = "b";
+    bl.innerText = "a";
+    if (al.classList.contains("kiur")) {
+        al.classList.remove("kiur");
+        bl.classList.add("kiur");
+    } else {
+        bl.classList.remove("kiur");
+        al.classList.add("kiur");
+    }
+    setTimeout(() => {
+        genoutput();
+        setgenKeplet2();
+    }, 30);
+    haspv = !haspv;
+};
+
+function takarbe() {
+    $('#burkolo,#jelento').addClass('on');
+    $('#burkolo #k2set,#burkolo *').css({ 'background-color': '#BDB9B9' });
+};
+
+function takarki() {
+    $('#burkolo,#jelento').removeClass('on');
+    $('#burkolo #k2set,#burkolo *').css({ 'background-color': '' });
+};
+
+function burkoloki() {
+    $('#derivT2 .tgomb.shown:not(.ori):first').trigger('click');
+};
+
+function cdat2(el, s, o) {
+    $('.tgomb.hl:not(.szelso)').html('&#x25CB;');
+    $('.tgomb.hl.szelso').html('&#x25CE;');
+    $('.tgomb.hl').removeClass('hl');
+    if ($(el).hasClass('szelso'))
+        $(el).html('&#x25C9;');
+    else
+        $(el).html('&#x25CF;');
+    $(el).addClass('hl');
+    var a = kiszed_c('avg');
+    var b = kiszed_c('bvg');
+
+    if ($(el).hasClass('ori')) {
+        takarbe();
+        if (!haspv) {
+            pozValtas2();
+            setTimeout(() => {
+                $(el).trigger('click');
+                $('#genout').css({ 'opacity': '0.65', 'background-color': '#fff7b8' });
+            }, 60)
+        }
+        if (aarg == barg && haspv) {
+            a = kiszed_c('bvg');
+            b = kiszed_c('avg');
+        }
+    } else {
+        takarki();
+        if (haspv) {
+            pozValtas2();
+            setTimeout(() => {
+                $(el).trigger('click');
+                $('#genout').css({ 'opacity': '1', 'background-color': '#e3e3e3' });
+            }, 60)
+        }
+    };
+
+    const cill = abillesztes(a, b);
+    const c = cill[0];
+
+    const r = c.length;
+    var e = _.take(c, s - 1);
+    if (s <= r)
+        e.push(o);
+    else
+        e.push(1);
+    var h = _.takeRight(c, r - s);
+
+    if (s <= r)
+        h.unshift(c[s - 1] - o + 1);
+    else
+        h = ["( )"];
+    $('.tsorszam-w').css("visibility", "hidden");
+    $('.tsorszam-w.corr').html($('.tsorszam-w.corr').attr('data-n'));
+    $('.tsorszam-w.corr').removeClass('corr');
+
+    if (aarg == barg) {
+        for (var t = 2; t <= s + Math.floor(s / (r + 1)); t++)
+            $('.tsorszam-w:nth(' + t + ')').css("visibility", "visible");
+        if (s == r + 1)
+            $('.tsorszam-w:nth(' + s + ')').html(1).addClass("corr");
+        else
+            $('.tsorszam-w:nth(' + s + ')').html(o).addClass("corr");
+        if (s == 1 && o == 1)
+            $('.tsorszam-w:nth(1)').html("( )").css("visibility", "visible");
+    }
+
+
+    $('.tsorszam-e').css("visibility", "hidden");
+    $('.tsorszam-e.corr').html($('.tsorszam-e.corr').attr('data-n'));
+    $('.tsorszam-e.corr').removeClass('corr');
+    for (var t = s - 1; t < r + Math.floor(s / (r + 1)) - 1; t++)
+        $('.tsorszam-e:nth(' + t + ')').css("visibility", "visible");
+    $('.tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
+    if (s == r)
+        $('.tsorszam-e:nth(-1)').html("( )").css("visibility", "visible");
+
+    $('.tsorszam-n').css("visibility", "hidden");
+    if (aarg != barg) {
+        const ce = conjugate(e);
+        for (var t = 1; t < ce.length; t++)
+            $('.tsorszam-n:nth(' + t + ')').css("visibility", "visible").html(ce[t]);
+        if (s == 1 && o == 1)
+            $('.tsorszam-n:nth(0)').html("( )").css("visibility", "visible");
+    };
+
+    var bv = [];
+    var keplet = "";
+    if (aarg) {
+        if (barg) {
+            bv = e.reverse();
+        } else {
+            bv = conjugate(e).reverse();
+        }
+    } else {
+        if (barg) {
+            bv = conjugate(e).reverse();
+        } else {
+            bv = e.reverse();
+        }
+    };
+    var argtxt1 = aargtxt;
+    var argtxt2 = bargtxt;
+    if (egyezes == 1 && narg != aarg) {
+        argtxt1 = bargtxt;
+        argtxt2 = aargtxt;
+    }
+
+    keplet = "&rightarrow;&nbsp;Li<sub>(" + _.dropRight(h) + ")</sub>(" + argtxt1 + ")&lowast;Li<sub>(" + _.dropRight(bv) + ")</sub>(" + argtxt2 + ")";
+    keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
+    $('.cintkeplet').html('').removeClass('cintkeplet');
+    $("#ebbe-" + s).html(keplet).addClass('cintkeplet');
+
+
+    var ezt = [];
+    if (!haspv) {
+        if (egyezes == 1 && narg != aarg)
+            var ezt = _.dropRight(bv).toString();
+        else
+            var ezt = _.dropRight(h).toString();
+    } else {
+        if (egyezes == 1 && narg != barg)
+            var ezt = _.dropRight(h).toString();
+        else
+            var ezt = _.dropRight(bv).toString();
+    }
+
+    var celok = $(".genout-sor .asor");
+    $('.zztbl').removeClass('zztbl');
+    for (let y of celok) {
+        if (y.innerText.replace(/[() +−]/g, "") == ezt) {
+            $(y).parent().parent().parent().addClass("zztbl")
+        }
+    }
+};
+
+function ribbonGraph2() {
+    const elem = document.getElementById("derivT2");
+    const a = kiszed_c('avg');
+    const b = kiszed_c('bvg');
+    const cill = abillesztes(a, b);
+    const c = cill[0];
+    const kc = kum(c);
+    const r = c.length;
+    var k = [0];
+    for (var i = 1; i < r; i++) {
+        k.push(kc[i - 1] - i);
+    };
+    cN2 = _.sum(c) + 1 - r || 1;
+    var kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th><div>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "<th style='width:21.36px'></th></div></th><td></td></tr></thead>";
+    for (var j = 0; j < r; j++) {
+        kep += "<tr><th><span class='tsorszam-w' data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div>";
+        for (var t = 0; t < k[j]; t++) {
+            kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
+        };
+        for (var t = k[j]; t < k[j] + c[j]; t++) {
+            kep += "<span class='tgomb shown' onclick='cdat2(this," + ((j + 1) + "," + (t - k[j] + 1)) + ")'>&#x25CB;</span> ";
+        };
+        kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
+    };
+
+    kep += "</th></tr></table>";
+    elem.innerHTML = kep;
+    const hatar = cill[1];
+    $('#derivT2 .tgomb.shown:nth(0),#derivT2 .tgomb.shown:nth(-1)').addClass('szelso').html('&#x25CE;');;
+    $('#derivT2 .tgomb.shown:nth(' + (hatar - 1) + ')').addClass('illesztoveg');
+    $('#derivT2 .tgomb.shown:nth(' + hatar + ')').addClass('illesztokezd');
+
+    if (cill[2] == "le") {
+        for (var u = 0; u < hatar; u++)
+            $('#derivT2 .tgomb.shown:nth(' + u + ')').addClass('ori');
+    } else {
+        console.log(cill[2])
+        for (var v = hatar; v < _.sum(c) + 1; v++) {
+            //console.log(v)
+            $('#derivT2 .tgomb.shown:nth(' + v + ')').addClass('ori');
+        }
+    }
+    setOutputFontintc2(document.getElementById("outfont-slider").value * 1);
+    dehomalyosit();
 };
