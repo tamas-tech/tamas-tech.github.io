@@ -35,15 +35,6 @@ function coarser(c) {
     return out;
 };
 
-/* function elozoje(c) {
-    const n = c.length - 1;
-    var out = [];
-    const grp = allcomps(c.length).filter(y => y.length == n);
-    for (let g of grp)
-        out.push(groupawithb(c, g));
-    return out;
-}; */
-
 function kovetoje(c) {
     const n = c.length + 1;
     return invPv(c).filter(y => y.length == n);
@@ -1538,4 +1529,49 @@ function ribbonGraph2() {
     }
     setOutputFontintc2(document.getElementById("outfont-slider").value * 1);
     dehomalyosit();
+};
+
+// DUALITY OF MZVs
+
+function setOutputFont5(v) {
+    $('div.sagecell_sessionOutput,div.sagecell_sessionOutput pre').css('font-size', v + 'px');
+};
+
+function out5Clear() {
+    const elem = document.querySelector("#ideout5 .sagecell_output_elements div");
+    if (elem)
+        elem.innerHTML = "";
+};
+
+function setn100(elem, id) {
+    var n = elem.value;
+    var Nelem = document.getElementById(id + "kijelzo");
+    Nelem.innerHTML = n * 100;
+};
+
+function dualofv(v) {
+    v[0] = v[0] - 1;
+    v.push(1);
+    return _.reverse(conjugate(v));
+};
+
+function sage_dual() {
+    const a = kiszed_sh("ad");
+    const b = dualofv([...a]);
+    const n = document.getElementById("nd").value * 100;
+    console.log(a, b)
+    var txt = "show('HIBA');";
+    if (a != undefined && b != undefined && !a[0] < 2) {
+        var ra = [...a].reverse();
+        var rb = [...b].reverse();
+
+        var txt1 = 'show(LatexExpr(r"\\zeta(\\mathbf{a})\\,=\\,"),Multizeta(' + a.toString() + '),LatexExpr(r"\\,=\\,"),Multizeta(' + b.toString() + '),LatexExpr(r"\\,=\\,\\zeta(\\mathbf{a}^{\\dagger})"),"\\n\\n");';
+        var txt2 = 'show(n(Multizeta(' + ra.toString() + '),prec = ' + n + '));';
+        var txt3 = 'show(n(Multizeta(' + rb.toString() + '),prec = ' + n + '));';
+        var txt = txt1 + txt2 + txt3;
+    };
+    console.log(txt)
+    $('#mycell5 .sagecell_editor textarea.sagecell_commands').val(txt);
+    $('#mycell5 .sagecell_input button.sagecell_evalButton').click();
+    setOutputFont5($('#outfont-slider5').val());
 };
