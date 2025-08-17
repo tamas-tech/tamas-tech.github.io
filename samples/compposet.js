@@ -1564,14 +1564,15 @@ function sage_dual() {
     if (a != undefined && b != undefined && !a[0] < 2) {
         var ra = [...a].reverse();
         var rb = [...b].reverse();
-
+        var txt0 = 'show(LatexExpr(r"\\mathbf{a}^{\\dagger}\\,=\\,(1,' + [...a.slice(1)].reverse().toString() + ',' + (a[0] - 1) + ')^{*}\\,=\\,(' + b.toString() + ')"),"\\n\\n");';
         var txt1 = 'show(LatexExpr(r"\\zeta(\\mathbf{a})\\,=\\,"),Multizeta(' + a.toString() + '),LatexExpr(r"\\,=\\,"),Multizeta(' + b.toString() + '),LatexExpr(r"\\,=\\,\\zeta(\\mathbf{a}^{\\dagger})"),"\\n\\n");';
         var txt2 = 'show(n(Multizeta(' + ra.toString() + '),prec = ' + n + '));';
         var txt3 = 'show(n(Multizeta(' + rb.toString() + '),prec = ' + n + '));';
-        var txt = txt1 + txt2 + txt3;
+        var txt = txt0 + txt1 + txt2 + txt3;
     };
     console.log(txt)
     $('#mycell5 .sagecell_editor textarea.sagecell_commands').val(txt);
     $('#mycell5 .sagecell_input button.sagecell_evalButton').click();
     setOutputFont5($('#outfont-slider5').val());
 };
+
