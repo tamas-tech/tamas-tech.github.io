@@ -238,7 +238,7 @@
         <p id="gen_math" class="kijelzo"></p>
     </div>
 
-     <div class="keret of odd" id="k5">
+    <div class="keret of odd" id="k5">
         <b><big class="sorszam">5.</big></b><span style="margin-left:10px;">( Duality of MZVs)</span>
         <p class="keplet" id="keplet_k4" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} \zeta(\mathbf{a})=\zeta(\mathbf{a}^{\dagger})\hspace{0.7cm}\text{, ahol } \mathbf{a}^{\dagger} = \left((-1)\odot\mathbf{a}\cdot (1)\right)^{-1*} \\ \text{Vagyis, }(a_{1},a_{2},\ldots,a_{n})^{\dagger} =(1,a_{n},a_{n-1},\ldots,a_{2},a_{1}-1)^{*}\hspace{0.7cm}(a_{1}\geq2)
             \end{gather*}\]
@@ -256,14 +256,40 @@
             <script type="text/x-sage"></script>
         </div>
         <div style="padding: 10px;outline: 2px solid #c0c9d0;;outline-offset: -6px;background-color: #e7fdf5;;">
+            <button onclick="html_dual();" class="showpre1" title="Insert code into editor">OK</button>
             <button id="okbtn3" onclick="sage_dual();" class="showpre1" title="Insert code into editor">SAGE</button>
-            <button class="showpre1" style="width:76px;margin-left:3px" onclick="out5Clear();" title="Clear output">Clear</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#dual_html');out5Clear();" title="Clear output">Clear</button>
             <label for="setoutputfont5">&#128474;</label>
             <input id="outfont-slider5" oninput="setOutputFont2(this.value);" type="range" min="12" max="24" value="12" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont5" />
         </div>
+        <p id="dual_html" class="kijelzo"></p>
         <div class="outputoutdiv">
             <div id="ideout5"></div>
         </div>
+    </div>
+
+    <div class="keret of even" id="k6">
+        <b><big class="sorszam">6.</big></b>
+        <p class="keplet" id="keplet_k6" style="padding-bottom:10px;margin-bottom:10px;">\[{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Le}_{(b_1,\ldots,b_n)}(1-x)\]</p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="avLiLi"><b style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="avLiLi" value="2,3" name="avLiLi">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="bvLiLi"><b style="padding: 2px 7px;">b</b> = </label>
+            <input class="inpvec" type="text" id="bvLiLi" value="4,1" name="bvLiLi">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label><b style="padding: 2px 7px;">N</b> = </label><span id="seriesNLiLi" style="display:inline-block;width:20px;">10</span>
+            <input id="series-sliderLiLi" type="range" min="10" max="40" value="10" style="display:inline-block;width:calc(90vw - 70px);vertical-align:middle;" title="set series's length" name="setseriesLiLi" onchange="setNLi(this);">
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="sorfejtesLiLi1();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="seriesLiLiClear();" title="Clear series">Clear</button>
+        <p class="kijelzo" id="sorLiLi"></p>
+        <p id="figy" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+        <section id="fnplLiLi" style="display:none;max-width:calc(100vw - 30px);">
+            <div id="plotLiLi" style="text-align:center;"></div>
+        </section>
     </div>
     <script>
         setTimeout(() => {
@@ -272,6 +298,7 @@
     </script>
 </body>
 </html>
+
 
 
 
