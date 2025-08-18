@@ -1228,6 +1228,29 @@ function Ha(S, n) {
     return h;
 };
 
+function FHa(S, n) {
+    var r, SS, h, g;
+    r = S.length;
+    if (r == 0 && n == 0)
+        h = Fraction(1);
+    else if (r == 0 && n > 0)
+        h = Fraction(0);
+    else if (n < r)
+        h = Fraction(0);
+    else if (r == 1)
+        h = Fraction(1, Math.pow(n, S[0]));
+    else {
+        SS = S.slice(1);
+        var hh = Fraction(1, Math.pow(n, S[0]));
+        g = new Fraction(0);
+        for (var i = r - 1; i < n; i++) {
+            g = g.add(FHa(SS, i));
+        };
+        h = g.mul(hh);
+    }
+    return h;
+};
+
 function Haz(S, n) {
     var r, SS, h, g;
     r = S.length;
