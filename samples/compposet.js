@@ -35,6 +35,15 @@ function coarser(c) {
     return out;
 };
 
+/* function elozoje(c) {
+    const n = c.length - 1;
+    var out = [];
+    const grp = allcomps(c.length).filter(y => y.length == n);
+    for (let g of grp)
+        out.push(groupawithb(c, g));
+    return out;
+}; */
+
 function kovetoje(c) {
     const n = c.length + 1;
     return invPv(c).filter(y => y.length == n);
@@ -1555,16 +1564,35 @@ function dualofv(v) {
     return _.reverse(conjugate(v));
 };
 
+function html_dual() {
+    const elem = document.getElementById("dual_html")
+    const a = kiszed_sh("ad");
+    const b = dualofv([...a]);
+    const n = document.getElementById("nd").value * 40;
+    var frd = "";
+    if (a.length > 1)
+        frd = [...a.slice(1)].reverse().toString() + ','
+    if (a != undefined && b != undefined && !a[0] < 2) {
+        var txt0 = '<b>a</b><sup>&dagger;</sup>&nbsp;=&nbsp;(' + a.toString() + ')<sup>&dagger;</sup>&nbsp;=&nbsp;(1,' + frd + (a[0] - 1) + ')<sup>*</sup>&nbsp;=&nbsp;(' + b.toString() + ')<br/><br/><span style="color:#777777;">';
+        var txt1 = '&zeta;(' + a.toString() + ')&nbsp;&approx;&nbsp;' + Haz(a, n) + '<br/>';
+        var txt2 = '&zeta;(' + b.toString() + ')&nbsp;&approx;&nbsp;' + Haz(b, n) + '</span>';
+        var txt = txt0 + txt1 + txt2;
+    };
+    elem.innerHTML = txt
+};
+
 function sage_dual() {
     const a = kiszed_sh("ad");
     const b = dualofv([...a]);
     const n = document.getElementById("nd").value * 100;
-    console.log(a, b)
     var txt = "show('HIBA');";
+    var frd = "";
+    if (a.length > 1)
+        frd = [...a.slice(1)].reverse().toString() + ','
     if (a != undefined && b != undefined && !a[0] < 2) {
         var ra = [...a].reverse();
         var rb = [...b].reverse();
-        var txt0 = 'show(LatexExpr(r"\\mathbf{a}^{\\dagger}\\,=\\,(1,' + [...a.slice(1)].reverse().toString() + ',' + (a[0] - 1) + ')^{*}\\,=\\,(' + b.toString() + ')"),"\\n\\n");';
+        var txt0 = 'show(LatexExpr(r"\\mathbf{a}^{\\dagger}\\,=\\,(1,' + frd + (a[0] - 1) + ')^{*}\\,=\\,(' + b.toString() + ')"),"\\n\\n");';
         var txt1 = 'show(LatexExpr(r"\\zeta(\\mathbf{a})\\,=\\,"),Multizeta(' + a.toString() + '),LatexExpr(r"\\,=\\,"),Multizeta(' + b.toString() + '),LatexExpr(r"\\,=\\,\\zeta(\\mathbf{a}^{\\dagger})"),"\\n\\n");';
         var txt2 = 'show(n(Multizeta(' + ra.toString() + '),prec = ' + n + '));';
         var txt3 = 'show(n(Multizeta(' + rb.toString() + '),prec = ' + n + '));';
@@ -1576,3 +1604,148 @@ function sage_dual() {
     setOutputFont5($('#outfont-slider5').val());
 };
 
+
+// plotLi(1-x)*Li(x)
+
+function setNLi(elem) {
+    var N = elem.value;
+    var Nelem = document.getElementById("seriesNLiLi");
+    Nelem.innerHTML = N;
+    sorfejtesLiLi1();
+};
+
+function seriesLiLiClear() {
+    var elem = document.querySelector("#sorLiLi");
+    var elemfn = document.querySelector("#fnplLiLi");
+    var elemfigy = document.querySelector("#figy");
+    elem.innerText = "";
+    functionPlot({
+        target: '#plotLiLi',
+        title: 'y = 0',
+        grid: true,
+        xAxis: {
+            domain: [-1, 1]
+        },
+        data: [{
+            fn: "0",
+            graphType: 'polyline',
+        }]
+    });
+    elemfn.style.display = "none";
+    elemfigy.style.display = "none";
+};
+
+function nLiLi1(a, b, N, x) {
+    const n = b.length;
+    var ca = [],
+        cb = [];
+    for (var i = 0; i < n + N + 1; i++)
+        cb[i] = Ha(a, i);
+    for (var j = 0; i < n + N + 1; i++)
+        ca[i] = Ha(b, n + j);
+    var c = 0;
+    for (var t = 0; t <= n + N; t++) {
+        var ct = 0;
+        for (var j = 0; j <= t; j++) {
+            var cj = 0;
+            var ej = Math.pow(-1, j);
+            for (var k = Math.max(n, j); k <= N; k++) {
+                cj += Ha(b, k) * binomial(k, j);
+            }
+            cj = cj * ej * Ha(a, t - j);
+            ct += cj;
+        };
+        c += ct * Math.pow(x, t);
+    };
+    return c;
+};
+
+function maxLiLi1(a, b, N) {
+    var c = [];
+    for (j = 1; j < 9; j++)
+        c.push(nLiLi1(a, b, N, 0.1 * j));
+    return _.max(c) * 1.1;
+};
+
+function LiLi1(a, b, N) {
+    const n = b.length;
+    var ca = [],
+        cb = [];
+    for (var i = 0; i < n + N + 1; i++)
+        cb[i] = FHa(a, i);
+    for (var j = 0; i < n + N + 1; i++)
+        ca[i] = FHa(b, n + j);
+    var c = "";
+    var cltx = "";
+    for (var t = 0; t <= n + N; t++) {
+        var ct = Fraction(0);
+        for (var j = 0; j <= t; j++) {
+            var cj = Fraction(0);
+            var ej = Math.pow(-1, j);
+            for (var k = Math.max(n, j); k <= N; k++) {
+                cj = cj.add(FHa(b, k).mul(binomial(k, j)));
+            }
+            cj = cj.mul(ej).mul(FHa(a, t - j));
+            ct = ct.add(cj)
+        };
+        c += ct.toFraction() + "*x^" + t + "+";
+        if (ct != 0)
+            cltx += ct.toLatex() + "\\;x^{" + t + "}+";
+    };
+    c = c.slice(0, -1);
+    c = c.replaceAll("+-", "-");
+    cltx = cltx.slice(0, -1);
+    cltx = cltx.replaceAll("+-", "-");
+    // console.log(c.replaceAll("*", " "));
+    // console.log(cltx);
+    const m = maxLiLi1(a, b, N);
+    return [c, cltx, [-0.1 * m, m]];
+};
+
+function sorfejtesLiLi1() {
+    sorhiba = false;
+    const lengtelem = document.querySelector("#series-sliderLiLi");
+    const elem = document.querySelector("#sorLiLi");
+    const elemfn = document.querySelector("#fnplLiLi");
+    elemfn.style.display = "block";
+    const a = kiszed_c('avLiLi');
+    const b = kiszed_c('bvLiLi');
+    const N = lengtelem.value * 1;
+
+    const c = LiLi1(a, b, N);
+    const fn = c[0];
+    const txt = c[1];
+    const yD = c[2];
+    if (!sorhiba) {
+        elem.innerText = "\\[" + txt + "\\]";
+        functionPlot({
+            target: '#plotLiLi',
+            title: "Li(" + a.toString() + ")(x)*Li(" + b.toString() + ")(1-x)",
+            grid: true,
+            disableZoom: true,
+            xAxis: {
+                domain: [0, 1]
+            },
+            yAxis: {
+                domain: yD
+            },
+            tip: {
+                xLine: true,
+                yLine: true,
+                renderer: function(x, y, index) {}
+            },
+            data: [{
+                fn: fn,
+                graphType: 'polyline',
+                color: "#ff0000"
+            }]
+        });
+        document.querySelector('svg.function-plot text.title').setAttribute('x', 140);
+    } else {
+        var pl = document.querySelector('.function-plot');
+        if (pl)
+            pl.remove();
+        elem.innerText = "\\[\\text{There is some problem with input data!}\\]";
+    };
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+};
