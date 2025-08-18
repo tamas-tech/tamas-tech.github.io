@@ -1568,14 +1568,10 @@ function html_dual() {
     const elem = document.getElementById("dual_html")
     const a = kiszed_sh("ad");
     const b = dualofv([...a]);
-    const n = document.getElementById("nd").value * 40;
     var frd = "";
-    var txt="HIBA
     if (a.length > 1)
         frd = [...a.slice(1)].reverse().toString() + ','
-    if (a != undefined && b != undefined && !a[0] < 2) {
          txt = '<b>a</b><sup>&dagger;</sup>&nbsp;=&nbsp;(' + a.toString() + ')<sup>&dagger;</sup>&nbsp;=&nbsp;(1,' + frd + (a[0] - 1) + ')<sup>*</sup>&nbsp;=&nbsp;(' + b.toString() + ')';
-    };
     elem.innerHTML = txt
 };
 
@@ -1747,4 +1743,5 @@ function sorfejtesLiLi1() {
     };
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
+
 
