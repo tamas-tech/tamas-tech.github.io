@@ -1570,13 +1570,11 @@ function html_dual() {
     const b = dualofv([...a]);
     const n = document.getElementById("nd").value * 40;
     var frd = "";
+    var txt="HIBA
     if (a.length > 1)
         frd = [...a.slice(1)].reverse().toString() + ','
     if (a != undefined && b != undefined && !a[0] < 2) {
-        var txt0 = '<b>a</b><sup>&dagger;</sup>&nbsp;=&nbsp;(' + a.toString() + ')<sup>&dagger;</sup>&nbsp;=&nbsp;(1,' + frd + (a[0] - 1) + ')<sup>*</sup>&nbsp;=&nbsp;(' + b.toString() + ')<br/><br/><span style="color:#777777;">';
-        var txt1 = '&zeta;(' + a.toString() + ')&nbsp;&approx;&nbsp;' + Haz(a, n) + '<br/>';
-        var txt2 = '&zeta;(' + b.toString() + ')&nbsp;&approx;&nbsp;' + Haz(b, n) + '</span>';
-        var txt = txt0 + txt1 + txt2;
+         txt = '<b>a</b><sup>&dagger;</sup>&nbsp;=&nbsp;(' + a.toString() + ')<sup>&dagger;</sup>&nbsp;=&nbsp;(1,' + frd + (a[0] - 1) + ')<sup>*</sup>&nbsp;=&nbsp;(' + b.toString() + ')';
     };
     elem.innerHTML = txt
 };
@@ -1749,3 +1747,4 @@ function sorfejtesLiLi1() {
     };
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
+
