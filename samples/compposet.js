@@ -1622,13 +1622,16 @@ function sage_dual() {
     const b = dualofv([...a]);
     const n = document.getElementById("nd").value * 100;
     var txt = "show('HIBA');";
+    var rag = "";
+    if (a[0] > 1)
+        rag = ',' + (a[0] - 1);
     var frd = "";
     if (a.length > 1)
-        frd = [...a.slice(1)].reverse().toString() + ','
+        frd = ',' + [...a.slice(1)].reverse().toString();
     if (a != undefined && b != undefined && !a[0] < 2) {
         var ra = [...a].reverse();
         var rb = [...b].reverse();
-        var txt0 = 'show(LatexExpr(r"\\mathbf{a}^{\\dagger}\\,=\\,(1,' + frd + (a[0] - 1) + ')^{*}\\,=\\,(' + b.toString() + ')"),"\\n\\n");';
+        var txt0 = 'show(LatexExpr(r"\\mathbf{a}^{\\dagger}\\,=\\,(1' + frd + rag + ')^{*}\\,=\\,(' + b.toString() + ')"),"\\n\\n");';
         var txt1 = 'show(LatexExpr(r"\\zeta(\\mathbf{a})\\,=\\,"),Multizeta(' + a.toString() + '),LatexExpr(r"\\,=\\,"),Multizeta(' + b.toString() + '),LatexExpr(r"\\,=\\,\\zeta(\\mathbf{a}^{\\dagger})"),"\\n\\n");';
         var txt2 = 'show(n(Multizeta(' + ra.toString() + '),prec = ' + n + '));';
         var txt3 = 'show(n(Multizeta(' + rb.toString() + '),prec = ' + n + '));';
@@ -1639,7 +1642,6 @@ function sage_dual() {
     $('#mycell5 .sagecell_input button.sagecell_evalButton').click();
     setOutputFont5($('#outfont-slider5').val());
 };
-
 
 // plotLi(1-x)*Li(x)
 
@@ -1785,3 +1787,4 @@ function sorfejtesLiLi1() {
     };
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
+
