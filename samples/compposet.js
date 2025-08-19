@@ -1279,6 +1279,40 @@ function near_concat(a, b) {
     return [..._.dropRight(a), _.last(a) + _.first(b), ..._.drop(b)];
 }
 
+function kiszed_cd(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
+            idClear('#cout')
+            return "Hibás bemenet";
+        }
+        cN = _.sum(av) + 1 - av.length || 1;
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    return av;
+};
+
 function abillesztes(a, b) {
     a.push(1);
     b.push(1);
@@ -1364,8 +1398,8 @@ function cdat2(el, s, o) {
     else
         $(el).html('&#x25CF;');
     $(el).addClass('hl');
-    var a = kiszed_c('avg');
-    var b = kiszed_c('bvg');
+    var a = kiszed_cd('avg');
+    var b = kiszed_cd('bvg');
 
     if ($(el).hasClass('ori')) {
         takarbe();
@@ -1377,8 +1411,8 @@ function cdat2(el, s, o) {
             }, 60)
         }
         if (aarg == barg && haspv) {
-            a = kiszed_c('bvg');
-            b = kiszed_c('avg');
+            a = kiszed_cd('bvg');
+            b = kiszed_cd('avg');
         }
     } else {
         takarki();
@@ -1492,8 +1526,8 @@ function cdat2(el, s, o) {
 
 function ribbonGraph2() {
     const elem = document.getElementById("derivT2");
-    const a = kiszed_c('avg');
-    const b = kiszed_c('bvg');
+    const a = kiszed_cd('avg');
+    const b = kiszed_cd('bvg');
     const cill = abillesztes(a, b);
     const c = cill[0];
     const kc = kum(c);
@@ -1561,22 +1595,30 @@ function setn100(elem, id) {
 function dualofv(v) {
     v[0] = v[0] - 1;
     v.push(1);
+    if (v[0] == 0)
+        v = _.drop(v, 1);
     return _.reverse(conjugate(v));
 };
 
 function html_dual() {
     const elem = document.getElementById("dual_html")
-    const a = kiszed_sh("ad");
+    const a = kiszed_cd("ad");
+    var txt = "HIBA";
     const b = dualofv([...a]);
     var frd = "";
+    var rag = "";
+    if (a[0] > 1)
+        rag = ',' + (a[0] - 1);
     if (a.length > 1)
-        frd = [...a.slice(1)].reverse().toString() + ','
-         txt = '<b>a</b><sup>&dagger;</sup>&nbsp;=&nbsp;(' + a.toString() + ')<sup>&dagger;</sup>&nbsp;=&nbsp;(1,' + frd + (a[0] - 1) + ')<sup>*</sup>&nbsp;=&nbsp;(' + b.toString() + ')';
-    elem.innerHTML = txt
+        frd = ',' + [...a.slice(1)].reverse().toString();
+    if (a != undefined && b != undefined && !a[0] < 2) {
+        txt = '<b>a</b><sup>&dagger;</sup>&nbsp;=&nbsp;(' + a.toString() + ')<sup>&dagger;</sup>&nbsp;=&nbsp;(1' + frd + rag + ')<sup>*</sup>&nbsp;=&nbsp;(' + b.toString() + ')';
+    };
+    elem.innerHTML = txt;
 };
 
 function sage_dual() {
-    const a = kiszed_sh("ad");
+    const a = kiszed_cd("ad");
     const b = dualofv([...a]);
     const n = document.getElementById("nd").value * 100;
     var txt = "show('HIBA');";
@@ -1702,8 +1744,8 @@ function sorfejtesLiLi1() {
     const elem = document.querySelector("#sorLiLi");
     const elemfn = document.querySelector("#fnplLiLi");
     elemfn.style.display = "block";
-    const a = kiszed_c('avLiLi');
-    const b = kiszed_c('bvLiLi');
+    const a = kiszed_cd('avLiLi');
+    const b = kiszed_cd('bvLiLi');
     const N = lengtelem.value * 1;
 
     const c = LiLi1(a, b, N);
@@ -1743,5 +1785,3 @@ function sorfejtesLiLi1() {
     };
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
-
-
