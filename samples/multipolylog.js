@@ -3525,8 +3525,8 @@ function toribbon(el, i) {
             console.log("zztbl elem")
             return;
         } else {
-            const aa = _.sum(kiszed_c('avg'));
-            const bb = _.sum(kiszed_c('bvg'));
+            const aa = _.sum(kiszed_cd('avg'));
+            const bb = _.sum(kiszed_cd('bvg'));
             if (!haspv) {
                 if (egyezes == 1 && narg != aarg)
                     $('#derivT2 .tgomb.shown:nth(' + (aa + 1 - i) + ')').trigger('click');
@@ -10607,3 +10607,4 @@ function genoutput1() {
     else
         genoutput1s();
 };
+
