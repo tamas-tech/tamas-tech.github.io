@@ -1193,7 +1193,7 @@ function setnArg2(elem) {
         nargtxt = "x";
     setFazis();
     setgenKeplet2();
-    homalyosit();
+    //homalyosit();
 };
 
 function setaArg2(elem) {
@@ -1204,7 +1204,7 @@ function setaArg2(elem) {
         aargtxt = "x";
     setFazis();
     setgenKeplet2();
-    homalyosit();
+    //homalyosit();
 };
 
 function setbArg2(elem) {
@@ -1215,7 +1215,7 @@ function setbArg2(elem) {
         bargtxt = "x";
     setFazis();
     setgenKeplet2();
-    homalyosit();
+    // homalyosit();
 };
 
 function setegyezes() {
@@ -1265,6 +1265,7 @@ function setgenKeplet20() {
 };
 
 function setgenKeplet2() {
+    homalyosit();
     const elem = document.querySelector("#k2set");
     const txt = setgenKeplet20();
     elem.style.visibility = "hidden";
@@ -1643,6 +1644,7 @@ function sage_dual() {
     setOutputFont5($('#outfont-slider5').val());
 };
 
+
 // plotLi(1-x)*Li(x)
 
 function setNLi(elem) {
@@ -1787,4 +1789,3 @@ function sorfejtesLiLi1() {
     };
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
-
