@@ -1341,5 +1341,7 @@ table#calltbl tr td {
     background-color: #ffdad6;
     padding: 0 10px;
     border-radius: 3px;
-    border: 1px solid #e1b1b1
+    border: 1px solid #e1b1b1;
+    font-family:Symbola;
 }
+
