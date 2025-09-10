@@ -1331,3 +1331,15 @@ table#calltbl tr td {
     display: inline-block;
 }
 
+#nyiltbl {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1.8em;
+    height: 1.8em;
+    font-size: 1.8em;
+    margin-left: 20px;
+    background-color: #ffdad6;
+    padding: 0 10px;
+    border-radius: 3px;
+    border: 1px solid #e1b1b1
+}
