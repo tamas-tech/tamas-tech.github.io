@@ -1264,12 +1264,25 @@ function setgenKeplet20() {
     return txt;
 };
 
+function setnyiltbl() {
+    const tblelem = document.querySelector("#nyiltbl");
+    var txt = '';
+    if (egyezes == 0)
+        txt = '<span style="transform: rotate(90deg) translateX(-0.15em) translateY(-0.45em);display: inline-block;margin-right: 2px;">⧬</span><span style="transform: rotate(-90deg) translateX(-0.65em) translateY(-0.25em);display: inline-block;">⧭</span>';
+    else if (egyezes == 1)
+        txt = '<span style="transform: rotate(180deg) translateY(-0.25em);display: inline-block;margin-right: 2px;">⧭</span><span style="transform: rotate(-90deg) translateX(-0.3em) translateY(0.05em);display: inline-block;">⧬</span>';
+    else
+        txt = '<span style="transform: rotate(90deg) translateX(0.27em);display: inline-block;margin-right: 2px;">⧬</span><span style="transform: rotate(-90deg) translateX(-0.27em) translateY(0.1em);display: inline-block;">⧭</span>';
+    tblelem.innerHTML = txt;
+};
+
 function setgenKeplet2() {
     const elem = document.querySelector("#k2set");
     const txt = setgenKeplet20();
     elem.style.visibility = "hidden";
     elem.innerText = "\\[" + txt + "\\]";
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    setTimeout(() => { setnyiltbl(); }, 100);
     setTimeout(() => {
         elem.style.visibility = "visible";
     }, 200);
@@ -1788,4 +1801,5 @@ function sorfejtesLiLi1() {
     };
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
+
 
