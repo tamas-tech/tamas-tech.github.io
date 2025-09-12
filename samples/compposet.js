@@ -619,7 +619,6 @@ function kivvec(elem) {
 
 function setRepr(c) {
     c = _.dropRight(c);
-    //return set2digit(kum(c), n);
     return kum(c);
 };
 
@@ -905,7 +904,6 @@ function setaArgc(elem) {
         aargtxt = "1-x";
     else
         aargtxt = "x";
-    //setFazis();
     setgenKepletc();
 };
 
@@ -915,7 +913,6 @@ function setbArgc(elem) {
         bargtxt = "1-x";
     else
         bargtxt = "x";
-    //setFazis();
     setgenKepletc();
 };
 
@@ -1361,12 +1358,6 @@ function pozValtas2() {
         document.getElementById("setaarg2").click();
         document.getElementById("setbarg2").click();
         dehomalyosit();
-        // document.getElementById("setaarg2").checked = !eaarg;
-        // document.getElementById("setbarg2").checked = !ebarg;
-        /* var eaargtxt = aargtxt;
-        var ebargtxt = bargtxt;
-        aargtxt = ebargtxt;
-        bargtxt = eaargtxt; */
     }
     a.id = "bvg";
     b.id = "avg";
@@ -1390,12 +1381,12 @@ function pozValtas2() {
 
 function takarbe() {
     $('#burkolo,#jelento').addClass('on');
-    $('#burkolo #k2set,#burkolo *').css({ 'background-color': '#BDB9B9' });
+    $('#burkolo #k2set,#nyiltbl,#burkolo *').css({ 'background-color': '#BDB9B9' });
 };
 
 function takarki() {
     $('#burkolo,#jelento').removeClass('on');
-    $('#burkolo #k2set,#burkolo *').css({ 'background-color': '' });
+    $('#burkolo #k2set,#nyiltbl,#burkolo *').css({ 'background-color': '' });
 };
 
 function burkoloki() {
@@ -1577,9 +1568,7 @@ function ribbonGraph2() {
         for (var u = 0; u < hatar; u++)
             $('#derivT2 .tgomb.shown:nth(' + u + ')').addClass('ori');
     } else {
-        console.log(cill[2])
         for (var v = hatar; v < _.sum(c) + 1; v++) {
-            //console.log(v)
             $('#derivT2 .tgomb.shown:nth(' + v + ')').addClass('ori');
         }
     }
@@ -1590,6 +1579,8 @@ function ribbonGraph2() {
 // DUALITY OF MZVs
 
 function setOutputFont5(v) {
+    var elem = document.getElementById("dual_html");
+    elem.style.fontSize = v + 'px';
     $('div.sagecell_sessionOutput,div.sagecell_sessionOutput pre').css('font-size', v + 'px');
 };
 
@@ -1613,8 +1604,76 @@ function dualofv(v) {
     return _.reverse(conjugate(v));
 };
 
+function gokartya(n) {
+    const e = document.getElementById("k" + n)
+    e.scrollIntoView({
+        behavior: "smooth",
+        block: 'center'
+    });
+};
+
+function extractHTML(node) {
+
+    // return a blank string if not a valid node
+    if (!node) return ''
+
+    // if it is a text node just return the trimmed textContent
+    if (node.nodeType === 3) return node.textContent.trim()
+
+    //beyond here, only deal with element nodes
+    if (node.nodeType !== 1) return ''
+    if (node.classList.contains('textarea')) return ''
+
+    let html = ''
+        // clone the node for its outer html sans inner html
+    let outer = node.cloneNode()
+
+    // if the node has a shadowroot, jump into it
+    node = node.shadowRoot || node
+
+    if (node.children.length) {
+
+        // we checked for children but now iterate over childNodes
+        // which includes #text nodes (and even other things)
+        for (let n of node.childNodes) {
+
+            // if the node is a slot
+            if (n.assignedNodes) {
+
+                // an assigned slot
+                if (n.assignedNodes()[0]) {
+                    // Can there be more than 1 assigned node??
+                    html += extractHTML(n.assignedNodes()[0])
+
+                    // an unassigned slot
+                } else { html += n.innerHTML }
+
+                // node is not a slot, recurse
+            } else { html += extractHTML(n) }
+        }
+
+        // node has no children
+    } else { html = node.innerHTML }
+
+    // insert all the (children's) innerHTML 
+    // into the (cloned) parent element
+    // and return the whole package
+    outer.innerHTML = html
+    return outer.outerHTML
+};
+
+function tglKepek() {
+    var elem = document.getElementById("kepek");
+    var open = elem.style.display;
+    if (open == "none") {
+        elem.style.display = "block";
+    } else
+        elem.style.display = "none";
+};
+
 function html_dual() {
-    const elem = document.getElementById("dual_html")
+    const elem = document.getElementById("dual_html");
+    const bizonyitassal = document.getElementById("setbiz").checked;
     const a = kiszed_cd("ad");
     var txt = "HIBA";
     const b = dualofv([...a]);
@@ -1625,8 +1684,70 @@ function html_dual() {
     if (a.length > 1)
         frd = ',' + [...a.slice(1)].reverse().toString();
     if (a != undefined && b != undefined && !a[0] < 2) {
-        txt = '<b>a</b><sup>&dagger;</sup>&nbsp;=&nbsp;(' + a.toString() + ')<sup>&dagger;</sup>&nbsp;=&nbsp;(1' + frd + rag + ')<sup>*</sup>&nbsp;=&nbsp;(' + b.toString() + ')';
+        txt = '<b>a</b><sup>&dagger;</sup>&nbsp;=&nbsp;(' + a.toString() + ')<sup>&dagger;</sup>&nbsp;=&nbsp;(1' + frd + rag + ')<sup>*</sup>&nbsp;=&nbsp;(' + b.toString() + ')&nbsp;&Rightarrow;&nbsp;&zeta;(' + a.toString() + ')&nbsp;=&nbsp;&nbsp;&zeta;(' + b.toString() + ')';
     };
+    if (bizonyitassal) {
+        const ak = [a[0] - 1, ...a.slice(1)];
+        var kep1 = '';
+        var kep2 = '';
+        var kep3 = '';
+        document.getElementById("avg").value = ak;
+        document.getElementById("bvg").value = 0;
+        if (document.getElementById("setnarg2").checked)
+            $("#setnarg2").trigger("click");
+        if (!document.getElementById("setaarg2").checked)
+            $("#setaarg2").trigger("click");
+        if (document.getElementById("setbarg2").checked)
+            $("#setbarg2").trigger("click");
+        setTimeout(() => {
+            $("#ribbonbtn").trigger("click");
+
+        }, 200);
+        setTimeout(() => {
+            $('.tgomb.shown.szelso.ori').trigger('click');
+        }, 300);
+        setTimeout(() => {
+            kep1 = extractHTML(document.getElementById('derivT2'));
+            kep1 += extractHTML(document.getElementById('genout'));
+        }, 900);
+        setTimeout(() => {
+            $('.tgomb.shown.szelso:not(.ori)').trigger('click');
+        }, 1000);
+        setTimeout(() => {
+            $('table.genout-sor:nth(0)').before('<table class="genout-sor" style="background-color:transparent;border:none;"><tbody><tr><td class="bsor" style="background-color:transparent;color:#ff0060;"><sub style="margin-right:2px;font-size:120%;vertical-align: -0.3em;">-</sub><b>a</b>&nbsp;&rightarrow;</td></tr><tr><td class="bsor">&nbsp</td></tr></tbody></table>');
+            $('table.genout-sor.zztbl').after('<table class="genout-sor" style="background-color:transparent;border:none;"><tbody><tr><td class="bsor" style="background-color:transparent;">&nbsp</td></tr><tr><td class="bsor" style="color: #ff0060;">&leftarrow;&nbsp;<b>a</b><sup>&dagger;</sup></td></tr></tbody></table>');
+            kep2 = extractHTML(document.getElementById('derivT2'));
+            kep2 += extractHTML(document.getElementById('genout'));
+        }, 1600);
+
+        setTimeout(() => {
+            txt = genltxfgv();
+            const elem = document.querySelector("#gen_math");
+            elem.innerText = "\\[" + txt + "\\]";
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+        }, 1700);
+
+        setTimeout(() => {
+            kep3 = extractHTML(document.getElementById('gen_math'));
+        }, 2500);
+
+        setTimeout(() => {
+            document.getElementById('gen_math').style.display = "none";
+        }, 2800);
+
+        setTimeout(() => {
+            document.getElementById('kephook1').innerHTML = kep1
+            document.getElementById('kephook2').innerHTML = kep2
+            document.getElementById('kephook3').innerHTML = kep3;
+        }, 2600);
+
+        txt += "<br/><br/><b style='margin-right:10px;'>Bizonyítás:</b><button  class='showpre1' onclick='tglKepek();'>Képekben</button><div id='kepek' style='display:none;'><span id='kephook1' class='kephook'></span><span id='kephook2' class='kephook'></span><span id='kephook3' class='kephook'></span></div><br/>";
+        txt += "<div style='color:#df007e;'>A dualitási tétel egyszerűen következik <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.25em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span> Li<sub>(0)</sub>(x)</span><span class='denominator'><span class='block'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> integrál pozíciócserével nyert két eredményének összevetéséből.</div>"
+        txt += "Az <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.3em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span></span><span class='denominator'><span class='block'><span class='block'>1<span class='binary-operator'>−</span>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span>  integrált számítjuk ki két féle módon. / <sub style='margin-right:2px;font-size:120%;vertical-align: -0.3em;'>-</sub><b>a</b> := (a<sub>1</sub>−1,a<sub>2</sub>,...,a<sub>n</sub>) = (" + ak.toString() + ") /<br/> (1) <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.25em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span></span><span class='denominator'><span class='block'><span class='block'>1<span class='binary-operator'>−</span>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = −Li<sub><b>a</b></sub>(1−x) <br/>";
+        txt += " (2) <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.25em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span></span><span class='denominator'><span class='block'><span class='block'>1<span class='binary-operator'>−</span>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.25em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span> Li<sub>(0)</sub>(x)</span><span class='denominator'><span class='block'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> =<span class='block' style='transform: scale(1.5);margin:0 7px;'>&sum;</span><sub style='vertical-align:-0.6em;'><b>u</b>,<b>v</b>&geq;(1)</sub>Li<sub><b>u</b></sub>(1-x) Li<sub><b>v</b></sub>(x) + Li<sub><b>a</b><sup>&dagger;</sup></sub>(x)<br/> Az integrál paramétereit be is állítottuk az <span class='kartyabtn' onclick='gokartya(" + 4 + ");'>4. kártyán</span> és már ki is számítottuk. Ha ezt megtekinti (az előző kártyára teker, vagy a sárgás gombra kattint, de a [Képekben] gombra kattintva is láthatja a kimeneteket), akkor jól láthatja, hogy a deriváló sorban az <sub style='margin-right:2px;font-size:120%;vertical-align: -0.3em;'>-</sub><b>a</b> = (" + ak.toString() + ") vektorral induló integrál éppen az  <b>a</b><sup>&dagger;</sup> = (" + b.toString() + ") vektorral zárul az integráló sorban. ";
+        txt += "A két integrálási eredményt összevetve az alábbit írhatjuk: <div style='text-align:center;'><span style='display:inline-block;outline:2px solid #a87d73;background-color:#e5e1f9;margin:5px;padding:10px;'> −Li<sub><b>a</b></sub>(1−x) + C =<span class='block' style='transform: scale(1.5);margin:0 7px;'>&sum;</span><sub style='vertical-align:-0.6em;'><b>u</b>,<b>v</b>&geq;(1)</sub>Li<sub><b>u</b></sub>(1-x) Li<sub><b>v</b></sub>(x) + Li<sub><b>a</b><sup>&dagger;</sup></sub>(x)<span></div> A C konstans kiszámításának -és az egész bizonyításnak is- a másik alappillére az a tény, hogy <span style='color:#df007e;'><b>u</b>,<b>v</b>&nbsp;&geq;&nbsp;(1) indexvektorok esetén az f<sub><b>u</b>,<b>v</b></sub>(x) =  Li<sub><b>u</b></sub>(1-x) Li<sub><b>v</b></sub>(x) függvények x = 0-ban, és x = 1-ben is zérus értéket vesznek fel.</span> (Erről  meg is győződhetünk a <span class='kartyabtn'  onclick='gokartya(" + 6 + ");'>6. kártyán</span> a függvények \"közelítő\" ábrázolásával.) Ennek pedig triviális következménye, hogy az egyenletben szereplő F(x) = <span class='block' style='transform: scale(1.5);margin:0 7px;'>&sum;</span><sub style='vertical-align:-0.6em;'><b>u</b>,<b>v</b>&geq;(1)</sub>Li<sub><b>u</b></sub>(1-x) Li<sub><b>v</b></sub>(x) összegfüggvény is zérus értéket vesz fel x = 0-ban, illetve x = 1-ben.<br/> (a) Ha az egyenletünkbe x = 1 értéket írjuk, akkor az −Li<sub><b>a</b></sub>(0) + C = 0 + Li<sub><b>a</b><sup>&dagger;</sup></sub>(1) &Leftrightarrow; C = &zeta;(<b>a</b><sup>&dagger;</sup>) egyenletet kapjuk. <br/> (b) Ha pedig az egyenletünkbe az x = 0 értéket helyettesítjük, akkor az −Li<sub><b>a</b></sub>(1) + C = 0 + Li<sub><b>a</b><sup>&dagger;</sup></sub>(0) = 0 &Leftrightarrow; −&zeta;(<b>a</b>) + C = 0 egyenletet nyerjük.<br/> Az (a) és (b) összevetésével pedig: −&zeta;(<b>a</b>) +  &zeta;(<b>a</b><sup>&dagger;</sup>) = 0  &Leftrightarrow; &zeta;(<b>a</b>) =  &zeta;(<b>a</b><sup>&dagger;</sup>)."
+    };
+
     elem.innerHTML = txt;
 };
 
@@ -1650,7 +1771,6 @@ function sage_dual() {
         var txt3 = 'show(n(Multizeta(' + rb.toString() + '),prec = ' + n + '));';
         var txt = txt0 + txt1 + txt2 + txt3;
     };
-    console.log(txt)
     $('#mycell5 .sagecell_editor textarea.sagecell_commands').val(txt);
     $('#mycell5 .sagecell_input button.sagecell_evalButton').click();
     setOutputFont5($('#outfont-slider5').val());
@@ -1748,8 +1868,6 @@ function LiLi1(a, b, N) {
     c = c.replaceAll("+-", "-");
     cltx = cltx.slice(0, -1);
     cltx = cltx.replaceAll("+-", "-");
-    // console.log(c.replaceAll("*", " "));
-    // console.log(cltx);
     const m = maxLiLi1(a, b, N);
     return [c, cltx, [-0.1 * m, m]];
 };
@@ -1802,4 +1920,68 @@ function sorfejtesLiLi1() {
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
+// fibrationBasis
 
+function trailing0(v) {
+    return _.dropRightWhile(v, y => y == 0);
+};
+
+function told0val(a, b) {
+    const na = a.length;
+    const nb = b.length;
+    if (na > nb) {
+        k = na - nb;
+        for (var i = 1; i <= na - nb; i++)
+            b.unshift(0);
+    } else {
+        k = nb - na;
+        for (var i = 1; i <= nb - na; i++)
+            a.unshift(0);
+    };
+
+    return [a, b];
+};
+
+function revlexelotte(s) {
+    const n = s.length;
+    var out = [];
+    for (var j = 0; j < n; j++) {
+        for (var k = 0; k < s[n - 1 - j]; k++) {
+            var cv;
+            if (j == 0 && k == 0)
+                cv = [];
+            else if (j > 0 && k == 0)
+                cv = _.takeRight(s, j);
+            else {
+                cv = _.takeRight(s, j);
+                cv.unshift(k);
+            }
+
+            out.push(cv);
+        }
+    }
+    out.push(s);
+    return out;
+};
+
+function rbontas(v) {
+    const n = v.length;
+    var u = [],
+        l = [],
+        nl = 0;
+    for (var i = 0; i < n; i++) {
+        var e = v[i];
+        if (e > 1) {
+            u.push(e - 1);
+            l.push(1);
+            nl++;
+        } else if (nl > 0)
+            l[nl - 1]++;
+        else {
+            l.push(1);
+            nl++;
+        }
+    };
+
+    return told0val(u, l);
+};
