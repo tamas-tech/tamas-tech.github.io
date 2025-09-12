@@ -718,9 +718,9 @@ function setOutputFontintc(v) {
 };
 
 function cdat(el, s, o) {
-    $('.tgomb.hl:not(.szelso)').html('&#x25CB;');
-    $('.tgomb.hl.szelso').html('&#x25CE;');
-    $('.tgomb.hl').removeClass('hl');
+    $('#derivT .tgomb.hl:not(.szelso)').html('&#x25CB;');
+    $('#derivT .tgomb.hl.szelso').html('&#x25CE;');
+    $('#derivT .tgomb.hl').removeClass('hl');
     if ($(el).hasClass('szelso'))
         $(el).html('&#x25C9;');
     else
@@ -795,7 +795,7 @@ function cdat(el, s, o) {
 };
 
 function cdatUPD() {
-    const elem = $('.tgomb.hl');
+    const elem = $('#derivT .tgomb.hl');
     if (elem)
         elem.trigger('click');
 };
@@ -840,12 +840,12 @@ function ribbonGraph() {
 };
 
 function ribbonAnimate() {
-    const N = $('.tgomb.shown').length;
+    const N = $('#derivT .tgomb.shown').length;
     const t = document.getElementById("t").value * 1;
     if (N > 0) {
         var i = 0;
         ra = setInterval(() => {
-            $('.tgomb.shown:nth(' + i + ')').click();
+            $('#derivT .tgomb.shown:nth(' + i + ')').click();
             i++;
             if (i == N) {
                 clearInterval(ra);
@@ -921,8 +921,8 @@ function setbArgc(elem) {
 var Lihlvec = [];
 
 function cdat_xn(el, s, o) {
-    $('.tgomb.hl').html('&#x25CB;');
-    $('.tgomb.hl').removeClass('hl');
+    $('#derivT .tgomb.hl').html('&#x25CB;');
+    $('#derivT .tgomb.hl').removeClass('hl');
     $(el).html('&#x25CF;');
     $(el).addClass('hl');
 
@@ -1326,6 +1326,7 @@ function kiszed_cd(id) {
 function abillesztes(a, b) {
     a.push(1);
     b.push(1);
+    b = b.filter(y => y != 0);
     setegyezes();
     const rb = [...b].reverse();
     var sorszam = _.sum(b);
@@ -1394,9 +1395,9 @@ function burkoloki() {
 };
 
 function cdat2(el, s, o) {
-    $('.tgomb.hl:not(.szelso)').html('&#x25CB;');
-    $('.tgomb.hl.szelso').html('&#x25CE;');
-    $('.tgomb.hl').removeClass('hl');
+    $('#derivT2 .tgomb.hl:not(.szelso)').html('&#x25CB;');
+    $('#derivT2 .tgomb.hl.szelso').html('&#x25CE;');
+    $('#derivT2 .tgomb.hl').removeClass('hl');
     if ($(el).hasClass('szelso'))
         $(el).html('&#x25C9;');
     else
@@ -1460,16 +1461,16 @@ function cdat2(el, s, o) {
     }
 
 
-    $('.tsorszam-e').css("visibility", "hidden");
-    $('.tsorszam-e.corr').html($('.tsorszam-e.corr').attr('data-n'));
-    $('.tsorszam-e.corr').removeClass('corr');
+    $('#derivT2 .tsorszam-e').css("visibility", "hidden");
+    $('#derivT2 .tsorszam-e.corr').html($('.tsorszam-e.corr').attr('data-n'));
+    $('#derivT2 .tsorszam-e.corr').removeClass('corr');
     for (var t = s - 1; t < r + Math.floor(s / (r + 1)) - 1; t++)
-        $('.tsorszam-e:nth(' + t + ')').css("visibility", "visible");
-    $('.tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
+        $('#derivT2 .tsorszam-e:nth(' + t + ')').css("visibility", "visible");
+    $('#derivT2 .tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
     if (s == r)
-        $('.tsorszam-e:nth(-1)').html("( )").css("visibility", "visible");
+        $('#derivT2 .tsorszam-e:nth(-1)').html("( )").css("visibility", "visible");
 
-    $('.tsorszam-n').css("visibility", "hidden");
+    $('#derivT2 .tsorszam-n').css("visibility", "hidden");
     if (aarg != barg) {
         const ce = conjugate(e);
         for (var t = 1; t < ce.length; t++)
@@ -1533,6 +1534,7 @@ function ribbonGraph2() {
     const a = kiszed_cd('avg');
     const b = kiszed_cd('bvg');
     const cill = abillesztes(a, b);
+    console.log(cill)
     const c = cill[0];
     const kc = kum(c);
     const r = c.length;
@@ -1671,6 +1673,8 @@ function tglKepek() {
         elem.style.display = "none";
 };
 
+var kkep1 = '';
+
 function html_dual() {
     const elem = document.getElementById("dual_html");
     const bizonyitassal = document.getElementById("setbiz").checked;
@@ -1704,19 +1708,22 @@ function html_dual() {
 
         }, 200);
         setTimeout(() => {
-            $('.tgomb.shown.szelso.ori').trigger('click');
+            $('#derivT2 .tgomb.shown.szelso.ori').trigger('click');
         }, 300);
         setTimeout(() => {
             kep1 = extractHTML(document.getElementById('derivT2'));
+            kep1 = kep1.replaceAll('id="derivT2"', '');
+            kkep1 = kep1;
             kep1 += extractHTML(document.getElementById('genout'));
         }, 900);
         setTimeout(() => {
-            $('.tgomb.shown.szelso:not(.ori)').trigger('click');
+            $('#derivT2 .tgomb.shown.szelso:not(.ori)').trigger('click');
         }, 1000);
         setTimeout(() => {
             $('table.genout-sor:nth(0)').before('<table class="genout-sor" style="background-color:transparent;border:none;"><tbody><tr><td class="bsor" style="background-color:transparent;color:#ff0060;"><sub style="margin-right:2px;font-size:120%;vertical-align: -0.3em;">-</sub><b>a</b>&nbsp;&rightarrow;</td></tr><tr><td class="bsor">&nbsp</td></tr></tbody></table>');
             $('table.genout-sor.zztbl').after('<table class="genout-sor" style="background-color:transparent;border:none;"><tbody><tr><td class="bsor" style="background-color:transparent;">&nbsp</td></tr><tr><td class="bsor" style="color: #ff0060;">&leftarrow;&nbsp;<b>a</b><sup>&dagger;</sup></td></tr></tbody></table>');
             kep2 = extractHTML(document.getElementById('derivT2'));
+            kep2 = kep2.replaceAll('id="derivT2"', '');
             kep2 += extractHTML(document.getElementById('genout'));
         }, 1600);
 
@@ -1736,8 +1743,8 @@ function html_dual() {
         }, 2800);
 
         setTimeout(() => {
-            document.getElementById('kephook1').innerHTML = "(1) "+ kep1
-            document.getElementById('kephook2').innerHTML = "(2) "+ kep2
+            document.getElementById('kephook1').innerHTML = "(1) " + kep1
+            document.getElementById('kephook2').innerHTML = "(2) " + kep2
             document.getElementById('kephook3').innerHTML = kep3;
         }, 2600);
 
@@ -1985,4 +1992,3 @@ function rbontas(v) {
 
     return told0val(u, l);
 };
-
