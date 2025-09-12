@@ -1736,8 +1736,8 @@ function html_dual() {
         }, 2800);
 
         setTimeout(() => {
-            document.getElementById('kephook1').innerHTML = kep1
-            document.getElementById('kephook2').innerHTML = kep2
+            document.getElementById('kephook1').innerHTML = "(1) "+ kep1
+            document.getElementById('kephook2').innerHTML = "(2) "+ kep2
             document.getElementById('kephook3').innerHTML = kep3;
         }, 2600);
 
@@ -1985,3 +1985,4 @@ function rbontas(v) {
 
     return told0val(u, l);
 };
+
