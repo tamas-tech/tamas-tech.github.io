@@ -1326,7 +1326,9 @@ function kiszed_cd(id) {
 function abillesztes(a, b) {
     a.push(1);
     b.push(1);
-    b = b.filter(y => y != 0);
+    if (b.length == 1 && b[0] == 0)
+        b = [1, 1]
+        //b = b.filter(y => y != 0);
     setegyezes();
     const rb = [...b].reverse();
     var sorszam = _.sum(b);
@@ -1474,9 +1476,9 @@ function cdat2(el, s, o) {
     if (aarg != barg) {
         const ce = conjugate(e);
         for (var t = 1; t < ce.length; t++)
-            $('.tsorszam-n:nth(' + t + ')').css("visibility", "visible").html(ce[t]);
+            $('#derivT2 .tsorszam-n:nth(' + t + ')').css("visibility", "visible").html(ce[t]);
         if (s == 1 && o == 1)
-            $('.tsorszam-n:nth(0)').html("( )").css("visibility", "visible");
+            $('#derivT2 .tsorszam-n:nth(0)').html("( )").css("visibility", "visible");
     };
 
     var bv = [];
@@ -1533,49 +1535,57 @@ function ribbonGraph2() {
     const elem = document.getElementById("derivT2");
     const a = kiszed_cd('avg');
     const b = kiszed_cd('bvg');
-    const cill = abillesztes(a, b);
-    console.log(cill)
-    const c = cill[0];
-    const kc = kum(c);
-    const r = c.length;
-    var k = [0];
-    for (var i = 1; i < r; i++) {
-        k.push(kc[i - 1] - i);
-    };
-    cN2 = _.sum(c) + 1 - r || 1;
-    var kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th><div>";
-    for (var i = 1; i < _.last(kc) - r + 2; i++) {
-        kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
-    };
-    kep += "<th style='width:21.36px'></th></div></th><td></td></tr></thead>";
-    for (var j = 0; j < r; j++) {
-        kep += "<tr><th><span class='tsorszam-w' data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div>";
-        for (var t = 0; t < k[j]; t++) {
-            kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
-        };
-        for (var t = k[j]; t < k[j] + c[j]; t++) {
-            kep += "<span class='tgomb shown' onclick='cdat2(this," + ((j + 1) + "," + (t - k[j] + 1)) + ")'>&#x25CB;</span> ";
-        };
-        kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
-    };
-
-    kep += "</th></tr></table>";
-    elem.innerHTML = kep;
-    const hatar = cill[1];
-    $('#derivT2 .tgomb.shown:nth(0),#derivT2 .tgomb.shown:nth(-1)').addClass('szelso').html('&#x25CE;');;
-    $('#derivT2 .tgomb.shown:nth(' + (hatar - 1) + ')').addClass('illesztoveg');
-    $('#derivT2 .tgomb.shown:nth(' + hatar + ')').addClass('illesztokezd');
-
-    if (cill[2] == "le") {
-        for (var u = 0; u < hatar; u++)
-            $('#derivT2 .tgomb.shown:nth(' + u + ')').addClass('ori');
+    var kep = "";
+    if (b.length == 1 && b[0] == 0 && (egyezes == 0 || (egyezes == 1 && aarg == narg))) {
+        kep = "Ez nagyon más integrálhoz vezet.";
+        elem.innerHTML = kep;
+        document.getElementById("genout").innerHTML = kep;
+        setOutputFontintc2(document.getElementById("outfont-slider").value * 1);
+        dehomalyosit();
     } else {
-        for (var v = hatar; v < _.sum(c) + 1; v++) {
-            $('#derivT2 .tgomb.shown:nth(' + v + ')').addClass('ori');
+        const cill = abillesztes(a, b);
+        const c = cill[0];
+        const kc = kum(c);
+        const r = c.length;
+        var k = [0];
+        for (var i = 1; i < r; i++) {
+            k.push(kc[i - 1] - i);
+        };
+        cN2 = _.sum(c) + 1 - r || 1;
+        kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th><div>";
+        for (var i = 1; i < _.last(kc) - r + 2; i++) {
+            kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
+        };
+        kep += "<th style='width:21.36px'></th></div></th><td></td></tr></thead>";
+        for (var j = 0; j < r; j++) {
+            kep += "<tr><th><span class='tsorszam-w' data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div>";
+            for (var t = 0; t < k[j]; t++) {
+                kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
+            };
+            for (var t = k[j]; t < k[j] + c[j]; t++) {
+                kep += "<span class='tgomb shown' onclick='cdat2(this," + ((j + 1) + "," + (t - k[j] + 1)) + ")'>&#x25CB;</span> ";
+            };
+            kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
+        };
+
+        kep += "</th></tr></table>";
+        elem.innerHTML = kep;
+        const hatar = cill[1];
+        $('#derivT2 .tgomb.shown:nth(0),#derivT2 .tgomb.shown:nth(-1)').addClass('szelso').html('&#x25CE;');;
+        $('#derivT2 .tgomb.shown:nth(' + (hatar - 1) + ')').addClass('illesztoveg');
+        $('#derivT2 .tgomb.shown:nth(' + hatar + ')').addClass('illesztokezd');
+
+        if (cill[2] == "le") {
+            for (var u = 0; u < hatar; u++)
+                $('#derivT2 .tgomb.shown:nth(' + u + ')').addClass('ori');
+        } else {
+            for (var v = hatar; v < _.sum(c) + 1; v++) {
+                $('#derivT2 .tgomb.shown:nth(' + v + ')').addClass('ori');
+            }
         }
+        setOutputFontintc2(document.getElementById("outfont-slider").value * 1);
+        dehomalyosit();
     }
-    setOutputFontintc2(document.getElementById("outfont-slider").value * 1);
-    dehomalyosit();
 };
 
 // DUALITY OF MZVs
@@ -1673,11 +1683,10 @@ function tglKepek() {
         elem.style.display = "none";
 };
 
-var kkep1 = '';
-
 function html_dual() {
     const elem = document.getElementById("dual_html");
     const bizonyitassal = document.getElementById("setbiz").checked;
+    const vanzar = document.getElementById("jelento").classList.contains("on");
     const a = kiszed_cd("ad");
     var txt = "HIBA";
     const b = dualofv([...a]);
@@ -1695,6 +1704,8 @@ function html_dual() {
         var kep1 = '';
         var kep2 = '';
         var kep3 = '';
+        if (vanzar)
+            burkoloki();
         document.getElementById("avg").value = ak;
         document.getElementById("bvg").value = 0;
         if (document.getElementById("setnarg2").checked)
@@ -1713,8 +1724,8 @@ function html_dual() {
         setTimeout(() => {
             kep1 = extractHTML(document.getElementById('derivT2'));
             kep1 = kep1.replaceAll('id="derivT2"', '');
-            kkep1 = kep1;
             kep1 += extractHTML(document.getElementById('genout'));
+            kep1 = kep1.replace(/(\<p id="genout".*)(\<div class=\"meret\"\>)(.*)(\<\/p\>)/g, "<hr style='color:#aaa;margin-top: 15px;'/>$2$3");
         }, 900);
         setTimeout(() => {
             $('#derivT2 .tgomb.shown.szelso:not(.ori)').trigger('click');
@@ -1725,6 +1736,7 @@ function html_dual() {
             kep2 = extractHTML(document.getElementById('derivT2'));
             kep2 = kep2.replaceAll('id="derivT2"', '');
             kep2 += extractHTML(document.getElementById('genout'));
+            kep2 = kep2.replace(/(\<p id="genout".*)(\<div class=\"meret\"\>)(.*)(\<\/p\>)/g, "<hr style='color:#aaa;margin-top: 15px;'/>$2$3");
         }, 1600);
 
         setTimeout(() => {
