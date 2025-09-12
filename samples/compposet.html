@@ -197,12 +197,12 @@
             <p class="keplet" id="k2set" style="height:84px;margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
             <div style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:42px;display:inline-block;" onclick="pozValtas2();"><b id="avgl"  class="kiur" style="padding: 2px 7px;">a</b> = </label>
-                <input class="inpvec" type="text" id="avg" value="3,4" oninput="agSumRefresh();setgenKeplet2();homalyosit();" name="a">
+                <input class="inpvec" type="text" id="avg" name="ribbona" value="3,4" oninput="agSumRefresh();setgenKeplet2();homalyosit();" name="a">
                 <big style="margin-left:2px;">∑</big>|a| = <span id="asg">5</span>
             </div>
             <div style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:42px;display:inline-block;" onclick="pozValtas2();"><b id="bvgl" style="padding: 2px 7px;">b</b> = </label>
-                <input class="inpvec" type="text" id="bvg" value="2,3,1,1,3" oninput="bgSumRefresh();setgenKeplet2();homalyosit();" name="b">
+                <input class="inpvec" type="text" id="bvg" name="ribbonb" value="2,3,1,1,3" oninput="bgSumRefresh();setgenKeplet2();homalyosit();" name="b">
                 <big style="margin-left:2px;"> ∑</big>|b| = <span id="bsg">5</span> <button style="margin-left:10px;" id="tukroz" onclick="tukrozes();">&lrhar;</button>
             </div>
 
@@ -303,6 +303,7 @@
     </script>
 </body>
 </html>
+
 
 
 
