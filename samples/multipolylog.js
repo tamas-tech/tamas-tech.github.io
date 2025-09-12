@@ -3313,7 +3313,9 @@ function setFazis() {
 };
 
 function kiszed_v(id) {
-    var av = document.getElementById(id).value;
+    const iav = document.getElementById(id);
+    var av = iav.value;
+    const namea = iav.name || "";
     if (pat.test(av)) {
         setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figygen");
         genClear();
@@ -3332,7 +3334,7 @@ function kiszed_v(id) {
     try {
         av = JSON.parse(av);
         var indx = av.indexOf(oo);
-        if (id == "avg" && av.some(v => v <= 0)) {
+        if (id == "avg" && av.some(v => v <= 0) && namea != "ribbonb") {
             setfigy("Az <b>a</b> indexvektor most csak pozitív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figygen");
             genClear();
             return;
@@ -10607,4 +10609,5 @@ function genoutput1() {
     else
         genoutput1s();
 };
+
 
