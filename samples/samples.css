@@ -1359,6 +1359,7 @@ span.kartyabtn:hover {
 }
 
 span.kephook {
+    font-family: Symbola;
     padding: 2px 5px;
     background-color: #f3f3d1;
     border: 1px solid #ddcebd;
@@ -1373,6 +1374,7 @@ span.kephook * {
 }
 
 div#kepek {
+    font-family: Symbola;
     display: none;
     margin-top: 10px;
     padding: 5px;
@@ -1380,5 +1382,6 @@ div#kepek {
     max-width: calc(100vw);
     overflow: auto;
 }
+
 
 
