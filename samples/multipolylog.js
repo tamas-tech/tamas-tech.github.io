@@ -3335,7 +3335,7 @@ function kiszed_v(id) {
         av = JSON.parse(av);
         var indx = av.indexOf(oo);
         if (id == "avg" && av.some(v => v <= 0) && namea != "ribbonb") {
-            setfigy("Az <b>a</b> indexvektor most csak pozitív elemeket tartalmazhat! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figygen");
+            setfigy("Az <b>a</b> indexvektor most csak pozitív elemeket tartalmazhat!....... " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figygen");
             genClear();
             return;
         } else if (id == "avg" && indx > -1) {
@@ -3524,7 +3524,6 @@ function toribbon(el, i) {
         return;
     } else {
         if ($el.hasClass("zztbl")) {
-            console.log("zztbl elem")
             return;
         } else {
             const aa = _.sum(kiszed_cd('avg'));
@@ -3749,7 +3748,7 @@ function display_composition(base, composition) {
 function comp0(n, k) {
     allcomp0 = [];
     if (k == 0)
-        allcomp0 = []
+        allcomp0 = [];
     else {
         var composition = [];
         for (var exists = get_first_weak_composition(n, k, composition); exists; exists = get_next_weak_composition(n, k, composition)) {
@@ -8897,7 +8896,7 @@ function xnlJelent1(elem) {
     var ne = $(elem).next('.pzoutblock');
     setTimeout(() => { ne.addClass('pznext'); }, 100);
     $(".xnLii,.xnLe,.xnLix").removeClass('hl');
-    $('.tgomb.shown[onclick="cdat_xn(this,' + sor + ',' + oszlop + ')"]').trigger('click');
+    $('#derivT2 .tgomb.shown[onclick="cdat_xn(this,' + sor + ',' + oszlop + ')"]').trigger('click');
 };
 
 function IsLatex(S, n) {
@@ -10609,5 +10608,3 @@ function genoutput1() {
     else
         genoutput1s();
 };
-
-
