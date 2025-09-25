@@ -1941,6 +1941,16 @@ function sorfejtesLiLi1() {
 
 // fibrationBasis
 
+function setOutputFont6(v) {
+    var elem = document.getElementById("outnm");
+    elem.style.fontSize = v + 'px';
+};
+
+function setOutputFont7(v) {
+    var elem = document.getElementById("outfb");
+    elem.style.fontSize = v + 'px';
+};
+
 function trailing0(v) {
     return _.dropRightWhile(v, y => y == 0);
 };
@@ -2396,3 +2406,4 @@ function int1nm(nv, mv) {
     const elem = document.getElementById("outfb");
     elem.innerHTML = out;
 };
+
