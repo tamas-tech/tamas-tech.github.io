@@ -296,6 +296,44 @@
             <div id="plotLiLi" style="text-align:center;"></div>
         </section>
     </div>
+
+    <div class="keret of odd" id="k7">
+        <b><big class="sorszam">7.</big></b>
+        <p class="keplet" id="keplet_k7" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\int_{(\mu_{r},\ldots,\mu_{2},\mu_{1})}^{(\nu_{r},\ldots,\nu_{2},\nu_{1})}[1] = \sum_{k=0}^{\mu_{1}}{\dfrac{(-1)^{k}}{(\mu_{1}-k)!}\;\ln^{\mu_{1}-k}(x)\sum_{N=0}^{k}\sum_{\begin{subarray}{c} \sum\boldsymbol{n} = N \\ \boldsymbol{0}\le\boldsymbol{n},|\boldsymbol{n}|=
+            r \end{subarray}}\sum_{\begin{subarray}{c} \sum\boldsymbol{m} = k-N \\ \boldsymbol{0}\le\boldsymbol{m},|\boldsymbol{m}| = r-1 \end{subarray}}\sum_{\begin{subarray}{c} (\boldsymbol{t}_{1},\ldots,\boldsymbol{t}_{r}) = \boldsymbol{T}\\ \sum\boldsymbol{t}_{j}
+            = n_{j}\\ \boldsymbol{0}\le\boldsymbol{t}_{j},\;|\boldsymbol{t}_{j}| = \nu_{j} \end{subarray}}\prod_{l=2}^{r}{\binom{\mu_{r}-1+m_{l-1}}{\mu_{r}-1}}\text{Li}_{\omega+\boldsymbol{T}\left(\bullet\bowtie\odot\right)\boldsymbol{m}}\;(x)}\\ \text{ahol
+            }\omega=[(\nu_{r})^{\ast}\bullet(\mu_{r})]\odot[(\nu_{r-1})^{\ast}\bullet(\mu_{r-1})]\odot\ldots\odot[(\nu_{2})^{\ast}\bullet(\mu_{1})]\odot(\nu_{1})^{\ast} \\ \text{és }\boldsymbol{T}\left(\bullet\bowtie\odot\right)\boldsymbol{m}=[\boldsymbol{t}_{r}\bullet(m_{r-1})]\odot[\boldsymbol{t}_{r-1}\bullet(m_{r-2})]\odot\ldots\odot[\boldsymbol{t}_{2}\bullet(m_{1})]\odot\boldsymbol{t}_{1}
+            \end{gather*}\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="nuv"><b style="padding: 2px 7px;">&nu;</b> = </label>
+            <input class="inpvec" type="text" id="nuv" value="1,1,1" name="nuv">
+        </div>
+        <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
+            <label for="muv"><b style="padding: 2px 7px;">&mu;</b> = </label>
+            <input class="inpvec" type="text" id="muv" value="3,2,2" name="muv">
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="hatas1en();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#outnm');" title="Clear series">Clear</button>
+        <p class="kijelzo" id="outnm" style="line-height: 1.5;"></p>
+        <p id="figynm" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+    </div>
+
+    <div class="keret of even" id="k8">
+        <b><big class="sorszam">8.</big></b>
+        <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\text{fibrationBasis of }\text{Li}_{(s_{1},\ldots,s_{r})}(1-x)\]
+        </p>
+        <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
+            <label for="fbs"><b style="padding: 2px 7px;">s</b> = </label>
+            <input class="inpvec" type="text" id="fbs" value="2,3,1,2" name="fbs">
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="LifB();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#outfb');" title="Clear series">Clear</button>
+        <label for="setfb" style="margin-left: 10px;">Kibontva</label>
+        <input type="checkbox" name="setfb" id="setfb" oninput="LifB()" style="height:20px;width:20px;vertical-align:middle;">
+        <p class="kijelzo" id="outfb" style="line-height: 1.5;"></p>
+        <p id="figyfb" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+    </div>               
     <script>
         setTimeout(() => {
             setgenKeplet2();
@@ -303,6 +341,7 @@
     </script>
 </body>
 </html>
+
 
 
 
