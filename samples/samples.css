@@ -1,1387 +1,2398 @@
-body {
-    background-color: #444;
-}
-
-body h1,
-body h2 {
-    color: #f1f1f1;
-}
-
-input.inpnumb {
-    background-color: inherit;
-    color: #0060df;
-    color: #df0000;
-    border: none;
-    border-bottom-color: currentcolor;
-    border-bottom-style: none;
-    border-bottom-width: medium;
-    border-bottom: 1px solid #a8a8a8;
-    text-align: center;
-    font-size: 18px;
-}
-
-.pre-container.show {
-    display: inline-block;
-    margin: 8px;
-    /*background-color: #e3eaea;*/
-    color: #394B75;
-    font-size: 12px;
-    padding: 5px 10px;
-    border: 1px solid #e1e1e1;
-}
-
-.pre-container {
-    display: none;
-}
-
-button.sendbtn {
-    display: inherit;
-    font-size: 22px;
-    position: relative;
-    bottom: -75px;
-    left: 15px;
-    background-color: #6D778E;
-    color: #f1f1f1;
-    box-shadow: 0px 2px 5px 5px #b3bfbb59;
-    border: 1px solid aliceblue;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button.sendbtn.noback {
-    bottom: -15px;
-}
-
-button.sendbtn:hover,
-button.sendbtn.noback:hover {
-    transform: scale(1.15);
-    background-color: #5f6983;
-}
-
-button.vissza {
-    display: inherit;
-    position: relative;
-    bottom: -45px;
-    left: 65px;
-    box-shadow: 0px 2px 5px 5px #b3bfbb59;
-    border: 1px solid aliceblue;
-    cursor: pointer;
-    background-color: #67a2a8;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    color: #fff0;
-    background-image: url("https://cdn.jsdelivr.net/npm/zeynepjs@2.2.0/examples/images/submenu-arrow.svg");
-    background-position: right 9px center;
-    background-repeat: no-repeat;
-    background-size: 8px 14px;
-    transform: rotate(-90deg);
-}
-
-button.vissza:hover {
-    transform: scale(1.15) rotate(-90deg);
-    background-color: #48868d;
-}
-
-button.showpre {
-    display: inherit;
-    position: relative;
-    bottom: -15px;
-    left: 116px;
-    box-shadow: 0px 2px 5px 5px #b3bfbb59;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    cursor: pointer;
-    background-color: #99756a;
-    width: 80px;
-    height: 30px;
-    color: #f0f0f0;
-}
-
-button.showpre:hover {
-    transform: scale(1.15);
-    background-color: #8b6356
-}
-
-button.showpre.hide {
-    background-color: #67a872;
-}
-
-button.showpre.hide:hover {
-    transform: scale(1.15);
-    background-color: #479254;
-}
-
-div#precover {
-    display: none;
-}
-
-span.showprecontainer {
-    font-size: 18px;
-    position: relative;
-}
-
-pre {
-    margin: 5px 0;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-}
-
-p.kijelzo {
-    margin-bottom: 5px;
-    max-width: calc(100vw);
-    overflow: auto;
-    padding: 5px 20px;
-    background-color: #f1f1f1;
-    border-top: 1px solid #d0d0d0;
-    border-bottom: 1px solid #d0d0d0;
-    font-size: 130%;
-}
-
-p.kijelzo.tomor {
-    margin-bottom: 2px;
-    margin-top: 2px;
-}
-
-div.keret {
-    border: 1px solid #bebebe;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    min-width: min-content;
-    padding-bottom: 20px;
-}
-
-div.keret.active {
-    outline: 3px solid #f00;
-    outline-offset: -4px;
-}
-
-div.keret.of {
-    overflow: auto;
-    min-width: unset;
-}
-
-div.keret.odd {
-    background-color: #f5fff9;
-    box-shadow: 0px 0px 10px 3px #6b77aa;
-}
-
-div.keret.even {
-    background-color: #fff1f1;
-    box-shadow: 0px 0px 10px 3px #eea8a8;
-}
-
-div.keret.odd .pre-container {
-    background-color: #e8f2f2;
-}
-
-div.keret.even .pre-container {
-    background-color: #ffe5e5;
-}
-
-p.keplet {
-    margin-top: 0;
-    margin-bottom: -76px;
-    padding: 5px 10px;
-    font-size: 130%
-}
-
-p.keplet.fixw {
-    max-width: calc(100vw - 10px);
-}
-
-p.keplet.noback {
-    margin-bottom: -0px;
-}
-
-div.keret.odd p.keplet {
-    background-color: #ddeee8;
-    outline: 2px solid #c0c9d0;
-    outline-offset: -6px;
-    min-width: max-content;
-}
-
-div.keret.even p.keplet {
-    background-color: #ffe4e4;
-    outline: 2px solid #ffbfbf;
-    outline-offset: -6px;
-    min-width: max-content;
-}
-
-big.sorszam {
-    margin-left: 10px
-}
-
-.switch.k {
-    position: relative;
-    display: inline-block;
-    width: 54px;
-    height: 28px;
-    bottom: 4px;
-}
-
-.slider.k:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.slider.round {
-    border-radius: 24px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-input:checked+.slider {
-    background-color: #54738b;
-}
-
-input:checked+.slider::before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-}
-
-button.otherbtn {
-    border: 1px solid #d3d3d3;
-    font-size: larger;
-    border-radius: 4px;
-    padding: 0.4em 1em;
-    color: #555;
-    text-decoration: none;
-    background-color: #c1c4d2;
-    font-weight: normal;
-    font-family: Verdana, Arial, sans-serif;
-    font-size: 1.1em;
-    vertical-align: middle;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.dynamic {
-    color: red;
-}
-
-.MathJax_Display {
-    margin: 20px 0 10px 0 !important;
-}
-
-.inputdiv {
-    height: 150px;
-    padding: 20px 20px 0 20px;
-    outline: 2px solid #c0c9d0;
-    outline-offset: -6px;
-    background-color: #eee;
-    width: max-content;
-}
-
-.outputdiv {
-    padding: 10px;
-    outline: 2px solid #c3d0c0;
-    outline-offset: -6px;
-    background-color: #e0ebe0;
-}
-
-.outputoutdiv {
-    padding: 4px;
-    /* outline: 2px solid #d0d0c0;
-    outline-offset: -2px; */
-    background-color: #fff;
-    margin-bottom: 5px;
-}
-
-#ideout {
-    width: 100%
-}
-
-input::-webkit-inner-spin-button {
-    appearance: auto;
-    display: inline-block;
-    cursor: pointer;
-    align-self: stretch;
-    opacity: 1!important;
-    pointer-events: all!important;
-    -webkit-user-modify: read-only !important;
-    flex: 0 0 auto;
-}
-
-b.kiur {
-    color: #ff0000;
-    background-color: #ffe8e8;
-    outline: 1px solid #f3bec3;
-}
-
-button.showpre1 {
-    box-shadow: 0px 2px 5px 5px #b3bfbb59;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    cursor: pointer;
-    background-color: #99756a;
-    width: 80px;
-    height: 30px;
-    color: #f0f0f0;
-    margin-right: 5px;
-    margin-left: 5px;
-}
-
-button.showpre1:hover {
-    transform: scale(1.15);
-    background-color: #8b6356
-}
-
-#sbtglbtn,
-#sbtglbtn2,
-#tukroz {
-    background-color: #e6e6e6;
-    color: #636363;
-    cursor: pointer;
-    border: 1px solid #d8d8d8;
-    padding: 5px;
-    border-radius: 3px;
-    height: 30px;
-    width: 30px;
-    margin-right: 5px;
-    font-size: 20px;
-    line-height: 0.6;
-    vertical-align: middle;
-}
-
-#setsForma {
-    background-color: #e6e6e6;
-    color: #636363;
-    cursor: pointer;
-    border: 1px solid #d8d8d8;
-    padding: 5px;
-    border-radius: 3px;
-    height: 30px;
-    margin-right: 5px;
-}
-
-#linit {
-    cursor: pointer;
-    padding: 2px 6px;
-    border: 1px solid #cecece;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-#linit:hover {
-    border: 1px solid #a3a3a3;
-    background-color: #dddddd;
-}
-
-svg.function-plot {
-    border: 1px solid #9ab4be;
-    background-color: #eaf7f6
-}
-
-svg.function-plot text.title,
-svg.function-plot text.top-right-legend {
-    font-size: 20px;
-}
-
-span.hr {
-    color: #4e8fc7;
-    font-size: 110%;
-    font-weight: 800;
-}
-
-#Hacom sup small {
-    margin-left: -6px;
-}
-
-span.outhiba {
-    border: 1px solid;
-    padding: 2px 5px;
-    font-weight: 800;
-    color: red;
-    background-color: #ffd6d6
-}
-
-#helpbar0 {
-    padding: 10px;
-    background-color: #fffae9;
-    color: rgb(53, 71, 29);
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 5px;
-    border-radius: 5px;
-}
-
-#helpbar0 ul li {
-    margin: 5px 2px;
-}
-
-table.genout-fej,
-table.genout-sor {
-    display: inline-table;
-    background-color: #cfe7ea;
-    padding: 3px;
-    border-radius: 3px;
-    border: 1px solid #b9c8d5;
-    margin-bottom: 16px;
-}
-
-table.genout-sor tr td.sep {
-    border-bottom: 1px solid #b7c5c7;
-}
-
-table.genout-sor tr td .bsorh {
-    color: #bb0909;
-}
-
-table.genout-sor.zztbl {
-    outline: 2px solid red;
-}
-
-table.genout-fej {
-    font-size: 80%;
-    color: #449bd1;
-    background-color: #e9e9e9;
-     text-align: center;
-}
-
-table.genout-sor tr:first-child td {
-    text-align: center;
-    background-color: #b4d2d2;
-}
-
-table.genout-nyil {
-    display: inline-table;
-    margin-right: 10px;
-    margin-left: 10px;
-}
-
-table.genout-nyil tr td {
-    font-size: calc(max(60%, 12px));
-    text-align: center;
-}
-
-table.genout-nyil tr td.tdeloj {
-    background-color: #9ee844;
-    border-radius: 50%;
-    padding: 3px 1px;
-}
-
-div.meret {
-    font-size: 80%;
-    border-bottom: 1px solid #d6e6e6;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-}
-
-#mshout div.meret {
-    border-bottom: 1px solid #ddc7c7;
-}
-
-::highlight(search-results) {
-    background-color: #f06;
-    color: white;
-}
-
-td input.malpha {
-    width: 50px;
-    border: none;
-    border-bottom: 1px solid #b3b3b3;
-    background: inherit;
-    text-align: center;
-    height: 22px;
-    color: #777777;
-    font-weight: 800;
-    font-size: 14px;
-}
-
-td input.mvec {
-    width: 46px;
-    height: 22px;
-    border-right: 3px solid #444444;
-    border-left: 3px solid #444444;
-    border-top: none;
-    border-bottom: none;
-    border-radius: 7px;
-    text-align: center;
-    background-color: inherit;
-    font-size: 16px;
-}
-
-td.msep {
-    font-size: 140%;
-    line-height: 1;
-}
-
-span.bzj {
-    font-size: larger;
-    font-weight: 800;
-    vertical-align: baseline;
-}
-
-input.inpvec {
-    width: 160px;
-    height: 22px;
-    border-right: 3px solid #444444;
-    border-left: 3px solid #444444;
-    border-top: none;
-    border-bottom: none;
-    border-radius: 7px;
-    text-align: center;
-    background-color: inherit;
-    font-size: 16px;
-    vertical-align: baseline;
-}
-
-table thead tr th span.tsorszam {
-    font-size: 12px;
-    text-align: center;
-    display: inline-block;
-    width: 21.36px;
-}
-
-table tr th span.tsorszam-n,
-table tr th span.tsorszam-e,
-table tr th span.tsorszam-s,
-table tr th span.tsorszam-w {
-    font-size: 12px;
-    text-align: center;
-    display: inline-block;
-    width: 21.36px;
-    visibility: hidden;
-    vertical-align: middle;
-}
-
-.tsorszam-s.hl,
-.tsorszam-w.hl {
-    background-color: #f0cccc;
-    box-shadow: 0 0 10px 5px #d7b8b8;
-}
-
-#derivT table tr th {
-    text-align: center;
-}
-
-#derivT table tr th.hl {
-    border-top: 1px solid
-}
-
-table tr td span.tgomb {
-    cursor: pointer;
-}
-
-table tr#J_sora td span.tgomb {
-    cursor: pointer;
-    padding: 0 6px;
-}
-
-table tr td span.tgomb.illesztoveg {
-    border-bottom: 1px solid #222;
-    border-right: 1px solid #222;
-}
-
-table tr td span.tgomb.illesztokezd {
-    border-left: 1px solid #222;
-    border-top: 1px solid #222;
-}
-
-table tr td span.tgomb.ori {
-    color: #c7c6d9;
-}
-
-table tr td span.tgomb.szelso {
-    content: '&#x25A1;';
-}
-
-table tr#J_sora.active {
-    background-color: #f4d7d7;
-}
-
-table tr td span.tgomb:hover {
-    color: #999;
-}
-
-table tr td span.tgomb.hl {
-    color: #d30000;
-}
-
-table tr#c_sora.active {
-    background-color: #cbf7b7;
-}
-
-table tr#J_sora.error,
-table tr#c_sora.error {
-    color: red;
-}
-
-table tr.derivlast td {
-    color: red;
-}
-
-table tr td.derivkezd {
-    font-size: 18px;
-}
-
-table tr td.derivkezd span {
-    font-size: 14px;
-    vertical-align: middle;
-}
-
-table tr td input.cinput {
-    width: 25px;
-    text-align: center;
-    border: 1px solid #adadad;
-    background-color: #ececec;
-    font-size: inherit;
-}
-
-table tr#c_sora.active td input.cinput {
-    width: 25px;
-    text-align: center;
-    border: 1px solid #63b169;
-    background-color: #c0e1b7;
-    font-size: inherit;
-}
-
-table tr#c_sora.error td input.cinput {
-    color: red;
-}
-
-table tr#J_sora td#fdiff,
-table tr#c_sora td#sumdiff {
-    text-align: center;
-    font-size: 16px;
-}
-
-table tr#J_sora td#fdiff.diff,
-table tr#c_sora td#sumdiff.sdiff {
-    border-radius: 5px;
-    border: 3px solid red
-}
-
-table thead tr th.cindh,
-table thead tr th.cdbindh {
-    border: 1px solid #aaa;
-    background-color: #dde9f3;
-    padding: 0 5px;
-    cursor: pointer;
-}
-
-table thead tr th.cindh.cindred {
-    border: 1px solid #ea8585;
-    box-shadow: 0px 0px 10px 3px #eea8a8;
-}
-
-table thead tr th.cdbindh.cindred {
-    border: 1px solid #2eae1b;
-    box-shadow: 0px 0px 10px 3px #87d5a1;
-}
-
-#c_index.statactive {
-    box-shadow: 0px 0px 10px 3px #dd9790;
-    background-color: #f4eaea;
-}
-
-#c_indexstat.statactive {
-    box-shadow: 0px 0px 10px 3px #8cc168;
-    background-color: #cbf7b7;
-}
-
-button.kiemelo {
-    margin: 5px 0 15px 5px;
-    color: #550000;
-    font-size: 16px;
-    border: 1px solid #dadada;
-    padding: 3px 5px;
-}
-
-table#pqntbl {
-    border-spacing: 3px;
-    background-color: #dbdbdb;
-    min-width: max-content;
-}
-
-table#pqntbl td {
-    border: 1px solid #cacaca;
-    text-align: center;
-    background-color: #e5ecec;
-    padding: 3px 5px;
-    cursor: pointer;
-    border-radius: 4px;
-    user-select: none;
-    min-width: 50px;
-}
-
-table#pqntbl td.active {
-    background-color: #c1d1d1;
-    border-color: #b5b5b5;
-    box-shadow: 0px 0px 5px 5px #abe1d587;
-}
-
-table#pqntbl table.tort td {
-    border-bottom: 1px solid #000000;
-    background-color: #e5ecec;
-    user-select: none;
-}
-
-#plotpqn svg.function-plot text.title,
-#plotpqn svg.function-plot text.top-right-legend {
-    font-size: 16px;
-}
-#plotpqn svg.function-plot .canvas .content g.graph path.kiemelt {
-    stroke-width: 5px;
-    filter: blur(2px);
-}
-
-#tsout span.allpqn {
-    display: inline-block;
-    padding: 10px 5px;
-    border: 1px solid transparent;
-}
-
-#tsout span.allpqn.kiemelt {
-    background-color: #ffffc3;
-    border-color: black;
-}
-
-table#Cpqntbl {
-    min-width: max-content;
-}
-
-table#Cpqntbl th,
-table#rStbl td {
-    border: 1px solid #d2d2d2;
-    text-align: center;
-    background-color: #e5ecec;
-    padding: 3px 5px;
-    cursor: pointer;
-    border-radius: 4px;
-    user-select: none;
-    min-width: 50px;
-}
-
-table#rStbl td.colhl,
-table#rStbl tr.rowhl td {
-    background-color: #dddcca;
-}
-
-table#rStbl td.rstb:not(.colh) {
-    background-color: #bdbdbd;
-    border: 1px solid #8c8c8c;
-}
-
-table.stable {
-    border-collapse: collapse;
-}
-
-table.stable th,
-table.stable td {
-    border: 1px solid #bbb;
-    padding: 5px;
-    text-align: center;
-}
-
-#tsout hr {
-    border-color: #ececec;
-}
-
-#tsout th {
-    background-color: #e8e8e8;
-}
-
-#tsout span.fsor {
-    border: 1px solid #bbb;
-    display: inline-block;
-    padding: 5px 10px;
-    background-color: #fffec4;
-    margin-top: 7px;
-}
-
-#pzout sub,
-#pzoutr sub {
-    font-size: 70%;
-    vertical-align: -40%;
-}
-
-#pzout sup,
-#pzoutr01 sup {
-    font-size: 70%;
-    margin-left: -0.5em;
-}
-
-#pqn01out #pzoutr01 {
-    width: 80vw;
-}
-
-#pzout span.pzjelento,
-#pqn01out span.pzjelento,
-#xnlout span.pzjelento {
-    cursor: pointer;
-    padding: 5px 0;
-    letter-spacing: 0.05em;
-}
-
-#pzout span.pzjelento:hover,
-#pqn01out span.pzjelento:hover,
-#xnlout span.pzjelento:hover {
-    color: #205cff;
-    background-color: #dae4ff
-}
-
-.sqrt-prefix {
-    display: -moz-inline-box!important;
-    display: inline-block!important;
-    padding-top: 0;
-    position: relative;
-    /*border-top: 1px solid transparent;*/
-    top: -0.6em;
-    line-height: inherit;
-    vertical-align: top;
-    -webkit-transform-origin: top;
-    -moz-transform-origin: top;
-    -ms-transform-origin: top;
-    -o-transform-origin: top;
-    transform-origin: top;
-    font-family: 'Symbola', Times, serif!important;
-}
-
-.block sub.sdefint {
-    display: -moz-inline-box!important;
-    display: inline-block!important;
-    padding-top: 0;
-    position: relative;
-    vertical-align: bottom;
-    bottom: -1.3em;
-}
-
-.block sup.sdefint {
-    display: -moz-inline-box!important;
-    display: inline-block!important;
-    padding-top: 0;
-    position: relative;
-    vertical-align: top;
-    bottom: 1.45em;
-}
-
-.fraction {
-    display: -moz-inline-box!important;
-    display: inline-block!important;
-    font-size: 90%;
-    text-align: center;
-    vertical-align: -.5em;
-    padding: 0 .2em
-}
-
-.fraction,
-x:-moz-any-link {
-    display: -moz-groupbox
-}
-
-.fraction,
-x:-moz-any-link,
-x:default {
-    display: inline-block
-}
-
-.numerator,
-.denominator {
-    display: block
-}
-
-.numerator {
-    padding: .1em
-}
-
-.denominator {
-    border-top: 1px solid;
-    float: right;
-    width: 100%;
-    padding: .1em .1em 0
-}
-
-.block {
-    display: -moz-inline-box!important;
-    display: inline-block!important;
-}
-
-table#pqnrtbl {
-    margin: 10px;
-    border-collapse: collapse;
-    min-width: max-content;
-}
-
-table#pqnrtbl tr td {
-    text-align: center;
-    padding: 1px 2px;
-    min-width: max-content;
-}
-
-table#pqnrtbl td.sorkezdo {
-    text-align: center;
-    border-right: 2px solid black;
-    border-left: 2px solid black;
-    padding: 5px;
-    font-weight: 800;
-}
-
-table#pqnrtbl tr:first-child th:first-child {
-    border-right: 1px solid;
-}
-
-table#pqnrtbl tr:first-child th {
-    border-bottom: 1px solid;
-}
-
-#pzoutr sup.binh {
-    font-size: 80%;
-    vertical-align: top;
-    position: relative;
-    left: 0.3em;
-    top: -0.5em;
-    margin-right: 5px;
-}
-
-#pzoutr sup.binh1 {
-    font-size: 80%;
-    vertical-align: top;
-    position: relative;
-    left: 0.45em;
-    top: -0.4em;
-    margin-right: 5px;
-}
-
-#pzoutr sup.binh2 {
-    font-size: 80%;
-    vertical-align: top;
-    position: relative;
-    left: 0.25em;
-    top: -0.2em;
-    margin-right: 2px;
-}
-
-#pzoutr sup.binh4 {
-    font-size: 80%;
-    vertical-align: top;
-    position: relative;
-    left: 0.55em;
-    margin-right: 5px;
-}
-
-#pzoutr sup.binh5 {
-    font-size: 80%;
-    vertical-align: top;
-    position: relative;
-    left: 0.4em;
-    margin-right: 5px;
-    top: 0.35em;
-    line-height: 0px;
-}
-
-#pzoutr span.tblpr {
-    vertical-align: -0.85em;
-}
-
-#pzoutr span.tblpr1 {
-    vertical-align: -0.15em;
-}
-
-.pzjelento.monom-active {
-    box-shadow: 0 0 10px 5px #c6c6c6;
-}
-
-#pzoutr {
-    display: block;
-    outline: 2px solid #d6d4b9;
-    outline-offset: -2px;
-    background-color: #e8e8e8;
-    margin: 5px 0;
-    padding: 7px;
-    font-size: inherit;
-    max-width: calc(100vw);
-    overflow: auto;
-}
-
-#nyil {
-    margin-left: 5px;
-    color: #2d2d2d;
-    font-size: 140%;
-    vertical-align: middle;
-}
-
-#pqn01out table#pqnrtbl {
-    margin: 10px;
-    border-collapse: collapse;
-    min-width: max-content;
-}
-
-.int01jelento.monom-active {
-    box-shadow: 0 0 10px 5px #c6c6c6;
-    box-shadow: inset 0 0 10px 5px #54babf;
-}
-
-#int01nyil {
-    margin-left: 5px;
-    color: #2d2d2d;
-    font-size: 140%;
-    vertical-align: middle;
-}
-
-#pzoutr sup.binh6 {
-    margin-left: -0.5em;
-}
-
-table.fpntbl,
-table.fpntblc {
-    height: 100%;
-    width: 100%;
-    min-width: max-content;
-    min-height: max-content;
-    border: 1px solid #303030;
-}
-
-table.fpntblc td {
-    cursor: pointer;
-}
-
-table.fpntbl td.fpnact {
-    background-color: #d7e9ea;
-    border: 1px solid #000000!important;
-}
-
-table.fpntbl td.fpnact1 {
-    background-color: #f2f2bc;
-    border: 1px solid #000000!important;
-}
-
-table.fpntblc td.fpnact {
-    background-color: #eeccb9;
-    border: 1px solid #c73a3a!important;
-}
-
-table.fpntblc td.fpnact2 {
-    background-color: #d7e9ea;
-    border: 1px solid #000000!important;
-}
-
-table.fpntbl.szorzotbl td.fpnact3 {
-    background-color: #fff3e8;
-}
-
-table.fpntbl.hszorzotbl td.fpnact3 {
-    background-color: #dae4ff;
-}
-
-#fpnoutsor span.parenfpn {
-    transform: scaleY(2.3);
-    display: inline-block;
-    transform-origin: center;
-}
-
-#fpnoutsor span.parenfpn {
-    transform: scaleY(2.3);
-    display: inline-block;
-    transform-origin: center;
-}
-
-#xnlout sub.xlns {
-    vertical-align: -0.5em;
-    font-size: 80%;
-}
-
-#xnlout sub.xlns1 {
-    vertical-align: -0.5em;
-    font-size: 80%;
-    margin-left: -0.4em;
-}
-
-#xnlout span.paren {
-    transform: scaleY(1.4);
-    display: inline-block;
-    transform-origin: center;
-    padding: 0 2px;
-}
-
-#xnlout span.paren1 {
-    transform: scaleY(2.2);
-    display: inline-block;
-    transform-origin: center;
-    padding: 0 2px;
-}
-
-
-.id1.hl {
-    color: red;
-}
-
-.id2.hl {
-    color: #001aff;
-}
-
-.allid.hl {
-    color: #ffe5e5;
-    background: #f732b3;
-    border-radius: 0.5em;
-    padding: 2px 0;
-}
-
-.allid.conj {
-    color: #f732b3;
-    background: #ffe5e5;
-    border-radius: 0.5em;
-    padding: 2px 0;
-}
-
-.allid.cfiner {
-    border-bottom: 2px solid #ffaeae;
-    border-top: 2px dotted #060606;
-}
-
-.allid.ckoveto {
-    border-bottom: 6px double #ffaeae;
-    border-top: 2px dotted #060606;
-}
-
-.allid.ccoarser {
-    border-bottom: 2px solid #9c9cff;
-    border-top: 2px dotted #060606;
-}
-
-.allid.celozo {
-    border-bottom: 6px double #9c9cff;
-    border-top: 2px dotted #060606;
-}
-
-#sf_show .id1.finer,
-.allid.finer {
-    border-bottom: 2px solid red;
-}
-
-.allid.koveto {
-    border-bottom: 6px double red;
-}
-
-.allid.coarser {
-    border-bottom: 2px solid blue;
-}
-
-.allid.elozo {
-    border-bottom: 6px double blue;
-}
-
-.allcdiv {
-    border: 1px solid #b7b7dd;
-    border-radius: 4px;
-    padding: 0 5px;
-    background-color: #e5ebf7;
-    margin-bottom: 5px;
-}
-
-table#calltbl {
-    min-width: max-content;
-    min-height: max-content;
-}
-
-table#calltbl tr td {
-    padding: 3px 5px;
-    font-size: 120%;
-    text-align: center;
-}
-
-.chalv {
-    opacity: 0.4;
-    font-size: smaller;
-}
-
-.cintkeplet {
-    border: 1px solid #c1cfec;
-    padding: 0 10px;
-    margin-left: 4em;
-    background-color: #fff;
-    text-align: center;
-    font-size: 70%;
-}
-
-.xnLi,
-.xnLe,
-.xnLii,
-.xnLix {
-    cursor: pointer;
-}
-
-.xnLi.hl {
-    background-color: #bdcfe1;
-    box-shadow: 0 0 10px 5px #d4e0bc;
-    padding: 5px 0px;
-}
-
-.xnLe.hl,
-.xnLii.hl,
-.xnLix.hl {
-    background-color: #e1c7bd;
-    box-shadow: 0 0 10px 5px #e0c6bc;
-    padding: 5px 0px;
-}
-
-.pzoutblock {
-    display: inline-block;
-}
-
-.pznext {
-    background-color: #fffcd0;
-    box-shadow: 0 0 10px 5px #fff0e0;
-}
-
-.zLi {
-    visibility: hidden;
-    width: 35px;
-    font-size: 70%;
-}
-
-.zLi.shown {
-    visibility: visible;
-}
-
-#burkolo {
-    pointer-events: all;
-    filter: none;
-    background-color: transparent;
-    margin-bottom: -20px;
-}
-
-#burkolo.on {
-    pointer-events: none;
-    filter: blur(3px) contrast(0.7);
-    background-color: #BDB9B9;
-}
-
-#jelento {
-    background-color: #0a29a6;
-    color: rgb(241, 241, 241);
-    text-align: center;
-    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
-    width: 97.1vw;
-    display: inline-block;
-    position: relative;
-    top: -10px;
-    visibility: hidden;
-    padding: 10px 0;
-    margin-bottom: -20px;
-}
-
-#jelento.on {
-    visibility: visible;
-}
-
-#szamitofelhivas {
-    background-color: #0a29a6;
-    color: rgb(241, 241, 241);
-    text-align: center;
-    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
-    width: 100vw;
-    display: inline-block;
-    position: relative;
-    top: -10px;
-    display: none;
-    padding: 10px 0;
-    margin-bottom: -20px;
-}
-
-#szamitofelhivas.on {
-    display: inline-block;
-}
-
-#nyiltbl {
-    display: inline-block;
-    vertical-align: middle;
-    width: 1.8em;
-    height: 1.8em;
-    font-size: 1.8em;
-    margin-left: 20px;
-    background-color: #ffdad6;
-    padding: 0 10px;
-    border-radius: 3px;
-    border: 1px solid #e1b1b1;
-    font-family:Symbola;
-}
-
-span.kartyabtn {
-    padding: 2px 5px;
-    background-color: #eeeea3;
-    border: 1px solid #ddcebd;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-span.kartyabtn:hover {
-    background-color: #d4d47b;
-    border: 1px solid #cfbeaa;
-}
-
-span.kephook {
-    font-family: Symbola;
-    padding: 2px 5px;
-    background-color: #f3f3d1;
-    border: 1px solid #ddcebd;
-    border-radius: 4px;
-    pointer-events: none;
-    margin-top: 5px;
-    display: inline-block;
-}
-
-span.kephook * {
-    pointer-events: none;
-}
-
-div#kepek {
-    font-family: Symbola;
-    display: none;
-    margin-top: 10px;
-    padding: 5px;
-    background-color: #333;
-    max-width: calc(100vw);
-    overflow: auto;
-}
-
-
-
+// poset of compositions
+var ra = undefined;
+var cN = 1;
+var cN2 = 1;
+var egyezes = 2;
+
+function invPv(v) {
+    var c = [],
+        out = [];
+    for (let k of v)
+        c.push(allcomps(k));
+    out = cartesian(c);
+    out = out.map(y => _.flatten(y));
+    return out;
+};
+
+function strictinvPv(v) {
+    return _.tail(invPv(v), v);
+};
+
+function groupawithb(a, b) {
+    var out = [];
+    for (let i of b) {
+        out.push(_.sum(_.take(a, i)));
+        a = a.slice(i);
+    }
+    return out;
+};
+
+function coarser(c) {
+    var out = [];
+    const grp = _.reverse(allcomps(c.length));
+    for (let g of grp)
+        out.push(groupawithb(c, g));
+    return out;
+};
+
+/* function elozoje(c) {
+    const n = c.length - 1;
+    var out = [];
+    const grp = allcomps(c.length).filter(y => y.length == n);
+    for (let g of grp)
+        out.push(groupawithb(c, g));
+    return out;
+}; */
+
+function kovetoje(c) {
+    const n = c.length + 1;
+    return invPv(c).filter(y => y.length == n);
+};
+
+function elozoje(c) {
+    const n = c.length - 1;
+    return coarser(c).filter(y => y.length == n);
+};
+
+function setOutputFontc(v) {
+    var elem = document.getElementById("cout");
+    elem.style.fontSize = v + 'px';
+};
+
+function setOutputFontcall(v) {
+    var elem = document.getElementById("callout");
+    elem.style.fontSize = v + 'px';
+};
+
+function callOutClear() {
+    idClear('#callout');
+    const cobj = window.cy;
+    if (cobj != undefined) {
+        window.cy.destroy();
+        $('cy').remove();
+    }
+};
+
+function allcomps(n) {
+    var out = [];
+    for (var k = 1; k <= n; k++) {
+        var c = comp(n, k);
+        for (let v of c)
+            out.push(v);
+    };
+    return out;
+};
+
+function idcsucUPD(setcsuc) {
+    const elem = $('.allid.hl')[0];
+    if (elem) {
+        const id = elem.dataset.id;
+        const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+        if (setcsuc) {
+            const fine = _.tail(invPv(vec));
+            const ff = fine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+            $('.allid.finer').removeClass('finer');
+            for (let f of ff)
+                f.addClass('finer');
+        } else
+            $('.allid.finer').removeClass('finer');
+    };
+};
+
+function idckovUPD(setckov) {
+    const elem = $('.allid.hl')[0];
+    if (elem) {
+        const id = elem.dataset.id;
+        const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+        if (setckov) {
+            const kov = kovetoje(vec);
+            const fk = kov.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+            $('.allid.koveto').removeClass('koveto');
+            for (let f of fk) {
+                f.removeClass('finer');
+                f.addClass('koveto');
+            };
+        } else {
+            const setcsuc = document.getElementById("csuc").checked;
+            if (setcsuc)
+                $('.allid.koveto').addClass('finer');
+            $('.allid.koveto').removeClass('koveto');
+        }
+    };
+};
+
+function idcprecUPD(setcprec) {
+    const elem = $('.allid.hl')[0];
+    if (elem) {
+        const id = elem.dataset.id;
+        const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+        if (setcprec) {
+            const coa = _.tail(coarser(vec));
+            const fd = coa.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+            $('.allid.coarser').removeClass('coarser');
+            for (let f of fd)
+                f.addClass('coarser');
+        } else
+            $('.allid.coarser').removeClass('coarser');
+    };
+};
+
+function idcelzUPD(setcelz) {
+    const elem = $('.allid.hl')[0];
+    if (elem) {
+        const id = elem.dataset.id;
+        const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+        if (setcelz) {
+            const megel = elozoje(vec);
+            const fe = megel.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+            $('.allid.elozo').removeClass('elozo');
+            for (let f of fe) {
+                f.removeClass('coarser');
+                f.addClass('elozo');
+            };
+        } else {
+            const setcprec = document.getElementById("cprec").checked;
+            if (setcprec)
+                $('.allid.elozo').addClass('coarser');
+            $('.allid.elozo').removeClass('elozo');
+        }
+    };
+};
+
+function idccsucUPD(setccsuc) {
+    const elem = $('.allid.hl')[0];
+    if (elem) {
+        const id = elem.dataset.id;
+        const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+        const cvec = conjugate(vec);
+        if (setccsuc) {
+            const cfine = _.tail(invPv(cvec));
+            const cff = cfine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+            $('.allid.cfiner').removeClass('cfiner');
+            for (let f of cff)
+                f.addClass('cfiner');
+        } else
+            $('.allid.cfiner').removeClass('cfiner');
+    };
+};
+
+function idcckovUPD(setcckov) {
+    const elem = $('.allid.hl')[0];
+    if (elem) {
+        const id = elem.dataset.id;
+        const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+        const cvec = conjugate(vec);
+        if (setcckov) {
+            const ckov = kovetoje(cvec);
+            const cfk = ckov.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+            $('.allid.ckoveto').removeClass('ckoveto');
+            for (let f of cfk) {
+                f.removeClass('cfiner');
+                f.addClass('ckoveto');
+            };
+        } else {
+            const setccsuc = document.getElementById("ccsuc").checked;
+            if (setccsuc)
+                $('.allid.ckoveto').addClass('cfiner');
+            $('.allid.ckoveto').removeClass('ckoveto');
+        };
+    };
+};
+
+function idccprecUPD(setccprec) {
+    const elem = $('.allid.hl')[0];
+    if (elem) {
+        const id = elem.dataset.id;
+        const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+        const cvec = conjugate(vec);
+        if (setccprec) {
+            const ccoa = _.tail(coarser(cvec));
+            const cfd = ccoa.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+            $('.allid.ccoarser').removeClass('ccoarser');
+            for (let f of cfd)
+                f.addClass('ccoarser');
+        } else
+            $('.allid.ccoarser').removeClass('ccoarser');
+    };
+};
+
+function idccelzUPD(setccelz) {
+    const elem = $('.allid.hl')[0];
+    if (elem) {
+        const id = elem.dataset.id;
+        const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+        const cvec = conjugate(vec);
+        if (setccelz) {
+            const cmegel = elozoje(cvec);
+            const cfe = cmegel.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+            $('.allid.celozo').removeClass('celozo');
+            for (let f of cfe) {
+                f.removeClass('ccoarser');
+                f.addClass('celozo');
+            };
+        } else {
+            const setccprec = document.getElementById("ccprec").checked;
+            if (setccprec)
+                $('.allid.celozo').addClass('ccoarser');
+            $('.allid.celozo').removeClass('celozo');
+        }
+    };
+};
+
+function callidUPD() {
+    const elem = $('.allid.hl')[0];
+    if (!elem)
+        return;
+    const id = elem.dataset.id;
+    $('.allid.hl').removeClass('hl');
+    $(elem).addClass('hl');
+    const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+
+    const setcsuc = document.getElementById("csuc").checked;
+    const setckov = document.getElementById("ckov").checked;
+    const setcprec = document.getElementById("cprec").checked;
+    const setcelz = document.getElementById("celz").checked;
+    const setccsuc = document.getElementById("ccsuc").checked;
+    const setcckov = document.getElementById("cckov").checked;
+    const setccprec = document.getElementById("ccprec").checked;
+    const setccelz = document.getElementById("ccelz").checked;
+
+    if (setcsuc) {
+        const fine = _.tail(invPv(vec));
+        const ff = fine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+        $('.allid.finer').removeClass('finer');
+        for (let f of ff)
+            f.addClass('finer');
+    } else
+        $('.allid.finer').removeClass('finer');
+
+    if (setckov) {
+        const kov = kovetoje(vec);
+        const fk = kov.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+        $('.allid.koveto').removeClass('koveto');
+        for (let f of fk) {
+            f.removeClass('finer');
+            f.addClass('koveto');
+        };
+    } else
+        $('.allid.koveto').removeClass('koveto');
+
+    if (setcprec) {
+        const coa = _.tail(coarser(vec));
+        const fd = coa.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+        $('.allid.coarser').removeClass('coarser');
+        for (let f of fd)
+            f.addClass('coarser');
+    } else
+        $('.allid.coarser').removeClass('coarser');
+
+    if (setcelz) {
+        const megel = elozoje(vec);
+        const fe = megel.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+        $('.allid.elozo').removeClass('elozo');
+        for (let f of fe) {
+            f.removeClass('coarser');
+            f.addClass('elozo');
+        };
+    } else
+        $('.allid.elozo').removeClass('elozo');
+
+    const cvec = conjugate(vec);
+    const fc = $('.allid[data-id="' + JSON.stringify(cvec).slice(1, -1).replaceAll(",", "_") + '"]');
+    $('.allid.conj').removeClass('conj');
+    fc.addClass('conj');
+
+    if (setccsuc) {
+        const cfine = _.tail(invPv(cvec));
+        const cff = cfine.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+        $('.allid.cfiner').removeClass('cfiner');
+        for (let f of cff)
+            f.addClass('cfiner');
+    } else
+        $('.allid.cfiner').removeClass('cfiner');
+
+    if (setcckov) {
+        const ckov = kovetoje(cvec);
+        const cfk = ckov.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+        $('.allid.ckoveto').removeClass('ckoveto');
+        for (let f of cfk) {
+            f.removeClass('cfiner');
+            f.addClass('ckoveto');
+        };
+    } else
+        $('.allid.ckoveto').removeClass('ckoveto');
+
+    if (setccprec) {
+        const ccoa = _.tail(coarser(cvec));
+        const cfd = ccoa.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+        $('.allid.ccoarser').removeClass('ccoarser');
+        for (let f of cfd)
+            f.addClass('ccoarser');
+    } else
+        $('.allid.ccoarser').removeClass('ccoarser');
+
+    if (setccelz) {
+        const cmegel = elozoje(cvec);
+        const cfe = cmegel.map(y => $('.allid[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+        $('.allid.celozo').removeClass('celozo');
+        for (let f of cfe) {
+            f.removeClass('ccoarser');
+            f.addClass('celozo');
+        };
+    } else
+        $('.allid.celozo').removeClass('celozo');
+};
+
+function hlallid(elem) {
+    const id = elem.dataset.id;
+    $('.allid.hl').removeClass('hl');
+    $(elem).addClass('hl');
+    const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+
+    const cvec = conjugate(vec);
+    const fc = $('.allid[data-id="' + JSON.stringify(cvec).slice(1, -1).replaceAll(",", "_") + '"]');
+    $('.allid.conj').removeClass('conj');
+    fc.addClass('conj');
+
+    callidUPD();
+};
+
+function drawGraph(n, elem) {
+    $(elem).empty();
+    $(elem).append("<div id='cy'></div>");
+    var nodes0 = [];
+    var edges0 = [];
+    const comps = allcomps(n);
+    for (let c of comps) {
+        nodes0.push({ data: { id: '(' + c + ')', foo: 3, bar: 5, baz: 2 } });
+        var targets = kovetoje(c);
+        for (let t of targets)
+            edges0.push({ data: { id: '(' + c + '_' + t + ')', weight: 1, source: '(' + c + ')', target: '(' + t + ')' } });
+    }
+
+    cytoscape({
+        container: document.getElementById('cy'),
+
+        style: cytoscape.stylesheet('#cy {position: relative;}')
+
+            .selector('node')
+            .css({
+                'position': 'relative',
+                'width': '60px',
+                'height': '60px',
+                'content': 'data(id)',
+                'stripe-size': '100%',
+                'stripe-direction': 'vertical',
+                'stripe-1-background-color': '#E8747C',
+                'stripe-1-background-size': 'mapData(foo, 0, 10, 0, 100)',
+                'stripe-2-background-color': '#74CBE8',
+                'stripe-2-background-size': 'mapData(bar, 0, 10, 0, 100)',
+                'stripe-3-background-color': '#74E883',
+                'stripe-3-background-size': 'mapData(baz, 0, 10, 0, 100)'
+            })
+            .selector('edge')
+            .css({
+                'curve-style': 'bezier',
+                'width': 4,
+                'target-arrow-shape': 'triangle',
+                'opacity': 0.5
+            })
+            .selector(':selected')
+            .css({
+                'background-color': 'black',
+                'line-color': 'black',
+                'target-arrow-color': 'black',
+                'source-arrow-color': 'black',
+                'opacity': 1
+            })
+            .selector('.faded')
+            .css({
+                'opacity': 0.25,
+                'text-opacity': 0
+            }),
+
+        elements: {
+            nodes: nodes0,
+
+            edges: edges0,
+        },
+
+        layout: {
+            name: 'circle',
+            padding: 10
+        },
+
+        ready: function() {
+            window.cy = this;
+        }
+    });
+    $("#cy").css({
+        position: 'relative'
+    })
+};
+
+function cPoset() {
+    const elem = document.getElementById("callout");
+    const n = document.getElementById("cn").value * 1;
+    const setrepr = document.getElementById("setrepr").checked;
+    const setgraph = document.getElementById("setgraph").checked;
+    var txt = "";
+    var comps = _.groupBy(allcomps(n), y => y.length);
+    if (setgraph)
+        drawGraph(n, elem)
+    else {
+        for (var i = 1; i <= n; i++) {
+            var ci = comps[n - i + 1];
+            var txti = "<div class='allcdiv'>";
+            for (let k of ci) {
+                if (!setrepr)
+                    txti += "<span class='allid' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlallid(this);'>(" + k + ")</span>,";
+                else {
+                    var h = setRepr(k, n - 1)
+                    txti += "<span class='chalv'>(" + k + ")&rarr;</span><span class='allid' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlallid(this);'>{" + h + "}</span>,";
+                }
+            };
+            txt += txti.slice(0, -1) + "</div>";
+        };
+        elem.innerHTML = txt;
+    }
+};
+
+function kiszed_c(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (av.some(v => v <= 0)) {
+            setfigy("Az <b>a</b> vektor nem tartalmazhat negatív elemet vagy 0-át! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figyC");
+            idClear('#cout')
+            return "Hibás bemenet";
+        } else if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
+            idClear('#cout')
+            return "Hibás bemenet";
+        }
+        cN = _.sum(av) + 1 - av.length || 1;
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    return av;
+};
+
+function kisebbnagyobb(elem) {
+    var s = elem.dataset.a;
+    if (s == "kisebb") {
+        elem.dataset.a = "nagyobb";
+        elem.innerHTML = "&preceq;";
+    } else {
+        elem.dataset.a = "kisebb";
+        elem.innerHTML = "&succeq;";
+    }
+};
+
+function cFiner() {
+    const elem = document.getElementById("cout");
+    const allas = document.getElementById("knr").dataset.a;
+    const c = kiszed_c('cvec');
+    var txt = "";
+    if (c == "Hibás bemenet")
+        txt += c;
+    else if (allas == "nagyobb") {
+        const s = _.sum(c);
+        const r = c.length;
+        const ctxt = JSON.stringify(c).replaceAll("[", "(").replaceAll("]", ")");
+        var out = invPv(c);
+        txt += "A<span style='color:#888;'>(z)</span> " + ctxt + " vektornál <b>finomabb</b> vektorok száma: " + 2 + "<sup>" + s + "  −&nbsp;" + r + "</sup> = 2<sup>" + (s - r) + "</sup> = " + Math.pow(2, s - r) + ".";
+        txt += "<br> {<b>k</b> | " + ctxt + "&preceq; <b>k</b> } = ";
+        txt += JSON.stringify(out).replaceAll("],[", "), (").replace("[[", "{(").replace("]]", ")}");
+    } else {
+        const r = c.length;
+        const ctxt = JSON.stringify(c).replaceAll("[", "(").replaceAll("]", ")");
+        var out = coarser(c);
+        txt += "A<span style='color:#888;'>(z)</span> " + ctxt + " vektornál <b>durvább</b> vektorok száma: " + 2 + "<sup>" + r + "  −&nbsp;1</sup> = 2<sup>" + (r - 1) + "</sup> = " + Math.pow(2, r - 1) + ".";
+        txt += "<br> {<b>k</b> | " + ctxt + " &succeq;<b>k</b>} = ";
+        txt += JSON.stringify(out).replaceAll("],[", "), (").replace("[[", "{(").replace("]]", ")}");
+    }
+    elem.innerHTML = txt;
+};
+
+function id1tgl(id) {
+    var elem = document.getElementById(id);
+    $(elem).toggle();
+};
+
+function posetid1() {
+    const elem = document.getElementById("cout");
+    const s = kiszed_c('cvec');
+    var txt = "";
+    if (s == "Hibás bemenet")
+        txt += s;
+    else {
+        const sf = invPv(s);
+        const sc = conjugate(s);
+        const scf = invPv(sc);
+        const ss = _.sum(s)
+
+        var stxt = JSON.stringify(s).replaceAll("[", "(").replaceAll("]", ")");
+        var stxtr = "";
+        var bo = "",
+            jo = "";
+        for (let k of sf) {
+            stxtr += "<span class='id1' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlid(this);kivvec(this);'>(" + k + ")</span>,";
+            var lk = k.length;
+            var ck = coarser(k);
+            for (let l of ck) {
+                var eloj = Math.pow(-1, lk + l.length);
+                if (eloj == 1)
+                    eloj = " + ";
+                else
+                    eloj = " − ";
+                bo += "<span class='id1' data-id='" + JSON.stringify(l).slice(1, -1).replaceAll(",", "_") + "' onclick='hlid(this);'>" + eloj + "A<sub>(" + l + ")</sub></span>";
+            };
+        };
+        stxtr = "{" + stxtr.slice(0, -1) + "}";
+
+        var sctxtr = "";
+        for (let k of scf) {
+            sctxtr += "<span class='id1' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlid(this);'>(" + k + ")</span>,";
+            var lk = k.length;
+            var elojs = Math.pow(-1, ss + lk);
+            if (elojs == 1)
+                elojs = " + ";
+            else
+                elojs = " − ";
+            jo += "<span class='id2' data-id='" + JSON.stringify(k).slice(1, -1).replaceAll(",", "_") + "' onclick='hlid(this);'>" + elojs + "A<sub>(" + k + ")</sub></span>";
+        };
+        sctxtr = "{" + sctxtr.slice(0, -1) + "}";
+        var sctxt = JSON.stringify(sc).replaceAll("[", "(").replaceAll("]", ")");
+        txt += "<div>A <b>c</b> = " + stxt + " vektor konjugáltja a <b>c</b>* = " + sctxt + " vektor.</div> ";
+        txt += "<div style='background-color: #ffd9d9;'> A <b>c</b> vektornál finomabb vektorok: {<b>k</b> | " + stxt + "&preceq; <b>k</b> } <span style='display:inline;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#f2cece;border-radius: 4px;' onclick='id1tgl(\"sf_show\");'>=</span> <span style='display:none;' id='sf_show' >" + stxtr + "</span></div>";
+        txt += "<div >A kiválasztott <b>k</b> = <span id='kivec' style='color:red;'> --- </span> vektornál durvább vektorok: <span id='kivecd'> --- </span></div>"
+        txt += "<div style='background-color: #ffd9d9;'>A <b>c</b>* vektornál finomabb vektorok: {<b>k</b> | " + sctxt + "&preceq; <b>k</b> } <span style='display:inline;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#f2cece;border-radius: 4px;' onclick='id1tgl(\"scf_show\");'>=</span> <span style='display:none;' id='scf_show' >" + sctxtr + "</span></div><h3 style='text-align:center;'>Az azonosság</h3>";
+        txt += bo + " = " + jo;
+    };
+
+    elem.innerHTML = txt;
+};
+
+function hlid(elem) {
+    const id = elem.dataset.id;
+    $('.id1.hl,.id2.hl').removeClass('hl');
+    $('.id1[data-id=' + id + '],.id2[data-id=' + id + ']').addClass('hl');
+    const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+    const fine = _.tail(invPv(vec));
+
+    const ff = fine.map(y => $('#sf_show .id1[data-id="' + JSON.stringify(y).slice(1, -1).replaceAll(",", "_") + '"]'));
+    $('#sf_show .id1.finer').removeClass('finer');
+    for (let f of ff)
+        f.addClass('finer');
+};
+
+function kivvec(elem) {
+    const id = elem.dataset.id;
+    const vec = JSON.parse("[" + id.replaceAll("_", ",") + "]");
+    $('#kivec').html("(" + vec + ")");
+    var coa = coarser(vec).map(y => JSON.stringify(y));
+    coa = "{" + coa + "}";
+    coa = coa.replaceAll("[", "(").replaceAll("]", ")");
+    $('#kivecd').html(coa);
+};
+
+// set reprezentation
+
+function setRepr(c) {
+    c = _.dropRight(c);
+    return kum(c);
+};
+
+$(document).on("doubleclick,dbltap", "#cy div canvas", function() {
+    idClear('#callout');
+    const cobj = window.cy;
+    if (cobj != undefined) {
+        window.cy.destroy();
+        $('cy').remove();
+    }
+})
+
+function drawGraph() {
+    const n = document.getElementById("cn").value * 1;
+    var elem = document.getElementById('callout');
+    $(elem).empty();
+    $(elem).append("<div id='cy'></div>");
+    var nodes0 = [];
+    var edges0 = [];
+    const comps = allcomps(n);
+    for (let c of comps) {
+        nodes0.push({ data: { id: '(' + c + ')' } });
+        var targets = kovetoje(c);
+        for (let t of targets)
+            edges0.push({ data: { id: '(' + c + '_' + t + ')', weight: 1, source: '(' + c + ')', target: '(' + t + ')' } });
+    }
+    cytoscape({
+        container: document.getElementById('cy'),
+
+        style: cytoscape.stylesheet('#cy {position: relative;}')
+
+            .selector('node')
+            .css({
+                'position': 'relative',
+                'width': '60px',
+                'height': '60px',
+                'content': 'data(id)',
+                'stripe-size': '100%',
+                'stripe-direction': 'vertical',
+                'stripe-1-background-color': '#E8747C',
+                'stripe-1-background-size': 'mapData(foo, 0, 10, 0, 100)',
+                'stripe-2-background-color': '#74CBE8',
+                'stripe-2-background-size': 'mapData(bar, 0, 10, 0, 100)',
+                'stripe-3-background-color': '#74E883',
+                'stripe-3-background-size': 'mapData(baz, 0, 10, 0, 100)'
+            })
+            .selector('edge')
+            .css({
+                'curve-style': 'bezier',
+                'width': 4,
+                'target-arrow-shape': 'triangle',
+                'opacity': 0.5
+            })
+            .selector(':selected')
+            .css({
+                'background-color': 'black',
+                'line-color': 'black',
+                'target-arrow-color': 'black',
+                'source-arrow-color': 'black',
+                'opacity': 1
+            })
+            .selector('.faded')
+            .css({
+                'opacity': 0.25,
+                'text-opacity': 0
+            }),
+
+        elements: {
+            nodes: nodes0,
+
+            edges: edges0,
+        },
+
+        layout: {
+            name: 'circle',
+            padding: 10
+        },
+
+        ready: function() {
+            window.cy = this;
+        }
+    });
+    $("#cy").css({
+        position: 'relative'
+    })
+};
+
+// master integral
+
+function setOutputFontintc(v) {
+    var elem = document.getElementById("derivT");
+    elem.style.fontSize = v + '%';
+
+    $('#derivT .tsorszam-s').width(20);
+    $('#derivT .tsorszam-s').width(($('#derivT .tsorszam-s').parent('div').width() - 10) / cN);
+    $('#derivT .tsorszam-s,#derivT .tsorszam-w,#derivT .tsorszam-e').css({ 'font-size': v * 0.01 * 12 + "px" });
+};
+
+function cdat(el, s, o) {
+    $('#derivT .tgomb.hl:not(.szelso)').html('&#x25CB;');
+    $('#derivT .tgomb.hl.szelso').html('&#x25CE;');
+    $('#derivT .tgomb.hl').removeClass('hl');
+    if ($(el).hasClass('szelso'))
+        $(el).html('&#x25C9;');
+    else
+        $(el).html('&#x25CF;');
+    $(el).addClass('hl');
+
+    const c = kiszed_c('intc');
+    const r = c.length;
+    var e = _.take(c, s - 1);
+    if (s <= r)
+        e.push(o);
+    else
+        e.push(1);
+    var h = _.takeRight(c, r - s);
+
+    if (s <= r)
+        h.unshift(c[s - 1] - o + 1);
+    else
+        h = ["( )"];
+    $('.tsorszam-w').css("visibility", "hidden");
+    $('.tsorszam-w.corr').html($('.tsorszam-w.corr').attr('data-n'));
+    $('.tsorszam-w.corr').removeClass('corr');
+    var d = 0;
+    if (barg && aarg)
+        d = 1;
+    if (aarg == barg) {
+        for (var t = 1 - d; t <= s + Math.floor(s / (r + 1)); t++)
+            $('.tsorszam-w:nth(' + t + ')').css("visibility", "visible");
+        if (s == r + 1)
+            $('.tsorszam-w:nth(' + (s) + ')').html(1).addClass("corr");
+        else
+            $('.tsorszam-w:nth(' + (s) + ')').html(o).addClass("corr");
+    }
+
+    $('.tsorszam-e').css("visibility", "hidden");
+    $('.tsorszam-e.corr').html($('.tsorszam-e.corr').attr('data-n'));
+    $('.tsorszam-e.corr').removeClass('corr');
+    for (var t = s - 1; t < r + Math.floor(s / (r + 1)); t++)
+        $('.tsorszam-e:nth(' + t + ')').css("visibility", "visible");
+    $('.tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
+
+    $('.tsorszam-s').css("visibility", "hidden");
+    if (aarg != barg) {
+        const ce = conjugate(e);
+        if (!aarg)
+            $('.tsorszam-s:nth(0)').css("visibility", "visible").html(0);
+        for (var t = 0; t < ce.length; t++)
+            $('.tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").html(ce[t]);
+    };
+    var bv = [];
+    var keplet = "";
+    if (aarg) {
+        if (barg) {
+            bv = e.reverse();
+            bv.push(0);
+        } else {
+            bv = conjugate(e).reverse();
+        }
+    } else {
+        if (barg) {
+            bv = conjugate(e).reverse();
+            bv.push(0);
+        } else {
+            bv = e.reverse();
+        }
+    };
+    keplet = "&rightarrow;&nbsp;Li<sub>(" + h + ")</sub>(" + aargtxt + ")&lowast;Li<sub>(" + bv + ")</sub>(" + bargtxt + ")";
+    keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
+    //const elem = document.getElementById("cintkeplet");
+    $('.cintkeplet').html('').removeClass('cintkeplet');
+    $("#ebbe-" + s).html(keplet).addClass('cintkeplet');
+};
+
+function cdatUPD() {
+    const elem = $('#derivT .tgomb.hl');
+    if (elem)
+        elem.trigger('click');
+};
+
+function ribbonGraph() {
+    const elem = document.getElementById("derivT");
+    const c = kiszed_c('intc');
+    const kc = kum(c);
+    const r = c.length;
+    var k = [0];
+    for (var i = 1; i < r; i++) {
+        k.push(kc[i - 1] - i);
+    };
+
+    var kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "<th style='width:21.36px'></th></th><td></td></tr></thead>";
+    for (var j = 0; j < r; j++) {
+        kep += "<tr><th><span class='tsorszam-w' data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div>";
+        for (var t = 0; t < k[j]; t++) {
+            kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
+        };
+        for (var t = k[j]; t < k[j] + c[j]; t++) {
+            kep += "<span class='tgomb shown' onclick='cdat(this," + ((j + 1) + "," + (t - k[j] + 1)) + ")'>&#x25CB;</span> ";
+        };
+        kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
+    };
+    kep += "<tr><th><span class='tsorszam-w' data-n='1' >1</span></th><td><div>";
+    var L = _.last(k) + _.last(c);
+    for (var t = 0; t < L - 1; t++)
+        kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
+    kep += "<span class='tgomb shown' style='background-color:#d5d5d5;border-radius: 50%;padding: 0 0.31em;margin-left: -0.31em;' onclick='cdat(this," + (r + 1) + "," + L + ")'>&#x25CB;</span></div></td><th><span class='tsorszam-e' data-n='( )'>( )</span></th><td><div  id='ebbe-" + (r + 1) + "'></div></td>";
+    kep += "</tr><tr><th><span class='tsorszam-s' data-n='0' style='color:red;'>0</span></th><th><div style='margin-left:-0.3em'>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-s' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "</div></th><th style='width:21.36px'></th></tr></table>";
+    elem.innerHTML = kep;
+    setOutputFontintc(document.getElementById("setoutputfontintc").value);
+};
+
+function ribbonAnimate() {
+    const N = $('#derivT .tgomb.shown').length;
+    const t = document.getElementById("t").value * 1;
+    if (N > 0) {
+        var i = 0;
+        ra = setInterval(() => {
+            $('#derivT .tgomb.shown:nth(' + i + ')').click();
+            i++;
+            if (i == N) {
+                clearInterval(ra);
+            }
+        }, t);
+    } else
+        return;
+}
+
+function setgenKeplet0c() {
+    var a = document.querySelector("#intc").value;
+    var b = "0";
+    var na = a.length;
+    var nb = b.length;
+    a = a.replaceAll("oo", "∞");
+    b = b.replaceAll("oo", "∞");
+    var tort = "x";
+    if (narg)
+        tort = "1-x";
+    var arg_a = "x";
+    var arg_b = "x";
+    if (aarg)
+        arg_a = "1-x";
+    if (barg)
+        arg_b = "1-x";
+
+    totr = "1-x";
+    var txt = "";
+    var txt1 = "";
+    var txt2 = "";
+    var szorzat = "\\cdot";
+    if (na * nb == 0)
+        szorzat = "";
+    if (na > 0)
+        txt1 = "{\\rm " + amode + "}_{(" + a + ")}(" + arg_a + ")";
+    if (nb > 0)
+        txt2 = "{\\rm " + bmode + "}_{(" + b + ")}(" + arg_b + ")";
+    txt = "\\int \\dfrac{" + txt1 + szorzat + txt2 + "}{" + tort + "}\\,{\\text{d} x}"
+    return txt;
+};
+
+function setgenKepletc() {
+    const elem = document.querySelector("#k1set");
+    const txt = setgenKeplet0c();
+    elem.style.visibility = "hidden";
+    elem.innerText = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    setTimeout(() => {
+        elem.style.visibility = "visible";
+    }, 200);
+};
+
+function setaArgc(elem) {
+    aarg = elem.checked;
+    if (aarg)
+        aargtxt = "1-x";
+    else
+        aargtxt = "x";
+    setgenKepletc();
+};
+
+function setbArgc(elem) {
+    barg = elem.checked;
+    if (barg)
+        bargtxt = "1-x";
+    else
+        bargtxt = "x";
+    setgenKepletc();
+};
+
+/////
+
+var Lihlvec = [];
+
+function cdat_xn(el, s, o) {
+    $('#derivT .tgomb.hl').html('&#x25CB;');
+    $('#derivT .tgomb.hl').removeClass('hl');
+    $(el).html('&#x25CF;');
+    $(el).addClass('hl');
+
+    const c = kiszed_c('xnls');
+    const n = document.getElementById("xnln").value * 1;
+    const r = c.length;
+    const mode = document.getElementById("setmodexnl").checked;
+    var e = _.take(c, s - 1);
+    if (s <= r)
+        e.push(o);
+    else
+        e.push(1);
+    var h = _.takeRight(c, r - s);
+
+    if (s <= r)
+        h.unshift(c[s - 1] - o + 1);
+    else
+        h = ["( )"];
+    $('.tsorszam-w').css("visibility", "hidden");
+    $('.tsorszam-w.veg').html($('.tsorszam-w.veg').attr('data-n'));
+    $('.tsorszam-w.veg').removeClass('veg');
+    $('.tsorszam-w.corr').html($('.tsorszam-w.corr').attr('data-n'));
+    $('.tsorszam-w.corr').removeClass('corr');
+
+    for (var t = 1; t <= s + Math.floor(s / (r + 1)); t++)
+        $('.tsorszam-w:nth(' + t + ')').css("visibility", "visible");
+    if (s == r + 1)
+        $('.tsorszam-w:nth(' + s + ')').html(1).addClass("corr");
+    else
+        $('.tsorszam-w:nth(' + s + ')').html(o).addClass("corr");
+
+    if (s > 1)
+        $('.tsorszam-w:nth(' + 1 + ')').css("visibility", "hidden");
+    $('.tsorszam-e').css("visibility", "hidden");
+    $('.tsorszam-e.corr').html($('.tsorszam-e.corr').attr('data-n'));
+    $('.tsorszam-e.corr').removeClass('corr');
+    for (var t = s - 1; t < r + Math.floor(s / (r + 1)); t++)
+        $('.tsorszam-e:nth(' + t + ')').css("visibility", "visible");
+
+    $('.tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
+    if (s < r + 1 && s > 1)
+        $('.tsorszam-w:nth(' + (s + 1) + ')').html("( )").addClass("veg").css("visibility", "visible");
+
+    $('.tsorszam-s').css("visibility", "hidden");
+    if (s == r + 1)
+        $('.tsorszam-s[data-n=0]').html("( )").addClass("veg").css("visibility", "visible");
+    $('.tsorszam-w.hl').removeClass('hl');
+    $('#derivT table tr th.hl').removeClass('hl');
+    var bv = [];
+    var keplet = "";
+
+    bv = _.dropRight(e.reverse());
+
+    keplet = "&rightarrow;&nbsp;Li<sub>(" + h + ")</sub>(x)&lowast;&sum;&zeta;*<sub class='xlns1'>" + (n + 1) + "</sub>&rightarrow;(" + [...bv].reverse() + ")&leftarrow;Li";
+
+    keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
+    $('.cintkeplet').html('').removeClass('cintkeplet');
+    $("#ebbe-" + s).html(keplet).addClass('cintkeplet');
+
+    Lihlvec = [...bv];
+    var htxt = [...h];
+    if (_.last(h) == "( )")
+        htxt = "";
+    if (mode) {
+        $('.pznext').removeClass('pznext');
+        $(".xnLii,.xnLe,.xnLix").removeClass('hl');
+        $(".xnLi .xlns:contains('(" + htxt + ")')").parent('.xnLi').next('.pzoutblock').addClass('pznext');
+    }
+    if (kellclick)
+        $(".pzjelento.monom-active").trigger("click");
+    $(".xnLi").removeClass('hl');
+    $('.zLi.shown').removeClass('shown');
+    $(".xnLi .xlns:contains('(" + htxt + ")')").parent('.xnLi').addClass('hl');
+};
+
+function Lihl(j) {
+    const n = Lihlvec.length + 2;
+    const mode = document.getElementById("setmodexnl").checked;
+    // const N = document.getElementById("xnln").value * 1 + 1;
+    $('.tsorszam-w.hl,.tsorszam-s.hl').removeClass('hl');
+    $('.zLi.shown').removeClass('shown');
+    $('.tsorszam-w:nth(' + j + ')').addClass('hl');
+    $('#derivT table tr th.hl').removeClass('hl');
+    $('#derivT table tr .tsorszam-w:nth(' + j + ')').parent('th').addClass('hl');
+    if (j > 1) {
+        $('.tsorszam-w:nth(' + j + ')').parent('th').next('.zLi').html('&uparrow;Li').addClass('shown'); //uj
+        $('.tsorszam-w:nth(' + (j - 1) + ')').parent('th').next('.zLi').html('&downarrow;&zeta;*').addClass('shown'); //uj
+    } else {
+        $('.tsorszam-w:nth(' + j + ')').parent('th').next('.zLi').html('&downarrow;x<sup>n</sup>').addClass('shown');
+    }
+
+    const helem = $(".xnLi.hl");
+    var htxt = _.take(Lihlvec, n - j);
+    var keplet = "";
+    if (mode) {
+        const jelem = helem.next('.pzoutblock');
+        $('.pznext').removeClass('pznext');
+        jelem.addClass('pznext')
+        $(".xnLii,.xnLe,.xnLix").removeClass('hl');
+        if (j == 1) {
+            $('.pznext span.xnLix').addClass('hl');
+            keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLix.hl').html();
+            $('.cintkeplet').html(keplet);
+        } else {
+            if (htxt.length == 0) {
+                htxt = [...Lihlvec].reverse();
+                $(".pznext .xnLe .xlns:contains('(" + htxt + ")')").parent('.xnLe').addClass('hl');
+                keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLe.hl').html();
+                $('.cintkeplet').html(keplet);
+            } else {
+                $(".pznext .xnLii .xlns:contains('(" + htxt + ")')").parent('.xnLii').addClass('hl');
+                keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLii.hl').html();
+                $('.cintkeplet').html(keplet);
+            }
+        };
+    } else {
+        const jelem = helem.next('.pzjelento');
+
+        kellclick2 = true;
+        if (!jelem.hasClass('monom-active'))
+            jelem.trigger('click');
+
+        $(".xnLii,.xnLe,.xnLix").removeClass('hl');
+        if (j == 1)
+            setTimeout(() => {
+                $('#pzoutr span.xnLix').addClass('hl');
+                keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLix.hl').html();
+                $('.cintkeplet').html(keplet);
+            }, 100);
+        else {
+            if (htxt.length == 0) {
+                htxt = [...Lihlvec].reverse();
+                setTimeout(() => {
+                    $(".xnLe .xlns:contains('(" + htxt + ")')").parent('.xnLe').addClass('hl');
+                    keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLe.hl').html();
+                    $('.cintkeplet').html(keplet);
+                }, 100);
+            } else
+                setTimeout(() => {
+                    $(".xnLii .xlns:contains('(" + htxt + ")')").parent('.xnLii').addClass('hl');
+                    keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLii.hl').html();
+                    $('.cintkeplet').html(keplet);
+                }, 100);
+        };
+        kellclick2 = false;
+        setTimeout(() => { kellclick2 = true; }, 200);
+    }
+};
+
+function Lihlveg(j) {
+    $('.tsorszam-s.hl,.tsorszam-w.hl').removeClass('hl');
+    $('.tsorszam-s[data-n=0]').addClass('hl');
+    $('#derivT table tr th.hl').removeClass('hl');
+    $('.zLi.shown').removeClass('shown');
+    $('#derivT table tr .tsorszam-s[data-n=0]').parent('th').addClass('hl');
+    var keplet = "";
+    if (j > 1) {
+        $('#derivT table tr .tsorszam-s[data-n=0]').parent('th').next('.zLi').html('&uparrow;Li').addClass('shown'); //uj
+        $('.tsorszam-w:nth(' + (j - 1) + ')').parent('th').next('.zLi').html('&downarrow;&zeta;*').addClass('shown'); //uj
+    } else {
+        $('#derivT table tr .tsorszam-s[data-n=0]').parent('th').next('.zLi').html('&downarrow;x<sup>n</sup>').addClass('shown');
+    }
+    const helem = $(".xnLi.hl");
+    const jelem = helem.next('.pzjelento');
+    kellclick2 = true;
+    if (!jelem.hasClass('monom-active'))
+        jelem.trigger('click');
+    $(".xnLii,.xnLe,.xnLix").removeClass('hl');
+    var htxt = [...Lihlvec].reverse();
+
+    setTimeout(() => {
+        $(".xnLe .xlns:contains('(" + htxt + ")')").parent('.xnLe').addClass('hl');
+        keplet = "&rightarrow;&nbsp;" + $('.xnLi.hl').html() + "&lowast;" + $('.xnLe.hl').html();
+        $('.cintkeplet').html(keplet);
+    }, 100);
+
+    kellclick2 = false;
+    setTimeout(() => { kellclick2 = true; }, 200);
+};
+
+function ribbonGraph_xn() {
+    const elem = document.getElementById("derivT");
+    const c = kiszed_c('xnls');
+    const kc = kum(c);
+    const r = c.length;
+    var k = [0];
+    for (var i = 1; i < r; i++) {
+        k.push(kc[i - 1] - i);
+    };
+
+    var kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><td class='zLi'></td><th>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "<th style='width:21.36px'></th></th><td></td></tr></thead>";
+    for (var j = 0; j < r; j++) {
+        kep += "<tr><th><span class='tsorszam-w' style='cursor:pointer;' onclick='Lihl(" + (j + 1) + ");' data-n='" + c[j] + "'>" + c[j] + "</span></th><td class='zLi'></td><td><div>";
+        for (var t = 0; t < k[j]; t++) {
+            kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
+        };
+        for (var t = k[j]; t < k[j] + c[j]; t++) {
+            kep += "<span class='tgomb shown' onclick='cdat_xn(this," + ((j + 1) + "," + (t - k[j] + 1)) + ")'>&#x25CB;</span> ";
+        };
+        kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
+    };
+    kep += "<tr><th><span class='tsorszam-w' data-n='1' onclick='Lihl(" + (r + 1) + ");' style='cursor:pointer;'>1</span></th><td class='zLi'></td><td><div>";
+    var L = _.last(k) + _.last(c);
+    for (var t = 0; t < L - 1; t++)
+        kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
+    kep += "<span class='tgomb shown' style='background-color:#d5d5d5;border-radius: 50%;padding: 0 0.31em;margin-left: -0.31em;' onclick='cdat_xn(this," + (r + 1) + "," + L + ")'>&#x25CB;</span></div></td><th><span class='tsorszam-e' data-n='( )'>( )</span></th><td><div  id='ebbe-" + (r + 1) + "'></div></td>";
+    kep += "</tr><tr><th><span class='tsorszam-s' data-n='0' style='color:red;cursor:pointer;'onclick='Lihlveg(" + (r + 2) + ");'>0</span></th><td class='zLi'></td><th><div style='margin-left:-0.3em'>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-s' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "</div></th><th style='width:21.36px'></th></tr></table>";
+    elem.innerHTML = kep;
+    setOutputFontintc(document.getElementById("setoutputfontxnl").value);
+    $('#derivT table tr:nth(1) td:nth(0),#derivT table tr:nth(1) th,#derivT table tr:nth(1) td:nth(1)').css('border-bottom', '1px dashed #70808e');
+};
+
+function xnLiiback(j, el) {
+    const mode = document.getElementById("setmodexnl").checked;
+    const gomb = $('.tsorszam-w[onclick="Lihl(' + j + ');"]');
+    if (mode && !$(el).parent().prev().hasClass('hl'))
+        return;
+    if (gomb.length != 0)
+        gomb.trigger('click');
+    else {
+        const gomb2 = $('.tsorszam-s[onclick="Lihlveg(' + j + ');"]');
+        gomb2.trigger('click');
+    }
+};
+
+// ZIG-ZAG INTEGRATE
+
+function setOutputFontintc2(v) {
+    var elem = document.getElementById("derivT2");
+    elem.style.fontSize = v + '%';
+
+    $('#derivT2 .tsorszam-n').width(20);
+    $('#derivT2 .tsorszam-n').width(($('#derivT2 .tsorszam-n').parent('div').width() * 1 + 10) / cN2);
+    $('#derivT2 .tsorszam-n,#derivT2 .tsorszam-w,#derivT2 .tsorszam-e').css({ 'font-size': v * 0.01 * 12 + "px" });
+};
+
+function homalyosit() {
+    $('#derivT2,#genout').css({ 'filter': 'blur(3px) contrast(0.5)', 'pointer-events': 'none' });
+    $('#szamitofelhivas').addClass('on');
+};
+
+function dehomalyosit() {
+    $('#derivT2,#genout').css({ 'filter': 'none', 'pointer-events': 'all' });
+    $('#szamitofelhivas').removeClass('on');
+};
+
+function set_abmode() {
+    amode = "Li";
+    bmode = "Li";
+};
+
+function setnArg2(elem) {
+    narg = elem.checked;
+    if (narg)
+        nargtxt = "1-x";
+    else
+        nargtxt = "x";
+    setFazis();
+    setgenKeplet2();
+    homalyosit();
+};
+
+function setaArg2(elem) {
+    aarg = elem.checked;
+    if (aarg)
+        aargtxt = "1-x";
+    else
+        aargtxt = "x";
+    setFazis();
+    setgenKeplet2();
+    homalyosit();
+};
+
+function setbArg2(elem) {
+    barg = elem.checked;
+    if (barg)
+        bargtxt = "1-x";
+    else
+        bargtxt = "x";
+    setFazis();
+    setgenKeplet2();
+    homalyosit();
+};
+
+function setegyezes() {
+    var e = 1;
+    if (aarg == barg) {
+        if (narg == aarg)
+            e = 2
+        else
+            e = 0
+    };
+    egyezes = e;
+};
+
+function setgenKeplet20() {
+    setegyezes();
+    set_abmode();
+    var a = document.querySelector("#avg").value;
+    var b = document.querySelector("#bvg").value;
+    var na = a.length;
+    var nb = b.length;
+    a = a.replaceAll("oo", "∞");
+    b = b.replaceAll("oo", "∞");
+    var tort = "x";
+    if (narg)
+        tort = "1-x";
+    var arg_a = "x";
+    var arg_b = "x";
+    if (aarg)
+        arg_a = "1-x";
+    if (barg)
+        arg_b = "1-x";
+
+    totr = "1-x";
+    var txt = "";
+    var txt1 = "";
+    var txt2 = "";
+    var szorzat = "\\cdot";
+    if (na * nb == 0)
+        szorzat = "";
+    if (na > 0)
+        txt1 = "{\\rm " + amode + "}_{(" + a + ")}(" + arg_a + ")";
+    if (nb > 0)
+        txt2 = "{\\rm " + bmode + "}_{(" + b + ")}(" + arg_b + ")";
+    txt = "\\text{Egyezés: }" + egyezes + ";\\;\\hspace{1cm}\\int \\dfrac{" + txt1 + szorzat + txt2 + "}{" + tort + "}\\,{\\text{d} x}"
+    txt += "\\hspace{2cm}\\begin{bmatrix}" + fltx[fazis.init.name] + " &" + fltx[fazis.std.name] + "\\\\" + fltx[fazis.atv.name] + " &" + fltx[fazis.veg.name] + "\\end{bmatrix}";
+    return txt;
+};
+
+function setnyiltbl() {
+    const tblelem = document.querySelector("#nyiltbl");
+    var txt = '';
+    if (egyezes == 0)
+        txt = '<span style="transform: rotate(90deg) translateX(-0.15em) translateY(-0.45em);display: inline-block;margin-right: 2px;">⧬</span><span style="transform: rotate(-90deg) translateX(-0.65em) translateY(-0.25em);display: inline-block;">⧭</span>';
+    else if (egyezes == 1)
+        txt = '<span style="transform: rotate(180deg) translateY(-0.25em);display: inline-block;margin-right: 2px;">⧭</span><span style="transform: rotate(-90deg) translateX(-0.3em) translateY(0.05em);display: inline-block;">⧬</span>';
+    else
+        txt = '<span style="transform: rotate(90deg) translateX(0.27em);display: inline-block;margin-right: 2px;">⧬</span><span style="transform: rotate(-90deg) translateX(-0.27em) translateY(0.1em);display: inline-block;">⧭</span>';
+    tblelem.innerHTML = txt;
+};
+
+function setgenKeplet2() {
+    const elem = document.querySelector("#k2set");
+    const txt = setgenKeplet20();
+    elem.style.visibility = "hidden";
+    elem.innerText = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    setTimeout(() => { setnyiltbl(); }, 100);
+    setTimeout(() => {
+        elem.style.visibility = "visible";
+    }, 200);
+};
+
+function near_concat(a, b) {
+    return [..._.dropRight(a), _.last(a) + _.first(b), ..._.drop(b)];
+}
+
+function kiszed_cd(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
+            idClear('#cout')
+            return "Hibás bemenet";
+        }
+        cN = _.sum(av) + 1 - av.length || 1;
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    return av;
+};
+
+function abillesztes(a, b) {
+    a.push(1);
+    b.push(1);
+    if (b.length == 1 && b[0] == 0)
+        b = [1, 1]
+        //b = b.filter(y => y != 0);
+    setegyezes();
+    const rb = [...b].reverse();
+    var sorszam = _.sum(b);
+    // var ill = "fole";
+    var ori = "le";
+    var c = near_concat(rb, a);
+    if (egyezes == 1) {
+        //ill = "melle";
+        if (aarg == narg) {
+            c = near_concat(conjugate(rb), a);
+        } else {
+            c = near_concat(conjugate([...a].reverse()), b);
+            sorszam = _.sum(a);
+            ori = "fel";
+        }
+    } else if (egyezes == 0) {
+        c = _.concat(rb, a);
+    }
+    return [c, sorszam, ori];
+}
+
+function pozValtas2() {
+    var a = document.getElementById("avg");
+    var b = document.getElementById("bvg");
+    var al = document.getElementById("avgl");
+    var bl = document.getElementById("bvgl");
+    var eaarg = document.getElementById("setaarg2").checked;
+    var ebarg = document.getElementById("setbarg2").checked;
+    if (eaarg != ebarg) {
+        document.getElementById("setaarg2").click();
+        document.getElementById("setbarg2").click();
+        dehomalyosit();
+    }
+    a.id = "bvg";
+    b.id = "avg";
+    al.id = "bvgl";
+    bl.id = "avgl";
+    al.innerText = "b";
+    bl.innerText = "a";
+    if (al.classList.contains("kiur")) {
+        al.classList.remove("kiur");
+        bl.classList.add("kiur");
+    } else {
+        bl.classList.remove("kiur");
+        al.classList.add("kiur");
+    }
+    setTimeout(() => {
+        genoutput();
+        setgenKeplet2();
+    }, 30);
+    haspv = !haspv;
+};
+
+function takarbe() {
+    $('#burkolo,#jelento').addClass('on');
+    $('#burkolo #k2set,#nyiltbl,#burkolo *').css({ 'background-color': '#BDB9B9' });
+};
+
+function takarki() {
+    $('#burkolo,#jelento').removeClass('on');
+    $('#burkolo #k2set,#nyiltbl,#burkolo *').css({ 'background-color': '' });
+};
+
+function burkoloki() {
+    $('#derivT2 .tgomb.shown:not(.ori):first').trigger('click');
+};
+
+function cdat2(el, s, o) {
+    $('#derivT2 .tgomb.hl:not(.szelso)').html('&#x25CB;');
+    $('#derivT2 .tgomb.hl.szelso').html('&#x25CE;');
+    $('#derivT2 .tgomb.hl').removeClass('hl');
+    if ($(el).hasClass('szelso'))
+        $(el).html('&#x25C9;');
+    else
+        $(el).html('&#x25CF;');
+    $(el).addClass('hl');
+    var a = kiszed_cd('avg');
+    var b = kiszed_cd('bvg');
+
+    if ($(el).hasClass('ori')) {
+        takarbe();
+        if (!haspv) {
+            pozValtas2();
+            setTimeout(() => {
+                $(el).trigger('click');
+                $('#genout').css({ 'opacity': '0.65', 'background-color': '#fff7b8' });
+            }, 60)
+        }
+        if (aarg == barg && haspv) {
+            a = kiszed_cd('bvg');
+            b = kiszed_cd('avg');
+        }
+    } else {
+        takarki();
+        if (haspv) {
+            pozValtas2();
+            setTimeout(() => {
+                $(el).trigger('click');
+                $('#genout').css({ 'opacity': '1', 'background-color': '#e3e3e3' });
+            }, 60)
+        }
+    };
+
+    const cill = abillesztes(a, b);
+    const c = cill[0];
+
+    const r = c.length;
+    var e = _.take(c, s - 1);
+    if (s <= r)
+        e.push(o);
+    else
+        e.push(1);
+    var h = _.takeRight(c, r - s);
+
+    if (s <= r)
+        h.unshift(c[s - 1] - o + 1);
+    else
+        h = ["( )"];
+    $('.tsorszam-w').css("visibility", "hidden");
+    $('.tsorszam-w.corr').html($('.tsorszam-w.corr').attr('data-n'));
+    $('.tsorszam-w.corr').removeClass('corr');
+
+    if (aarg == barg) {
+        for (var t = 2; t <= s + Math.floor(s / (r + 1)); t++)
+            $('.tsorszam-w:nth(' + t + ')').css("visibility", "visible");
+        if (s == r + 1)
+            $('.tsorszam-w:nth(' + s + ')').html(1).addClass("corr");
+        else
+            $('.tsorszam-w:nth(' + s + ')').html(o).addClass("corr");
+        if (s == 1 && o == 1)
+            $('.tsorszam-w:nth(1)').html("( )").css("visibility", "visible");
+    }
+
+
+    $('#derivT2 .tsorszam-e').css("visibility", "hidden");
+    $('#derivT2 .tsorszam-e.corr').html($('.tsorszam-e.corr').attr('data-n'));
+    $('#derivT2 .tsorszam-e.corr').removeClass('corr');
+    for (var t = s - 1; t < r + Math.floor(s / (r + 1)) - 1; t++)
+        $('#derivT2 .tsorszam-e:nth(' + t + ')').css("visibility", "visible");
+    $('#derivT2 .tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
+    if (s == r)
+        $('#derivT2 .tsorszam-e:nth(-1)').html("( )").css("visibility", "visible");
+
+    $('#derivT2 .tsorszam-n').css("visibility", "hidden");
+    if (aarg != barg) {
+        const ce = conjugate(e);
+        for (var t = 1; t < ce.length; t++)
+            $('#derivT2 .tsorszam-n:nth(' + t + ')').css("visibility", "visible").html(ce[t]);
+        if (s == 1 && o == 1)
+            $('#derivT2 .tsorszam-n:nth(0)').html("( )").css("visibility", "visible");
+    };
+
+    var bv = [];
+    var keplet = "";
+    if (aarg) {
+        if (barg) {
+            bv = e.reverse();
+        } else {
+            bv = conjugate(e).reverse();
+        }
+    } else {
+        if (barg) {
+            bv = conjugate(e).reverse();
+        } else {
+            bv = e.reverse();
+        }
+    };
+    var argtxt1 = aargtxt;
+    var argtxt2 = bargtxt;
+    if (egyezes == 1 && narg != aarg) {
+        argtxt1 = bargtxt;
+        argtxt2 = aargtxt;
+    }
+
+    keplet = "&rightarrow;&nbsp;Li<sub>(" + _.dropRight(h) + ")</sub>(" + argtxt1 + ")&lowast;Li<sub>(" + _.dropRight(bv) + ")</sub>(" + argtxt2 + ")";
+    keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
+    $('.cintkeplet').html('').removeClass('cintkeplet');
+    $("#ebbe-" + s).html(keplet).addClass('cintkeplet');
+
+
+    var ezt = [];
+    if (!haspv) {
+        if (egyezes == 1 && narg != aarg)
+            var ezt = _.dropRight(bv).toString();
+        else
+            var ezt = _.dropRight(h).toString();
+    } else {
+        if (egyezes == 1 && narg != barg)
+            var ezt = _.dropRight(h).toString();
+        else
+            var ezt = _.dropRight(bv).toString();
+    }
+
+    var celok = $(".genout-sor .asor");
+    $('.zztbl').removeClass('zztbl');
+    for (let y of celok) {
+        if (y.innerText.replace(/[() +−]/g, "") == ezt) {
+            $(y).parent().parent().parent().addClass("zztbl")
+        }
+    }
+};
+
+function ribbonGraph2() {
+    const elem = document.getElementById("derivT2");
+    const a = kiszed_cd('avg');
+    const b = kiszed_cd('bvg');
+    var kep = "";
+    if (b.length == 1 && b[0] == 0 && (egyezes == 0 || (egyezes == 1 && aarg == narg))) {
+        kep = "Ez nagyon más integrálhoz vezet.";
+        elem.innerHTML = kep;
+        document.getElementById("genout").innerHTML = kep;
+        setOutputFontintc2(document.getElementById("outfont-slider").value * 1);
+        dehomalyosit();
+    } else {
+        const cill = abillesztes(a, b);
+        const c = cill[0];
+        const kc = kum(c);
+        const r = c.length;
+        var k = [0];
+        for (var i = 1; i < r; i++) {
+            k.push(kc[i - 1] - i);
+        };
+        cN2 = _.sum(c) + 1 - r || 1;
+        kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th><div>";
+        for (var i = 1; i < _.last(kc) - r + 2; i++) {
+            kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
+        };
+        kep += "<th style='width:21.36px'></th></div></th><td></td></tr></thead>";
+        for (var j = 0; j < r; j++) {
+            kep += "<tr><th><span class='tsorszam-w' data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div>";
+            for (var t = 0; t < k[j]; t++) {
+                kep += "<span class='tgomb' style='visibility:hidden;'>&#x25CB;</span> ";
+            };
+            for (var t = k[j]; t < k[j] + c[j]; t++) {
+                kep += "<span class='tgomb shown' onclick='cdat2(this," + ((j + 1) + "," + (t - k[j] + 1)) + ")'>&#x25CB;</span> ";
+            };
+            kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
+        };
+
+        kep += "</th></tr></table>";
+        elem.innerHTML = kep;
+        const hatar = cill[1];
+        $('#derivT2 .tgomb.shown:nth(0),#derivT2 .tgomb.shown:nth(-1)').addClass('szelso').html('&#x25CE;');;
+        $('#derivT2 .tgomb.shown:nth(' + (hatar - 1) + ')').addClass('illesztoveg');
+        $('#derivT2 .tgomb.shown:nth(' + hatar + ')').addClass('illesztokezd');
+
+        if (cill[2] == "le") {
+            for (var u = 0; u < hatar; u++)
+                $('#derivT2 .tgomb.shown:nth(' + u + ')').addClass('ori');
+        } else {
+            for (var v = hatar; v < _.sum(c) + 1; v++) {
+                $('#derivT2 .tgomb.shown:nth(' + v + ')').addClass('ori');
+            }
+        }
+        setOutputFontintc2(document.getElementById("outfont-slider").value * 1);
+        dehomalyosit();
+    }
+};
+
+// DUALITY OF MZVs
+
+function setOutputFont5(v) {
+    var elem = document.getElementById("dual_html");
+    elem.style.fontSize = v + 'px';
+    $('div.sagecell_sessionOutput,div.sagecell_sessionOutput pre').css('font-size', v + 'px');
+};
+
+function out5Clear() {
+    const elem = document.querySelector("#ideout5 .sagecell_output_elements div");
+    if (elem)
+        elem.innerHTML = "";
+};
+
+function setn100(elem, id) {
+    var n = elem.value;
+    var Nelem = document.getElementById(id + "kijelzo");
+    Nelem.innerHTML = n * 100;
+};
+
+function dualofv(v) {
+    v[0] = v[0] - 1;
+    v.push(1);
+    if (v[0] == 0)
+        v = _.drop(v, 1);
+    return _.reverse(conjugate(v));
+};
+
+function gokartya(n) {
+    const e = document.getElementById("k" + n)
+    e.scrollIntoView({
+        behavior: "smooth",
+        block: 'center'
+    });
+};
+
+function extractHTML(node) {
+
+    // return a blank string if not a valid node
+    if (!node) return ''
+
+    // if it is a text node just return the trimmed textContent
+    if (node.nodeType === 3) return node.textContent.trim()
+
+    //beyond here, only deal with element nodes
+    if (node.nodeType !== 1) return ''
+    if (node.classList.contains('textarea')) return ''
+
+    let html = ''
+        // clone the node for its outer html sans inner html
+    let outer = node.cloneNode()
+
+    // if the node has a shadowroot, jump into it
+    node = node.shadowRoot || node
+
+    if (node.children.length) {
+
+        // we checked for children but now iterate over childNodes
+        // which includes #text nodes (and even other things)
+        for (let n of node.childNodes) {
+
+            // if the node is a slot
+            if (n.assignedNodes) {
+
+                // an assigned slot
+                if (n.assignedNodes()[0]) {
+                    // Can there be more than 1 assigned node??
+                    html += extractHTML(n.assignedNodes()[0])
+
+                    // an unassigned slot
+                } else { html += n.innerHTML }
+
+                // node is not a slot, recurse
+            } else { html += extractHTML(n) }
+        }
+
+        // node has no children
+    } else { html = node.innerHTML }
+
+    // insert all the (children's) innerHTML 
+    // into the (cloned) parent element
+    // and return the whole package
+    outer.innerHTML = html
+    return outer.outerHTML
+};
+
+function tglKepek() {
+    var elem = document.getElementById("kepek");
+    var open = elem.style.display;
+    if (open == "none") {
+        elem.style.display = "block";
+    } else
+        elem.style.display = "none";
+};
+
+function html_dual() {
+    const elem = document.getElementById("dual_html");
+    const bizonyitassal = document.getElementById("setbiz").checked;
+    const vanzar = document.getElementById("jelento").classList.contains("on");
+    const a = kiszed_cd("ad");
+    var txt = "HIBA";
+    const b = dualofv([...a]);
+    var frd = "";
+    var rag = "";
+    if (a[0] > 1)
+        rag = ',' + (a[0] - 1);
+    if (a.length > 1)
+        frd = ',' + [...a.slice(1)].reverse().toString();
+    if (a != undefined && b != undefined && !a[0] < 2) {
+        txt = '<b>a</b><sup>&dagger;</sup>&nbsp;=&nbsp;(' + a.toString() + ')<sup>&dagger;</sup>&nbsp;=&nbsp;(1' + frd + rag + ')<sup>*</sup>&nbsp;=&nbsp;(' + b.toString() + ')&nbsp;&Rightarrow;&nbsp;&zeta;(' + a.toString() + ')&nbsp;=&nbsp;&nbsp;&zeta;(' + b.toString() + ')';
+    };
+    if (bizonyitassal) {
+        const ak = [a[0] - 1, ...a.slice(1)];
+        var kep1 = '';
+        var kep2 = '';
+        var kep3 = '';
+        if (vanzar)
+            burkoloki();
+        document.getElementById("avg").value = ak;
+        document.getElementById("bvg").value = 0;
+        if (document.getElementById("setnarg2").checked)
+            $("#setnarg2").trigger("click");
+        if (!document.getElementById("setaarg2").checked)
+            $("#setaarg2").trigger("click");
+        if (document.getElementById("setbarg2").checked)
+            $("#setbarg2").trigger("click");
+        setTimeout(() => {
+            $("#ribbonbtn").trigger("click");
+
+        }, 200);
+        setTimeout(() => {
+            $('#derivT2 .tgomb.shown.szelso.ori').trigger('click');
+        }, 300);
+        setTimeout(() => {
+            kep1 = extractHTML(document.getElementById('derivT2'));
+            kep1 = kep1.replaceAll('id="derivT2"', '');
+            kep1 += extractHTML(document.getElementById('genout'));
+            kep1 = kep1.replace(/(\<p id="genout".*)(\<div class=\"meret\"\>)(.*)(\<\/p\>)/g, "<hr style='color:#aaa;margin-top: 15px;'/>$2$3");
+        }, 900);
+        setTimeout(() => {
+            $('#derivT2 .tgomb.shown.szelso:not(.ori)').trigger('click');
+        }, 1000);
+        setTimeout(() => {
+            $('table.genout-sor:nth(0)').before('<table class="genout-sor" style="background-color:transparent;border:none;"><tbody><tr><td class="bsor" style="background-color:transparent;color:#ff0060;"><sub style="margin-right:2px;font-size:120%;vertical-align: -0.3em;">-</sub><b>a</b>&nbsp;&rightarrow;</td></tr><tr><td class="bsor">&nbsp</td></tr></tbody></table>');
+            $('table.genout-sor.zztbl').after('<table class="genout-sor" style="background-color:transparent;border:none;"><tbody><tr><td class="bsor" style="background-color:transparent;">&nbsp</td></tr><tr><td class="bsor" style="color: #ff0060;">&leftarrow;&nbsp;<b>a</b><sup>&dagger;</sup></td></tr></tbody></table>');
+            kep2 = extractHTML(document.getElementById('derivT2'));
+            kep2 = kep2.replaceAll('id="derivT2"', '');
+            kep2 += extractHTML(document.getElementById('genout'));
+            kep2 = kep2.replace(/(\<p id="genout".*)(\<div class=\"meret\"\>)(.*)(\<\/p\>)/g, "<hr style='color:#aaa;margin-top: 15px;'/>$2$3");
+        }, 1600);
+
+        setTimeout(() => {
+            txt = genltxfgv();
+            const elem = document.querySelector("#gen_math");
+            elem.innerText = "\\[" + txt + "\\]";
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+        }, 1700);
+
+        setTimeout(() => {
+            kep3 = extractHTML(document.getElementById('gen_math'));
+        }, 2500);
+
+        setTimeout(() => {
+            document.getElementById('gen_math').style.display = "none";
+        }, 2800);
+
+        setTimeout(() => {
+            document.getElementById('kephook1').innerHTML = "(1) " + kep1
+            document.getElementById('kephook2').innerHTML = "(2) " + kep2
+            document.getElementById('kephook3').innerHTML = kep3;
+        }, 2600);
+
+        txt += "<br/><br/><b style='margin-right:10px;'>Bizonyítás:</b><button  class='showpre1' onclick='tglKepek();'>Képekben</button><div id='kepek' style='display:none;'><span id='kephook1' class='kephook'></span><span id='kephook2' class='kephook'></span><span id='kephook3' class='kephook'></span></div><br/>";
+        txt += "<div style='color:#df007e;'>A dualitási tétel egyszerűen következik <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.25em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span> Li<sub>(0)</sub>(x)</span><span class='denominator'><span class='block'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> integrál pozíciócserével nyert két eredményének összevetéséből.</div>"
+        txt += "Az <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.3em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span></span><span class='denominator'><span class='block'><span class='block'>1<span class='binary-operator'>−</span>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span>  integrált számítjuk ki két féle módon. / <sub style='margin-right:2px;font-size:120%;vertical-align: -0.3em;'>-</sub><b>a</b> := (a<sub>1</sub>−1,a<sub>2</sub>,...,a<sub>n</sub>) = (" + ak.toString() + ") /<br/> (1) <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.25em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span></span><span class='denominator'><span class='block'><span class='block'>1<span class='binary-operator'>−</span>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = −Li<sub><b>a</b></sub>(1−x) <br/>";
+        txt += " (2) <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.25em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span></span><span class='denominator'><span class='block'><span class='block'>1<span class='binary-operator'>−</span>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> = <span class='block' style='margin:10px;'><span class='sqrt-prefix sdefint' style='transform: scale(1.38424, 3.1);'>∫</span><span class='block' style='position:relative;'><span class='fraction'><span class='numerator'>Li<sub><sub style='margin-right:2px;font-size:120%;vertical-align: -0.25em;'>-</sub><b>a</b></sub><span class='block'><span class='block'>(1−x)</span></span> Li<sub>(0)</sub>(x)</span><span class='denominator'><span class='block'><span class='block'>x</span></span></span> <span style='display:inline-block;width:0'>&nbsp;</span></span></span><span class='block' style='position:relative;'>dx</span></span> =<span class='block' style='transform: scale(1.5);margin:0 7px;'>&sum;</span><sub style='vertical-align:-0.6em;'><b>u</b>,<b>v</b>&geq;(1)</sub>Li<sub><b>u</b></sub>(1-x) Li<sub><b>v</b></sub>(x) + Li<sub><b>a</b><sup>&dagger;</sup></sub>(x)<br/> Az integrál paramétereit be is állítottuk az <span class='kartyabtn' onclick='gokartya(" + 4 + ");'>4. kártyán</span> és már ki is számítottuk. Ha ezt megtekinti (az előző kártyára teker, vagy a sárgás gombra kattint, de a [Képekben] gombra kattintva is láthatja a kimeneteket), akkor jól láthatja, hogy a deriváló sorban az <sub style='margin-right:2px;font-size:120%;vertical-align: -0.3em;'>-</sub><b>a</b> = (" + ak.toString() + ") vektorral induló integrál éppen az  <b>a</b><sup>&dagger;</sup> = (" + b.toString() + ") vektorral zárul az integráló sorban. ";
+        txt += "A két integrálási eredményt összevetve az alábbit írhatjuk: <div style='text-align:center;'><span style='display:inline-block;outline:2px solid #a87d73;background-color:#e5e1f9;margin:5px;padding:10px;'> −Li<sub><b>a</b></sub>(1−x) + C =<span class='block' style='transform: scale(1.5);margin:0 7px;'>&sum;</span><sub style='vertical-align:-0.6em;'><b>u</b>,<b>v</b>&geq;(1)</sub>Li<sub><b>u</b></sub>(1-x) Li<sub><b>v</b></sub>(x) + Li<sub><b>a</b><sup>&dagger;</sup></sub>(x)<span></div> A C konstans kiszámításának -és az egész bizonyításnak is- a másik alappillére az a tény, hogy <span style='color:#df007e;'><b>u</b>,<b>v</b>&nbsp;&geq;&nbsp;(1) indexvektorok esetén az f<sub><b>u</b>,<b>v</b></sub>(x) =  Li<sub><b>u</b></sub>(1-x) Li<sub><b>v</b></sub>(x) függvények x = 0-ban, és x = 1-ben is zérus értéket vesznek fel.</span> (Erről  meg is győződhetünk a <span class='kartyabtn'  onclick='gokartya(" + 6 + ");'>6. kártyán</span> a függvények \"közelítő\" ábrázolásával.) Ennek pedig triviális következménye, hogy az egyenletben szereplő F(x) = <span class='block' style='transform: scale(1.5);margin:0 7px;'>&sum;</span><sub style='vertical-align:-0.6em;'><b>u</b>,<b>v</b>&geq;(1)</sub>Li<sub><b>u</b></sub>(1-x) Li<sub><b>v</b></sub>(x) összegfüggvény is zérus értéket vesz fel x = 0-ban, illetve x = 1-ben.<br/> (a) Ha az egyenletünkbe x = 1 értéket írjuk, akkor az −Li<sub><b>a</b></sub>(0) + C = 0 + Li<sub><b>a</b><sup>&dagger;</sup></sub>(1) &Leftrightarrow; C = &zeta;(<b>a</b><sup>&dagger;</sup>) egyenletet kapjuk. <br/> (b) Ha pedig az egyenletünkbe az x = 0 értéket helyettesítjük, akkor az −Li<sub><b>a</b></sub>(1) + C = 0 + Li<sub><b>a</b><sup>&dagger;</sup></sub>(0) = 0 &Leftrightarrow; −&zeta;(<b>a</b>) + C = 0 egyenletet nyerjük.<br/> Az (a) és (b) összevetésével pedig: −&zeta;(<b>a</b>) +  &zeta;(<b>a</b><sup>&dagger;</sup>) = 0  &Leftrightarrow; &zeta;(<b>a</b>) =  &zeta;(<b>a</b><sup>&dagger;</sup>)."
+    };
+
+    elem.innerHTML = txt;
+};
+
+function sage_dual() {
+    const a = kiszed_cd("ad");
+    const b = dualofv([...a]);
+    const n = document.getElementById("nd").value * 100;
+    var txt = "show('HIBA');";
+    var rag = "";
+    if (a[0] > 1)
+        rag = ',' + (a[0] - 1);
+    var frd = "";
+    if (a.length > 1)
+        frd = ',' + [...a.slice(1)].reverse().toString();
+    if (a != undefined && b != undefined && !a[0] < 2) {
+        var ra = [...a].reverse();
+        var rb = [...b].reverse();
+        var txt0 = 'show(LatexExpr(r"\\mathbf{a}^{\\dagger}\\,=\\,(1' + frd + rag + ')^{*}\\,=\\,(' + b.toString() + ')"),"\\n\\n");';
+        var txt1 = 'show(LatexExpr(r"\\zeta(\\mathbf{a})\\,=\\,"),Multizeta(' + a.toString() + '),LatexExpr(r"\\,=\\,"),Multizeta(' + b.toString() + '),LatexExpr(r"\\,=\\,\\zeta(\\mathbf{a}^{\\dagger})"),"\\n\\n");';
+        var txt2 = 'show(n(Multizeta(' + ra.toString() + '),prec = ' + n + '));';
+        var txt3 = 'show(n(Multizeta(' + rb.toString() + '),prec = ' + n + '));';
+        var txt = txt0 + txt1 + txt2 + txt3;
+    };
+    $('#mycell5 .sagecell_editor textarea.sagecell_commands').val(txt);
+    $('#mycell5 .sagecell_input button.sagecell_evalButton').click();
+    setOutputFont5($('#outfont-slider5').val());
+};
+
+
+// plotLi(1-x)*Li(x)
+
+function setNLi(elem) {
+    var N = elem.value;
+    var Nelem = document.getElementById("seriesNLiLi");
+    Nelem.innerHTML = N;
+    sorfejtesLiLi1();
+};
+
+function seriesLiLiClear() {
+    var elem = document.querySelector("#sorLiLi");
+    var elemfn = document.querySelector("#fnplLiLi");
+    var elemfigy = document.querySelector("#figy");
+    elem.innerText = "";
+    functionPlot({
+        target: '#plotLiLi',
+        title: 'y = 0',
+        grid: true,
+        xAxis: {
+            domain: [-1, 1]
+        },
+        data: [{
+            fn: "0",
+            graphType: 'polyline',
+        }]
+    });
+    elemfn.style.display = "none";
+    elemfigy.style.display = "none";
+};
+
+function nLiLi1(a, b, N, x) {
+    const n = b.length;
+    var ca = [],
+        cb = [];
+    for (var i = 0; i < n + N + 1; i++)
+        cb[i] = Ha(a, i);
+    for (var j = 0; i < n + N + 1; i++)
+        ca[i] = Ha(b, n + j);
+    var c = 0;
+    for (var t = 0; t <= n + N; t++) {
+        var ct = 0;
+        for (var j = 0; j <= t; j++) {
+            var cj = 0;
+            var ej = Math.pow(-1, j);
+            for (var k = Math.max(n, j); k <= N; k++) {
+                cj += Ha(b, k) * binomial(k, j);
+            }
+            cj = cj * ej * Ha(a, t - j);
+            ct += cj;
+        };
+        c += ct * Math.pow(x, t);
+    };
+    return c;
+};
+
+function maxLiLi1(a, b, N) {
+    var c = [];
+    for (j = 1; j < 9; j++)
+        c.push(nLiLi1(a, b, N, 0.1 * j));
+    return _.max(c) * 1.1;
+};
+
+function LiLi1(a, b, N) {
+    const n = b.length;
+    var ca = [],
+        cb = [];
+    for (var i = 0; i < n + N + 1; i++)
+        cb[i] = FHa(a, i);
+    for (var j = 0; i < n + N + 1; i++)
+        ca[i] = FHa(b, n + j);
+    var c = "";
+    var cltx = "";
+    for (var t = 0; t <= n + N; t++) {
+        var ct = Fraction(0);
+        for (var j = 0; j <= t; j++) {
+            var cj = Fraction(0);
+            var ej = Math.pow(-1, j);
+            for (var k = Math.max(n, j); k <= N; k++) {
+                cj = cj.add(FHa(b, k).mul(binomial(k, j)));
+            }
+            cj = cj.mul(ej).mul(FHa(a, t - j));
+            ct = ct.add(cj)
+        };
+        c += ct.toFraction() + "*x^" + t + "+";
+        if (ct != 0)
+            cltx += ct.toLatex() + "\\;x^{" + t + "}+";
+    };
+    c = c.slice(0, -1);
+    c = c.replaceAll("+-", "-");
+    cltx = cltx.slice(0, -1);
+    cltx = cltx.replaceAll("+-", "-");
+    const m = maxLiLi1(a, b, N);
+    return [c, cltx, [-0.1 * m, m]];
+};
+
+function sorfejtesLiLi1() {
+    sorhiba = false;
+    const lengtelem = document.querySelector("#series-sliderLiLi");
+    const elem = document.querySelector("#sorLiLi");
+    const elemfn = document.querySelector("#fnplLiLi");
+    elemfn.style.display = "block";
+    const a = kiszed_cd('avLiLi');
+    const b = kiszed_cd('bvLiLi');
+    const N = lengtelem.value * 1;
+
+    const c = LiLi1(a, b, N);
+    const fn = c[0];
+    const txt = c[1];
+    const yD = c[2];
+    if (!sorhiba) {
+        elem.innerText = "\\[" + txt + "\\]";
+        functionPlot({
+            target: '#plotLiLi',
+            title: "Li(" + a.toString() + ")(x)*Li(" + b.toString() + ")(1-x)",
+            grid: true,
+            disableZoom: true,
+            xAxis: {
+                domain: [0, 1]
+            },
+            yAxis: {
+                domain: yD
+            },
+            tip: {
+                xLine: true,
+                yLine: true,
+                renderer: function(x, y, index) {}
+            },
+            data: [{
+                fn: fn,
+                graphType: 'polyline',
+                color: "#ff0000"
+            }]
+        });
+        document.querySelector('svg.function-plot text.title').setAttribute('x', 140);
+    } else {
+        var pl = document.querySelector('.function-plot');
+        if (pl)
+            pl.remove();
+        elem.innerText = "\\[\\text{There is some problem with input data!}\\]";
+    };
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+};
+
+// fibrationBasis
+
+function trailing0(v) {
+    return _.dropRightWhile(v, y => y == 0);
+};
+
+function told0val(a, b) {
+    const na = a.length;
+    const nb = b.length;
+    if (na > nb) {
+        k = na - nb;
+        for (var i = 1; i <= na - nb; i++)
+            b.unshift(0);
+    } else {
+        k = nb - na;
+        for (var i = 1; i <= nb - na; i++)
+            a.unshift(0);
+    };
+
+    return [a, b];
+};
+
+function hosszill(a, b) {
+    const na = a.length;
+    const nb = b.length;
+    if (na > nb) {;
+        for (var i = 0; i < na - nb; i++)
+            b.push(0);
+
+    } else if (nb > na) {
+        for (var i = 0; i < nb - na; i++)
+            a.push(0);
+    }
+    return [a, b];
+};
+
+function revlexelotte(s) {
+    const n = s.length;
+    var out = [];
+    for (var j = 0; j < n; j++) {
+        for (var k = 0; k < s[n - 1 - j]; k++) {
+            var cv;
+            if (j == 0 && k == 0)
+                cv = [];
+            else if (j > 0 && k == 0)
+                cv = _.takeRight(s, j);
+            else {
+                cv = _.takeRight(s, j);
+                cv.unshift(k);
+            }
+
+            out.push(cv);
+        }
+    }
+    out.push(s);
+    return out;
+};
+
+function rbontas(v) {
+    const n = v.length;
+    var u = [],
+        l = [],
+        nl = 0;
+    for (var i = 0; i < n; i++) {
+        var e = v[i];
+        if (e > 1) {
+            u.push(e - 1);
+            l.push(1);
+            nl++;
+        } else if (nl > 0)
+            l[nl - 1]++;
+        else {
+            l.push(1);
+            nl++;
+        }
+    };
+
+    return told0val(u, l);
+};
+
+function inv_nconc(a, b) {
+    return trailing0(_.zipWith(...told0val(a, b), (x, y) => x - y));
+};
+
+function ribbon_comp(s) {
+    const rs = revlexelotte(s);
+    const bs = rbontas(s)
+    var out = [];
+    for (let sv of rs)
+        out.push([hosszill(..._.zipWith(bs, rbontas(sv), (x, y) => inv_nconc(x, y))), sv]);
+    return out;
+};
+//...............................................
+
+function szabdal(a, v) {
+    const nv = v.length - 1;
+    var out = [];
+    for (var j = 0; j < nv; j++)
+        out.push(a.slice(v[j], v[j + 1]))
+    return out;
+};
+
+function comp0spec(n, k) {
+    allcomp0 = [];
+    if (n == 0 && k == 0)
+        allcomp0 = [
+            []
+        ];
+    else if (k == 0)
+        allcomp0 = [];
+    else if (n == 0 && k > 0)
+        allcomp0 = [Array(k).fill(0)];
+    else {
+        var composition = [];
+        for (var exists = get_first_weak_composition(n, k, composition); exists; exists = get_next_weak_composition(n, k, composition)) {
+            display_composition(allcomp0, composition);
+        };
+    }
+    return allcomp0;
+};
+
+function ncomp0(N, nv) {
+    const kumnv = [0, ...kum(nv)];
+    const l = _.last(kumnv);
+    return comp0spec(N, l).map(y => szabdal(y, kumnv));
+}
+
+function nconc(a, b) {
+    if (a.length == 0)
+        return b;
+    else if (b.length == 0)
+        return a;
+    else
+        return [...a.slice(0, -1), _.last(a) + b[0], ...b.slice(1)];
+};
+
+function Nconc(L) {
+    var out = [];
+    for (let v of L)
+        out = nconc(out, v);
+    return out;
+};
+
+function fuzottcomp(Av, Bv) {
+    const kiv = _.isEqual(Bv, []) && _.includes((Av.map(y => _.isEqual(y, []))), true);
+    var out = [];
+    if (!kiv) {
+        const r = Av.length;
+        var c = [];
+        for (var j = 0; j <= r - 2; j++)
+            c.push(_.concat(Av[r - j - 1], Bv[r - 2 - j]));
+        out = Nconc([...c, Av[0]]);
+    };
+
+    return out;
+};
+
+function conjcomp(v) {
+    if (_.isEqual(v, []))
+        return [];
+    else
+        return conjugate(v);
+}
+
+function hatas1(nv, mv) {
+    var out = '';
+    const rnv = [...nv].reverse();
+    const rmv = [...mv].reverse();
+    const rr = nv.length;
+    const nmc = fuzottcomp(rnv.map(y => conjcomp([y])), rmv.slice(1));
+    const M = rmv[0];
+    var outL = [];
+    var outk = "";
+    var obj = {};
+    var b = 1;
+    for (var k = 0; k <= M; k++) {
+        outL = [];
+        outk = "";
+        obj = {};
+        for (var N = 0; N <= k; N++) {
+            var T = ncomp0(N, rnv);
+            for (let t of T) {
+                var Tm = comp0spec(k - N, rr - 1);
+                for (let m of Tm) {
+                    b = 1;
+                    for (var l = 2; l <= rr; l++) {
+                        b = b * binomial(rmv[l - 1] - 1 + m[l - 2], rmv[l - 1] - 1);
+                    }
+                    var tm = fuzottcomp(t, m.map(y => [y]));
+                    var indx = _.zipWith(nmc, tm, (u, v) => u + v);
+                    outL.push([b, indx]);
+                }
+            }
+        }
+        //console.log(outL);
+        if (outL.length > 0) {
+            var eloj = Math.pow(-1, k);
+            if (eloj == 1)
+                eloj = " + ";
+            else
+                eloj = " − ";
+            var cln = Fraction(1, factorial(M - k));
+            var clntxt = "";
+            var formln = "";
+            if (cln.d > 1)
+                clntxt = formazottTortHTML(cln.n, cln.d) + ' ';
+            formln = 'ln<sup>' + (M - k) + '</sup>(x)'
+
+            out += eloj + '<span style="display:inline-block;color:' + COLORS[k] + ';font-weight:800;background-color:#e3e3e3;padding:3px 5px;border-radius:3px;">' + clntxt + formln + '</span>'; //ln(x)^M-k
+
+
+            obj = _.groupBy(outL, y => y[1]);
+            // console.log(obj)
+            var ke = Object.keys(obj);
+            for (let k of ke) {
+                var b = _.sum(obj[k].map(z => z[0]));
+                var prefix = "+";
+                if (b > 1)
+                    prefix += b + '·';
+                outk += prefix + 'Li<sub>(' + k + ')</sub>(x)';
+            }
+            outk = outk.slice(1);
+            if (ke.length > 1)
+                outk = '·<span class="paren">[</span>' + outk + '<span class="paren">]</span>';
+            else
+                outk = '·' + outk;
+            out += outk;
+        }
+    }
+    if (out.startsWith(' + '))
+        out = out.slice(3);
+    return out;
+};
+
+function kiszed_nm(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        /*  if (av.some(v => v <= 0)) {
+             setfigy("Az <b>a</b> vektor nem tartalmazhat negatív elemet vagy 0-át! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figyC");
+             idClear('#cout')
+             return "Hibás bemenet";
+         } else */
+        if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
+            idClear('#cout')
+            return "Hibás bemenet";
+        }
+        cN = _.sum(av) + 1 - av.length || 1;
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    return av;
+};
+
+function hatas1en() {
+    const elem = document.getElementById("outnm");
+    const nv = kiszed_nm("nuv");
+    const mv = kiszed_nm("muv");
+    var out = hatas1(nv, mv);
+    elem.innerHTML = out;
+};
+
+function Lifb(s) {
+    const rc = ribbon_comp(s);
+    const rcl = rc.slice(0, -1);
+    var out = '';
+    for (let nm of rcl) {
+        out += ' + <span class="cc">C<sub>(' + nm[1].toString() + ')</sub></span><span class="paren">·{</span>' + hatas1(...nm[0]) + '<span class="paren">}</span>';
+    };
+    out.slice(3);
+    out = out.replace('()', '( )')
+    return out;
+};
+
+function Lifbkibontva(s) {
+    const rc = ribbon_comp(s);
+    const rcl = rc.slice(0, -1);
+    const ss = _.sum(s);
+    const d = 1 - (ss % 2);
+    var szamlalo = 0;
+    var out = '';
+    for (let nm of rcl) {
+        szamlalo++;
+        var eloj = ' + ';
+        if ((szamlalo + d) % 2 == 1)
+            eloj = ' − ';
+        var eloj = ' + ';
+        if ((szamlalo + d) % 2 == 1)
+            eloj = ' − ';
+        out += eloj + '<span class="cc">C<sub>(' + nm[1].toString() + ')</sub></span>·<span class="paren">{</span>' + hatas1(...nm[0]) + '<span class="paren">}</span>';
+    };
+    out += ' + <span class="cc">C<sub>(' + s.toString() + ')</sub></span>';
+    if (out.startsWith(' + '))
+        out = out.slice(3);
+    out = out.replace('()', '( )')
+    return out;
+};
+
+function Lifbint(s) {
+    const rc = ribbon_comp(s);
+    const rcl = rc.slice(0, -1);
+    const ss = _.sum(s);
+    const d = 1 - (ss % 2);
+    var szamlalo = 0;
+    var out = '';
+    for (let nm of rcl) {
+        szamlalo++;
+        var eloj = ' + ';
+        if ((szamlalo + d) % 2 == 1)
+            eloj = ' − ';
+        var u = nm[0][0];
+        var l = nm[0][1];
+        out += eloj + '<span style="display:inline-block;"><span style="font-weight:600;color:#d50000;">C<sub>(' + nm[1].toString() + ')</sub></span><span class="sqrt-prefix sdefint" style="transform: scaleY( 2.2) translateY(0.13em);font-weight:600;">∫</span><span style="display:inline-block;vertical-align: middle;text-align:center;font-size:90%;line-height:normal;"><table><tr><td>(' + u + ')</td></tr><tr><td>(' + l + ')</td></tr></table></span>[1]</span>';
+
+    };
+    out += ' + <span style="font-weight:600;color:#d50000;">C<sub>(' + s.toString() + ')</sub></span>';
+    if (out.startsWith(' + '))
+        out = out.slice(3);
+    out = out.replace('()', '( )')
+    return out;
+};
+
+function LifB() {
+    const kibontva = document.getElementById("setfb").checked;
+    const elem = document.getElementById("outfb");
+    const s = kiszed_nm("fbs");
+    var out = "";
+    if (kibontva)
+        out = Lifbkibontva(s);
+    else
+        out = Lifbint(s);
+    elem.innerHTML = out;
+};
+
+// DETERMINANT OF A MATRIX
+
+// recursive with fraction input
+
+function determinantOfMatrixRecursive0(mat, n) {
+    if (n === 1) {
+        return mat[0][0];
+    }
+    let det = 0;
+    let sign = 1;
+    for (let i = 0; i < n; i++) {
+        let submatrix =
+            createSubmatrix(mat, i, n);
+        det += sign * mat[0][i] *
+            determinantOfMatrixRecursive(submatrix, n - 1);
+        sign = -sign;
+    }
+    return det;
+};
+
+function determinantOfMatrixRecursive(mat, n) {
+    if (n === 1) {
+        return Fraction(mat[0][0]);
+    }
+    let det = Fraction(0);
+    let sign = Fraction(1);
+    for (let i = 0; i < n; i++) {
+        let submatrix =
+            createSubmatrix(mat, i, n);
+        det = det.add(sign.mul(Fraction(mat[0][i]).mul(
+            determinantOfMatrixRecursive(submatrix, n - 1))));
+        sign = sign.mul(Fraction(-1));
+    }
+    return det;
+};
+
+// Function to find sub-matrices of different orders
+function createSubmatrix(mat, colToRemove, n) {
+    let submatrix = [];
+    for (let i = 1; i < n; i++) {
+        let newRow = [];
+        for (let j = 0; j < n; j++) {
+            if (j !== colToRemove) {
+                newRow.push(mat[i][j]);
+            }
+        }
+        submatrix.push(newRow);
+    }
+    return submatrix;
+};
+
+function Tegla(V) {
+    var it = [],
+        T = [];
+    for (let v of V) {
+        var vj = [];
+        for (var i = 0; i <= v; i++) {
+            vj.push(i);
+        };
+        it.push(vj);
+    };
+
+    T = cartesian(it);
+    return T;
+};
+
+function suly(a, b) {
+    const r = a.length;
+    const T = Tegla(a);
+    s = 0;
+    for (let t of T) {
+        var p = 1;
+        for (var j = 0; j < r; j++) {
+            p *= binomial(b[j] + t[j], b[j]);
+        };
+        s += p;
+    };
+    return s;
+};
+
+function int1nm(nv, mv) {
+    const sumn = _.sum(nv);
+    const mv1 = mv.slice(0, -1).map(y => y - 1);
+    const knv = kum(nv).slice(0, -1).map(y => y + 1);
+    const rnv = [...nv].reverse().map(y => conjugate([y]));
+    const rmv = [...nv].reverse().slice(0, -1);
+    const nmc = fuzottcomp(rnv, rmv);
+    const T = comp0(_.last(mv), sumn);
+    var out = "";
+    for (let t of T) {
+        var tknv = [];
+        for (let j of knv)
+            tknv.push(t[j - 1]);
+        var ot = _.zipWith(nmc, t, (x, y) => x + y);
+        var szorzo = suly(tknv, mv1);
+        if (szorzo == 1)
+            szorzo = "";
+        out += " + " + szorzo + "&nbsp&zeta;(" + ot + ")";
+    }
+    out = out.slice(2);
+    //return [sumn, mv1, knv, nmc, out];
+    const elem = document.getElementById("outfb");
+    elem.innerHTML = out;
+};
