@@ -1396,11 +1396,12 @@ div#kepek {
     color: #e6e4d1;
     background-color: #5e5e5e;
     transform-origin: center;
-    padding: 3px 4px;
+    padding: 3px 4px 7px 4px;
     font-weight: 800;
     outline: 1px solid #5e5e5e;
     outline-offset: 1px;
     border-radius: 5px;
     margin-right: 4px;
 }
+
 
