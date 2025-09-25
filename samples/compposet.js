@@ -1961,6 +1961,20 @@ function told0val(a, b) {
     return [a, b];
 };
 
+function hosszill(a, b) {
+    const na = a.length;
+    const nb = b.length;
+    if (na > nb) {;
+        for (var i = 0; i < na - nb; i++)
+            b.push(0);
+
+    } else if (nb > na) {
+        for (var i = 0; i < nb - na; i++)
+            a.push(0);
+    }
+    return [a, b];
+};
+
 function revlexelotte(s) {
     const n = s.length;
     var out = [];
@@ -2003,4 +2017,382 @@ function rbontas(v) {
     };
 
     return told0val(u, l);
+};
+
+function inv_nconc(a, b) {
+    return trailing0(_.zipWith(...told0val(a, b), (x, y) => x - y));
+};
+
+function ribbon_comp(s) {
+    const rs = revlexelotte(s);
+    const bs = rbontas(s)
+    var out = [];
+    for (let sv of rs)
+        out.push([hosszill(..._.zipWith(bs, rbontas(sv), (x, y) => inv_nconc(x, y))), sv]);
+    return out;
+};
+//...............................................
+
+function szabdal(a, v) {
+    const nv = v.length - 1;
+    var out = [];
+    for (var j = 0; j < nv; j++)
+        out.push(a.slice(v[j], v[j + 1]))
+    return out;
+};
+
+function comp0spec(n, k) {
+    allcomp0 = [];
+    if (n == 0 && k == 0)
+        allcomp0 = [
+            []
+        ];
+    else if (k == 0)
+        allcomp0 = [];
+    else if (n == 0 && k > 0)
+        allcomp0 = [Array(k).fill(0)];
+    else {
+        var composition = [];
+        for (var exists = get_first_weak_composition(n, k, composition); exists; exists = get_next_weak_composition(n, k, composition)) {
+            display_composition(allcomp0, composition);
+        };
+    }
+    return allcomp0;
+};
+
+function ncomp0(N, nv) {
+    const kumnv = [0, ...kum(nv)];
+    const l = _.last(kumnv);
+    return comp0spec(N, l).map(y => szabdal(y, kumnv));
+}
+
+function nconc(a, b) {
+    if (a.length == 0)
+        return b;
+    else if (b.length == 0)
+        return a;
+    else
+        return [...a.slice(0, -1), _.last(a) + b[0], ...b.slice(1)];
+};
+
+function Nconc(L) {
+    var out = [];
+    for (let v of L)
+        out = nconc(out, v);
+    return out;
+};
+
+function fuzottcomp(Av, Bv) {
+    const kiv = _.isEqual(Bv, []) && _.includes((Av.map(y => _.isEqual(y, []))), true);
+    var out = [];
+    if (!kiv) {
+        const r = Av.length;
+        var c = [];
+        for (var j = 0; j <= r - 2; j++)
+            c.push(_.concat(Av[r - j - 1], Bv[r - 2 - j]));
+        out = Nconc([...c, Av[0]]);
+    };
+
+    return out;
+};
+
+function conjcomp(v) {
+    if (_.isEqual(v, []))
+        return [];
+    else
+        return conjugate(v);
+}
+
+function hatas1(nv, mv) {
+    var out = '';
+    const rnv = [...nv].reverse();
+    const rmv = [...mv].reverse();
+    const rr = nv.length;
+    const nmc = fuzottcomp(rnv.map(y => conjcomp([y])), rmv.slice(1));
+    const M = rmv[0];
+    var outL = [];
+    var outk = "";
+    var obj = {};
+    var b = 1;
+    for (var k = 0; k <= M; k++) {
+        outL = [];
+        outk = "";
+        obj = {};
+        for (var N = 0; N <= k; N++) {
+            var T = ncomp0(N, rnv);
+            for (let t of T) {
+                var Tm = comp0spec(k - N, rr - 1);
+                for (let m of Tm) {
+                    b = 1;
+                    for (var l = 2; l <= rr; l++) {
+                        b = b * binomial(rmv[l - 1] - 1 + m[l - 2], rmv[l - 1] - 1);
+                    }
+                    var tm = fuzottcomp(t, m.map(y => [y]));
+                    var indx = _.zipWith(nmc, tm, (u, v) => u + v);
+                    outL.push([b, indx]);
+                }
+            }
+        }
+        //console.log(outL);
+        if (outL.length > 0) {
+            var eloj = Math.pow(-1, k);
+            if (eloj == 1)
+                eloj = " + ";
+            else
+                eloj = " − ";
+            var cln = Fraction(1, factorial(M - k));
+            var clntxt = "";
+            var formln = "";
+            if (cln.d > 1)
+                clntxt = formazottTortHTML(cln.n, cln.d) + ' ';
+            formln = 'ln<sup>' + (M - k) + '</sup>(x)'
+
+            out += eloj + '<span style="display:inline-block;color:' + COLORS[k] + ';font-weight:800;background-color:#e3e3e3;padding:3px 5px;border-radius:3px;">' + clntxt + formln + '</span>'; //ln(x)^M-k
+
+
+            obj = _.groupBy(outL, y => y[1]);
+            // console.log(obj)
+            var ke = Object.keys(obj);
+            for (let k of ke) {
+                var b = _.sum(obj[k].map(z => z[0]));
+                var prefix = "+";
+                if (b > 1)
+                    prefix += b + '·';
+                outk += prefix + 'Li<sub>(' + k + ')</sub>(x)';
+            }
+            outk = outk.slice(1);
+            if (ke.length > 1)
+                outk = '·<span class="paren">[</span>' + outk + '<span class="paren">]</span>';
+            else
+                outk = '·' + outk;
+            out += outk;
+        }
+    }
+    if (out.startsWith(' + '))
+        out = out.slice(3);
+    return out;
+};
+
+function kiszed_nm(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        /*  if (av.some(v => v <= 0)) {
+             setfigy("Az <b>a</b> vektor nem tartalmazhat negatív elemet vagy 0-át! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figyC");
+             idClear('#cout')
+             return "Hibás bemenet";
+         } else */
+        if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
+            idClear('#cout')
+            return "Hibás bemenet";
+        }
+        cN = _.sum(av) + 1 - av.length || 1;
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    return av;
+};
+
+function hatas1en() {
+    const elem = document.getElementById("outnm");
+    const nv = kiszed_nm("nuv");
+    const mv = kiszed_nm("muv");
+    var out = hatas1(nv, mv);
+    elem.innerHTML = out;
+};
+
+function Lifb(s) {
+    const rc = ribbon_comp(s);
+    const rcl = rc.slice(0, -1);
+    var out = '';
+    for (let nm of rcl) {
+        out += ' + <span class="cc">C<sub>(' + nm[1].toString() + ')</sub></span><span class="paren">·{</span>' + hatas1(...nm[0]) + '<span class="paren">}</span>';
+    };
+    out.slice(3);
+    out = out.replace('()', '( )')
+    return out;
+};
+
+function Lifbkibontva(s) {
+    const rc = ribbon_comp(s);
+    const rcl = rc.slice(0, -1);
+    const ss = _.sum(s);
+    const d = 1 - (ss % 2);
+    var szamlalo = 0;
+    var out = '';
+    for (let nm of rcl) {
+        szamlalo++;
+        var eloj = ' + ';
+        if ((szamlalo + d) % 2 == 1)
+            eloj = ' − ';
+        var eloj = ' + ';
+        if ((szamlalo + d) % 2 == 1)
+            eloj = ' − ';
+        out += eloj + '<span class="cc">C<sub>(' + nm[1].toString() + ')</sub></span>·<span class="paren">{</span>' + hatas1(...nm[0]) + '<span class="paren">}</span>';
+    };
+    out += ' + <span class="cc">C<sub>(' + s.toString() + ')</sub></span>';
+    if (out.startsWith(' + '))
+        out = out.slice(3);
+    out = out.replace('()', '( )')
+    return out;
+};
+
+function Lifbint(s) {
+    const rc = ribbon_comp(s);
+    const rcl = rc.slice(0, -1);
+    const ss = _.sum(s);
+    const d = 1 - (ss % 2);
+    var szamlalo = 0;
+    var out = '';
+    for (let nm of rcl) {
+        szamlalo++;
+        var eloj = ' + ';
+        if ((szamlalo + d) % 2 == 1)
+            eloj = ' − ';
+        var u = nm[0][0];
+        var l = nm[0][1];
+        out += eloj + '<span style="display:inline-block;"><span style="font-weight:600;color:#d50000;">C<sub>(' + nm[1].toString() + ')</sub></span><span class="sqrt-prefix sdefint" style="transform: scaleY( 2.2) translateY(0.13em);font-weight:600;">∫</span><span style="display:inline-block;vertical-align: middle;text-align:center;font-size:90%;line-height:normal;"><table><tr><td>(' + u + ')</td></tr><tr><td>(' + l + ')</td></tr></table></span>[1]</span>';
+
+    };
+    out += ' + <span style="font-weight:600;color:#d50000;">C<sub>(' + s.toString() + ')</sub></span>';
+    if (out.startsWith(' + '))
+        out = out.slice(3);
+    out = out.replace('()', '( )')
+    return out;
+};
+
+function LifB() {
+    const kibontva = document.getElementById("setfb").checked;
+    const elem = document.getElementById("outfb");
+    const s = kiszed_nm("fbs");
+    var out = "";
+    if (kibontva)
+        out = Lifbkibontva(s);
+    else
+        out = Lifbint(s);
+    elem.innerHTML = out;
+};
+
+// DETERMINANT OF A MATRIX
+
+// recursive with fraction input
+
+function determinantOfMatrixRecursive0(mat, n) {
+    if (n === 1) {
+        return mat[0][0];
+    }
+    let det = 0;
+    let sign = 1;
+    for (let i = 0; i < n; i++) {
+        let submatrix =
+            createSubmatrix(mat, i, n);
+        det += sign * mat[0][i] *
+            determinantOfMatrixRecursive(submatrix, n - 1);
+        sign = -sign;
+    }
+    return det;
+};
+
+function determinantOfMatrixRecursive(mat, n) {
+    if (n === 1) {
+        return Fraction(mat[0][0]);
+    }
+    let det = Fraction(0);
+    let sign = Fraction(1);
+    for (let i = 0; i < n; i++) {
+        let submatrix =
+            createSubmatrix(mat, i, n);
+        det = det.add(sign.mul(Fraction(mat[0][i]).mul(
+            determinantOfMatrixRecursive(submatrix, n - 1))));
+        sign = sign.mul(Fraction(-1));
+    }
+    return det;
+};
+
+// Function to find sub-matrices of different orders
+function createSubmatrix(mat, colToRemove, n) {
+    let submatrix = [];
+    for (let i = 1; i < n; i++) {
+        let newRow = [];
+        for (let j = 0; j < n; j++) {
+            if (j !== colToRemove) {
+                newRow.push(mat[i][j]);
+            }
+        }
+        submatrix.push(newRow);
+    }
+    return submatrix;
+};
+
+function Tegla(V) {
+    var it = [],
+        T = [];
+    for (let v of V) {
+        var vj = [];
+        for (var i = 0; i <= v; i++) {
+            vj.push(i);
+        };
+        it.push(vj);
+    };
+
+    T = cartesian(it);
+    return T;
+};
+
+function suly(a, b) {
+    const r = a.length;
+    const T = Tegla(a);
+    s = 0;
+    for (let t of T) {
+        var p = 1;
+        for (var j = 0; j < r; j++) {
+            p *= binomial(b[j] + t[j], b[j]);
+        };
+        s += p;
+    };
+    return s;
+};
+
+function int1nm(nv, mv) {
+    const sumn = _.sum(nv);
+    const mv1 = mv.slice(0, -1).map(y => y - 1);
+    const knv = kum(nv).slice(0, -1).map(y => y + 1);
+    const rnv = [...nv].reverse().map(y => conjugate([y]));
+    const rmv = [...nv].reverse().slice(0, -1);
+    const nmc = fuzottcomp(rnv, rmv);
+    const T = comp0(_.last(mv), sumn);
+    var out = "";
+    for (let t of T) {
+        var tknv = [];
+        for (let j of knv)
+            tknv.push(t[j - 1]);
+        var ot = _.zipWith(nmc, t, (x, y) => x + y);
+        var szorzo = suly(tknv, mv1);
+        if (szorzo == 1)
+            szorzo = "";
+        out += " + " + szorzo + "&nbsp&zeta;(" + ot + ")";
+    }
+    out = out.slice(2);
+    //return [sumn, mv1, knv, nmc, out];
+    const elem = document.getElementById("outfb");
+    elem.innerHTML = out;
 };
