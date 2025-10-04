@@ -593,6 +593,16 @@ table tr th span.tsorszam-w {
     vertical-align: middle;
 }
 
+table tr th span.tsorszam-fix {
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+    width: 21.36px;
+    visibility: hidden;
+    vertical-align: middle;
+    color: #7c7c7c
+}
+
 .tsorszam-s.hl,
 .tsorszam-w.hl {
     background-color: #f0cccc;
@@ -642,7 +652,16 @@ table tr td span.tgomb:hover {
     color: #999;
 }
 
-table tr td span.tgomb.hl {
+#rfbJ table tr td span.tgomb.hl.hlmove {
+    border-top: none;
+}
+
+#rfbJ table tr td span.tgomb.hl {
+    border-top: 2px solid #ff3232;
+    color: #d30000;
+}
+
+p.kijelzo:not(#rfbJ) table tr td span.tgomb.hl {
     color: #d30000;
 }
 
@@ -1404,4 +1423,59 @@ div#kepek {
     margin-right: 4px;
 }
 
+#rfbT table tr td span.tgomb {
+    user-select: none;
+}
+
+#rfbT table tr td span.tgomb.hlLn {
+    color: #456ab9;
+}
+
+#rfbT table tr td span.tgomb.no {
+    visibility: hidden;
+}
+
+#rfbT table tr td span.tgomb.hlLi {
+    color: #cca33c;
+    opacity: 0.35;
+}
+
+#rfbT table tr td span.tgomb.ye {
+    visibility: visible;
+    color: #cca33c;
+    opacity: 0.3;
+}
+
+#rfbT table tr td span.tgomb.sel {
+    opacity: 1;
+}
+
+#rfbT .tsorszam-s.ln {
+    visibility: visible;
+    border-left: 1px solid;
+    color: blue
+}
+
+#rfbT table tr td span.tgomb.move {
+    outline: 1px dotted #818181;
+    outline-offset: 2px;
+}
+
+#rfbT table tr td span.tgomb.hl {
+    border-top: 2px solid #ff3232;
+    color: #d30000;
+}
+
+#rfbT table tr td span.tgomb.hl.hlmove {
+    border-top: none;
+}
+
+#rfbT #binomkijelzo {
+    background-color: inherit;
+    font-size: 60%;
+    height: 55px;
+    padding: 0 10px;
+    margin-left: 4em;
+    text-align: center;
+}
 
