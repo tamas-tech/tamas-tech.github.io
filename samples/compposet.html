@@ -337,7 +337,67 @@
         <input id="outfont-slider7" oninput="setOutputFont7(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont7" />
         <p class="kijelzo" id="outfb" style="line-height: 1.5;font-family: Cambria math;"></p>
         <p id="figyfb" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
-    </div>               
+    </div>
+    <div class="keret of odd" id="k9" style="padding-bottom:10px;margin-bottom:10px;">
+        <b><big class="sorszam">9.</big></b>
+        <p class="keplet" id="rfbset" style="height:84px;margin-bottom:10px;background-color: #dddddd;">\[\text{ zig-zag graph for the fibrationBasis of }{\rm Li}_{(s_1,\ldots,s_r)}(1-x)\]</p>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
+            <input class="inpvec" style="width:280px;" type="text" id="rfbs" value="3,4,1,2,1,1,1,2,1" oninput="idClear('#rfbT');">
+        </div>
+        <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
+            <button id="okbtnrfb" onclick="rfbGraph();" class="showpre1" title="Insert code into editor">Calculate</button>
+            <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#rfbT');" title="Clear output">Clear</button>
+            <label for="setoutputfontintc" style="margin-right:-10px;">&#128474;</label>
+            <input oninput="setOutputFontrfb(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontintc" name="setoutputfontintc">
+        </div>
+        <p class="kijelzo" id="rfbJ" style="font-family:Symbola,Cambria Math;">
+            <span id="rfbT" class="MathJax"></span>
+        </p>
+        <table border="1" width="100%" id="ordersTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;">
+            <tr class="parent">
+                <td colspan="3" onclick="toggleTableRow(this)">Magyarázat</td>
+            </tr>
+            <tr class="child" style="display: none;">
+                <td colspan="3">
+                    <ul>
+                        <li><i>A piros elem mozgatása:</i> Semmi mást nem kell csinálni mint a kivánt helyre kattintani. Ekkor a piros elem oszlopában a piros elem feletti elemek (ha egyáltalán vannak) mind "Li" elemnek számítanak, és lepotyognak egymás tetejére
+                            az első helyre. Az "ln"-nek megfelelő kék elemekből egy sem lesz a piros elem felett, tehát egy piros elem áthelyezésekor mindig az ln<sup>0</sup>(x) esettel indítunk.</li>
+                        <li><i>Piros elem fixálása:</i> Ha egy piros elem oszlopában, a piros elem <b>felett</b> szeretnénk kék elemet kiválasztani, akkor a piroselemet fixálni kell. Ezt egyszerűen a piros elemre való ismételt kattintással érhetjük el. Ekkor
+                            a piros elem felett megjelenik egy kis piros vonal, és a piros elem fölé kattintva kék elemet hozhatunk létre. A piros elem fixálása nem jelenti azt, hogy azt ne tudnák elmozgatni. Csak azt szolgálja, hogy az oszlopában <b>fölé</b>                            kattintva kék a kék elemek számát tudjuk változtatni. Ha nem fölé, hanem alá vagy egy másik oszlopba kattintunk, akkor oda kerül át.
+                            <li><i>Piros elem feloldása:</i> Ha a piros elem fixált, és szeretnénk az oszlopában felyebb mozgatni, akkor ezt két módon is elérhetjük:
+                                <br/>1. A piros elem feletti helyeken kivűli helyek valamelyikére kattintunk, majd a kívánt helyre.
+                                <br/>2. A piros elemre kattintunk, így az felold (a felette lévő kis piros vonal eltűnik) , és ekkor már fölé kattintva nem a kék és a sárga elemeket arányát változtatjuk, hanem a piros elemet mozgatjuk feljebb.
+                            </li>
+                            <li><i>Kék elemekre kattintás:</i> Ha egy kék elemre kattintunk, akkor az ismét sárga lesz. Így tudjuk rogzített C<sub><b>t</b></sub> konstans mellett változtatni az ln kitevőjét.</li>
+                            <li><i>A lepotyogott sárga elemek mozgatása:</i> Erre vonatkozóan két egyszerű szabályt kell követni.
+                                <br/>1. Egy <b>legfelső teli</b> sárga elemre kattintva a körül egy halvány keret jelenik meg. Ez azt jelenti, hogy ez az elem fog arra az <b>üres</b> helyre mozogni, ahová ezt követően kattintunk.</li>
+                            <br/>2. Egy <b>üres</b> sárga elemre kattintva a mozgatásra kijelölt teli elem kerül a helyére.</li>
+                        Persze ezen kívűl még van néhány szabály, de ezek elég automatikusan működnek. Ha egy bekeretezett teli elemre kattintunk, akkor a bekeretezés megszűnik, és így egyetlen elem sem lesz mozgatásra kijelölve. Ha ekkor egy üres helyre kattintunk, akkor a
+                        program automatikusan a legfelső teli elemek közül a legelsőt helyezi át. Ezért ha nincs mozgatásra kijelölt elem, akkor is lesz átmozgatás, de a kijelöléssel mi szabhatjuk meg, hogy melyiket teli elemet, melyik üres helyre szeretnénk
+                        mozgatni. Másrészről a program arról is gondoskodik, hogy csak egy legfelső elem legyen kijelölhető a mozgatásra, és a kijelőléstől függöen dinamikussan frissíti azonüres helyeket, ahová azt áthelyezhetjük. LaLaLa....
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="keret of even" id="k10">
+        <b><big class="sorszam">10.</big></b>
+        <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\LaTeX \text{ fordító}\]
+        </p>
+        <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
+            <!--  <input type="text" id="latexinput" value="" name="fbs"> -->
+            <textarea id="latexinput" value="" cols="70" rows="8" style="font-size:150%;line-height:1.4;" autocorrect="off" spellcheck="false" placeholder="Write LaTeX code here, like \dfrac{1}{2}..."></textarea>
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="mapleMatrix();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear( '#gen_latex');" title="Clear series">Clear</button>
+        <label for="setmaxbuffer">Buffer méret (MB)</label>
+        <input id="setmaxbuffer" type="number" style="width:60px;" min="5" max="500" step="5" value="5" name="setmaxbuffer" onchange="setMaxBuffer(this.value);">
+        <label for="setoutputfont7">&#128474;</label>
+        <input id="outfont-slider7" oninput="setLatexFont(this.value);" type="range" min="50" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfont7" />
+        <p class="kijelzo" id="gen_latex" style="line-height: 1.5;font-family: Cambria math;"></p>
+        <p id="figylatex" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+    </div>                        
     <script>
         setTimeout(() => {
             setgenKeplet2();
@@ -345,6 +405,7 @@
     </script>
 </body>
 </html>
+
 
 
 
