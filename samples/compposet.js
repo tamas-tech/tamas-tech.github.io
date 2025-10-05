@@ -2556,6 +2556,7 @@ function teglaTrim() {
 };
 
 function fbcdat(el, s, o) {
+    const Lifirst = document.getElementById('setlnLi').checked;
     const E = $("#rfbT .tgomb.hl");
     const DE = E.attr("rfb-data");
     const de = $(el).attr("rfb-data");
@@ -2621,31 +2622,45 @@ function fbcdat(el, s, o) {
             $('#rfbT .tgomb.sel').removeClass('sel').html('&#x25CB;');
 
             rfbtegla[0] = m - 1;
-            var d = 0;
-            if ((sse == r && _.last(c) > 1) || (ss == r && _.last(c) == 1))
-                d++;
-            for (var p = sse + ss - s + 1 + d; p <= ss + d; p++) {
-                $('#rfbT .tgomb.no[rfb-data=' + p + '-1]').addClass('sel').html('&#x25CF;');
-                rfbtegla[1].push(p)
-                ce[0]++
-                    for (var q = 1; q < m; q++)
-                        $('#rfbT .tgomb.no[rfb-data=' + p + '-' + q + ']').addClass('ye');
-            };
-            $('#rfbT .tgomb.sel:nth(0)').addClass('move');
+            if (Lifirst) {
+                var d = 0;
+                if ((sse == r && _.last(c) > 1) || (ss == r && _.last(c) == 1))
+                    d++;
+                for (var p = sse + ss - s + 1 + d; p <= ss + d; p++) {
+                    $('#rfbT .tgomb.no[rfb-data=' + p + '-1]').addClass('sel').html('&#x25CF;');
+                    rfbtegla[1].push(p)
+                    ce[0]++
+                        for (var q = 1; q < m; q++)
+                            $('#rfbT .tgomb.no[rfb-data=' + p + '-' + q + ']').addClass('ye');
+                };
+                $('#rfbT .tgomb.sel:nth(0)').addClass('move');
+            } else {
+                rfbtegla[1] = [];
+                _.filter($('#rfbT .tgomb.shown'), function(y) {
+                    var tt = $(y).attr('rfb-data').split('-');
+                    return tt[0] < s * 1 && tt[1] == m;
+                }).map(z => $(z).addClass('hlLn').html('&#x25CF;'));
+            }
         } else if ($(el).hasClass('hlLn')) {
             $(el).removeClass('hlLn').html('&#x25CB;');
             var pp = ss + 1;
             const rfb1 = rfbtegla[1];
+            const krit = (sse == r && _.last(c) > 1) || (ss == r && _.last(c) == 1);
             if (rfb1.length > 0)
                 pp = rfb1[0];
+            if (krit)
+                pp++;
             for (var q = 1; q < m; q++)
                 $('#rfbT .tgomb.no[rfb-data=' + (pp - 1) + '-' + q + ']').addClass('ye');
             $('#rfbT .tgomb.no[rfb-data=' + (pp - 1) + '-1]').addClass('sel').html('&#x25CF;');
-            //if ($('#rfbT .tgomb.move').length == 0)
             $('#rfbT .tgomb.move').removeClass('move');
-            //$('#rfbT .tgomb.sel:last').addClass('move');
+            if (krit && rfb1.length > 0) {
+                pp--
+                $('#rfbT .tgomb.no[rfb-data=' + (pp - 1) + '-1]').addClass('sel').html('&#x25CF;');
+            }
             rfbtegla[1].unshift(pp - 1);
             rfb_last["Li"] = rfb_last["Li"] + 1;
+            console.log("kék->fehér", rfbtegla[1])
         } else {
             $(el).addClass('hlLn');
             if ($(el).hasClass('szelso'))
@@ -2659,6 +2674,7 @@ function fbcdat(el, s, o) {
             $('#rfbT .tgomb.sel:nth(0)').addClass('move');
             rfbtegla[1] = _.drop(rfbtegla[1]);
             rfb_last["Li"] = rfb_last["Li"] - 1;
+            console.log("fehér->kék", rfbtegla[1])
         };
         for (var t = 0; t < ce.length - 1; t++)
             $('#rfbT .tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").html(ce[t]);
