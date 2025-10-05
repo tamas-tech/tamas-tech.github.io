@@ -2732,7 +2732,7 @@ function rfbGraph() {
     };
     kep += "</div></th><th style='width:21.36px'></th><td id='binomkijelzo'></td></tr></table>";
     elem.innerHTML = kep;
-    setOutputFontrfb(document.getElementById("setoutputfontintc").value);
+    setOutputFontrfb(document.getElementById("setoutputfontrfb").value);
 };
 
 // Általános Latex kimenet
@@ -2760,3 +2760,4 @@ function setMaxBuffer(v) {
         }
     });
 };
+
