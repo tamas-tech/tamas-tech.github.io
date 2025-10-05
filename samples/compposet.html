@@ -338,6 +338,7 @@
         <p class="kijelzo" id="outfb" style="line-height: 1.5;font-family: Cambria math;"></p>
         <p id="figyfb" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     </div>
+                        
     <div class="keret of odd" id="k9" style="padding-bottom:10px;margin-bottom:10px;">
         <b><big class="sorszam">9.</big></b>
         <p class="keplet" id="rfbset" style="height:84px;margin-bottom:10px;background-color: #dddddd;">\[\text{ zig-zag graph for the fibrationBasis of }{\rm Li}_{(s_1,\ldots,s_r)}(1-x)\]</p>
@@ -345,9 +346,11 @@
             <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
             <input class="inpvec" style="width:280px;" type="text" id="rfbs" value="3,4,1,2,1,1,1,2,1" oninput="idClear('#rfbT');">
         </div>
-        <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
+         <div style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
             <button id="okbtnrfb" onclick="rfbGraph();" class="showpre1" title="Insert code into editor">Calculate</button>
             <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#rfbT');" title="Clear output">Clear</button>
+            <label style="margin-left:5px;color: #456ab9;font-size:130%;">●</label>
+            <label class="switch" style="bottom:2px"><input  id="setlnLi" type="checkbox"><span class="slider round"></span></label><label style="margin-left:5px;margin-right:10px;color: #cca33c;font-size:130%;">●</label>
             <label for="setoutputfontintc" style="margin-right:-10px;">&#128474;</label>
             <input oninput="setOutputFontrfb(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontintc" name="setoutputfontintc">
         </div>
@@ -405,6 +408,7 @@
     </script>
 </body>
 </html>
+
 
 
 
