@@ -2541,7 +2541,7 @@ function teglaTrim() {
     if (szorzo == 1)
         szorzo = "";
     else
-        szorzo = "1/" + p + " ";
+        szorzo = "1/" + factorial(p) + " ";
     var keplet = "";
     const phatv = $('#rfbT .tsorszam-s.ln').html();
     keplet = "&rightarrow;&nbsp;" + elojel + szorzo + B + "C<sub>(" + rfb_last["C"] + ")</sub>&lowast;ln<sup style='color:blue'>" + phatv + "</sup>(x)&lowast;Li<sub>(" + d + ")</sub>(x)";
@@ -2595,7 +2595,10 @@ function fbcdat(el, s, o) {
             rfb_last["v"] = [...ce];
             rfb_last["s"] = s;
             rfb_last["C"] = h;
-            rfb_last["Li"] = s - sse;
+            if (Lifirst)
+                rfb_last["Li"] = s - sse;
+            else
+                rfb_last["Li"] = 0;
             rfb_last["o"] = m;
 
             $('#rfbT .tsorszam-e').css("visibility", "hidden");
@@ -2660,7 +2663,6 @@ function fbcdat(el, s, o) {
             }
             rfbtegla[1].unshift(pp - 1);
             rfb_last["Li"] = rfb_last["Li"] + 1;
-            console.log("kék->fehér", rfbtegla[1])
         } else {
             $(el).addClass('hlLn');
             if ($(el).hasClass('szelso'))
@@ -2674,7 +2676,6 @@ function fbcdat(el, s, o) {
             $('#rfbT .tgomb.sel:nth(0)').addClass('move');
             rfbtegla[1] = _.drop(rfbtegla[1]);
             rfb_last["Li"] = rfb_last["Li"] - 1;
-            console.log("fehér->kék", rfbtegla[1])
         };
         for (var t = 0; t < ce.length - 1; t++)
             $('#rfbT .tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").html(ce[t]);
