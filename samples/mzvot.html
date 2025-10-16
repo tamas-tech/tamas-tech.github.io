@@ -1,0 +1,710 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Multiple Zeta Values online tools</title>
+	<link rel="stylesheet" href="samples.css">
+	<link rel="stylesheet" href="../one-dark.css">
+    <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
+	<script src="../tools/lodash.min.js"></script>
+	<script src="multipolylog.js"></script>
+    <script src="compposet.js"></script>
+    <script>
+    // Make the div with id 'mycell' a Sage cell
+    sagecell.makeSagecell({inputLocation:  'div.precompute',
+                           editor: 'codemirror-readonly',
+                           hide: ['output', 'editor'],
+                           linked: 'true',
+                           linkKey: 'main',
+                           evalButtonText: 'Activate'});
+    // Make *any* div with class 'compute' a Sage cell
+    sagecell.makeSagecell({inputLocation: '#sc1.compute',
+                           linked: 'true',
+                           linkKey: 'main',
+                           evalButtonText: 'Evaluate'});
+	/*sagecell.makeSagecell({inputLocation: '#sc2.compute',
+                           linked: 'true',
+                           linkKey: 'main',
+                           evalButtonText: 'Evaluate1'});*/
+    </script>
+    <style>
+      .example {
+        color: black;
+        background-color: #EEEEEE;
+        width: auto*;
+      }
+      .example_output {
+        color:black;
+        background-color: #e0e0e0;
+      }
+	  .btn {
+	  background-color:#e2e2e2;
+	  border:1px solid #a1a1a1;
+	  cursor:pointer;
+	  padding:2px 5px;
+	  border-radius:4px;
+	  margin-bottom: 5px;
+	  display: inline-block;
+	  }
+	  body h1, body h2 {
+	   color: #111;
+      }
+    </style>
+  </head>
+  <body style="font-size:18px;background-color: #fff;">
+  <h1>Multiple Zeta Values online tools</h1>
+  Click the &ldquo;Activate&rdquo; button below first.
+    <div class="precompute"><script type="text/x-sage">
+
+import functools
+import itertools
+from functools import lru_cache, total_ordering
+
+F = FreeAlgebra(QQ, 2, "e0, e1")
+e0 = F.0
+e1 = F.1
+
+def is_FormalSum(val):
+    try:
+        val + FormalSum([])
+        return True
+    except:
+        return False
+
+def index_to_word(ind):
+    ret = F(0)
+    for coeff, ks in ind:
+        ret += (-1)^len(ks)* coeff * Fmul(e1*e0^(k-1) for k in ks)
+    return ret
+
+def word_to_index(fe):
+    dic = F(fe).monomial_coefficients()
+    ret = FormalSum([])
+    for key in dic:
+        ks = []
+        for e in key.to_list():
+            if F(e)==e1:
+                ks.append(1)
+            elif F(e)==e0:
+                ks[-1] += 1
+            else:
+                assert False
+        ret += (-1)^len(ks) * dic[key] * index(*ks)
+    return ret
+
+def LiftIndex(zero):
+    def decorator(func):
+        def obj_to_FormalSum(obj):
+            if obj.parent()==F:
+                obj = word_to_index(obj)
+            assert is_FormalSum(obj)
+            assert all(type(v)==monoindex for c,v in obj)
+            return obj
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwags):
+            formal_sums = [obj_to_FormalSum(obj) for obj in args]
+            ret = zero
+            for formal_sum_arg in itertools.product(*formal_sums):
+                coeff = mul(c for c,v in formal_sum_arg )
+                arg = tuple(v.ks for c,v in formal_sum_arg )
+                ret += coeff * func(*arg, **kwags)
+            if args[0].parent()==F:
+                ret = index_to_word(ret)
+            return ret
+        return wrapper
+    return decorator
+
+def LiftWord(zero):
+    def decorator(func):
+        def obj_to_list_of_monomials(obj):
+            if is_FormalSum(obj):
+                obj = index_to_word(obj)
+
+            dic = obj.monomial_coefficients()
+            return [ (dic[key], key) for key in dic ]
+        @functools.wraps(func)
+        def wrapper(*args, **kwags):
+            list_of_list_of_monomials = [obj_to_list_of_monomials(obj) for obj in args]
+            ret = zero
+            for monomials in itertools.product(*list_of_list_of_monomials ):
+                coeff = mul(c for c,v in monomials )
+                arg = list( [F(e) for e in v.to_list()] for c,v in monomials )
+                ret += coeff * func(*arg, **kwags)
+            if is_FormalSum(args[0]):
+                ret = word_to_index(ret)
+            return ret
+        return wrapper
+    return decorator
+
+
+@LiftWord(zero = F(0))
+def dual(es):
+    return (-1)^len(es) * Fmul([e1 if e==e0 else e0 for e in es[::-1]])
+
+def Fmul(seq):
+    ret = F(1)
+    for e in seq:ret*=e
+    return ret
+
+def lift_to_fr(v):
+    data = FormalSum([(1, (v,))])
+    FR = FormalRing(QQ)
+    return FR.Element(parent = FR, data = data)
+
+def lift_to_fs(v):
+    return FormalSum([(1,v)])
+
+@LiftWord(zero = F(0))
+def shuffle(_es1,_es2):
+    def rec(es1, es2):
+        ret = F(0)
+        if len(es1)==0 and len(es2)==0:
+            return F(1)
+        if len(es1)!=0:
+            ret += es1[0] * rec(es1[1:], es2)
+        if len(es2)!=0:
+            ret += es2[0] * rec(es1, es2[1:])
+        return ret
+    return rec(_es1, _es2)
+
+class FormalRingElement(CommutativeRingElement):
+    def __init__(self, parent, data):
+        if parent is None:
+            raise ValueError("The parent must be provided")
+        self.data = FormalSum([]) + data
+        return CommutativeRingElement.__init__(self, parent)
+
+    def __eq__(self, other):
+        return (self - other).data == FormalSum([])
+
+    def _repr_(self):
+        ret = ""
+        for coeff, seq in self.data:
+            count = {}
+            for v in seq:
+                if v not in count:
+                    count[v]=1
+                else:
+                    count[v] += 1
+            factors = []
+            for v in count:
+                if count[v]==1:
+                    factors.append( str(v) )
+                else:
+                    factors.append( str(v) + "^" + str(count[v]) )
+            mono = "*".join(factors)
+            if mono=="":
+                term = str(coeff)
+            elif coeff==1:
+                term = mono
+            elif coeff==-1:
+                term = "-" + mono
+            else:
+                term = str(coeff) + "*" + mono
+            if ret!="" and term[0]!="-":
+                term = "+" + term
+            if ret!="" and term[0]=="+":
+                term = " + " + term[1:]
+            elif  ret!="" and term[0]=="-":
+                term = " - " + term[1:]
+            ret += term
+        if ret=="":
+            ret = "0"
+        return str(ret)
+
+    def _add_(self, other):
+        C = self.__class__
+        return C(self.parent(), self.data + other.data)
+
+    def _sub_(self, other):
+        C = self.__class__
+        return C(self.parent(), self.data - other.data)
+
+    def _mul_(self, other):
+        C = self.__class__
+        new_data = FormalSum([])
+        for c1, seq1 in self.data:
+            for c2,seq2 in other.data:
+                seq = tuple(sorted(seq1+seq2))
+                new_data += c1*c2*FormalSum([ (1, seq ) ])
+        return C(self.parent(), new_data)
+
+class FormalRing(UniqueRepresentation, CommutativeRing):
+    Element = FormalRingElement
+
+    def _repr_(self):
+        return f"Ring generated by formal objects over {self.base()}"
+
+    def _element_constructor_(self, *args, **kwds):
+        return self.element_class(self, *args, **kwds)
+
+    def _coerce_map_from_(self, S):
+        def coerce(R, x):
+            try:
+                ret = R.Element(parent = self, data = x*FormalSum([(1, ())]))
+            except:
+                print(f"Failed for coercing: R = {R}, S = {S}, x = {x}")
+                assert False
+            return ret
+        return coerce
+
+@lru_cache(maxsize = None)
+def _real_multizeta(ks, prec, t = 0):
+    return RealField(prec)(sage.libs.pari.pari.zetamult( s = pari(ks[::-1]), t = t, precision = prec ).sage() )
+
+def LiftZeta(zero):
+    def decorator(func):
+        def obj_to_FormalSum(obj):
+            if obj.parent()==F:
+                obj = word_to_index(obj)
+            assert is_FormalSum(obj)
+            assert all(type(v)==monoindex for c,v in obj)
+            return obj
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwags):
+            if len(args)==1 and type(args[0])!=int:
+                u = args[0]
+                if u.parent()==F:
+                    u = word_to_index(u)
+                if is_FormalSum(u):
+                    return zero + sum( c*func(*v.ks, **kwags) for c,v in u )
+            return func(*args,**kwags)
+        return wrapper
+    return decorator
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def mzv(*ks, t = 0):
+    if len(ks)==0:
+        return FormalRing(QQ)(1)
+    t = QQ(t)
+    gen = {}
+    gen[2] = [(2,)]
+    gen[3] = [(3,)]
+    gen[5] = [(5,)]
+    gen[7] = [(7,)]
+    gen[8] = [(3,5)]
+    gen[9] = [(9,)]
+    gen[10] = [(3,7)]
+    gen[11] = [(3,3,5), (11,)]
+    gen[12] = [(1,1,4,6), (3,9)]
+    gen[13] = [(3,5,5,), (3,3,7), (13,)]
+    gen[14] = [(3,3,3,5,), (5,9), (3,11)]
+    gen[15] = [(1,1,3,4,6), (3,3,9), (5,3,7,), (15,)]
+    gen[16] = [(1,1,6,8), (3,3,3,7), (3,3,5,5),(3,13), (5,11)]
+    gen[17] = [(1,1,3,6,6), (3,3,3,3,5), (3,3,11), (3,5,9), (5,3,9), (5,5,7), (17,)]
+
+    weight = sum(ks)
+    if weight >17:
+        raise NotImplementedError("Multiple zeta value for weight >17 is not implemented")
+
+    gen_lin = [[] for _ in (0..weight)]
+    gen_lin[0].append(())
+    for w in (0..weight):
+        if w in gen:
+            for ls in gen[w]:
+                for w2 in (0..weight - w):
+                    for seq in gen_lin[w2]:
+                        gen_lin[w+w2].append( (ls,)+seq )
+
+    prec = 64
+    rel_coeff = []
+    while True:
+        vals = []
+        for seq in gen_lin[weight]:
+            val = RealField(prec = prec)(1)
+            for ls in seq:
+                val *= _real_multizeta(ks = ls, prec = prec)
+            vals.append(val)
+        vals.append( _real_multizeta(ks = ks, prec = prec, t = t) )
+        new_rel_coeff = sage.libs.pari.pari.lindep(v = vals).sage()
+        if new_rel_coeff[-1]<0:
+            new_rel_coeff = [-v for v in new_rel_coeff]
+        if new_rel_coeff==rel_coeff:
+            break
+        rel_coeff = new_rel_coeff
+        prec*=2
+    FR =  FormalRing(QQ)
+    ret =FR(0)
+    for i,seq in enumerate(gen_lin[weight]):
+        if rel_coeff[i]!=0:
+            v = -rel_coeff[i]/rel_coeff[-1]
+            for ls in seq:
+                if ls==(2,):
+                    v *= 1/6*lift_to_fr("π")^2
+                else:
+                    v *= lift_to_fr( "ζ" + "(" + ",".join(str(l) for l in ls) + ")")
+            ret += v
+    return ret
+
+def mzsv(*ks):
+    return mzv(*ks, t=1)
+
+def _modulo_zeta2(fr):
+    new_data = FormalSum([])
+    for coeff, seq in fr.data:
+        seq = tuple(sorted(seq) )
+        if "π" not in seq:
+            new_data += coeff * lift_to_fs(seq)
+    FR = FormalRing(QQ)
+    return FR.Element(parent = FR, data = new_data )
+
+def star_index(ks):
+    def rec(ls):
+        if len(ls)<=1:
+            return [ls]
+        return [ls[:1]+seq for seq in rec(ls[1:])] + rec((ls[0]+ls[1],) + ls[2:])
+    return rec(tuple(ks) )
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def shuffle_regularized_mzv(*ks):
+    return mzv(shuffle_regularization(index(ks) ) )
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def shuffle_regularized_mzsv(*ks):
+    return FormalRing(QQ)(0) + sum( shuffle_regularized_mzv(index(*ls) )  for ls in star_index(ks))
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def stuffle_regularized_mzv(*ks):
+    return mzv(stuffle_regularization(index(ks) ) )
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def stuffle_regularized_mzsv(*ks):
+    return FormalRing(QQ)(0) + sum( stuffle_regularized_mzv(index(*ls) )  for ls in star_index(ks))
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def shuffle_regularized_symmetric_mzv(*ks):
+    ret = FormalRing(QQ)(0)
+    for j in (0..len(ks) ):
+        ret += (-1)^sum(ks[j:]) * shuffle_regularized_mzv(index(ks[:j]) )  * shuffle_regularized_mzv(index(ks[j:][::-1]) )
+    return ret
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def shuffle_regularized_symmetric_mzsv(*ks):
+    return FormalRing(QQ)(0) + sum( shuffle_regularized_symmetric_mzv(index(*ls) )  for ls in star_index(ks))
+
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def stuffle_regularized_symmetric_mzv(*ks):
+    ret = FormalRing(QQ)(0)
+    for j in (0..len(ks) ):
+        ret += (-1)^sum(ks[j:]) * stuffle_regularized_mzv(index(ks[:j]) )  * stuffle_regularized_mzv(index(ks[j:][::-1]) )
+    return ret
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def stuffle_regularized_symmetric_mzsv(*ks):
+    return FormalRing(QQ)(0) + sum( stuffle_regularized_symmetric_mzv(index(*ls) )  for ls in star_index(ks))
+
+@LiftZeta(zero = FormalRing(QQ)(0) )
+@lru_cache(maxsize = None)
+def symmetric_mzv(*ks):
+    return _modulo_zeta2( shuffle_regularized_symmetric_mzv(index(ks) ) )
+
+def symmetric_mzsv(*ks):
+    return _modulo_zeta2( shuffle_regularized_symmetric_mzsv(index(ks) ) )
+
+@total_ordering
+class monoindex:
+    def __init__(self, *ks):
+        self.ks = ks
+    def __repr__(self):
+        return "index(" + ",".join(str(k) for k in self.ks) + ")"
+    def __eq__(self, other):
+        return self.ks == other.ks
+    def __lt__(self, other):
+        return self.ks < other.ks
+    def __hash__(self):
+        return hash(self.ks)
+    def __len__(self):
+        return len(self.ks)
+    def __getitem__(self, key):
+        if type(key)==slice:
+            return self.__class__( *self.ks[key] )
+        else:
+            return self.ks[key]
+    def __add__(self,other):
+        return self.__class__(*(self.ks + other.ks) )
+
+def index(*ks):
+    if len(ks)==1 and ( type(ks[0])==tuple or type(ks[0])==list ):
+        ks = tuple(ks[0])
+    ks = tuple(ks)
+    return lift_to_fs( monoindex(*ks) )
+
+@LiftIndex(zero = FormalSum([]))
+def Concatenate(ks, ls):
+    return index(ks+ls)
+
+@LiftIndex(zero = FormalSum([]))
+def stuffle(_ks, _ls):
+    assert type(_ks)==tuple and type(_ls)==tuple
+    def rec(ks, ls):
+        if len(ks)==0 or len(ls)==0:
+            return index( ks+ls )
+        return Concatenate(index(ks[:1]), rec(ks[1:],ls) ) + \
+                Concatenate(index(ls[:1]), rec(ks,ls[1:])) + \
+                Concatenate(index(ks[0]+ls[0],), rec(ks[1:],ls[1:]))
+    return rec(_ks, _ls)
+
+
+@LiftIndex(zero = FormalSum([]))
+def stuffle_regularization(ks):
+    assert type(ks)==tuple
+    self = stuffle_regularization
+    j = 0
+    while j<len(ks) and ks[-1-j]==1:
+        j += 1
+    if j==0:
+        return index(ks)
+    v1  = index(ks)
+    v2 = 1/j*stuffle(index(ks[:-1]), index(1))
+    return self( index(ks) - 1/j*stuffle(index(ks[:-1]), index(1)) )
+
+@LiftIndex(zero = FormalSum([]))
+def shuffle_regularization(ks):
+    self = shuffle_regularization
+    j = 0
+    while j<len(ks) and ks[-1-j]==1:
+        j += 1
+    if j==0:
+        return index(ks)
+    return shuffle_regularization( index(ks) - 1/j*shuffle(index(ks[:-1]), index(1)) )
+
+@LiftIndex(zero = FormalSum([]))
+def shuffle_regularization(ks):
+    self = shuffle_regularization
+    j = 0
+    while j<len(ks) and ks[-1-j]==1:
+        j += 1
+    if j==0:
+        return index(ks)
+    return shuffle_regularization( index(ks) - 1/j*shuffle(index(ks[:-1]), index(1)) )
+
+@LiftIndex(zero = FormalSum([]))
+def Hoffman_dual(ks):
+    self = Hoffman_dual
+    s = ""
+    for i,k in enumerate(ks):
+        if i!=0:
+            s+=","
+        s += "+"*(int(k-1) )
+    ret = [1]
+    for c in s:
+        if c=="+":
+            ret.append(1)
+        elif c==",":
+            ret[-1]+=1
+        else:
+            assert False
+    return index(ret)
+
+def test():
+    assert mzv(1,2) == ζ(3)
+    assert mzv(2,3) == 1/2*ζ(3)*π^2 - 11/2*ζ(5)
+    assert ζ(2,3) == 1/2*ζ(3)*π^2 - 11/2*ζ(5)
+    assert mzsv(1,2) == 2*ζ(3)
+    assert mzv(1,2,t=1) == 2*ζ(3)
+
+    assert stuffle(index(2), index(5)) == index(2,5) + index(5,2) + index(7)
+    assert stuffle(index(2,3), index(5)) == index(2,3,5) + index(2,5,3) + index(2,8) + index(5,2,3) + index(7,3)
+    assert stuffle(-e1*e0, -e1*e0*e0*e0*e0) == -e1*e0^6 + e1*e0^4*e1*e0 + e1*e0*e1*e0^4
+
+    assert shuffle(e1*e0, e1 ) == e1*e0*e1 + 2*e1^2*e0
+    assert shuffle(index(2), index(1)) == index(2,1) + 2*index(1,2)
+
+    assert dual(e1*e0*e0*e1*e0) == -e1*e0*e1^2*e0
+    assert dual(index(3,2)) == index(2,1,2)
+
+    assert Hoffman_dual( index(3,4) ) == index(1,1,2,1,1,1)
+
+    assert shuffle_regularization( index(5,1) ) == -index(4,2) - index(3,3) - index(2,4) - 2*index(1,5)
+    assert shuffle_regularization( shuffle(index(1,1), index(2,3) ) ) == 0
+
+    assert shuffle_regularized_mzv(2,1) == -2*ζ(3)
+
+    assert stuffle_regularization( index(5,1) ) == -index(1,5) - index(6)
+    assert stuffle_regularized_mzv(1,1) == -1/12*π^2
+
+    assert shuffle_regularized_symmetric_mzv(3,8) == -4/315*ζ(5)*π^6 - 1/3*ζ(7)*π^4 - 12*ζ(9)*π^2 + 165*ζ(11)
+    assert stuffle_regularized_symmetric_mzv(3,8) == -4/315*ζ(5)*π^6 - 1/3*ζ(7)*π^4 - 12*ζ(9)*π^2 + 165*ζ(11)
+    assert symmetric_mzv(3,8) == 165*ζ(11)
+
+    assert shuffle_regularized_symmetric_mzv(1,1) == 0
+    assert shuffle_regularized_symmetric_mzsv(1,1) == 1/3*π^2
+    assert stuffle_regularized_symmetric_mzv(1,1) == -1/6*π^2
+    assert stuffle_regularized_symmetric_mzsv(1,1) == 1/6*π^2
+
+
+ζ = mzv
+π = lift_to_fr("π")
+
+</script>
+</div>
+
+<h2>Your code</h2>
+<div id="sc1" class="compute">
+<script type="text/x-sage"></script>
+</div>
+
+<!--<div id="sc2" class="compute">
+<script type="text/x-sage"></script>
+</div>-->
+<div style="margin-left:2px;padding:5px;border:1px solid #c4c1c1;border-radius:5px;background-color:#fdf9bf;;margin-top:10px;">
+<h3 style="margin-block-start: 5px;font-weight: normal;">reg<sub>&#x29E2;</sub>((1)<sup>n</sup>, <b>s</b>)=<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: 0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>(-1)<sup>n</sup></td></tr><tr><td>n!</td></tr></table></span><span class="paren">[</span>&#8706;<sup>(n)</sup>(<b>s</b><sup>&dagger;</sup>)<span class="paren">]</span><sup>&dagger;</sup></h3>
+<label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
+<input class="inpvec" style="width:230px;margin-right:12px;" type="text" id="gendual" value="1,2,3,2" oninput="shbeir(this);" onclick="shbeir(this);"><button type="button" class="sagecell_evalButton ui-button ui-corner-all ui-widget" onclick="shuffreg();">Formáz</button>
+<p id="figyC" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+</div>
+<h2>Usage</h2>
+<ol>
+  <li> Click the &ldquo;Activate&rdquo; button </li>
+  <li> Type your code at the above box.</li>
+  <li> Click &ldquo;Evaluate&rdquo; button. </li>
+  <li> Repeat 2 and 3.</li>
+</ol>
+The followings are examples of usage. The author of this page is <a href="https://sites.google.com/view/minoru-hirose">Minoru Hirose</a>. See <a href="https://github.com/MinoruHirose/mzv-online-tools">github page</a> for the source code.
+<h3> Symbolic expression for multiple zeta(-star) Value</h3>
+<div>
+<pre class="example"><code>
+>>> <span class="btn" onclick="setCode(this);">mzv(1,2)</span>
+ζ(3)
+
+>>> <span class="btn" onclick="setCode(this);">mzv(2,3)</span>
+1/2*ζ(3)*π^2 - 11/2*ζ(5)
+
+>>> <span class="btn" onclick="setCode(this);">ζ(2,3)</span>
+1/2*ζ(3)*π^2 - 11/2*ζ(5)
+
+>>> <span class="btn" onclick="setCode(this);">mzsv(1,2)</span>
+2*ζ(3)
+
+>> <span class="btn" onclick="setCode(this);">mzv(1,2,t=1)</span>
+2*ζ(3)
+
+</code>
+</pre>
+</div>
+
+
+<h3>Harmonic product</h3>
+<div>
+<pre class="example"><code>
+>>> <span class="btn" onclick="setCode(this);">stuffle(index(2), index(5))</span>
+index(2,5) + index(5,2) + index(7)
+
+>>> <span class="btn" onclick="setCode(this);">stuffle(index(2,3), index(5))</span>
+index(2,3,5) + index(2,5,3) + index(2,8) + index(5,2,3) + index(7,3)
+
+>>> <span class="btn" onclick="setCode(this);">stuffle(-e1*e0, -e1*e0*e0*e0*e0)</span>
+-e1*e0^6 + e1*e0^4*e1*e0 + e1*e0*e1*e0^4
+</code>
+</pre>
+</div>
+
+<h3> Shuffle product </h3>
+<div>
+<pre class="example"><code>
+>>> <span class="btn" onclick="setCode(this);">shuffle(e1*e0, e1 )</span>
+e1*e0*e1 + 2*e1^2*e0
+
+>>> <span class="btn" onclick="setCode(this);">shuffle(index(2), index(1))</span>
+index(2,1) + 2*index(1,2)
+</code>
+</pre>
+</div>
+
+<h3> Dual of index </h3>
+<div>
+<pre class="example"><code>
+>>> <span class="btn" onclick="setCode(this);">dual(e1*e0*e0*e1*e0)</span>
+-e1*e0*e1^2*e0
+
+>>> <span class="btn" onclick="setCode(this);">dual(index(3,2))</span>
+index(2,1,2)
+</code>
+</pre>
+</div>
+
+<h3> Hoffman-dual of index</h3>
+<div>
+<pre class="example"><code>
+>>> <span class="btn" onclick="setCode(this);">Hoffman_dual( index(3,4) )</span>
+index(1,1,2,1,1,1)
+</code>
+</pre>
+</div>
+
+<h3> Shuffle regularization </h3>
+<div>
+<pre class="example"><code>
+>>> <span class="btn" onclick="setCode(this);">shuffle_regularization( index(5,1) )</span>
+-index(4,2) - index(3,3) - index(2,4) - 2*index(1,5)
+
+>>> <span class="btn" onclick="setCode(this);">shuffle_regularization( shuffle(index(1,1), index(2,3) ) )</span>
+0
+
+>>> <span class="btn" onclick="setCode(this);">shuffle_regularized_mzv(2,1)</span>
+-2*ζ(3)
+</code>
+</pre>
+</div>
+
+<h3> Stuffle regularization </h3>
+<div>
+<pre class="example"><code>
+>>> <span class="btn" onclick="setCode(this);">stuffle_regularization( index(5,1) )</span>
+-index(1,5) - index(6)
+
+>> <span class="btn" onclick="setCode(this);">stuffle_regularized_mzv(1,1)</span>
+-1/12*π^2
+</code>
+</pre>
+</div>
+
+<h3> Symbolic expression for symmetric multiple zeta(-star) value </h3>
+<div>
+<pre class="example"><code>
+>>> <span class="btn" onclick="setCode(this);">shuffle_regularized_symmetric_mzv(3,8)</span>
+-4/315*ζ(5)*π^6 - 1/3*ζ(7)*π^4 - 12*ζ(9)*π^2 + 165*ζ(11)
+
+>>> <span class="btn" onclick="setCode(this);">stuffle_regularized_symmetric_mzv(3,8)</span>
+-4/315*ζ(5)*π^6 - 1/3*ζ(7)*π^4 - 12*ζ(9)*π^2 + 165*ζ(11)
+
+>>> <span class="btn" onclick="setCode(this);">symmetric_mzv(3,8)</span>
+165*ζ(11)
+
+>>> <span class="btn" onclick="setCode(this);">shuffle_regularized_symmetric_mzv(1,1)</span>
+0
+
+>>> <span class="btn" onclick="setCode(this);">shuffle_regularized_symmetric_mzsv(1,1)</span> #star-value
+1/3*π^2
+
+>>> <span class="btn" onclick="setCode(this);">stuffle_regularized_symmetric_mzv(1,1)</span>
+-1/6*π^2
+
+>>> <span class="btn" onclick="setCode(this);">shuffle_regularized_symmetric_mzsv(1,1)</span> # star-value
+1/6*π^2
+
+</code>
+</pre>
+</div>
+<script>
+setTimeout(()=>{
+cmeditormz=document.querySelector('#sc1 .CodeMirror').CodeMirror;
+cmeditormz.setOption("theme", "one-dark");
+},200);
+</script>
+
+  </body>
+</html>
