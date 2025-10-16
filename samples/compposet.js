@@ -2802,10 +2802,10 @@ function genDual(s) {
     var out = [];
     if (n % 2 == 0)
         for (let w of d)
-            out.push([p * w[0], w[1]]);
+            out.push([p * w[0], dualofv(w[1])]);
     else
         for (let w of d)
-            out.push([-p * w[0], w[1]]);
+            out.push([-p * w[0], dualofv(w[1])]);
     return out;
 };
 
@@ -2904,5 +2904,6 @@ function shuffreg() {
     const text = shuffzeta + "\n" + tgd + "\n" + ztxt + "\n" + dtxt;
     cmeditormz.setValue(text);
 }
+
 
 
