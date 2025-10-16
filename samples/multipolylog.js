@@ -3929,6 +3929,8 @@ function calc_sh() {
         sh = "( )&#x29E2;( ) = ( )";
     else if (a_sor.length == 0)
         sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
+    else if (b_sor.length == 0)
+        sh = "(" + a_sor + ")&#x29E2;( ) = (" + a_sor + ")";
     else {
         sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
         kk = a_sor.length;
@@ -4272,7 +4274,7 @@ $(document).on('input focus', '#query2', function() {
     setSearch();
 });
 
-if (document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
+if (document.title != "Multiple Zeta Values online tools" && document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('#shout')
         const foo1 = document.querySelector('#sagetransf');
@@ -4596,7 +4598,7 @@ function setSearch3() {
 $(document).on('input focus', '#mquery', function() {
     setSearch3();
 });
-if (document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
+if (document.title != "Multiple Zeta Values online tools" && document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('p#mshout')
         var isin = window.getSelection().containsNode(foo, true);
@@ -5457,7 +5459,7 @@ function boldVertices() {
     };
 };
 
-if (document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
+if (document.title != "Multiple Zeta Values online tools" && document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('p#shout');
         const foo2 = document.querySelector('span#iresz');
@@ -5819,7 +5821,9 @@ function calc_shLi() {
     else if (a_sor.length + b_sor.length == 0)
         sh = "( )&#x29E2;( ) = ( )";
     else if (a_sor.length == 0)
-        sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + " )";
+        sh = "( )&#x29E2;(" + b_sor + ") = (" + b_sor + ")";
+    else if (b_sor.length == 0)
+        sh = "(" + a_sor + ")&#x29E2;( ) = (" + a_sor + ")";
     else {
         sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
         kk = a_sor.length;
