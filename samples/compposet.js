@@ -2802,10 +2802,16 @@ function genDual(s) {
     var out = [];
     if (n % 2 == 0)
         for (let w of d)
-            out.push([p * w[0], dualofv(w[1])]);
+            if (valasztott == 2)
+                out.push([p * w[0], dualofv(w[1])]);
+            else
+                out.push([p * w[0], w[1]]);
     else
         for (let w of d)
-            out.push([-p * w[0], dualofv(w[1])]);
+            if (valasztott == 2)
+                out.push([-p * w[0], dualofv(w[1])]);
+            else
+                out.push([-p * w[0], w[1]]);
     return out;
 };
 
@@ -2813,6 +2819,8 @@ function shbeir(el) {
     var txt = el.value;
     txt = "shuffle_regularization( index(" + txt.split('').reverse().join('') + ") )";
     cmeditormz.setValue(txt);
+    if ($('#sc1 .sagecell_sessionOutput pre') != undefined)
+        $('#sc1 .sagecell_sessionOutput pre').text("")
 }
 
 function kiszed_gd(id) {
@@ -2836,10 +2844,15 @@ function kiszed_gd(id) {
     };
     return av;
 };
+var shuff_reg = ""
 
 function shuffreg() {
     const out = $('#sc1 .sagecell_sessionOutput pre');
     var txt = out.text();
+    if (!/sh = n/.test(txt) && txt != "")
+        shuff_reg = txt || "";
+    else if (shuff_reg != "")
+        txt = shuff_reg;
     if (!/index/.test(txt))
         return;
     const s = kiszed_gd('gendual');
@@ -2900,10 +2913,24 @@ function shuffreg() {
 
     dtxt += '"));\n';
     dtxt = dtxt.replaceAll("=\\,+", "=\\,");
-    console.log(de)
     const text = shuffzeta + "\n" + tgd + "\n" + ztxt + "\n" + dtxt;
     cmeditormz.setValue(text);
-}
+    $('#sc1 .sagecell_evalButton').trigger('click');
+};
 
+var valasztott = 1;
 
-
+function changeValasztott(elem) {
+    const id = elem.id;
+    if (id == "v1" && valasztott == 2) {
+        valasztott = 1;
+        $('#v2').removeClass('valasztott').addClass('nemvalasztott');
+        $('#v1').removeClass('nemvalasztott').addClass('valasztott');
+    }
+    if (id == "v2" && valasztott == 1) {
+        valasztott = 2;
+        $('#v1').removeClass('valasztott').addClass('nemvalasztott');
+        $('#v2').removeClass('nemvalasztott').addClass('valasztott');
+    }
+    shuffreg();
+};
