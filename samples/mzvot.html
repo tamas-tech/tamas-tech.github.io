@@ -50,6 +50,22 @@
 	  body h1, body h2 {
 	   color: #111;
       }
+	  .valasztott {
+	  border: solid 1px #a1a1a1;
+	  display: inline-block;
+      padding: 0 5px;
+      border-radius: 5px;
+	  opacity:1;
+	  cursor:pointer;
+	  }
+	  .nemvalasztott {
+	  border: solid 1px transparent;
+	  display: inline-block;
+      padding: 0 5px;
+      border-radius: 5px;
+	  opacity:0.5;
+	  cursor:pointer;
+	  }  
     </style>
   </head>
   <body style="font-size:18px;background-color: #fff;">
@@ -561,9 +577,9 @@ def test():
 <script type="text/x-sage"></script>
 </div>-->
 <div style="margin-left:2px;padding:5px;border:1px solid #c4c1c1;border-radius:5px;background-color:#fdf9bf;;margin-top:10px;">
-<h3 style="margin-block-start: 5px;font-weight: normal;">reg<sub>&#x29E2;</sub>((1)<sup>n</sup>, <b>s</b>)=<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: 0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>(-1)<sup>n</sup></td></tr><tr><td>n!</td></tr></table></span><span class="paren">[</span>&#8706;<sup>(n)</sup>(<b>s</b><sup>&dagger;</sup>)<span class="paren">]</span><sup>&dagger;</sup></h3>
+<h3 style="margin-block-start: 5px;font-weight: normal;">reg<sub>&#x29E2;</sub>((1)<sup>n</sup>, <b>s</b>)=<span class="valasztott" id="v1" onclick="changeValasztott(this);"><span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: 0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>(-1)<sup>n</sup></td></tr><tr><td>n!</td></tr></table></span>&#8706;<sup>(n)</sup>(<b>s</b><sup>&dagger;</sup>)</span> = <span id="v2" class="nemvalasztott" onclick="changeValasztott(this);" ><span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: 0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>(-1)<sup>n</sup></td></tr><tr><td>n!</td></tr></table></span><span class="paren">[</span>&#8706;<sup>(n)</sup>(<b>s</b><sup>&dagger;</sup>)<span class="paren">]</span><sup>&dagger;</sup></span></h3>
 <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
-<input class="inpvec" style="width:230px;margin-right:12px;" type="text" id="gendual" value="1,2,3,2" oninput="shbeir(this);" onclick="shbeir(this);"><button type="button" class="sagecell_evalButton ui-button ui-corner-all ui-widget" onclick="shuffreg();">Formáz</button>
+<input class="inpvec" style="width:230px;margin-right:12px;" type="text" id="gendual" value="1,2,3,2" oninput="shbeir(this);" onclick="shbeir(this);">
 <p id="figyC" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
 </div>
 <h2>Usage</h2>
