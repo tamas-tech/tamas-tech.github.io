@@ -2761,3 +2761,148 @@ function setMaxBuffer(v) {
     });
 };
 
+// derivalas
+
+function setCode(elem) {
+    const text = elem.innerText;
+    cmeditormz.setValue(text);
+    document.querySelector('#sc1 .CodeMirror').scrollIntoView({
+        behavior: "smooth",
+        block: 'center'
+    });
+};
+
+function expDeriv(s, n) {
+    const sn = s.length;
+    const W = comp0(n, sn);
+    const fak = factorial(n);
+    var out = [];
+    for (let w of W) {
+        var sw = _.zipWith(s, w, (u, v) => u + v);
+        var p = 1;
+        for (var j = 0; j < sn; j++) {
+            p *= binomial(sw[j] - 1, s[j] - 1);
+        };
+        out.push([p * fak, sw]);
+    };
+
+    return out;
+};
+
+function leading1(v) {
+    return _.dropWhile(v, y => y == 1);
+};
+
+function genDual(s) {
+    const sr = leading1(s);
+    const n = s.length - sr.length;
+    const du = dualofv(sr);
+    const p = 1 / factorial(n);
+    const d = [...expDeriv(du, n)];
+    var out = [];
+    if (n % 2 == 0)
+        for (let w of d)
+            out.push([p * w[0], w[1]]);
+    else
+        for (let w of d)
+            out.push([-p * w[0], w[1]]);
+    return out;
+};
+
+function shbeir(el) {
+    var txt = el.value;
+    txt = "shuffle_regularization( index(" + txt.split('').reverse().join('') + ") )";
+    cmeditormz.setValue(txt);
+}
+
+function kiszed_gd(id) {
+    var av = document.getElementById(id).value;
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    try {
+        av = JSON.parse(av);
+        if (av.some(v => v <= 0)) {
+            setfigy("Az <b>a</b> vektor nem tartalmazhat negatív elemet vagy 0-át! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figyC");
+            return "Hibás bemenet";
+        }
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
+        return "Hibás bemenet";
+    };
+    return av;
+};
+
+function shuffreg() {
+    const out = $('#sc1 .sagecell_sessionOutput pre');
+    var txt = out.text();
+    if (!/index/.test(txt))
+        return;
+    const s = kiszed_gd('gendual');
+    const de = genDual(s);
+    var shuffzeta = 'sh = n(' + txt.replaceAll("index", "Multizeta") + ',prec = 200);\n';
+    shuffzeta += 'show(LatexExpr(r"\\zeta^{\\text{reg}}(' + s.toString() + ')\\,=\\,"),sh)';
+    var tgd = "";
+    for (j = 0; j < de.length; j++) {
+        var tag = de[j];
+        tgd += "+" + tag[0] + "*Multizeta(" + [...tag[1]].reverse().toString() + ")";
+    };
+    tgd = tgd.replaceAll("+-", "-");
+    if (tgd.startsWith("+"))
+        tgd = tgd.slice(1);
+    tgd = "deriv = n(" + tgd + ",prec = 200);\n";
+    tgd += 'show(LatexExpr(r"\\zeta^{\\text{der}}(' + s.toString() + ')\\,=\\,"),deriv),"\\n\\n"';
+
+    if (txt.startsWith("-")) {
+        var bontas = txt.split('-');
+        var glu = "-";
+    } else {
+        var bontas = txt.split('+');
+        var glu = "+";
+    };
+    bontas = bontas.map(y => y.trim().split('*'));
+    var bontas1 = [];
+    for (let b of bontas) {
+        if (b.length == 1)
+            bontas1.push(["1", b[0]])
+        else
+            bontas1.push([b[0], b[1]]);
+    };
+
+    var ztxt = 'show(LatexExpr(r"\\zeta^{\\text{reg}}(' + s.toString() + ')\\,=\\,';
+    for (let v of bontas1) {
+        var c = glu;
+        if (v[0] != 1)
+            c += v[0];
+        if (v[1] != "")
+            ztxt += c + '\\zeta(' + v[1].slice(0, -1).replace("index(", "").split('').reverse().join('') + ')'
+    }
+
+    ztxt += '"));\n';
+    ztxt = ztxt.replaceAll("=\\,+", "=\\,");
+
+    var dtxt = 'show(LatexExpr(r"\\zeta^{\\text{der}}(' + s.toString() + ')\\,=\\,';
+    for (let v of de) {
+        var c = v[0];
+        if (c == -1)
+            c = "-";
+        else if (c == 1)
+            c = "+";
+        else if (c > 1)
+            c = "+" + c;
+        if (v[1] != "")
+            dtxt += c + '\\zeta(' + v[1].toString() + ')'
+    }
+
+    dtxt += '"));\n';
+    dtxt = dtxt.replaceAll("=\\,+", "=\\,");
+    console.log(de)
+    const text = shuffzeta + "\n" + tgd + "\n" + ztxt + "\n" + dtxt;
+    cmeditormz.setValue(text);
+}
+
+
