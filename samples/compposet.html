@@ -357,6 +357,16 @@
         <p class="kijelzo" id="rfbJ" style="font-family:Symbola,Cambria Math;">
             <span id="rfbT" class="MathJax"></span>
         </p>
+        <table border="0" width="100%" id="derivTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;">
+            <tr class="parent">
+                <td colspan="3" onclick="toggleTableRow(this)">Deriváltak: <span id="dcimke" style="margin-left:20px;"></span></td>
+            </tr>
+            <tr class="child" style="display: none;">
+                <td c colspan="3">
+                    <p class="kijelzo" style="font-size:100%;"></p>
+                </td>
+            </tr>
+        </table>
         <table border="1" width="100%" id="ordersTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;">
             <tr class="parent">
                 <td colspan="3" onclick="toggleTableRow(this)">Magyarázat</td>
@@ -408,6 +418,7 @@
     </script>
 </body>
 </html>
+
 
 
 
