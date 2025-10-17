@@ -3,10 +3,11 @@ var ra = undefined;
 var cN = 1;
 var cN2 = 1;
 var egyezes = 2;
-var rfb_last = { "v": [], "s": 0, "C": [], "Li": 0, "o": 0 };
+var rfb_last = { "v": [], "deriv_path": [], "s": 0, "C": [], "Li": 0, "o": 0 };
 var rfbtegla = [
     0, []
 ];
+deriv_fix = false;
 
 function invPv(v) {
     var c = [],
@@ -2427,6 +2428,14 @@ function setOutputFontrfb(v) {
     $('#rfbT .tsorszam-s,#rfbT .tsorszam-fix,#rfbT .tsorszam-w,#rfbT .tsorszam-e').css({ 'font-size': v * 0.01 * 12 + "px" });
 };
 
+function setDerfix(e) {
+    deriv_fix = e.checked;
+    if (deriv_fix)
+        make_Deriv();
+    else if ($('#rfbT .tgomb.d-path').length > 0)
+        $('#rfbT .tgomb.d-path').removeClass('d-path');
+};
+
 function moveSelect(e) {
     const $e = $(e);
     const esel = $e.hasClass('sel');
@@ -2467,6 +2476,49 @@ function moveSelect(e) {
     }
 };
 
+function drawDerivPath(s, o, d) {
+    const k = kum(d);
+    var d_path = [];
+    for (var i = 1; i <= s; i++)
+        for (var j = 1; j < o; j++)
+            if ($('#rfbT .tgomb.shown[rfb-data=' + i + '-' + j + ']').length > 0)
+                d_path.push([i, j]);
+    d_path.filter(y => y[1] < o && y[0] <= s);
+    for (let v of d_path) {
+        var j = v[1];
+        v[0] += k[j - 1];
+    };
+    for (var j = 1; j < o; j++) {
+        var m = _.min(d_path.filter(y => y[1] == j).map(t => t[0]));
+        for (var u = 1; u <= d[j - 1]; u++) {
+            d_path.push([m - u, j]);
+        }
+    }
+    const p = $('#rfbT .tsorszam-s.ln').text() * 1;
+    for (var l = s - p; l <= s; l++)
+        d_path.push([l, o]);
+    for (let j of d_path) {
+        $('#rfbT .tgomb[rfb-data=' + j[0] + '-' + j[1] + ']').addClass('d-path');
+    }
+};
+
+function toggle_Deriv() {
+    const s = rfb_last.s;
+    const o = rfb_last.o;
+    const d = rfb_last.deriv_path;
+    if ($('#rfbT .tgomb.d-path').length > 0)
+        $('#rfbT .tgomb.d-path').removeClass('d-path');
+    else
+        drawDerivPath(s, o, d);
+};
+
+function make_Deriv() {
+    const s = rfb_last.s;
+    const o = rfb_last.o;
+    const d = rfb_last.deriv_path;
+    drawDerivPath(s, o, d);
+};
+
 function teglaTrim() {
     const o = rfbtegla[0];
     const v = _.dropRight([...rfbtegla[1]]);
@@ -2476,7 +2528,8 @@ function teglaTrim() {
     if (diff > 0)
         for (var d = 0; d < diff; d++)
             $('#rfbT .tgomb.sel:nth(' + d + ')').removeClass('sel move').html('&#x25CB;');
-
+    if ($('#rfbT .tgomb.d-path').length > 0)
+        $('#rfbT .tgomb.d-path').removeClass('d-path');
     var d = Array(o).fill(0);
     for (var i = 1; i < o + 1; i++) {
         for (let j of v) {
@@ -2502,7 +2555,8 @@ function teglaTrim() {
     };
     const vv = [...rfbtegla[1]];
     var B = 1;
-    var Btext = ""
+    var Btext = "";
+    rfb_last.deriv_path = [];
     const lv = [...rfb_last["v"]];
     for (var i = 1; i < o + 1; i++) {
         for (let j of vv) {
@@ -2513,9 +2567,10 @@ function teglaTrim() {
         }
         d[i - 1] = lv[i - 1] + d[i - 1];
         B *= binomial(d[i - 1] - 1, lv[i - 1] - 1);
+        rfb_last.deriv_path.push(d[i - 1] - lv[i - 1]);
         Btext += drawBinomial(d[i - 1] - 1, lv[i - 1] - 1);
     };
-
+    rfb_last.deriv_path.push(0);
     for (var t = 0; t < o; t++)
         $('#rfbT .tsorszam-s:nth(' + (t + 1) + ')').html(d[t]);
     if (o > 0)
@@ -2549,6 +2604,8 @@ function teglaTrim() {
 
     $("#derivTable span.deractive").removeClass('deractive');
     $("#derivTable span[der-data=" + d.toString().replaceAll(',', "-") + "]").addClass('deractive');
+    if (deriv_fix)
+        make_Deriv();
 };
 
 function derivSor(s, n) {
@@ -2578,8 +2635,12 @@ function fbcdat(el, s, o) {
     const E = $("#rfbT .tgomb.hl");
     const DE = E.attr("rfb-data");
     const de = $(el).attr("rfb-data");
+    if ($('#rfbT .tgomb.d-path').length > 0)
+        $('#rfbT .tgomb.d-path').removeClass('d-path');
     if (DE == de) {
         $(el).toggleClass('hlmove');
+        if (deriv_fix)
+            make_Deriv();
         return;
     } else {
         const c = kiszed_c('rfbs');
@@ -2724,7 +2785,7 @@ function rfbGraph() {
         k.push(kc[i - 1] - i);
     };
 
-    var kep = "<table style='border-collapse:collapse;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th>";
+    var kep = "<span id='show_deriv' onclick='toggle_Deriv();'>&#x25CB;</span><table style='border-collapse:collapse;display:inline-table;'><input type='checkbox'  id='setderfix' onchange='setDerfix(this);' style='height:20px;width:20px;display: inline-block;position: relative;left: -40px;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th>";
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
     };
@@ -2756,6 +2817,7 @@ function rfbGraph() {
     kep += "</div></th><th style='width:21.36px'></th><td id='binomkijelzo'></td></tr></table>";
     elem.innerHTML = kep;
     setOutputFontrfb(document.getElementById("setoutputfontrfb").value);
+    $('#rfbT #show_deriv').css('top', Math.max(20, ($('#rfbT table').height() - 40) / 2) + 'px');
 };
 
 // Általános Latex kimenet
