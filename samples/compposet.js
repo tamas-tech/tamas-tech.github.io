@@ -2818,6 +2818,8 @@ function rfbGraph() {
     elem.innerHTML = kep;
     setOutputFontrfb(document.getElementById("setoutputfontrfb").value);
     $('#rfbT #show_deriv').css('top', Math.max(20, ($('#rfbT table').height() - 40) / 2) + 'px');
+    if (deriv_fix)
+        document.getElementById("setderfix").click();
 };
 
 // Általános Latex kimenet
@@ -3019,3 +3021,4 @@ function changeValasztott(elem) {
     }
     shuffreg();
 };
+
