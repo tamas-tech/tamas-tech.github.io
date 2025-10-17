@@ -1506,5 +1506,33 @@ div#kepek {
     background-color: #ffd7c8;
 }
 
+#rfbT #show_deriv {
+    display: inline-block;
+    position: relative;
+    color: #1bce83;
+    background-color: #d8f4de;
+    padding: 0 6px;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+}
+
+#rfbT .tgomb.shown.d-path,
+#rfbT .tgomb:not(.shown).ye.d-path {
+    outline: 1px solid #9effd7!important;
+    visibility: visible!important;
+    box-shadow: 0px 2px 5px 5px #d3f9ec;
+    opacity: 1 !important;
+    background-color: #d1ffec!important;
+}
+
+#rfbT .tgomb:not(.shown):not(.sel).d-path {
+    outline: 1px solid #9effd7!important;
+    visibility: visible!important;
+    box-shadow: 0px 2px 5px 5px #d3f9ec;
+    opacity: 1 !important;
+    background-color: #d1ffec!important;
+    color: #a8ffb5!important;
+}
 
 
