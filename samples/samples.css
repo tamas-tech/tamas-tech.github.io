@@ -1479,3 +1479,32 @@ div#kepek {
     text-align: center;
 }
 
+#rfbT .tsorszam-fix.Li {
+    visibility: visible;
+    border-left: 1px solid;
+    color: #b99331;
+}
+
+.lncolor {
+    background-color: #ccd8ff;
+    border-radius: 50%;
+}
+
+.licolor {
+    background-color: #fde29b;
+    border-radius: 50%;
+}
+
+.binomcolor {
+    background-color: #ffd7c8;
+    height: 16px;
+    display: inline-block !important;
+    padding: 2px 5px 4px 5px !important;
+}
+
+#derivTable span.deractive {
+    background-color: #ffd7c8;
+}
+
+
+
