@@ -2503,20 +2503,24 @@ function drawDerivPath(s, o, d) {
 };
 
 function toggle_Deriv() {
-    const s = rfb_last.s;
-    const o = rfb_last.o;
-    const d = rfb_last.deriv_path;
-    if ($('#rfbT .tgomb.d-path').length > 0)
-        $('#rfbT .tgomb.d-path').removeClass('d-path');
-    else
-        drawDerivPath(s, o, d);
+    if (rfb_last.s > 0) {
+        const s = rfb_last.s;
+        const o = rfb_last.o;
+        const d = rfb_last.deriv_path;
+        if ($('#rfbT .tgomb.d-path').length > 0)
+            $('#rfbT .tgomb.d-path').removeClass('d-path');
+        else
+            drawDerivPath(s, o, d);
+    }
 };
 
 function make_Deriv() {
-    const s = rfb_last.s;
-    const o = rfb_last.o;
-    const d = rfb_last.deriv_path;
-    drawDerivPath(s, o, d);
+    if (rfb_last.s > 0) {
+        const s = rfb_last.s;
+        const o = rfb_last.o;
+        const d = rfb_last.deriv_path;
+        drawDerivPath(s, o, d);
+    }
 };
 
 function teglaTrim() {
@@ -2591,19 +2595,24 @@ function teglaTrim() {
     var szorzo = factorial(p);
     szorzo = "1/" + "<span class='lncolor'>" + szorzo + "</span>&lowast;";
     var keplet = "";
-    const phatv = $('#rfbT .tsorszam-s.ln').html();
-    keplet = "&rightarrow;&nbsp;" + elojel + szorzo + "<span class='binomcolor'>" + B + "</span>&lowast;C<sub>(" + rfb_last["C"] + ")</sub>&lowast;ln<sup class='lncolor'>" + phatv + "</sup>(x)&lowast;Li<sub>(" + d + ")</sub>(x)";
+    keplet = "&rightarrow;&nbsp;" + elojel + szorzo + "<span class='binomcolor'>" + B + "</span>&lowast;&zeta;(" + rfb_last["C"] + ")&lowast;ln<sup class='lncolor'>" + p + "</sup>(x)&lowast;Li<sub>(" + d + ")</sub>(x)";
     keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
     $('#rfbT .cintkeplet').html('').removeClass('cintkeplet');
     $("#rfbT #ebbe-" + ls).html(keplet).addClass('cintkeplet');
+    const av = conjugate(_.dropRight(rfb_last.v, 1));
+    var bont = "<b>a</b> &odot; (1)<sup><i>p</i></sup> &bullet; <b>c</b> = (" + av.toString() + ")&odot;(" + Array(lLi + p).fill(1).toString() + ")&bullet;(" + rfb_last["C"] + ")";
+    bont = bont.replaceAll("(( ))", "( )").replaceAll("()", "( )")
+    $("#rfbT #ebbe-" + (ls + 1)).html(bont).addClass('cintkeplet');
     $("#rfbT #binomkijelzo").html(Btext);
     _.filter($('#rfbT .tgomb.shown'), function(y) {
         var tt = $(y).attr('rfb-data').split('-');
         return tt[0] < ls * 1 && tt[1] == lo * 1 && !$(y).hasClass('hlLn');
     }).map(z => $(z).addClass('hlLi'));
 
+    //if ($("#derivTable span.deractive").length > 0) {
     $("#derivTable span.deractive").removeClass('deractive');
     $("#derivTable span[der-data=" + d.toString().replaceAll(',', "-") + "]").addClass('deractive');
+    // }
     if (deriv_fix)
         make_Deriv();
 };
@@ -2614,8 +2623,8 @@ function derivSor(s, n) {
     const fakt = factorial(n);
     const el = $('#derivTable tr.parent td #dcimke');
     const elem = $('#derivTable tr.child td p');
-    el.html("<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td class='licolor'>" + fakt + "</td></tr></table></span>" + " (" + ss.toString() + ")<sup class='licolor'>(" + n + ")</sup> = ...")
-    var dtxt = '(' + ss.toString() + ')<sup>(' + n + ')</sup> =';
+    el.html("&#8706;<sup>p - j</sup>(<b>a</b>*) = <span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td class='licolor'>" + fakt + "</td></tr></table></span>" + " (" + ss.toString() + ")<sup class='licolor'>(" + n + ")</sup> = ...")
+    var dtxt = '=';
     for (let v of de) {
         var c = v[0] / fakt;
         var ertek = v[1].toString();
@@ -2681,11 +2690,13 @@ function fbcdat(el, s, o) {
                 rfb_last["Li"] = 0;
             rfb_last["o"] = m;
 
+            const pje = _.takeRight(rfb_last.v, 1) - (rfb_last.Le * 1 || 0) - 1;
             $('#rfbT .tsorszam-e').css("visibility", "hidden");
             $('#rfbT .tsorszam-e.corr').html($('#rfbT .tsorszam-e.corr').attr('data-n'));
             $('#rfbT .tsorszam-e.corr').removeClass('corr');
-            for (var t = s - 1; t < r + Math.floor(s / (r + 1)); t++)
+            for (var t = s - 2; t < r + Math.floor(s / (r + 1)); t++)
                 $('#rfbT .tsorszam-e:nth(' + t + ')').css("visibility", "visible");
+            $('#rfbT .tsorszam-e:nth(' + (s - 2) + ')').html("p = " + pje).addClass("corr");
             $('#rfbT .tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
 
             $('#rfbT .tsorszam-s,#rfbT .tsorszam-fix').css("visibility", "hidden");
@@ -2763,7 +2774,9 @@ function fbcdat(el, s, o) {
         for (var t = 0; t < ce.length - 1; t++)
             $('#rfbT .tsorszam-fix:nth(' + (t + 1) + ')').css("visibility", "visible").html(rfb_last["v"][t]);
         $('#rfbT .tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").addClass('ln').html($('#rfbT .tgomb.hlLn').length);
+        //$('#rfbT .tsorszam-s:nth(' + (t + 2) + ')').css("visibility", "visible").html(" = j");
         $('#rfbT .tsorszam-fix:nth(' + (t + 1) + ')').css("visibility", "visible").addClass('Li').html(rfb_last["Li"]);
+        //$('#rfbT .tsorszam-fix:nth(' + (t + 2) + ')').css("visibility", "visible").html(" = p - j");
         if (ce.length == 1) {
             $('#rfbT .tsorszam-s:nth(0)').css("visibility", "visible");
             $('#rfbT .tsorszam-fix:nth(0)').css("visibility", "visible");
@@ -2784,8 +2797,8 @@ function rfbGraph() {
     for (var i = 1; i < r; i++) {
         k.push(kc[i - 1] - i);
     };
-
-    var kep = "<span id='show_deriv' onclick='toggle_Deriv();'>&#x25CB;</span><table style='border-collapse:collapse;display:inline-table;'><input type='checkbox'  id='setderfix' onchange='setDerfix(this);' style='height:20px;width:20px;display: inline-block;position: relative;left: -40px;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th>";
+    var chk = "false";
+    var kep = "<span id='show_deriv' onclick='toggle_Deriv();'>&#x25CB;</span><table style='border-collapse:collapse;display:inline-table;'><input type='checkbox' id='setderfix' onchange='setDerfix(this);' style='height:20px;width:20px;display: inline-block;position: relative;left: -40px;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th>";
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
     };
@@ -2809,7 +2822,7 @@ function rfbGraph() {
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-s' data-n='" + i + "'>" + i + "</span>";
     };
-    kep += "</div></th><th style='width:21.36px'></th><td></td></tr>";
+    kep += "</div></th><th style='width:21.36px'></th><td><div  id='ebbe-" + (r + 2) + "'></div></td></tr>";
     kep += "<tr><th><span class='tsorszam-fix' data-n='0'>0</span></th><th><div style='margin-left:-0.3em'>";
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-fix' data-n='" + i + "'>" + i + "</span>";
@@ -3021,4 +3034,3 @@ function changeValasztott(elem) {
     }
     shuffreg();
 };
-
