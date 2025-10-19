@@ -1256,9 +1256,10 @@ table#calltbl tr td {
     border: 1px solid #c1cfec;
     padding: 0 10px;
     margin-left: 4em;
-    background-color: #fff;
+    background-color: #ececec;
     text-align: center;
     font-size: 70%;
+    box-shadow: 2px 2px 5px 5px #d9d9d959;
 }
 
 .xnLi,
@@ -1534,5 +1535,6 @@ div#kepek {
     background-color: #d1ffec!important;
     color: #a8ffb5!important;
 }
+
 
 
