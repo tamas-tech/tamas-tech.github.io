@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Regularization</title>
+    <script src="../../../Redmentor/jquery-1.12.1.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script> -->
+    <link rel="stylesheet" href="samples.css">
+    <script src="multipolylog.js"></script>
+    <script src="compposet.js"></script>
+    <script src="../tools/cytoscape/dist/cytoscape.min.js"></script>
+    <link href="../tools/cytoscape/dist/style.css" rel="stylesheet" />
+    <!-- from cdn -->
+    <!--  <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.9.5/function-plot.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> -->
+
+    <!-- from local -->
+
+    <script src="../MathJax-2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="../tools/lodash.min.js"></script>
+    <script src="../tools/FractionJS/dist/fraction.min.js"></script>
+    <script src="../tools/d3.v3.min.js"></script>
+    <script src="../tools/function-plot.js"></script>
+    <script src="../tools/CombinationsJS/YourCombinations.js"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+                preview: "none",
+            },
+            TeX: {
+                MAXBUFFER: 5 * 1024, // Set size of buffer in bytes
+                MAXMACROS: 1000000,
+                noErrors: {
+                    disabled: true
+                }, // Show error messages
+            },
+        });
+    </script>
+
+</head>
+
+<body>
+    <div class="keret of odd" id="k1">
+        <b><big class="sorszam" style="margin-right: 15px;">1.</big></b>Shuffle regularization
+        <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\boldsymbol{a}\,{\large\unicode{x29E2}_{*}}\boldsymbol{b}\,:=\,(\boldsymbol{a}^{\vee}{\large\unicode{x29E2}}\,\boldsymbol{b}^{\vee})^{\wedge}\hspace{12mm}\boldsymbol{x}^{\vee}\,:=\,\boldsymbol{x}-\boldsymbol{1}\hspace{12mm}\boldsymbol{x}^{\wedge}\,:=\,\boldsymbol{x}+\boldsymbol{1}\\
+            \text{reg}_{\,{\Large\unicode{x29E2}}}(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{a}) = {\large\sum_{j\,=\,0}^{n}}(-1)^{j}\,(\underset{j}{\underbrace{1,1,\ldots,1}}){\large\unicode{x29E2}_{*}}(\underset{n-j}{\underbrace{1,1,\ldots,1}},\boldsymbol{a})
+            \hspace{12mm}(n\geq0\;,\boldsymbol{a}\text{ admissible})\\ \\ \hline\\ \nu(x_{1},\ldots,x_{m}\geq2,\underset{L}{\underbrace{1,1,\ldots,1}})\,:=\,L \\ \\ \text{reg}_{\,{\Large\unicode{x29E2}}}(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{a})
+            = {\large\sum_{\begin{subarray}{c}k_{1}+\ldots+k_{r}\,=\,n \\k_{1},\cdots,k_{r}\geq \boldsymbol{0}\end{subarray}}}{\large\sum_{\begin{subarray}{c}\sum\boldsymbol{w}_{i}\,=\,a_{i}+k_{i}\\ |\boldsymbol{w}_{i}|\,=\,k_{i}+1\\ \boldsymbol{w}_{i}\geq
+            \boldsymbol{1},\;\text{admissible}\\ i\,=\,1,2,\ldots,r\,=\,|\boldsymbol{a}|\end{subarray}}}\nu(\boldsymbol{w}_{1})\cdots\nu(\boldsymbol{w}_{r})*\boldsymbol{w}_{1}\bullet\cdots\bullet\boldsymbol{w}_{r}\\ \\ \hline \\ \text{reg}_{\,{\Large\unicode{x29E2}}}(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{a})
+            =\frac{(-1)^{n}}{n!}\left[\partial^{n}(\boldsymbol{a}^{\dagger})\right]^{\dagger} \end{gather*}\]
+        </p>
+
+        <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
+            <label for="n"><b style="padding: 2px 7px;">n</b> =  </label>
+            <input type="number" id="nd" value="2" min="1" step="1" onchange="reg_shuff();" name="n" style="width:50px;margin-right:10px;">
+            <label for="ad"><b style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="ad" value="4,2,3" name="fbs" style="margin-right:10px;"> (admissible)
+        </div>
+        <button class="showpre1" style="width:96px;margin-left:10px" onclick="reg_shuff();" title="Calculate series">Calculate</button>
+        <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#shreg');" title="Clear series">Clear</button>
+        <label for="setfb" style="margin-left: 10px;">Kibontva</label>
+        <input type="checkbox" name="setshr" id="setshr" oninput="reg_shuff()" style="height:20px;width:20px;vertical-align:middle;">
+        <label for="setoutputfont7">&#128474;</label>
+        <input id="outfont-slider7" oninput="setOutputFont7(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont7" />
+        <p class="kijelzo" id="shreg" style="line-height: 1.5;font-family: Cambria math;"></p>
+        <p id="figyshr" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+    </div>
+</body>
+
+</html>
