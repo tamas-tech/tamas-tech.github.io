@@ -3038,7 +3038,7 @@ function changeValasztott(elem) {
 
 // regularization 
 
-function setOutputFont7(v) {
+function setOutputFont8(v) {
     var elem = document.getElementById("shreg");
     elem.style.fontSize = v + 'px';
 };
@@ -3184,3 +3184,4 @@ function reg_shuff() {
     };
     elem.innerHTML = dtxt;
 };
+
