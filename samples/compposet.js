@@ -1295,6 +1295,7 @@ function near_concat(a, b) {
 }
 
 function kiszed_cd(id) {
+
     var av = document.getElementById(id).value;
     if (pat.test(av)) {
         setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
@@ -1789,8 +1790,8 @@ function sage_dual() {
     if (a != undefined && b != undefined && !a[0] < 2) {
         var ra = [...a].reverse();
         var rb = [...b].reverse();
-        var txt0 = 'show(LatexExpr(r"\\mathbf{a}^{\\dagger}\\,=\\,(1' + frd + rag + ')^{*}\\,=\\,(' + b.toString() + ')"),"\\n\\n");';
-        var txt1 = 'show(LatexExpr(r"\\zeta(\\mathbf{a})\\,=\\,"),Multizeta(' + a.toString() + '),LatexExpr(r"\\,=\\,"),Multizeta(' + b.toString() + '),LatexExpr(r"\\,=\\,\\zeta(\\mathbf{a}^{\\dagger})"),"\\n\\n");';
+        var txt0 = 'show(LatexExpr(r"\\boldsymbol{a}^{\\dagger}\\,=\\,(1' + frd + rag + ')^{*}\\,=\\,(' + b.toString() + ')"),"\\n\\n");';
+        var txt1 = 'show(LatexExpr(r"\\zeta(\\boldsymbol{a})\\,=\\,"),Multizeta(' + a.toString() + '),LatexExpr(r"\\,=\\,"),Multizeta(' + b.toString() + '),LatexExpr(r"\\,=\\,\\zeta(\\boldsymbol{a}^{\\dagger})"),"\\n\\n");';
         var txt2 = 'show(n(Multizeta(' + ra.toString() + '),prec = ' + n + '));';
         var txt3 = 'show(n(Multizeta(' + rb.toString() + '),prec = ' + n + '));';
         var txt = txt0 + txt1 + txt2 + txt3;
@@ -2903,15 +2904,15 @@ function genDual(s) {
     if (n % 2 == 0)
         for (let w of d)
             if (valasztott == 2)
-                out.push([p * w[0], dualofv(w[1])]);
+                out.push([(p * w[0]).toFixed(0), dualofv(w[1])]);
             else
-                out.push([p * w[0], w[1]]);
+                out.push([(p * w[0]).toFixed(0), w[1]]);
     else
         for (let w of d)
             if (valasztott == 2)
-                out.push([-p * w[0], dualofv(w[1])]);
+                out.push([(-p * w[0]).toFixed(0), dualofv(w[1])]);
             else
-                out.push([-p * w[0], w[1]]);
+                out.push([(-p * w[0]).toFixed(0), w[1]]);
     return out;
 };
 
@@ -3033,4 +3034,153 @@ function changeValasztott(elem) {
         $('#v2').removeClass('nemvalasztott').addClass('valasztott');
     }
     shuffreg();
+};
+
+// regularization 
+
+function setOutputFont7(v) {
+    var elem = document.getElementById("shreg");
+    elem.style.fontSize = v + 'px';
+};
+
+function shrHighlight() {
+    const els = $('#shreg table td.shrhl');
+    var v = [];
+    els.each(function() {
+        var w = JSON.parse('[' + this.innerText.slice(1, -1) + ']');
+        v = _.concat(v, w)
+    });
+    $("#shreg span.deractive").removeClass('deractive');
+    $("#shreg span[der-data=" + v.toString().replaceAll(',', "-") + "]").addClass('deractive');
+};
+
+function shrk(e) {
+    $(e).parent().parent().find('tr td.shrhl').removeClass('shrhl');
+    $(e).parent().parent().find('tr td.shrhlnu').removeClass('shrhlnu');
+    $(e).addClass('shrhl');
+    $(e).next('td').addClass('shrhlnu');
+    shrHighlight();
+};
+
+function shrkn(e) {
+    $(e).parent().parent().find('tr td.shrhl').removeClass('shrhl');
+    $(e).parent().parent().find('tr td.shrhlnu').removeClass('shrhlnu');
+    $(e).addClass('shrhlnu');
+    $(e).prev('td').addClass('shrhl');
+    shrHighlight();
+};
+
+function regshbontas() {
+    var a = kiszed_gd('ad');
+    var k = document.getElementById('kd').value;
+    if (!k.startsWith("[")) {
+        k = "[" + k;
+    }
+    if (!k.endsWith("]")) {
+        k = k + "]";
+    };
+
+    try {
+        k = JSON.parse(k);
+        if (k.some(v => v < 0)) {
+            setfigy("Az <b>a</b> vektor nem tartalmazhat negatív elemet! " + '<span class="outhiba"><b>a</b> = (' + k + ')</span>', "figyshr");
+        }
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + k + '</span>', "figyshr");
+    };
+    const n = k.length;
+    var out = "";
+    for (var i = 0; i < n; i++) {
+        out += "<table class='shregtbl'><tr><th>A(" + (a[i] + k[i]) + "," + (k[i] + 1) + ")</th><th>&nu;( )</th></tr>"
+        var c = comp(a[i] + k[i], k[i] + 1).filter(y => y[0] > 1);
+        for (var j = 0; j < c.length; j++) {
+            var w = c[j];
+            var nu = _.takeRightWhile(w, y => y == 1).length + 1;
+            var cls = "";
+            var clsnu = "";
+            if (j == 0) {
+                cls = "class='shrhl' ";
+                clsnu = "class='shrhlnu' ";
+            }
+            out += "<tr><td " + cls + "onclick='shrk(this)'>(" + w.toString() + ")</td><td " + clsnu + "onclick='shrkn(this)'>" + nu + "</td></tr>";
+        }
+        out = out.slice(0, -1);
+        out += "</table><span style='display:inline-block;width:10px;'></span>";
+    };
+    document.getElementById('shrtables').innerHTML = out;
+    shrHighlight();
+};
+
+var shrbindx = 0;
+
+function shrugrik(e, indx) {
+    const be = document.getElementById('kd');
+    const nn = allcomp0.length;
+    if (indx > 0 && indx < nn + 1) {
+        shrbindx = indx - 1;
+        const v = allcomp0[shrbindx].toString();
+        be.value = v;
+        regshbontas();
+    } else {
+        e.value = ("☹");
+    };
+};
+
+function shrleptet(b) {
+    const be = document.getElementById('kd');
+    const L = allcomp0.length;
+    if (b) {
+        if (shrbindx > 0)
+            shrbindx--;
+        else
+            shrbindx = L - 1;
+    } else {
+        if (shrbindx < L - 1)
+            shrbindx++;
+        else
+            shrbindx = 0;
+    }
+    const v = allcomp0[shrbindx].toString();
+    be.value = v;
+    document.getElementById('lepeskijelzo').value = shrbindx + 1;
+    regshbontas();
+};
+
+function reg_shuff() {
+    const reszl = document.getElementById('setshr').checked;
+    const elem = document.getElementById('shreg');
+    var s = kiszed_gd('ad');
+    const r = s.length;
+    const n = document.getElementById('nd').value * 1;
+    for (var j = 0; j < n; j++)
+        s.unshift(1);
+    const de = genDual(s);
+
+    var dtxt = 'reg<sub><span style="font-size:larger;">&#x29E2;</span></sub>(' + s.toString() + ') = ';
+    for (let v of de) {
+        var c = v[0];
+        var ertek = dualofv(v[1]).toString();
+        if (c == -1)
+            c = " −<span der-data='" + ertek.replaceAll(",", "-") + "'>";
+        else if (c == 1)
+            c = " +<span der-data='" + ertek.replaceAll(",", "-") + "'>";
+        else if (c > 1)
+            c = " +<span der-data='" + ertek.replaceAll(",", "-") + "'>" + c + "&lowast;";
+        else if (c < 1)
+            c = " −<span der-data='" + ertek.replaceAll(",", "-") + "'>" + Math.abs(c) + "&lowast;";
+        if (v[1] != "")
+            dtxt += c + "(" + ertek + ")</span>";
+    };
+
+    dtxt = dtxt.replaceAll("=  +", "= ");
+    if (reszl) {
+        shrbindx = 0;
+        const k = _.last(comp0(n, r));
+        const tables = "<div style='border-top:1px solid #a2a2a2;margin:10px 0;padding-top:10px;'><label for='fbs'><b style='padding: 2px 7px;'>k</b> = </label><input class='inpvec' type='text' readonly='true' id='kd' value='" + k.toString() + "' name='kd' style='margin-right:10px;'><span class='lepteto' onclick='shrleptet(false);' style='display:inline-block;padding:5px 5px 5px 7px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25b6</span><span class='lepteto' onclick='shrleptet(true);' style='display:inline-block;padding:5px 7px 5px 5px;margin-left:10px;margin-right:10px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25c0</span><input id='lepeskijelzo' value='1' type='text' onchange='shrugrik(this,this.value);' style='width: 30px;border:none;font-size:18px;text-align:right;font-family:Times New Roman;background-color: inherit;border-bottom: 1px solid #828282;margin-left:5px;' />/<span id='lepesall' style='display:inline-block;min-width:35px;font-size:18px;'>" + allcomp0.length + "</span></div><div id='shrtables'></div>"
+        dtxt = dtxt + tables;
+        elem.innerHTML = dtxt;
+        regshbontas();
+        return;
+    };
+    elem.innerHTML = dtxt;
 };
