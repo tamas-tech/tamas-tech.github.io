@@ -1536,5 +1536,38 @@ div#kepek {
     color: #a8ffb5!important;
 }
 
+table.shregtbl {
+    display: inline-table;
+    border: 1px solid
+}
+
+table.shregtbl tr td {
+    padding: 0 3px;
+    text-align: center;
+    cursor: pointer;
+}
+
+table.shregtbl tr th {
+    padding: 0 3px;
+    background-color: #cacaca;
+    border-bottom: 1px solid;
+}
+
+table.shregtbl tr td.shrhl {
+    background-color: #f7cccc;
+}
+
+table.shregtbl tr td.shrhlnu {
+    background-color: #ffeda5;
+}
+
+table.shregtbl tr td:hover {
+    outline: 1px solid #ff6c6c;
+}
+
+#shreg span.deractive {
+    background-color: #ffd7c8;
+}
+
 
 
