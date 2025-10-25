@@ -3942,7 +3942,7 @@ function calc_sh() {
             if (sh == "")
                 sh = "Nem megfelelő bemenet"
             else {
-                sh = "(" + a_sor.toString() + ") <span style='font-size:28px;'>&#x29E2;</span> (" + b_sor.toString() + ") = " + sh;
+                sh = "(" + a_sor.toString() + ") <span style='font-size:1.5em;'>&#x29E2;</span> (" + b_sor.toString() + ") = " + sh;
                 var db = sh.match(/ \+ /g).length;
                 sh = sh.slice(0, -3)
                 sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b> (gyorsítás: &#10761;" + javitas + ") futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
@@ -4029,7 +4029,7 @@ function sageshtransf() {
                         str += " + " + value + "&lowast;(" + str2vec(key) + ")";
                     sum++;
                 });
-                str = "(" + a.toString() + ") <span style='font-size:28px;font-size:800;'>&#x29E2;</span> (" + b.toString() + ") = " + str.slice(3);
+                str = "(" + a.toString() + ") <span style='font-size:1.5em;font-weight:800;'>&#x29E2;</span> (" + b.toString() + ") = " + str.slice(3);
             } else
                 str = "HIBA";
         }
@@ -4088,7 +4088,7 @@ function sageshtransf3() {
                         str += " + " + value + "&lowast;(" + str2vec(key) + ")";
                     sum++;
                 });
-                str = "(" + a.toString() + ") <span style='font-size:28px;font-size:800;'>&#x29E2;</span> (" + b.toString() + ") <span style='font-size:28px;font-size:800;'>&#x29E2;</span> (" + c.toString() + ") = " + str.slice(3);
+                str = "(" + a.toString() + ") <span style='font-size:1.5em;font-weight:800;'>&#x29E2;</span> (" + b.toString() + ") <span style='font-size:1.5em;font-weight:800;'>&#x29E2;</span> (" + c.toString() + ") = " + str.slice(3);
             } else
                 str = "HIBA";
         }
@@ -4526,13 +4526,13 @@ function mcalc_sh() {
     } else
         var db = msh.match(/ \+ /g).length + 1;
     if (heada == "" && headb !== "")
-        msh = "( )" + " <span style='font-size:28px;font-weight:800;'>&#x29E2;</span> " + headb + " = " + headb.replace("<span class='bzj'>[</span>", "").replace("<span class='bzj'>]</span>", "");
+        msh = "( )" + " <span style='font-size:1.5em;font-weight:800;'>&#x29E2;</span> " + headb + " = " + headb.replace("<span class='bzj'>[</span>", "").replace("<span class='bzj'>]</span>", "");
     else if (heada != "" && headb == "")
-        msh = heada + " <span style='font-size:28px;font-weight:800;'>&#x29E2;</span> " + "( )" + " = " + heada.replace("<span class='bzj'>[</span>", "").replace("<span class='bzj'>]</span>", "");
+        msh = heada + " <span style='font-size:1.5em;font-weight:800;'>&#x29E2;</span> " + "( )" + " = " + heada.replace("<span class='bzj'>[</span>", "").replace("<span class='bzj'>]</span>", "");
     else if (heada == "" && headb == "")
-        msh = "( )" + " <span style='font-size:28px;font-weight:800;'>&#x29E2;</span> " + "( )" + " = " + "( )";
+        msh = "( )" + " <span style='font-size:1.5em;font-weight:800;'>&#x29E2;</span> " + "( )" + " = " + "( )";
     else
-        msh = heada + " <span style='font-size:28px;font-weight:800;'>&#x29E2;</span> " + headb + " = " + msh;
+        msh = heada + " <span style='font-size:1.5em;font-weight:800;'>&#x29E2;</span> " + headb + " = " + msh;
     msh = "<div class='meret'>A számítás mérete: <b>" + osszmeret + " </b> futás.  Az összeg <b>" + db + "</b> tagú.</div>" + msh;
 
     msh = msh.replace(/\+ *-/g, "- ")
@@ -5835,7 +5835,7 @@ function calc_shLi() {
             if (sh == "")
                 sh = "Nem megfelelő bemenet"
             else {
-                sh = "Li<sub>(" + a_sor0.toString() + ")</sub>(x)&lowast;Li<sub>(" + b_sor0.toString() + ")</sub>(x) = Li<sub>[(" + a_sor0.toString() + ")ˇ<span style='font-size:28px;'>&#x29E2;</span>(" + b_sor0.toString() + ")ˇ]^</sub> (x) = Li<sub>[(" + a_sor.toString() + ")<span style='font-size:28px;'>&#x29E2;</span>(" + b_sor.toString() + ")]^</sub> (x) = <br/><br/>= " + sh;
+                sh = "Li<sub>(" + a_sor0.toString() + ")</sub>(x)&lowast;Li<sub>(" + b_sor0.toString() + ")</sub>(x) = Li<sub>[(" + a_sor0.toString() + ")ˇ<span style='font-size:1.5em;'>&#x29E2;</span>(" + b_sor0.toString() + ")ˇ]^</sub> (x) = Li<sub>[(" + a_sor.toString() + ")<span style='font-size:1.5em;'>&#x29E2;</span>(" + b_sor.toString() + ")]^</sub> (x) = <br/><br/>= " + sh;
                 var db = sh.match(/ \+ /g).length;
                 sh = sh.slice(0, -3)
                 sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b> (gyorsítás: &#10761;" + javitas + ") futás. " + sumab + "-nak(nek) összesen <b>" + binomial(sumab + nnn - 1, nnn - 1) + "</b> darab " + nnn + " hosszú nem-negatív kompozíciója van. Az összegben ezekből <b>" + db + "</b> szerepel. Vagyis, nagyjából minden " + (binomial(sumab + nnn - 1, nnn - 1) / db).toFixed(3) + "-dik. </div>" + sh;
