@@ -3279,3 +3279,4 @@ function reg_shuff() {
     };
     elem.innerHTML = dtxt;
 };
+
