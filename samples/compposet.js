@@ -3146,8 +3146,99 @@ function shrleptet(b) {
     regshbontas();
 };
 
+function cegyutthshr(j) {
+    var sum = 0;
+    for (let y of it) {
+        sum += komb(nnn, y);
+    }
+    if (j % 2 == 0) {
+        if (sum == 0)
+            sum = "";
+        else if (sum == 1) {
+            sum = "(" + c_sor.map(y => y + 1).toString() + ") + ";
+        } else
+            sum += "&lowast;(" + c_sor.map(y => y + 1).toString() + ") + ";
+    } else {
+        if (sum == 0)
+            sum = "";
+        else if (sum == 1) {
+            sum = "(" + c_sor.map(y => y + 1).toString() + ") − ";
+        } else
+            sum += "&lowast;(" + c_sor.map(y => y + 1).toString() + ") − ";
+    }
+    return sum;
+};
+
+function eshuffshr(j) {
+    const maxa = _.max(a_sor);
+    const maxb = _.max(b_sor);
+    const maxab = maxa + maxb + 1;
+    var cek = comp0(sumab, nnn);
+    cek = cek.filter(y => y.every(v => v < maxab));
+    var LL = "";
+
+    for (let c of cek) {
+        c_sor = c;
+        LL += cegyutthshr(j);
+    }
+    if (j % 2 == 1)
+        LL = " − " + LL;
+    return LL;
+};
+
+function shuff_shr(n) {
+    var shn = "";
+    for (var j = 0; j <= n; j++) {
+        var sh = "";
+        var meret = 0;;
+        var a_sor0 = Array(j).fill(1);
+        if (j < n)
+            var b_sor0 = _.concat(Array(n - j).fill(1), kiszed_sh("ad"));
+        else
+            var b_sor0 = kiszed_sh("ad");
+
+        a_sor = [...a_sor0.map(y => y - 1)];
+        b_sor = [...b_sor0.map(y => y - 1)];
+
+        if (a_sor == undefined || b_sor == undefined)
+            sh = "HIBA";
+        else if (a_sor.length == 0) {
+            sh = "( )<span style='font-size:1.5em;'>&#x29E2;</span>(" + b_sor.map(y => y + 1) + ") = (" + b_sor.map(y => y + 1) + ")";
+            sh = "<div class='meretshr'> <b style='padding:0 5px;'> j =" + j + "</b>: Az összeg <b>1</b> tagból áll.</div>" + sh;
+        } else {
+            sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+            kk = a_sor.length;
+            nnn = kk + b_sor.length;
+            meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+            if (meret < 150000000) {
+                it = Choose(nnn, kk);
+                sh = eshuffshr(j);
+                if (sh == "")
+                    sh = "Nem megfelelő bemenet"
+                else {
+                    var elojel = "";
+                    if (j % 2 == 1)
+                        elojel = "−";
+                    sh = "(-1)<sup>" + j + "</sup>&lowast;(" + a_sor0.toString() + ")<span style='font-size:1.5em;'>&#x29E2;</span><sub>&lowast;</sub>(" + b_sor0.toString() + ") = " + elojel + "[(" + a_sor0.toString() + ")ˇ<span style='font-size:1.5em;'>&#x29E2;</span>(" + b_sor0.toString() + ")ˇ]^ = " + elojel + "[(" + a_sor.toString() + ")<span style='font-size:1.5em;'>&#x29E2;</span>(" + b_sor.toString() + ")]^ =<br/>= " + sh;
+                    if (j % 2 == 0)
+                        var db = sh.match(/ \+ /g).length;
+                    else
+                        var db = sh.match(/ − /g).length - 1;
+                    sh = sh.slice(0, -3)
+                    sh = "<div class='meretshr'> <b style='padding:0 5px;'> j =" + j + "</b>: Az összeg <b>" + db + "</b> tagból áll.</div>" + sh;
+                }
+            } else {
+                sh = "<div class='meretshr'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+            }
+        };
+        shn = shn + sh;
+    };
+    return shn;
+};
+
 function reg_shuff() {
-    const reszl = document.getElementById('setshr').checked;
+    const osszevet = document.getElementById('setshr').checked;
+    const mivel = document.getElementById('shrvallaszto').checked;
     const elem = document.getElementById('shreg');
     var s = kiszed_gd('ad');
     const r = s.length;
@@ -3173,15 +3264,18 @@ function reg_shuff() {
     };
 
     dtxt = dtxt.replaceAll("=  +", "= ");
-    if (reszl) {
-        shrbindx = 0;
-        const k = _.last(comp0(n, r));
-        const tables = "<div style='border-top:1px solid #a2a2a2;margin:10px 0;padding-top:10px;'><label for='fbs'><b style='padding: 2px 7px;'>k</b> = </label><input class='inpvec' type='text' readonly='true' id='kd' value='" + k.toString() + "' name='kd' style='margin-right:10px;'><span class='lepteto' onclick='shrleptet(false);' style='display:inline-block;padding:5px 5px 5px 7px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25b6</span><span class='lepteto' onclick='shrleptet(true);' style='display:inline-block;padding:5px 7px 5px 5px;margin-left:10px;margin-right:10px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25c0</span><input id='lepeskijelzo' value='1' type='text' onchange='shrugrik(this,this.value);' style='width: 30px;border:none;font-size:18px;text-align:right;font-family:Times New Roman;background-color: inherit;border-bottom: 1px solid #828282;margin-left:5px;' />/<span id='lepesall' style='display:inline-block;min-width:35px;font-size:18px;'>" + allcomp0.length + "</span></div><div id='shrtables'></div>"
-        dtxt = dtxt + tables;
-        elem.innerHTML = dtxt;
-        regshbontas();
-        return;
+    if (osszevet) {
+        if (!mivel) {
+            shrbindx = 0;
+            const k = _.first(comp0(n, r));
+            const tables = "<div style='border-top:1px solid #a2a2a2;margin:10px 0;padding-top:10px;'><label for='fbs'><b style='padding: 2px 7px;'>k</b> = </label><input class='inpvec' type='text' readonly='true' id='kd' value='" + k.toString() + "' name='kd' style='margin-right:10px;'><span class='lepteto' onclick='shrleptet(false);' style='display:inline-block;padding:5px 5px 5px 7px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25b6</span><span class='lepteto' onclick='shrleptet(true);' style='display:inline-block;padding:5px 7px 5px 5px;margin-left:10px;margin-right:10px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25c0</span><input id='lepeskijelzo' value='1' type='text' onchange='shrugrik(this,this.value);' style='width: 30px;border:none;font-size:18px;text-align:right;font-family:Times New Roman;background-color: inherit;border-bottom: 1px solid #828282;margin-left:5px;' />/<span id='lepesall' style='display:inline-block;min-width:35px;font-size:18px;'>" + allcomp0.length + "</span></div><div id='shrtables'></div>"
+            dtxt = dtxt + tables;
+            elem.innerHTML = dtxt;
+            regshbontas();
+            return;
+        } else {
+            dtxt = dtxt + "<hr/>" + shuff_shr(n);
+        }
     };
     elem.innerHTML = dtxt;
 };
-
