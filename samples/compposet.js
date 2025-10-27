@@ -2612,9 +2612,9 @@ function teglaTrim() {
         return tt[0] < ls * 1 && tt[1] == lo * 1 && !$(y).hasClass('hlLn');
     }).map(z => $(z).addClass('hlLi'));
 
-    $("#derivTable span.deractive").removeClass('deractive');
+    $("#rfbTable span.deractive").removeClass('deractive');
     if (d.length > 0)
-        $("#derivTable span[der-data=" + d.toString().replaceAll(',', "-") + "]").addClass('deractive');
+        $("#rfbTable span[der-data=" + d.toString().replaceAll(',', "-") + "]").addClass('deractive');
     if (deriv_fix)
         make_Deriv();
 };
@@ -2623,9 +2623,9 @@ function derivSor(s, n) {
     const ss = _.dropRight(s, 1);
     const de = expDeriv(ss, n).reverse();
     const fakt = factorial(n);
-    const el = $('#derivTable tr.parent td #dcimke');
-    const elem = $('#derivTable tr.child td p');
-    el.html("&#8706;<sup>p - j</sup>(<b>a</b>*) = <span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td class='licolor'>" + fakt + "</td></tr></table></span>" + " (" + ss.toString() + ")<sup class='licolor'>(" + n + ")</sup> = ...")
+    const el = $('#rfbTable tr.parent td #dcimke');
+    const elem = $('#rfbTable tr.child td p');
+    el.html("<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td>(p - k)!</td></tr></table></span> &#8706;<sup>p - k</sup>(<b>a</b>*) = <span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td class='licolor'>" + fakt + "</td></tr></table></span>" + " (" + ss.toString() + ")<sup class='licolor'>(" + n + ")</sup> = ...")
     var dtxt = '=';
     for (let v of de) {
         var c = v[0] / fakt;
@@ -2646,10 +2646,12 @@ function fbcdat(el, s, o) {
     const E = $("#rfbT .tgomb.hl");
     const DE = E.attr("rfb-data");
     const de = $(el).attr("rfb-data");
+    const m = de.split("-")[1] * 1;
     if ($('#rfbT .tgomb.d-path').length > 0)
         $('#rfbT .tgomb.d-path').removeClass('d-path');
     if (DE == de) {
-        $(el).toggleClass('hlmove');
+        if (m != 1)
+            $(el).toggleClass('hlmove');
         if (deriv_fix)
             make_Deriv();
         return;
@@ -2676,7 +2678,6 @@ function fbcdat(el, s, o) {
         $('#rfbT .tgomb.hlLi').removeClass('hlLi');
         const ce = conjugate(e);
         const oaz = _.isEqual(_.dropRight(ce), _.dropRight(rfb_last["v"])) && rfb_last["s"] > s && !E.hasClass('hlmove');
-        const m = de.split("-")[1] * 1;
         const ssv = conjugate(c).slice(0, m);
         const ss = _.sum(ssv) - ssv.length + 1;
         const ssve = ssv.slice(0, m - 1);
@@ -2776,9 +2777,9 @@ function fbcdat(el, s, o) {
         for (var t = 0; t < ce.length - 1; t++)
             $('#rfbT .tsorszam-fix:nth(' + (t + 1) + ')').css("visibility", "visible").html(rfb_last["v"][t]);
         $('#rfbT .tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").addClass('ln').html($('#rfbT .tgomb.hlLn').length);
-        //$('#rfbT .tsorszam-s:nth(' + (t + 2) + ')').css("visibility", "visible").html(" = j");
+        $('#rfbT .tsorszam-s:nth(' + (t + 2) + ')').css("visibility", "visible").html(" = k");
         $('#rfbT .tsorszam-fix:nth(' + (t + 1) + ')').css("visibility", "visible").addClass('Li').html(rfb_last["Li"]);
-        //$('#rfbT .tsorszam-fix:nth(' + (t + 2) + ')').css("visibility", "visible").html(" = p - j");
+        $('#rfbT .tsorszam-fix:nth(' + (t + 2) + ')').css("visibility", "visible").html(" = p - k");
         if (ce.length == 1) {
             $('#rfbT .tsorszam-s:nth(0)').css("visibility", "visible");
             $('#rfbT .tsorszam-fix:nth(0)').css("visibility", "visible");
