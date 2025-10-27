@@ -2406,7 +2406,6 @@ function int1nm(nv, mv) {
         out += " + " + szorzo + "&nbsp&zeta;(" + ot + ")";
     }
     out = out.slice(2);
-    //return [sumn, mv1, knv, nmc, out];
     const elem = document.getElementById("outfb");
     elem.innerHTML = out;
 };
@@ -2579,10 +2578,10 @@ function teglaTrim() {
     for (var t = 0; t < o; t++)
         $('#rfbT .tsorszam-s:nth(' + (t + 1) + ')').html(d[t]);
     if (o > 0)
-        Btext += "<span style='display:inline-block;position: relative;top: -30%;'> = " + "<span class='binomcolor'>" + B + "</span>" + "</span>";
+        Btext += "<span style='display:inline-block;position: relative;top: -30%;'> = " + "<span class='binomcolor'>" + B + "</span></span>";
     else {
-        Btext = drawBinomial(-1, -1) + "<span style='display:inline-block;position: relative;top: -30%;'> = " + B + "</span>";
-        B = 1;
+        B = binomial(-1 + rfb_last.Li, -1)
+        Btext = drawBinomial(-1 + rfb_last.Li, -1) + "<span style='display:inline-block;position: relative;top: -30%;'> = " + "<span class='binomcolor'>" + B + "</span></span>";
     };
 
     const lo = rfb_last.o;
@@ -2600,7 +2599,10 @@ function teglaTrim() {
     keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
     $('#rfbT .cintkeplet').html('').removeClass('cintkeplet');
     $("#rfbT #ebbe-" + ls).html(keplet).addClass('cintkeplet');
-    const av = conjugate(_.dropRight(rfb_last.v, 1));
+    if (rfb_last.v.length > 1)
+        var av = conjugate(_.dropRight(rfb_last.v, 1));
+    else
+        var av = [];
     var bont = "<b>a</b> &odot; (1)<sup><i>p</i></sup> &bullet; <b>c</b> = (" + av.toString() + ")&odot;(" + Array(lLi + p).fill(1).toString() + ")&bullet;(" + rfb_last["C"] + ")";
     bont = bont.replaceAll("(( ))", "( )").replaceAll("()", "( )")
     $("#rfbT #ebbe-" + (ls + 1)).html(bont).addClass('cintkeplet');
@@ -2610,10 +2612,9 @@ function teglaTrim() {
         return tt[0] < ls * 1 && tt[1] == lo * 1 && !$(y).hasClass('hlLn');
     }).map(z => $(z).addClass('hlLi'));
 
-    //if ($("#derivTable span.deractive").length > 0) {
     $("#derivTable span.deractive").removeClass('deractive');
-    $("#derivTable span[der-data=" + d.toString().replaceAll(',', "-") + "]").addClass('deractive');
-    // }
+    if (d.length > 0)
+        $("#derivTable span[der-data=" + d.toString().replaceAll(',', "-") + "]").addClass('deractive');
     if (deriv_fix)
         make_Deriv();
 };
@@ -2695,8 +2696,9 @@ function fbcdat(el, s, o) {
             $('#rfbT .tsorszam-e').css("visibility", "hidden");
             $('#rfbT .tsorszam-e.corr').html($('#rfbT .tsorszam-e.corr').attr('data-n'));
             $('#rfbT .tsorszam-e.corr').removeClass('corr');
-            for (var t = s - 2; t < r + Math.floor(s / (r + 1)); t++)
-                $('#rfbT .tsorszam-e:nth(' + t + ')').css("visibility", "visible");
+            for (var t = s - 2; t < r + Math.floor(s / (r + 1)); t++) {
+                $('#rfbT .tsorszam-e:nth(' + t + ')').css("visibility", "visible").html(h[t - s + 1]);
+            }
             $('#rfbT .tsorszam-e:nth(' + (s - 2) + ')').html("p = " + pje).addClass("corr");
             $('#rfbT .tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
 
@@ -2765,7 +2767,6 @@ function fbcdat(el, s, o) {
             const pp = rfbtegla[1][0];
             for (var q = 1; q < m; q++)
                 $('#rfbT .tgomb.no[rfb-data=' + pp + '-' + q + ']').removeClass('ye').removeClass('sel').removeClass('move').html('&#x25CB;');
-            // if ($('#rfbT .tgomb.move').length == 0)
             $('#rfbT .tgomb.sel:nth(0)').addClass('move');
             rfbtegla[1] = _.drop(rfbtegla[1]);
             rfb_last["Li"] = rfb_last["Li"] - 1;
@@ -3279,4 +3280,3 @@ function reg_shuff() {
     };
     elem.innerHTML = dtxt;
 };
-
