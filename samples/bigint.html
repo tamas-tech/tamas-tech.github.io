@@ -33,6 +33,14 @@
             editor: 'textarea',
             hide: ["editor", "evalButton", "permalink"],
         });
+         MathJax.Hub.Config({
+            tex2jax: {
+                preview: "none",
+            },
+            menusettings: {
+                zoom: "Double-Click",
+            }
+        });
     </script>
 </head>
 <body style="overflow:scroll;">
@@ -349,3 +357,4 @@
     </script>
 </body>
 </html>
+
