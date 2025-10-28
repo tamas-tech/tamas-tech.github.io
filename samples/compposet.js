@@ -2687,7 +2687,7 @@ function fbcdat(el, s, o) {
             rfb_last["v"] = [...ce];
             rfb_last["s"] = s;
             rfb_last["C"] = h;
-            if (Lifirst)
+            if (Lifirst && m!=1)
                 rfb_last["Li"] = s - sse;
             else
                 rfb_last["Li"] = 0;
@@ -2720,7 +2720,7 @@ function fbcdat(el, s, o) {
             $('#rfbT .tgomb.sel').removeClass('sel').html('&#x25CB;');
 
             rfbtegla[0] = m - 1;
-            if (Lifirst) {
+            if (Lifirst && m!=1) {
                 var d = 0;
                 if ((sse == r && _.last(c) > 1) || (ss == r && _.last(c) == 1))
                     d++;
@@ -3281,3 +3281,4 @@ function reg_shuff() {
     };
     elem.innerHTML = dtxt;
 };
+
