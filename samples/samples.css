@@ -1503,10 +1503,10 @@ div#kepek {
     padding: 2px 5px 4px 5px !important;
 }
 
-#derivTable span.deractive {
-    background-color: #ffd7c8;
-    outline: 3px solid red;
-    box-shadow: 0px 2px 5px 5px #ffa37f;
+#rfbTable span.deractive {
+    background-color: #fff9c8;
+    outline: 3px solid #cca33c;
+    box-shadow: 0px 2px 5px 5px #ffe39c;
 }
 
 #rfbT #show_deriv {
@@ -1567,10 +1567,10 @@ table.shregtbl tr td:hover {
     outline: 1px solid #ff6c6c;
 }
 
-#rfbTable span.deractive {
-    background-color: #fff9c8;
-    outline: 3px solid #cca33c;
-    box-shadow: 0px 2px 5px 5px #ffe39c;
+#shreg span.deractive {
+    background-color: #ffd7c8;
+    outline: 3px solid red;
+    box-shadow: 0px 2px 5px 5px #ffa37f;
 }
 
 div.meretshr {
@@ -1581,6 +1581,7 @@ div.meretshr {
     margin-bottom: 5px;
     background-color: #e5eaea;
 }
+
 
 
 
