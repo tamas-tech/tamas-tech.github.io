@@ -3238,6 +3238,10 @@ function shuff_shr(n) {
     return shn;
 };
 
+function shuffleReg(s) {
+    return genDual(s).map(y => [y[0], dualofv(y[1])]);
+};
+
 function reg_shuff() {
     const osszevet = document.getElementById('setshr').checked;
     const mivel = document.getElementById('shrvallaszto').checked;
@@ -3371,46 +3375,23 @@ function stuffle(a, b) {
     return s;
 };
 
-function cegyutthr(szur) {
+function cegyutthr() {
     var sum = 0;
     for (let y of it) {
         sum += komb(nnn, y);
     }
     const cc = c_sor.map(y => y + 1);
-    const indx = cc.toString();
-
-    if (szur && itst.hasOwnProperty(indx)) {
-        var kul = sum - itst[indx];
-        if (kul >= 0) {
-            sum = kul;
-            delete itst[indx];
-        } else if (kul < 0) {
-            sum = 0;
-            itst[indx] = itst[indx] + kul;
-        }
-    };
-
-    if (szur) {
-        if (sum <= 0)
-            sum = "";
-        else if (sum == 1) {
-            sum = "zetamult(" + JSON.stringify(cc) + ")+";
-        } else {
-            sum += "*zetamult(" + JSON.stringify(cc) + ")+";
-        }
+    if (sum == 0)
+        sum = "";
+    else if (sum == 1) {
+        sum = "(" + cc.toString() + ") + ";
     } else {
-        if (sum == 0)
-            sum = "";
-        else if (sum == 1) {
-            sum = "(" + cc.toString() + ") + ";
-        } else {
-            sum += "&lowast;(" + cc.toString() + ") + ";
-        }
-    };
+        sum += "&lowast;(" + cc.toString() + ") + ";
+    }
     return sum;
 };
 
-function eshuffr(szur) {
+function eshuffr() {
     const maxa = _.max(a_sor);
     const maxb = _.max(b_sor);
     const maxab = maxa + maxb + 1;
@@ -3420,7 +3401,7 @@ function eshuffr(szur) {
 
     for (let c of cek) {
         c_sor = c;
-        LL += cegyutthr(szur);
+        LL += cegyutthr();
     }
     return LL;
 };
@@ -3453,7 +3434,7 @@ function rshuff() {
         meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
         if (meret < 150000000) {
             it = Choose(nnn, kk);
-            sh = eshuffr(false);
+            sh = eshuffr();
             if (sh == "")
                 sh = "Nem megfelelő bemenet"
             else {
@@ -3465,6 +3446,84 @@ function rshuff() {
         }
     };
     elem.innerHTML = sh;
+};
+
+function cegyutths() {
+    var sum = 0;
+    for (let y of it) {
+        sum += komb(nnn, y);
+    }
+    const cc = c_sor.map(y => y + 1);
+    if (sum > 0) {
+        return [sum, cc];
+    }
+};
+
+function eshuffs() {
+    const maxa = _.max(a_sor);
+    const maxb = _.max(b_sor);
+    const maxab = maxa + maxb + 1;
+    var cek = comp0(sumab, nnn);
+    cek = cek.filter(y => y.every(v => v < maxab));
+    //var out = [];
+    var out = {};
+
+    for (let c of cek) {
+        c_sor = c;
+        var be = cegyutths();
+        if (be)
+            out[be[1].toString()] = be[0];
+    }
+    return out;
+};
+
+function objDiff(obja, objb) {
+    _.mergeWith(obja, objb, function(a, b) {
+        kul = (a || 0) * 1 - (b || 0) * 1;
+        return kul;
+    })
+    return _.omitBy(obja, y => y == 0);
+};
+
+function diffReg(a, b) {
+    var obja = shuffle(a, b);
+    var objb = _.countBy(stuffle(a, b));
+    var out = [];
+    _.forEach(objDiff(obja, objb), function(value, key) {
+        out.push(shuffleReg(JSON.parse("[" + key + "]")).map(y => [value * y[0], y[1]]));
+    });
+    out = _.groupBy(_.flatten(out), y => y[1]);
+    out = _.mapValues(out, y => _.sum(y.map(z => z[0])))
+    return out;
+};
+
+function shuffle(a, b) {
+    a_sor = [...a];
+    b_sor = [...b];
+    const a0 = a_sor;
+    const b0 = b_sor;
+    if (a_sor !== undefined && b_sor != undefined) {
+        a_sor = a_sor.map(y => y - 1);
+        b_sor = b_sor.map(y => y - 1);
+    }
+    var sh, meret;
+    if (a_sor.length + b_sor.length == 0)
+        sh = [];
+    else if (a_sor.length == 0)
+        sh = b0;
+    else if (b_sor.length == 0)
+        sh = a0;
+    else {
+        sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+        kk = a_sor.length;
+        nnn = kk + b_sor.length;
+        meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+        if (meret < 150000000) {
+            it = Choose(nnn, kk);
+            sh = eshuffs();
+        }
+    };
+    return sh;
 };
 
 function stuff() {
@@ -3483,9 +3542,15 @@ function stuff() {
     else if (b.length == 0)
         sh = "(" + a + ")&lowast;( ) = (" + a + ")";
     else {
-        const S = stuffle(a, b);
-        for (let s of S)
-            sh += "(" + s.toString() + ") + ";
+        const S = _.countBy(stuffle(a, b));
+        /*  for (let s of S)
+             sh += "(" + s.toString() + ") + "; */
+        _.forEach(S, function(value, key) {
+            if (value * 1 == 1)
+                sh += "(" + key + ") + ";
+            else if (value * 1 > 0)
+                sh += value + "&lowast;(" + key + ") +";
+        });
         if (sh == "")
             sh = "Nem megfelelő bemenet"
         else {
@@ -3504,7 +3569,7 @@ function rshtuff() {
         rshuff();
 };
 
-function dblshuff() {
+function dblshuffREGI() {
     clearDbl();
     var admissible = true;
     const elem1 = document.getElementById("figyshdbl");
@@ -3533,8 +3598,8 @@ function dblshuff() {
         meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
         if (meret < 150000000) {
             it = Choose(nnn, kk);
-            itstmit = [];
             const itst0 = stuffle(a0, b0);
+            console.log(itst0)
             itst = _.countBy(itst0);
             sh = eshuffr(true);
             sh = "gp(\"" + sh;
@@ -3547,6 +3612,7 @@ function dblshuff() {
                     sh += "+" + String(-1 * value) + "*zetamult([" + key + "])";
                 if (key.startsWith("1,")) {
                     admissible = false;
+                    console.log(shuffleReg(JSON.parse("[" + key + "]")))
                     return;
                 }
             });
@@ -3585,3 +3651,74 @@ function dblshuff() {
     }
 };
 
+function dblshuff() {
+    clearDbl();
+    const elem1 = document.getElementById("figyshdbl");
+    elem1.innerHTML = "";
+    const elem = document.getElementById("shoutdbl");
+    const t = document.getElementById("tdbl").value * 1000;
+    a_sor = kiszed_dbl("adbl", "figyshdbl");
+    b_sor = kiszed_dbl("bdbl", "figyshdbl");
+    var a0 = a_sor;
+    var b0 = b_sor;
+    if (a_sor !== undefined && b_sor != undefined) {
+        a_sor = a_sor.map(y => y - 1);
+        b_sor = b_sor.map(y => y - 1);
+    };
+    var sh = "",
+        txt = "",
+        meret;
+    if (a_sor == undefined || b_sor == undefined)
+        txt = "HIBA";
+    else if (a_sor.length == 0 || b_sor.length == 0)
+        txt = "&zeta;( )";
+    else {
+        sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+        kk = a_sor.length;
+        nnn = kk + b_sor.length;
+        meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+        if (meret < 150000000) {
+            const shst = diffReg(a0, b0)
+            sh = "gp(\"";
+            _.forEach(shst, function(value, key) {
+                if (value * 1 == 1)
+                    sh += "-zetamult([" + key + "])";
+                else if (value * 1 > 0)
+                    sh += String(-1 * value) + "*zetamult([" + key + "])";
+                else if (value * 1 < 0)
+                    sh += "+" + String(-1 * value) + "*zetamult([" + key + "])";
+            });
+            sh += "\")";
+        } else {
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+        }
+    };
+    if (a_sor != undefined && b_sor != undefined) {
+        sh = sh.replace("+-", "-");
+        txt += sh.slice(4, -2);
+        txt = txt.replaceAll("1*", "")
+        txt = txt.replaceAll("zetamult([", "&zeta;(");
+        txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&lowast;")
+        txt = "<span style='font-size:130%;font-weight: 700;margin-right:3px;'>&zeta;</span><span class='paren'>[</span>reg<sub>&#x29E2;</sub><span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>(</span>(" + a0.toString() + ") <span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span> (" + b0.toString() + ")" + " − (" + a0.toString() + ") <span style='font-size:1.3em;'>&lowast;</span> (" + b0.toString() + ")<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>)</span><span class='paren'>]</span> = " + txt;
+        txt = txt.replace("=  +", "=")
+    }
+
+    elem.innerHTML = txt;
+    if (a_sor != undefined && b_sor != undefined && a_sor.length != 0 && b_sor.length != 0) {
+        $('#mycell1 .sagecell_editor textarea.sagecell_commands').val(sh);
+        $('#mycell1 .sagecell_input button.sagecell_evalButton').click();
+        $('div.sagecell_sessionOutput').css('font-size', '22px');
+        var ra = setInterval(() => {
+            valasz = $('#ideout1 .sagecell_sessionOutput pre').text();
+            if (valasz != "") {
+                clearInterval(ra);
+                clearInterval(to);
+                elem.innerHTML = elem.innerHTML + " = <span style='color:red;font-weight:700;'>" + valasz + "</span>";
+            }
+        }, 50);
+        var to = setTimeout(() => {
+            clearInterval(ra);
+            elem.innerHTML = elem.innerHTML + " &rightarrow; <span style='color:red;font-weight:700;'>A válasz " + t / 1000 + " sec alatt nem érkezett meg.</span>";
+        }, t)
+    }
+};
