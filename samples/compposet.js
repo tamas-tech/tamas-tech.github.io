@@ -8,6 +8,7 @@ var rfbtegla = [
     0, []
 ];
 deriv_fix = false;
+var allcompReg = [];
 
 function invPv(v) {
     var c = [],
@@ -3074,7 +3075,7 @@ function shrkn(e) {
 
 function regshbontas() {
     var a = kiszed_gd('ad');
-    var k = document.getElementById('kd').value;
+    var k = document.querySelector('#kd').value;
     if (!k.startsWith("[")) {
         k = "[" + k;
     }
@@ -3116,11 +3117,11 @@ function regshbontas() {
 var shrbindx = 0;
 
 function shrugrik(e, indx) {
-    const be = document.getElementById('kd');
-    const nn = allcomp0.length;
+    const be = document.querySelector('#kd');
+    const nn = allcompReg.length;
     if (indx > 0 && indx < nn + 1) {
         shrbindx = indx - 1;
-        const v = allcomp0[shrbindx].toString();
+        const v = allcompReg[shrbindx].toString();
         be.value = v;
         regshbontas();
     } else {
@@ -3129,8 +3130,8 @@ function shrugrik(e, indx) {
 };
 
 function shrleptet(b) {
-    const be = document.getElementById('kd');
-    const L = allcomp0.length;
+    const be = document.querySelector('#kd');
+    const L = allcompReg.length;
     if (b) {
         if (shrbindx > 0)
             shrbindx--;
@@ -3142,7 +3143,7 @@ function shrleptet(b) {
         else
             shrbindx = 0;
     }
-    const v = allcomp0[shrbindx].toString();
+    const v = allcompReg[shrbindx].toString();
     be.value = v;
     document.getElementById('lepeskijelzo').value = shrbindx + 1;
     regshbontas();
@@ -3273,8 +3274,9 @@ function reg_shuff() {
     if (osszevet) {
         if (!mivel) {
             shrbindx = 0;
-            const k = _.first(comp0(n, r));
-            const tables = "<div style='border-top:1px solid #a2a2a2;margin:10px 0;padding-top:10px;'><label for='fbs'><b style='padding: 2px 7px;'>k</b> = </label><input class='inpvec' type='text' readonly='true' id='kd' value='" + k.toString() + "' name='kd' style='margin-right:10px;'><span class='lepteto' onclick='shrleptet(false);' style='display:inline-block;padding:5px 5px 5px 7px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25b6</span><span class='lepteto' onclick='shrleptet(true);' style='display:inline-block;padding:5px 7px 5px 5px;margin-left:10px;margin-right:10px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25c0</span><input id='lepeskijelzo' value='1' type='text' onchange='shrugrik(this,this.value);' style='width: 30px;border:none;font-size:18px;text-align:right;font-family:Times New Roman;background-color: inherit;border-bottom: 1px solid #828282;margin-left:5px;' />/<span id='lepesall' style='display:inline-block;min-width:35px;font-size:18px;'>" + allcomp0.length + "</span></div><div id='shrtables'></div>"
+            var k = _.first(comp0(n, r));
+            allcompReg = [...allcomp0];
+            var tables = "<div style='border-top:1px solid #a2a2a2;margin:10px 0;padding-top:10px;'><label for='fbs'><b style='padding: 2px 7px;'>k</b> = </label><input class='inpvec' type='text' readonly='true' id='kd' value='" + k.toString() + "' name='kd' style='margin-right:10px;'><span class='lepteto' onclick='shrleptet(false);' style='display:inline-block;padding:5px 5px 5px 7px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25b6</span><span class='lepteto' onclick='shrleptet(true);' style='display:inline-block;padding:5px 7px 5px 5px;margin-left:10px;margin-right:10px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;'>&#x25c0</span><input id='lepeskijelzo' value='1' type='text' onchange='shrugrik(this,this.value);' style='width: 30px;border:none;font-size:18px;text-align:right;font-family:Times New Roman;background-color: inherit;border-bottom: 1px solid #828282;margin-left:5px;' />/<span id='lepesall' style='display:inline-block;min-width:35px;font-size:18px;'>" + allcompReg.length + "</span></div><div id='shrtables'></div>"
             dtxt = dtxt + tables;
             elem.innerHTML = dtxt;
             regshbontas();
