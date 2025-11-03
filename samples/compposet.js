@@ -3545,7 +3545,7 @@ function dblshuff() {
                     sh += String(-1 * value) + "*zetamult([" + key + "])";
                 else if (value < 0)
                     sh += "+" + String(-1 * value) + "*zetamult([" + key + "])";
-                if (key.startsWith("1")) {
+                if (key.startsWith("1,")) {
                     admissible = false;
                     return;
                 }
@@ -3584,3 +3584,4 @@ function dblshuff() {
         }, t)
     }
 };
+
