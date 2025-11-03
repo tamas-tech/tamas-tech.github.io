@@ -2687,7 +2687,7 @@ function fbcdat(el, s, o) {
             rfb_last["v"] = [...ce];
             rfb_last["s"] = s;
             rfb_last["C"] = h;
-            if (Lifirst && m!=1)
+            if (Lifirst && m != 1)
                 rfb_last["Li"] = s - sse;
             else
                 rfb_last["Li"] = 0;
@@ -2720,7 +2720,7 @@ function fbcdat(el, s, o) {
             $('#rfbT .tgomb.sel').removeClass('sel').html('&#x25CB;');
 
             rfbtegla[0] = m - 1;
-            if (Lifirst && m!=1) {
+            if (Lifirst && m != 1) {
                 var d = 0;
                 if ((sse == r && _.last(c) > 1) || (ss == r && _.last(c) == 1))
                     d++;
@@ -3282,3 +3282,305 @@ function reg_shuff() {
     elem.innerHTML = dtxt;
 };
 
+// double shuffle relation 
+
+function kiszed_dbl(id, figy) {
+    var av = document.getElementById(id).value;
+    const elem = document.getElementById(id);
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figysh");
+        elem.innerHTML = "";
+        return;
+    };
+
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (av.some(v => v < 1)) {
+            setfigy("Az <b>a</b>, illetve <b>b</b>  indexvektor csak pozitív elemeket tartalmazhat! " + '<span class="outhiba"><b>index</b> = (' + av + ')</span>', figy);
+            elem.innerHTML = "";
+            return;
+        };
+        if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy('Egyik indexvektor sem tartalmazhat ∞-t! ' + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', figy);
+            elem.innerHTML = "";
+            return;
+        }
+        if (id == "bvg" && indx > -1)
+            av = oo2Inf(av);
+
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', figy);
+        elem.innerHTML = "";
+        return;
+    };
+    return av;
+};
+
+function okshSet(e) {
+    const st = e.checked;
+    const btn = document.getElementById("okshst");
+    if (st)
+        btn.innerHTML = "<span style='margin:0 5px;'>&lowast;</span>";
+    else
+        btn.innerHTML = '<span style="margin:0 3px;font-size:160%;line-height:0.4;text-decoration:underline;"><span style="margin:0 3px;">&#x29E2;</span></span>';
+};
+
+function clearDbl() {
+    const elem = document.querySelector("#shoutdbl");
+    elem.innerHTML = "";
+    if ($('#ideout1 .sagecell_sessionOutput pre') != undefined)
+        $('#ideout1 .sagecell_sessionOutput pre').text("")
+};
+
+function setOutputFont9(v) {
+    var elem = document.getElementById("shoutr");
+    elem.style.fontSize = v + 'px';
+};
+
+function setOutputFont10(v) {
+    var elem = document.getElementById("shoutdbl");
+    elem.style.fontSize = v + 'px';
+};
+
+function stuffle(a, b) {
+    var s = [];
+    if (a.length == 0)
+        s = [b];
+    else if (b.length == 0)
+        s = [a];
+    else {
+        for (let y of stuffle(a.slice(1), b))
+            s.push(_.concat([a[0]], y));
+        for (let x of stuffle(a, b.slice(1)))
+            s.push(_.concat([b[0]], x));
+        for (let u of stuffle(a.slice(1), b.slice(1)))
+            s.push(_.concat([a[0] + b[0]], u));
+    };
+
+    return s;
+};
+
+function cegyutthr(szur) {
+    var sum = 0;
+    for (let y of it) {
+        sum += komb(nnn, y);
+    }
+    const cc = c_sor.map(y => y + 1);
+    const indx = cc.toString();
+
+    if (szur && itst.hasOwnProperty(indx)) {
+        var kul = sum - itst[indx];
+        if (kul >= 0) {
+            sum = kul;
+            delete itst[indx];
+        } else if (kul < 0) {
+            sum = 0;
+            itst[indx] = itst[indx] + kul;
+        }
+    };
+
+    if (szur) {
+        if (sum <= 0)
+            sum = "";
+        else if (sum == 1) {
+            sum = "zetamult(" + JSON.stringify(cc) + ")+";
+        } else {
+            sum += "*zetamult(" + JSON.stringify(cc) + ")+";
+        }
+    } else {
+        if (sum == 0)
+            sum = "";
+        else if (sum == 1) {
+            sum = "(" + cc.toString() + ") + ";
+        } else {
+            sum += "&lowast;(" + cc.toString() + ") + ";
+        }
+    };
+    return sum;
+};
+
+function eshuffr(szur) {
+    const maxa = _.max(a_sor);
+    const maxb = _.max(b_sor);
+    const maxab = maxa + maxb + 1;
+    var cek = comp0(sumab, nnn);
+    cek = cek.filter(y => y.every(v => v < maxab));
+    var LL = "";
+
+    for (let c of cek) {
+        c_sor = c;
+        LL += cegyutthr(szur);
+    }
+    return LL;
+};
+
+function rshuff() {
+    const elem1 = document.getElementById("figyshst");
+    elem1.innerHTML = "";
+    const elem = document.getElementById("shoutr");
+    a_sor = kiszed_dbl("avli", "figyshst");
+    b_sor = kiszed_dbl("bvli", "figyshst");
+    const a0 = a_sor;
+    const b0 = b_sor;
+    if (a_sor !== undefined && b_sor != undefined) {
+        a_sor = a_sor.map(y => y - 1);
+        b_sor = b_sor.map(y => y - 1);
+    }
+    var sh, meret;
+    if (a_sor == undefined || b_sor == undefined)
+        sh = "HIBA";
+    else if (a_sor.length + b_sor.length == 0)
+        sh = "( )&#x29E2;( ) = ( )";
+    else if (a_sor.length == 0)
+        sh = "( )&#x29E2;(" + b0 + ") = (" + b0 + " )";
+    else if (b_sor.length == 0)
+        sh = "(" + a0 + ")&#x29E2;( ) = (" + a0 + ")";
+    else {
+        sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+        kk = a_sor.length;
+        nnn = kk + b_sor.length;
+        meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+        if (meret < 150000000) {
+            it = Choose(nnn, kk);
+            sh = eshuffr(false);
+            if (sh == "")
+                sh = "Nem megfelelő bemenet"
+            else {
+                sh = "(" + a0.toString() + ") <span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span> (" + b0.toString() + ") = " + sh;
+                sh = sh.slice(0, -3)
+            }
+        } else {
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+        }
+    };
+    elem.innerHTML = sh;
+};
+
+function stuff() {
+    const elem1 = document.getElementById("figyshst");
+    elem1.innerHTML = "";
+    const elem = document.getElementById("shoutr");
+    var a = kiszed_dbl("avli", "figyshst");
+    var b = kiszed_dbl("bvli", "figyshst");
+    var sh = "";
+    if (a == undefined || b == undefined)
+        sh = "HIBA";
+    else if (a.length + b.length == 0)
+        sh = "( )&lowast;( ) = ( )";
+    else if (a.length == 0)
+        sh = "( )&lowast;(" + b + ") = (" + b + " )";
+    else if (b.length == 0)
+        sh = "(" + a + ")&lowast;( ) = (" + a + ")";
+    else {
+        const S = stuffle(a, b);
+        for (let s of S)
+            sh += "(" + s.toString() + ") + ";
+        if (sh == "")
+            sh = "Nem megfelelő bemenet"
+        else {
+            sh = "(" + a.toString() + ") <span style='font-size:1.5em;'>&lowast;</span> (" + b.toString() + ") = " + sh;
+            sh = sh.slice(0, -3)
+        }
+    };
+    elem.innerHTML = sh;
+};
+
+function rshtuff() {
+    const st = document.getElementById('shst').checked;
+    if (st)
+        stuff();
+    else
+        rshuff();
+};
+
+function dblshuff() {
+    clearDbl();
+    var admissible = true;
+    const elem1 = document.getElementById("figyshdbl");
+    elem1.innerHTML = "";
+    const elem = document.getElementById("shoutdbl");
+    const t = document.getElementById("tdbl").value * 1000;
+    a_sor = kiszed_dbl("adbl", "figyshdbl");
+    b_sor = kiszed_dbl("bdbl", "figyshdbl");
+    var a0 = a_sor;
+    var b0 = b_sor;
+    if (a_sor !== undefined && b_sor != undefined) {
+        a_sor = a_sor.map(y => y - 1);
+        b_sor = b_sor.map(y => y - 1);
+    };
+    var sh = "",
+        txt = "",
+        meret;
+    if (a_sor == undefined || b_sor == undefined)
+        txt = "HIBA";
+    else if (a_sor.length == 0 || b_sor.length == 0)
+        txt = "&zeta;( )";
+    else {
+        sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+        kk = a_sor.length;
+        nnn = kk + b_sor.length;
+        meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+        if (meret < 150000000) {
+            it = Choose(nnn, kk);
+            itstmit = [];
+            const itst0 = stuffle(a0, b0);
+            itst = _.countBy(itst0);
+            sh = eshuffr(true);
+            sh = "gp(\"" + sh;
+            _.forEach(itst, function(value, key) {
+                if (value == 1)
+                    sh += "-zetamult([" + key + "])";
+                else if (value > 0)
+                    sh += String(-1 * value) + "*zetamult([" + key + "])";
+                else if (value < 0)
+                    sh += "+" + String(-1 * value) + "*zetamult([" + key + "])";
+                if (key.startsWith("1")) {
+                    admissible = false;
+                    return;
+                }
+            });
+            sh += "\")";
+        } else {
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+        }
+    };
+    if (a_sor != undefined && b_sor != undefined) {
+        sh = sh.replace("+-", "-")
+        txt += sh.slice(4, -2);
+        txt = txt.replaceAll("1;lowast;", "")
+        txt = txt.replaceAll("zetamult([", "&zeta;(");
+        txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&lowast;")
+        txt = "<span style='font-size:140%;font-weight: 700;margin-right:3px;'>&zeta;</span><span class='paren'>[</span>(" + a0.toString() + ") <span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span> (" + b0.toString() + ")" + " − (" + a0.toString() + ") <span style='font-size:1.5em;'>&lowast;</span> (" + b0.toString() + ")<span class='paren'>]</span> = " + txt;
+    }
+    if (!admissible)
+        txt += "<span style='color:red;font-weight:700;'> &rightarrow; A formula tartalmaz non-admissible indexeket!</span>";
+    elem.innerHTML = txt;
+    if (a_sor != undefined && b_sor != undefined && a_sor.length != 0 && b_sor.length != 0 && admissible) {
+        $('#mycell1 .sagecell_editor textarea.sagecell_commands').val(sh);
+        $('#mycell1 .sagecell_input button.sagecell_evalButton').click();
+        $('div.sagecell_sessionOutput').css('font-size', '22px');
+        var ra = setInterval(() => {
+            valasz = $('#ideout1 .sagecell_sessionOutput pre').text();
+            if (valasz != "") {
+                clearInterval(ra);
+                clearInterval(to);
+                elem.innerHTML = elem.innerHTML + " = <span style='color:red;font-weight:700;'>" + valasz + "</span>";
+            }
+        }, 50);
+        var to = setTimeout(() => {
+            clearInterval(ra);
+            elem.innerHTML = elem.innerHTML + " &rightarrow; <span style='color:red;font-weight:700;'>A válasz " + t / 1000 + " sec alatt nem érkezett meg.</span>";
+        }, t)
+    }
+};
