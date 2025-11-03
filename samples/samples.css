@@ -1402,7 +1402,7 @@ div#kepek {
     overflow: auto;
 }
 
-#shoutr span.paren,
+#shoutdbl span.paren,
 #outnm span.paren,
 #outfb span.paren {
     transform: scale(1.2, 1.5);
@@ -1582,6 +1582,7 @@ div.meretshr {
     margin-bottom: 5px;
     background-color: #e5eaea;
 }
+
 
 
 
