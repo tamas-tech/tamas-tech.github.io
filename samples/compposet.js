@@ -3095,10 +3095,12 @@ function regshbontas() {
     var out = "";
     for (var i = 0; i < n; i++) {
         out += "<table class='shregtbl'><tr><th>A(" + (a[i] + k[i]) + "," + (k[i] + 1) + ")</th><th>&nu;( )</th></tr>"
-        var c = comp(a[i] + k[i], k[i] + 1).filter(y => y[0] > 1);
+        var c = comp(a[i] + k[i], k[i] + 1).filter(y => y[0] > 1 || y.every(v => v == 1));
         for (var j = 0; j < c.length; j++) {
             var w = c[j];
             var nu = _.takeRightWhile(w, y => y == 1).length + 1;
+             if (w.every(v => v == 1))
+                nu = 1;
             var cls = "";
             var clsnu = "";
             if (j == 0) {
@@ -3724,3 +3726,4 @@ function dblshuff() {
         }, t)
     }
 };
+
