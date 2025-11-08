@@ -1413,7 +1413,6 @@ div#kepek {
 }
 
 #outfb span.cc {
-    /*display: inline-block;*/
     color: #e6e4d1;
     background-color: #5e5e5e;
     transform-origin: center;
@@ -1423,6 +1422,7 @@ div#kepek {
     outline-offset: 1px;
     border-radius: 5px;
     margin-right: 4px;
+    cursor: pointer;
 }
 
 #rfbT table tr td span.tgomb {
@@ -1611,6 +1611,7 @@ div.meretshr {
     margin-bottom: 5px;
     background-color: #e5eaea;
 }
+
 
 
 
