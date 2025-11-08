@@ -3122,6 +3122,14 @@ function id2tgl(id) {
     }
 };
 
+function invugras(elem) {
+    var indx = elem.getAttribute("kp-data");
+    indx = JSON.parse("[" + indx.replaceAll("-", ",") + "]");
+    const k = _.findIndex(allcompReg, y => _.isEqual(y, indx)) + 1;
+    console.log(allcompReg[k])
+    $("#lepeskijelzo").val(k).trigger("click)").trigger("change");
+}
+
 function regshbontas() {
     var a = kiszed_gd('ad');
     const A = a.length;
@@ -3160,7 +3168,7 @@ function regshbontas() {
         var szamlalo = 0;
         for (let k of allcomp0) {
             const color = COLORS[szamlalo];
-            keplet += "<span class='kpblokk' style='background-color:" + color + "25;outline-color:" + color + "' kp-data='" + k.toString().replaceAll(",", "-") + "'>"
+            keplet += "<span class='kpblokk' style='cursor:pointer;background-color:" + color + "25;outline-color:" + color + "' kp-data='" + k.toString().replaceAll(",", "-") + "' onclick='invugras(this)'>"
             for (var j = 0; j < A; j++) {
                 keplet += drawAngel(a[j] + "+<span style='color:" + color + ";font-weight700;text-decoration:underline;'>" + k[j] + "</span>", "1+<span style='color:" + color + ";font-weight700;text-decoration:underline;'>" + k[j] + "</span>") + " &bullet; ";
             };
@@ -3173,7 +3181,7 @@ function regshbontas() {
         szamlalo = 0;
         for (let kk of allcomp0) {
             const color = COLORS[szamlalo];
-            keplet += "<span class='kpblokk' style='background-color:" + color + "25;outline-color:" + color + "' kp-data='" + kk.toString().replaceAll(",", "-") + "'>"
+            keplet += "<span class='kpblokk' style='cursor:pointer;background-color:" + color + "25;outline-color:" + color + "' kp-data='" + kk.toString().replaceAll(",", "-") + "'  onclick='invugras(this)'>"
             for (var j = 0; j < A; j++) {
                 keplet += drawAngel(a[j] + kk[j], 1 + kk[j]) + " &bullet; ";
             };
@@ -3186,7 +3194,7 @@ function regshbontas() {
         szamlalo = 0;
         for (let k2 of allcomp0) {
             const color = COLORS[szamlalo];
-            keplet += "<span class='kpblokk ov' style='background-color:" + color + "25;outline-color:" + color + "' kp-data='" + k2.toString().replaceAll(",", "-") + "'>"
+            keplet += "<span class='kpblokk ov' style='cursor:pointer;background-color:" + color + "25;outline-color:" + color + "' kp-data='" + k2.toString().replaceAll(",", "-") + "'  onclick='invugras(this)'>"
             for (var j = 0; j < A; j++) {
                 keplet += "[" + htmlAdmissible(a[j] + k2[j], 1 + k2[j]) + "] &bullet; ";
             };
@@ -3199,7 +3207,7 @@ function regshbontas() {
         szamlalo = 0;
         for (let k3 of allcomp0) {
             const color = COLORS[szamlalo];
-            keplet += "<span class='kpblokk ov' style='background-color:" + color + "25;outline-color:" + color + "' kp-data='" + k3.toString().replaceAll(",", "-") + "'>"
+            keplet += "<span class='kpblokk ov' style='cursor:pointer;background-color:" + color + "25;outline-color:" + color + "' kp-data='" + k3.toString().replaceAll(",", "-") + "' onclick='invugras(this)'>"
             var L = [];
             for (var j = 0; j < A; j++) {
                 L.push(Admissible(a[j] + k3[j], 1 + k3[j]));
@@ -3312,6 +3320,7 @@ function regshbontas() {
 var shrbindx = 0;
 
 function shrugrik(e, indx) {
+    console.log(indx)
     const be = document.querySelector('#kd');
     const nn = allcompReg.length;
     if (indx > 0 && indx < nn + 1) {
