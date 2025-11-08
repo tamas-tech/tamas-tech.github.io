@@ -3155,7 +3155,7 @@ function regshbontas() {
             keplet += drawAngel(a[j] + "+k<sub>" + (j + 1) + "</sub>", "1+k<sub>" + (j + 1) + "</sub>") + " &bullet; ";
         }
         keplet = keplet.slice(0, -9);
-        keplet += "<span style='display:inline-block;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;' onclick='id2tgl(\"kpt1\");'>=<span style='margin:0 .5em;opacity:0.4;font-size: 80%'>" + drawAngel(a[1] + "+<span style='color:" + COLORS[0] + ";font-weight700;text-decoration:underline;'>" + k[1] + "</span>", "1+<span style='color:" + COLORS[0] + ";font-weight700;text-decoration:underline;'>" + allcomp0[0][1] + "</span>") + " &bullet;</span>...</span> <span style='display:" + dkpts[1] + ";' id='kpt1'>" + eloj;
+        keplet += "<span style='display:inline-block;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;' onclick='id2tgl(\"kpt1\");'>=<span style='margin:0 .5em;opacity:0.4;font-size: 80%'>" + drawAngel(a[0] + "+<span style='color:" + COLORS[0] + ";font-weight700;text-decoration:underline;'>" + k[0] + "</span>", "1+<span style='color:" + COLORS[0] + ";font-weight700;text-decoration:underline;'>" + allcomp0[0][0] + "</span>") + " &bullet;</span>...</span> <span style='display:" + dkpts[1] + ";' id='kpt1'>" + eloj;
         comp0(N, A)
         var szamlalo = 0;
         for (let k of allcomp0) {
@@ -3169,7 +3169,7 @@ function regshbontas() {
             keplet += "</span>" + kotj;
         };
         keplet = keplet.slice(0, -3);
-        keplet += "</span><span style='display:inline-block;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;' onclick='id2tgl(\"kpt2\");'>=<span style='margin:0 .5em;opacity:0.4;font-size: 80%'>" + drawAngel(a[1] + k[1], 1 + allcomp0[0][1] + "</span>") + " &bullet;</span>...</span> <span style='display:" + dkpts[2] + ";' id='kpt2'>" + eloj;
+        keplet += "</span><span style='display:inline-block;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;' onclick='id2tgl(\"kpt2\");'>=<span style='margin:0 .5em;opacity:0.4;font-size: 80%'>" + drawAngel(a[0] + k[0], 1 + allcomp0[0][0] + "</span>") + " &bullet;</span>...</span> <span style='display:" + dkpts[2] + ";' id='kpt2'>" + eloj;
         szamlalo = 0;
         for (let kk of allcomp0) {
             const color = COLORS[szamlalo];
@@ -3378,8 +3378,12 @@ function htmlAdmissible(n, k) {
     return out;
 };
 
-function mconc(m1, m2, ov) {
+function mconc(ov, m1, m2) {
     var out = [];
+    if (m2 == undefined)
+        m2 = [
+            [1, []]
+        ];
     for (let x of m1) {
         for (let y of m2) {
             out.push([x[0] * y[0], _.concat(x[1], y[1])])
@@ -3398,9 +3402,9 @@ function mconc(m1, m2, ov) {
 
 function mConc(M, ov) {
     const m = M.length;
-    var out = mconc(M[0], M[1], false);
+    var out = mconc(false, M[0], M[1]);
     for (i = 2; i < m; i++) {
-        out = mconc(out, M[i], false)
+        out = mconc(false, out, M[i])
     }
     if (ov) {
         var out1 = _.groupBy(out, y => y[1]);
