@@ -2209,11 +2209,6 @@ function kiszed_nm(id) {
     try {
         av = JSON.parse(av);
         var indx = av.indexOf(oo);
-        /*  if (av.some(v => v <= 0)) {
-             setfigy("Az <b>a</b> vektor nem tartalmazhat negatív elemet vagy 0-át! " + '<span class="outhiba"><b>a</b> = (' + av + ')</span>', "figyC");
-             idClear('#cout')
-             return "Hibás bemenet";
-         } else */
         if (indx > -1) {
             av = oo2strInf(av);
             setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
@@ -2245,15 +2240,33 @@ function Lifb(s) {
         out += ' + <span class="cc">C<sub>(' + nm[1].toString() + ')</sub></span><span class="paren">·{</span>' + hatas1(...nm[0]) + '<span class="paren">}</span>';
     };
     out.slice(3);
-    out = out.replace('()', '( )')
+    out = out.replace('()', '( )');
     return out;
 };
+
+function updSlick() {
+    $('#c-slick').slick('unslick').html("");
+    $('#c-slick').slick({
+        mobileFirst: true,
+        asNavFor: '#Li-slick',
+    });
+    $('#c-slick').slick('slickAdd', "<div>C</div>");
+
+    $('#Li-slick').slick('unslick').html("");
+    $('#Li-slick').slick({
+        mobileFirst: true,
+        adaptiveHeight: true,
+        asNavFor: '#c-slick',
+    });
+    $('#Li-slick').slick('slickAdd', "<div>ln<sup>p</sup>(x)&lowast;Li<sub><b>a</b></sub>(x)</div>");
+}
 
 function Lifbkibontva(s) {
     const rc = ribbon_comp(s);
     const rcl = rc.slice(0, -1);
     const ss = _.sum(s);
     const d = 1 - (ss % 2);
+    updSlick();
     var szamlalo = 0;
     var out = '';
     for (let nm of rcl) {
@@ -2264,13 +2277,27 @@ function Lifbkibontva(s) {
         var eloj = ' + ';
         if ((szamlalo + d) % 2 == 1)
             eloj = ' − ';
-        out += eloj + '<span class="cc">C<sub>(' + nm[1].toString() + ')</sub></span>·<span class="paren">{</span>' + hatas1(...nm[0]) + '<span class="paren">}</span>';
+        out += eloj + '<span class="cc" onclick="goToC(' + szamlalo + ')">C<sub>(' + nm[1].toString() + ')</sub></span>·<span class="paren">{</span>' + hatas1(...nm[0]) + '<span class="paren">}</span>';
+        $('#c-slick').slick('slickAdd', "<div>" + eloj + "C<sub>(" + nm[1].toString() + ")</sub></div>");
+        $('#Li-slick').slick('slickAdd', "<div>" + hatas1(...nm[0]) + "</div>");
     };
-    out += ' + <span class="cc">C<sub>(' + s.toString() + ')</sub></span>';
+    szamlalo++;
+    out += ' + <span class="cc" onclick="goToC(' + szamlalo + ')">C<sub>(' + s.toString() + ')</sub></span>';
     if (out.startsWith(' + '))
         out = out.slice(3);
-    out = out.replace('()', '( )')
+    out = out.replace('()', '( )');
+    $('#c-slick').slick('slickAdd', "<div>C<sub>(" + s.toString() + ")</sub></div>");
+    $('#Li-slick').slick('slickAdd', "<div>1</div>");
     return out;
+};
+
+function goToC(n) {
+    $('#c-slick').slick('slickGoTo', n);
+    const e = document.getElementById("c-slick")
+    e.scrollIntoView({
+        behavior: "smooth",
+        block: 'center'
+    });
 };
 
 function Lifbint(s) {
@@ -2278,6 +2305,7 @@ function Lifbint(s) {
     const rcl = rc.slice(0, -1);
     const ss = _.sum(s);
     const d = 1 - (ss % 2);
+    updSlick();
     var szamlalo = 0;
     var out = '';
     for (let nm of rcl) {
@@ -2287,13 +2315,17 @@ function Lifbint(s) {
             eloj = ' − ';
         var u = nm[0][0];
         var l = nm[0][1];
-        out += eloj + '<span style="display:inline-block;"><span style="font-weight:600;color:#d50000;">C<sub>(' + nm[1].toString() + ')</sub></span><span class="sqrt-prefix sdefint" style="transform: scaleY( 2.2) translateY(0.13em);font-weight:600;">∫</span><span style="display:inline-block;vertical-align: middle;text-align:center;font-size:90%;line-height:normal;"><table><tr><td>(' + u + ')</td></tr><tr><td>(' + l + ')</td></tr></table></span>[1]</span>';
-
+        out += eloj + '<span onclick="goToC(' + szamlalo + ')" style="display:inline-block;cursor:pointer;"><span style="font-weight:600;color:#d50000;">C<sub>(' + nm[1].toString() + ')</sub></span><span class="sqrt-prefix sdefint" style="transform: scaleY( 2.2) translateY(0.13em);font-weight:600;">∫</span><span style="display:inline-block;vertical-align: middle;text-align:center;font-size:90%;line-height:normal;"><table><tr><td>(' + u + ')</td></tr><tr><td>(' + l + ')</td></tr></table></span>[1]</span>';
+        $('#c-slick').slick('slickAdd', "<div>" + eloj + "C<sub>(" + nm[1].toString() + ")</sub></div>");
+        $('#Li-slick').slick('slickAdd', "<div>" + hatas1(...nm[0]) + "</div>");
     };
-    out += ' + <span style="font-weight:600;color:#d50000;">C<sub>(' + s.toString() + ')</sub></span>';
+    szamlalo++
+    out += ' + <span onclick="goToC(' + szamlalo + ')" style="font-weight:600;color:#d50000;cursor:pointer;">C<sub>(' + s.toString() + ')</sub></span>';
     if (out.startsWith(' + '))
         out = out.slice(3);
     out = out.replace('()', '( )')
+    $('#c-slick').slick('slickAdd', "<div>C<sub>(" + s.toString() + ")</sub></div>");
+    $('#Li-slick').slick('slickAdd', "<div>1</div>");
     return out;
 };
 
