@@ -1,0 +1,64 @@
+.styled_tabs {
+	display: block;
+	clear: both;
+	overflow: hidden;
+	display: block;
+}
+
+.styled_tabs .controls {
+	float: left;
+	margin: 5px 0 0;
+	border-bottom: 1px solid #c6c6c6;;
+	padding-left: 20px;
+	display: block;
+	width: 100%;
+	clear: both;
+}
+
+.styled_tabs .controls .control {
+	text-decoration: none;
+	background-color: #eaeaea;
+	display: inline-block;
+	float: left;
+	font-weight: bold;
+	color: #000000 !important;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-topleft: 5px;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	padding: 5px 10px;
+	margin-right: 5px;
+	border: 1px solid #c6c6c6;;
+	border-bottom: none;
+	font-size: 85%;
+	opacity:0.35;
+}
+
+.styled_tabs .controls .control.active {
+	border-bottom: 1px solid #ffffff;
+	margin-bottom: -1px !important;
+	background-color: #ffffff;
+	opacity:1;
+}
+
+.styled_tabs .targets {
+	float: left;
+	clear: none;
+	min-height: 40px;
+	height: fit-content;
+	display: block;
+	min-width: calc(100% - 12px);
+	border: 1px solid #c6c6c6;;
+	border-top: none;
+	/*overflow: hidden;*/
+	clear: both;
+	/*padding: 10px 10px 20px 10px;*/
+	padding: 5px 5px;
+	/*background-color: #bae8db*/
+}
+
+.styled_tabs .targets p {
+	margin:0;
+}
