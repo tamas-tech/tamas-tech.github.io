@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
+    <link href="../tools/tabs.css" rel="stylesheet" />
     <link rel="stylesheet" href="samples.css">
     <script src="multipolylog.js"></script>
       <script src="compposet.js"></script>
@@ -19,6 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js "></script>
+    <script src="../tools/tabbing-system-tabs/js/tabs.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script> 
@@ -39,49 +41,6 @@
             hide: ["editor", "evalButton", "permalink"],
         });
     </script>
-    <style>
-        .tabcontainer {
-            width: calc(100% - 52px);
-            padding: 0 25px;
-            padding-top: 4px;
-            background-color: #eee;
-            text-align: center;
-            border-radius: 6px
-        }
-        
-        .slick-prev {
-            left: -26px !important;
-            height: 28px !important;
-            width: 28px !important;
-            display: block;
-            top: 20px
-        }
-        
-        .slick-next {
-            right: -26px !important;
-            height: 28px !important;
-            width: 28px !important;
-            display: block;
-            top: 20px
-        }
-        
-        .slick-next::before,
-        .slick-prev::before {
-            color: #888888 !important;
-            font-size: 28px !important;
-        }
-        
-        .slick-slide {
-            padding: 5px;
-            background-color: #fffceb;
-            margin: 5px;
-            border: 1px solid #c4c4c4;
-            border-radius: 5px;
-            font-family: Cambria Math;
-            font-size: 120%;
-            line-height: 1.5;
-        }
-    </style>
 </head>
 <body>
     <div class="keret of odd" id="k1" style="padding-bottom:40px;margin-bottom:10px;">
@@ -369,8 +328,7 @@
         <p class="kijelzo" id="outnm" style="line-height: 1.5;font-family: Cambria math;"></p>
         <p id="figynm" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     </div>
-
-       <div class="keret of even" id="k8">
+    <div class="keret of even" id="k8">
         <b><big class="sorszam">8.</big></b>
         <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\text{Li}_{{\large \boldsymbol{s}}}(1-x) = {\LARGE \sum_{{\large \boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{c}\,=\,\boldsymbol{s}}}}\frac{(-1)^{\sum \boldsymbol{a}}}{p!}\,\zeta(\boldsymbol{c}){\Large \sum_{{\large k = p\cdot\delta_{|\boldsymbol{a}|,0}}}^{{\large
             p}}}(-1)^{k}\,\dbinom{p}{k}\ln^{k}(x)\text{Li}_{{\large \partial^{p-k}(\boldsymbol{a}^{*})}}(x)\]
@@ -386,17 +344,13 @@
         <label for="setoutputfont7">&#128474;</label>
         <input id="outfont-slider7" oninput="setOutputFont7(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfont7" />
         <p class="kijelzo" id="outfb" style="line-height: 1.5;font-family: Cambria math;"></p>
-        <p id="figyfb" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
-        <div class="tabcontainer">
-            <div id="c-slick">
-                <div>C</div>
-            </div>
-        </div>
         <div class="tabcontainer">
             <div id="Li-slick">
-                <div>Li<sub><b>a</b></sub>(x)</div>
+                <div>
+                    <h3 class='slickh3'>C<sub><b>k</b></sub></h3>Li<sub><b>a</b></sub>(x)</div>
             </div>
         </div>
+        <p id="figyfb" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     </div>
 
     <div class="keret of odd" id="k9" style="padding-bottom:10px;margin-bottom:10px;">
@@ -491,20 +445,17 @@
     </script>
     <script type="text/javascript ">
         $(document).ready(function() {
-            $('#c-slick').slick({
-                mobileFirst: true,
-                asNavFor: '#Li-slick',
-            });
-
             $('#Li-slick').slick({
                 mobileFirst: true,
                 adaptiveHeight: true,
-                asNavFor: '#c-slick',
+                speed: 500,
+                dots: true,
             });
         });
-     </script>
+    </script>
 </body>
 </html>
+
 
 
 
