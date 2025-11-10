@@ -2122,7 +2122,50 @@ function conjcomp(v) {
         return conjugate(v);
 }
 
-function hatas1(nv, mv) {
+function kiszed_nm(id) {
+    var av = document.getElementById(id).value;
+    if (pat.test(av)) {
+        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    if (!av.startsWith("[")) {
+        av = "[" + av;
+    }
+    if (!av.endsWith("]")) {
+        av = av + "]";
+    };
+
+    av = av.replaceAll('oo', oo);
+
+    try {
+        av = JSON.parse(av);
+        var indx = av.indexOf(oo);
+        if (indx > -1) {
+            av = oo2strInf(av);
+            setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
+            idClear('#cout')
+            return "Hibás bemenet";
+        }
+        cN = _.sum(av) + 1 - av.length || 1;
+    } catch (error) {
+        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
+        idClear('#cout')
+        return "Hibás bemenet";
+    };
+    return av;
+};
+
+
+function hatas1en() {
+    const elem = document.getElementById("outnm");
+    const nv = kiszed_nm("nuv");
+    const mv = kiszed_nm("muv");
+    var out = hatas1r(nv, mv);
+    elem.innerHTML = out;
+};
+
+function hatas1r(nv, mv) {
     var out = '';
     const rnv = [...nv].reverse();
     const rmv = [...mv].reverse();
@@ -2190,124 +2233,153 @@ function hatas1(nv, mv) {
     return out;
 };
 
-function kiszed_nm(id) {
-    var av = document.getElementById(id).value;
-    if (pat.test(av)) {
-        setfigy("Valamelyik ∞ jel hibás:" + '<span class="outhiba">' + av + '</span>', "figyC");
-        idClear('#cout')
-        return "Hibás bemenet";
-    };
-    if (!av.startsWith("[")) {
-        av = "[" + av;
-    }
-    if (!av.endsWith("]")) {
-        av = av + "]";
-    };
+// Általános slick-------------------------------------------------
 
-    av = av.replaceAll('oo', oo);
-
-    try {
-        av = JSON.parse(av);
-        var indx = av.indexOf(oo);
-        if (indx > -1) {
-            av = oo2strInf(av);
-            setfigy("Az <b>a</b> indexvektor nem tartalmazhat ∞-t! " + '<span class="outhiba"> <b>a</b> = (' + av + ')</span>', "figyC");
-            idClear('#cout')
-            return "Hibás bemenet";
-        }
-        cN = _.sum(av) + 1 - av.length || 1;
-    } catch (error) {
-        setfigy("Hibás bemenet: " + '<span class="outhiba">' + av + '</span>', "figyC");
-        idClear('#cout')
-        return "Hibás bemenet";
-    };
-    return av;
-};
-
-function hatas1en() {
-    const elem = document.getElementById("outnm");
-    const nv = kiszed_nm("nuv");
-    const mv = kiszed_nm("muv");
-    var out = hatas1(nv, mv);
-    elem.innerHTML = out;
-};
-
-function Lifb(s) {
-    const rc = ribbon_comp(s);
-    const rcl = rc.slice(0, -1);
-    var out = '';
-    for (let nm of rcl) {
-        out += ' + <span class="cc">C<sub>(' + nm[1].toString() + ')</sub></span><span class="paren">·{</span>' + hatas1(...nm[0]) + '<span class="paren">}</span>';
-    };
-    out.slice(3);
-    out = out.replace('()', '( )');
-    return out;
-};
-
-function updSlick() {
-    $('#c-slick').slick('unslick').html("");
-    $('#c-slick').slick({
-        mobileFirst: true,
-        asNavFor: '#Li-slick',
-    });
-    $('#c-slick').slick('slickAdd', "<div>C</div>");
-
-    $('#Li-slick').slick('unslick').html("");
-    $('#Li-slick').slick({
-        mobileFirst: true,
-        adaptiveHeight: true,
-        asNavFor: '#c-slick',
-    });
-    $('#Li-slick').slick('slickAdd', "<div>ln<sup>p</sup>(x)&lowast;Li<sub><b>a</b></sub>(x)</div>");
+function updSlickID(id, kezdolap) {
+    $('#' + id).slick('unslick').html("");
+    $('#' + id).append(kezdolap)
 }
 
-function Lifbkibontva(s) {
-    const rc = ribbon_comp(s);
-    const rcl = rc.slice(0, -1);
-    const ss = _.sum(s);
-    const d = 1 - (ss % 2);
-    updSlick();
+function goToSlick(id, n, elem) {
+    $('.onslick').removeClass('onslick');
+    $(elem).addClass('onslick');
+    $('#' + id).slick('slickGoTo', n);
+    const e = document.getElementById(id)
+    e.scrollIntoView({
+        behavior: "smooth",
+        block: 'start'
+    });
+};
+
+function goToOnSlick() {
+    const e = $('.onslick')[0];
+    e.scrollIntoView({
+        behavior: "smooth",
+        block: 'start'
+    });
+};
+
+function makeSlicks(oCt, kezdolap, fulcim, id, slickid) {
+    const elem = document.getElementById(id);
+    updSlickID(slickid, kezdolap);
     var szamlalo = 0;
     var out = '';
-    for (let nm of rcl) {
+    var tabs = "";
+    for (let nm of oCt) {
         szamlalo++;
-        var eloj = ' + ';
-        if ((szamlalo + d) % 2 == 1)
-            eloj = ' − ';
-        var eloj = ' + ';
-        if ((szamlalo + d) % 2 == 1)
-            eloj = ' − ';
-        out += eloj + '<span class="cc" onclick="goToC(' + szamlalo + ')">C<sub>(' + nm[1].toString() + ')</sub></span>·<span class="paren">{</span>' + hatas1(...nm[0]) + '<span class="paren">}</span>';
-        $('#c-slick').slick('slickAdd', "<div>" + eloj + "C<sub>(" + nm[1].toString() + ")</sub></div>");
-        $('#Li-slick').slick('slickAdd', "<div>" + hatas1(...nm[0]) + "</div>");
+        var cimek = nm[2];
+        var t = nm[3];
+        var L = t.length;
+        var dat = nm[1].match(/\((\d[\,|\)])*/)[0].slice(1, -1).replaceAll(",", "-");
+        if (dat == "")
+            dat = "zero";
+        out += '<span onclick=goToSlick("' + slickid + '",' + szamlalo + ',this) style="cursor:pointer;" data-slk="' + dat + '">' + nm[0] + '</span>';
+        tabs = "<div><h3 class='slickh3'>" + nm[1] + "</h3>";
+        tabs += "<div id='my_tabs-" + szamlalo + "' class='styled_tabs'><div class='controls'><a href='#' class='control active'>" + cimek[0] + "</a>";
+        for (var j = 1; j < L; j++)
+            tabs += "<a href='#' class='control'>" + cimek[j] + "</a>"
+        tabs += fulcim + "</div><div class='targets'>";
+        for (var j1 = 0; j1 < L; j1++)
+            tabs += "<div class='target'>" + t[j1] + "</div>"
+        tabs += "</div></div></div>";
+        $('#Li-slick').append(tabs);
+        $('#my_tabs-' + szamlalo).tabs();
     };
-    szamlalo++;
-    out += ' + <span class="cc" onclick="goToC(' + szamlalo + ')">C<sub>(' + s.toString() + ')</sub></span>';
+    szamlalo++
     if (out.startsWith(' + '))
         out = out.slice(3);
     out = out.replace('()', '( )');
-    $('#c-slick').slick('slickAdd', "<div>C<sub>(" + s.toString() + ")</sub></div>");
-    $('#Li-slick').slick('slickAdd', "<div>1</div>");
-    return out;
+    slickno = szamlalo - 1;
+    $('#' + slickid).slick({
+        mobileFirst: true,
+        //fade: true,
+        speed: 500,
+    });
+    elem.innerHTML = out;
 };
 
-function goToC(n) {
-    $('#c-slick').slick('slickGoTo', n);
-    const e = document.getElementById("c-slick")
-    e.scrollIntoView({
-        behavior: "smooth",
-        block: 'center'
-    });
+function hatas1(nv, mv) {
+    var Out = [];
+    var out1 = ""
+    var out = '';
+    const rnv = [...nv].reverse();
+    const rmv = [...mv].reverse();
+    const rr = nv.length;
+    const nmc = fuzottcomp(rnv.map(y => conjcomp([y])), rmv.slice(1));
+    const M = rmv[0];
+    var outL = [];
+    var outk = "";
+    var obj = {};
+    var b = 1;
+    for (var k = 0; k <= M; k++) {
+        outL = [];
+        outk = "";
+        obj = {};
+        for (var N = 0; N <= k; N++) {
+            var T = ncomp0(N, rnv);
+            for (let t of T) {
+                var Tm = comp0spec(k - N, rr - 1);
+                for (let m of Tm) {
+                    b = 1;
+                    for (var l = 2; l <= rr; l++) {
+                        b = b * binomial(rmv[l - 1] - 1 + m[l - 2], rmv[l - 1] - 1);
+                    }
+                    var tm = fuzottcomp(t, m.map(y => [y]));
+                    var indx = _.zipWith(nmc, tm, (u, v) => u + v);
+                    outL.push([b, indx]);
+                }
+            }
+        }
+        if (outL.length > 0) {
+            var eloj = Math.pow(-1, k);
+            if (eloj == 1)
+                eloj = " + ";
+            else
+                eloj = " − ";
+            var cln = Fraction(1, factorial(M - k));
+            var clntxt = "";
+            var formln = "";
+            if (cln.d > 1)
+                clntxt = formazottTortHTML(cln.n, cln.d) + ' ';
+            formln = 'ln<sup>' + (M - k) + '</sup>(x)'
+
+            out1 = eloj + '<span style="display:inline-block;color:' + COLORS[k] + ';font-weight:800;background-color:#e3e3e3;padding:3px 5px;border-radius:3px;">' + clntxt + formln + '</span>';
+
+            obj = _.groupBy(outL, y => y[1]);
+            var ke = Object.keys(obj);
+            for (let k of ke) {
+                var b = _.sum(obj[k].map(z => z[0]));
+                var prefix = "+";
+                if (b > 1)
+                    prefix += b + '·';
+                outk += prefix + 'Li<sub>(' + k + ')</sub>(x)';
+            }
+            outk = outk.slice(1);
+            if (ke.length > 1)
+                outk = '·<span class="paren">[</span>' + outk + '<span class="paren">]</span>';
+            else
+                outk = '·' + outk;
+            Out.unshift([out1 + outk])
+        }
+    }
+    if (out.startsWith(' + '))
+        out = out.slice(3);
+    return Out;
 };
 
 function Lifbint(s) {
+    oCt = [];
     const rc = ribbon_comp(s);
     const rcl = rc.slice(0, -1);
     const ss = _.sum(s);
     const d = 1 - (ss % 2);
-    updSlick();
     var szamlalo = 0;
-    var out = '';
+    for (var k = 0; k < rcl.length; k++)
+        oCt.push([
+            ["", "", ["0", "1"],
+                ["0", "1"]
+            ]
+        ]);
     for (let nm of rcl) {
         szamlalo++;
         var eloj = ' + ';
@@ -2315,34 +2387,113 @@ function Lifbint(s) {
             eloj = ' − ';
         var u = nm[0][0];
         var l = nm[0][1];
-        out += eloj + '<span onclick="goToC(' + szamlalo + ')" style="display:inline-block;cursor:pointer;"><span style="font-weight:600;color:#d50000;">C<sub>(' + nm[1].toString() + ')</sub></span><span class="sqrt-prefix sdefint" style="transform: scaleY( 2.2) translateY(0.13em);font-weight:600;">∫</span><span style="display:inline-block;vertical-align: middle;text-align:center;font-size:90%;line-height:normal;"><table><tr><td>(' + u + ')</td></tr><tr><td>(' + l + ')</td></tr></table></span>[1]</span>';
-        $('#c-slick').slick('slickAdd', "<div>" + eloj + "C<sub>(" + nm[1].toString() + ")</sub></div>");
-        $('#Li-slick').slick('slickAdd', "<div>" + hatas1(...nm[0]) + "</div>");
+        var oCtk = oCt[szamlalo - 1]
+        oCtk[0] = eloj + '<span style="font-weight:600;color:#d50000;">C<sub>(' + nm[1].toString() + ')</sub></span><span class="sqrt-prefix sdefint" style="transform: scaleY( 2.2) translateY(0.13em);font-weight:600;">∫</span><span style="display:inline-block;vertical-align: middle;text-align:center;font-size:90%;line-height:normal;"><table><tr><td>(' + u + ')</td></tr><tr><td>(' + l + ')</td></tr></table></span>[1]';
+
+        oCtk[1] = eloj + "C<sub>(" + nm[1].toString() + ")</sub><button class='vissza1' onclick='goToOnSlick();'> </button>";
+
+        oCtk[2] = [];
+        oCtk[3] = [];
+        var t3 = hatas1(...nm[0]);
+        for (var h = 0; h < t3.length; h++) {
+            oCtk[2].push(h);
+            oCtk[3].push(t3[h][0]);
+        };
     };
-    szamlalo++
-    out += ' + <span onclick="goToC(' + szamlalo + ')" style="font-weight:600;color:#d50000;cursor:pointer;">C<sub>(' + s.toString() + ')</sub></span>';
-    if (out.startsWith(' + '))
-        out = out.slice(3);
-    out = out.replace('()', '( )')
-    $('#c-slick').slick('slickAdd', "<div>C<sub>(" + s.toString() + ")</sub></div>");
-    $('#Li-slick').slick('slickAdd', "<div>1</div>");
-    return out;
+    oCt[szamlalo - 1][0] = '+<span style="font-weight:600;color:#d50000;">C<sub>(' + s.toString() + ')</sub></span>';
+    oCt[szamlalo - 1][1] = "+C<sub>(" + s.toString() + ")</sub></span>";
+    oCt[szamlalo - 1][3] = [];
+    oCt[szamlalo - 1][3].push('<span style="display:inline-block;color:#2484c1;font-weight:800;background-color:#e3e3e3;padding:3px 5px;border-radius:3px;">ln<sup>0</sup>(x)</span>·Li<sub>( )</sub>(x)');
+    makeSlicks(oCt, "<div><h3 class='slickh3'>C</h3>ln<sup>p</sup>(x)·Li<sub><b>a</b></sub>(x)</div>", "", "outfb", "Li-slick");
+    oCt = [];
 };
+
+function Lifbkibontva(s) {
+    oCt = [];
+    const rc = ribbon_comp(s);
+    const rcl = rc.slice(0, -1);
+    const ss = _.sum(s);
+    const d = 1 - (ss % 2);
+    var szamlalo = 0;
+    for (var k = 0; k < rcl.length; k++)
+        oCt.push([
+            ["", "", ["0", "1"],
+                ["0", "1"]
+            ]
+        ]);
+
+    for (let nm of rcl) {
+        szamlalo++;
+        var eloj = ' + ';
+        if ((szamlalo + d) % 2 == 1)
+            eloj = ' − ';
+        var oCtk = oCt[szamlalo - 1]
+        var Ctxt0 = "";
+        Ctxt0 += nm[1].toString();
+        var Ctxt = "";
+
+        oCtk[1] = eloj + "C<sub>(" + Ctxt0 + ")</sub><button class='vissza1' onclick='goToOnSlick();'> </button>";
+        oCtk[2] = [];
+        oCtk[3] = [];
+        var t3 = hatas1(...nm[0])
+        for (var h = 0; h < t3.length; h++) {
+            oCtk[2].push(h);
+            oCtk[3].push(t3[h][0]);
+            Ctxt += t3[h][0];
+        };
+        if (Ctxt.startsWith(" + "))
+            Ctxt = Ctxt.slice(3)
+        oCtk[0] = eloj + '<span class="cc">C<sub>(' + Ctxt0 + ')</sub></span>·<span class="paren">{</span>' + Ctxt + '<span class="paren">}</span>';
+    };
+    oCt[szamlalo - 1][0] = '+<span class="cc">C<sub>(' + s.toString() + ')</sub></span>';
+    oCt[szamlalo - 1][1] = "+C<sub>(" + s.toString() + ")</sub>";
+    oCt[szamlalo - 1][3] = [];
+    oCt[szamlalo - 1][3].push('<span style="display:inline-block;color:#2484c1;font-weight:800;background-color:#e3e3e3;padding:3px 5px;border-radius:3px;">ln<sup>0</sup>(x)</span>·Li<sub>( )</sub>(x)');
+    makeSlicks(oCt, "<div><h3 class='slickh3'>C</h3>ln<sup>p</sup>(x)·Li<sub><b>a</b></sub>(x)</div>", "", "outfb", "Li-slick");
+    oCt = [];
+}
 
 function LifB() {
     const kibontva = document.getElementById("setfb").checked;
-    const elem = document.getElementById("outfb");
     const s = kiszed_nm("fbs");
-    var out = "";
-    if (kibontva)
+    if (kibontva) {
         out = Lifbkibontva(s);
-    else
-        out = Lifbint(s);
-    elem.innerHTML = out;
+    } else {
+        Lifbint(s);
+    }
 };
 
-// DETERMINANT OF A MATRIX
+$(document).on('afterChange', '#Li-slick', function(event, slick, currentSlide) {
+    $('.onslick').removeClass('onslick');
+    var indx = $('.slick-slide.slick-current h3.slickh3 sub').text();
+    if (currentSlide == 0)
+        return;
+    if (currentSlide == 1) {
+        $('#outfb span[data-slk=zero]').addClass('onslick');
+    } else if (indx.length > 0) {
+        indx = indx.match(/\((\d[\,|\)])*/)[0].slice(1, -1).replaceAll(",", "-");
+        $('#outfb span[data-slk=' + indx + ']').addClass('onslick');
+    } else
+        return;
+});
 
+
+var oCt = [
+    ["O1", "C11", ["0", "1"],
+        ["tab-11", "tab-12"]
+    ],
+    ["O1", "C21", ["0"],
+        ["tab-21"]
+    ],
+    ["O1", "C31", ["0", "1", "2"],
+        ["tab-31", "tab-32", "tab-33"]
+    ],
+    ["O1", "C41", ["0-aaaaaaa", "1-llllll", "2-bbbbbbbbbbb", "3-cccc", "4", "5", "6", "7"],
+        ["tab-41", "tab-42", "tab-43", "tab-44", "tab-45", "tab-46", "tab-47", "tab-48"]
+    ]
+]
+
+// DETERMINANT OF A MATRIX
 // recursive with fraction input
 
 function determinantOfMatrixRecursive0(mat, n) {
