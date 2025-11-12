@@ -3984,7 +3984,7 @@ function diffReg(a, b) {
     var objb = _.countBy(stuffle(a, b));
     var out = [];
     _.forEach(objDiff(obja, objb), function(value, key) {
-        out.push(shuffleReg(JSON.parse("[" + key + "]")).map(y => [value * y[0], y[1]]));
+        out.push(shuffleReg(JSON.parse("[" + key + "]")).map(y => [-value * y[0], y[1]]));
     });
     out = _.groupBy(_.flatten(out), y => y[1]);
     out = _.mapValues(out, y => _.sum(y.map(z => z[0])))
@@ -4134,3 +4134,4 @@ function dblshuff() {
         }, t)
     }
 };
+
