@@ -3570,6 +3570,65 @@ function htmlAdmissible(n, k) {
     return out;
 };
 
+function htmlRAdmissible(n, k, d) {
+    var out = "";
+    var A = Admissible(n, k);
+    var jel = "";
+    if (d) {
+        jel += "d";
+    }
+    for (let a of A) {
+        var m = a[0]
+        if (m == 1)
+            m = "";
+        else
+            m += "&lowast;";
+        var w = a[1].toString();
+        var wj = a[1].toString();;
+        if (d)
+            wj = dualofv(a[1]).toString();
+
+        out += "<span class='adm" + jel + "' adm" + jel + "-data='" + wj.replaceAll(",", "-") + "' coeff-data='" + a[0] + "' onclick='adm" + jel + "hl(this);'>" + m + "(" + w + ")</span> + ";
+    };
+    out = out.slice(0, -3);
+    return out;
+};
+
+function admhl(elem) {
+    $('#nk .adm.hl,#nk .admd.hl').removeClass('hl');
+    $(elem).addClass('hl');
+    const dat = elem.getAttribute('adm-data');
+    const elemd = $('#nk .admd[admd-data=' + dat + ']')
+    elemd.addClass('hl');
+    var kijel = formazottTortHTML("s<sub>1</sub> - 1", "c") + "&nbsp;·[c&lowast;<b>s</b>] =" + formazottTortHTML(dat.split('-')[0] - 1, elem.getAttribute('coeff-data')) + "&nbsp;·" + elem.innerText + "<sup>&dagger;</sup> = " + elemd[0].innerText;
+    document.getElementById("nktr").innerHTML = kijel;
+};
+
+function admdhl(elem) {
+    $('#nk .adm.hl,#nk .admd.hl').removeClass('hl');
+    $(elem).addClass('hl');
+    const dat = elem.getAttribute('admd-data');
+    const elemd = $('#nk .adm[adm-data=' + dat + ']')
+    elemd.addClass('hl');
+    var kijel = formazottTortHTML("s<sub>1</sub> - 1", "c") + "&nbsp;·[c&lowast;<b>s</b>] =" + formazottTortHTML(dat.split('-')[0] - 1, elemd[0].getAttribute('coeff-data')) + "&nbsp;·" + elemd[0].innerText + "<sup>&dagger;</sup> = " + elem.innerText;
+    document.getElementById("nktr").innerHTML = kijel;
+};
+
+function nkWrite() {
+    const elem = document.getElementById("nk");
+    const n = document.getElementById("nt").value * 1;
+    const k = document.getElementById("kt").value * 1;
+    if (n < k)
+        elem.innerHTML = drawAngel("n", "k") + " = " + drawAngel(n, k) + " nem értelmezett."
+    else {
+        const vonal = "<hr style='color:#d7d7d73d;'/>";
+        const sor1 = drawAngel("n", "k") + " = " + drawAngel(n, k) + " = " + htmlRAdmissible(n, k, false);
+        const sor3 = drawAngel("n", "n - k") + " = " + drawAngel(n, n - k) + " = " + htmlRAdmissible(n, n - k, true);
+        var sortr = "<div id='nktr'> </div>";
+        elem.innerHTML = sor1 + vonal + sortr + vonal + sor3;
+    }
+};
+
 function mconc(ov, m1, m2) {
     var out = [];
     if (m2 == undefined)
@@ -3626,7 +3685,7 @@ function htmlmConc(M, ov, eloj) {
 };
 
 function drawAngel(n, k) {
-    return "<span style='display:inline-block;vertical-align: middle'><span style='display:inline-block;transform: scaleY(2.7) scaleX(1.6) translateY(0.05em);'>&LeftAngleBracket;</span><table style='display:inline-table;border-collapse: collapse;margin: 0 5px;'><tr><td>" + n + "</td></tr><tr><td>" + k + "</td></tr></table><span style='display:inline-block;transform: scaleY(2.7) scaleX(1.6) translateY(0.05em);'>&RightAngleBracket;</span></span>";
+    return "<span style='display:inline-block;vertical-align: middle'><span style='display:inline-block;transform: scaleY(2.7) scaleX(1.6) translateY(0.05em);'>&LeftAngleBracket;</span><table style='text-align:center;display:inline-table;border-collapse: collapse;margin: 0 5px;'><tr><td>" + n + "</td></tr><tr><td>" + k + "</td></tr></table><span style='display:inline-block;transform: scaleY(2.7) scaleX(1.6) translateY(0.05em);'>&RightAngleBracket;</span></span>";
 };
 
 function formazottSum(indx, m) {
@@ -3851,6 +3910,41 @@ function setOutputFont10(v) {
     elem.style.fontSize = v + 'px';
 };
 
+function setOutputFont11(v) {
+    var elem = document.getElementById("nk");
+    elem.style.fontSize = v + 'px';
+};
+
+function Shuffle(a, b) {
+    var s = [];
+    if (a.length == 0)
+        s = [b];
+    else if (b.length == 0)
+        s = [a];
+    else if (a[0] == 1 && b[0] == 1) {
+        for (let y of Shuffle(a.slice(1), b))
+            s.push(_.concat([1], y));
+        for (let x of Shuffle(a, b.slice(1)))
+            s.push(_.concat([1], x));
+    } else if (a[0] > 1 && b[0] == 1) {
+        for (let y of Shuffle([a[0] - 1, ...a.slice(1)], b))
+            s.push(nconc([1], y));
+        for (let x of Shuffle(a, b.slice(1)))
+            s.push(_.concat([1], x));
+    } else if (a[0] == 1 && b[0] > 1) {
+        for (let y of Shuffle(a.slice(1), b))
+            s.push(_.concat([1], y));
+        for (let x of Shuffle(a, [b[0] - 1, ...b.slice(1)]))
+            s.push(nconc([1], x));
+    } else {
+        for (let y of Shuffle([a[0] - 1, ...a.slice(1)], b))
+            s.push(nconc([1], y));
+        for (let x of Shuffle(a, [b[0] - 1, ...b.slice(1)]))
+            s.push(nconc([1], x));
+    };
+    return s;
+};
+
 function stuffle(a, b) {
     var s = [];
     if (a.length == 0)
@@ -3867,6 +3961,43 @@ function stuffle(a, b) {
     };
 
     return s;
+};
+
+function printShuffle(a, b) {
+    const s = _.countBy(Shuffle(a, b));
+    var eloj = " + ";
+    var out = "";
+    _.forEach(s, function(value, key) {
+        eloj = " + ";
+        if (value > 1)
+            eloj += value + "&lowast;";
+        out += eloj + "(" + key + ")"
+    });
+    out = out.slice(3);
+    return out;
+};
+
+function Shuffle1(a, b) {
+    var s = "";
+    if (a.length == 0)
+        s = "(" + b.toString() + ")";
+    else if (b.length == 0)
+        s = "(" + a.toString() + ")";
+    else if (a[0] == 1 && b[0] == 1) {
+        s += "(1)&bullet;[(" + a.slice(1).toString() + ")<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>(" + b.toString() + ")]";
+        s += " + (1)&bullet;[(" + a.toString() + ")<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>(" + b.slice(1).toString() + ")]";
+    } else if (a[0] > 1 && b[0] == 1) {
+        s += "(1)&odot;[(" + [a[0] - 1, ...a.slice(1)].toString() + ")<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>(" + b.toString() + ")]";
+        s += " + (1)&bullet;[(" + a.toString() + ")<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>(" + b.slice(1).toString() + ")]";
+    } else if (a[0] == 1 && b[0] > 1) {
+        s += "(1)&bullet;[(" + a.slice(1).toString() + ")<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>(" + b.toString() + ")]";
+        s += " + (1)&odot;[(" + a.toString() + ")<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>(" + [b[0] - 1, ...b.slice(1)].toString() + ")]";
+    } else {
+        s += "(1)&odot;[(" + [a[0] - 1, ...a.slice(1)].toString() + ")<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>(" + b.toString() + ")]";
+        s += " + (1)&odot;[(" + a.toString() + ")<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>(" + [b[0] - 1, ...b.slice(1)].toString() + ")]";
+    };
+    s = s.replaceAll("()", "( )")
+    document.getElementById("shoutr").innerHTML = s;
 };
 
 function cegyutthr() {
@@ -4134,4 +4265,3 @@ function dblshuff() {
         }, t)
     }
 };
-
