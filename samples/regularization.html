@@ -42,8 +42,27 @@
 </head>
 
 <body>
-     <div class="keret of odd" id="k1">
-        <b><big class="sorszam" style="margin-right: 15px;">1.</big></b>Shuffle regularization
+    <div class="keret of even" id="k1">
+        <b><big class="sorszam" style="margin-right: 15px;">1.</big></b>
+        <p class="keplet" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\nu(x_{1},\ldots,x_{m},\underset{r}{\underbrace{1,1,\ldots,1}}\,)\,:=\,r + 1\hspace{5mm}\text{where } x_{m}\geq2\\ \left\langle \begin{array}{c} n \\ n \end{array} \right\rangle:= (\underset{n}{\underbrace{1,1,\ldots,1}} )\hspace{5mm}(n=1,2,\ldots)\\
+            \left\langle \begin{array}{c} n \\ k \end{array} \right\rangle:={\Large\sum_{\large{\begin{subarray}{c}\sum\boldsymbol{s}\,=\,n,\; |\boldsymbol{s}|\,=\,k \\ \\ \boldsymbol{s}\geq \boldsymbol{1},\;\text{admissible}\end{subarray}}}}\nu(\boldsymbol{s})*\boldsymbol{s}\hspace{5mm}(n,k=1,2,\ldots,\;k
+            < n ) \end{gather*}\] </p>
+
+                <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
+                    <label for="nt"><b style="padding: 2px 7px;">n</b> =  </label>
+                    <input type="number" id="nt" value="7" min="1" step="1" onchange="nkWrite();" name="n" style="width:50px;margin-right:10px;">
+                    <label for="kt"><b style="padding: 2px 7px;">k</b> =  </label>
+                    <input type="number" id="kt" value="3" min="1" step="1" onchange="nkWrite();" name="n" style="width:50px;margin-right:10px;">
+                </div>
+                <button class="showpre1" style="width:75px;margin-left:10px" onclick="nkWrite();" title="Calculate series">Calculate</button>
+                <button class="showpre1" style="width:60px;margin-left:3px" onclick="idClear('#nk');" title="Clear series">Clear</button>
+                <label for="setoutputfont8">&#128474;</label>
+                <input id="outfont-slider8" oninput="setOutputFont11(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfont8" />
+                <p class="kijelzo" id="nk" style="margin-top:10px;line-height: 1.5;font-family: Cambria math;background-color: #f7e4da;outline: 2px solid #ffe8e8"></p>
+                <p id="figynk" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+    </div>
+     <div class="keret of odd" id="k2">
+        <b><big class="sorszam" style="margin-right: 15px;">2.</big></b>Shuffle regularization
         <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\boldsymbol{a}\,{\large\unicode{x29E2}_{*}}\boldsymbol{b}\,:=\,(\boldsymbol{a}^{\vee}{\large\unicode{x29E2}}\,\boldsymbol{b}^{\vee})^{\wedge}\hspace{12mm}\boldsymbol{x}^{\vee}\,:=\,\boldsymbol{x}-\boldsymbol{1}\hspace{12mm}\boldsymbol{x}^{\wedge}\,:=\,\boldsymbol{x}+\boldsymbol{1}\\
             \boxed{\boldsymbol{\Large\unicode{x29E2}}_{*}}\hspace{5mm}\text{reg}_{\,{\Large\unicode{x29E2}}}(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{a}) = {\large\sum_{j\,=\,0}^{n}}(-1)^{j}\,(\underset{j}{\underbrace{1,1,\ldots,1}}){\large\unicode{x29E2}_{*}}(\underset{n-j}{\underbrace{1,1,\ldots,1}},\boldsymbol{a})
             \hspace{12mm}(n\geq0\;,\boldsymbol{a}\text{ admissible})\\ \\ \hline\\ \nu(x_{1},\ldots,x_{m}\geq2,\underset{L}{\underbrace{1,1,\ldots,1}})\,:=\,L + 1 \\ \\ \boxed{\boldsymbol{\Large\times}}\hspace{5mm}\text{reg}_{\,{\Large\unicode{x29E2}}}(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{a})
@@ -71,8 +90,8 @@
         <p class="kijelzo" id="shreg" style="margin-top:10px;line-height: 1.5;font-family: Cambria math;"></p>
         <p id="figyshr" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     </div>
-    <div class="keret of even" id="k2" style="margin-bottom:10px;">
-        <b><big class="sorszam">2.</big></b>
+    <div class="keret of even" id="k3" style="margin-bottom:10px;">
+        <b><big class="sorszam">3.</big></b>
         <span style="font-size:130%;display:inline-block;width:80%;text-align:center;"><b>a</b><span style='font-size: 1.2em;text-decoration:underline;text-underline-offset: 3px;margin:0 3px;'>&#x29E2;</span><b>b</b> és <b>a</b><span style='font-size: 1.2em;margin:0 3px;'>&lowast;</span><b>b</b></span>
         <div style="margin-left:2px;padding:3px;">
             <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">a</b> = </label>
@@ -97,8 +116,8 @@
             <p id="shoutr" style="margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.3"></p>
         </div>
     </div>
-    <div class="keret of odd" id="k3" style="margin-bottom:10px;">
-        <b><big class="sorszam">3.</big> (Regularized double shuffle relations)</b>
+    <div class="keret of odd" id="k4" style="margin-bottom:10px;">
+        <b><big class="sorszam">4.</big> (Regularized double shuffle relations)</b>
         <p class="keplet" id="keplet_k8" style="text-align:center;padding-bottom:10px;margin-bottom:10px;padding: 20px;"><span style="margin-right:10px">&zeta;<span style='display: inline-block;transform-origin: center;transform: scale(1.2);padding: 0 2px;'>[</span>reg<sub>&#x29E2;</sub>(<b>a</b><span style='font-size: 1.2em;text-decoration:underline;text-underline-offset: 3px;margin:0 3px;'>&#x29E2;</span><b>b</b>            - <b>a</b>
             <span style='font-size: 1.2em;margin:0 3px;'>&lowast;</span><b>b</b>)<span style='display: inline-block;transform-origin: center;transform: scale(1.2);padding: 0 2px;'>]</span> = 0</span>(where <b>a</b> or <b>b</b> admissible)
         </p>
@@ -133,6 +152,7 @@
 
 
 </html>
+
 
 
 
