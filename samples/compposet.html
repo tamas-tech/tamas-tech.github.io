@@ -420,8 +420,34 @@
         </table>
     </div>
 
-    <div class="keret of even" id="k10">
+    <div class="keret of even" id="k10" style="margin-bottom:10px;">
         <b><big class="sorszam">10.</big></b>
+        <p class="keplet" id="keplet_k10" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} \boldsymbol{c} \text{ admissible},\;\boldsymbol{s}=(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{c}),\;\hat{\boldsymbol{c}}=(1)\bullet(-1)\odot\boldsymbol{c},\;(\,)^{\dagger}:=(\,) \\(1)\hspace{6mm} \frac{(-1)^{n}}{n!}\partial^{n}(\boldsymbol{c}^{\dagger})
+            = {\LARGE \sum_{{\large \begin{subarray}{c}\boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{b}\,=\,\boldsymbol{s}\\ \boldsymbol{a}\neq(\,),\;\boldsymbol{b}\text{ admissible}\end{subarray}}}}\frac{(-1)^{\sum \boldsymbol{a}+p+1}}{p!}{\Large \sum_{{\large
+            k = p\cdot\delta_{|\boldsymbol{b}|,0}}}^{{\large p}}}(-1)^{k}\,\dbinom{p}{k}\partial^{k}(\boldsymbol{a}^{*})\;{\large\underline{\unicode{x29E2}}}\;\partial^{p-k}(\boldsymbol{b}^{\dagger}) \\(2)\hspace{6mm} \boldsymbol{c} = {\LARGE \sum_{{\large
+            \begin{subarray}{c}\boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{b}\,=\,\hat{\boldsymbol{c}}\\ \boldsymbol{a}\neq(\,),\;\boldsymbol{b}\text{ admissible}\end{subarray}}}}\frac{(-1)^{\sum \boldsymbol{a}+p+1}}{p!}{\Large \sum_{{\large k = p\cdot\delta_{|\boldsymbol{b}|,0}}}^{{\large
+            p}}}(-1)^{k}\,\dbinom{p}{k}\partial^{k}(\boldsymbol{a}^{*})\;{\large\underline{\unicode{x29E2}}}\;\partial^{p-k}(\boldsymbol{b}^{\dagger})\end{gather*}\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label for="k29n"><b style="padding: 2px 7px;">n</b> =  </label>
+            <input type="number" id="k29n" value="2" min="0" step="1" onchange="formk29();" name="n" style="width:50px;margin-right:10px;">
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
+            <input class="inpvec" type="text" id="sk29" value="2,3"> admissible!
+        </div>
+        <div style="margin-top:2px;padding:5px;">
+            <button class="showpre1" onclick="formk29();" title="Calculate input">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#outk29');" title="Clear output">Clear</button>
+            <span style="margin-left:5px;font-size:16px;">(1)</span>
+            <label class="switch">
+        <input type="checkbox" id="k29vallaszto" onchange="formk29()"><span class="slider round"></span></label>
+            <span style="margin-right:10px">(2)</span>
+            <input id="outfont-slider9" oninput="setOutputFont12(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfont9" />
+        </div>
+        <p id="figyk29" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
+        <p id="outk29" ondblclick="cleark29();" style="user-select:none;margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
+    </div>
+    <div class="keret of odd" id="k11">
+        <b><big class="sorszam">11.</big></b>
         <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\LaTeX \text{ fordító}\]
         </p>
         <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
@@ -437,7 +463,6 @@
         <p class="kijelzo" id="gen_latex" style="line-height: 1.5;font-family: Cambria math;"></p>
         <p id="figylatex" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     </div>
-
     <script>
         setTimeout(() => {
             setgenKeplet2();
@@ -455,6 +480,7 @@
     </script>
 </body>
 </html>
+
 
 
 
