@@ -1617,7 +1617,8 @@ function setn100(elem, id) {
     Nelem.innerHTML = n * 100;
 };
 
-function dualofv(v) {
+function dualofv(v0) {
+    let v = [...v0];
     v[0] = v[0] - 1;
     v.push(1);
     if (v[0] == 0)
@@ -2986,7 +2987,6 @@ function rfbGraph() {
     for (var i = 1; i < r; i++) {
         k.push(kc[i - 1] - i);
     };
-    var chk = "false";
     var kep = "<span id='show_deriv' onclick='toggle_Deriv();'>&#x25CB;</span><table style='border-collapse:collapse;display:inline-table;'><input type='checkbox' id='setderfix' onchange='setDerfix(this);' style='height:20px;width:20px;display: inline-block;position: relative;left: -40px;'><thead><tr><th><span class='tsorszam-w' data-n='0' style='color:red;'>0</span></th><th>";
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
@@ -3915,6 +3915,11 @@ function setOutputFont11(v) {
     elem.style.fontSize = v + 'px';
 };
 
+function setOutputFont12(v) {
+    var elem = document.getElementById("outk29");
+    elem.style.fontSize = v + 'px';
+};
+
 function Shuffle(a, b) {
     var s = [];
     if (a.length == 0)
@@ -4265,3 +4270,192 @@ function dblshuff() {
         }, t)
     }
 };
+
+// Shuffle szétbontás
+
+function pozvagas(s) {
+    const n = s.length;
+    var vagas = [];
+    for (var j = 0; j < n; j++) {
+        if (1 < s[j]) {
+            for (var i = 1; i < s[j]; i++) {
+                var a = [..._.take(s, j), s[j] - i];
+                var c = [i, ..._.takeRight(s, n - 1 - j)];
+                var b = [...leading1(c)];
+                var p = c.length - b.length;
+                vagas.push([a, p, b]);
+            };
+        };
+    };
+    return vagas;
+};
+
+function Poztag(w) {
+    let a = w[0];
+    let p = w[1];
+    let b = w[2];
+    var tag = [];
+    if (b.length > 0) {
+        for (var k = 0; k <= p; k++) {
+            let d1 = expDeriv(conjugate(a), k);
+            let d2 = expDeriv(dualofv(b), p - k);
+            let coeff = Math.pow(-1, _.sum(a) + p + k + 1) * binomial(p, k) / factorial(p);
+            for (let v1 of d1) {
+                for (let v2 of d2) {
+                    tag.push([coeff * v1[0] * v2[0], v1[1], v2[1]]);
+                }
+            }
+        }
+    } else {
+        var d = expDeriv(conjugate(a), p);
+        var coeff = Math.pow(-1, _.sum(a) + 1) / factorial(p);
+        for (let v of d)
+            tag.push([coeff * v[0], v[1]]);
+    }
+    return tag;
+};
+
+function keplet29(s) {
+    return out = pozvagas(s).map(y => Poztag(y));
+};
+
+function printShuffleId(a, b) {
+    const s = _.countBy(Shuffle(a, b));
+    var eloj = " + ";
+    var out = "";
+    _.forEach(s, function(value, key) {
+        var c = "";
+        if (value > 1)
+            c += value + "&lowast;";
+        out += eloj + "<span class='k29' data-k29='" + key.replaceAll(',', "-") + "' onclick=' k29Highlight(this)'>" + c + "(" + key + ")</span>";
+    });
+    out = out.slice(3);
+    return out;
+};
+
+function k29Highlight(elem) {
+    $("#outk29 span.k29.hl").removeClass('hl');
+    $("#outk29 span.shk29.hl").removeClass('hl');
+    const dat = elem.getAttribute('data-k29');
+    $("#outk29 span.k29[data-k29='" + dat + "']").addClass('hl');
+    var elem2 = $(elem).parent('.shk29')
+    if (elem2.length > 0) {
+        const dat2 = elem2[0].getAttribute('data-shk29');
+        $("#outk29 span.shk29[data-shk29='" + dat2 + "']").addClass('hl');
+    }
+};
+
+function shk29Highlight(elem) {
+    $("#outk29 span.k29.hl").removeClass('hl');
+    $("#outk29 span.shk29.hl").removeClass('hl');
+    const dat = elem.getAttribute('data-shk29');
+    $("#outk29 span.shk29[data-shk29='" + dat + "']").addClass('hl');
+};
+
+function cleark29() {
+    $("#outk29 span.k29.hl").removeClass('hl');
+    $("#outk29 span.shk29.hl").removeClass('hl');
+};
+
+
+function formk29() {
+    const s0 = leading1(kiszed_dbl("sk29", "figyk29"));
+    const n = document.getElementById("k29n").value * 1;
+    const val = document.getElementById("k29vallaszto").checked;
+    var s = [];
+    if (val) {
+        s.push(1);
+        s.push(s0[0] - 1)
+        for (var u = 1; u < s0.length; u++)
+            s.push(s0[u]);
+        s = dualofv(s);
+    } else
+        s = _.concat(Array(n).fill(1), s0);
+
+    const k29 = keplet29(s);
+    const stf = "<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>";
+    const sa = leading1(s);
+    const L = s.length - sa.length;
+    const fakt = Math.pow(-1, L) / factorial(L);
+    const ds = expDeriv(dualofv(sa), L).map(y => [fakt * y[0], y[1]]);
+    var txtd = "";
+    for (let w of ds) {
+        var c = w[0];
+        var c0 = w[0];
+        if (c == -1)
+            c = " − ";
+        else if (c == 1)
+            c = " + ";
+        else if (c > 1)
+            c = " + " + c + "&lowast;";
+        else if (c < 1)
+            c = " − " + -1 * c + "&lowast;";
+        var w1 = w[1].toString();
+        txtd += c.slice(0, 3) + "<span class='k29' data-k29='" + w1.replaceAll(',', "-") + "' onclick='k29Highlight(this)'>" + c.slice(3) + "(" + w1 + ")</span>";
+    };
+
+    if (txtd.startsWith(" + "))
+        txtd = txtd.slice(3);
+    txtd = "<span class='out29d'>" + txtd + "</span>"
+    var txt = "";
+    var txt2 = "";
+    var txt3 = "";
+    var ss = [];
+    for (let t of k29) {
+        for (let w of t) {
+            var c = w[0];
+            var c0 = w[0];
+            if (c == -1)
+                c = " − ";
+            else if (c == 1)
+                c = " + ";
+            else if (c > 1)
+                c = " + " + c + "&lowast;";
+            else if (c < 1)
+                c = " − " + -1 * c + "&lowast;";
+            if (w.length == 3) {
+                var dat = (w[1].toString() + "--" + w[2].toString()).replaceAll(',', "-");
+                txt += c.slice(0, 3) + "<span class='shk29' data-shk29='" + dat + "' onclick='shk29Highlight(this)'>" + c.slice(3) + "(" + w[1].toString() + ") " + stf + " (" + w[2].toString() + ")</span>";
+                txt2 += c.slice(0, 3) + "<span class='shk29' data-shk29='" + dat + "'>" + c.slice(3) + "<span class='paren'>[</span>" + printShuffleId(w[1], w[2]) + "<span class='paren'>]</span></span>";
+                ss.push(Shuffle(w[1], w[2]).map(y => [c0, y]));
+            } else if (w.length == 2) {
+                var w1 = w[1].toString();
+                txt += c.slice(0, 3) + "<span class='k29' data-k29='" + w1.replaceAll(',', "-") + "' onclick='k29Highlight(this)'>" + c.slice(3) + "(" + w1 + ")</span>";;
+                txt2 += c.slice(0, 3) + "<span class='k29' data-k29='" + w1.replaceAll(',', "-") + "' onclick='k29Highlight(this)'>" + c.slice(3) + "(" + w1 + ")</span>";
+                ss.push([
+                    [c0, w[1]]
+                ]);
+            }
+        }
+    };
+
+    var obj = _.groupBy(_.flatten(ss), y => y[1]);
+    _.forEach(obj, function(value, key) {
+        obj[key] = _.sum(value.map(y => y[0]));
+    });
+    _.forEach(obj, function(value, key) {
+        var c = value;
+        if (c != 0) {
+            if (c == -1)
+                c = " − ";
+            else if (c == 1)
+                c = " + ";
+            else if (c > 1)
+                c = " + " + c + "&lowast;";
+            else if (c < 1)
+                c = " − " + -1 * c + "&lowast;";
+            txt3 += c.slice(0, 3) + "<span class='k29' data-k29='" + key.replaceAll(',', "-") + "' onclick='k29Highlight(this)'>" + c.slice(3) + "(" + key + ")</span>";
+        }
+    });
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+    txt = "<span class='out291'>" + txt + "</span>"
+    if (txt2.startsWith(" + "))
+        txt2 = txt2.slice(3);
+    if (txt3.startsWith(" + "))
+        txt3 = txt3.slice(3);
+    txt3 = "<span class='out29d'>" + txt3 + "</span>";
+    const rule = " = <hr style='color: #c8c8c870;'/> = "
+    var txtall = txtd + rule + txt + rule + txt2 + rule + txt3;
+    document.getElementById("outk29").innerHTML = txtall;
+}
