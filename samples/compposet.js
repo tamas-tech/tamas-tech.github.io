@@ -3010,7 +3010,7 @@ function drawMat(mat) {
             vec = monomvec2HTML(w);
             if (vec.startsWith(' + '))
                 vec = vec.slice(3);
-            txt += '<td class="hide-column">' + vec + '</td>';
+            txt += '<td class="hide-column"><span class="td-block">' + vec + '</span></td>';
         }
         txt += '</tr>';
     }
@@ -5104,4 +5104,3 @@ function bvector(s) {
         out.push(bvector_s(w));
     return out;
 };
-
