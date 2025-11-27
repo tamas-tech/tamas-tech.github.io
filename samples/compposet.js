@@ -2497,6 +2497,25 @@ var oCt = [
 // DETERMINANT OF A MATRIX
 // recursive with fraction input
 
+const determinant1 = m =>
+    m.length == 1 ?
+    m[0][0] :
+    m.length == 2 ?
+    m[0][0] * m[1][1] - m[0][1] * m[1][0] :
+    m[0].reduce((r, e, i) =>
+        r + (-1) ** (i + 2) * e * determinant1(m.slice(1).map(c =>
+            c.filter((_, j) => i != j))), 0);
+
+const determinant2 = m =>
+    m.length == 1 ?
+    m[0][0] :
+    m.length == 2 ?
+    m[0][0] + "*" + m[1][1] + "-" + m[0][1] + "*" + m[1][0] :
+    m[0].reduce((r, e, i) =>
+        r + (-1) ** (i + 2) + "*" + e + "*" + determinant2(m.slice(1).map(c =>
+            c.filter((_, j) => i != j))), 0);
+
+
 function determinantOfMatrixRecursive0(mat, n) {
     if (n === 1) {
         return mat[0][0];
@@ -2507,11 +2526,12 @@ function determinantOfMatrixRecursive0(mat, n) {
         let submatrix =
             createSubmatrix(mat, i, n);
         det += sign * mat[0][i] *
-            determinantOfMatrixRecursive(submatrix, n - 1);
+            determinantOfMatrixRecursive0(submatrix, n - 1);
         sign = -sign;
     }
     return det;
 };
+
 
 function determinantOfMatrixRecursive(mat, n) {
     if (n === 1) {
@@ -2525,6 +2545,23 @@ function determinantOfMatrixRecursive(mat, n) {
         det = det.add(sign.mul(Fraction(mat[0][i]).mul(
             determinantOfMatrixRecursive(submatrix, n - 1))));
         sign = sign.mul(Fraction(-1));
+    }
+    return det;
+};
+
+function symbDeterminantOfMatrixRecursive(mat, n) {
+    if (n === 1) {
+        return mat[0][0];
+    }
+    let det = "";
+    let sign = "+";
+    for (let i = 0; i < n; i++) {
+        let submatrix = createSubmatrix(mat, i, n);
+        det += sign + mat[0][i] + "*(" + symbDeterminantOfMatrixRecursive(submatrix, n - 1) + ")";
+        if (sign == "+")
+            sign = "-"
+        else
+            sign = "-"
     }
     return det;
 };
@@ -2544,6 +2581,558 @@ function createSubmatrix(mat, colToRemove, n) {
     return submatrix;
 };
 
+//---------------------SYMBOLIC DETERMINANT
+/**
+ * Checks if a permutation has an even number of inversions.
+ * @param {number[]} p - The permutation array.
+ * @returns {number} The sign of the permutation (+1 or -1).
+ */
+function getSign(p) {
+    let inversions = 0;
+    const n = p.length;
+    for (let i = 0; i < n - 1; i++) {
+        for (let j = i + 1; j < n; j++) {
+            if (p[i] > p[j]) {
+                inversions++;
+            }
+        }
+    }
+    return inversions % 2 === 0 ? 1 : -1;
+}
+
+/**
+ * Generates all permutations of an array.
+ * @param {any[]} arr - The array to permuted.
+ * @returns {any[][]} A list of all permutations.
+ */
+function permuted(arr) {
+    const result = [];
+    const n = arr.length;
+
+    function backtrack(index, currentPermutation) {
+        if (index === n) {
+            result.push([...currentPermutation]);
+            return;
+        }
+        for (let i = 0; i < n; i++) {
+            if (!currentPermutation.includes(arr[i])) {
+                currentPermutation.push(arr[i]);
+                backtrack(index + 1, currentPermutation);
+                currentPermutation.pop();
+            }
+        }
+    }
+
+    backtrack(0, []);
+    return result;
+}
+
+/**
+ * Calculates the determinant of a symbolic matrix using the permutation definition.
+ * @param {string[][]} matrix - The symbolic matrix.
+ * @returns {string} The determinant as a symbolic string.
+ */
+function symbDet(matrix) {
+    const n = matrix.length;
+    if (n === 0) return "0";
+
+    // For symbolic matrices, we cannot directly compute the determinant as a number
+    // For a symbolic matrix, we must construct the string representation.
+
+    const columnIndices = Array.from({ length: n }, (_, i) => i);
+    const permutations = permuted(columnIndices);
+
+    let terms = [];
+    for (const p of permutations) {
+        let sign = getSign(p);
+        let term = [];
+        let expression = "";
+
+        for (let i = 0; i < n; i++) {
+            term.push(matrix[i][p[i]]);
+        }
+
+        // Format the term as a string
+        if (sign === 1) {
+            expression = term.join("*");
+        } else {
+            expression = `-${term.join("*")}`;
+        }
+        terms.push(expression);
+    }
+    return terms
+}
+//----------------------SYMBOLIC DETERMINANT END
+
+
+function generateMonotoneArrays(n, k) {
+    const results = [];
+
+    function backtrack(currentArray, start) {
+        // Base case: if the current array is of the desired length, add it to the results
+        if (currentArray.length === k) {
+            results.push([...currentArray]);
+            return;
+        }
+
+        // Iterate through possible next elements
+        // The loop starts from `start` to ensure strictly increasing order
+        // and continues up to `n` - (k - currentArray.length) + 1 to ensure there are enough numbers left for the remaining elements
+        for (let i = start; i <= n - (k - currentArray.length) + 1; i++) {
+            // Add the current number to the array
+            currentArray.push(i);
+            // Recursively call backtrack with the updated array and the next starting number
+            backtrack(currentArray, i + 1);
+            // Backtrack: remove the last added number to explore other possibilities
+            currentArray.pop();
+        }
+    }
+
+    // Start the backtracking process with an empty array and the starting number 1
+    backtrack([], 1);
+    return results;
+}
+
+var Uo = [{ 'c': 3, '2': 1 }, { 'c': -4, '3': 1, '2,1': 2 }, { 'c': 0, '4': 3 }];
+var Vo = [{ 'c': -2, '2': 1 }, { 'c': 2, '2,1': 1 }];
+var U3 = [{ 'c': 3, '2': 1, '3,1': 2 }, { 'c': 2, '4': 2 }];
+var obj1 = { 'c': 2, '2,1': 1, '3,2': 2 };
+var obj2 = { 'c': -7, '2,1': 5, '4,5,3': 4, '5,2,3': 2, '2,3': 7 };
+var egy = [{ 'c': 1 }];
+
+function customizer(o1, o2, key) {
+    if (key == 'c')
+        return o1 * o2;
+    else
+        return (o1 || 0) + (o2 || 0);
+};
+
+function dense0(vList) {
+    if (vList.length > 1)
+        vList = _.reject(vList, (o => o.c == 0));
+    if (vList.length == 0)
+        vList = [{ 'c': 0 }];
+    return vList;
+}
+
+function symbVprod(U, V) {
+    U = dense0(U);
+    V = dense0(V);
+    var out = [];
+    for (let u of U)
+        for (let v of V) {
+            var su = _.clone(u);
+            var sv = _.clone(v);
+            out.push(_.mergeWith(su, sv, customizer));
+        }
+    return dense0(out);
+};
+
+function symbVProd(vList) {
+    var out = [];
+    const n = vList.length;
+    if (n <= 1)
+        out = vList;
+    if (n > 1) {
+        var out0 = vList[0];
+        for (var j = 1; j < n; j++)
+            out0 = symbVprod(out0, vList[j]);
+        out.push(out0);
+    };
+    return dense0(out[0]);
+};
+
+function ovhato(obj1, obj2) {
+    return _.isEqual(_.omit(obj1, 'c'), _.omit(obj2, 'c'));
+};
+
+function symbOv(vList) {
+    var out = [];
+    const n = vList.length;
+    if (n <= 1)
+        out = vList;
+    if (n > 1) {
+        var szamlalo = 0;
+        /* var nemOv = _.countBy(vList, ovhato);
+        console.log("nemOv.length", nemOv); */
+        while (vList.length > 0 && szamlalo < 100000) {
+            e = _.first(vList);
+            var ov = vList.filter(x => ovhato(x, e));
+            _.pullAllWith(vList, [e], ovhato);
+            //console.log(szamlalo + ": ", ov, vList);
+            var cc = _.sum(ov.map(y => y.c));
+            e.c = cc
+            szamlalo++
+            out.push(e)
+        }
+    }
+    out = dense0(out);
+    return out;
+};
+
+function kiigazit(t) {
+    if (t.startsWith('-'))
+        if (/\]\*\[/.test(t))
+            t = t.slice(1).replace("]*[", ']W[').replace(/"c":(?=.*W)/g, '"c":-').replace('W', '*').replaceAll('--', '');
+        else
+            t = t.slice(1).replace('"c":', '"c":-').replaceAll('--', '');
+    t = '[' + t.replaceAll('*', ',') + ']';
+    return t;
+};
+
+function detM(mat) {
+    var strmat = mat.map(y => y.map(z => JSON.stringify(z)));
+    var det = symbDet(strmat);
+    det = det.map(y => JSON.parse(kiigazit(y)));
+    det = det.map(y => symbOv(symbVProd(y)));
+    console.log("szorzat kész")
+    det = dense0(_.flatten(det));
+    if (det.length > 400)
+        out = "A determináns közel " + det.length + "hosszú amit már nagyon időigényes összevonni."
+    else {
+        det = symbOv(det);
+        console.log("összevonás kész")
+    };
+
+    return det;
+};
+
+//............................ better determinant calculator >
+function domino(A, v) {
+    const n = A.length;
+    var out = [{ "c": 1 }];
+    if (n > 0) {
+        const vn = v.length;
+        var L = [];
+        var veg = _.cloneDeep(A[n - 1][v[vn - 1] - 1]);
+        if (vn % 2 == 1)
+            veg.map(o => o.c = -1 * o.c);
+        L.push(veg);
+        for (i = 0; i < vn - 1; i++)
+            L.push(A[v[i + 1] - 1][v[i] - 1]);
+
+        out = symbVProd(L);
+    }
+    return out;
+};
+
+const range = (start, stop) =>
+    Array.from({ length: stop - start + 1 },
+        (_, i) => start + i,
+    );
+
+function bhez(A, k) {
+    const n = A.length;
+    const b = A[k - 1][n - 1];
+    if (k < n) {
+        const pS = powerSet(range(k + 1, n - 1));
+        var L = [];
+        for (let a of pS) {
+            L.push(symbVprod(b, domino(A, [k, ...a])));
+        }
+        L = _.flatten(L);
+        return L;
+    } else
+        return b;
+}
+
+function detMnew(A) {
+    var out = [];
+    const n = A.length;
+    for (var k = 1; k <= n; k++)
+        out.push(bhez(A, k));
+    out = dense0(_.flatten(out));
+    if (out.length > 400) {
+        detov = false;
+        return out;
+    } else {
+        detov = true;
+        out = symbOv(out);
+    }
+    return out;
+};
+//...........................<end
+var dettagok = 0;
+var detov = true;
+
+function monom2HTML(obj) {
+    if (_.isEqual(obj, { 'c': 1 }))
+        return "1";
+    if (_.isEqual(obj, { 'c': 0 }))
+        return "0";
+    var C = obj.c * 1;
+    if (C == 1)
+        C = " + "
+    else if (C == -1)
+        C = " − ";
+    else if (C > 1)
+        C = " + " + C + "&hairsp;";
+    else if (C < 1)
+        C = " − " + -C + "&hairsp;";
+
+    obj = _.omit(obj, 'c');
+    var m = "";
+    _.forEach(obj, function(value, key) {
+        if (value > 1)
+            m += '&zeta;<sup>' + value + '</sup><sub class="zhindx">' + key + '</sub>';
+        else
+            m += '&zeta;<sub class="zindx">' + key + '</sub>';
+    });
+    m = C + m;
+    return m;
+};
+
+function monomvec2HTML(mv) {
+    dettagok = 0;
+    var txt = "";
+    for (let m of mv) {
+        txt += monom2HTML(m);
+        dettagok++;
+    }
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+
+    if (dettagok > 5000)
+        txt = "A determináns több mint 5000 tagból álló összeg";
+    return txt;
+};
+
+function monom2gp(obj) {
+    if (_.isEqual(obj, { 'c': 1 }))
+        return "1";
+    if (_.isEqual(obj, { 'c': 0 }))
+        return "0";
+    var C = obj.c * 1;
+    if (C == 1)
+        C = "+"
+    else if (C == -1)
+        C = "-";
+    else if (C > 1)
+        C = "+" + C + "*";
+    else if (C < 1)
+        C = "-" + -1 * C + "*";
+
+    obj = _.omit(obj, 'c');
+    var m = "";
+    _.forEach(obj, function(value, key) {
+        if (value > 1)
+            m += 'zetamult([' + key + '])^' + value + '*';
+        else
+            m += 'zetamult([' + key + '])*';
+    });
+    m = C + m;
+    m = m.slice(0, -1);
+    return m;
+};
+
+function monomvec2gp(mv) {
+    var txt = "";
+    for (let m of mv) {
+        txt += monom2gp(m);
+    }
+    txt = "gp(\"" + txt + "\")";
+    return txt;
+};
+
+function detValasz(det) {
+    const elem = document.getElementById("detertek");
+    if (dettagok > 5000)
+        elem.innerHTML = "  &rightarrow; Nem küldtük el.";
+    else {
+        const t = 100000;
+        $('#mycelldet .sagecell_editor textarea.sagecell_commands').val(monomvec2gp(det));
+        $('#mycelldet .sagecell_input button.sagecell_evalButton').click();
+        $('div.sagecell_sessionOutput').css('font-size', '22px');
+        var ra = setInterval(() => {
+            valasz = $('#ideoutdet .sagecell_sessionOutput pre').text();
+            if (valasz != "") {
+                clearInterval(ra);
+                clearInterval(to);
+                elem.innerHTML = " = " + valasz;
+            }
+        }, 50);
+        var to = setTimeout(() => {
+            clearInterval(ra);
+            elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
+        }, t)
+    }
+};
+
+var sarokv = [];
+
+function sarokIndexek() {
+    const $table = $('#outdet table');
+    const meret = $('#outdet table thead tr th').length - 1;
+    const sarkok = $('#outdet table tbody tr td').filter(function() { return (this.innerText == "1" || this.innerText == "0") && $(this).prev('td').text() !== "0" && $(this).prev('td').text() !== "1" }) /*.addClass('sarokleft')*/ ;
+    const egyek = $('#outdet table tbody tr td').filter(function() { return this.innerText == "1" }).addClass('egyatlo');
+    const ne = egyek.length;
+    sarokv = [];
+    sarkok.each(function() {
+        var colIndex = this.cellIndex
+        sarokv.push(colIndex);
+        $table.find("tbody tr, thead tr")
+            .children(":nth-child(" + colIndex + ")")
+            .addClass('columnline');
+        $table.find("tbody tr:nth(" + (colIndex - 1) + ")")
+            .addClass('rowline');
+        $table.find("tbody tr:nth(" + (colIndex - 1) + ")")
+            .children(":nth-child(" + colIndex + ")")
+            .addClass('sarokelem');
+    });
+    const lastegy = $table.find("tbody tr:nth(" + ne + ")")
+        .children(":nth-child(" + (ne + 1) + ")")
+
+    if (lastegy != undefined && lastegy.text() != "0") {
+        lastegy.addClass('sarokelem');
+        lastegy.closest('tr').addClass('rowline');
+        sarokv.push(ne + 1);
+    }
+    sarokv = _.uniq(sarokv);
+    console.log("egyezés: ", _.last(sarokv), meret)
+    if (_.last(sarokv) == meret)
+        $table.find("tbody tr, thead tr")
+        .children(":nth-child(" + meret + ")")
+        .addClass('columnline');
+    sarokv.push(meret + 1);
+    console.log(sarokv);
+};
+
+function drawMat(mat) {
+    const n = mat.length;
+    var txt = '<span style="display:block;width: fit-content;padding-top:15px;padding-right:15px;padding-bottom:46px;"><table id="dettbl " class="table-hideable"> <thead><tr><th></th>';
+    for (var j = 0; j < n; j++)
+        txt += ' <th class="hide-column hide-col">' + (j + 1) + '</th>';
+    txt += '</tr></thead><tbody>';
+    for (var i = 0; i < n; i++) {
+        txt += '<tr><th onclick="hlThisRow(this);">' + (i + 1) + '</th>';
+        var v = mat[i];
+        for (let w of v) {
+            vec = monomvec2HTML(w);
+            if (vec.startsWith(' + '))
+                vec = vec.slice(3);
+            txt += '<td class="hide-column">' + vec + '</td>';
+        }
+        txt += '</tr>';
+    }
+    txt += ' </tbody> </table> <button class="restore-button showpre1" onclick="showColumns();" style="position:absolute;margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns();" style="position:absolute;left:120px;margin-top:8px;">Hide all</button></span>';
+
+    setTimeout(() => { sarokIndexek(); }, 100);
+
+    return txt;
+};
+
+function drawDet() {
+    const detkell = document.getElementById("setdet").checked;
+    const elem = document.getElementById("outdet");
+    const mat = eval(document.getElementById("sdet").value) || Pmbig4;
+    const table = drawMat(mat);
+    if (detkell) {
+        var det0 = detMnew(mat);
+        var det = monomvec2HTML(det0);
+        var ov = " (összevonás után)";
+        if (!detov)
+            ov = " (összevonás nélkül)"
+        elem.innerHTML = "A detemináns" + ov + " egy " + dettagok + " tagú összeg.<br/>" + det + "<span id='detertek' style='color:blue;'></span>" + table;
+        detValasz(det0);
+    } else
+        elem.innerHTML = table;
+
+    hideColumns();
+    // setTimeout(() => { $(".table-hideable th.hide-col").each(function(o) { $(".table-hideable th.hide-col:nth(" + o + ")").trigger('dblclick').trigger('dblclick') }); }, 0);
+};
+
+function catalog(e) {
+    document.getElementById("sdet").value = e.value;
+    drawDet();
+};
+
+//$(function() {
+//$(".table-hideable .hide-col").each(HideColumnIndex);
+$(document).on('dblclick', '.hide-column', HideColumnIndex);
+
+function HideColumnIndex() {
+    var $el = $(this);
+    var $cell = $el.closest('th,td')
+    var $table = $cell.closest('table')
+    if ($el.hasClass('hide-col')) {
+        var colIndex = $cell[0].cellIndex + 1;
+        $table.find("tbody tr, thead tr")
+            .children(":nth-child(" + colIndex + ")")
+            .removeClass('hide-col');
+    } else {
+        var colIndex = $cell[0].cellIndex + 1;
+        $table.find("tbody tr, thead tr")
+            .children(":nth-child(" + colIndex + ")")
+            .addClass('hide-col');
+    };
+    keresztelem();
+}
+
+$(document).on('click', '.hide-column', activateIndex);
+
+function hlThisRow(e) {
+    var $el = $(e);
+    var $table = $el.closest('table');
+    var $row = $el.closest('tr');
+    if (!$row.hasClass('active')) {
+        $table.find("tbody tr.active")
+            .removeClass('active');
+        $row.addClass('active');
+    };
+    keresztelem();
+};
+
+function keresztelem() {
+    $('#outdet table tbody td.keresztelem').removeClass("keresztelem");
+    const m = $('#outdet table tbody tr.active td.active');
+    m.addClass("keresztelem");
+    const txt = m.html() || "A kiválasztott elem...";
+    document.getElementById("keresztelem").innerHTML = txt;
+}
+
+function activateIndex() {
+    var $el = $(this);
+    var $cell = $el.closest('th,td');
+    var $table = $cell.closest('table');
+    var $row = $cell.closest('tr');
+
+    if (!$el.hasClass('active')) {
+        $table.find("tbody tr td.active, thead tr th.active")
+            .removeClass('active');
+
+        var colIndex = $cell[0].cellIndex + 1;
+        $table.find("tbody tr, thead tr")
+            .children(":nth-child(" + colIndex + ")")
+            .addClass('active');
+    };
+
+    if (!$row.hasClass('active') && $cell[0].nodeName != "TH") {
+        $table.find("tbody tr.active")
+            .removeClass('active');
+        $row.addClass('active');
+    };
+    keresztelem();
+}
+
+function showColumns(e) {
+    var $table = $('.table-hideable');
+    $table.find("th, td")
+        .removeClass('hide-col');
+};
+
+function hideColumns(e) {
+    var $table = $('.table-hideable');
+    $table.find("th, td")
+        .addClass('hide-col');
+}
+//})
+
+/* 2*Zeta[2]*Zeta[3, 1]+2*Zeta[2, 1, 3]        2*Zeta[2]*Zeta[2, 3, 1]+Zeta[2]                 -2*Zeta[3]
+            -Zeta[2, 1]                       Zeta[2, 2, 2]+2*Zeta[3, 1, 2]             2*Zeta[2]*Zeta[3, 1]
+-2*Zeta[2]*Zeta[3, 2, 1]-Zeta[2, 2, 1]     -2*Zeta[3]*Zeta[3, 2]-Zeta[2, 2]^2    2*Zeta[2, 3, 1, 2]+2*Zeta[3, 2, 1, 2] */
+
+//4*Zeta[2]*Zeta[3, 1]*Zeta[2, 2, 2]*Zeta[2, 3, 1, 2]+4*Zeta[2]*Zeta[3, 1]*Zeta[2, 2, 2]*Zeta[3, 2, 1, 2]+8*Zeta[2]*Zeta[3, 1]*Zeta[3, 1, 2]*Zeta[2, 3, 1, 2]+8*Zeta[2]*Zeta[3, 1]*Zeta[3, 1, 2]*Zeta[3, 2, 1, 2]+8*Zeta[2]^2*Zeta[3]*Zeta[3, 1]^2*Zeta[3, 2]+4*Zeta[2]*Zeta[2, 2]^2*Zeta[3, 1]*Zeta[2, 1, 3]+4*Zeta[2, 1]*Zeta[2]*Zeta[2, 3, 1]*Zeta[2, 3, 1, 2]+4*Zeta[2, 1]*Zeta[2]*Zeta[2, 3, 1]*Zeta[3, 2, 1, 2]-8*Zeta[2]^3*Zeta[3, 1]*Zeta[2, 3, 1]*Zeta[3, 2, 1]-4*Zeta[2]^2*Zeta[3, 1]*Zeta[2, 2, 1]*Zeta[2, 3, 1]-4*Zeta[2]*Zeta[3]*Zeta[2, 2, 2]*Zeta[3, 2, 1]-8*Zeta[2]*Zeta[3]*Zeta[3, 1, 2]*Zeta[3, 2, 1]+2*Zeta[2]*Zeta[2, 1]*Zeta[2, 3, 1, 2]-4*Zeta[2]^3*Zeta[3, 1]*Zeta[3, 2, 1]+2*Zeta[2]*Zeta[2, 1]*Zeta[3, 2, 1, 2]-2*Zeta[2]^2*Zeta[3, 1]*Zeta[2, 2, 1]-2*Zeta[3]*Zeta[2, 2, 1]*Zeta[2, 2, 2]+4*Zeta[2, 1, 3]*Zeta[2, 2, 2]*Zeta[2, 3, 1, 2]-4*Zeta[2, 1]*Zeta[3]^2*Zeta[3, 2]+8*Zeta[2, 1, 3]*Zeta[3, 1, 2]*Zeta[3, 2, 1, 2]-4*Zeta[3]*Zeta[2, 2, 1]*Zeta[3, 1, 2]+4*Zeta[2, 1, 3]*Zeta[2, 2, 2]*Zeta[3, 2, 1, 2]+8*Zeta[2, 1, 3]*Zeta[3, 1, 2]*Zeta[2, 3, 1, 2]-2*Zeta[2, 1]*Zeta[3]*Zeta[2, 2]^2+4*Zeta[2]^2*Zeta[2, 2]^2*Zeta[3, 1]^2+8*Zeta[2]*Zeta[3]*Zeta[3, 1]*Zeta[3, 2]*Zeta[2, 1, 3]
+//---------------------------------------------------------------------
 function Tegla(V) {
     var it = [],
         T = [];
@@ -3920,6 +4509,11 @@ function setOutputFont12(v) {
     elem.style.fontSize = v + 'px';
 };
 
+function setOutputFontDet(v) {
+    var elem = document.getElementById("outdet");
+    elem.style.fontSize = v + 'px';
+};
+
 function Shuffle(a, b) {
     var s = [];
     if (a.length == 0)
@@ -4373,6 +4967,7 @@ function formk29() {
         s = _.concat(Array(n).fill(1), s0);
 
     const k29 = keplet29(s);
+    console.log(k29)
     const stf = "<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>";
     const sa = leading1(s);
     const L = s.length - sa.length;
@@ -4458,4 +5053,37 @@ function formk29() {
     const rule = " = <hr style='color: #c8c8c870;'/> = "
     var txtall = txtd + rule + txt + rule + txt2 + rule + txt3;
     document.getElementById("outk29").innerHTML = txtall;
-}
+};
+
+// bvector of deterinant
+
+function btag(w) {
+    let a = w[0];
+    let p = w[1];
+    let b = w[2];
+    var tag = [];
+    if (b.length > 0) {
+        let d = expDeriv(conjugate(a), p);
+        let coeff = Math.pow(-1, _.sum(a) + 1) / factorial(p);
+        for (let v of d)
+            tag.push([coeff * v[0], v[1], b]);
+    } else {
+        var d = expDeriv(conjugate(a), p);
+        var coeff = Math.pow(-1, _.sum(a) + 1) / factorial(p);
+        for (let v of d)
+            tag.push([coeff * v[0], v[1]]);
+    }
+    return tag;
+};
+
+function bvector_s(s) {
+    return _.flatten(pozvagas(s).map(y => btag(y)));
+};
+
+function bvector(s) {
+    const na_revs = revlexelotte(s).filter(y => y[0] == 1 && y.length > 1);
+    var out = [];
+    for (let w of na_revs)
+        out.push(bvector_s(w));
+    return out;
+};
