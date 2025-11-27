@@ -1753,6 +1753,88 @@ button.vissza1 {
     box-shadow: 0px 0px 5px 5px #d9d9d9;
 }
 
+sub.zhindx {
+    vertical-align: -0.5em;
+    margin-left: -0.5em;
+}
+
+.table-hideable {
+    width: auto;
+    outline: 2px solid #757575;
+    border-collapse: collapse;
+    margin: 10px;
+}
+
+.table-hideable td,
+.table-hideable th {
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    max-width: auto;
+    border: 1px solid #d8d8d8;
+    padding: 3px;
+    white-space: nowrap;
+    min-width: 40px;
+    /* transition: all 0.3s; */
+}
+
+.table-hideable th {
+    background-color: #d0d0d0;
+    border-color: #a8a8a8;
+}
+
+.hide-col {
+    overflow: hidden !important;
+    max-width: 40px !important;
+    text-overflow: ellipsis !important;
+    /* white-space: nowrap !important; */
+}
+
+.table-hideable tr.active {
+    background-color: #dde7f9;
+    border-color: #cccccc;
+}
+
+.table-hideable td.active {
+    background-color: #dde7f9;
+    border-color: #cccccc;
+}
+
+.table-hideable tbody tr.active th,
+.table-hideable th.active {
+    background-color: #bacac1;
+}
+
+.table-hideable td.keresztelem {
+    background-color: #eef4ff;
+    outline: 2px solid #93b4d2;
+    outline-offset: -4px;
+}
+
+.table-hideable td.columnline,
+.table-hideable th.columnline {
+    border-right: 2px solid #858585;
+}
+
+.table-hideable tr.rowline {
+    border-top: 2px solid #858585;
+}
+
+.table-hideable tbody tr td.sarokelem {
+    background-color: #b90045;
+    color: white;
+    font-weight: 700;
+}
+
+.table-hideable tbody td.blokkzaro {
+    border-top: 2px solid #858585;
+}
+
+.table-hideable tbody td.egyatlo {
+    font-weight: 800;
+    box-shadow: inset 0 0 7px 7px #dfdfdf;
+}
+
 
 
 
