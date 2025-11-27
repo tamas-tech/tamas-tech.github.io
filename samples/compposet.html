@@ -487,11 +487,19 @@
             <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#outdet');idClear('#keresztelem');" title="Clear output">Clear</button>
             <label for="setdet" style="margin-left: 10px;">Determinánssal</label>
             <input type="checkbox" name="setdet" id="setdet" onchange="drawDet();" style="height:20px;width:20px;vertical-align:middle;">
-            <!--<span style="margin-left:5px;font-size:16px;">(1)</span>
-            <label class="switch">
-            <input type="checkbox" id="k29vallaszto" onchange="drawDet();"><span class="slider round"></span></label>
-            <span style="margin-right:10px">(2)</span>
-            <input id="outfont-slider9" oninput="setOutputFontDet(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfont9" />-->
+            <button style="margin-left:10px;" id="sbtglbtn2" onclick="sbTgl('detsettingbar');">⚙</button>
+        </div>
+        <div id="detsettingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+            <div style="margin-bottom: 10px;">
+                <span style="margin-left:5px;font-size:16px;">Teljes szélsség</span>
+                <label class="switch">
+                <input type="checkbox" id="setwmode"><span class="slider round"></span></label>
+                <span style="margin-right:10px">Csak az aktuális elem szélessége</span>
+            </div>
+            <div>
+                <label for="setoutputfont9" style="margin-left: 10px;">&#128474;</label>
+                <input id="outfont-slider9" oninput="setOutputFontDet(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfont9" />
+            </div>
         </div>
         <p id="figydet" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;">dfd fdf </p>
         <p id="outdet" class="kijelzo" style="line-height: 1.5;font-family: Cambria math;"></p>
@@ -502,7 +510,7 @@
             <div id="ideoutdet"></div>
         </div>
         <span id="keresztelem" style="display:inline-block;padding:0 20px;font-family: Cambria Math;"></span>
-    </div>                    
+    </div>                 
                         
      <div class="keret of even" id="k12">
         <b><big class="sorszam">12. (LaTeX)</big></b>
@@ -539,6 +547,7 @@
     </script>
 </body>
 </html>
+
 
 
 
