@@ -3051,14 +3051,31 @@ function catalog(e) {
 $(document).on('dblclick', '.hide-column', HideColumnIndex);
 
 function HideColumnIndex() {
+    const wmode = document.getElementById("setwmode").checked;
     var $el = $(this);
-    var $cell = $el.closest('th,td')
-    var $table = $cell.closest('table')
+    var $cell = $el.closest('th,td');
+    var $table = $cell.closest('table');
+    var $sp = $cell.children('.td-block');
+
     if ($el.hasClass('hide-col')) {
         var colIndex = $cell[0].cellIndex + 1;
-        $table.find("tbody tr, thead tr")
-            .children(":nth-child(" + colIndex + ")")
-            .removeClass('hide-col');
+        if (wmode && $cell[0].nodeName != "TH") {
+            var w = Math.max(40, $sp.width() + 15);
+            var cw = Math.max(40, $cell.width() + 15);
+            console.log(cw, w);
+            if (cw < w)
+                $cell.removeClass('hide-col')
+                .css("max-width", w + "px");
+            else
+                $table.find("tbody tr, thead tr")
+                .children(":nth-child(" + colIndex + ")")
+                .addClass('hide-col');
+        } else {
+            $table.find("tbody tr, thead tr")
+                .children(":nth-child(" + colIndex + ")")
+                .removeClass('hide-col')
+                .css("max-width", w + 10 + "px");
+        }
     } else {
         var colIndex = $cell[0].cellIndex + 1;
         $table.find("tbody tr, thead tr")
@@ -3066,7 +3083,7 @@ function HideColumnIndex() {
             .addClass('hide-col');
     };
     keresztelem();
-}
+};
 
 $(document).on('click', '.hide-column', activateIndex);
 
@@ -5087,3 +5104,4 @@ function bvector(s) {
         out.push(bvector_s(w));
     return out;
 };
+
