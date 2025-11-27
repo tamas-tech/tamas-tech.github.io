@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="samples.css">
     <script src="multipolylog.js"></script>
     <script src="compposet.js"></script>
+    <script src="Matobj.js"></script>
     <script src="../tools/fraction.min.js"></script>
     <script src="../tools/YourCombinations.js"></script>
       <script src="../tools/cytoscape.min.js"></script>
@@ -39,6 +40,13 @@
             evalButtonText: 'OK',
             editor: 'textarea',
             hide: ["editor", "evalButton", "permalink"],
+        });
+        sagecell.makeSagecell({
+            inputLocation: '#mycelldet',
+            outputLocation: '#ideoutdet',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink", "output"],
         });
     </script>
 </head>
@@ -446,8 +454,58 @@
         <p id="figyk29" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
         <p id="outk29" ondblclick="cleark29();" style="user-select:none;margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
     </div>
-    <div class="keret of odd" id="k11">
+
+    <div class="keret of odd" id="k11" style="margin-bottom:10px;">
         <b><big class="sorszam">11.</big></b>
+        <p class="keplet" id="keplet_k11" style="padding-bottom:10px;margin-bottom:10px;">\[\text{Itt lesz a determináns képlete}\]
+        </p>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
+            <input class="inpvec" type="text" id="sdet" value="Pm33" style="margin-right:10px;display:none;">
+            <select onchange="catalog(this);" style="height:30px;border:none;border-bottom: 1px solid #7c7c7c;font-size:105%;background-color:inherit">
+                <option value="Pm33">(1,2,2,3)</option>
+                <option value="T22">(1,2,2,1,2)</option>
+                <option value="T33">(1,2,3,1,2)</option>
+                <option value="T44">(1,2,3,1,3)</option>
+                <option value="Pmbig5">(1,3,2,3,2)</option>
+                <option value="Pmbig4">(1,1,2,3,1,2)</option>
+                <option value="Pmbig3">(1,2,3,1,1,4)</option>
+                <option value="Pmbig2">(1,1,2,3,1,1,4)</option>
+                <option value="T55">(1,1,5,3,1,1,4)</option>
+                <option value="Pmbig1">(1,2,1,1,3,1,1,1,4)</option>
+                <option value="Pmbig7">(1,1,2,1,1,3,1,1,1,4)</option>
+                <option value="Pmbig8">(1,3,1,1,1,1,2,1,1,1)</option>
+                <option value="Pmbig6">(1,1,1,2,1,1,3,1,1,1,4)</option>
+                <option value="Pmbig10">(1,1,1,5,3,1,1,4,1,1,2)</option>
+                <option value="Pmbig11">(1,1,1,3,1,1,2,4,1,1,1,2)</option>
+                <option value="Pmbig0">(1,2,1,1,1, 4,3,1,2,1,1,1,5,2)</option>
+                <option value="Pmbig16">(1,1,2,1,1,3,1,1,1,4, 1,1,2,3,1,1,5)</option>
+            </select>
+        </div>
+        <div style="margin-top:2px;padding:5px;">
+            <button class="showpre1" onclick="drawDet();" title="Calculate input">Calculate</button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#outdet');idClear('#keresztelem');" title="Clear output">Clear</button>
+            <label for="setdet" style="margin-left: 10px;">Determinánssal</label>
+            <input type="checkbox" name="setdet" id="setdet" onchange="drawDet();" style="height:20px;width:20px;vertical-align:middle;">
+            <!--<span style="margin-left:5px;font-size:16px;">(1)</span>
+            <label class="switch">
+            <input type="checkbox" id="k29vallaszto" onchange="drawDet();"><span class="slider round"></span></label>
+            <span style="margin-right:10px">(2)</span>
+            <input id="outfont-slider9" oninput="setOutputFontDet(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfont9" />-->
+        </div>
+        <p id="figydet" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;">dfd fdf </p>
+        <p id="outdet" class="kijelzo" style="line-height: 1.5;font-family: Cambria math;"></p>
+        <div id="mycelldet" style="margin-top:6px;" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv" style="padding:0;">
+            <div id="ideoutdet"></div>
+        </div>
+        <span id="keresztelem" style="display:inline-block;padding:0 20px;font-family: Cambria Math;"></span>
+    </div>                    
+                        
+     <div class="keret of even" id="k12">
+        <b><big class="sorszam">12. (LaTeX)</big></b>
         <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\LaTeX \text{ fordító}\]
         </p>
         <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
@@ -463,6 +521,7 @@
         <p class="kijelzo" id="gen_latex" style="line-height: 1.5;font-family: Cambria math;"></p>
         <p id="figylatex" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     </div>
+                        
     <script>
         setTimeout(() => {
             setgenKeplet2();
@@ -480,6 +539,7 @@
     </script>
 </body>
 </html>
+
 
 
 
