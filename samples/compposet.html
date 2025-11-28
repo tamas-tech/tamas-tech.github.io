@@ -55,6 +55,13 @@
             editor: 'textarea',
             hide: ["editor", "evalButton", "permalink", "output"],
         });
+         sagecell.makeSagecell({
+            inputLocation: '#mycellk29',
+            outputLocation: '#ideoutk29',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink", "output"],
+        });
     </script>
 </head>
 <body>
@@ -525,6 +532,12 @@
         <div class="outputoutdiv" style="padding:0;">
             <div id="ideoutdetshuff"></div>
         </div>
+       <div id="mycellk29" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv" style="padding:0;">
+            <div id="ideoutk29"></div>
+        </div>
         <span id="keresztelem" style="display:inline-block;padding:0 20px;font-family: Cambria Math;"></span>
     </div>        
                         
@@ -563,6 +576,7 @@
     </script>
 </body>
 </html>
+
 
 
 
