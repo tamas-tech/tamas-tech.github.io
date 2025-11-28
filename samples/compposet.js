@@ -2854,6 +2854,7 @@ function detMnew(A) {
 //...........................<end
 var dettagok = 0;
 var detov = true;
+var k29tagok = 0;
 
 function monom2HTML(obj) {
     if (_.isEqual(obj, { 'c': 1 }))
@@ -2957,6 +2958,8 @@ function detValasz(det) {
     }
 };
 
+// regshuff determinant
+
 function reg_shuff2gp() {
     const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
     const de = genDual(s);
@@ -2999,6 +3002,136 @@ function regshuffValasz() {
     }, t)
 };
 
+function reg_shuff_det() {
+    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
+    const de = genDual(s);
+
+    var dtxt = '&zeta;(reg<sub><span style="font-size:larger;">&#x29E2;</span></sub>(' + s.toString() + ')) = ';
+    for (let v of de) {
+        var c = v[0];
+        var ertek = dualofv(v[1]).toString();
+        if (c == -1)
+            c = " − "
+        else if (c == 1)
+            c = " + "
+        else if (c > 1)
+            c = " + " + c + "&hairsp;";
+        else if (c < 1)
+            c = " − " + Math.abs(c) + "&hairsp;";
+        if (v[1] != "")
+            dtxt += c + "&zeta;<sub class='zindx'>" + ertek + "</sub>";
+    };
+
+    dtxt = dtxt.replaceAll("=  +", "= ");
+    return dtxt;
+};
+
+// keplet29 zetaval 
+
+function Poztagzeta(w) {
+    let a = w[0];
+    let p = w[1];
+    let b = w[2];
+    var tag = [];
+    if (b.length > 0) {
+        for (var k = 0; k <= p; k++) {
+            let d1 = expDeriv(conjugate(a), k);
+            let d2 = expDeriv(dualofv(b), p - k);
+            let coeff = Math.pow(-1, _.sum(a) + p + k + 1) * binomial(p, k) / factorial(p);
+            for (let v1 of d1) {
+                for (let v2 of d2) {
+                    tag.push([coeff * v1[0] * v2[0], v1[1], v2[1]]);
+                }
+            }
+        }
+    } else {
+        var d = expDeriv(conjugate(a), p);
+        var coeff = Math.pow(-1, _.sum(a) + 1) / factorial(p);
+        for (let v of d)
+            tag.push([coeff * v[0], v[1]]);
+    }
+    return tag;
+};
+
+function keplet29zeta(s) {
+    return out = _.flatten(pozvagas(s).map(y => Poztagzeta(y)));
+};
+
+function k29zeta2gp() {
+    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
+    const de = keplet29zeta(s);
+
+    var txt = "";
+    for (let v of de) {
+        var c = v[0];
+        var e1 = v[1].toString();
+        var e2 = "";
+        if (v.length == 3)
+            e2 = v[2].toString();
+        if (c == -1)
+            c = "-"
+        else if (c == 1)
+            c = "+"
+        else if (c > 1)
+            c = "+" + c + "*";
+        else if (c < 1)
+            c += "*";
+        txt += c + "zetamult([" + e1 + "])";
+        if (v.length == 3)
+            txt += "*zetamult([" + e2 + "])";
+    };
+    txt = "gp(\"" + txt + "\")";
+    return txt;
+};
+
+function k29_det() {
+    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
+    const de = keplet29zeta(s);
+    k29tagok = 0
+    var dtxt = '&zeta;<sub>k29</sub>(' + s.toString() + ') = ';
+    for (let v of de) {
+        var c = v[0];
+        var e1 = v[1].toString();
+        if (v.length == 3)
+            var e2 = v[2].toString();
+        if (c == -1)
+            c = " − "
+        else if (c == 1)
+            c = " + "
+        else if (c > 1)
+            c = " + " + c + "&hairsp;";
+        else if (c < 1)
+            c = " − " + Math.abs(c) + "&hairsp;";
+        dtxt += c + "&zeta;<sub class='zindx'>" + e1 + "</sub>"
+        if (v.length == 3)
+            dtxt += "&hairsp;&zeta;<sub class='zindx'>" + e2 + "</sub>";
+        k29tagok++;
+    };
+
+    dtxt = dtxt.replaceAll("=  +", "= ");
+    return dtxt;
+};
+
+function k29Valasz() {
+    const elem = document.getElementById("detk29ertek");
+    const t = 100000;
+    $('#mycellk29 .sagecell_editor textarea.sagecell_commands').val(k29zeta2gp());
+    $('#mycellk29 .sagecell_input button.sagecell_evalButton').click();
+    var ra = setInterval(() => {
+        valasz = $('#ideoutk29 .sagecell_sessionOutput pre').text();
+        if (valasz != "") {
+            clearInterval(ra);
+            clearInterval(to);
+            elem.innerHTML = " = " + valasz;
+        }
+    }, 50);
+    var to = setTimeout(() => {
+        clearInterval(ra);
+        elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
+    }, t)
+};
+
+////////
 var sarokv = [];
 
 function sarokIndexek() {
@@ -3062,30 +3195,6 @@ function drawMat(mat) {
     return txt;
 };
 
-function reg_shuff_det() {
-    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
-    const de = genDual(s);
-
-    var dtxt = '&zeta;(reg<sub><span style="font-size:larger;">&#x29E2;</span></sub>(' + s.toString() + ')) = ';
-    for (let v of de) {
-        var c = v[0];
-        var ertek = dualofv(v[1]).toString();
-        if (c == -1)
-            c = " − "
-        else if (c == 1)
-            c = " + "
-        else if (c > 1)
-            c = " + " + c + "&hairsp;";
-        else if (c < 1)
-            c = " − " + Math.abs(c) + "&hairsp;";
-        if (v[1] != "")
-            dtxt += c + "&zeta;<sub class='zindx'>" + ertek + "</sub>";
-    };
-
-    dtxt = dtxt.replaceAll("=  +", "= ");
-    return dtxt;
-};
-
 function drawDet() {
     const detkell = document.getElementById("setdet").checked;
     const elem = document.getElementById("outdet");
@@ -3094,12 +3203,14 @@ function drawDet() {
     if (detkell) {
         var det0 = detMnew(mat);
         var det = monomvec2HTML(det0);
+        var k29 = k29_det();
         var ov = " (összevonás után)";
         if (!detov)
             ov = " (összevonás nélkül)"
-        elem.innerHTML = "A detemináns" + ov + " egy " + dettagok + " tagú összeg.<br/>" + det + "<span id='detertek' style='color:blue;'></span><hr/>" + reg_shuff_det() + "<span id='detshuffertek' style='color:blue;'></span>" + table;
+        elem.innerHTML = "A detemináns" + ov + " egy " + dettagok + " tagú összeg.<br/>" + det + "<span id='detertek' style='color:blue;'></span><hr/>" + reg_shuff_det() + "<span id='detshuffertek' style='color:blue;'></span><hr/> A <b>képlet29</b> eredménye egy " + k29tagok + " tagú összeg.<br/>" + k29 + "<span id='detk29ertek' style='color:blue;'></span>" + table;
         detValasz(det0);
         regshuffValasz();
+        k29Valasz();
     } else
         elem.innerHTML = table;
 
