@@ -2942,7 +2942,6 @@ function detValasz(det) {
         const t = 100000;
         $('#mycelldet .sagecell_editor textarea.sagecell_commands').val(monomvec2gp(det));
         $('#mycelldet .sagecell_input button.sagecell_evalButton').click();
-        $('div.sagecell_sessionOutput').css('font-size', '22px');
         var ra = setInterval(() => {
             valasz = $('#ideoutdet .sagecell_sessionOutput pre').text();
             if (valasz != "") {
@@ -2956,6 +2955,48 @@ function detValasz(det) {
             elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
         }, t)
     }
+};
+
+function reg_shuff2gp() {
+    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
+    const de = genDual(s);
+
+    var txt = '';
+    for (let v of de) {
+        var c = v[0];
+        var ertek = dualofv(v[1]).toString();
+        if (c == -1)
+            c = "-"
+        else if (c == 1)
+            c = "+"
+        else if (c > 1)
+            c = "+" + c + "*";
+        else if (c < 1)
+            c += "*";
+        if (v[1] != "")
+            txt += c + "zetamult([" + ertek + "])";
+    };
+    txt = "gp(\"" + txt + "\")";
+    return txt;
+};
+
+function regshuffValasz() {
+    const elem = document.getElementById("detshuffertek");
+    const t = 100000;
+    $('#mycelldetshuff .sagecell_editor textarea.sagecell_commands').val(reg_shuff2gp());
+    $('#mycelldetshuff .sagecell_input button.sagecell_evalButton').click();
+    var ra = setInterval(() => {
+        valasz = $('#ideoutdetshuff .sagecell_sessionOutput pre').text();
+        if (valasz != "") {
+            clearInterval(ra);
+            clearInterval(to);
+            elem.innerHTML = " = " + valasz;
+        }
+    }, 50);
+    var to = setTimeout(() => {
+        clearInterval(ra);
+        elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
+    }, t)
 };
 
 var sarokv = [];
@@ -2999,7 +3040,7 @@ function sarokIndexek() {
 
 function drawMat(mat) {
     const n = mat.length;
-    var txt = '<span style="display:block;width: fit-content;padding-top:15px;padding-right:15px;padding-bottom:46px;"><table id="dettbl " class="table-hideable"> <thead><tr><th></th>';
+    var txt = '<span style="display:block;width:fit-content;padding-top:15px;padding-right:15px;padding-bottom:46px;"><table id="dettbl " class="table-hideable"> <thead><tr><th></th>';
     for (var j = 0; j < n; j++)
         txt += ' <th class="hide-column hide-col">' + (j + 1) + '</th>';
     txt += '</tr></thead><tbody>';
@@ -3021,6 +3062,30 @@ function drawMat(mat) {
     return txt;
 };
 
+function reg_shuff_det() {
+    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
+    const de = genDual(s);
+
+    var dtxt = '&zeta;(reg<sub><span style="font-size:larger;">&#x29E2;</span></sub>(' + s.toString() + ')) = ';
+    for (let v of de) {
+        var c = v[0];
+        var ertek = dualofv(v[1]).toString();
+        if (c == -1)
+            c = " − "
+        else if (c == 1)
+            c = " + "
+        else if (c > 1)
+            c = " + " + c + "&hairsp;";
+        else if (c < 1)
+            c = " − " + Math.abs(c) + "&hairsp;";
+        if (v[1] != "")
+            dtxt += c + "&zeta;<sub class='zindx'>" + ertek + "</sub>";
+    };
+
+    dtxt = dtxt.replaceAll("=  +", "= ");
+    return dtxt;
+};
+
 function drawDet() {
     const detkell = document.getElementById("setdet").checked;
     const elem = document.getElementById("outdet");
@@ -3032,8 +3097,9 @@ function drawDet() {
         var ov = " (összevonás után)";
         if (!detov)
             ov = " (összevonás nélkül)"
-        elem.innerHTML = "A detemináns" + ov + " egy " + dettagok + " tagú összeg.<br/>" + det + "<span id='detertek' style='color:blue;'></span>" + table;
+        elem.innerHTML = "A detemináns" + ov + " egy " + dettagok + " tagú összeg.<br/>" + det + "<span id='detertek' style='color:blue;'></span><hr/>" + reg_shuff_det() + "<span id='detshuffertek' style='color:blue;'></span>" + table;
         detValasz(det0);
+        regshuffValasz();
     } else
         elem.innerHTML = table;
 
