@@ -3152,6 +3152,25 @@ function k29Valasz(s) {
     }
 };
 
+function detmk29Valasz(kul) {
+    const elem = document.getElementById("detmk29ertek");
+    const t = 100000;
+    $('#mycelldetmk29 .sagecell_editor textarea.sagecell_commands').val(monomvec2gp(kul));
+    $('#mycelldetmk29 .sagecell_input button.sagecell_evalButton').click();
+    var ram = setInterval(() => {
+        valasz = $('#ideoutdetmk29 .sagecell_sessionOutput pre').text();
+        if (valasz != "") {
+            clearInterval(ram);
+            clearInterval(tom);
+            elem.innerHTML = " = " + valasz;
+        }
+    }, 50);
+    var tom = setTimeout(() => {
+        clearInterval(ram);
+        elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
+    }, t)
+};
+
 ////////
 var sarokv = [];
 
@@ -3204,7 +3223,7 @@ function drawMat(mat) {
             vec = monomvec2HTML(w);
             if (vec.startsWith(' + '))
                 vec = vec.slice(3);
-            txt += '<td class="hide-column"><span class="td-block" data-title="&zeta;<sub>2,1,2</sub>">' + vec + '</span></td>';
+            txt += '<td class="hide-column"><span class="td-block">' + vec + '</span></td>';
         }
         txt += '</tr>';
     }
@@ -3225,14 +3244,17 @@ function drawDet() {
     const detkell = document.getElementById("setdet").checked;
     const k29kell = document.getElementById("setk29").checked;
     const regshuffkell = document.getElementById("setregshuff").checked;
+    const detmk29kell = document.getElementById("setdetmk29").checked;
     const elem = document.getElementById("outdet");
     elem.innerHTML = "HIBA";
     const mat = s2mat(s);
     const table = drawMat(mat);
     var txt = "";
     if (detallkell) {
-        if (detkell) {
+        if (detkell || detmk29kell) {
             var det0 = detMnew(mat);
+        }
+        if (detkell) {
             var det = monomvec2HTML(det0);
             var ov = " (összevonás után)";
             if (dettagok > tagmax)
@@ -3246,9 +3268,18 @@ function drawDet() {
             if (k29tagok > tagmax)
                 k29 = "Az összeg tagjainak száma(" + k29tagok + ") meghaladja a maximálisan megjeleníthető <b style='color:red;'>" + tagmax + "</b> értéket.";
             txt += "A <b>képlet29</b> eredménye egy " + k29tagok + " tagú összeg.<br/>" + k29 + "<span id='detk29ertek' style='color:blue;'></span><hr/>";
-        }
+        };
         if (regshuffkell)
             txt += reg_shuff_det(s) + "<span id='detshuffertek' style='color:blue;'></span><hr/>";
+        if (detmk29kell) {
+            var det00 = _.cloneDeep(det0);
+            var kul = symbOv(_.flatten([det00, symbVprod([{ "c": -1 }], vList2obj(keplet29zeta(s), 1))]));
+            var detmk29 = monomvec2HTML(kul);
+            var detmk29tagok = kul.length;
+            if (detmk29tagok > tagmax)
+                detk29 = "A különbség tagjainak száma(" + detmk29tagok + ") meghaladja a maximálisan megjeleníthető <b style='color:red;'>" + tagmax + "</b> értéket.";
+            txt += "A det - képlet29 különbség összevonás után egy " + detmk29tagok + " tagból álló összeg<br/>" + detmk29 + "<span id='detmk29ertek' style='color:blue;'></span><hr/>"
+        };
 
         elem.innerHTML = txt + table;
         if (detkell)
@@ -3257,7 +3288,8 @@ function drawDet() {
             k29Valasz(s);
         if (regshuffkell)
             regshuffValasz(s);
-
+        if (detmk29kell)
+            detmk29Valasz(kul);
     } else
         elem.innerHTML = table;
 
