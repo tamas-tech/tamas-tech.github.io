@@ -2102,6 +2102,13 @@ function Nconc(L) {
     return out;
 };
 
+function Conc(L) {
+    var out = [];
+    for (let v of L)
+        out = _.concat(out, v);
+    return out;
+};
+
 function fuzottcomp(Av, Bv) {
     const kiv = _.isEqual(Bv, []) && _.includes((Av.map(y => _.isEqual(y, []))), true);
     var out = [];
@@ -2855,6 +2862,7 @@ function detMnew(A) {
 var dettagok = 0;
 var detov = true;
 var k29tagok = 0;
+var kuldmax = 2000;
 
 function monom2HTML(obj) {
     if (_.isEqual(obj, { 'c': 1 }))
@@ -2893,8 +2901,8 @@ function monomvec2HTML(mv) {
     if (txt.startsWith(" + "))
         txt = txt.slice(3);
 
-    if (dettagok > 5000)
-        txt = "A determináns több mint 5000 tagból álló összeg";
+    if (dettagok > kuldmax)
+        txt = "A determináns tagjainak a száma meghaladja az elküldéshez megengedett maximális <b style='color:red;'>" + kuldmax + "</b> értéket";
     return txt;
 };
 
@@ -2937,7 +2945,7 @@ function monomvec2gp(mv) {
 
 function detValasz(det) {
     const elem = document.getElementById("detertek");
-    if (dettagok > 5000)
+    if (dettagok > kuldmax)
         elem.innerHTML = "  &rightarrow; Nem küldtük el.";
     else {
         const t = 100000;
@@ -2960,8 +2968,7 @@ function detValasz(det) {
 
 // regshuff determinant
 
-function reg_shuff2gp() {
-    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
+function reg_shuff2gp(s) {
     const de = genDual(s);
 
     var txt = '';
@@ -2983,10 +2990,10 @@ function reg_shuff2gp() {
     return txt;
 };
 
-function regshuffValasz() {
+function regshuffValasz(s) {
     const elem = document.getElementById("detshuffertek");
     const t = 100000;
-    $('#mycelldetshuff .sagecell_editor textarea.sagecell_commands').val(reg_shuff2gp());
+    $('#mycelldetshuff .sagecell_editor textarea.sagecell_commands').val(reg_shuff2gp(s));
     $('#mycelldetshuff .sagecell_input button.sagecell_evalButton').click();
     var ra = setInterval(() => {
         valasz = $('#ideoutdetshuff .sagecell_sessionOutput pre').text();
@@ -3002,8 +3009,8 @@ function regshuffValasz() {
     }, t)
 };
 
-function reg_shuff_det() {
-    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
+function reg_shuff_det(s) {
+    //const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
     const de = genDual(s);
 
     var dtxt = '&zeta;(reg<sub><span style="font-size:larger;">&#x29E2;</span></sub>(' + s.toString() + ')) = ';
@@ -3057,11 +3064,14 @@ function keplet29zeta(s) {
     return out = _.flatten(pozvagas(s).map(y => Poztagzeta(y)));
 };
 
-function k29zeta2gp() {
-    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
+function k29zeta2gp(s) {
     const de = keplet29zeta(s);
-
     var txt = "";
+    if (de.length > 400)
+        txt = monomvec2gp(vList2obj(de, 1));
+    else
+        txt = monomvec2gp(symbOv(vList2obj(de, 1)));
+    /* var txt = "";
     for (let v of de) {
         var c = v[0];
         var e1 = v[1].toString();
@@ -3080,55 +3090,68 @@ function k29zeta2gp() {
         if (v.length == 3)
             txt += "*zetamult([" + e2 + "])";
     };
-    txt = "gp(\"" + txt + "\")";
+    txt = "gp(\"" + txt + "\")";*/
     return txt;
 };
 
-function k29_det() {
-    const s = JSON.parse("[" + $('#selects option:selected').text().slice(1, -1) + "]");
+function k29_det(s) {
+    k29tagok = 0;
     const de = keplet29zeta(s);
-    k29tagok = 0
-    var dtxt = '&zeta;<sub>k29</sub>(' + s.toString() + ') = ';
-    for (let v of de) {
-        var c = v[0];
-        var e1 = v[1].toString();
-        if (v.length == 3)
-            var e2 = v[2].toString();
-        if (c == -1)
-            c = " − "
-        else if (c == 1)
-            c = " + "
-        else if (c > 1)
-            c = " + " + c + "&hairsp;";
-        else if (c < 1)
-            c = " − " + Math.abs(c) + "&hairsp;";
-        dtxt += c + "&zeta;<sub class='zindx'>" + e1 + "</sub>"
-        if (v.length == 3)
-            dtxt += "&hairsp;&zeta;<sub class='zindx'>" + e2 + "</sub>";
-        k29tagok++;
-    };
-
+    const deobj = vList2obj(de, 1);
+    k29tagok = deobj.length;
+    var dtxt = '&zeta;<sub>k29</sub>(' + s.toString() + ')';
+    if (de.length < 400) {
+        var ov = symbOv(deobj);
+        k29tagok = ov.length;
+        dtxt += " (összevonás után) = " + monomvec2HTML(ov);
+    } else {
+        dtxt += " (összevonás nélkül) = " + monomvec2HTML(deobj);
+        /* for (let v of de) {
+            var c = v[0];
+            var e1 = v[1].toString();
+            if (v.length == 3)
+                var e2 = v[2].toString();
+            if (c == -1)
+                c = " − "
+            else if (c == 1)
+                c = " + "
+            else if (c > 1)
+                c = " + " + c + "&hairsp;";
+            else if (c < 1)
+                c = " − " + Math.abs(c) + "&hairsp;";
+            dtxt += c + "&zeta;<sub class='zindx'>" + e1 + "</sub>"
+            if (v.length == 3)
+                dtxt += "&hairsp;&zeta;<sub class='zindx'>" + e2 + "</sub>";
+            k29tagok++;
+        }; */
+    }
+    if (k29tagok > kuldmax)
+        dtxt = "A képlet29 tagjainak a száma meghaladja az elküldéshez megengedett maximális <b style='color:red;'>" + kuldmax + "</b> értéket";
     dtxt = dtxt.replaceAll("=  +", "= ");
     return dtxt;
 };
 
-function k29Valasz() {
+function k29Valasz(s) {
     const elem = document.getElementById("detk29ertek");
-    const t = 100000;
-    $('#mycellk29 .sagecell_editor textarea.sagecell_commands').val(k29zeta2gp());
-    $('#mycellk29 .sagecell_input button.sagecell_evalButton').click();
-    var ra = setInterval(() => {
-        valasz = $('#ideoutk29 .sagecell_sessionOutput pre').text();
-        if (valasz != "") {
+    if (k29tagok > kuldmax)
+        elem.innerHTML = "  &rightarrow; Nem küldtük el.";
+    else {
+        const t = 100000;
+        $('#mycellk29 .sagecell_editor textarea.sagecell_commands').val(k29zeta2gp(s));
+        $('#mycellk29 .sagecell_input button.sagecell_evalButton').click();
+        var ra = setInterval(() => {
+            valasz = $('#ideoutk29 .sagecell_sessionOutput pre').text();
+            if (valasz != "") {
+                clearInterval(ra);
+                clearInterval(to);
+                elem.innerHTML = " = " + valasz;
+            }
+        }, 50);
+        var to = setTimeout(() => {
             clearInterval(ra);
-            clearInterval(to);
-            elem.innerHTML = " = " + valasz;
-        }
-    }, 50);
-    var to = setTimeout(() => {
-        clearInterval(ra);
-        elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
-    }, t)
+            elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
+        }, t)
+    }
 };
 
 ////////
@@ -3162,13 +3185,12 @@ function sarokIndexek() {
         sarokv.push(ne + 1);
     }
     sarokv = _.uniq(sarokv);
-    console.log("egyezés: ", _.last(sarokv), meret)
     if (_.last(sarokv) == meret)
         $table.find("tbody tr, thead tr")
         .children(":nth-child(" + meret + ")")
         .addClass('columnline');
     sarokv.push(meret + 1);
-    console.log(sarokv);
+    //console.log("sarokv: ", sarokv);
 };
 
 function drawMat(mat) {
@@ -3195,27 +3217,33 @@ function drawMat(mat) {
     return txt;
 };
 
+// Kapcolodó részek a dokumentumban
+// --> bvector of deterinant and the full determinant in object-vector  form
+
 function drawDet() {
+    document.getElementById("figydet").style.display = "none";
+    const s = kiszed_dbl("sdet", "figydet");
     const detkell = document.getElementById("setdet").checked;
     const elem = document.getElementById("outdet");
-    const mat = eval(document.getElementById("sdet").value) || Pmbig4;
+    elem.innerHTML = "HIBA";
+    //const mat = eval(document.getElementById("sdet").value) || Pmbig4;
+    const mat = s2mat(s);
     const table = drawMat(mat);
     if (detkell) {
         var det0 = detMnew(mat);
         var det = monomvec2HTML(det0);
-        var k29 = k29_det();
+        var k29 = k29_det(s);
         var ov = " (összevonás után)";
         if (!detov)
             ov = " (összevonás nélkül)"
-        elem.innerHTML = "A detemináns" + ov + " egy " + dettagok + " tagú összeg.<br/>" + det + "<span id='detertek' style='color:blue;'></span><hr/>" + reg_shuff_det() + "<span id='detshuffertek' style='color:blue;'></span><hr/> A <b>képlet29</b> eredménye egy " + k29tagok + " tagú összeg.<br/>" + k29 + "<span id='detk29ertek' style='color:blue;'></span>" + table;
+        elem.innerHTML = "A detemináns" + ov + " egy " + dettagok + " tagú összeg.<br/>" + det + "<span id='detertek' style='color:blue;'></span><hr/>" + reg_shuff_det(s) + "<span id='detshuffertek' style='color:blue;'></span><hr/> A <b>képlet29</b> eredménye egy " + k29tagok + " tagú összeg.<br/>" + k29 + "<span id='detk29ertek' style='color:blue;'></span>" + table;
         detValasz(det0);
-        regshuffValasz();
-        k29Valasz();
+        regshuffValasz(s);
+        k29Valasz(s);
     } else
         elem.innerHTML = table;
 
     hideColumns();
-    // setTimeout(() => { $(".table-hideable th.hide-col").each(function(o) { $(".table-hideable th.hide-col:nth(" + o + ")").trigger('dblclick').trigger('dblclick') }); }, 0);
 };
 
 function catalog(e) {
@@ -3223,8 +3251,6 @@ function catalog(e) {
     drawDet();
 };
 
-//$(function() {
-//$(".table-hideable .hide-col").each(HideColumnIndex);
 $(document).on('dblclick', '.hide-column', HideColumnIndex);
 
 function HideColumnIndex() {
@@ -5249,7 +5275,7 @@ function formk29() {
     document.getElementById("outk29").innerHTML = txtall;
 };
 
-// bvector of deterinant
+// bvector of deterinant and the full determinant in object-vector  form
 
 function btag(w) {
     let a = w[0];
@@ -5280,4 +5306,93 @@ function bvector(s) {
     for (let w of na_revs)
         out.push(bvector_s(w));
     return out;
+};
+
+function vec2obj(v, oszto) {
+    var obj = _.countBy(v.slice(1));
+    obj['c'] = v[0] / oszto;
+    return obj;
+};
+
+function vList2obj(vL, oszto) {
+    var out = [];
+    for (let v of vL)
+        out.push(vec2obj(v, oszto));
+    return out;
+};
+
+function fuzes(i, j, sarkok, diff, sobj) {
+    var L = [];
+    for (var t = i; t < j; t++) {
+        L.push(nconc([diff[t]], sobj[sarkok[t]]));
+    }
+    L.push(sobj[sarkok[j]]);
+    return Conc(L.reverse());
+};
+
+function s2mat(s) {
+    const n = s.length - 1;
+    const b = bvector(s);
+    const B = blokkmeret(s);
+    const sarkok = B[0].slice(0, -1);
+    var diff = [];
+    for (var k = 0; k < sarkok.length - 1; k++)
+        diff.push(sarkok[k + 1] - sarkok[k] - 1);
+    diff.push(0);
+    const sarokelemek = B[1].slice(0, -1);
+    const sobj = {};
+    const fuzesek = {};
+    for (var i = 0; i < sarkok.length; i++) {
+        sobj[sarkok[i]] = sarokelemek[i];
+    }
+    for (var i = 0; i < sarkok.length; i++) {
+        for (var j = i; j < sarkok.length; j++) {
+            var indx = [sarkok[i], sarkok[j]].toString();
+            fuzesek[indx] = fuzes(i, j, sarkok, diff, sobj);
+        }
+    }
+    // console.log(sobj)
+    // console.log(fuzesek)
+    mat = [];
+    for (var i = 0; i < n; i++) {
+        const e0 = _.last(sarkok.filter(y => y <= i + 1)) || 1;
+        const e1 = _.find(sarkok, y => y > i + 1) || n;
+        var sor = [];
+        for (var j = 0; j < n; j++) {
+            const ej = _.find(sarkok, y => y > j + 1) || n;
+            const indx = [ej, e0].toString();
+            if (i > j) {
+                if (i - j == 1) {
+                    if (_.includes(sarkok, i + 1)) {
+                        sor.push([vec2obj([1, sobj[i + 1]], Math.pow(-1, _.sum(sobj[i + 1])))]);
+                    } else
+                        sor.push([{ 'c': 0 }]);
+                } else if (e0 <= j + 1 && j + 1 < e1)
+                    sor.push([{ 'c': 0 }]);
+                else {
+                    //sor.push([vec2obj([1, [j + 2, ej, e0, i + 1]])]);
+                    var rend = ej - j - 2;
+                    var a = nconc([i + 1 - e0], fuzesek[indx]);
+                    sor.push(vList2obj(expDeriv(a, rend), factorial(rend) * Math.pow(-1, _.sum(a))));
+                }
+            } else if (j == n - 1) {
+                sor.push(vList2obj(b[i], 1));
+            } else if (i == j)
+                sor.push([{ 'c': 1 }]);
+            else
+                sor.push([{ 'c': 0 }]);
+        }
+        mat.push(sor);
+    }
+    return mat;
+};
+
+function blokkmeret(s) {
+    s = _.dropRight(s);
+    const rb = rbontas(s);
+    var v = rb[1].reverse();
+    var u = rb[0].reverse();
+    u = u.map(y => dualofv([y + 1]))
+    var kv = kum(v).map(y => y + 1);
+    return [kv, u];
 };
