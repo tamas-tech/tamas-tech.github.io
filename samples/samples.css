@@ -1774,7 +1774,7 @@ sub.zhindx {
     border: 1px solid #d8d8d8;
     padding: 3px;
     white-space: nowrap;
-    min-width: 40px;
+    min-width: 1.9em;
     /* transition: all 0.3s; */
 }
 
@@ -1785,7 +1785,7 @@ sub.zhindx {
 
 .hide-col {
     overflow: hidden !important;
-    max-width: 40px !important;
+    max-width: 1.9em !important;
     text-overflow: ellipsis !important;
     /* white-space: nowrap !important; */
 }
@@ -1834,6 +1834,7 @@ sub.zhindx {
     font-weight: 800;
     box-shadow: inset 0 0 7px 7px #dfdfdf;
 }
+
 
 
 
