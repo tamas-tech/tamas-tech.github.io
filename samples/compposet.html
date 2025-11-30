@@ -61,6 +61,13 @@
             editor: 'textarea',
             hide: ["editor", "evalButton", "permalink", "output"],
         });
+        sagecell.makeSagecell({
+            inputLocation: '#mycelldetmk29',
+            outputLocation: '#ideoutdetmk29',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink", "output"],
+        });
     </script>
 </head>
 <body>
@@ -467,7 +474,7 @@
         <p id="figyk29" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
         <p id="outk29" ondblclick="cleark29();" style="user-select:none;margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
     </div>
-    
+
     <div class="keret of odd" id="k11" style="margin-bottom:10px;">
         <b><big class="sorszam">11.</big></b>
         <p class="keplet" id="keplet_k11" style="padding-bottom:10px;margin-bottom:10px;">\[\text{Itt lesz a determináns képlete}\]
@@ -480,7 +487,7 @@
             <option value="1,2,3,1,3">T44=(1,2,3,1,3)</option>
             <option value="1,3,2,3,2">Pmbig5=(1,3,2,3,2)</option>
             <option value="1,1,2,3,1,2">Pmbig4=(1,1,2,3,1,2)</option>
-            <option value="(1,2,3,1,1,4">Pmbig3=(1,2,3,1,1,4)</option>
+            <option value="1,2,3,1,1,4">Pmbig3=(1,2,3,1,1,4)</option>
             <option value="1,2,3,1,1,4">T66=(1,2,3,2,3,2)</option>
             <option value="1,3,3,3,3,3">T77=(1,3,3,3,3,3)</option>
             <option value="1,5,4,3,2,1">T88=(1,5,4,3,2,1)</option>
@@ -509,12 +516,14 @@
         </div>
         <div id="detsettingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
             <div style="margin-bottom: 7px;">
-                <label for="setdet" style="margin-left: 10px;">determináns</label>
+                <label for="setdet" style="margin-left: 10px;">det</label>
                 <input type="checkbox" checked name="setdet" id="setdet" style="height:20px;width:20px;vertical-align:middle;">
-                <label for="setk29" style="margin-left: 10px;">képlet29</label>
+                <label for="setk29" style="margin-left: 10px;">k29</label>
                 <input type="checkbox" checked name="setk29" id="setk29" style="height:20px;width:20px;vertical-align:middle;">
                 <label for="setregshuff" style="margin-left: 10px;">regshuff</label>
                 <input type="checkbox" checked name="setregshuff" id="setregshuff" style="height:20px;width:20px;vertical-align:middle;">
+                <label for="setdetmk29" style="margin-left: 10px;">det - k29</label>
+                <input type="checkbox" name="setdetmk29" id="setdetmk29" style="height:20px;width:20px;vertical-align:middle;">
             </div>
             <div style="margin-bottom: 7px;">
                 <label for="tagmax" style="width:145px;display:inline-block;"><b>Maximális kiírás </b>:</label>
@@ -556,9 +565,15 @@
         <div class="outputoutdiv" style="padding:0;">
             <div id="ideoutk29"></div>
         </div>
+        <div id="mycelldetmk29" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv" style="padding:0;">
+            <div id="ideoutdetmk29"></div>
+        </div>
         <span id="keresztelem" style="display:inline-block;padding:0 20px;font-family: Cambria Math;"></span>
-    </div>         
-                        
+    </div>
+                            
      <div class="keret of even" id="k12">
         <b><big class="sorszam">12. (LaTeX)</big></b>
         <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\LaTeX \text{ fordító}\]
@@ -594,6 +609,7 @@
     </script>
 </body>
 </html>
+
 
 
 
