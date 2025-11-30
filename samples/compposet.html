@@ -468,7 +468,7 @@
         <p id="outk29" ondblclick="cleark29();" style="user-select:none;margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
     </div>
     
-     <div class="keret of odd" id="k11" style="margin-bottom:10px;">
+    <div class="keret of odd" id="k11" style="margin-bottom:10px;">
         <b><big class="sorszam">11.</big></b>
         <p class="keplet" id="keplet_k11" style="padding-bottom:10px;margin-bottom:10px;">\[\text{Itt lesz a determináns képlete}\]
         </p>
@@ -503,24 +503,37 @@
         <div style="margin-top:2px;padding:5px;">
             <button class="showpre1" onclick="drawDet();" title="Calculate input">Calculate</button>
             <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#outdet');idClear('#keresztelem');" title="Clear output">Clear</button>
-            <label for="setdet" style="margin-left: 10px;">Determinánssal</label>
-            <input type="checkbox" name="setdet" id="setdet" onchange="drawDet();" style="height:20px;width:20px;vertical-align:middle;">
+            <label for="setdetall" style="margin-left: 10px;">det-k29-regshuff</label>
+            <input type="checkbox" name="setdetall" id="setdetall" onchange="drawDet();" style="height:20px;width:20px;vertical-align:middle;">
             <button style="margin-left:10px;padding: 5px 5px 9px 5px;" id="sbtglbtn2" onclick="sbTgl('detsettingbar');">⚙</button>
         </div>
         <div id="detsettingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+            <div style="margin-bottom: 7px;">
+                <label for="setdet" style="margin-left: 10px;">determináns</label>
+                <input type="checkbox" checked name="setdet" id="setdet" style="height:20px;width:20px;vertical-align:middle;">
+                <label for="setk29" style="margin-left: 10px;">képlet29</label>
+                <input type="checkbox" checked name="setk29" id="setk29" style="height:20px;width:20px;vertical-align:middle;">
+                <label for="setregshuff" style="margin-left: 10px;">regshuff</label>
+                <input type="checkbox" checked name="setregshuff" id="setregshuff" style="height:20px;width:20px;vertical-align:middle;">
+            </div>
+            <div style="margin-bottom: 7px;">
+                <label for="tagmax" style="width:145px;display:inline-block;"><b>Maximális kiírás </b>:</label>
+                <input type="number" id="tagmax" value="2000" min="0" max="5000" step="100" name="tagmax" style="width:60px;" oninput="tagmax=this.value*1;"> (2000)
+            </div>
+            <div style="margin-bottom: 7px;">
+                <label for="kuldmax" style="width:145px;display:inline-block;"><b>Maximális küldés</b>:</label>
+                <input type="number" id="kuldmax" value="2000" min="0" max="5000" step="100" name="kuldmax" style="width:60px;" oninput="kuldmax=this.value*1;"> (2000)
+            </div>
+            <hr/>
             <div style="margin-bottom: 10px;">
-                <span style="margin-left:5px;font-size:16px;">Teljes szélsség</span>
+                <span>Teljes szélsség</span>
                 <label class="switch">
                 <input type="checkbox" id="setwmode"><span class="slider round"></span></label>
                 <span style="margin-right:10px">Csak az aktuális elem szélessége</span>
             </div>
             <div>
-                <label for="kuldmax"><b style="padding: 2px 8px;">Maximális küldés</b> = </label>
-                <input type="number" id="kuldmax" value="2000" min="0" max="5000" step="100" name="kuldmax" style="width:60px;" oninput="kuldmax=this.value*1;">
-            </div>
-            <div>
-                <label for="setoutputfont9" style="margin-left: 10px;">&#128474;</label>
-                <input id="outfont-slider9" oninput="setOutputFontDet(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfont9" />
+                <label for="setoutputfontdet">&#128474;</label>
+                <input oninput="setOutputFontDet(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfontdet" />
             </div>
         </div>
         <p id="figydet" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;">dfd fdf </p>
@@ -544,7 +557,7 @@
             <div id="ideoutk29"></div>
         </div>
         <span id="keresztelem" style="display:inline-block;padding:0 20px;font-family: Cambria Math;"></span>
-    </div>                  
+    </div>         
                         
      <div class="keret of even" id="k12">
         <b><big class="sorszam">12. (LaTeX)</big></b>
@@ -581,6 +594,7 @@
     </script>
 </body>
 </html>
+
 
 
 
