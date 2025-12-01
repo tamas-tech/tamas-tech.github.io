@@ -5360,7 +5360,8 @@ function bvector(s) {
 
 function vec2obj(v, oszto) {
     var obj = _.countBy(v.slice(1));
-    obj['c'] = v[0] / oszto;
+    var c = Fraction(v[0]);
+    obj['c'] = c.div(oszto);
     return obj;
 };
 
@@ -5446,3 +5447,4 @@ function blokkmeret(s) {
     var kv = kum(v).map(y => y + 1);
     return [kv, u];
 };
+
