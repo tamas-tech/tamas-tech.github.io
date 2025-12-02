@@ -3227,7 +3227,7 @@ function drawMat(mat) {
         }
         txt += '</tr>';
     }
-    txt += ' </tbody> </table> <button class="restore-button showpre1" onclick="showColumns();" style="position:absolute;margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns();" style="position:absolute;left:120px;margin-top:8px;">Hide all</button></span>';
+    txt += ' </tbody> </table><button class="restore-button showpre1" onclick="showColumns();" style="position:absolute;margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns();" style="position:absolute;left:120px;margin-top:8px;">Hide all</button><button class="restore-button showpre1" onclick="toggleSarkok();" style="position:absolute;left:210px;margin-top:8px;background-color: #b90045;width:90px;">Sarokelemek</button></span>';
 
     setTimeout(() => { sarokIndexek(); }, 100);
 
@@ -3303,6 +3303,13 @@ function catalog(e) {
 
 $(document).on('dblclick', '.hide-column', HideColumnIndex);
 
+function toggleSarkok() {
+    if ($('.table-hideable tr td.sarokelem.hide-col').length >= $('.table-hideable tr td.sarokelem:not(.hide-col)').length)
+        $('.table-hideable tr td.sarokelem').removeClass('hide-col');
+    else
+        $('.table-hideable tr td.sarokelem').addClass('hide-col');
+};
+
 function HideColumnIndex() {
     const wmode = document.getElementById("setwmode").checked;
     var $el = $(this);
@@ -3315,7 +3322,6 @@ function HideColumnIndex() {
         if (wmode && $cell[0].nodeName != "TH") {
             var w = Math.max(40, $sp.width() + 15);
             var cw = Math.max(40, $cell.width() + 15);
-            console.log(cw, w);
             if (cw < w)
                 $cell.removeClass('hide-col')
                 .css("max-width", w + "px");
@@ -3353,10 +3359,23 @@ function hlThisRow(e) {
 };
 
 function keresztelem() {
+    const detreszletes = document.getElementById("detreszletes").checked;
     $('#outdet table tbody td.keresztelem').removeClass("keresztelem");
     const m = $('#outdet table tbody tr.active td.active');
+    var $row = m.closest('tr');
     m.addClass("keresztelem");
-    const txt = m.html() || "A kiválasztott elem...";
+    var txt = m.html() || "A kiválasztott elem...";
+    if (detreszletes && $row[0] != undefined) {
+        $('.table-hideable tbody tr td.subdiagonal').removeClass('subdiagonal');
+        const i = $row[0].rowIndex * 1;
+        const j = m[0].cellIndex * 1;
+        //console.log(i, j)
+        for (var k = j + 1; k < i + 1; k++)
+            $('.table-hideable tr:nth(' + k + ') td:nth(' + (k - 2) + ')').addClass('subdiagonal').removeClass('hide-col');
+        var txt0 = matrixJelentes(i, j) || "";
+        if (txt0 != "")
+            txt = txt0 + "<hr style='color:#f1f1f1;opacity:0.5;'/>" + txt;
+    }
     document.getElementById("keresztelem").innerHTML = txt;
 }
 
@@ -3384,24 +3403,18 @@ function activateIndex() {
     keresztelem();
 }
 
-function showColumns(e) {
+function showColumns() {
     var $table = $('.table-hideable');
     $table.find("th, td")
         .removeClass('hide-col');
 };
 
-function hideColumns(e) {
+function hideColumns() {
     var $table = $('.table-hideable');
     $table.find("th, td")
         .addClass('hide-col');
 }
-//})
 
-/* 2*Zeta[2]*Zeta[3, 1]+2*Zeta[2, 1, 3]        2*Zeta[2]*Zeta[2, 3, 1]+Zeta[2]                 -2*Zeta[3]
-            -Zeta[2, 1]                       Zeta[2, 2, 2]+2*Zeta[3, 1, 2]             2*Zeta[2]*Zeta[3, 1]
--2*Zeta[2]*Zeta[3, 2, 1]-Zeta[2, 2, 1]     -2*Zeta[3]*Zeta[3, 2]-Zeta[2, 2]^2    2*Zeta[2, 3, 1, 2]+2*Zeta[3, 2, 1, 2] */
-
-//4*Zeta[2]*Zeta[3, 1]*Zeta[2, 2, 2]*Zeta[2, 3, 1, 2]+4*Zeta[2]*Zeta[3, 1]*Zeta[2, 2, 2]*Zeta[3, 2, 1, 2]+8*Zeta[2]*Zeta[3, 1]*Zeta[3, 1, 2]*Zeta[2, 3, 1, 2]+8*Zeta[2]*Zeta[3, 1]*Zeta[3, 1, 2]*Zeta[3, 2, 1, 2]+8*Zeta[2]^2*Zeta[3]*Zeta[3, 1]^2*Zeta[3, 2]+4*Zeta[2]*Zeta[2, 2]^2*Zeta[3, 1]*Zeta[2, 1, 3]+4*Zeta[2, 1]*Zeta[2]*Zeta[2, 3, 1]*Zeta[2, 3, 1, 2]+4*Zeta[2, 1]*Zeta[2]*Zeta[2, 3, 1]*Zeta[3, 2, 1, 2]-8*Zeta[2]^3*Zeta[3, 1]*Zeta[2, 3, 1]*Zeta[3, 2, 1]-4*Zeta[2]^2*Zeta[3, 1]*Zeta[2, 2, 1]*Zeta[2, 3, 1]-4*Zeta[2]*Zeta[3]*Zeta[2, 2, 2]*Zeta[3, 2, 1]-8*Zeta[2]*Zeta[3]*Zeta[3, 1, 2]*Zeta[3, 2, 1]+2*Zeta[2]*Zeta[2, 1]*Zeta[2, 3, 1, 2]-4*Zeta[2]^3*Zeta[3, 1]*Zeta[3, 2, 1]+2*Zeta[2]*Zeta[2, 1]*Zeta[3, 2, 1, 2]-2*Zeta[2]^2*Zeta[3, 1]*Zeta[2, 2, 1]-2*Zeta[3]*Zeta[2, 2, 1]*Zeta[2, 2, 2]+4*Zeta[2, 1, 3]*Zeta[2, 2, 2]*Zeta[2, 3, 1, 2]-4*Zeta[2, 1]*Zeta[3]^2*Zeta[3, 2]+8*Zeta[2, 1, 3]*Zeta[3, 1, 2]*Zeta[3, 2, 1, 2]-4*Zeta[3]*Zeta[2, 2, 1]*Zeta[3, 1, 2]+4*Zeta[2, 1, 3]*Zeta[2, 2, 2]*Zeta[3, 2, 1, 2]+8*Zeta[2, 1, 3]*Zeta[3, 1, 2]*Zeta[2, 3, 1, 2]-2*Zeta[2, 1]*Zeta[3]*Zeta[2, 2]^2+4*Zeta[2]^2*Zeta[2, 2]^2*Zeta[3, 1]^2+8*Zeta[2]*Zeta[3]*Zeta[3, 1]*Zeta[3, 2]*Zeta[2, 1, 3]
 //---------------------------------------------------------------------
 function Tegla(V) {
     var it = [],
@@ -5381,7 +5394,22 @@ function fuzes(i, j, sarkok, diff, sobj) {
     return Conc(L.reverse());
 };
 
+function fuzesForm(i, j, sarkok, diff, sobj) {
+    var L = [];
+
+    for (var t = i; t < j; t++) {
+        L.push([
+            [diff[t]], sobj[sarkok[t]]
+        ]);
+    };
+    L.push([sobj[sarkok[j]]]);
+    return L;
+};
+
+var matrixGraph = {}
+
 function s2mat(s) {
+    matrixGraph = {};
     const n = s.length - 1;
     const b = bvector(s);
     const B = blokkmeret(s);
@@ -5393,17 +5421,19 @@ function s2mat(s) {
     const sarokelemek = B[1].slice(0, -1);
     const sobj = {};
     const fuzesek = {};
+    const Fuzesek = {};
     for (var i = 0; i < sarkok.length; i++) {
         sobj[sarkok[i]] = sarokelemek[i];
-    }
+    };
     for (var i = 0; i < sarkok.length; i++) {
         for (var j = i; j < sarkok.length; j++) {
             var indx = [sarkok[i], sarkok[j]].toString();
             fuzesek[indx] = fuzes(i, j, sarkok, diff, sobj);
-        }
-    }
-    // console.log(sobj)
-    // console.log(fuzesek)
+            Fuzesek[indx] = fuzesForm(i, j, sarkok, diff, sobj);
+        };
+    };
+    //console.log(sobj)
+    //console.log(fuzesek)
     mat = [];
     for (var i = 0; i < n; i++) {
         const e0 = _.last(sarkok.filter(y => y <= i + 1)) || 1;
@@ -5421,10 +5451,10 @@ function s2mat(s) {
                 } else if (e0 <= j + 1 && j + 1 < e1)
                     sor.push([{ 'c': 0 }]);
                 else {
-                    //sor.push([vec2obj([1, [j + 2, ej, e0, i + 1]])]);
                     var rend = ej - j - 2;
                     var a = nconc([i + 1 - e0], fuzesek[indx]);
                     sor.push(vList2obj(expDeriv(a, rend), factorial(rend) * Math.pow(-1, _.sum(a))));
+                    matrixGraph[[i + 1, j + 1]] = { 'eleje': rend, 'kozepe': Fuzesek[indx], 'vege': i + 1 - e0, 'sarok': a };
                 }
             } else if (j == n - 1) {
                 sor.push(vList2obj(b[i], 1));
@@ -5448,3 +5478,71 @@ function blokkmeret(s) {
     return [kv, u];
 };
 
+const koz = '{ "eleje": 2, "kozepe": [ [ [ 2, 1 ] ], [ [ 3 ], [ 2, 1, 1 ] ], [ [ 2 ], [ 2 ] ], [ [ 0 ], [ 2, 1 ] ] ], "vege": 2, "sarok": [ 4, 1, 5, 1, 1, 4, 2, 1 ] }'
+
+function ff0(v) {
+    var out = ""
+    if (!(v.length == 1 && v[0] == 0)) {
+        for (var i = 0; i < v[0]; i++)
+            out += "0,";
+    };
+    return out;
+}
+
+function matrixJelentes(i, j) {
+    const obj = matrixGraph[[i, j]];
+    if (obj == undefined)
+        out = "A kiválasztott elemhez nem tarozik részletes jelentés."
+    else {
+        var k = _.cloneDeep(obj.kozepe);
+        const p = obj.eleje;
+        const s = obj.sarok;
+        const e = _.sum(s);
+        const c = formazottTortHTML("(-1)<sup>" + e + "</sup>", p + "!") + "&nbsp;";
+        const fv = "<span style='font-size:130%;color:red;'>|</span>"
+        var e1 = "";
+        if (e % 2 == 1)
+            e1 = "−&hairsp;";
+        const c1 = e1 + formazottTortHTML(1, factorial(p)) + "&nbsp;";
+        //k[0].unshift([obj.vege])
+        var out0 = ff0([p]) + fv;
+        const kn = k.length;
+        for (var l = 0; l < kn - 1; l++) {
+            out0 += "&zeta;<sub>" + k[l][1] + "</sub>," + ff0(k[l][0]);
+        };
+        out0 += "&zeta;<sub>" + k[kn - 1][0] + "</sub>," + ff0([obj.vege]);
+        out0 = out0.replaceAll("," + fv, fv);
+        if (out0.endsWith(','))
+            out0 = out0.slice(0, -1);
+        out0 += "&nbsp;&nbsp;&rightarrow;&nbsp;&nbsp;[" + p + "]" + fv;
+        for (var l = 0; l < kn - 1; l++) {
+            out0 += "&zeta;<sub>" + k[l][1] + "</sub>,[" + k[l][0] + "],";
+        };
+        out0 += "&zeta;<sub>" + k[kn - 1][0] + "</sub>,[" + obj.vege + "],";
+        if (out0.endsWith(','))
+            out0 = out0.slice(0, -1);
+        out0 += "&nbsp;&leftarrow;&nbsp;A piros vonal elötti szám határozza meg a deriválás fokát, a piros vonal utáni részt pedig megfordítjuk.<br/>";
+        var tk = [];
+        for (var i = 0; i < kn - 1; i++) {
+            tk.unshift("<span style='border-radius:4px;padding:2px;background-color:#c6e7f7;color:blue;'>(" + k[i][0] + ")</span>&odot;<span style='border-radius:4px;padding:2px;background-color:#b90045;color:white;'>(" + k[i][1] + ")</span>");
+        };
+        tk.unshift("<span style='border-radius:4px;padding:2px;background-color:#c6e7f7;color:blue;'>(" + obj.vege + ")</span>&odot;<span style='border-radius:4px;padding:2px;background-color:#b90045;color:white;'>(" + k[kn - 1][0] + ")</span>");
+        var out = "";
+        for (var j = 0; j < k.length; j++) {
+            out += tk[j] + "&bullet;"
+        }
+        out = out.slice(0, -8);
+        out = c + "&part;<sup>" + p + "</sup>[" + out + "] = ";
+        out += c1 + "&part;<sup>" + p + "</sup>(" + s + ") = ";
+        return out0 + out;
+    }
+}
+
+function matrixJelentes0(i, j) {
+    const obj = matrixGraph[[i, j]];
+    if (obj == undefined)
+        console.log("NINCS")
+    else {
+        return JSON.stringify(obj);
+    }
+}
