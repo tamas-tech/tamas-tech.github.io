@@ -2086,6 +2086,10 @@ function ncomp0(N, nv) {
     return comp0spec(N, l).map(y => szabdal(y, kumnv));
 }
 
+function conc(a, b) {
+    return _.concat(a, b);
+};
+
 function nconc(a, b) {
     if (a.length == 0)
         return b;
@@ -3935,7 +3939,7 @@ function setCode(elem) {
 
 function expDeriv(s, n) {
     const sn = s.length;
-    const W = comp0(n, sn);
+    const W = comp0(n, sn); //.reverse();
     const fak = factorial(n);
     var out = [];
     for (let w of W) {
@@ -5545,4 +5549,284 @@ function matrixJelentes0(i, j) {
     else {
         return JSON.stringify(obj);
     }
+};
+
+// derivalas altalanosan....................................................
+
+const derivobj = { "alapDeriv": alapDeriv, "conjDeriv": 0 };
+const muvobj = { "vec_add": vec_add, "conc": conc, "nconc": nconc, "vec_stuffle": vec_stuffle, "vec_shuffle": vec_shuffle };
+
+function abValtas() {
+    var al = document.getElementById("avl");
+    var bl = document.getElementById("bvl");
+    if (al.classList.contains("kiur")) {
+        al.classList.remove("kiur");
+        bl.classList.add("kiur");
+    } else {
+        bl.classList.remove("kiur");
+        al.classList.add("kiur");
+    }
+
+    setTimeout(() => { derivInput(); }, 30);
+};
+
+function setOutputFontdiff(v) {
+    var elem = document.getElementById("diffout");
+    elem.style.fontSize = v + 'px';
+};
+
+function msv2HTML(msv) {
+    var C = msv[0] * 1;
+    if (C == 0)
+        return "";
+    if (C == 1)
+        C = " + "
+    else if (C == -1)
+        C = " − ";
+    else if (C > 1)
+        C = " + " + C + "&lowast;";
+    else if (C < 1)
+        C = " − " + -C + "&lowast;";
+    var m = C + "(" + msv[1] + ")";
+    return m;
+};
+
+function ms2HTML(mv) {
+    var txt = "";
+    for (let m of mv) {
+        txt += msv2HTML(m);
+    }
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+    if (txt == "")
+        txt = "0";
+    return txt;
+};
+
+function makeDual(msv) {
+    return [msv[0], dualofv(msv[1])];
+};
+
+function makeConj(msv) {
+    return [msv[0], conjugate(msv[1])];
+};
+
+function alapDeriv(v, n, dual, conj) {
+    var u = _.cloneDeep(v);
+    if (dual)
+        u = dualofv(u);
+    if (conj)
+        u = conjugate(u);
+    var out = expDeriv(u, n).reverse();
+    if (dual)
+        out = out.map(y => makeDual(y));
+    if (conj)
+        out = out.map(y => makeConj(y));
+    return out;
+};
+
+function vecList_Ov(L) {
+    var out1 = _.countBy(L);
+    var out = [];
+    _.forEach(out1, function(value, key) {
+        out.push([value * 1, JSON.parse("[" + key + "]")]);
+    });
+    return out;
+};
+
+function vec_add(a, b) {
+    const ab = told0val(a, b);
+    return _.zipWith(ab[0], ab[1], (u, v) => u + v);
+};
+
+function vec_stuffle(a, b) {
+    return vecList_Ov(stuffle(a, b));
+};
+
+function vec_shuffle(a, b) {
+    var out = [];
+    const obj = shuffle(a, b)
+    _.forEach(obj, function(value, key) {
+        out.push([value * 1, JSON.parse("[" + key + "]")]);
+    });
+    return out;
+};
+
+function vec_fuzJvel(a, b, J) {
+    out = [];
+    n = a.length + b.length;
+    var aa = _.cloneDeep(a);
+    var bb = _.cloneDeep(b);
+    for (var i = 0; i < n; i++) {
+        if (J.includes(i + 1)) {
+            out.push(aa[0]);
+            aa.shift();
+        } else {
+            out.push(bb[0]);
+            bb.shift();
+        }
+    }
+    return out;
+};
+
+function is_ms(v) {
+    if (v[0][1] && typeof(v[0][1]) != 'number')
+        return true;
+    else
+        return false;
 }
+
+function ms_mul(c, ms) {
+    return ms.map(y => [c * y[0], y[1]])
+};
+
+function ms_vecmul(cvec, ms) {
+    out = [];
+    n = ms.length;
+    for (i = 0; i < n; i++) {
+        var c = cvec[i] || 1;
+        out.push([c * ms[i][0], ms[i][1]])
+    }
+    return out;
+};
+
+function ms_Ov(ms) {
+    var out1 = _.groupBy(ms, y => y[1]);
+    out1 = _.mapValues(out1, y => _.sum(y.map(z => z[0])));
+    var out = [];
+    _.forEach(out1, function(value, key) {
+        out.push([value * 1, JSON.parse("[" + key + "]")]);
+    });
+    return out;
+};
+
+function ms_deriv(deriv, n, dual, conj, ms) {
+    var out0 = [];
+    for (let v of ms)
+        out0.push(...ms_mul(v[0], deriv(v[1], n, dual, conj)));
+
+    var out = ms_Ov(out0);
+    return out;
+};
+
+function linExtension(muv, ov, m1, m2, param) {
+    var out = [];
+    if (m2 == undefined)
+        m2 = [
+            [1, []]
+        ];
+    if (param != null)
+        for (let x of m1) {
+            for (let y of m2) {
+                out.push([x[0] * y[0], muv(x[1], y[1], param)])
+            }
+        }
+    else
+        for (let x of m1) {
+            for (let y of m2) {
+                out.push([x[0] * y[0], muv(x[1], y[1])])
+            }
+        }
+    if (out[0][1][0] != undefined && typeof(out[0][1][0]) != 'number') {
+        console.log('vektor van')
+            //out = _.flatten(out.map(y => y[1].map(z => [y[0], z])));
+        out = _.flatten(out.map(y => ms_mul(y[0], y[1])))
+    };
+    if (ov) {
+        out = ms_Ov(out);
+    };
+    return out;
+};
+
+function leibnizR1(deriv, n, dual, conj, m1, m2, muv, ov, param) {
+    console.log(ms_deriv(deriv, n, dual, conj, linExtension(muv, ov, m1, m2, param)))
+    return _.sortBy(ms_Ov(ms_deriv(deriv, n, dual, conj, linExtension(muv, ov, m1, m2, param))));
+};
+
+function leibnizR2(deriv, n, dual, conj, m1, m2, muv, ov, param) {
+    var out = [];
+    for (var k = 0; k < n + 1; k++) {
+        //console.log(ms_mul(binomial(n, k), linExtension(muv, ov, ms_deriv(m1, k), ms_deriv(m2, n - k))))
+        out.push(...ms_mul(binomial(n, k), linExtension(muv, ov, ms_deriv(deriv, k, dual, conj, m1), ms_deriv(deriv, n - k, dual, conj, m2), param)));
+    };
+
+    return _.sortBy(ms_Ov(out));
+};
+
+// JSON.stringify(leibnizR2(expDeriv,[[2,[4,1]],[3,[5,2]]],[[5,[2,3]],[-1,[3,3]]],2,_.concat,true))
+
+function elojel2num(str) {
+    if (str == "+" || str == "")
+        str = 1;
+    else if (str == "-")
+        str = -1;
+    else
+        str = str * 1;
+    return str;
+};
+
+function txt2muv(str, muv) {
+    if (/\)\.\(/.test(str)) {
+        str = str.split(").(").map(y => JSON.parse("[" + y + "]"));
+        str = muv(...str);
+        if ([vec_stuffle, vec_shuffle].includes(muv))
+            str = ms_Ov(str);
+        return str;
+    } else
+        return JSON.parse("[" + str + "]");
+};
+
+function mse(y) {
+    var out
+    if (is_ms(y[1]))
+        out = ms_mul(y[0], y[1]);
+    else
+        out = [y];
+    return out;
+};
+
+function str2ms(str, muv) {
+    str = str.replaceAll(" ", "");
+    var out = str.split(/\)(?!\.)/).filter(y => y != "").map(z => z.split(/(?<!\.)\(/));
+    out = out.map(y => [elojel2num(y[0].replace("*", "")), txt2muv(y[1], muv)]);
+    if (/\)\.\(/.test(str) && [vec_shuffle, vec_stuffle].includes(muv))
+        out = ms_Ov(_.flatten(out.map(y => mse(y))));
+    return out;
+};
+
+function ms_kiszed(id, muv) {
+    var str = document.getElementById(id).value;
+    str = str2ms(str, muv);
+    return str;
+    //document.getElementById("diffout").innerHTML = JSON.stringify(str);
+};
+
+function displayLeibniz(deriv, n, dual, conj, muv) {
+    const msa = ms_kiszed("av", muv);
+    const msb = ms_kiszed("bv", muv);
+    const L1 = leibnizR1(deriv, n, dual, conj, msa, msb, muv, false);
+    const L2 = leibnizR2(deriv, n, dual, conj, msa, msb, muv, true);
+    const txt1 = ms2HTML(L1);
+    const txt2 = ms2HTML(L2);
+    const txt3 = ms2HTML(ms_Ov([...L1, ...ms_mul(-1, L2)]));
+    const txt = txt1 + "<hr/>" + txt2 + "<hr/><span style='color:blue;'>" + txt3 + "</span>";
+    document.getElementById("diffout").innerHTML = txt;
+}
+
+function derivInput() {
+    const id = $('b.kiur').parent().next('input')[0].id;
+    const deriv = derivobj[document.getElementById("selectderiv").value];
+    const muv = muvobj[document.getElementById("selectmuv").value];
+    const n = document.getElementById("n").value * 1;
+    const dual = document.getElementById("setdual").checked;
+    const conj = document.getElementById("setconj").checked;
+    const leibniz = document.getElementById("leibniz").checked;
+    if (leibniz)
+        displayLeibniz(deriv, n, dual, conj, muv);
+    else {
+        const ms = ms_kiszed(id, muv);
+        var d = ms_deriv(deriv, n, dual, conj, ms);
+        //document.getElementById("diffout").innerHTML = JSON.stringify(d);
+        document.getElementById("diffout").innerHTML = ms2HTML(d);
+    }
+};
