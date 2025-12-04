@@ -5383,6 +5383,8 @@ function vec2obj(v, oszto) {
 };
 
 function vList2obj(vL, oszto) {
+     if (vL.length == 0)
+        return [{ 'c': 0 }];
     var out = [];
     for (let v of vL)
         out.push(vec2obj(v, oszto));
@@ -5830,3 +5832,4 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
