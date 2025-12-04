@@ -25,6 +25,8 @@ const COLORS = [
     "#807ece", "#8db27c", "#be66a2", "#9ed3c6", "#00644b", "#005064", "#77979f", "#77e079", "#9c73ab", "#1f79a7"
 ];
 
+const TITLES = ["Multiple Zeta Values online tools", "Regularization", "Explicit formula", "Generalized zeta", "Poset of Compositions", "Differentiation"];
+
 var lepessor = [];
 var mode = "Li";
 var mode1 = "Li";
@@ -4274,7 +4276,8 @@ $(document).on('input focus', '#query2', function() {
     setSearch();
 });
 
-if (document.title != "Multiple Zeta Values online tools" && document.title != "Regularization" && document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
+//if (document.title != "Multiple Zeta Values online tools" && document.title != "Regularization" && document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
+if (!TITLES.includes(document.title))
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('#shout')
         const foo1 = document.querySelector('#sagetransf');
@@ -4598,7 +4601,8 @@ function setSearch3() {
 $(document).on('input focus', '#mquery', function() {
     setSearch3();
 });
-if (document.title != "Multiple Zeta Values online tools" && document.title != "Regularization" && document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
+//if (document.title != "Multiple Zeta Values online tools" && document.title != "Regularization" && document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
+if (!TITLES.includes(document.title))
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('p#mshout')
         var isin = window.getSelection().containsNode(foo, true);
@@ -5459,7 +5463,8 @@ function boldVertices() {
     };
 };
 
-if (document.title != "Multiple Zeta Values online tools" && document.title != "Regularization" && document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
+//if (document.title != "Multiple Zeta Values online tools" && document.title != "Regularization" && document.title != "Explicit formula" && document.title != "Generalized zeta" && document.title != "Poset of Compositions")
+if (!TITLES.includes(document.title))
     $(document).on('selectionchange', function() {
         const foo = document.querySelector('p#shout');
         const foo2 = document.querySelector('span#iresz');
@@ -10612,3 +10617,4 @@ function genoutput1() {
     else
         genoutput1s();
 };
+
