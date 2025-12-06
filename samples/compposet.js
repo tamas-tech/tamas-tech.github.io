@@ -2349,6 +2349,7 @@ function makeSlicks(oCt, kezdolap, fulcim, id, slickid) {
         mobileFirst: true,
         //fade: true,
         speed: 500,
+        arrows: false,
     });
     elem.innerHTML = out;
 };
@@ -5889,4 +5890,5 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
 
