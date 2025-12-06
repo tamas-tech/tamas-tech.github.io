@@ -34,7 +34,7 @@ function setkijelzoW(id, val) {
         }
 
     }
-    const w = $(elem).width();
+    const w = Math.min(4000, $(elem).width());
     elem.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
     setTimeout(() => { $(elem).parent().animate({ scrollLeft: w + 50 }, w); }, 800);
     setTimeout(() => { $(elem).parent().animate({ scrollLeft: -w - 50 }, w); }, 1200 + w);
@@ -5889,3 +5889,4 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
