@@ -1631,7 +1631,9 @@ h3.slickh3 {
     padding-top: 4px;
     background-color: #eee;
     text-align: center;
-    border-radius: 6px
+    border-radius: 6px;
+    position: sticky;
+    left: 0;
 }
 
 .tabcontainerln {
@@ -1972,6 +1974,7 @@ p#keresztelem {
     margin-top: -6px;
     box-shadow: 1px 1px 1px #17592b, 0px 0px 1px #175928;
 }
+
 
 
 
