@@ -1875,7 +1875,12 @@ p#keresztelem {
 }
 
 .nobrn {
-    text-align: left;
+    text-align: center;
+    margin-top: 2px;
+}
+
+.nobrn #nyiltbl {
+    margin-top: 5px;
 }
 
 .nobrn .lblwrap {
@@ -1966,6 +1971,7 @@ p#keresztelem {
     margin-top: -6px;
     box-shadow: 1px 1px 1px #17592b, 0px 0px 1px #175928;
 }
+
 
 
 
