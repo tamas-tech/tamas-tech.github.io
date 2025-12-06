@@ -1,4 +1,47 @@
 // poset of compositions
+
+function setCard(e) {
+    const $card = $(e).parent('.uitok').parent('div');
+    const $cel = $card.find(".nobr");
+
+    if ($cel.length > 0) {
+        $(e).css('line-height', '1.2').html('&#8626;');
+        $cel.removeClass("nobr").addClass("nobrn");
+
+    } else {
+        $(e).css('line-height', '').html('&#8677;');;
+        $card.find(".nobrn").removeClass("nobrn").addClass("nobr");
+    }
+};
+
+//var kivetelouts = ["outdet"]
+
+function setkijelzoW(id, val) {
+    const elem = document.getElementById(id)
+    if (val == 6)
+        $(elem).addClass('nobrkij').css('width', 'auto');
+    else {
+        $(elem).removeClass('nobrkij');
+        if (val == 1) {
+            elem.style.width = 'auto';
+            elem.style.maxWidth = '';
+        } else {
+            elem.style.width = 'calc(' + val * 100 + 'vw)';
+            //if (!kivetelouts.includes(id))
+            elem.style.maxWidth = 'unset';
+            //else
+            //elem.style.maxWidth = 'calc(100vw - 24px)';
+        }
+
+    }
+    const w = $(elem).width();
+    elem.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
+    setTimeout(() => { $(elem).parent().animate({ scrollLeft: w + 50 }, w); }, 800);
+    setTimeout(() => { $(elem).parent().animate({ scrollLeft: -w - 50 }, w); }, 1200 + w);
+    //setTimeout(() => { elem.scrollIntoView({ behavior: "smooth", block: "center", inline: "end" }); }, 800);
+    //setTimeout(() => { elem.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" }); }, 1800);
+};
+
 var ra = undefined;
 var cN = 1;
 var cN2 = 1;
@@ -3196,6 +3239,10 @@ function sarokIndexek() {
         $table.find("tbody tr:nth(" + (colIndex - 1) + ")")
             .children(":nth-child(" + colIndex + ")")
             .addClass('sarokelem');
+        $table.find("thead tr")
+            .children(":nth-child(" + colIndex + ")")
+            .addClass('sarokelem');
+
     });
     const lastegy = $table.find("tbody tr:nth(" + ne + ")")
         .children(":nth-child(" + (ne + 1) + ")")
@@ -3216,7 +3263,7 @@ function sarokIndexek() {
 
 function drawMat(mat) {
     const n = mat.length;
-    var txt = '<span style="display:block;width:fit-content;padding-top:15px;padding-right:15px;padding-bottom:46px;"><table id="dettbl " class="table-hideable"> <thead><tr><th></th>';
+    var txt = '<span style="display:block;width:fit-content;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="dettbl " class="table-hideable"> <thead><tr><th></th>';
     for (var j = 0; j < n; j++)
         txt += ' <th class="hide-column hide-col">' + (j + 1) + '</th>';
     txt += '</tr></thead><tbody>';
@@ -3231,7 +3278,8 @@ function drawMat(mat) {
         }
         txt += '</tr>';
     }
-    txt += ' </tbody> </table><button class="restore-button showpre1" onclick="showColumns();" style="position:absolute;margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns();" style="position:absolute;left:120px;margin-top:8px;">Hide all</button><button class="restore-button showpre1" onclick="toggleSarkok();" style="position:absolute;left:210px;margin-top:8px;background-color: #b90045;width:90px;">Sarokelemek</button></span>';
+    /* txt += '</tbody></table><span style="display:inline-block;position:sticky;left:5px;"><button class="restore-button showpre1" onclick="showColumns();" style="position:absolute;margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns(); "style="position:absolute;left:120px;margin-top:8px;width:70px;">Hide all</button><button class="restore-button showpre1" onclick="toggleSarkok();" style="position:absolute;left:200px;margin-top:8px;background-color:#b90045;width:90px;">Sarokelemek</button></span></span>'; */
+    txt += '</tbody></table><span id="button3" style="display:inline-block;position:sticky;left:15px;"><button class="restore-button showpre1" onclick="showColumns();" style="margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns(); "style="margin-top:8px;width:70px;">Hide all</button><button class="restore-button showpre1" onclick="toggleSarkok();" style="margin-top:8px;background-color:#b90045;width:90px;">Sarokelemek</button></span></span>';
 
     setTimeout(() => { sarokIndexek(); }, 100);
 
@@ -3308,10 +3356,18 @@ function catalog(e) {
 $(document).on('dblclick', '.hide-column', HideColumnIndex);
 
 function toggleSarkok() {
-    if ($('.table-hideable tr td.sarokelem.hide-col').length >= $('.table-hideable tr td.sarokelem:not(.hide-col)').length)
-        $('.table-hideable tr td.sarokelem').removeClass('hide-col');
-    else
-        $('.table-hideable tr td.sarokelem').addClass('hide-col');
+    const fullcol = document.getElementById("setfullcol").checked;
+    if (fullcol) {
+        if ($('.table-hideable tr td.sarokelem.hide-col').length >= $('.table-hideable tr td.sarokelem:not(.hide-col)').length)
+            $('.table-hideable tr td.columnline').removeClass('hide-col');
+        else
+            $('.table-hideable tr td.columnline').addClass('hide-col');
+    } else {
+        if ($('.table-hideable tr td.sarokelem.hide-col').length >= $('.table-hideable tr td.sarokelem:not(.hide-col)').length)
+            $('.table-hideable tr td.sarokelem').removeClass('hide-col');
+        else
+            $('.table-hideable tr td.sarokelem').addClass('hide-col');
+    };
 };
 
 function HideColumnIndex() {
@@ -3381,7 +3437,7 @@ function keresztelem() {
             txt = txt0 + "<hr style='color:#f1f1f1;opacity:0.5;'/>" + txt;
     }
     document.getElementById("keresztelem").innerHTML = txt;
-}
+};
 
 function activateIndex() {
     var $el = $(this);
@@ -3405,7 +3461,7 @@ function activateIndex() {
         $row.addClass('active');
     };
     keresztelem();
-}
+};
 
 function showColumns() {
     var $table = $('.table-hideable');
@@ -3417,7 +3473,8 @@ function hideColumns() {
     var $table = $('.table-hideable');
     $table.find("th, td")
         .addClass('hide-col');
-}
+    $('#outdet').animate({ scrollLeft: 0 }, 500)
+};
 
 //---------------------------------------------------------------------
 function Tegla(V) {
@@ -5383,7 +5440,7 @@ function vec2obj(v, oszto) {
 };
 
 function vList2obj(vL, oszto) {
-     if (vL.length == 0)
+    if (vL.length == 0)
         return [{ 'c': 0 }];
     var out = [];
     for (let v of vL)
@@ -5832,4 +5889,3 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
-
