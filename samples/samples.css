@@ -1625,8 +1625,9 @@ h3.slickh3 {
 }
 
 .tabcontainer {
-    width: calc(100% - 52px);
-    padding: 0 25px;
+    width:100%;
+    /*width: calc(100% - 52px);
+    padding: 0 25px;*/
     padding-top: 4px;
     background-color: #eee;
     text-align: center;
@@ -1971,6 +1972,7 @@ p#keresztelem {
     margin-top: -6px;
     box-shadow: 1px 1px 1px #17592b, 0px 0px 1px #175928;
 }
+
 
 
 
