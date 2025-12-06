@@ -434,7 +434,7 @@
             </div>
             <div class="nobr" style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
                 <button id="okbtnrfb" onclick="rfbGraph();" class="showpre1" title="Insert code into editor">Calculate</button>
-                <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#rfbT');" title="Clear output">Clear</button>
+                <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#rfbT');updSlickID('Li-slick','');" title="Clear output">Clear</button>
                 <span class="lblwrap">
                 <label style="margin-left:5px;color: #456ab9;font-size:130%;">●</label>
                 <label class="switch" style="bottom:2px"><input  id="setlnLi" type="checkbox"><span class="slider round"></span></label><label style="margin-left:5px;margin-right:10px;color: #cca33c;font-size:130%;">●</label>
@@ -449,7 +449,7 @@
             <p class="kijelzo" id="rfbJ" style="font-family:Symbola,Cambria Math;">
                 <span id="rfbT" class="MathJax"></span>
             </p>
-            <table border="0" width="100%" id="rfbTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;">
+            <table width="100%" id="rfbTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;">
                 <tr class="parent">
                     <td colspan="3" onclick="toggleTableRow(this)">Deriváltak: <span id="dcimke" style="margin-left:20px;"></span></td>
                 </tr>
@@ -459,7 +459,7 @@
                     </td>
                 </tr>
             </table>
-            <table border="1" width="100%" id="ordersTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;">
+            <table  width="100%" id="ordersTable" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;">
                 <tr class="parent">
                     <td colspan="3" onclick="toggleTableRow(this)">Magyarázat</td>
                 </tr>
@@ -686,6 +686,7 @@
     </script>
 </body>
 </html>
+
 
 
 
