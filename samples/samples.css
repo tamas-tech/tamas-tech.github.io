@@ -136,6 +136,8 @@ p.kijelzo {
     border-top: 1px solid #d0d0d0;
     border-bottom: 1px solid #d0d0d0;
     font-size: 130%;
+    position: sticky;
+    left: 0;
 }
 
 p.kijelzo.tomor {
@@ -209,7 +211,9 @@ div.keret.even p.keplet {
 }
 
 big.sorszam {
-    margin-left: 10px
+    margin-left: 10px;
+     display: inline-block;
+    vertical-align: middle;
 }
 
 .switch.k {
@@ -1234,6 +1238,7 @@ table.fpntbl.hszorzotbl td.fpnact3 {
     padding: 0 5px;
     background-color: #e5ebf7;
     margin-bottom: 5px;
+     width: fit-content;
 }
 
 table#calltbl {
@@ -1851,6 +1856,115 @@ p#keresztelem {
     padding: 10px 20px;
     font-family: Cambria Math;
     white-space: nowrap;
+}
+
+.lblwrap {
+    display: inline-block;
+    margin-top: 0;
+}
+
+.nobrkij,
+.nobr {
+    width: max-content;
+    white-space: nowrap;
+    display: inline-block;
+    min-width: calc(100% - 24px);
+    /*  width: calc(100vw);
+    white-space: nowrap;
+    overflow: auto; */
+}
+
+.nobrn {
+    text-align: left;
+}
+
+.nobrn .lblwrap {
+    margin-top: 8px;
+}
+
+.stickblock {
+    padding: 5px 0;
+    max-width: calc(100vw);
+    overflow-x: auto;
+    position: sticky;
+    left: 0;
+}
+
+.uiset {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+    background-color: #cefff1;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #06ac00;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1.4em;
+    line-height: 1.1;
+    padding: 0 1px;
+}
+
+.kijelzoset {
+    -webkit-appearance: none;
+    width: 140px;
+    margin-left: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.uitok {
+    position: sticky;
+    left: 0;
+    display: block;
+    padding: 5px 0px;
+    border-bottom: 1px solid #cecece;
+    margin-bottom: 5px;
+    background-color: #bbbbbb21;
+}
+
+.uitok input[type="range"]::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #17592b, 0px 0px 1px #175928;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #0cdd1b;
+    cursor: pointer;
+    border: 1px solid #579357;
+}
+
+.uitok input[type="range"]::-moz-range-track {
+    background: #00c11a;
+    height: 2px;
+    border-radius: 2px;
+    border: 0.2px solid #032b0a;
+}
+
+.uitok input[type="range"] {
+    height: 22px !important;
+    background-color: transparent;
+}
+
+.uitok input[type=range]::-webkit-slider-runnable-track {
+    background-color: #00c11a;
+    height: 4px;
+    border-color: #00c11a;
+}
+
+.uitok input[type=range]::-webkit-slider-thumb {
+    -webkit-user-modify: read-write;
+    -webkit-appearance: none;
+    border: 1px solid #579357;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: #0cdd1b !important;
+    color: #0cdd1b !important;
+    cursor: pointer;
+    margin-top: -6px;
+    box-shadow: 1px 1px 1px #17592b, 0px 0px 1px #175928;
 }
 
 
