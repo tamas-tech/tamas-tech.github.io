@@ -71,12 +71,14 @@
     </script>
 </head>
 <body>
-     <div class="keret of odd" id="k1" style="padding-bottom:10px;margin-bottom:10px;">
+         <div class="keret of odd" id="k1" style="padding-bottom:10px;margin-bottom:10px;">
         <span class="uitok"> <b><big class="sorszam">1.</big> Base concepts<span style="float:right"></span></b><br/><input class="kijelzoset" oninput="setkijelzoW('callout',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset"
             onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left(c_{1},c_{2},\ldots,c_{n-1},c_{n}\right)\rightarrow\lbrace c_{1},c_{1}+c_{2},\ldots,c_{1}+c_{2}+\cdots+c_{n-1}\rbrace\\\lbrace c_{1},c_{1}+c_{2},\ldots,c_{1}+c_{2}+\cdots+c_{n-1}\rbrace \rightarrow \left(c_{1},c_{2}-c_{1},\ldots,c_{n-1}-c_{n-2},n-c_{n-1}\right)\end{gather*}\]
+            <p class="keplet" id="keplet_k1" style="padding-bottom:10px;margin-bottom:0px;">\[\begin{gather*}\left(c_{1},c_{2},\ldots,c_{n-1},c_{n}\right)\rightarrow\lbrace c_{1},c_{1}+c_{2},\ldots,c_{1}+c_{2}+\cdots+c_{n-1}\rbrace\\\lbrace c_{1},c_{1}+c_{2},\ldots,c_{1}+c_{2}+\cdots+c_{n-1}\rbrace \rightarrow \left(c_{1},c_{2}-c_{1},\ldots,c_{n-1}-c_{n-2},n-c_{n-1}\right)\end{gather*}\]
             </p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label for="cn"><b style="padding: 2px 8px;">n</b> =  </label>
                 <input type="number" id="cn" value="4" min="1" step="1" name="cn" style="width:50px;">
@@ -163,14 +165,16 @@
         <p id="callout" style="font-family:Cambria Math;outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;line-height:1.8"></p>
     </div>
 
-    <div class="keret of even" id="k2" style="padding-bottom:10px;margin-bottom:10px;">
+    <div class="keret of even" id="k2" style="padding-bottom:10px;margin-bottom:0px;">
         <span class="uitok">        <b><big class="sorszam">2.</big></b><input class="kijelzoset" oninput="setkijelzoW('cout',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="keplet_k2" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\left\{ \boldsymbol{k}: \left(c_{1},c_{2},\ldots,c_{r}\right)\preceq \boldsymbol{k} \right\} =\left\{ \boldsymbol{k}:\sum\boldsymbol{k}=c_{1}\right\} \times\left\{ \boldsymbol{k}:\sum\boldsymbol{k}=c_{2}\right\} \times\cdots\times\left\{
+            <p class="keplet" id="keplet_k2" style="padding-bottom:10px;margin-bottom:0px;">\[\begin{gather*}\left\{ \boldsymbol{k}: \left(c_{1},c_{2},\ldots,c_{r}\right)\preceq \boldsymbol{k} \right\} =\left\{ \boldsymbol{k}:\sum\boldsymbol{k}=c_{1}\right\} \times\left\{ \boldsymbol{k}:\sum\boldsymbol{k}=c_{2}\right\} \times\cdots\times\left\{
                 \boldsymbol{k}:\sum\boldsymbol{k}=c_{r}\right\}\\ \left\{ \boldsymbol{k}:\left(c_{1},c_{2},\ldots,c_{r}\right)\succeq\boldsymbol{k} \right\}=\sum_{\bullet\in\{"+",","\}}(s_{1}\bullet s_{2}\bullet\cdots\bullet s_{r})\\(\text{id1})\hspace{1cm}
                 \sum_{\boldsymbol{c}\preceq\boldsymbol{k}} (-1)^{|\boldsymbol{k}|}\;\sum_{\boldsymbol{t}\preceq\boldsymbol{k}}(-1)^{|\boldsymbol{t}|}\text{A}_{\boldsymbol{t}} =(-1)^{\sum\boldsymbol{s}}\cdot\sum_{\boldsymbol{c}^{*}\preceq\boldsymbol{k}}
                 (-1)^{|\boldsymbol{k}|}\text{A}_{\boldsymbol{k}} \end{gather*}\]
             </p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
                 <input class="inpvec" type="text" id="cvec" value="2,5,3" onchange="idClear('#cout');cFiner();"><span id="knr" style="display:inline-block;height:25px;border:1px solid #eac2c2;padding:0 10px 3px 10px;margin:0 10px;vertical-align: middle;margin-bottom:5px;cursor:pointer;background-color:#ffe6e6;border-radius: 4px;font-size:120%;font-weight: 800;"
@@ -194,7 +198,9 @@
     <div class="keret of odd" id="k3" style="padding-bottom:10px;margin-bottom:10px;">
         <span class="uitok"> <b><big class="sorszam">3.</big></b><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="k1set" style="height:84px;margin-bottom:10px;background-color: #dddddd;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(0)}(x)}{x}\,{\text{d} x}\]</p>
+            <p class="keplet" id="k1set" style="height:84px;margin-bottom:0px;background-color: #dddddd;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(0)}(x)}{x}\,{\text{d} x}\]</p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">c</b> = </label>
                 <input class="inpvec" type="text" id="intc" value="3,2,1,4,1,2" oninput="idClear('#derivT');setgenKepletc();">
@@ -299,9 +305,11 @@
         <span class="uiset" onclick="setCard(this);">&#8677;</span>
         </span>
         <div class="stickblock">
-            <p class="keplet" id="keplet_k4" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} \zeta(\boldsymbol{a})=\zeta(\boldsymbol{a}^{\dagger})\hspace{0.7cm}\text{, ahol } \boldsymbol{a}^{\dagger} = \left((-1)\odot\boldsymbol{a}\cdot (1)\right)^{-1*} \\ \text{Vagyis, }(a_{1},a_{2},\ldots,a_{n})^{\dagger} =(1,a_{n},a_{n-1},\ldots,a_{2},a_{1}-1)^{*}\hspace{0.7cm}(a_{1}\geq2)
+            <p class="keplet" id="keplet_k4" style="padding-bottom:10px;margin-bottom:0px;">\[\begin{gather*} \zeta(\boldsymbol{a})=\zeta(\boldsymbol{a}^{\dagger})\hspace{0.7cm}\text{, ahol } \boldsymbol{a}^{\dagger} = \left((-1)\odot\boldsymbol{a}\cdot (1)\right)^{-1*} \\ \text{Vagyis, }(a_{1},a_{2},\ldots,a_{n})^{\dagger} =(1,a_{n},a_{n-1},\ldots,a_{2},a_{1}-1)^{*}\hspace{0.7cm}(a_{1}\geq2)
                 \end{gather*}\]
             </p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label for="ad"><b style="padding: 2px 7px;">a</b> = </label>
                 <input class="inpvec" type="text" id="ad" value="2,3" name="sd">
@@ -334,8 +342,10 @@
 
     <div class="keret of even" id="k6" style="margin-bottom:10px;padding-bottom: 30px;">
         <span class="uitok">    <b><big class="sorszam">6.</big></b><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
-        <div class="stickblock" style="padding-bottom:20px">
-            <p class="keplet" id="keplet_k6" style="padding-bottom:10px;margin-bottom:10px;">\[\text{plot of } {\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_n)}(1-x)\]</p>
+        <div class="stickblock">
+            <p class="keplet" id="keplet_k6" style="padding-bottom:10px;margin-bottom:0px;">\[\text{plot of } {\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_n)}(1-x)\]</p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label for="avLiLi"><b style="padding: 2px 7px;">a</b> = </label>
                 <input class="inpvec" type="text" id="avLiLi" value="2,3" name="avLiLi">
@@ -363,12 +373,14 @@
     <div class="keret of odd" id="k7" style="margin-bottom:10px;padding-bottom: 10px;">
         <span class="uitok">    <b><big class="sorszam">7.</big></b><input class="kijelzoset" oninput="setkijelzoW('outnm',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="keplet_k7" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*}\int_{(\mu_{r},\ldots,\mu_{2},\mu_{1})}^{(\nu_{r},\ldots,\nu_{2},\nu_{1})}[1] = \sum_{k=0}^{\mu_{1}}{\dfrac{(-1)^{k}}{(\mu_{1}-k)!}\;\ln^{\mu_{1}-k}(x)\sum_{N=0}^{k}\sum_{\begin{subarray}{c} \sum\boldsymbol{n} = N \\ \boldsymbol{0}\le\boldsymbol{n},|\boldsymbol{n}|=
+            <p class="keplet" id="keplet_k7" style="padding-bottom:10px;margin-bottom:0px;">\[\begin{gather*}\int_{(\mu_{r},\ldots,\mu_{2},\mu_{1})}^{(\nu_{r},\ldots,\nu_{2},\nu_{1})}[1] = \sum_{k=0}^{\mu_{1}}{\dfrac{(-1)^{k}}{(\mu_{1}-k)!}\;\ln^{\mu_{1}-k}(x)\sum_{N=0}^{k}\sum_{\begin{subarray}{c} \sum\boldsymbol{n} = N \\ \boldsymbol{0}\le\boldsymbol{n},|\boldsymbol{n}|=
                 r \end{subarray}}\sum_{\begin{subarray}{c} \sum\boldsymbol{m} = k-N \\ \boldsymbol{0}\le\boldsymbol{m},|\boldsymbol{m}| = r-1 \end{subarray}}\sum_{\begin{subarray}{c} (\boldsymbol{t}_{1},\ldots,\boldsymbol{t}_{r}) = \boldsymbol{T}\\ \sum\boldsymbol{t}_{j}
                 = n_{j}\\ \boldsymbol{0}\le\boldsymbol{t}_{j},\;|\boldsymbol{t}_{j}| = \nu_{j} \end{subarray}}\prod_{l=2}^{r}{\binom{\mu_{r}-1+m_{l-1}}{\mu_{r}-1}}\text{Li}_{\omega+\boldsymbol{T}\left(\bullet\bowtie\odot\right)\boldsymbol{m}}\;(x)}\\
                 \text{ahol }\omega=[(\nu_{r})^{\ast}\bullet(\mu_{r})]\odot[(\nu_{r-1})^{\ast}\bullet(\mu_{r-1})]\odot\ldots\odot[(\nu_{2})^{\ast}\bullet(\mu_{1})]\odot(\nu_{1})^{\ast} \\ \text{és }\boldsymbol{T}\left(\bullet\bowtie\odot\right)\boldsymbol{m}=[\boldsymbol{t}_{r}\bullet(m_{r-1})]\odot[\boldsymbol{t}_{r-1}\bullet(m_{r-2})]\odot\ldots\odot[\boldsymbol{t}_{2}\bullet(m_{1})]\odot\boldsymbol{t}_{1}
                 \end{gather*}\]
             </p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label for="nuv"><b style="padding: 2px 7px;">&nu;</b> = </label>
                 <input class="inpvec" type="text" id="nuv" value="1,1,1" name="nuv">
@@ -391,10 +403,12 @@
 
     <div class="keret of even" id="k8" style="margin-bottom:10px;padding-bottom: 10px;">
         <span class="uitok">    <b><big class="sorszam">8.</big></b><input class="kijelzoset" oninput="setkijelzoW('outfb',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
-        <div class="stickblock" style="padding-bottom:20px">
-            <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\text{Li}_{{\large \boldsymbol{s}}}(1-x) = {\LARGE \sum_{{\large \boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{c}\,=\,\boldsymbol{s}}}}\frac{(-1)^{\sum \boldsymbol{a}}}{p!}\,\zeta(\boldsymbol{c}){\Large \sum_{{\large k = p\cdot\delta_{|\boldsymbol{a}|,0}}}^{{\large
+        <div class="stickblock">
+            <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:0px;">\[\text{Li}_{{\large \boldsymbol{s}}}(1-x) = {\LARGE \sum_{{\large \boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{c}\,=\,\boldsymbol{s}}}}\frac{(-1)^{\sum \boldsymbol{a}}}{p!}\,\zeta(\boldsymbol{c}){\Large \sum_{{\large k = p\cdot\delta_{|\boldsymbol{a}|,0}}}^{{\large
                 p}}}(-1)^{k}\,\dbinom{p}{k}\ln^{k}(x)\text{Li}_{{\large \partial^{p-k}(\boldsymbol{a}^{*})}}(x)\]
             </p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;margin-bottom:10px;padding:3px;">
                 <label for="fbs"><b style="padding: 2px 7px;">s</b> = </label>
                 <input class="inpvec" type="text" id="fbs" value="1,4,1,1,1,1,1,5,2" name="fbs">
@@ -425,9 +439,11 @@
     <div class="keret of odd" id="k9" style="padding-bottom:10px;margin-bottom:10px;">
         <span class="uitok">    <b><big class="sorszam">9.</big></b><input class="kijelzoset" oninput="setkijelzoW('tableof2',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="rfbset" style="height:180px;margin-bottom:10px;background-color: #dddddd;">\[\begin{gather*}\text{ zig-zag graph for the fibrationBasis of }{\rm Li}_{(s_1,\ldots,s_r)}(1-x)\\[2mm] \text{Li}_{{\large \boldsymbol{s}}}(1-x) = {\LARGE \sum_{{\large \boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{c}\,=\,\boldsymbol{s}}}}\frac{(-1)^{\sum
+            <p class="keplet" id="rfbset" style="height:180px;margin-bottom:0px;background-color: #dddddd;">\[\begin{gather*}\text{ zig-zag graph for the fibrationBasis of }{\rm Li}_{(s_1,\ldots,s_r)}(1-x)\\[2mm] \text{Li}_{{\large \boldsymbol{s}}}(1-x) = {\LARGE \sum_{{\large \boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{c}\,=\,\boldsymbol{s}}}}\frac{(-1)^{\sum
                 \boldsymbol{a}}}{p!}\,\zeta(\boldsymbol{c}){\Large \sum_{{\large k = p\cdot\delta_{|\boldsymbol{a}|,0}}}^{{\large p}}}(-1)^{k}\,\dbinom{p}{k}\ln^{k}(x)\text{Li}_{{\large \partial^{p-k}(\boldsymbol{a}^{*})}}(x)\end{gather*}\]
             </p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
                 <input class="inpvec" style="width:280px;" type="text" id="rfbs" value="1,4,1,1,1,1,1,5,2" oninput="idClear('#rfbT');">
@@ -449,7 +465,7 @@
             <p class="kijelzo" id="rfbJ" style="font-family:Symbola,Cambria Math;">
                 <span id="rfbT" class="MathJax"></span>
             </p>
-            <table width="100%" id="rfbTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;">
+            <table border="0" width="100%" id="rfbTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;">
                 <tr class="parent">
                     <td colspan="3" onclick="toggleTableRow(this)">Deriváltak: <span id="dcimke" style="margin-left:20px;"></span></td>
                 </tr>
@@ -459,7 +475,7 @@
                     </td>
                 </tr>
             </table>
-            <table  width="100%" id="ordersTable" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;">
+            <table width="100%" id="ordersTable" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 17px;font-family:Cambria Math;">
                 <tr class="parent">
                     <td colspan="3" onclick="toggleTableRow(this)">Magyarázat</td>
                 </tr>
@@ -501,12 +517,14 @@
     <div class="keret of even" id="k10" style="margin-bottom:10px;padding-bottom: 10px;">
         <span class="uitok">    <b><big class="sorszam">10.</big></b><input class="kijelzoset" oninput="setkijelzoW('outk29',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="keplet_k10" style="padding-bottom:10px;margin-bottom:10px;">\[\begin{gather*} \boldsymbol{c} \text{ admissible},\;\boldsymbol{s}=(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{c}),\;\hat{\boldsymbol{c}}=(1)\bullet(-1)\odot\boldsymbol{c},\;(\,)^{\dagger}:=(\,) \\(1)\hspace{6mm} \frac{(-1)^{n}}{n!}\partial^{n}(\boldsymbol{c}^{\dagger})
+            <p class="keplet" id="keplet_k10" style="padding-bottom:10px;margin-bottom:0px;">\[\begin{gather*} \boldsymbol{c} \text{ admissible},\;\boldsymbol{s}=(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{c}),\;\hat{\boldsymbol{c}}=(1)\bullet(-1)\odot\boldsymbol{c},\;(\,)^{\dagger}:=(\,) \\(1)\hspace{6mm} \frac{(-1)^{n}}{n!}\partial^{n}(\boldsymbol{c}^{\dagger})
                 = {\LARGE \sum_{{\large \begin{subarray}{c}\boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{b}\,=\,\boldsymbol{s}\\ \boldsymbol{a}\neq(\,),\;\boldsymbol{b}\text{ admissible}\end{subarray}}}}\frac{(-1)^{\sum \boldsymbol{a}+p+1}}{p!}{\Large
                 \sum_{{\large k = p\cdot\delta_{|\boldsymbol{b}|,0}}}^{{\large p}}}(-1)^{k}\,\dbinom{p}{k}\partial^{k}(\boldsymbol{a}^{*})\;{\large\underline{\unicode{x29E2}}}\;\partial^{p-k}(\boldsymbol{b}^{\dagger}) \\(2)\hspace{6mm} \boldsymbol{c}
                 = {\LARGE \sum_{{\large \begin{subarray}{c}\boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{b}\,=\,\hat{\boldsymbol{c}}\\ \boldsymbol{a}\neq(\,),\;\boldsymbol{b}\text{ admissible}\end{subarray}}}}\frac{(-1)^{\sum \boldsymbol{a}+p+1}}{p!}{\Large
                 \sum_{{\large k = p\cdot\delta_{|\boldsymbol{b}|,0}}}^{{\large p}}}(-1)^{k}\,\dbinom{p}{k}\partial^{k}(\boldsymbol{a}^{*})\;{\large\underline{\unicode{x29E2}}}\;\partial^{p-k}(\boldsymbol{b}^{\dagger})\end{gather*}\]
             </p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <span class="lblwrap">
                 <label for="k29n"><b style="padding: 2px 7px;">n</b> =  </label>
@@ -541,8 +559,10 @@
     <div class="keret of odd" id="k11" style="margin-bottom:10px;padding-bottom: 10px;">
         <span class="uitok">    <b><big class="sorszam">11.</big></b><input class="kijelzoset" oninput="setkijelzoW('outdet',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="keplet_k11" style="padding-bottom:10px;margin-bottom:10px;">\[\text{Itt lesz a determináns képlete}\]
+            <p class="keplet" id="keplet_k11" style="padding-bottom:10px;margin-bottom:0px;">\[\text{Itt lesz a determináns képlete}\]
             </p>
+        </div>
+        <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <select id="selects" onchange="catalog(this);" style="height:30px;width:calc(100vw - 30px);border:none;border-bottom: 1px solid #7c7c7c;font-size:105%;background-color:inherit">
             <option value="1,2,2,3">Pm33=(1,2,2,3)</option>
@@ -668,6 +688,7 @@
         <p class="kijelzo" id="gen_latex" style="line-height: 1.5;font-family: Cambria math;"></p>
         <p id="figylatex" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     </div>
+
                         
     <script>
         setTimeout(() => {
@@ -686,6 +707,7 @@
     </script>
 </body>
 </html>
+
 
 
 
