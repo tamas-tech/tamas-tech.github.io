@@ -567,11 +567,12 @@ body {
 }
 
 .zeynep.opened {
-    position: fixed;
+    height: calc(1vh + 0px);
+    /*  position: fixed;
     height: calc(100% + 0px);
     top: 0;
     bottom: 5px;
-    transform: translateX(0) translateZ(0);
+    transform: translateX(0) translateZ(0); */;
 }
 
 @media (max-width: 500px) {
@@ -1050,3 +1051,4 @@ button.clrhbtn {
     width: fit-content;
     min-width: calc(100% - 14px);
 }
+
