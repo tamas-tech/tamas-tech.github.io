@@ -71,7 +71,7 @@
     </script>
 </head>
 <body>
-         <div class="keret of odd" id="k1" style="padding-bottom:10px;margin-bottom:10px;">
+    <div class="keret of odd" id="k1" style="padding-bottom:10px;margin-bottom:10px;">
         <span class="uitok"> <b><big class="sorszam">1.</big> Base concepts<span style="float:right"></span></b><br/><input class="kijelzoset" oninput="setkijelzoW('callout',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset"
             onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
@@ -233,67 +233,64 @@
     <!--  INNEN  -->
     <div class="keret of even" id="k4" style="padding-bottom:10px;margin-bottom:10px;">
         <span class="uitok">        <b><big class="sorszam">4.</big></b><input class="kijelzoset" oninput="setkijelzoW('genout',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
-        <div class="stickblock">
-            <div id="burkolo">
-                <fieldset style="border:1px solid #ccc;border-radius:3px;">
-                    <legend>Please select arguments:</legend>
-                    <div class="nobr" style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
-                        <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{x}\)</span>
-                        <label class="switch"><input id="setnarg2"  type="checkbox" onchange="setnArg2(this);genClear();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{1-x}\)</span>
-                        <span id="nyiltbl"></span>
-                    </div>
-                    <div class="nobr" style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
-                        <label for="amode" style="cursor:pointer;"><b style="padding: 2px 7px;">a</b>:
+        <div id="burkolo">
+            <fieldset style="border:1px solid #ccc;border-radius:3px;">
+                <legend>Please select arguments:</legend>
+                <div class="nobr" style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+                    <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{x}\)</span>
+                    <label class="switch"><input id="setnarg2"  type="checkbox" onchange="setnArg2(this);genClear();"><span class="slider round"></span></label> <span style="margin-left:10px;margin-right:10px;">\(\displaystyle\int \dfrac{1}{1-x}\)</span>
+                    <span id="nyiltbl"></span>
+                </div>
+                <div class="nobr" style="padding-bottom:6px;padding-top:6px;border-bottom:1px solid #e1e1e1e1;">
+                    <label for="amode" style="cursor:pointer;"><b style="padding: 2px 7px;">a</b>:
                 <span style="margin-left:5px;">x</span>
                 <label class="switch"><input  id="setaarg2" type="checkbox" onchange="setaArg2(this);genClear();"><span class="slider round"></span></label> <span>1-x</span>
-                        <span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
-                        <label for="bmode" style="cursor:pointer;"><b  style="padding: 2px 7px;">b</b>:
+                    <span style="margin-left:5px;font-size:20px;color: #cacaca;">|</span>
+                    <label for="bmode" style="cursor:pointer;"><b  style="padding: 2px 7px;">b</b>:
                     <span style="margin-left:5px;">x</span>
                     <label class="switch"><input id="setbarg2" type="checkbox" onchange="setbArg2(this);genClear();"><span class="slider round"></span></label> <span>1-x</span>
-                    </div>
-                </fieldset>
-                <p class="keplet" id="k2set" style="height:84px;margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
-                <div style="margin-left:2px;padding:3px;">
-                    <label style="cursor:pointer;width:42px;display:inline-block;" onclick="pozValtas2();"><b id="avgl"  class="kiur" style="padding: 2px 7px;">a</b> = </label>
-                    <input class="inpvec" type="text" id="avg" name="ribbona" value="3,4" oninput="agSumRefresh();setgenKeplet2();homalyosit();" name="a">
-                    <big style="margin-left:2px;">∑</big>|a| = <span id="asg">5</span>
                 </div>
-                <div class="nobr" style="margin-left:2px;padding:3px;">
-                    <label style="cursor:pointer;width:42px;display:inline-block;" onclick="pozValtas2();"><b id="bvgl" style="padding: 2px 7px;">b</b> = </label>
-                    <input class="inpvec" type="text" id="bvg" name="ribbonb" value="2,3,1,1,3" oninput="bgSumRefresh();setgenKeplet2();homalyosit();" name="b">
-                    <big style="margin-left:2px;"> ∑</big>|b| = <span id="bsg">5</span> <button style="margin-left:10px;" id="tukroz" onclick="tukrozes();">&lrhar;</button>
-                </div>
-                <div class="nobr" style="margin-top:2px;padding:5px;">
-                    <button id="ribbonbtn" class="showpre1" onclick="set_abmode();genoutput();ribbonGraph2()" title="Calculate input">Calculate</button>
-                    <button class="showpre1" style="width:76px;margin-left:3px" onclick="genClear();idClear('#derivT2')" title="Clear output">Clear</button>
-                    <span class="lblwrap">
+            </fieldset>
+            <p class="keplet" id="k2set" style="height:84px;margin-bottom:10px;">\[\int \dfrac{{\rm Li}_{(a_1,\ldots,a_n)}(x)\cdot{\rm Li}_{(b_1,\ldots,b_m)}(x)}{x}\,{\text{d} x}\]</p>
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <label style="cursor:pointer;width:42px;display:inline-block;" onclick="pozValtas2();"><b id="avgl"  class="kiur" style="padding: 2px 7px;">a</b> = </label>
+                <input class="inpvec" type="text" id="avg" name="ribbona" value="3,4" oninput="agSumRefresh();setgenKeplet2();homalyosit();" name="a">
+                <big style="margin-left:2px;">∑</big>|a| = <span id="asg">5</span>
+            </div>
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <label style="cursor:pointer;width:42px;display:inline-block;" onclick="pozValtas2();"><b id="bvgl" style="padding: 2px 7px;">b</b> = </label>
+                <input class="inpvec" type="text" id="bvg" name="ribbonb" value="2,3,1,1,3" oninput="bgSumRefresh();setgenKeplet2();homalyosit();" name="b">
+                <big style="margin-left:2px;"> ∑</big>|b| = <span id="bsg">5</span> <button style="margin-left:10px;" id="tukroz" onclick="tukrozes();">&lrhar;</button>
+            </div>
+            <div class="nobr" style="margin-top:2px;padding:5px;">
+                <button id="ribbonbtn" class="showpre1" onclick="set_abmode();genoutput();ribbonGraph2()" title="Calculate input">Calculate</button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="genClear();idClear('#derivT2')" title="Clear output">Clear</button>
+                <span class="lblwrap">
                     <span style="margin-left:10px;font-size:12px;">HTML</span>
-                    <label class="switch"><input  type="checkbox" onchange="setgenOut(this);"><span class="slider round"></span></label> <span style="font-size:12px;">MathJax</span></span>
-                    <button style="margin-left:10px;padding: 5px 5px 9px 5px;" id="sbtglbtn2" onclick="sbTgl('gensettingbar');">⚙</button>
-                </div>
-
-                <div class="nobr" id="gensettingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
-                    <div style="margin-bottom: 10px;">
-                        <label for="setgenmaxsor">Max méret</label>
-                        <input id="setgenmaxsor" type="number" style="width:60px;" min="200" max="500" step="10" value="350" name="setmaxsor" onchange="setoutMaxsor();">
-                        <label for="showmathas" style="margin-left: 10px;"> Show math as functions </label>
-                        <input type="checkbox" name="showmathas" id="showmath" style="height:20px;width:20px;vertical-align: middle;" onchange="setMathoutmode(this);" />
-                        <label for="insonsel" style="margin-left: 10px;"> Insert on select </label>
-                        <input type="checkbox" name="insonsel" id="insonsel" style="height:20px;width:20px;vertical-align:middle;" onchange="setInsertOnSelect(this);" />
-                    </div>
-                    <div>
-                        <label for="setoutputfont" style="margin-left: 10px;">&#128474;</label>
-                        <input id="outfont-slider" oninput="setgenOutputFont(this.value);setOutputFontintc2(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize"
-                            name="setoutputfont">
-                    </div>
-                </div>
+                <label class="switch"><input  type="checkbox" onchange="setgenOut(this);"><span class="slider round"></span></label> <span style="font-size:12px;">MathJax</span></span>
+                <button style="margin-left:10px;padding: 5px 5px 9px 5px;" id="sbtglbtn2" onclick="sbTgl('gensettingbar');">⚙</button>
             </div>
 
-            <span id="jelento">A zár akkor old fel, ha egy nem halvány gombot jelöl ki.<button  onclick="burkoloki();" style="margin-left: 20px;">Felold</button></span>
-            <span id="szamitofelhivas">Ujraszámítás szükséges! Kattintson a  <button id="ribbonbtn2" class="showpre1" onclick="set_abmode();genoutput();ribbonGraph2()" title="Calculate input">Calculate</button> gombra.</span>
+            <div class="nobr" id="gensettingbar" style="display:none;margin-left:5px;width:max-content;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+                <div style="margin-bottom: 10px;">
+                    <label for="setgenmaxsor">Max méret</label>
+                    <input id="setgenmaxsor" type="number" style="width:60px;" min="200" max="500" step="10" value="350" name="setmaxsor" onchange="setoutMaxsor();">
+                    <label for="showmathas" style="margin-left: 10px;"> Show math as functions </label>
+                    <input type="checkbox" name="showmathas" id="showmath" style="height:20px;width:20px;vertical-align: middle;" onchange="setMathoutmode(this);" />
+                    <label for="insonsel" style="margin-left: 10px;"> Insert on select </label>
+                    <input type="checkbox" name="insonsel" id="insonsel" style="height:20px;width:20px;vertical-align:middle;" onchange="setInsertOnSelect(this);" />
+                </div>
+                <div>
+                    <label for="setoutputfont" style="margin-left: 10px;">&#128474;</label>
+                    <input id="outfont-slider" oninput="setgenOutputFont(this.value);setOutputFontintc2(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:calc(70vw - 100px);vertical-align: middle;" title="set output's fontsize"
+                        name="setoutputfont">
+                </div>
+            </div>
         </div>
+        <span id="jelento">A zár akkor old fel, ha egy nem halvány gombot jelöl ki.<button  onclick="burkoloki();" style="margin-left: 20px;">Felold</button></span>
+        <span id="szamitofelhivas">Ujraszámítás szükséges! Kattintson a  <button id="ribbonbtn2" class="showpre1" onclick="set_abmode();genoutput();ribbonGraph2()" title="Calculate input">Calculate</button> gombra.</span>
         <p id="figygen" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
-        <p class="kijelzo" id="derivJ2" style="font-family:Symbola,Cambria Math;font-size:130%;margin-top:10px;">
+        <p class="kijelzo" id="derivJ2" style="font-family:Symbola,Cambria Math;font-size:130%;margin-top:20px;">
             <span id="derivT2" class="MathJax"></span>
         </p>
         <p id="genout" style="outline: 2px solid #cfcfcf;;outline-offset: -2px;background-color:  #e3e3e3;margin:5px;padding:7px;font-size:130%;;min-height:20px;"></p>
@@ -414,7 +411,7 @@
                 <input class="inpvec" type="text" id="fbs" value="1,4,1,1,1,1,1,5,2" name="fbs">
             </div>
             <div class="nobr">
-                <button class="showpre1" style="width:96px;margin-left:10px" onclick="LifB();" title="Calculate series">Calculate</button>
+                <button class="showpre1" style="width:96px;margin-left:10px;margin-bottom:5px" onclick="LifB();" title="Calculate series">Calculate</button>
                 <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#outfb');updSlickID('Li-slick','');" title="Clear series">Clear</button>
                 <span class="lblwrap">
                 <label for="setfb" style="margin-left: 10px;">Kibontva</label>
@@ -461,7 +458,7 @@
                 </span>
             </div>
         </div>
-        <div id="tableof2">
+        <div id="tableof2" style="max-width:100vw">
             <p class="kijelzo" id="rfbJ" style="font-family:Symbola,Cambria Math;">
                 <span id="rfbT" class="MathJax" style="padding-right:80px;"></span>
             </p>
@@ -564,7 +561,7 @@
         </div>
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
-                <select id="selects" onchange="catalog(this);" style="height:30px;width:calc(100vw - 30px);border:none;border-bottom: 1px solid #7c7c7c;font-size:105%;background-color:inherit">
+                <select id="selects" onchange="catalog(this);" style="height:30px;width:calc(100vw - 50px);border:none;border-bottom: 1px solid #7c7c7c;font-size:105%;background-color:inherit">
             <option value="1,2,2,3">Pm33=(1,2,2,3)</option>
             <option value="1,2,2,1,2">T22=(1,2,2,1,2)</option>
             <option value="1,2,3,1,2">T33=(1,2,3,1,2)</option>
@@ -688,8 +685,7 @@
         <p class="kijelzo" id="gen_latex" style="line-height: 1.5;font-family: Cambria math;"></p>
         <p id="figylatex" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
     </div>
-
-                        
+    
     <script>
         setTimeout(() => {
             setgenKeplet2();
@@ -707,6 +703,7 @@
     </script>
 </body>
 </html>
+
 
 
 
