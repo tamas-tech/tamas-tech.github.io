@@ -1761,6 +1761,10 @@ button.vissza1 {
     box-shadow: 0px 0px 5px 5px #d9d9d9;
 }
 
+sub.zindx {
+    vertical-align: -0.5em;
+}
+
 sub.zhindx {
     vertical-align: -0.5em;
     margin-left: -0.5em;
@@ -1814,7 +1818,6 @@ sub.zhindx {
 }
 
 .table-hideable td.keresztelem {
-    padding-left:5px;
     background-color: #eef4ff;
     outline: 2px solid #93b4d2;
     outline-offset: -4px;
@@ -1829,7 +1832,19 @@ sub.zhindx {
     border-top: 2px solid #858585;
 }
 
+.table-hideable td.columnlinetukor,
+.table-hideable th.columnlinetukor,
+.table-hideable td.columnlinetuk,
+.table-hideable th.columnlinetuk {
+    border-left: 2px solid #858585;
+}
+
+.table-hideable tr.rowlinetukor {
+    border-bottom: 2px solid #858585;
+}
+
 .table-hideable tbody tr td.sarokelem {
+    padding-left: 5px;
     background-color: #b90045;
     color: white;
     font-weight: 700;
@@ -1974,6 +1989,7 @@ p#keresztelem {
     margin-top: -6px;
     box-shadow: 1px 1px 1px #17592b, 0px 0px 1px #175928;
 }
+
 
 
 
