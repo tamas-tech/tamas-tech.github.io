@@ -2853,7 +2853,7 @@ function detM(mat) {
 };
 
 //............................ better determinant calculator >
-function domino(A, v) {
+function dominoEredeti(A, v) {
     const n = A.length;
     var out = [{ "c": 1 }];
     if (n > 0) {
@@ -2876,7 +2876,7 @@ const range = (start, stop) =>
         (_, i) => start + i,
     );
 
-function bhez(A, k) {
+function bhezEredeti(A, k) {
     const n = A.length;
     const b = A[k - 1][n - 1];
     if (k < n) {
@@ -2890,6 +2890,46 @@ function bhez(A, k) {
     } else
         return b;
 }
+
+// tukrozott
+
+function domino(A, v, k) {
+    const n = A.length;
+    var out = [{ "c": 1 }];
+    if (n > 0) {
+        const vn = v.length;
+        var L = [];
+        var veg = _.cloneDeep(A[v[vn - 1] - 1][k - 1]);
+        if (vn % 2 == 1)
+            veg.map(o => o.c = -1 * o.c);
+        L.push(veg);
+        for (i = 0; i < vn - 1; i++)
+            L.push(A[v[i] - 1][v[i + 1] - 1]);
+
+        out = symbVProd(L);
+    }
+    return out;
+};
+
+function bhez(A, k) {
+    const n = A.length;
+    const b = A[k - 1][0];
+    if (k == 1)
+        return b;
+    if (k < n + 1) {
+        const pS = powerSet(range(2, k - 1));
+        var L = [];
+        for (let a of pS) {
+            //if (a.length > 0)
+            L.push(symbVprod(b, domino(A, [1, ...a], k)));
+        }
+        L = _.flatten(L);
+        return L;
+    } else
+        return b;
+}
+
+//document.getElementById("callout").innerHTML=monomvec2HTML(bhezt(PmA8,6))
 
 function detMnew(A) {
     dettagok = 0;
@@ -3262,7 +3302,54 @@ function sarokIndexek() {
     //console.log("sarokv: ", sarokv);
 };
 
-function drawMat(mat) {
+function sarokIndexekTukor() {
+    const $table = $('#outdet table');
+    const meret = $('#outdet table thead tr th').length - 1;
+    //const sarkok = $('#outdet table tbody tr td').filter(function() { return (this.innerText == "1" || this.innerText == "0") && $(this).prev('td').text() !== "0" && $(this).prev('td').text() !== "1" });
+    const sarkok = $('#outdet table tbody tr td').filter(function() { return this.celIndex != 2 && (this.innerText == "1" || this.innerText == "0") && ($(this).next('td').text() !== "0" && $(this).next('td').text() !== "1") });
+    const egyek = $('#outdet table tbody tr td').filter(function() { return this.innerText == "1" }).addClass('egyatlo');
+    const ne = egyek.length;
+    sarokv = [];
+    sarkok.each(function(t) {
+        var colIndex = this.cellIndex;
+        sarokv.push(colIndex);
+        $table.find("tbody tr, thead tr")
+            .children(":nth-child(" + (2) + ")")
+            .addClass('columnlinetuk');
+        $table.find("tbody tr, thead tr")
+            .children(":nth-child(" + (colIndex + 2) + ")")
+            .addClass('columnlinetukor');
+        $table.find("thead tr")
+            .addClass('rowlinetukor');
+        $table.find("tbody tr:nth(" + (colIndex - 1) + ")")
+            .addClass('rowlinetukor');
+        $table.find("tbody tr:nth(" + (colIndex - 1) + ")")
+            .children(":nth-child(" + (colIndex + 2) + ")")
+            .addClass('sarokelem');
+        $table.find("thead tr")
+            .children(":nth-child(" + (colIndex + 1) + ")")
+            .addClass('sarokelem');
+
+    });
+    const lastegy = $table.find("tbody tr:nth(" + 0 + ")")
+        .children(":nth-child(" + (2 + 1) + ")");
+
+    if (lastegy != undefined && lastegy.text() != "0") {
+        lastegy.addClass('sarokelem');
+        lastegy.closest('tr').addClass('rowlinetukor');
+        sarokv.unshift(1);
+    }
+    sarokv = _.uniq(sarokv);
+    if (_.first(sarokv) == 1) {
+        $table.find("tbody tr, thead tr")
+            .children(":nth-child(" + 3 + ")")
+            .addClass('columnlinetukor');
+    }
+    sarokv.push(meret + 1);
+    //console.log("sarokv: ", sarokv);
+};
+
+function drawMat(mat, felsoharomszog) {
     const n = mat.length;
     var txt = '<span style="display:block;width:fit-content;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="dettbl " class="table-hideable"> <thead><tr><th></th>';
     for (var j = 0; j < n; j++)
@@ -3281,8 +3368,10 @@ function drawMat(mat) {
     }
     /* txt += '</tbody></table><span style="display:inline-block;position:sticky;left:5px;"><button class="restore-button showpre1" onclick="showColumns();" style="position:absolute;margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns(); "style="position:absolute;left:120px;margin-top:8px;width:70px;">Hide all</button><button class="restore-button showpre1" onclick="toggleSarkok();" style="position:absolute;left:200px;margin-top:8px;background-color:#b90045;width:90px;">Sarokelemek</button></span></span>'; */
     txt += '</tbody></table><span id="button3" style="display:inline-block;position:sticky;left:15px;"><button class="restore-button showpre1" onclick="showColumns();" style="margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns(); "style="margin-top:8px;width:70px;">Hide all</button><button class="restore-button showpre1" onclick="toggleSarkok();" style="margin-top:8px;background-color:#b90045;width:90px;">Sarokelemek</button></span></span>';
-
-    setTimeout(() => { sarokIndexek(); }, 100);
+    if (felsoharomszog)
+        setTimeout(() => { sarokIndexekTukor(); }, 100);
+    else
+        setTimeout(() => { sarokIndexek(); }, 100);
 
     return txt;
 };
@@ -3290,9 +3379,11 @@ function drawMat(mat) {
 // Kapcolodó részek a dokumentumban
 // --> bvector of deterinant and the full determinant in object-vector  form
 
+
 function drawDet() {
     document.getElementById("figydet").style.display = "none";
     const s = kiszed_dbl("sdet", "figydet");
+    const alsoharomszog = document.getElementById("settukor").checked;
     const detallkell = document.getElementById("setdetall").checked;
     const detkell = document.getElementById("setdet").checked;
     const k29kell = document.getElementById("setk29").checked;
@@ -3300,8 +3391,7 @@ function drawDet() {
     const detmk29kell = document.getElementById("setdetmk29").checked;
     const elem = document.getElementById("outdet");
     elem.innerHTML = "HIBA";
-    const mat = s2mat(s);
-    const table = drawMat(mat);
+    var mat = s2mat(s);
     var txt = "";
     if (detallkell) {
         if (detkell || detmk29kell) {
@@ -3334,6 +3424,10 @@ function drawDet() {
             txt += "A det - képlet29 különbség összevonás után egy " + detmk29tagok + " tagból álló összeg<br/>" + detmk29 + "<span id='detmk29ertek' style='color:blue;'></span><hr/>"
         };
 
+        if (alsoharomszog)
+            mat = mat.map(y => y.reverse()).reverse();
+        const table = drawMat(mat, !alsoharomszog);
+
         elem.innerHTML = txt + table;
         if (detkell)
             detValasz(det0);
@@ -3343,8 +3437,12 @@ function drawDet() {
             regshuffValasz(s);
         if (detmk29kell)
             detmk29Valasz(kul);
-    } else
+    } else {
+        if (alsoharomszog)
+            mat = mat.map(y => y.reverse()).reverse();
+        const table = drawMat(mat, !alsoharomszog);
         elem.innerHTML = table;
+    }
 
     hideColumns();
 };
@@ -3360,9 +3458,9 @@ function toggleSarkok() {
     const fullcol = document.getElementById("setfullcol").checked;
     if (fullcol) {
         if ($('.table-hideable tr td.sarokelem.hide-col').length >= $('.table-hideable tr td.sarokelem:not(.hide-col)').length)
-            $('.table-hideable tr td.columnline').removeClass('hide-col');
+            $('.table-hideable tr td.columnline,.table-hideable tr td.columnlinetukor').removeClass('hide-col');
         else
-            $('.table-hideable tr td.columnline').addClass('hide-col');
+            $('.table-hideable tr td.columnline,.table-hideable tr td.columnlinetukor').addClass('hide-col');
     } else {
         if ($('.table-hideable tr td.sarokelem.hide-col').length >= $('.table-hideable tr td.sarokelem:not(.hide-col)').length)
             $('.table-hideable tr td.sarokelem').removeClass('hide-col');
@@ -3421,6 +3519,7 @@ function hlThisRow(e) {
 
 function keresztelem() {
     const detreszletes = document.getElementById("detreszletes").checked;
+    const alsoharomszog = document.getElementById('settukor').checked;
     $('#outdet table tbody td.keresztelem').removeClass("keresztelem");
     const m = $('#outdet table tbody tr.active td.active');
     var $row = m.closest('tr');
@@ -3431,9 +3530,13 @@ function keresztelem() {
         const i = $row[0].rowIndex * 1;
         const j = m[0].cellIndex * 1;
         //console.log(i, j)
-        for (var k = j + 1; k < i + 1; k++)
-            $('.table-hideable tr:nth(' + k + ') td:nth(' + (k - 2) + ')').addClass('subdiagonal').removeClass('hide-col');
-        var txt0 = matrixJelentes(i, j) || "";
+        if (alsoharomszog)
+            for (var k = j + 1; k < i + 1; k++)
+                $('.table-hideable tr:nth(' + k + ') td:nth(' + (k - 2) + ')').addClass('subdiagonal').removeClass('hide-col');
+        else
+            for (var k = i + 1; k < j + 1; k++)
+                $('.table-hideable tr:nth(' + (k - 1) + ') td:nth(' + (k - 1) + ')').addClass('subdiagonal').removeClass('hide-col');
+        var txt0 = matrixJelentes(i, j, alsoharomszog) || "";
         if (txt0 != "")
             txt = txt0 + "<hr style='color:#f1f1f1;opacity:0.5;'/>" + txt;
     }
@@ -5472,6 +5575,7 @@ function fuzesForm(i, j, sarkok, diff, sobj) {
 
 var matrixGraph = {}
 
+// also háromszög mátrixot rak össze, amit az utolsó sorban megfordítunk, ezért felső háromszög mátrixot ad vissza.
 function s2mat(s) {
     matrixGraph = {};
     const n = s.length - 1;
@@ -5521,6 +5625,7 @@ function s2mat(s) {
                     matrixGraph[[i + 1, j + 1]] = { 'eleje': rend, 'kozepe': Fuzesek[indx], 'vege': i + 1 - e0, 'sarok': a };
                 }
             } else if (j == n - 1) {
+                //sor.push(symbOv(vList2obj(b[i], 1))); jelentos lassulast okoz
                 sor.push(vList2obj(b[i], 1));
             } else if (i == j)
                 sor.push([{ 'c': 1 }]);
@@ -5528,7 +5633,8 @@ function s2mat(s) {
                 sor.push([{ 'c': 0 }]);
         }
         mat.push(sor);
-    }
+    };
+    mat = mat.map(y => y.reverse()).reverse();
     return mat;
 };
 
@@ -5553,39 +5659,67 @@ function ff0(v) {
     return out;
 }
 
-function matrixJelentes(i, j) {
+function matrixJelentes(i, j, alsoharomszog) {
+    const n = _.last(sarokv);
+    if (!alsoharomszog) {
+        i = n - i;
+        j = n - j;
+    }
     const obj = matrixGraph[[i, j]];
     if (obj == undefined)
         out = "A kiválasztott elemhez nem tarozik részletes jelentés."
     else {
         var k = _.cloneDeep(obj.kozepe);
+        console.log(k)
+        const kn = k.length;
         const p = obj.eleje;
         const s = obj.sarok;
         const e = _.sum(s);
         const c = formazottTortHTML("(-1)<sup>" + e + "</sup>", p + "!") + "&nbsp;";
-        const fv = "<span style='font-size:130%;color:red;'>|</span>"
         var e1 = "";
         if (e % 2 == 1)
             e1 = "−&hairsp;";
         const c1 = e1 + formazottTortHTML(1, factorial(p)) + "&nbsp;";
-        //k[0].unshift([obj.vege])
-        var out0 = ff0([p]) + fv;
-        const kn = k.length;
-        for (var l = 0; l < kn - 1; l++) {
-            out0 += "&zeta;<sub>" + k[l][1] + "</sub>," + ff0(k[l][0]);
-        };
-        out0 += "&zeta;<sub>" + k[kn - 1][0] + "</sub>," + ff0([obj.vege]);
-        out0 = out0.replaceAll("," + fv, fv);
-        if (out0.endsWith(','))
-            out0 = out0.slice(0, -1);
-        out0 += "&nbsp;&nbsp;&rightarrow;&nbsp;&nbsp;[" + p + "]" + fv;
-        for (var l = 0; l < kn - 1; l++) {
-            out0 += "&zeta;<sub>" + k[l][1] + "</sub>,[" + k[l][0] + "],";
-        };
-        out0 += "&zeta;<sub>" + k[kn - 1][0] + "</sub>,[" + obj.vege + "],";
-        if (out0.endsWith(','))
-            out0 = out0.slice(0, -1);
-        out0 += "&nbsp;&leftarrow;&nbsp;A piros vonal elötti szám határozza meg a deriválás fokát, a piros vonal utáni részt pedig megfordítjuk.<br/>";
+        const fv = "<span style='font-size:130%;color:red;'>|</span>";
+        var out0 = "";
+        if (alsoharomszog) {
+            out0 = ff0([p]) + fv;
+            for (var l = 0; l < kn - 1; l++) {
+                out0 += "&zeta;<sub>" + k[l][1] + "</sub>," + ff0(k[l][0]);
+            };
+            out0 += "&zeta;<sub>" + k[kn - 1][0] + "</sub>," + ff0([obj.vege]);
+            out0 = out0.replaceAll("," + fv, fv);
+            if (out0.endsWith(','))
+                out0 = out0.slice(0, -1);
+            out0 += "&nbsp;&nbsp;&rightarrow;&nbsp;&nbsp;[" + p + "]" + fv;
+            for (var l = 0; l < kn - 1; l++) {
+                out0 += "&zeta;<sub>" + k[l][1] + "</sub>,[" + k[l][0] + "],";
+            };
+            out0 += "&zeta;<sub>" + k[kn - 1][0] + "</sub>,[" + obj.vege + "],";
+            if (out0.endsWith(','))
+                out0 = out0.slice(0, -1);
+            out0 += "&nbsp;&leftarrow;&nbsp;A piros vonal elötti szám határozza meg a deriválás fokát, a piros vonal utáni részt pedig megfordítjuk.<br/>";
+        } else {
+            out0 += ff0([obj.vege]) + "&zeta;<sub>" + k[kn - 1][0] + "</sub>,";
+            for (var l = 0; l < kn - 1; l++) {
+                var ll = kn - 2 - l;
+                out0 += ff0(k[ll][0]) + "&zeta;<sub>" + k[ll][1] + "</sub>,";
+            };
+            out0 += fv + ff0([p]);
+            out0 = out0.replaceAll("," + fv, fv);
+            if (out0.endsWith(','))
+                out0 = out0.slice(0, -1);
+            out0 += "&nbsp;&nbsp;&rightarrow;&nbsp;&nbsp;";
+            out0 += "[" + obj.vege + "],&zeta;<sub>" + k[kn - 1][0] + "</sub>,";
+            for (var l = 0; l < kn - 1; l++) {
+                var ll = kn - 2 - l;
+                out0 += "[" + k[ll][0] + "],&zeta;<sub>" + k[ll][1] + "</sub>,";
+            };
+            out0 += fv + "[" + p + "]";
+            if (out0.endsWith(','))
+                out0 = out0.slice(0, -1);
+            out0 += "&nbsp;&leftarrow;&nbsp;A piros vonal utáni szám határozza meg a deriválás fokát.<br/>";
+        }
         var tk = [];
         for (var i = 0; i < kn - 1; i++) {
             tk.unshift("<span style='border-radius:4px;padding:2px;background-color:#c6e7f7;color:blue;'>(" + k[i][0] + ")</span>&odot;<span style='border-radius:4px;padding:2px;background-color:#b90045;color:white;'>(" + k[i][1] + ")</span>");
@@ -5599,15 +5733,6 @@ function matrixJelentes(i, j) {
         out = c + "&part;<sup>" + p + "</sup>[" + out + "] = ";
         out += c1 + "&part;<sup>" + p + "</sup>(" + s + ") = ";
         return out0 + out;
-    }
-}
-
-function matrixJelentes0(i, j) {
-    const obj = matrixGraph[[i, j]];
-    if (obj == undefined)
-        console.log("NINCS")
-    else {
-        return JSON.stringify(obj);
     }
 };
 
@@ -5813,8 +5938,6 @@ function leibnizR2(deriv, n, dual, conj, m1, m2, muv, ov, param) {
     return _.sortBy(ms_Ov(out));
 };
 
-// JSON.stringify(leibnizR2(expDeriv,[[2,[4,1]],[3,[5,2]]],[[5,[2,3]],[-1,[3,3]]],2,_.concat,true))
-
 function elojel2num(str) {
     if (str == "+" || str == "")
         str = 1;
@@ -5890,5 +6013,3 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
-
-
