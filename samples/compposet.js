@@ -3481,10 +3481,13 @@ function HideColumnIndex() {
         if (wmode && $cell[0].nodeName != "TH") {
             var w = Math.max(40, $sp.width() + 15);
             var cw = Math.max(40, $cell.width() + 15);
-            if (cw < w)
+            if (cw < w){
+                $table.find("thead tr")
+                    .children(":nth-child(" + colIndex + ")")
+                    .removeClass('hide-col');
                 $cell.removeClass('hide-col')
-                .css("max-width", w + "px");
-            else
+                    .css("max-width", w + "px");
+            } else
                 $table.find("tbody tr, thead tr")
                 .children(":nth-child(" + colIndex + ")")
                 .addClass('hide-col');
@@ -6013,3 +6016,4 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
