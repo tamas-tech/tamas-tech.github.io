@@ -3367,7 +3367,7 @@ function drawMat(mat, felsoharomszog) {
         txt += '</tr>';
     }
     /* txt += '</tbody></table><span style="display:inline-block;position:sticky;left:5px;"><button class="restore-button showpre1" onclick="showColumns();" style="position:absolute;margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns(); "style="position:absolute;left:120px;margin-top:8px;width:70px;">Hide all</button><button class="restore-button showpre1" onclick="toggleSarkok();" style="position:absolute;left:200px;margin-top:8px;background-color:#b90045;width:90px;">Sarokelemek</button></span></span>'; */
-    txt += '</tbody></table><span id="button3" style="display:inline-block;position:sticky;left:15px;"><button class="restore-button showpre1" onclick="showColumns();" style="margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="hideColumns(); "style="margin-top:8px;width:70px;">Hide all</button><button class="restore-button showpre1" onclick="toggleSarkok();" style="margin-top:8px;background-color:#b90045;width:90px;">Sarokelemek</button></span></span>';
+    txt += '</tbody></table><span id="button3" style="display:inline-block;position:sticky;left:15px;"><button class="restore-button showpre1" onclick="showhideColumns(this);" style="margin-top:8px;">Show all</button><button class="restore-button showpre1" onclick="toggleSarkok();" style="margin-top:8px;background-color:#b90045;width:90px;">Sarokelemek</button></span></span>';
     if (felsoharomszog)
         setTimeout(() => { sarokIndexekTukor(); }, 100);
     else
@@ -3581,6 +3581,16 @@ function hideColumns() {
     $table.find("th, td")
         .addClass('hide-col');
     $('#outdet').animate({ scrollLeft: 0 }, 500)
+};
+
+function showhideColumns(e) {
+    if (e.innerText == "Show all") {
+        showColumns();
+        e.innerText = "Hide all"
+    } else {
+        hideColumns();
+        e.innerText = "Show all"
+    }
 };
 
 //---------------------------------------------------------------------
@@ -6016,4 +6026,5 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
 
