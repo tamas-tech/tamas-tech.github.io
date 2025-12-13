@@ -4645,7 +4645,7 @@ function rfbGraph_det() {
     };
     kep += "</div></th><th style='width:21.36px'></th><td id='binomkijelzo'></td></tr></table>";
     elem.innerHTML = kep;
-    setOutputFontrfb_det(document.getElementById("setoutputfontrfb").value);
+    setOutputFontrfb_det(document.getElementById("setoutputfontrfb_det").value);
     $('#detT #show_deriv').css('top', Math.max(20, ($('#detT table').height() - 40) / 2) + 'px');
     $('#detT table .tsorszam-b:nth(1)').trigger("click");
     if (deriv_fix)
@@ -6604,3 +6604,4 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
