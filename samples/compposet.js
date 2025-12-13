@@ -2808,13 +2808,10 @@ function symbOv(vList) {
         out = vList;
     if (n > 1) {
         var szamlalo = 0;
-        /* var nemOv = _.countBy(vList, ovhato);
-        console.log("nemOv.length", nemOv); */
         while (vList.length > 0 && szamlalo < 100000) {
             e = _.first(vList);
             var ov = vList.filter(x => ovhato(x, e));
             _.pullAllWith(vList, [e], ovhato);
-            //console.log(szamlalo + ": ", ov, vList);
             var cc = _.sum(ov.map(y => y.c));
             e.c = cc
             szamlalo++
@@ -2840,7 +2837,6 @@ function detM(mat) {
     var det = symbDet(strmat);
     det = det.map(y => JSON.parse(kiigazit(y)));
     det = det.map(y => symbOv(symbVProd(y)));
-    console.log("szorzat kész")
     det = dense0(_.flatten(det));
     if (det.length > 400)
         out = "A determináns közel " + det.length + "hosszú amit már nagyon időigényes összevonni."
@@ -3340,7 +3336,6 @@ function sarokIndexek() {
         .children(":nth-child(" + meret + ")")
         .addClass('columnline');
     sarokv.push(meret + 1);
-    //console.log("sarokv: ", sarokv);
 };
 
 function sarokIndexekTukor() {
@@ -3387,7 +3382,6 @@ function sarokIndexekTukor() {
             .addClass('columnlinetukor');
     }
     sarokv.push(meret + 1);
-    //console.log("sarokv: ", sarokv);
 };
 
 function drawMat(mat, felsoharomszog) {
@@ -3573,7 +3567,6 @@ function keresztelem() {
         $('.table-hideable tbody tr td.subdiagonal').removeClass('subdiagonal');
         const i = $row[0].rowIndex * 1;
         const j = m[0].cellIndex * 1;
-        //console.log(i, j)
         if (alsoharomszog)
             for (var k = j + 1; k < i + 1; k++)
                 $('.table-hideable tr:nth(' + k + ') td:nth(' + (k - 2) + ')').addClass('subdiagonal').removeClass('hide-col');
@@ -4309,7 +4302,6 @@ function teglaTrim_det() {
         elojel = "−";
     else
         elojel = "";
-    console.log(ds, p, _.sum(ds) + p + 1, elojel)
     var szorzo = factorial(p);
     szorzo = "1/" + "<span class='lncolor'>" + szorzo + "</span>&lowast;";
     var keplet = "";
@@ -4343,11 +4335,14 @@ function teglaTrim_det() {
         make_Deriv_det();
     vertVonal();
     const idvec = [ds.toString() + '-' + c.toString(), c.toString() + '-' + ds.toString()];
-    console.log(idvec)
     $('#detbTable #bjelentes .bvec.hl').removeClass('hl');
     for (let v of idvec)
         $('#detbTable #bjelentes .bvec[data-b="' + v.replaceAll("( )-", "").replaceAll("-( )", "") + '"]').addClass('hl');
 };
+
+$(document).on('click', '#detT .cintkeplet', function() {
+    $('#detbTable #bjelentes .bvec.hl')[0].scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
+});
 
 function derivSor_det(s, n) {
     const ss = _.dropRight(s, 1);
@@ -4937,7 +4932,6 @@ function invugras(elem) {
     var indx = elem.getAttribute("kp-data");
     indx = JSON.parse("[" + indx.replaceAll("-", ",") + "]");
     const k = _.findIndex(allcompReg, y => _.isEqual(y, indx)) + 1;
-    console.log(allcompReg[k])
     $("#lepeskijelzo").val(k).trigger("click)").trigger("change");
 }
 
@@ -5044,7 +5038,6 @@ function regshbontas() {
         comp0(N, A)
         const szamlalo = document.getElementById("lepeskijelzo").value * 1 - 1;
         const color = COLORS[szamlalo];
-        console.log(szamlalo);
         keplet += "<span class='kpblokk' style='background-color:" + color + "25;outline-color:" + color + "' kp-data='" + k.toString().replaceAll(",", "-") + "'>"
         for (var j = 0; j < A; j++) {
             keplet += drawAngel(a[j] + "+<span style='color:" + color + ";font-weight700;text-decoration:underline;'>" + k[j] + "</span>", "1+<span style='color:" + color + ";font-weight700;text-decoration:underline;'>" + k[j] + "</span>") + " &bullet; ";
@@ -5131,7 +5124,6 @@ function regshbontas() {
 var shrbindx = 0;
 
 function shrugrik(e, indx) {
-    console.log(indx)
     const be = document.querySelector('#kd');
     const nn = allcompReg.length;
     if (indx > 0 && indx < nn + 1) {
@@ -6006,7 +5998,6 @@ function formk29() {
         s = _.concat(Array(n).fill(1), s0);
 
     const k29 = keplet29(s);
-    console.log(k29)
     const stf = "<span style='font-size:1.5em;text-decoration:underline;text-underline-offset: 3px;'>&#x29E2;</span>";
     const sa = leading1(s);
     const L = s.length - sa.length;
@@ -6191,8 +6182,6 @@ function s2mat(s) {
             Fuzesek[indx] = fuzesForm(i, j, sarkok, diff, sobj);
         };
     };
-    //console.log(sobj)
-    //console.log(fuzesek)
     mat = [];
     for (var i = 0; i < n; i++) {
         const e0 = _.last(sarkok.filter(y => y <= i + 1)) || 1;
@@ -6261,7 +6250,6 @@ function matrixJelentes(i, j, alsoharomszog) {
         out = "A kiválasztott elemhez nem tarozik részletes jelentés."
     else {
         var k = _.cloneDeep(obj.kozepe);
-        console.log(k)
         const kn = k.length;
         const p = obj.eleje;
         const s = obj.sarok;
@@ -6504,8 +6492,7 @@ function linExtension(muv, ov, m1, m2, param) {
             }
         }
     if (out[0][1][0] != undefined && typeof(out[0][1][0]) != 'number') {
-        console.log('vektor van')
-            //out = _.flatten(out.map(y => y[1].map(z => [y[0], z])));
+        //out = _.flatten(out.map(y => y[1].map(z => [y[0], z])));
         out = _.flatten(out.map(y => ms_mul(y[0], y[1])))
     };
     if (ov) {
@@ -6515,7 +6502,6 @@ function linExtension(muv, ov, m1, m2, param) {
 };
 
 function leibnizR1(deriv, n, dual, conj, m1, m2, muv, ov, param) {
-    console.log(ms_deriv(deriv, n, dual, conj, linExtension(muv, ov, m1, m2, param)))
     return _.sortBy(ms_Ov(ms_deriv(deriv, n, dual, conj, linExtension(muv, ov, m1, m2, param))));
 };
 
@@ -6604,4 +6590,3 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
-
