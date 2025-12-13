@@ -1441,7 +1441,8 @@ div#kepek {
     color: #456ab9;
 }
 
-#rfbT table tr td span.tgomb.no {
+#rfbT table tr td span.tgomb.no,
+#detT table tr td span.tgomb.no {
     visibility: hidden;
 }
 
@@ -2068,6 +2069,7 @@ table tr.trvonal {
     text-decoration-thickness: 2px;
     text-underline-offset: 12px
 }
+
 
 
 
