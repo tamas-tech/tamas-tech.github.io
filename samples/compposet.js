@@ -46,7 +46,7 @@ var ra = undefined;
 var cN = 1;
 var cN2 = 1;
 var egyezes = 2;
-var rfb_last = { "v": [], "deriv_path": [], "s": 0, "C": [], "Li": 0, "o": 0 };
+var rfb_last = { "v": [], "deriv_path": [], "s": 0, "C": [], "Li": 0, "o": 0, "bfelett": 0 };
 var rfbtegla = [
     0, []
 ];
@@ -818,7 +818,7 @@ function cdat(el, s, o) {
         const ce = conjugate(e);
         if (!aarg)
             $('#derivT .tsorszam-s:nth(0)').css("visibility", "visible").html(0);
-        for (var t = 0; t < ce.length; t++)
+        for (var t = boszlopa; t < ce.length; t++)
             $('#derivT .tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").html(ce[t]);
     };
     var bv = [];
@@ -2994,6 +2994,47 @@ function monomvec2HTML(mv) {
     return txt;
 };
 
+function monom2HTMLWithId(obj) {
+    if (_.isEqual(obj, { 'c': 1 }))
+        return "1";
+    if (_.isEqual(obj, { 'c': 0 }))
+        return "0";
+    var C = obj.c * 1;
+    if (C == 1)
+        C = " + "
+    else if (C == -1)
+        C = " − ";
+    else if (C > 1)
+        C = " + " + C + "&hairsp;";
+    else if (C < 1)
+        C = " − " + -C + "&hairsp;";
+
+    obj = _.omit(obj, 'c');
+    var m = "";
+    var keydata = ""
+    _.forEach(obj, function(value, key) {
+        keydata += key + "-";
+        if (value > 1)
+            m += '&zeta;<sup>' + value + '</sup><sub class="zhindx">' + key + '</sub>';
+        else
+            m += '&zeta;<sub class="zindx">' + key + '</sub>';
+    });
+    keydata = keydata.slice(0, -1);
+    m = '<span class="bvec" data-b="' + keydata + '">' + C + m + '</span>';
+    return m;
+};
+
+function monomvec2HTMLWithId(mv) {
+    var txt = "";
+    for (let m of mv) {
+        txt += monom2HTMLWithId(m);
+    }
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+    return txt;
+};
+
+
 function monom2gp(obj) {
     if (_.isEqual(obj, { 'c': 1 }))
         return "1";
@@ -3481,7 +3522,7 @@ function HideColumnIndex() {
         if (wmode && $cell[0].nodeName != "TH") {
             var w = Math.max(40, $sp.width() + 15);
             var cw = Math.max(40, $cell.width() + 15);
-            if (cw < w){
+            if (cw < w) {
                 $table.find("thead tr")
                     .children(":nth-child(" + colIndex + ")")
                     .removeClass('hide-col');
@@ -3824,9 +3865,9 @@ function teglaTrim() {
     const lo = rfb_last.o;
     const ls = rfb_last.s;
     const p = $('#rfbT .tsorszam-s.ln').text() * 1;
-    var elojel = Math.pow(-1, _.sum(_.dropRight(lv)) + p);
+    var elojel = Math.pow(-1, _.sum(_.dropRight(lv)) + p + 1);
     if (elojel < 0)
-        elojel = "-";
+        elojel = "−";
     else
         elojel = "";
     var szorzo = factorial(p);
@@ -4070,6 +4111,543 @@ function rfbGraph() {
     elem.innerHTML = kep;
     setOutputFontrfb(document.getElementById("setoutputfontrfb").value);
     $('#rfbT #show_deriv').css('top', Math.max(20, ($('#rfbT table').height() - 40) / 2) + 'px');
+    if (deriv_fix)
+        document.getElementById("setderfix").click();
+};
+
+
+// ribbon graph for Matrix determinant
+
+function toggleTableRow_det(row) {
+    const next = row.parentElement.nextElementSibling;
+    if (next && next.classList.contains("child")) {
+        next.style.display = (next.style.display === "none") ? "table-row" : "none";
+    }
+}
+
+function setOutputFontrfb_det(v) {
+    var elem = document.getElementById("detT");
+    elem.style.fontSize = v + '%';
+
+    $('#detT .tsorszam-s,#detT .tsorszam-n,#detT .tsorszam-fix').width(20);
+    $('#detT .tsorszam-s,#detT .tsorszam-n,#detT .tsorszam-fix').width(($('#detT .tsorszam-s').parent('div').width() - 10) / cN);
+    $('#detT .tsorszam-s,#detT .tsorszam-n,#detT .tsorszam-fix,#detT .tsorszam-w,#detT .tsorszam-e').css({ 'font-size': v * 0.01 * 12 + "px" });
+    vertVonal();
+    $('#detT .tsorszam-n .vertvonal').css({ 'margin-left': -$('#detT .tsorszam-n .vertvonal').parent().width() * 0.2 + 'px' });
+};
+
+function setDerfix_det(e) {
+    deriv_fix = e.checked;
+    if (deriv_fix)
+        make_Deriv_det();
+    else if ($('#detT .tgomb.d-path').length > 0)
+        $('#detT .tgomb.d-path').removeClass('d-path');
+};
+
+function moveSelect_det(e) {
+    const $e = $(e);
+    const esel = $e.hasClass('sel');
+    const m = $('#detT .tgomb.move');
+    const ed = $e.attr('rfb-data');
+    const md = m.attr('rfb-data');
+    const mas = m.length > 0 && !(ed == md);
+    const ej = ed.split('-')[1];
+    const ei = ed.split('-')[0];
+    const ee = $('#detT .tgomb.no[rfb-data=' + (ei - 1) + '-' + ej + ']');
+    var eesel = false;
+    if (ee.length > 0)
+        eesel = ee.hasClass('sel');
+    var mj = 0;
+    if (m.length > 0)
+        mj = md.split('-')[1] || 0;
+    if (!eesel) {
+        if (m.length == 0) {
+            if (esel)
+                $e.toggleClass('move');
+            else if ($('#detT .tgomb.sel').length > 0) {
+                const mm = $('#detT .tgomb.sel:nth(0)')
+                $e.toggleClass('sel').toggleClass('move').html('&#x25CF;');
+                mm.removeClass('sel').removeClass('move').html('&#x25CB;');
+            }
+        } else if (!mas) {
+            m.removeClass('move');
+        } else {
+            if (!esel && ej != mj) {
+                $e.toggleClass('sel').toggleClass('move').html('&#x25CF;');
+                m.removeClass('sel').removeClass('move').html('&#x25CB;');
+            } else if (ej != mj) {
+                $e.toggleClass('move');
+                m.removeClass('move');
+            }
+        };
+        teglaTrim_det();
+    }
+};
+
+function drawDerivPath_det(s, o, d) {
+    const k = kum(d);
+    var d_path = [];
+    for (var i = 1; i <= s; i++)
+        for (var j = 1; j < o; j++)
+            if ($('#detT .tgomb.shown[rfb-data=' + i + '-' + j + ']').length > 0)
+                d_path.push([i, j]);
+    d_path.filter(y => y[1] < o && y[0] <= s);
+    for (let v of d_path) {
+        var j = v[1];
+        v[0] += k[j - 1];
+    };
+    for (var j = 1; j < o; j++) {
+        var m = _.min(d_path.filter(y => y[1] == j).map(t => t[0]));
+        for (var u = 1; u <= d[j - 1]; u++) {
+            d_path.push([m - u, j]);
+        }
+    }
+    const p = $('#detT .tsorszam-s.ln').text() * 1;
+    for (var l = s - p; l <= s; l++)
+        d_path.push([l, o]);
+    for (let j of d_path) {
+        $('#detT .tgomb[rfb-data=' + (j[0]) + '-' + (j[1]) + ']').addClass('d-path');
+    }
+};
+
+function toggle_Deriv_det() {
+    if (rfb_last.s > 0) {
+        const s = rfb_last.s;
+        const o = rfb_last.o;
+        const d = rfb_last.deriv_path;
+        if ($('#detT .tgomb.d-path').length > 0)
+            $('#detT .tgomb.d-path').removeClass('d-path');
+        else
+            drawDerivPath_det(s, o, d);
+    }
+};
+
+function make_Deriv_det() {
+    if (rfb_last.s > 0) {
+        const s = rfb_last.s;
+        const o = rfb_last.o;
+        const d = rfb_last.deriv_path;
+        drawDerivPath_det(s, o, d);
+    }
+};
+
+function teglaTrim_det() {
+    const o = rfbtegla[0];
+    const v = _.dropRight([...rfbtegla[1]]);
+    const db = $('#detT .tgomb.sel').length;
+    const lLi = rfb_last["Li"];
+    const diff = db - lLi;
+    if (diff > 0)
+        for (var d = 0; d < diff; d++)
+            $('#detT .tgomb.sel:nth(' + d + ')').removeClass('sel move').html('&#x25CB;');
+    if ($('#detT .tgomb.d-path').length > 0)
+        $('#detT .tgomb.d-path').removeClass('d-path');
+    var d = Array(o).fill(0);
+    for (var i = 1; i < o + 1; i++) {
+        for (let j of v) {
+            var e = $('#detT .tgomb.no[rfb-data=' + j + '-' + i + ']')
+            var f = $('#detT .tgomb.no[rfb-data=' + (j + 1) + '-' + i + ']')
+            if (!f.hasClass('sel')) {
+                if (e.hasClass('sel')) {
+                    e.removeClass('sel').html('&#x25CB;');
+                    f.addClass('sel').html('&#x25CF;');
+                    if (e.hasClass('move')) {
+                        e.toggleClass('move');
+                        f.toggleClass('move');
+                    }
+                } else
+                    e.removeClass('ye');
+            } else {
+                if (!e.hasClass('ye') && !f.hasClass('move'))
+                    e.addClass('ye');
+                else if (f.hasClass('move') && !e.hasClass('sel'))
+                    e.removeClass('ye');
+            }
+        }
+    };
+    const vv = [...rfbtegla[1]];
+    var B = 1;
+    var Btext = "";
+    rfb_last.deriv_path = [];
+    const lv = [...rfb_last["v"]];
+    for (var i = 1; i < o + 1; i++) {
+        for (let j of vv) {
+            var e = $('#detT .tgomb.no[rfb-data=' + j + '-' + i + ']')
+            if (e.hasClass('sel')) {
+                d[i - 1] = d[i - 1] + 1;
+            }
+        }
+
+        d[i - 1] = lv[i - 1] + d[i - 1];
+        rfb_last.deriv_path.push(d[i - 1] - lv[i - 1]);
+        dif = 0;
+        if (i - 1 == boszlopa)
+            dif = rfb_last.bfelett
+        d[i - 1] = d[i - 1] - dif;
+        if (i > boszlopa) {
+            B *= binomial(d[i - 1] - 1, lv[i - 1] - dif - 1);
+            Btext += drawBinomial(d[i - 1] - 1, lv[i - 1] - 1);
+        }
+    };
+    rfb_last.deriv_path.push(0);
+    for (var t = 0; t < o; t++)
+        $('#detT .tsorszam-s:nth(' + (t + 1) + ')').html(d[t]);
+    if (o > 0)
+        Btext += "<span style='display:inline-block;position: relative;top: -30%;'> = " + "<span class='binomcolor'>" + B + "</span></span>";
+    else {
+        B = binomial(-1 + rfb_last.Li, -1)
+        Btext = drawBinomial(-1 + rfb_last.Li, -1) + "<span style='display:inline-block;position: relative;top: -30%;'> = " + "<span class='binomcolor'>" + B + "</span></span>";
+    };
+
+    const lo = rfb_last.o;
+    const ls = rfb_last.s;
+    const c = rfb_last.C;
+    const p = $('#detT .tsorszam-fix.Li').text() * 1;
+    const ds = d.slice(boszlopa);
+    var elojel = Math.pow(-1, _.sum(ds) + p + 1);
+    if (elojel < 0)
+        elojel = "−";
+    else
+        elojel = "";
+    console.log(ds, p, _.sum(ds) + p + 1, elojel)
+    var szorzo = factorial(p);
+    szorzo = "1/" + "<span class='lncolor'>" + szorzo + "</span>&lowast;";
+    var keplet = "";
+    keplet = "&rightarrow;&nbsp;" + elojel + "<span class='binomcolor'>" + B + "</span>&zeta;<sub>" + c + "</sub>&nbsp;&zeta;<sub>" + ds + "</sub>";
+    keplet = keplet.replaceAll("<sub>(( ))</sub>", "<sub>( )</sub>");
+    $('#detT .cintkeplet').html('').removeClass('cintkeplet');
+    $("#detT #ebbe-" + ls).html(keplet).addClass('cintkeplet');
+    if (rfb_last.v.length > 1) {
+        var av = conjugate(_.dropRight(rfb_last.v, 1));
+        av = _.drop(av, bsora - 1);
+    } else
+        var av = [];
+    var bont = "<b>a</b> &odot; (1)<sup><i>p</i></sup> &bullet; <b>c</b> = (" + av.toString() + ")&odot;(" + Array(p).fill(1).toString() + ")&bullet;(" + rfb_last["C"] + ")";
+    bont = bont.replaceAll("(( ))", "( )").replaceAll("()", "( )")
+    $("#detT #ebbe-" + (ls + 1)).html(bont).addClass('cintkeplet');
+    if (rfb_last.v.length > 1) {
+        av[0] -= rfb_last.bfelett;
+    }
+    $("#detT #binomkijelzo").html(Btext);
+    _.filter($('#detT .tgomb.shown'), function(y) {
+        var tt = $(y).attr('rfb-data').split('-');
+        return tt[0] < ls * 1 && tt[1] == lo * 1 && !$(y).hasClass('hlLn');
+    }).map(z => $(z).addClass('hlLi'));
+
+    $("#detTable span.deractive").removeClass('deractive');
+    if (d.length > 0) {
+        var dd = _.drop(d, boszlopa)
+        $("#detTable span[der-data=" + dd.toString().replaceAll(',', "-") + "]").addClass('deractive');
+    }
+    if (deriv_fix)
+        make_Deriv_det();
+    vertVonal();
+    const idvec = [ds.toString() + '-' + c.toString(), c.toString() + '-' + ds.toString()];
+    console.log(idvec)
+    $('#detbTable #bjelentes .bvec.hl').removeClass('hl');
+    for (let v of idvec)
+        $('#detbTable #bjelentes .bvec[data-b="' + v.replaceAll("( )-", "").replaceAll("-( )", "") + '"]').addClass('hl');
+};
+
+function derivSor_det(s, n) {
+    const ss = _.dropRight(s, 1);
+    const de = expDeriv(ss, n).reverse();
+    const fakt = factorial(n);
+    const el = $('#detTable tr.parent td #dcimke');
+    const elem = $('#detTable tr.child td p');
+    el.html("<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td>p!</td></tr></table></span> &#8706;<sup>p</sup>(<b>a</b>*) = <span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td class='licolor'>" + fakt + "</td></tr></table></span>" + " (" + ss.toString() + ")<sup class='licolor'>(" + n + ")</sup> = ...")
+    var dtxt = '=';
+    for (let v of de) {
+        var c = v[0] / fakt;
+        var ertek = v[1].toString();
+        if (c == 1)
+            c = " +  <span der-data='" + ertek.replaceAll(",", "-") + "'>";
+        else if (c > 1)
+            c = " +  <span der-data='" + ertek.replaceAll(",", "-") + "'>" + c + "&lowast;";
+        if (v[1] != "")
+            dtxt += c + "(" + ertek + ")</span>";
+    };
+    dtxt = dtxt.replace("= +", "= ");
+    elem.html(dtxt);
+};
+
+function vertVonal() {
+    $('#detT .vertvonal').remove();
+    $('#detT tr.trvonal').removeClass('trvonal');
+    $('#detT .tsorszam-n').css({ 'visibility': 'hidden', 'text-align': 'left' });
+    const elem = $('#detT .tsorszam-n[data-n=' + (rfb_last.o + 0) + ']');
+    $("#detT table tbody .tgomb.shown.hl").closest('tr').addClass('trvonal');
+    elem.css({ 'visibility': 'visible', 'text-align': 'left' })
+    elem.html(elem.html() + "<span class='vertvonal'></span>");
+    var h = $("#detT table tbody").height() - $("#detT table tbody tr:last").height() * 4 + 'px';
+    $('#detT .vertvonal').css('height', h);
+};
+
+function fbcdat_det(el, s, o) {
+    //const Lifirst = true;
+    const E = $("#detT .tgomb.hl");
+    const DE = E.attr("rfb-data");
+    const de = $(el).attr("rfb-data");
+    const m = de.split("-")[1] * 1;
+    if ($('#detT .tgomb.d-path').length > 0)
+        $('#detT .tgomb.d-path').removeClass('d-path');
+    if (DE == de) {
+        if (m != 1)
+            $(el).toggleClass('hlmove');
+        if (deriv_fix)
+            make_Deriv_det();
+        return;
+    } else {
+        const c = kiszed_c('dets');
+        const r = c.length;
+        var e = _.take(c, s - 1);
+        if (s <= r)
+            e.push(o);
+        else
+            e.push(1);
+        var h = _.takeRight(c, r - s);
+
+        if (s <= r)
+            h.unshift(c[s - 1] - o + 1);
+        else
+            h = ["( )"];
+
+        $('#detT .tsorszam-s.ln').removeClass('ln');
+        $('#detT .tsorszam-fix.Li').removeClass('Li');
+        $('#detT .tgomb.hlLi').removeClass('hlLi');
+        const ce = conjugate(e);
+        const oaz = _.isEqual(_.dropRight(ce), _.dropRight(rfb_last["v"])) && rfb_last["s"] > s && !E.hasClass('hlmove');
+        const ssv = conjugate(c).slice(0, m);
+        const ss = _.sum(ssv) - ssv.length + 1;
+        const ssve = ssv.slice(0, m - 1);
+        const sse = _.sum(ssve) - ssve.length + 1;
+        if (!oaz) {
+            rfbtegla = [0, []];
+            rfb_last["v"] = [...ce];
+            rfb_last["s"] = s;
+            rfb_last["C"] = h;
+            if (m != 1)
+                rfb_last["Li"] = s - sse;
+            else
+                rfb_last["Li"] = 0;
+            rfb_last["o"] = m;
+            rfb_last["bfelett"] = $('#detT table .tgomb.bfelett').length;
+
+            //const pje = _.takeRight(rfb_last.v, 1) - (rfb_last.Le * 1 || 0) - 1;
+            $('#detT .tsorszam-e').css("visibility", "hidden");
+            $('#detT .tsorszam-e.corr').html($('#detT .tsorszam-e.corr').attr('data-n'));
+            $('#detT .tsorszam-e.corr').removeClass('corr');
+            for (var t = s - 1; t < r + Math.floor(s / (r + 1)); t++) {
+                $('#detT .tsorszam-e:nth(' + t + ')').css("visibility", "visible").html(h[t - s + 1]);
+            }
+            //$('#detT .tsorszam-e:nth(' + (s - 2) + ')').html("p = " + pje).addClass("corr");
+            $('#detT .tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
+
+            $('#detT .tsorszam-s,#detT .tsorszam-fix').css("visibility", "hidden");
+
+            $('#detT .tgomb.hl:not(.szelso)').html('&#x25CB;');
+            $('#detT .tgomb.hl.szelso').html('&#x25CE;');
+            $('#detT .tgomb.hl').removeClass('hl');
+            $('#detT .tgomb.hlLn').removeClass('hlLn').html('&#x25CB;');
+            if ($(el).hasClass('szelso'))
+                $(el).html('&#x25C9;');
+            else
+                $(el).html('&#x25CF;');
+            $(el).addClass('hl hlmove');
+
+            $('#detT .tgomb.ye').removeClass('ye')
+            $('#detT .tgomb.move').removeClass('move');
+            $('#detT .tgomb.sel').removeClass('sel').html('&#x25CB;');
+            rfbtegla[0] = m - 1;
+
+            if (m != 1) {
+                var d = 0;
+                if ((sse == r && _.last(c) > 1) || (ss == r && _.last(c) == 1))
+                    d++;
+                for (var p = sse + ss - s + 1 + d; p <= ss + d; p++) {
+                    $('#detT .tgomb.no[rfb-data=' + p + '-' + (boszlopa + 1) + ']').addClass('sel').html('&#x25CF;');
+                    rfbtegla[1].push(p)
+                    ce[0]++
+                        for (var q = 1 + boszlopa; q < m; q++)
+                            $('#detT .tgomb.no[rfb-data=' + p + '-' + q + ']').addClass('ye');
+                };
+                $('#detT .tgomb.sel:nth(0)').addClass('move');
+            } else {
+                rfbtegla[1] = [];
+                _.filter($('#detT .tgomb.shown'), function(y) {
+                    var tt = $(y).attr('rfb-data').split('-');
+                    return tt[0] < s * 1 && tt[1] == m;
+                }).map(z => $(z).addClass('hlLn').html('&#x25CF;'));
+            }
+
+        } else if ($(el).hasClass('hlLn')) {
+            $(el).removeClass('hlLn').html('&#x25CB;');
+            var pp = ss + 1;
+            const rfb1 = rfbtegla[1];
+            const krit = (sse == r && _.last(c) > 1) || (ss == r && _.last(c) == 1);
+            if (rfb1.length > 0)
+                pp = rfb1[0];
+            if (krit)
+                pp++;
+            for (var q = 1 + boszlopa; q < m; q++)
+                $('#detT .tgomb.no[rfb-data=' + (pp - 1) + '-' + q + ']').addClass('ye');
+            $('#detT .tgomb.no[rfb-data=' + (pp - 1) + '-' + boszlopa + ']').addClass('sel').html('&#x25CF;');
+            $('#detT .tgomb.move').removeClass('move');
+            if (krit && rfb1.length > 0) {
+                pp--
+                $('#detT .tgomb.no[rfb-data=' + (pp - 1) + '-1]').addClass('sel').html('&#x25CF;');
+            }
+            rfbtegla[1].unshift(pp - 1);
+            rfb_last["Li"] = rfb_last["Li"] + 1;
+        } else {
+            $(el).addClass('hlLn');
+            if ($(el).hasClass('szelso'))
+                $(el).html('&#x25C9;');
+            else
+                $(el).html('&#x25CF;');
+            const pp = rfbtegla[1][0];
+            for (var q = 1; q < m; q++)
+                $('#detT .tgomb.no[rfb-data=' + pp + '-' + q + ']').removeClass('ye').removeClass('sel').removeClass('move').html('&#x25CB;');
+            $('#detT .tgomb.sel:nth(0)').addClass('move');
+            rfbtegla[1] = _.drop(rfbtegla[1]);
+            rfb_last["Li"] = rfb_last["Li"] - 1;
+        };
+        for (var t = boszlopa; t < ce.length - 1; t++)
+            $('#detT .tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").html(ce[t]);
+        $('#detT .tsorszam-fix:nth(' + (boszlopa + 1) + ')').css("visibility", "visible").html(rfb_last["v"][boszlopa] - rfb_last.bfelett);
+        for (var t = boszlopa + 1; t < ce.length - 1; t++)
+            $('#detT .tsorszam-fix:nth(' + (t + 1) + ')').css("visibility", "visible").html(rfb_last["v"][t]);
+        $('#detT .tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").addClass('ln').html($('#detT .tgomb.hlLn').length);
+        //$('#detT .tsorszam-s:nth(' + (t + 2) + ')').css("visibility", "visible").html(" = k");
+        $('#detT .tsorszam-fix:nth(' + (t + 1) + ')').css("visibility", "visible").addClass('Li').html(rfb_last["Li"]);
+        $('#detT .tsorszam-fix:nth(' + (t + 2) + ')').css("visibility", "visible").html(" = p");
+        if (ce.length == 1) {
+            $('#detT .tsorszam-s:nth(0)').css("visibility", "visible");
+            $('#detT .tsorszam-fix:nth(0)').css("visibility", "visible");
+        };
+        //derivSor_det(_rfb_last["v"], rfb_last["Li"]);
+        var dv = _.drop(rfb_last["v"], boszlopa);
+        dv[0] -= rfb_last.bfelett;
+        derivSor_det(dv, rfb_last["Li"]);
+        teglaTrim_det();
+    };
+};
+
+function zzClear() {
+    $('#detT .tgomb.ye').removeClass('ye')
+    $('#detT .tgomb.move').removeClass('move');
+    $('#detT .tgomb.sel').removeClass('sel').html('&#x25CB;');
+    $('#detT .cintkeplet').html('').removeClass('cintkeplet');
+    $('#detT .tsorszam-e').css("visibility", "hidden");
+    $('#detT .tsorszam-s,#detT .tsorszam-fix').css("visibility", "hidden");
+    $("#detT #binomkijelzo").html("");
+    $('#detTable tr.parent td #dcimke').html("");
+    $("#derivkij").html("");
+    $('#detT .tgomb.szelso').html('&#x25CE;');
+    $('#detT .tgomb.d-path').removeClass('d-path');
+    $('#detT .vertvonal').remove();
+    $('#detT .tsorszam-n').css({ 'visibility': 'hidden', 'text-align': 'left' });
+    $('#detT tr.trvonal').removeClass('trvonal');
+};
+
+function setEgyenlo(a, b) {
+    return _.isEqual(_.sortBy(a), _.sortBy(b));
+};
+
+var boszlopa = 0;
+var bsora = 0;
+
+function setb(e) {
+    $('#detT table .tsorszam-b.hl').removeClass('hl');
+    $('#detT table .tgomb.nobben').removeClass('nobben').html('&#x25CB;');
+    $('#detT table .tgomb.hlmove').removeClass('hlmove').html('&#x25CB;');
+    $('#detT table .tgomb.hl').removeClass('hl');
+    $('#detT table .tgomb.bfelett').removeClass('bfelett');
+    $('#detT table .tgomb.hlLi').removeClass('hlLi');
+    $('#detT table .tgomb.shown.belem').html('&#x25CB;');
+    $('#detT table .tgomb.shown.belem').removeClass('belem');
+    $('#detT table .tgomb.shown.nobderiv').html('&#x25CB;');
+    $('#detT table .tgomb.shown.nobderiv').removeClass('nobderiv');
+
+    const $table = $('#detT table');
+    bsora = e.getAttribute('data-n') * 1;
+    const n = $('.tsorszam-b:last').attr('data-n') * 1;
+    const belem = ($("#detT table tbody tr:nth(" + (bsora - 1) + ") td div .tgomb.shown:last"));
+    boszlopa = belem.prevAll('.tgomb').length;
+    belem.addClass('belem').html('&#x25CF;');
+    belem.prevAll('.tgomb.shown').addClass('nobben').html('&times;');
+    $(e).addClass('hl');
+    for (var i = 0; i < bsora - 1; i++)
+        $table.find("tbody tr:nth(" + i + ") td div .tgomb.shown")
+        .addClass('nobben').html('&times;');
+    for (var j = bsora; j < n + 1; j++) {
+        $("#detT table tbody tr:nth(" + (j) + ") td div .tgomb:nth(" + boszlopa + "):not(.no)")
+            .html('&#x25CF;')
+            .addClass('nobderiv');
+        $("#detT table tbody tr:nth(" + (j) + ") td div .tgomb.shown:last")
+            .html('&#x25CF;')
+            .addClass('nobderiv');
+    };
+    for (var j = 0; j <= bsora - 2; j++) {
+        $("#detT table tbody tr:nth(" + (j) + ") td div .tgomb:nth(" + boszlopa + "):not(.no)")
+            .addClass('bfelett');
+    };
+
+    rfb_last["bfelett"] = $('#detT table .tgomb.bfelett').length;
+    zzClear();
+    document.getElementById('bjelentes').innerHTML = monomvec2HTMLWithId(symbOv(vList2obj(bvector(kiszed_c('dets'))[n - bsora], 1)));
+    document.getElementById('bindexe').innerHTML = bsora;
+    //symbOv(vList2obj(bvector(kiszed_c('dets'))[4 - bsora], 1)).map(y=>Object.keys(y)) 
+};
+
+function rfbGraph_det() {
+    rfbtegla = [0, []];
+    rfb_last = { "v": [], "s": 0, "C": [], "Li": 0, "o": 0, "bfelett": 0 };
+    const elem = document.getElementById("detT");
+    const c = kiszed_c('dets');
+    const kc = kum(c);
+    const r = c.length;
+    var k = [0];
+    for (var i = 1; i < r; i++) {
+        k.push(kc[i - 1] - i);
+    };
+    var kep = "<span id='show_deriv' onclick='toggle_Deriv_det();'>&#x25CB;</span><table style='border-collapse:collapse;display:inline-table;'><input type='checkbox' id='setderfix' onchange='setDerfix_det(this);' style='height:20px;width:20px;display: inline-block;position: relative;left: -40px;'><thead><tr><th><span class='tsorszam-b' data-n='0' style='color:red;'>b</span></th><th>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "<th style='width:21.36px'></th></th><td></td></tr></thead>";
+    for (var j = 0; j < r; j++) {
+        if (j < r - 1)
+            kep += "<tr><th><span class='tsorszam-b' data-n='" + (j + 1) + "' onclick='setb(this)'>" + (j + 1) + "</span></th><td><div>";
+        else
+            kep += "<tr><span class='tsorszam-b' data-n='" + (j + 1) + "'></span><th></th><td><div>";
+        for (var t = 0; t < k[j]; t++) {
+            kep += "<span class='tgomb no' onclick='moveSelect_det(this);' rfb-data='" + (j + 1) + "-" + (t + 1) + "'>&#x25CB;</span> ";
+        };
+        for (var t = k[j]; t < k[j] + c[j]; t++) {
+            kep += "<span class='tgomb shown' rfb-data='" + (j + 1) + "-" + (t + 1) + "' onclick='fbcdat_det(this," + ((j + 1) + "," + (t - k[j] + 1)) + ")'>&#x25CB;</span> ";
+        };
+        kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
+    };
+    kep += "<tr><th></th><td><div>";
+    var L = _.last(k) + _.last(c);
+    for (var t = 0; t < L - 1; t++)
+        kep += "<span class='tgomb no' onclick='moveSelect_det(this);' rfb-data='" + (r + 1) + "-" + (t + 1) + "'>&#x25CB;</span> ";;
+    kep += "<span class='tgomb shown szelso' style='border-radius: 50%;padding: 0 0.31em;margin-left: -0.31em;' onclick='fbcdat_det(this," + (r + 1) + "," + L + ")' rfb-data='" + (r + 1) + "-" + L + "'>&#x25CE;</span></div></td><th><span class='tsorszam-e szelso' data-n='( )'>( )</span></th><td><div  id='ebbe-" + (r + 1) + "'></div></td>";
+    kep += "</tr><tr><th><span class='tsorszam-s' data-n='0'>( ) </span></th><th><div style='margin-left:-0.3em'>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-s' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "</div></th><th style='width:21.36px'></th><td><div  id='ebbe-" + (r + 2) + "'></div></td></tr>";
+    kep += "<tr><th><span class='tsorszam-fix' data-n='0'>0</span></th><th><div style='margin-left:-0.3em'>";
+    for (var i = 1; i < _.last(kc) - r + 2; i++) {
+        kep += "<span class='tsorszam-fix' data-n='" + i + "'>" + i + "</span>";
+    };
+    kep += "</div></th><th style='width:21.36px'></th><td id='binomkijelzo'></td></tr></table>";
+    elem.innerHTML = kep;
+    setOutputFontrfb_det(document.getElementById("setoutputfontrfb").value);
+    $('#detT #show_deriv').css('top', Math.max(20, ($('#detT table').height() - 40) / 2) + 'px');
+    $('#detT table .tsorszam-b:nth(1)').trigger("click");
     if (deriv_fix)
         document.getElementById("setderfix").click();
 };
@@ -6026,5 +6604,3 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
-
-
