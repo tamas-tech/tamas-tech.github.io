@@ -1431,11 +1431,13 @@ div#kepek {
     cursor: pointer;
 }
 
-#rfbT table tr td span.tgomb {
+#rfbT table tr td span.tgomb,
+#detT table tr td span.tgomb {
     user-select: none;
 }
 
-#rfbT table tr td span.tgomb.hlLn {
+#rfbT table tr td span.tgomb.hlLn,
+#detT table tr td span.tgomb.hlLn {
     color: #456ab9;
 }
 
@@ -1443,51 +1445,33 @@ div#kepek {
     visibility: hidden;
 }
 
-#rfbT table tr td span.tgomb.hlLi {
+#rfbT table tr td span.tgomb.hlLi,
+#detT table tr td span.tgomb.hlLi {
     color: #cca33c;
     opacity: 0.35;
 }
 
-#rfbT table tr td span.tgomb.ye {
+#rfbT table tr td span.tgomb.ye,
+#detT table tr td span.tgomb.ye {
     visibility: visible;
     color: #cca33c;
     opacity: 0.3;
 }
 
-#rfbT table tr td span.tgomb.sel {
+#rfbT table tr td span.tgomb.sel,
+#detT table tr td span.tgomb.sel {
     opacity: 1;
 }
 
-#rfbT .tsorszam-s.ln {
+#rfbT .tsorszam-s.ln,
+#detT .tsorszam-s.ln {
     visibility: visible;
     border-left: 1px solid;
     color: blue
 }
 
-#rfbT table tr td span.tgomb.move {
-    outline: 1px dotted #818181;
-    outline-offset: 2px;
-}
-
-#rfbT table tr td span.tgomb.hl {
-    border-top: 2px solid #ff3232;
-    color: #d30000;
-}
-
-#rfbT table tr td span.tgomb.hl.hlmove {
-    border-top: none;
-}
-
-#rfbT #binomkijelzo {
-    background-color: inherit;
-    font-size: 60%;
-    height: 55px;
-    padding: 0 10px;
-    margin-left: 4em;
-    text-align: center;
-}
-
-#rfbT .tsorszam-fix.Li {
+#rfbT .tsorszam-fix.Li,
+#detT .tsorszam-fix.Li {
     visibility: visible;
     border-left: 1px solid;
     color: #b99331;
@@ -1505,18 +1489,46 @@ div#kepek {
 
 .binomcolor {
     background-color: #ffd7c8;
-    height: 16px;
     display: inline-block !important;
-    padding: 2px 5px 4px 5px !important;
+    padding: 5px !important;
 }
 
-#rfbTable span.deractive {
+#rfbTable span.deractive,
+#detTable span.deractive {
     background-color: #fff9c8;
     outline: 3px solid #cca33c;
     box-shadow: 0px 2px 5px 5px #ffe39c;
 }
 
-#rfbT #show_deriv {
+#rfbT table tr td span.tgomb.move,
+#detT table tr td span.tgomb.move {
+    outline: 1px dotted #818181;
+    outline-offset: 2px;
+}
+
+#rfbT table tr td span.tgomb.hl,
+#detT table tr td span.tgomb.hl {
+    border-top: 2px solid #ff3232;
+    color: #d30000;
+}
+
+#rfbT table tr td span.tgomb.hl.hlmove,
+#detT table tr td span.tgomb.hl.hlmove {
+    border-top: none;
+}
+
+#rfbT #binomkijelzo,
+#detT #binomkijelzo {
+    background-color: inherit;
+    font-size: 60%;
+    height: 55px;
+    padding: 0 10px;
+    margin-left: 4em;
+    text-align: center;
+}
+
+#rfbT #show_deriv,
+#detT #show_deriv {
     display: inline-block;
     position: relative;
     color: #1bce83;
@@ -1527,8 +1539,10 @@ div#kepek {
     user-select: none;
 }
 
-#rfbT .tgomb.shown.d-path,
-#rfbT .tgomb:not(.shown).ye.d-path {
+#rfbT .tgomb.shown:not(.nobben).d-path,
+#rfbT .tgomb:not(.shown).ye.d-path,
+#detT .tgomb.shown:not(.nobben).d-path,
+#detT .tgomb:not(.shown).ye.d-path {
     outline: 1px solid #9effd7!important;
     visibility: visible!important;
     box-shadow: 0px 2px 5px 5px #d3f9ec;
@@ -1536,7 +1550,8 @@ div#kepek {
     background-color: #d1ffec!important;
 }
 
-#rfbT .tgomb:not(.shown):not(.sel).d-path {
+#rfbT .tgomb:not(.shown):not(.sel).d-path,
+#detT .tgomb:not(.shown):not(.sel).d-path {
     outline: 1px solid #9effd7!important;
     visibility: visible!important;
     box-shadow: 0px 2px 5px 5px #d3f9ec;
@@ -1989,6 +2004,71 @@ p#keresztelem {
     margin-top: -6px;
     box-shadow: 1px 1px 1px #17592b, 0px 0px 1px #175928;
 }
+
+#detT tr th span.tsorszam-b {
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+    width: 30px;
+    vertical-align: middle;
+    border: 1px solid #b9b9b9;
+    padding: 4px 5px;
+    margin-right: 15px;
+    cursor: pointer;
+    border-radius: 3px
+}
+
+#detT tr th span.tsorszam-b.hl {
+    background-color: #b7e3b5;
+    ;
+}
+
+#detT .tgomb.shown.belem {
+    color: #149302;
+    background-color: #c6c6c6;
+    border-radius: 50%;
+    padding: 0 0.27em;
+    margin-left: -0.27em;
+    pointer-events: none;
+}
+
+#detT .tgomb.shown.nobben {
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+#detT .tgomb.shown.nobderiv {
+    pointer-events: none;
+}
+
+#detT .tgomb.shown:not(.nobderiv):not(.nobben):not(.belem):not(.hl) {
+    color: #555;
+}
+
+#detT table tr td span.tgomb.nobderiv.hlLi {
+    opacity: 0.25;
+}
+
+table tr th span.tsorszam-n .vertvonal {
+    display: block;
+    height: 0;
+    width: inherit;
+    border-left: 1px dashed #979797;
+    position: absolute;
+    margin-left: -0.25em;
+}
+
+table tr.trvonal {
+    border-top: 1px dashed #979797;
+}
+
+#detbTable #bjelentes span.bvec.hl {
+    text-decoration: underline;
+    text-decoration-color: fuchsia;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 12px
+}
+
 
 
 
