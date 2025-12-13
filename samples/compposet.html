@@ -672,8 +672,90 @@
         <p id="keresztelem"></p>
     </div>
 
-    <div class="keret of even" id="k12" style="margin-bottom:10px;padding-bottom: 10px;">
-        <b><big class="sorszam">12. (LaTeX)</big></b>
+    <div class="keret of odd" id="k12" style="padding-bottom:10px;margin-bottom:10px;">
+        <span class="uitok">    <b><big class="sorszam">12.</big></b><input class="kijelzoset" oninput="setkijelzoW('tableof22',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
+        <div class="stickblock">
+            <p class="keplet" id="_det" style="height:180px;margin-bottom:0px;background-color: #dddddd;">\[\begin{gather*} \boldsymbol{b}_{i} =\boldsymbol{A}_{i,1}= {\LARGE \sum_{{\large \boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{c}\,=\,\boldsymbol{s}}}}\frac{(-1)^{\sum \boldsymbol{a}+1}}{p!}\,\zeta(\boldsymbol{c})\cdot\zeta\left(\partial^{p}(\boldsymbol{a}^{*})\right)\\[2mm]\text{Mas}\end{gather*}\]
+            </p>
+        </div>
+        <div class="stickblock">
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
+                <input class="inpvec" style="width:280px;" type="text" id="dets" value="1,1,1,1,4,1,1,1,3,1,1,5,2" oninput="idClear('#detT');">
+            </div>
+            <div class="nobr" style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
+                <button id="okbtnrfb_det" onclick="rfbGraph_det();" class="showpre1" title="Insert code into editor">Calculate</button>
+                <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#detT');" title="Clear output">Clear</button>
+                <label for="setoutputfontrfb" style="margin-right:-10px;">&#128474;</label>
+                <input oninput="setOutputFontrfb_det(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontrfb" name="setoutputfontrfb">
+                </span>
+            </div>
+        </div>
+        <div id="tableof22" style="max-width:100vw">
+            <p class="kijelzo" id="rfbJdet" style="font-family:Symbola,Cambria Math;">
+                <span id="detT" class="MathJax" style="padding-right:80px;"></span>
+            </p>
+            <table width="100%" id="detbTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;border-bottom: 1px solid #c6c6c6;">
+                <tr class="parent" style="padding-left:20px;background-color: #dfdfdf;">
+                    <td colspan="3" onclick="toggleTableRow_det(this)">b<sub id="bindexe">1</sub>: <span id="bcimke" style="padding-left:20px;"></span></td>
+                </tr>
+                <tr class="child" style="display: none;">
+                    <td c colspan="3">
+                        <p id="bjelentes" style="font-size:100%;padding-left: 5px;margin-top:5px;"></p>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" id="detTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;">
+                <tr class="parent" style="padding-left:20px;background-color: #dfdfdf;">
+                    <td colspan="3" onclick="toggleTableRow_det(this)">Deriváltak: <span id="dcimke" style="margin-left:20px;"></span></td>
+                </tr>
+                <tr class="child" style="display: none;">
+                    <td c colspan="3">
+                        <p id="derivkij" style="font-size:100%;"></p>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" id="ordersTable" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 17px;font-family:Cambria Math;">
+                <tr class="parent">
+                    <td colspan="3" onclick="toggleTableRow_det(this)">Magyarázat</td>
+                </tr>
+                <tr class="child" style="display: none;">
+                    <td colspan="3">
+                        <h4>A képlet magyarázata</h4>
+                        <ul>
+                            <li><i><b>a</b>: </i> A kiválasztott piros elem <i>oszlopa elötti</i> részben a fehér elemek által alkotott sorokban az elemek száma.</li>
+                            <li><i><b>c</b>: </i> A kiválasztott piros elem, és az azt követő fehér elemek által alkotott sorokban az elemek száma.</li>
+                            <li><i>p: </i> A kiválasztott piros elem oszlopában a piros feletti összes elem száma.</li>
+                            <li><i>k: </i> A kiválasztott piros elem oszlopában a piros feletti kék elemek száma. Így &nbsp;<i> p - k </i> &nbsp; a lepotyogott sárga elemek száma. Ez a két szám látható az alsó sorok végén (a függőleges vonalak után) kékkel,
+                                illetve sárgával színezve.</li>
+                        </ul>
+                        <h4>A kártya használata</h4>
+                        <ul>
+                            <li><i>A piros elem mozgatása:</i> Semmi mást nem kell csinálni mint a kivánt helyre kattintani. Ekkor a piros elem oszlopában a piros elem feletti elemek (ha egyáltalán vannak) mind "Li" elemnek számítanak, és lepotyognak egymás
+                                tetejére az első helyre. Az "ln"-nek megfelelő kék elemekből egy sem lesz a piros elem felett, tehát egy piros elem áthelyezésekor mindig az ln<sup>0</sup>(x) esettel indítunk.</li>
+                            <li><i>Piros elem fixálása:</i> Ha egy piros elem oszlopában, a piros elem <b>felett</b> szeretnénk kék elemet kiválasztani, akkor a piroselemet fixálni kell. Ezt egyszerűen a piros elemre való ismételt kattintással érhetjük el.
+                                Ekkor a piros elem felett megjelenik egy kis piros vonal, és a piros elem fölé kattintva kék elemet hozhatunk létre. A piros elem fixálása nem jelenti azt, hogy azt ne tudnák elmozgatni. Csak azt szolgálja, hogy az oszlopában
+                                <b>fölé</b> kattintva kék a kék elemek számát tudjuk változtatni. Ha nem fölé, hanem alá vagy egy másik oszlopba kattintunk, akkor oda kerül át.
+                                <li><i>Piros elem feloldása:</i> Ha a piros elem fixált, és szeretnénk az oszlopában felyebb mozgatni, akkor ezt két módon is elérhetjük:
+                                    <br/>1. A piros elem feletti helyeken kivűli helyek valamelyikére kattintunk, majd a kívánt helyre.
+                                    <br/>2. A piros elemre kattintunk, így az felold (a felette lévő kis piros vonal eltűnik) , és ekkor már fölé kattintva nem a kék és a sárga elemeket arányát változtatjuk, hanem a piros elemet mozgatjuk feljebb.
+                                </li>
+                                <li><i>Kék elemekre kattintás:</i> Ha egy kék elemre kattintunk, akkor az ismét sárga lesz. Így tudjuk rogzített C<sub><b>t</b></sub> konstans mellett változtatni az ln kitevőjét.</li>
+                                <li><i>A lepotyogott sárga elemek mozgatása:</i> Erre vonatkozóan két egyszerű szabályt kell követni.
+                                    <br/>1. Egy <b>legfelső teli</b> sárga elemre kattintva a körül egy halvány keret jelenik meg. Ez azt jelenti, hogy ez az elem fog arra az <b>üres</b> helyre mozogni, ahová ezt követően kattintunk.</li>
+                                <br/>2. Egy <b>üres</b> sárga elemre kattintva a mozgatásra kijelölt teli elem kerül a helyére.</li>
+                            Persze ezen kívűl még van néhány szabály, de ezek elég automatikusan működnek. Ha egy bekeretezett teli elemre kattintunk, akkor a bekeretezés megszűnik, és így egyetlen elem sem lesz mozgatásra kijelölve. Ha ekkor egy üres helyre kattintunk, akkor a
+                            program automatikusan a legfelső teli elemek közül a legelsőt helyezi át. Ezért ha nincs mozgatásra kijelölt elem, akkor is lesz átmozgatás, de a kijelöléssel mi szabhatjuk meg, hogy melyiket teli elemet, melyik üres helyre
+                            szeretnénk mozgatni. Másrészről a program arról is gondoskodik, hogy csak egy legfelső elem legyen kijelölhető a mozgatásra, és a kijelőléstől függöen dinamikussan frissíti azonüres helyeket, ahová azt áthelyezhetjük. LaLaLa....
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>                
+
+    <div class="keret of even" id="k13" style="margin-bottom:10px;padding-bottom: 10px;">
+        <b><big class="sorszam">13. (LaTeX)</big></b>
         <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\LaTeX \text{ fordító}\]
         </p>
         <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
@@ -707,6 +789,7 @@
     </script>
 </body>
 </html>
+
 
 
 
