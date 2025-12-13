@@ -492,14 +492,14 @@
                                 tetejére az első helyre. Az "ln"-nek megfelelő kék elemekből egy sem lesz a piros elem felett, tehát egy piros elem áthelyezésekor mindig az ln<sup>0</sup>(x) esettel indítunk.</li>
                             <li><i>Piros elem fixálása:</i> Ha egy piros elem oszlopában, a piros elem <b>felett</b> szeretnénk kék elemet kiválasztani, akkor a piroselemet fixálni kell. Ezt egyszerűen a piros elemre való ismételt kattintással érhetjük el.
                                 Ekkor a piros elem felett megjelenik egy kis piros vonal, és a piros elem fölé kattintva kék elemet hozhatunk létre. A piros elem fixálása nem jelenti azt, hogy azt ne tudnák elmozgatni. Csak azt szolgálja, hogy az oszlopában
-                                <b>fölé</b> kattintva kék a kék elemek számát tudjuk változtatni. Ha nem fölé, hanem alá vagy egy másik oszlopba kattintunk, akkor oda kerül át.
-                                <li><i>Piros elem feloldása:</i> Ha a piros elem fixált, és szeretnénk az oszlopában felyebb mozgatni, akkor ezt két módon is elérhetjük:
-                                    <br/>1. A piros elem feletti helyeken kivűli helyek valamelyikére kattintunk, majd a kívánt helyre.
-                                    <br/>2. A piros elemre kattintunk, így az felold (a felette lévő kis piros vonal eltűnik) , és ekkor már fölé kattintva nem a kék és a sárga elemeket arányát változtatjuk, hanem a piros elemet mozgatjuk feljebb.
-                                </li>
-                                <li><i>Kék elemekre kattintás:</i> Ha egy kék elemre kattintunk, akkor az ismét sárga lesz. Így tudjuk rogzített C<sub><b>t</b></sub> konstans mellett változtatni az ln kitevőjét.</li>
-                                <li><i>A lepotyogott sárga elemek mozgatása:</i> Erre vonatkozóan két egyszerű szabályt kell követni.
-                                    <br/>1. Egy <b>legfelső teli</b> sárga elemre kattintva a körül egy halvány keret jelenik meg. Ez azt jelenti, hogy ez az elem fog arra az <b>üres</b> helyre mozogni, ahová ezt követően kattintunk.</li>
+                                <b>fölé</b> kattintva kék a kék elemek számát tudjuk változtatni. Ha nem fölé, hanem alá vagy egy másik oszlopba kattintunk, akkor oda kerül át.</li>
+                            <li><i>Piros elem feloldása:</i> Ha a piros elem fixált, és szeretnénk az oszlopában felyebb mozgatni, akkor ezt két módon is elérhetjük:
+                                <br/>1. A piros elem feletti helyeken kivűli helyek valamelyikére kattintunk, majd a kívánt helyre.
+                                <br/>2. A piros elemre kattintunk, így az felold (a felette lévő kis piros vonal eltűnik) , és ekkor már fölé kattintva nem a kék és a sárga elemeket arányát változtatjuk, hanem a piros elemet mozgatjuk feljebb.
+                            </li>
+                            <li><i>Kék elemekre kattintás:</i> Ha egy kék elemre kattintunk, akkor az ismét sárga lesz. Így tudjuk rogzített C<sub><b>t</b></sub> konstans mellett változtatni az ln kitevőjét.</li>
+                            <li><i>A lepotyogott sárga elemek mozgatása:</i> Erre vonatkozóan két egyszerű szabályt kell követni.
+                                <br/>1. Egy <b>legfelső teli</b> sárga elemre kattintva a körül egy halvány keret jelenik meg. Ez azt jelenti, hogy ez az elem fog arra az <b>üres</b> helyre mozogni, ahová ezt követően kattintunk.
                                 <br/>2. Egy <b>üres</b> sárga elemre kattintva a mozgatásra kijelölt teli elem kerül a helyére.</li>
                             Persze ezen kívűl még van néhány szabály, de ezek elég automatikusan működnek. Ha egy bekeretezett teli elemre kattintunk, akkor a bekeretezés megszűnik, és így egyetlen elem sem lesz mozgatásra kijelölve. Ha ekkor egy üres helyre kattintunk, akkor a
                             program automatikusan a legfelső teli elemek közül a legelsőt helyezi át. Ezért ha nincs mozgatásra kijelölt elem, akkor is lesz átmozgatás, de a kijelöléssel mi szabhatjuk meg, hogy melyiket teli elemet, melyik üres helyre
@@ -721,32 +721,27 @@
                 </tr>
                 <tr class="child" style="display: none;">
                     <td colspan="3">
+                       <h3>A mátrix első oszlopában található <b>A</b><sub>i,1</sub> = <b>b</b><sub>i</sub> elemek kiszámítása</h3>
                         <h4>A képlet magyarázata</h4>
                         <ul>
-                            <li><i><b>a</b>: </i> A kiválasztott piros elem <i>oszlopa elötti</i> részben a fehér elemek által alkotott sorokban az elemek száma.</li>
-                            <li><i><b>c</b>: </i> A kiválasztott piros elem, és az azt követő fehér elemek által alkotott sorokban az elemek száma.</li>
-                            <li><i>p: </i> A kiválasztott piros elem oszlopában a piros feletti összes elem száma.</li>
-                            <li><i>k: </i> A kiválasztott piros elem oszlopában a piros feletti kék elemek száma. Így &nbsp;<i> p - k </i> &nbsp; a lepotyogott sárga elemek száma. Ez a két szám látható az alsó sorok végén (a függőleges vonalak után) kékkel,
-                                illetve sárgával színezve.</li>
+                            <li><i><b>a</b>: </i>A zig-zag gráfnak a kiválasztott piros elem által meghatározott négy negyed közül a <i>bal felső</i> negyedbe eső részében a sorok hosszaiból képzett vektor. Vagyis, a bal felső negyedben a zöld, a fekete és
+                                fehér golyókból álló sorok hosszaiból képzett vektor.</li>
+                            <li><i><b>c</b>: </i> A zig-zag gráfnak a kiválasztott piros elem által meghatározott négy negyed közül a <i>jobb alsó</i> negyedbe eső részében a sorok hosszaiból képzett vektor. Vagyis, a jobb alsó negyedben a piros, a fekete
+                                és fehér golyókból álló sorok hosszaiból képzett vektor.</li>
+                            <li><i>p: </i> A kiválasztott piros elem oszlopában a piros feletti elemek száma. (Ha nincs a kiválasztott piros elem felett elem, akkor <i>p = 0</i>.)</li>
+                            <li>A kiválasztott piros elmhez tartozó <i>előjelet</i> a &sum;<b>a</b>+1 adja meg, amely a fentiek szerint nem más, mint a a bal felső negyedbe eső zöld, fekete és fehér golyók számához hozzáadva az egyetlen piros golyó számát.
+                                Így a lepotyogott sárga golyók száma nem befolyásolja az előjel alakulását. Gondoljunk csak arra, hogy a mátrix blokkjain belül egy sorban az előjelek változatlanok.<br><span style="color:#d40000;font-size:105%;">A képletben megjelenő zetaszorzatok előjelét a kiválasztott piros golyóig vett zöld fekete és fehér (nem lepotyogott) golyók száma (a pirosat is beleszámolva) adja meg.</span></li>
+
                         </ul>
                         <h4>A kártya használata</h4>
                         <ul>
-                            <li><i>A piros elem mozgatása:</i> Semmi mást nem kell csinálni mint a kivánt helyre kattintani. Ekkor a piros elem oszlopában a piros elem feletti elemek (ha egyáltalán vannak) mind "Li" elemnek számítanak, és lepotyognak egymás
-                                tetejére az első helyre. Az "ln"-nek megfelelő kék elemekből egy sem lesz a piros elem felett, tehát egy piros elem áthelyezésekor mindig az ln<sup>0</sup>(x) esettel indítunk.</li>
-                            <li><i>Piros elem fixálása:</i> Ha egy piros elem oszlopában, a piros elem <b>felett</b> szeretnénk kék elemet kiválasztani, akkor a piroselemet fixálni kell. Ezt egyszerűen a piros elemre való ismételt kattintással érhetjük el.
-                                Ekkor a piros elem felett megjelenik egy kis piros vonal, és a piros elem fölé kattintva kék elemet hozhatunk létre. A piros elem fixálása nem jelenti azt, hogy azt ne tudnák elmozgatni. Csak azt szolgálja, hogy az oszlopában
-                                <b>fölé</b> kattintva kék a kék elemek számát tudjuk változtatni. Ha nem fölé, hanem alá vagy egy másik oszlopba kattintunk, akkor oda kerül át.
-                                <li><i>Piros elem feloldása:</i> Ha a piros elem fixált, és szeretnénk az oszlopában felyebb mozgatni, akkor ezt két módon is elérhetjük:
-                                    <br/>1. A piros elem feletti helyeken kivűli helyek valamelyikére kattintunk, majd a kívánt helyre.
-                                    <br/>2. A piros elemre kattintunk, így az felold (a felette lévő kis piros vonal eltűnik) , és ekkor már fölé kattintva nem a kék és a sárga elemeket arányát változtatjuk, hanem a piros elemet mozgatjuk feljebb.
-                                </li>
-                                <li><i>Kék elemekre kattintás:</i> Ha egy kék elemre kattintunk, akkor az ismét sárga lesz. Így tudjuk rogzített C<sub><b>t</b></sub> konstans mellett változtatni az ln kitevőjét.</li>
-                                <li><i>A lepotyogott sárga elemek mozgatása:</i> Erre vonatkozóan két egyszerű szabályt kell követni.
-                                    <br/>1. Egy <b>legfelső teli</b> sárga elemre kattintva a körül egy halvány keret jelenik meg. Ez azt jelenti, hogy ez az elem fog arra az <b>üres</b> helyre mozogni, ahová ezt követően kattintunk.</li>
-                                <br/>2. Egy <b>üres</b> sárga elemre kattintva a mozgatásra kijelölt teli elem kerül a helyére.</li>
-                            Persze ezen kívűl még van néhány szabály, de ezek elég automatikusan működnek. Ha egy bekeretezett teli elemre kattintunk, akkor a bekeretezés megszűnik, és így egyetlen elem sem lesz mozgatásra kijelölve. Ha ekkor egy üres helyre kattintunk, akkor a
-                            program automatikusan a legfelső teli elemek közül a legelsőt helyezi át. Ezért ha nincs mozgatásra kijelölt elem, akkor is lesz átmozgatás, de a kijelöléssel mi szabhatjuk meg, hogy melyiket teli elemet, melyik üres helyre
-                            szeretnénk mozgatni. Másrészről a program arról is gondoskodik, hogy csak egy legfelső elem legyen kijelölhető a mozgatásra, és a kijelőléstől függöen dinamikussan frissíti azonüres helyeket, ahová azt áthelyezhetjük. LaLaLa....
+                            <li><i>A b<sub>i</sub> komponens kiválasztása:</i> A táblázat baloldalán található <i>i</i>-edik sorszámra kattintva megkapjuk a <b>b</b><sub>i</sub> komponenshez tartozó rész zig-zag gráfot. A rész zig-zag gráf kezdőeleme -amely
+                                mindig a kiválasztott sor utolsó eleme- zölddel van kiemelve, míg a többi elem színe fekete és fehér. (A zig-zag gráf levágott részét halvány X-ek jelölik.)</li>
+                            <li><i>A fekete elemek halottak:</i> A fekete elemekre hiába kattintunk nem történik semmi. Ezek a sorok utolsó elemei, illetve az első egynél hosszabb sor első eleme.</li>
+                            <li><i>A fehér elemekben deriválhatunk:</i> Egy fehér elemre kattintva az összes felette lévő elem (ha van) lepotyog. A lepotyogott elemeket az összes lehetséges módon elrendezve megkapjuk a képletben szereplő zetaszorzatokat:</li>
+                            <li><i>A teljes <b>b</b><sub>i</sub> komponens megtekintése:</i> A táblázat alatti b<sub>i</sub> = ... részre kattintva megjelenik a teljes b<sub>i</sub> komponens. Egy fehér pontban vett deriválthoz tartozó aktuális zetaszorzat
+                                a teljes összegben aláhúzással van kiemelve.</li>
+                            <li><i>A teljes derivált megtekintése:</i> Egy konkrét fehér pontban vett derivált megtekinthető a táblázat alatti deriváltak részre kattintva. Egy konkrét sárga elem elrendezéshez tartózó tag keretezve jelenik meg a teljes deriváltban.</li>
                         </ul>
                     </td>
                 </tr>
@@ -789,6 +784,7 @@
     </script>
 </body>
 </html>
+
 
 
 
