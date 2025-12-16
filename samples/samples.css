@@ -2034,7 +2034,7 @@ p#keresztelem {
 }
 
 #detT .tgomb.shown.nobben {
-    opacity: 0.1;
+    opacity: 0.15;
     pointer-events: none;
 }
 
@@ -2069,6 +2069,12 @@ table tr.trvonal {
     text-decoration-thickness: 2px;
     text-underline-offset: 12px
 }
+
+#rfbJdet table tr td span.tgomb.hl {
+    border-top: none;
+    color: #d30000;
+}
+
 
 
 
