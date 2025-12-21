@@ -2126,6 +2126,7 @@ table tr.trvonal {
     border-top: 1px dashed #979797;
 }
 
+#detbTable #bjelentes span.hl,
 #detbTable #bjelentes span.bvec.hl {
     text-decoration: underline;
     text-decoration-color: fuchsia;
@@ -2181,6 +2182,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
