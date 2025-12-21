@@ -2096,6 +2096,14 @@ p#keresztelem {
     padding: 0 2px;
 }
 
+#detbTable #bjelentes span.paren1 {
+    color: #ff00a7;
+    transform: scale(1.2, 1.5);
+    display: inline-block;
+    transform-origin: center;
+    padding: 0 2px;
+}
+
 #detT .tgomb.shown.nobben {
     opacity: 0.15;
     pointer-events: none;
@@ -2182,6 +2190,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
