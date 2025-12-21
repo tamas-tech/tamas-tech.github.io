@@ -380,6 +380,7 @@ button.showpre1:hover {
 
 #sbtglbtn,
 #sbtglbtn2,
+.sbtglbtn,
 #tukroz {
     background-color: #e6e6e6;
     color: #636363;
@@ -2033,18 +2034,66 @@ p#keresztelem {
     border-radius: 3px
 }
 
-#detT tr th span.tsorszam-b.hl {
+#detT tr th span.tsorszam-b.hl,
+#detT tr th span.tsorszam-b.hlfix {
     background-color: #b7e3b5;
-    ;
 }
 
-#detT .tgomb.shown.belem {
+#detT tr th span.tsorszam-b.hlblock {
+    background-color: #fdd8d8;
+}
+
+#detT tr th span.tsorszam-b.lastbelem {
+    outline: 2px solid #50a84d;
+    outline-offset: 1px;
+}
+
+#detT tr th span.tsorszam-b.lastaelem:not(.hlblock) {
+    outline: 2px solid #e6a7a7;
+    outline-offset: 1px;
+}
+
+#detT tr.rowlinetukor:not(.trvonal) {
+    border-top: 1px solid #c6c6c6;
+}
+
+#detT tr.rowlinetukor.trvonal {
+    border-top: 1px dashed #979797;
+}
+
+#detT .tgomb.shown.aelem {
+    background-color: #ffcbcb;
+    /* color: #9d1f1f;
+    background-color: #c6c6c6; */
+    border-radius: 50%;
+    padding: 0 0.27em;
+    margin-left: -0.27em;
+    pointer-events: none;
+    outline: 1px solid #cacaca;
+    outline-offset: -1px;
+}
+
+#detT .tgomb.shown.afelett {
+    color: #cca33c50;
+}
+
+#detT .tgomb.shown.belem,
+#detT .tgomb.shown.belemfix {
     color: #149302;
     background-color: #c6c6c6;
     border-radius: 50%;
     padding: 0 0.27em;
     margin-left: -0.27em;
     pointer-events: none;
+    outline: 1px solid #afafaf;
+    outline-offset: -1px;
+}
+
+#detbTable #bjelentes span.paren {
+    transform: scale(1.2, 1.9);
+    display: inline-block;
+    transform-origin: center;
+    padding: 0 2px;
 }
 
 #detT .tgomb.shown.nobben {
@@ -2056,7 +2105,7 @@ p#keresztelem {
     pointer-events: none;
 }
 
-#detT .tgomb.shown:not(.nobderiv):not(.nobben):not(.belem):not(.hl) {
+#detT .tgomb.shown:not(.nobderiv):not(.nobben):not(.belem):not(.belemfix):not(.hl) {
     color: #555;
 }
 
@@ -2132,6 +2181,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
