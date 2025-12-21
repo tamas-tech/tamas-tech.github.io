@@ -4556,7 +4556,7 @@ function derivSor_det(s, n) {
         if (v[1] != "")
             dtxt += c + "(" + ertek + ")</span>";
     };
-    dtxt = dtxt.replace("= +", "= ") + detAb;
+    dtxt = dtxt.replace("= +", "= ");
     elem.html(dtxt);
 };
 
@@ -4921,7 +4921,33 @@ function formDetzz(s, j) {
     return nyzj + v[0] + zzj;
 };
 
+function zetaSor_der(s, n) {
+    const de = expDeriv(s, n).reverse();
+    const fakt = factorial(n);
+    var dtxt = '';
+    for (let v of de) {
+        var c = v[0] / fakt;
+        var ertek = v[1].toString();
+        if (c == 1)
+            c = " + ";
+        else if (c > 1)
+            c = " +  " + c + "&hairsp;";
+        if (v[1] != "")
+            dtxt += c + "&zeta;<sub>" + ertek + "</sub>";
+    };
+    dtxt = dtxt.replace("= +", "= ");
+    dtxt = dtxt.slice(3);
+    return dtxt;
+};
+
+function zetaAbHl(e, k) {
+    $('#detbTable #bjelentes .hl').removeClass('hl');
+    $(e).addClass('hl');
+    $('#detbTable #bjelentes .bvec[data-Ab="' + k + '"]').addClass('hl');
+};
+
 function kepletDetzz(s) {
+    const ss = kiszed_c('dets');
     var b = [];
     var L = s.length;
     while (L > 0) {
@@ -4937,16 +4963,25 @@ function kepletDetzz(s) {
     for (var j = 0; j < b.length - 1; j++)
         b[j + 1].unshift(_.last(b[j]));
     var txt = "";
+    var dtxt = "<span class='bvec' data-Ab='0'><span class='paren1'>[</span>" + monomvec2HTML(vList2obj(bvector(ss)[bsora - 1], 1)) + "<span class='paren1'>]</span></span>";
+    var szamlalo = 1;
     for (let w of b) {
         var k = _.last(w)[1];
         w = _.dropRight(w);
         var v = w.map(y => y[0]);
-        txt += "<span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>" + formazottTortHTML("&part;<sup>" + k + "</sup>", k + "!") + "(" + v.toString() + ")<span class='paren'>]</span>&middot;";
+        txt += "<span  onclick='zetaAbHl(this," + szamlalo + ");'><span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>" + formazottTortHTML("&part;<sup>" + k + "</sup>", k + "!") + "(" + v.toString() + ")<span class='paren'>]</span></span>&middot;";
+        if (v.length > 1)
+            dtxt += "&middot;<span class='bvec' data-Ab='" + szamlalo + "'><span class='paren1'>[</span>" + zetaSor_der(v, k) + "<span class='paren1'>]</span></span>";
+        else
+            dtxt += "&middot;<span class='bvec' data-Ab='" + szamlalo + "'>" + zetaSor_der(v, k) + "</span>";
+        szamlalo++;
     };
     txt = txt.slice(0, -8);
-    txt = "b<sub>" + bsora + "</sub>&middot;" + txt
-    document.getElementById("bjelentes").innerHTML = txt;
-    return txt;
+    //dtxt = dtxt.slice(0, -8);
+    //dtxt = monomvec2HTML(vList2obj(bvector(ss)[bsora - 1], 1)); + "&middot;" + dtxt;
+    txt = "<span  onclick='zetaAbHl(this,0);'>b<sub>" + bsora + "</sub></span>&middot;" + txt
+    document.getElementById("bjelentes").innerHTML = txt + " =<br/> = " + dtxt;
+    return txt + "=<br/>=" + dtxt;
 };
 
 function setb(e) {
