@@ -3458,9 +3458,10 @@ function drawMat(mat, felsoharomszog) {
     blepes = 0;
     blep = 1;
     const n = mat.length;
-    var txt = '<span style="display:block;width:fit-content;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="dettbl " class="table-hideable"> <thead><tr><th></th>';
+
+    var txt = '<span style="display:block;width:fit-content;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="dettbl" class="table-hideable"> <thead><tr><th></th>';
     for (var j = 0; j < n; j++)
-        txt += ' <th class="hide-column hide-col">' + (j + 1) + '</th>';
+        txt += '<th class="hide-column hide-col">' + (j + 1) + '</th>';
     txt += '</tr></thead><tbody>';
     for (var i = 0; i < n; i++) {
         txt += '<tr><th onclick="hlThisRow(this);">' + (i + 1) + '</th>';
@@ -4280,6 +4281,13 @@ function rfbGraph() {
 
 // ribbon graph for Matrix determinant
 
+var boszlopa = 0;
+var bsora = 0;
+var boszlopa2 = 0;
+var bsora2 = 0;
+var bblokkja = 1;
+var detAb = 'b';
+
 function toggleTableRow_det(row) {
     const next = row.parentElement.nextElementSibling;
     if (next && next.classList.contains("child")) {
@@ -4467,7 +4475,7 @@ function teglaTrim_det() {
     const p = $('#detT .tsorszam-fix.Li').text() * 1;
     const ds = d.slice(boszlopa);
     var ep = p;
-    if (!detAb)
+    if (detAb == 'b')
         ep = p + 1;
     var elojel = Math.pow(-1, _.sum(ds) + ep);
     if (elojel < 0)
@@ -4477,7 +4485,7 @@ function teglaTrim_det() {
     /* var szorzo = factorial(p);
     szorzo = "1/" + "<span class='lncolor'>" + szorzo + "</span>&lowast;"; */
     var keplet = "0";
-    if (detAb) {
+    if (detAb == 'A') {
         if (ds.length > 0)
             keplet = "&rightarrow;&nbsp;" + elojel + "<span class='binomcolor'>" + B + "</span>&zeta;<sub>" + ds + "</sub>";
     } else
@@ -4491,7 +4499,7 @@ function teglaTrim_det() {
     } else
         var av = [];
     var strong = "1"
-    if (detAb)
+    if (detAb == 'A')
         strong = "0.4"
     var bont = "<b>a</b> &odot; (1)<sup><i>p</i></sup> &bullet; <b>c</b> = (" + av.toString() + ")&odot;(" + Array(p).fill(1).toString() + ")<span style='opacity:" + strong + ";'>&bullet;(" + rfb_last["C"] + ")</span>";
     bont = bont.replaceAll("(( ))", "( )").replaceAll("()", "( )")
@@ -4506,7 +4514,7 @@ function teglaTrim_det() {
     }).map(z => $(z).addClass('hlLi'));
 
     $("#detTable span.deractive").removeClass('deractive');
-    if (d.length > 0 && !detAb) {
+    if (d.length > 0 && detAb == 'b') {
         var dd = _.drop(d, boszlopa)
         $("#detTable span[der-data=" + dd.toString().replaceAll(',', "-") + "]").addClass('deractive');
     }
@@ -4514,7 +4522,7 @@ function teglaTrim_det() {
         make_Deriv_det();
     vertVonal();
     $('#detbTable #bjelentes .bvec.hl').removeClass('hl');
-    if (detAb) {
+    if (detAb == 'A') {
         setTimeout(() => { $('#detbTable #bjelentes .bvec[data-b="' + ds.toString() + '"]').addClass('hl'); }, 100);
 
     } else {
@@ -4548,7 +4556,7 @@ function derivSor_det(s, n) {
         if (v[1] != "")
             dtxt += c + "(" + ertek + ")</span>";
     };
-    dtxt = dtxt.replace("= +", "= ");
+    dtxt = dtxt.replace("= +", "= ") + detAb;
     elem.html(dtxt);
 };
 
@@ -4571,7 +4579,7 @@ function fbcdat_det(el, s, o) {
     const m = de.split("-")[1] * 1;
     if ($('#detT .tgomb.d-path').length > 0)
         $('#detT .tgomb.d-path').removeClass('d-path');
-    if (DE == de && !detAb) {
+    if (DE == de && detAb == 'b') {
         if (m != 1)
             $(el).toggleClass('hlmove');
         if (deriv_fix)
@@ -4601,7 +4609,6 @@ function fbcdat_det(el, s, o) {
         const ss = _.sum(ssv) - ssv.length + 1;
         const ssve = ssv.slice(0, m - 1);
         const sse = _.sum(ssve) - ssve.length + 1;
-        console.log(oaz)
         if (!oaz) {
             //console.log('eset0fo')
             rfbtegla = [0, []];
@@ -4621,7 +4628,7 @@ function fbcdat_det(el, s, o) {
             for (var t = s - 1; t < r + Math.floor(s / (r + 1)); t++) {
                 $('#detT .tsorszam-e:nth(' + t + ')').css("visibility", "visible").html(h[t - s + 1]);
             }
-            if (detAb)
+            if (detAb == 'A')
                 $('#detT .tsorszam-e').css("visibility", "hidden");
             $('#detT .tsorszam-e:nth(' + (s - 1) + ')').html(h[0]).addClass("corr");
 
@@ -4721,7 +4728,7 @@ function fbcdat_det(el, s, o) {
 };
 
 function zzClear() {
-    $('#detT .tgomb.ye').removeClass('ye')
+    $('#detT .tgomb.ye').removeClass('ye').html('&#x25CB;')
     $('#detT .tgomb.move').removeClass('move');
     $('#detT .tgomb.sel').removeClass('sel').html('&#x25CB;');
     $('#detT .cintkeplet').html('').removeClass('cintkeplet');
@@ -4729,7 +4736,7 @@ function zzClear() {
     $('#detT .tsorszam-s,#detT .tsorszam-fix').css("visibility", "hidden");
     $("#detT #binomkijelzo").html("");
     $('#detTable tr.parent td #dcimke').html("");
-    $("#derivkij").html("");
+    $("#detTable #derivkijdet").html("");
     $('#detT .tgomb.szelso').html('&#x25CE;');
     $('#detT .tgomb.d-path').removeClass('d-path');
     $('#detT .vertvonal').remove();
@@ -4737,15 +4744,34 @@ function zzClear() {
     $('#detT tr.trvonal').removeClass('trvonal');
 };
 
+function clearLastab(b) {
+    if (!b) {
+        $('#detT table .tsorszam-b.lastaelem').removeClass('lastaelem');
+        $('#detT table .tsorszam-b.lastbelem').removeClass('lastbelem');
+    }
+};
+
+function bClear() {
+    const lastabfix = document.getElementById('lastabfix').checked;
+    $('#detT table .tsorszam-b.hl').removeClass('hl');
+    $('#detT table .tgomb.nobben').removeClass('nobben').html('&#x25CB;');
+    $('#detT table .tgomb.hlmove').removeClass('hlmove').html('&#x25CB;');
+    $('#detT table .tgomb.hl').removeClass('hl');
+    $('#detT table .tgomb.bfelett').removeClass('bfelett');
+    $('#detT table .tgomb.hlLi').removeClass('hlLi');
+    $('#detT table .tgomb.shown.belem').html('&#x25CB;');
+    $('#detT table .tgomb.shown.belem').removeClass('belem');
+    $('#detT table .tgomb.shown.nobderiv').html('&#x25CB;');
+    $('#detT table .tgomb.shown.nobderiv').removeClass('nobderiv');
+    if (!lastabfix) {
+        $('#detT table .tsorszam-b.lastaelem').removeClass('lastaelem');
+        $('#detT table .tsorszam-b.lastbelem').removeClass('lastbelem');
+    }
+};
+
 function setEgyenlo(a, b) {
     return _.isEqual(_.sortBy(a), _.sortBy(b));
 };
-
-var boszlopa = 0;
-var bsora = 0;
-var boszlopa2 = 0;
-var bsora2 = 0;
-var detAb = false;
 
 function drawAij(i, j) {
     $('#detT table .tsorszam-b.hl').removeClass('hl');
@@ -4810,10 +4836,123 @@ function drawAij(i, j) {
     document.getElementById('bindexe').innerHTML = bsora + "," + bsora2;
 };
 
+function drawbAij(i, add) {
+    const ei = $("#detT table tbody tr:nth(" + (i - 1) + ") td div .tgomb.shown:last");
+    if (add)
+        ei.addClass('aelem').removeClass('afelett').html('&#x25CF;');
+    else
+        ei.removeClass('aelem').removeClass('afelett').html('&#x25CF;');
+    var boszlopa = ei.prevAll('.tgomb').length;
+    for (var l = 0; l <= i - 2; l++) {
+        if (add)
+            $("#detT table tbody tr:nth(" + l + ") td div .tgomb:nth(" + boszlopa + ")")
+            .addClass('afelett').html('&#x25CB;');
+        else
+            $("#detT table tbody tr:nth(" + l + ") td div .tgomb:nth(" + boszlopa + ")")
+            .removeClass('afelett').html('&#x25CF;');
+    };
+};
+
+function detOszlop(n, k) {
+    var sl = 0;
+    var der = 0;
+    var avb = false;
+    for (var i = 0; i < n; i++) {
+        var s = $("#detT table tbody tr:nth(" + i + ") td div .tgomb:nth(" + k + ").shown:not(.nobben)");
+        sl += s.length * 1;
+        if (s.hasClass('afelett'))
+            der++;
+        if (s.hasClass('aelem') || s.hasClass('belem'))
+            avb = true;
+    }
+    return [sl - der, der, avb];
+};
+
+var ssorba = [
+    [
+        3,
+        0,
+        false
+    ],
+    [
+        2,
+        2,
+        true
+    ],
+    [
+        1,
+        0,
+        false
+    ],
+    [
+        3,
+        2,
+        true
+    ],
+    [
+        1,
+        0,
+        false
+    ],
+    [
+        1,
+        0,
+        false
+    ],
+    [
+        1,
+        2,
+        true
+    ]
+];
+
+function formDetzz(s, j) {
+    const v = s[j - 1];
+    const m = s[j];
+    var nyzj = "",
+        zzj = "";
+    if (j == 1 || v[2])
+        nyzj = "(";
+    if (m[2]) {
+        zzj = ")";
+        if (m[1] > 0)
+            zzj += "<sup style='font-weight:400;'>[" + m[1] + "]</sup>";
+    }
+    return nyzj + v[0] + zzj;
+};
+
+function kepletDetzz(s) {
+    var b = [];
+    var L = s.length;
+    while (L > 0) {
+        indx = _.findIndex(s, function(y) { return y[2] != false });
+        if (indx > -1) {
+            b.push(_.take(s, indx + 1))
+            s = _.drop(s, indx + 1);
+            L = s.length;
+        } else {
+            return s;
+        }
+    };
+    for (var j = 0; j < b.length - 1; j++)
+        b[j + 1].unshift(_.last(b[j]));
+    var txt = "";
+    for (let w of b) {
+        var k = _.last(w)[1];
+        w = _.dropRight(w);
+        var v = w.map(y => y[0]);
+        txt += "<span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>" + formazottTortHTML("&part;<sup>" + k + "</sup>", k + "!") + "(" + v.toString() + ")<span class='paren'>]</span>&middot;";
+    };
+    txt = txt.slice(0, -8);
+    txt = "b<sub>" + bsora + "</sub>&middot;" + txt
+    document.getElementById("bjelentes").innerHTML = txt;
+    return txt;
+};
+
 function setb(e) {
     const $table = $('#detT table');
     const n = $('.tsorszam-b:last').attr('data-n') * 1;
-    if (detAb) {
+    if (detAb == 'A') {
         const vansora = $('#detT table .tsorszam-b.hl:first').attr('data-n') * 1 || 1;
         const bsoranext = e.getAttribute('data-n') * 1;
         if (bsoranext == bsora) {
@@ -4837,22 +4976,11 @@ function setb(e) {
         } else
             bsora2 = bsoranext;
         if (bsora > 0 && bsora2 > 0) {
-            bsora = Math.min(bsora, bsora2);
-            bsora2 = Math.max(bsora, bsora2);
+            bsorRendez();
         };
         drawAij(bsora, bsora2);
-    } else {
-        $('#detT table .tsorszam-b.hl').removeClass('hl');
-        $('#detT table .tgomb.nobben').removeClass('nobben').html('&#x25CB;');
-        $('#detT table .tgomb.hlmove').removeClass('hlmove').html('&#x25CB;');
-        $('#detT table .tgomb.hl').removeClass('hl');
-        $('#detT table .tgomb.bfelett').removeClass('bfelett');
-        $('#detT table .tgomb.hlLi').removeClass('hlLi');
-        $('#detT table .tgomb.shown.belem').html('&#x25CB;');
-        $('#detT table .tgomb.shown.belem').removeClass('belem');
-        $('#detT table .tgomb.shown.nobderiv').html('&#x25CB;');
-        $('#detT table .tgomb.shown.nobderiv').removeClass('nobderiv');
-
+    } else if (detAb == 'b') {
+        bClear();
         bsora = e.getAttribute('data-n') * 1;
         const belem = ($("#detT table tbody tr:nth(" + (bsora - 1) + ") td div .tgomb.shown:last"));
         boszlopa = belem.prevAll('.tgomb').length;
@@ -4880,23 +5008,161 @@ function setb(e) {
         document.getElementById('bjelentes').innerHTML = monomvec2HTMLWithId(symbOv(vList2obj(bvector(kiszed_c('dets'))[n - bsora], 1)));
         document.getElementById('bfeje').innerHTML = "b";
         document.getElementById('bindexe').innerHTML = bsora;
+    } else if (detAb == 'Ab') {
+        const indx = e.getAttribute('data-n') * 1;
+        if (indx == 1)
+            return;
+        else if (indx == bsora) {
+            bClear();
+            bsora = 0;
+        } else if (indx > bsora) {
+            zzClear();
+            bClear();
+            $("#detT table tbody tr .tsorszam-b.lastbelem").removeClass('lastbelem');
+            $("#detT table tbody .tsorszam-b[data-block='" + bblokkja + "']").parent('th').parent('tr').find('td div .tgomb.shown.afelett').each(function() { $(this).removeClass('afelett').html('&#x25CF;') })
+            const belem = ($("#detT table tbody tr:nth(" + (indx - 1) + ") td div .tgomb.shown:last"));
+            bblokkja = $("#detT table tbody tr:nth(" + (indx - 1) + ") .tsorszam-b").attr('data-block') * 1;
+            boszlopa = belem.prevAll('.tgomb').length;
+            belem.addClass('belem').html('&#x25CF;');
+            belem.prevAll('.tgomb.shown').addClass('nobderiv').html('&#x25CF;');
+            for (var j = 0; j <= indx - 2; j++) {
+                $("#detT table tbody tr:nth(" + (j) + ") td div .tgomb:nth(" + boszlopa + "):not(.no)")
+                    .addClass('afelett').html('&#x25CB;');
+            };
+            $(e).addClass('hl').addClass('lastbelem');
+            $("#detT table tbody tr .tsorszam-b.hlblock[data-block='" + bblokkja + "']")
+                .removeClass('hlblock').removeClass('lastaelem');
+            for (var i = 1; i < indx; i++) {
+                $table.find("tbody tr:nth(" + i + ") td div .tgomb.shown")
+                    .addClass('nobderiv')
+                $table.find("tbody tr:nth(" + i + ") td div .tgomb.shown:not(.afelett):not(.no)")
+                    .html('&#x25CF;');
+            };
+            for (var j = indx; j < n + 1; j++) {
+                /* $("#detT table tbody tr:nth(" + j + ") td div .tgomb:nth(" + boszlopa + "):not(.no)")
+                    .html('&#x25CF;')
+                    .addClass('nobderiv');
+                $("#detT table tbody tr:nth(" + j + ") td div .tgomb.shown:last")
+                    .html('&#x25CF;')
+                    .addClass('nobderiv'); */
+                $("#detT table tbody tr:nth(" + j + ") .tsorszam-b.hlblock")
+                    .removeClass('hlblock').removeClass('lastaelem');
+                $("#detT table tbody tr:nth(" + j + ") td div .tgomb.shown")
+                    .removeClass('aelem')
+                    .removeClass('afelett').html('&#x25CF;');
+            };
+            for (var j = 0; j <= indx - 2; j++) {
+                $("#detT table tbody tr:nth(" + j + ") td div .tgomb:nth(" + boszlopa + "):not(.no)")
+                    .removeClass('aelem')
+            };
+            for (var t = indx; t < n + 2; t++) {
+                $table.find("tbody tr:nth(" + t + ") td div .tgomb.shown")
+                    .addClass('nobben').html('&times;')
+            };
+
+            bsora = indx;
+            rfb_last["bfelett"] = $('#detT table .tgomb.bfelett').length;
+        } else if (indx < bsora) {
+            const bl = $(e).attr('data-block') * 1;
+            const bln = $(e).attr('data-n') * 1
+            if (bl !== 1 && bl != bblokkja) {
+                const onelem = $("#detT table tbody .tsorszam-b.hlblock[data-block='" + bl + "']");
+                const on = onelem.attr('data-n') * 1 || 0;
+                onelem.removeClass('hlblock').removeClass('lastaelem');
+                onelem.parent('th').parent('tr').find('.tgomb.shown:last').removeClass('aelem');
+                $("#detT table tbody .tsorszam-b[data-block='" + bl + "']").parent('th').parent('tr').find('td div .tgomb.shown.afelett').each(function() { $(this).removeClass('afelett').html('&#x25CF;') })
+                if (bln != on) {
+                    $(e).addClass('hlblock').addClass('lastaelem');
+                    drawbAij(indx, true);
+                } else {
+                    drawbAij(indx, false);
+                };
+            };
+        };
+        if (bsora > 0) {
+            var ssorba = [];
+            for (var k = 0; k < boszlopa + 1; k++)
+                ssorba.push(detOszlop(n, k));
+            $('#detT table .tsorszam-s.ln').removeClass('ln');
+            $('#detT table .tsorszam-fix.Li').removeClass('Li');
+            for (var j = 1; j < boszlopa + 1; j++) {
+                var ds = $('#detT table .tsorszam-s[data-n="' + j + '"]');
+                ds.css({
+                    'visibility': 'visible',
+                    'vertical-align': 'bottom'
+                }).html(formDetzz(ssorba, j));
+                $('#detT .tsorszam-fix[data-n="' + j + '"]').css("visibility", "visible").html(ssorba[j - 1][0] + ssorba[j - 1][1]);
+            };
+            const Lihez = _.last(ssorba)
+            $('#detT .tsorszam-fix[data-n="' + (boszlopa + 1) + '"]').css("visibility", "visible").html(Lihez[0] + Lihez[1]).addClass('Li');
+            var dsb = $('#detT table .tsorszam-s[data-n=0]');
+            dsb.css({
+                'visibility': 'visible',
+                'vertical-align': 'bottom'
+            }).html('b<sub>' + bsora + '</sub>&nbsp;&times;');
+            kepletDetzz(ssorba);
+        } else {
+            $('#detT table .tsorszam-s').css({ 'visibility': 'hidden' });
+        };
     };
 };
 
+function bsorRendez() {
+    var bs = Math.min(bsora, bsora2);
+    var bs2 = Math.max(bsora, bsora2);
+    if (bs == bs2)
+        bs = 1;
+    bsora = bs;
+    bsora2 = bs2;
+};
+
 function detAbmode(e) {
-    if (e.innerHTML == 'b<sub>i</sub>') {
-        detAb = true;
+    if (detAb == 'b') {
+        detAb = 'A';
         e.innerHTML = '<b>A</b><sub>i,j</sub>';
         zzClear();
-        if (bsora < 1)
-            bsora = 1;
-        const n = $('.tsorszam-b:last').attr('data-n') * 1;
-        if (bsora2 < 1)
-            bsora2 = n;
+        if ($('#detT table .tsorszam-b.lastaelem').length == 1) {
+            bsora = $('#detT table .tsorszam-b.lastaelem:nth(0)').attr('data-n') * 1;
+            bsora2 = $('#detT table .tsorszam-b.lastbelem').attr('data-n') * 1;
+
+        } else if ($('#detT table .tsorszam-b.lastaelem').length > 1) {
+            bsora = $('#detT table .tsorszam-b.lastaelem:nth(0)').attr('data-n') * 1;
+            bsora2 = $('#detT table .tsorszam-b.lastaelem:nth(1)').attr('data-n') * 1;
+        } else {
+            if (bsora < 1)
+                bsora = 1;
+            const n = $('.tsorszam-b:last').attr('data-n') * 1;
+            if (bsora2 < 1)
+                bsora2 = n;
+        };
+        bsorRendez();
         drawAij(bsora, bsora2);
-    } else {
-        detAb = false;
+    } else if (detAb == 'A') {
+        detAb = 'Ab';
+        e.innerHTML = 'det';
+        if ($('#detT table .tsorszam-b.lastbelem').length > 0) {
+            bsora = 0;
+            $('#detT table .tsorszam-b.lastbelem').trigger('click');
+        } else
+            $('#detT table .tsorszam-b:nth(' + bsora2 + ')').trigger("click");
+        if ($('#detT table .tsorszam-b.lastaelem').length > 0)
+            $('#detT table .tsorszam-b.lastaelem').trigger('click');
+        //$("#detT table tbody tr:last").css('display', 'none');
+        $("#detT table tbody tr:nth(0) td div .tgomb.shown:last").addClass('belemfix').html('&#x25CF;');
+        $('#detT table .tsorszam-b:nth(1)').addClass('hlfix');
+    } else if (detAb == 'Ab') {
+        detAb = 'b';
         e.innerHTML = 'b<sub>i</sub>';
+        zzClear();
+        //$("#detT table tbody tr:last").css('display', '');
+        $('#detT table tbody tr .tsorszam-b.hlfix').removeClass('hlfix');
+        $("#detT table tbody tr .tsorszam-b.hlblock").removeClass('hlblock');
+        $("#detT table tbody tr:nth(0) td div .tgomb.shown:last").removeClass('belemfix');
+        $("#detT table tbody tr td div .tgomb.shown")
+            .removeClass('aelem')
+            .removeClass('belem')
+            .removeClass('afelett').html('&#x25CF;');
+        $('#detT table .tsorszam-s:not(.ln)').css({ 'visibility': '', 'vertical-align': 'middle' })
         if (bsora < 1)
             $('#detT table .tsorszam-b:nth(1)').trigger("click");
         else
@@ -4907,6 +5173,12 @@ function detAbmode(e) {
 function rfbGraph_det() {
     rfbtegla = [0, []];
     rfb_last = { "v": [], "s": 0, "C": [], "Li": 0, "o": 0, "bfelett": 0 };
+    boszlopa = 0;
+    bsora = 0;
+    boszlopa2 = 0;
+    bsora2 = 0;
+    bblokkja = 1;
+    detAb = 'b';
     const elem = document.getElementById("detT");
     const c = kiszed_c('dets');
     const kc = kum(c);
@@ -4915,16 +5187,30 @@ function rfbGraph_det() {
     for (var i = 1; i < r; i++) {
         k.push(kc[i - 1] - i);
     };
+
     var kep = "<span id='show_deriv' onclick='toggle_Deriv_det();'>&#x25CB;</span><table style='border-collapse:collapse;display:inline-table;'><input type='checkbox' id='setderfix' onchange='setDerfix_det(this);' style='height:20px;width:20px;display: inline-block;position: relative;left: -40px;'><thead><tr><th><span class='tsorszam-b' data-n='0' style='font-size: 16px;outline: 1px solid #aaa;outline-offset: 2px;background-color: white;' onclick='detAbmode(this);'>b<sub>i</sub></span></th><th>";
     for (var i = 1; i < _.last(kc) - r + 2; i++) {
         kep += "<span class='tsorszam-n' data-n='" + i + "'>" + i + "</span>";
     };
     kep += "<th style='width:21.36px'></th></th><td></td></tr></thead>";
+    var szamlalo = 1;
+    var blokkok = []
     for (var j = 0; j < r; j++) {
+        var oszt = "";
+        var thd = " data-block='" + szamlalo + "' ";
+        if (c[j] > 1) {
+            oszt = " class='rowlinetukor'";
+            blokkok.push(j);
+        };
+
+        if (c[j + 1] > 1) {
+            szamlalo++;;
+        };
+
         if (j < r - 1)
-            kep += "<tr><th><span class='tsorszam-b' data-n='" + (j + 1) + "' onclick='setb(this)'>" + (j + 1) + "</span></th><td><div>";
+            kep += "<tr" + oszt + "><th><span class='tsorszam-b'" + thd + " data-n='" + (j + 1) + "' onclick='setb(this)'>" + (j + 1) + "</span></th><td><div>";
         else
-            kep += "<tr><span class='tsorszam-b' data-n='" + (j + 1) + "'></span><th></th><td><div>";
+            kep += "<tr" + oszt + "><span class='tsorszam-b' data-n='" + (j + 1) + "'></span><th></th><td><div>";
         for (var t = 0; t < k[j]; t++) {
             kep += "<span class='tgomb no' onclick='moveSelect_det(this);' rfb-data='" + (j + 1) + "-" + (t + 1) + "'>&#x25CB;</span> ";
         };
@@ -4934,6 +5220,7 @@ function rfbGraph_det() {
         kep += "</div></td><th><span class='tsorszam-e'  data-n='" + c[j] + "'>" + c[j] + "</span></th><td><div  id='ebbe-" + (j + 1) + "'></div></td>";
     };
     kep += "<tr><th></th><td><div>";
+    //console.log(blokkok);
     var L = _.last(k) + _.last(c);
     for (var t = 0; t < L - 1; t++)
         kep += "<span class='tgomb no' onclick='moveSelect_det(this);' rfb-data='" + (r + 1) + "-" + (t + 1) + "'>&#x25CB;</span> ";;
@@ -4954,8 +5241,6 @@ function rfbGraph_det() {
     $('#detT table .tsorszam-b:nth(1)').trigger("click");
     if (deriv_fix)
         document.getElementById("setderfix").click();
-    if (detAb)
-        $('#detT table .tsorszam-b:nth(0)').trigger("click");
 };
 
 // Általános Latex kimenet
@@ -6750,7 +7035,7 @@ function is_ms(v) {
         return true;
     else
         return false;
-}
+};
 
 function ms_mul(c, ms) {
     return ms.map(y => [c * y[0], y[1]])
@@ -6898,7 +7183,9 @@ function derivInput() {
     else {
         const ms = ms_kiszed(id, muv);
         var d = ms_deriv(deriv, n, dual, conj, ms);
-        //document.getElementById("diffout").innerHTML = JSON.stringify(d);
+        const oszto = factorial(document.getElementById("oszto").value * 1);
+        d = d.map(y => [y[0] / oszto, y[1]])
+            //document.getElementById("diffout").innerHTML = JSON.stringify(d);
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
