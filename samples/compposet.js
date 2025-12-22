@@ -3034,17 +3034,17 @@ function monom2HTML(obj) {
     else if (C == -1)
         C = " − ";
     else if (C > 1)
-        C = " + " + C + "&hairsp;";
+        C = " + " + C + "&hairsp;"; //MAPLEBE
     else if (C < 1)
-        C = " − " + -C + "&hairsp;";
+        C = " − " + -C + "&hairsp;"; //MAPLEBE
 
     obj = _.omit(obj, 'c');
     var m = "";
     _.forEach(obj, function(value, key) {
         if (value > 1)
-            m += '&zeta;<sup>' + value + '</sup><sub class="zhindx">' + key + '</sub>';
+            m += '(&zeta;<sup>' + value + '</sup>)<sub class="zhindx">' + key + '</sub>'; //MAPLEBE
         else
-            m += '&zeta;<sub class="zindx">' + key + '</sub>';
+            m += '&zeta;<sub class="zindx">' + key + '</sub>'; //MAPLEBE
     });
     m = C + m;
     return m;
@@ -4927,13 +4927,14 @@ function zetaSor_der(s, n) {
     var dtxt = '';
     for (let v of de) {
         var c = v[0] / fakt;
-        var ertek = v[1].toString();
+        // EREDETILEG    var ertek = "[" + v[1].toString() + "]";
+        var ertek = v[1].toString(); //MAPLEBE
         if (c == 1)
             c = " + ";
         else if (c > 1)
-            c = " +  " + c + "&hairsp;";
+            c = " +  " + c + "&hairsp;"; //MAPLEBE
         if (v[1] != "")
-            dtxt += c + "&zeta;<sub>" + ertek + "</sub>";
+            dtxt += c + " &zeta;<sub>" + ertek + "</sub>";
     };
     dtxt = dtxt.replace("= +", "= ");
     dtxt = dtxt.slice(3);
@@ -4948,10 +4949,14 @@ function zetaAbHl(e, k) {
 
 function kepletDetzz(s) {
     const ss = kiszed_c('dets');
+    const n = ss.length - 1;
+    var indxs = ["1"];
+    $("#detT table tbody tr .tsorszam-b.hlblock,#detT table tbody tr .tsorszam-b.hl").each(function() { indxs.push(this.getAttribute("data-n")) });
+    indxs = _.uniq(indxs);
     var b = [];
     var L = s.length;
     while (L > 0) {
-        indx = _.findIndex(s, function(y) { return y[2] != false });
+        var indx = _.findIndex(s, function(y) { return y[2] != false });
         if (indx > -1) {
             b.push(_.take(s, indx + 1))
             s = _.drop(s, indx + 1);
@@ -4963,25 +4968,36 @@ function kepletDetzz(s) {
     for (var j = 0; j < b.length - 1; j++)
         b[j + 1].unshift(_.last(b[j]));
     var txt = "";
-    var dtxt = "<span class='bvec' data-Ab='0'><span class='paren1'>[</span>" + monomvec2HTML(vList2obj(bvector(ss)[bsora - 1], 1)) + "<span class='paren1'>]</span></span>";
+    var dtxt = "<span class='bvec' data-Ab='0'><span class='paren1'>(</span>" + monomvec2HTML(vList2obj(bvector(ss)[n - bsora], 1)) + "<span class='paren1'>)</span></span>";
+    var cimke = "b<sub>" + bsora + "</sub>&times;";
     var szamlalo = 1;
+    var ossz = 0;
     for (let w of b) {
         var k = _.last(w)[1];
         w = _.dropRight(w);
         var v = w.map(y => y[0]);
+        ossz += _.sum(v)
         txt += "<span  onclick='zetaAbHl(this," + szamlalo + ");'><span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>" + formazottTortHTML("&part;<sup>" + k + "</sup>", k + "!") + "(" + v.toString() + ")<span class='paren'>]</span></span>&middot;";
         if (v.length > 1)
-            dtxt += "&middot;<span class='bvec' data-Ab='" + szamlalo + "'><span class='paren1'>[</span>" + zetaSor_der(v, k) + "<span class='paren1'>]</span></span>";
+            dtxt += "&middot;<span class='bvec' data-Ab='" + szamlalo + "'><span class='paren1'>(</span>" + zetaSor_der(v, k) + "<span class='paren1'>)</span></span>"; // MAPLEBE * &middot;
         else
-            dtxt += "&middot;<span class='bvec' data-Ab='" + szamlalo + "'>" + zetaSor_der(v, k) + "</span>";
+            dtxt += "&middot;<span class='bvec' data-Ab='" + szamlalo + "'>" + zetaSor_der(v, k) + "</span>"; // MAPLEBE * &middot;
+        cimke += "A<sub>" + indxs[szamlalo - 1] + "," + indxs[szamlalo] + "</sub>&middot;";
         szamlalo++;
     };
     txt = txt.slice(0, -8);
     //dtxt = dtxt.slice(0, -8);
     //dtxt = monomvec2HTML(vList2obj(bvector(ss)[bsora - 1], 1)); + "&middot;" + dtxt;
+    var elojel = "";
+    //console.log(szamlalo + ossz + 1)
+    if (cimke.endsWith('&middot;'))
+        cimke = cimke.slice(0, -8);
+    if ((szamlalo + ossz + 1) % 2 == 1)
+        elojel = " − ";
     txt = "<span  onclick='zetaAbHl(this,0);'>b<sub>" + bsora + "</sub></span>&middot;" + txt
-    document.getElementById("bjelentes").innerHTML = txt + " =<br/> = " + dtxt;
-    return txt + "=<br/>=" + dtxt;
+    document.getElementById("bjelentes").innerHTML = elojel + txt + " =<br/> = " + elojel + dtxt;
+    document.getElementById("bcimke").innerHTML = cimke;
+    //return txt + "=<br/>=" + dtxt;
 };
 
 function setb(e) {
@@ -5045,9 +5061,39 @@ function setb(e) {
         document.getElementById('bindexe').innerHTML = bsora;
     } else if (detAb == 'Ab') {
         const indx = e.getAttribute('data-n') * 1;
-        if (indx == 1)
+        const elsoblokk = $("#detT table tbody tr .tsorszam-b[data-block='1']").length + 1;
+        if (indx == 1) {
+            zzClear();
+            bClear();
+            $("#detT table tbody tr .tsorszam-b.lastbelem").removeClass('lastbelem');
+            bsora = e.getAttribute('data-n') * 1;
+            const belem = $("#detT table tbody tr:nth(" + (bsora - 1) + ") td div .tgomb.shown:last");
+            console.log(belem)
+            boszlopa = 0;
+            belem.addClass('belem').html('&#x25CF;')
+            $(e).addClass('hl').addClass('lastbelem');
+            const onelem = $("#detT table tbody .tsorszam-b.hlblock");
+            onelem.removeClass('hlblock').removeClass('lastaelem');
+            onelem.parent('th').parent('tr').find('.tgomb.shown:last').removeClass('aelem');
+            for (var i = 1; i < n + 1; i++) {
+                $table.find("tbody tr:nth(" + i + ") td div .tgomb.shown")
+                    .addClass('nobderiv')
+                $table.find("tbody tr:nth(" + i + ") td div .tgomb.shown:not(.no)")
+                    .html('&#x25CF;');
+                $("#detT table tbody tr:nth(" + i + ") td div .tgomb.shown")
+                    .removeClass('aelem')
+                    .removeClass('afelett').html('&#x25CF;');
+            };
+            //$table.find(".tgomb.shown.szelso").css('pointer-events', 'none');
+            rfb_last["bfelett"] = $('#detT table .tgomb.bfelett').length;
+            document.getElementById('bjelentes').innerHTML = monomvec2HTML(symbOv(vList2obj(bvector(kiszed_c('dets'))[n - bsora], 1)));
+            document.getElementById('bfeje').innerHTML = "b";
+            document.getElementById('bindexe').innerHTML = bsora;
+            document.getElementById("bcimke").innerHTML = "b<sub>" + bsora + "</sub>";
             return;
-        else if (indx == bsora) {
+        } else if (indx < elsoblokk) {
+            return;
+        } else if (indx == bsora) {
             bClear();
             bsora = 0;
         } else if (indx > bsora) {
@@ -5115,6 +5161,7 @@ function setb(e) {
             };
         };
         if (bsora > 0) {
+            $("#detT table tbody tr:nth(0) td div .tgomb.belemfix").html('&#x25CF;');
             var ssorba = [];
             for (var k = 0; k < boszlopa + 1; k++)
                 ssorba.push(detOszlop(n, k));
@@ -5136,6 +5183,8 @@ function setb(e) {
                 'vertical-align': 'bottom'
             }).html('b<sub>' + bsora + '</sub>&nbsp;&times;');
             kepletDetzz(ssorba);
+            document.getElementById('bfeje').innerHTML = "b";
+            document.getElementById('bindexe').innerHTML = bsora;
         } else {
             $('#detT table .tsorszam-s').css({ 'visibility': 'hidden' });
         };
@@ -5185,10 +5234,12 @@ function detAbmode(e) {
         //$("#detT table tbody tr:last").css('display', 'none');
         $("#detT table tbody tr:nth(0) td div .tgomb.shown:last").addClass('belemfix').html('&#x25CF;');
         $('#detT table .tsorszam-b:nth(1)').addClass('hlfix');
+        $("#detT table tbody tr .tgomb.shown.szelso").css('pointer-events', 'none');
     } else if (detAb == 'Ab') {
         detAb = 'b';
         e.innerHTML = 'b<sub>i</sub>';
         zzClear();
+        $("#detT table tbody  tr .tgomb.shown.szelso").css('pointer-events', 'all');
         //$("#detT table tbody tr:last").css('display', '');
         $('#detT table tbody tr .tsorszam-b.hlfix').removeClass('hlfix');
         $("#detT table tbody tr .tsorszam-b.hlblock").removeClass('hlblock');
