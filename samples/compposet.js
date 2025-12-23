@@ -5068,7 +5068,6 @@ function setb(e) {
             $("#detT table tbody tr .tsorszam-b.lastbelem").removeClass('lastbelem');
             bsora = e.getAttribute('data-n') * 1;
             const belem = $("#detT table tbody tr:nth(" + (bsora - 1) + ") td div .tgomb.shown:last");
-            console.log(belem)
             boszlopa = 0;
             belem.addClass('belem').html('&#x25CF;')
             $(e).addClass('hl').addClass('lastbelem');
@@ -5253,6 +5252,7 @@ function detAbmode(e) {
             $('#detT table .tsorszam-b:nth(1)').trigger("click");
         else
             $('#detT table .tsorszam-b:nth(' + bsora + ')').trigger("click");
+         document.getElementById("bcimke").innerHTML = "";
     };
 };
 
@@ -7275,3 +7275,4 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
