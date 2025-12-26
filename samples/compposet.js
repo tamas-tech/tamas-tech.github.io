@@ -3042,7 +3042,7 @@ function monom2HTML(obj) {
     var m = "";
     _.forEach(obj, function(value, key) {
         if (value > 1)
-            m += '(&zeta;<sup>' + value + '</sup>)<sub class="zhindx">' + key + '</sub>'; //MAPLEBE
+            m += '&zeta;<sup>' + value + '</sup><sub class="zhindx">' + key + '</sub>'; //MAPLEBE
         else
             m += '&zeta;<sub class="zindx">' + key + '</sub>'; //MAPLEBE
     });
@@ -4287,6 +4287,7 @@ var boszlopa2 = 0;
 var bsora2 = 0;
 var bblokkja = 1;
 var detAb = 'b';
+var bdet = [];
 
 function toggleTableRow_det(row) {
     const next = row.parentElement.nextElementSibling;
@@ -4524,7 +4525,6 @@ function teglaTrim_det() {
     $('#detbTable #bjelentes .bvec.hl').removeClass('hl');
     if (detAb == 'A') {
         setTimeout(() => { $('#detbTable #bjelentes .bvec[data-b="' + ds.toString() + '"]').addClass('hl'); }, 100);
-
     } else {
         const idvec = [ds.toString() + '-' + c.toString(), c.toString() + '-' + ds.toString()];
         for (let v of idvec)
@@ -4672,40 +4672,6 @@ function fbcdat_det(el, s, o) {
             }
 
         }
-        /* else if ($(el).hasClass('hlLn')) {
-                   console.log('eset1')
-                   $(el).removeClass('hlLn').html('&#x25CB;');
-                   var pp = ss + 1;
-                   const rfb1 = rfbtegla[1];
-                   const krit = (sse == r && _.last(c) > 1) || (ss == r && _.last(c) == 1);
-                   if (rfb1.length > 0)
-                       pp = rfb1[0];
-                   if (krit)
-                       pp++;
-                   for (var q = 1 + boszlopa; q < m; q++)
-                       $('#detT .tgomb.no[rfb-data=' + (pp - 1) + '-' + q + ']').addClass('ye');
-                   $('#detT .tgomb.no[rfb-data=' + (pp - 1) + '-' + boszlopa + ']').addClass('sel').html('&#x25CF;');
-                   $('#detT .tgomb.move').removeClass('move');
-                   if (krit && rfb1.length > 0) {
-                       pp--
-                       $('#detT .tgomb.no[rfb-data=' + (pp - 1) + '-1]').addClass('sel').html('&#x25CF;');
-                   }
-                   rfbtegla[1].unshift(pp - 1);
-                   rfb_last["Li"] = rfb_last["Li"] + 1;
-               } else {
-                   console.log('eset2')
-                   $(el).addClass('hlLn');
-                   if ($(el).hasClass('szelso'))
-                       $(el).html('&#x25C9;');
-                   else
-                       $(el).html('&#x25CF;');
-                   const pp = rfbtegla[1][0];
-                   for (var q = 1; q < m; q++)
-                       $('#detT .tgomb.no[rfb-data=' + pp + '-' + q + ']').removeClass('ye').removeClass('sel').removeClass('move').html('&#x25CB;');
-                   $('#detT .tgomb.sel:nth(0)').addClass('move');
-                   rfbtegla[1] = _.drop(rfbtegla[1]);
-                   rfb_last["Li"] = rfb_last["Li"] - 1;
-               }; */
         for (var t = boszlopa; t < ce.length - 1; t++)
             $('#detT .tsorszam-s:nth(' + (t + 1) + ')').css("visibility", "visible").html(ce[t]);
         $('#detT .tsorszam-fix:nth(' + (boszlopa + 1) + ')').css("visibility", "visible").html(rfb_last["v"][boszlopa] - rfb_last.bfelett);
@@ -4719,11 +4685,16 @@ function fbcdat_det(el, s, o) {
             $('#detT .tsorszam-s:nth(0)').css("visibility", "visible");
             $('#detT .tsorszam-fix:nth(0)').css("visibility", "visible");
         };
-        //derivSor_det(_rfb_last["v"], rfb_last["Li"]);
         var dv = _.drop(rfb_last["v"], boszlopa);
         dv[0] -= rfb_last.bfelett;
         derivSor_det(dv, rfb_last["Li"]);
         teglaTrim_det();
+        if (document.getElementById("rfb_detreszletes").checked) {
+            var indx = bdet.length + 1 - rfb_last.v.length + boszlopa;
+            //if (indx == 1)
+            //   indx = 0;
+            hlbts(indx);
+        }
     };
 };
 
@@ -4868,44 +4839,6 @@ function detOszlop(n, k) {
     return [sl - der, der, avb];
 };
 
-var ssorba = [
-    [
-        3,
-        0,
-        false
-    ],
-    [
-        2,
-        2,
-        true
-    ],
-    [
-        1,
-        0,
-        false
-    ],
-    [
-        3,
-        2,
-        true
-    ],
-    [
-        1,
-        0,
-        false
-    ],
-    [
-        1,
-        0,
-        false
-    ],
-    [
-        1,
-        2,
-        true
-    ]
-];
-
 function formDetzz(s, j) {
     const v = s[j - 1];
     const m = s[j];
@@ -4927,8 +4860,8 @@ function zetaSor_der(s, n) {
     var dtxt = '';
     for (let v of de) {
         var c = v[0] / fakt;
-        // EREDETILEG    var ertek = "[" + v[1].toString() + "]";
-        var ertek = v[1].toString(); //MAPLEBE
+        var ertek = "[" + v[1].toString() + "]";
+        //var ertek = v[1].toString(); //MAPLEBE
         if (c == 1)
             c = " + ";
         else if (c > 1)
@@ -5003,6 +4936,7 @@ function kepletDetzz(s) {
 function setb(e) {
     const $table = $('#detT table');
     const n = $('.tsorszam-b:last').attr('data-n') * 1;
+    const reszl = document.getElementById("rfb_detreszletes").checked;
     if (detAb == 'A') {
         $('#detT table tbody tr td div .tgomb.shown').css('filter', 'none');
         const vansora = $('#detT table .tsorszam-b.hl:first').attr('data-n') * 1 || 1;
@@ -5059,7 +4993,13 @@ function setb(e) {
 
         rfb_last["bfelett"] = $('#detT table .tgomb.bfelett').length;
         zzClear();
-        document.getElementById('bjelentes').innerHTML = monomvec2HTMLWithId(symbOv(vList2obj(bvector(kiszed_c('dets'))[n - bsora], 1)));
+        const s = kiszed_c('dets');
+        if (reszl) {
+            if ($("#detbTable #bjelentes table.btable.c").length == 0)
+                b2tables(s);
+            $("#detbTable #bjelentes table.btable.c tbody tr td[data-bt=" + bsora + "]").trigger('click');
+        } else
+            document.getElementById('bjelentes').innerHTML = monomvec2HTMLWithId(symbOv(vList2obj(bvector(s)[n - bsora], 1)));
         document.getElementById('bfeje').innerHTML = "b";
         document.getElementById('bindexe').innerHTML = bsora;
     } else if (detAb == 'Ab') {
@@ -5277,6 +5217,7 @@ function rfbGraph_det() {
     const c = kiszed_c('dets');
     const kc = kum(c);
     const r = c.length;
+    const reszl = document.getElementById("rfb_detreszletes").checked;
     var k = [0];
     for (var i = 1; i < r; i++) {
         k.push(kc[i - 1] - i);
@@ -5335,6 +5276,10 @@ function rfbGraph_det() {
     $('#detT table .tsorszam-b:nth(1)').trigger("click");
     if (deriv_fix)
         document.getElementById("setderfix").click();
+    if (reszl) {
+        b2tables(c);
+        setTimeout(() => { $('#detT table .tsorszam-b.hl').trigger("click"); }, 300);
+    };
 };
 
 // Általános Latex kimenet
@@ -6806,6 +6751,334 @@ function bvector(s) {
     for (let w of na_revs)
         out.push(bvector_s(w));
     return dense0(out);
+};
+
+function hlbtc(e) {
+    $("#detbTable #bjelentes table.btable.c td.hl").removeClass('hl');
+    $("#detbTable #bjelentes table.btable.c td.bk .bknum.hl").removeClass('hl');
+    const n = $("#detbTable #bjelentes table.btable.c tr:nth(0) th").length;
+    $(e).children('.bknum').addClass('hl');
+    const $table = $("#detbTable #bjelentes table.btable.c");
+    const sor = e.closest('tr').rowIndex;
+    const oszlop = e.cellIndex;
+    $table.find("tr:nth(" + sor + ") td:nth(" + (oszlop - 1) + ").bk").addClass('hl');
+    for (var j = oszlop; j < n + 1; j++)
+        $table.find("tr:nth(1) td:nth(" + j + ")").addClass('hl');
+};
+
+function hlbts(k) {
+    if (k == 0)
+        return;
+    $("#detbTable #bjelentes table.btable.s td.hl").removeClass('hl');
+    $("#detbTable #bjelentes table.btable.s td.bk .bknum.hl").removeClass('hl');
+    const n = $("#detbTable #bjelentes table.btable.s tr:nth(0) th").length;
+    const $table = $("#detbTable #bjelentes table.btable.s");
+    const e = $table.find("td.bk[data-bt=" + k + "]")[0];
+    $(e).children('.bknum').addClass('hl');
+    if (e != undefined) {
+        const sor = e.closest('tr').rowIndex;
+        const oszlop = e.cellIndex;
+        $table.find("tr:nth(" + sor + ") td:nth(" + (oszlop - 1) + ").bk").addClass('hl');
+        for (var j = oszlop; j < n + 1; j++)
+            $table.find("tr:nth(1) td:nth(" + j + ")").addClass('hl');
+    }
+
+    $("#detbTable #bjelentes table.btable.b td.hl,#detbTable #bjelentes table.btable.b th.hl").removeClass('hl');
+    $("#detbTable #bjelentes table.btable.b td.hle").removeClass('hle');
+    $("#detbTable #bjelentes table.btable.b td.bh").removeClass('bh');
+    const n1 = $("#detbTable #bjelentes table.btable.b tr:nth(0) th").length;
+    const $table1 = $("#detbTable #bjelentes table.btable.b");
+    const K = n1 - k;
+    const e1 = $table1.find("td:nth(" + (K - 1) + ")");
+    e1.addClass('bh');
+    $table1.find("tr:nth(0) th:nth(" + K + ")").addClass('hl');
+    for (var i = 1; i < K; i++)
+        $table1.find("tr:nth(1) td:nth(" + i + ")").addClass('hle');
+    for (var j = K; j < n1; j++)
+        $table1.find("tr:nth(1) td:nth(" + j + ")").addClass('hl');
+    const bd = b_bontasK(bdet, K - 1);
+    document.getElementById("bdetnek").innerHTML = bd;
+};
+
+function b_sor(v0) {
+    bdet = [];
+    document.getElementById("bdetnek").innerHTML = "";
+    $("#detbTable #bjelentes table.btable.s td.hl").removeClass('hl');
+    $("#detbTable #bjelentes table.btable.s td.bk .bknum.hl").removeClass('hl');
+    const bind = v0[0];
+    const v = [...v0.slice(1)];
+    bdet = v;
+    const n = v.length;
+    var tbl = "<table class='btable b'><thead><th>k</th>";
+    for (var i = 0; i < n; i++)
+        tbl += "<th>" + (n - i) + ".</th>";
+    tbl += "</tr></thead><tbody><tr><td>b<sub>" + bind + "</sub></td>";
+    for (var j = 0; j < n; j++)
+        tbl += "<td onclick='hlbts(" + (n - j - 1) + ");'>" + v[j] + "</td>";
+    tbl += "</tr></tbody></table>";
+
+    document.getElementById('bsornak').innerHTML = tbl;
+};
+
+
+function b_bontas(s) {
+    const n = s.length;
+    var out = [];
+    for (var k = 1; k < n - 1; k++) {
+        var vk = s.slice(0, k);
+        var vnext = s[k] - 1;
+        var coeff = Math.pow(-1, _.sum(vk) + 1) / factorial(vnext);
+        var vege = conjcomp([1, ...s.slice(k + 1)]);
+        out.push([expDeriv(vk, vnext).map(y => [y[0] * coeff, y[1]]), vege]);
+    };
+    var vk = s.slice(0, -1);
+    var coeff = Math.pow(-1, _.sum(vk) + 1) / factorial(s[n - 2]);
+    var vnext = _.last(s);
+    out.push([expDeriv(vk, vnext).map(y => [y[0] * coeff, y[1]]), []]);
+    return out;
+};
+
+function b_bontasK(s, k) {
+    const n = s.length;
+    var out = "<ul>";
+    var out1 = "";
+    var out2 = "";
+    if (k < n - 1) {
+        var vk = s.slice(0, k);
+        var vnext = s[k] - 1;
+        var vege = [1, ...s.slice(k + 1)];
+        out += "<li>&nbsp;" + formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;&part;<sup>" + vnext + "</sup><span class='hlr'>(" + vk.toString() + ")</span>&middot;<span class='hly'>(" + vege + ")</span><sup>*</sup></li>";
+
+        var eloj = " + ";
+        if (_.sum(vk) % 2 == 0)
+            eloj = " − "
+        var f = factorial(vnext);
+        if (f == 1)
+            f = "";
+        else if (f > 1)
+            f = formazottTortHTML(1, f);
+        var p = "";
+        if (vnext == 1)
+            p = "&nbsp;&part;"
+        else if (vnext > 1)
+            p = "&nbsp;&part;<sup>" + vnext + "</sup>"
+
+        out1 += "<li>&nbsp;" + eloj + f + p + "<span class='hlr'>(" + vk.toString() + ")</span>&middot;<span class='hly'>(" + conjcomp(vege).toString() + ")</span></li>";
+        var coeff = factorial(vnext);
+        var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
+        var dtxt = ""
+        for (let v of d)
+            dtxt += msv2HTML(v);
+        dtxt = dtxt.slice(3);
+        if (d.length > 1)
+            dtxt = "<span class='paren1'>[</span>" + dtxt + "<span class='paren1'>]</span>";
+        out2 += "<li>&nbsp;" + eloj + dtxt + "&middot;<span class='hly'>(" + conjcomp(vege).toString() + ")</span></li></ul>";
+    } else if (k == n - 1) {
+        var vk = s.slice(0, -1);
+        var vnext = _.last(s);
+        out += "<li>" + formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;&part;<sup>" + vnext + "</sup><span class='hlr'>(" + vk.toString() + ")</span></li>";
+
+        var eloj = " + ";
+        if (_.sum(vk) % 2 == 0)
+            eloj = " − "
+        var f = factorial(vnext);
+        if (f == 1)
+            f = "";
+        else if (f > 1)
+            f = formazottTortHTML(1, f);
+        var p = "";
+        if (vnext == 1)
+            p = "&nbsp;&part;"
+        else if (vnext > 1)
+            p = "&nbsp;&part;<sup>" + vnext + "</sup>"
+        out1 += "<li>&nbsp;" + eloj + f + p + "<span class='hlr'>(" + vk.toString() + ")</span></li></ol>";
+
+        var coeff = factorial(vnext);
+        var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
+        var dtxt = ""
+        for (let v of d)
+            dtxt += msv2HTML(v);
+        dtxt = dtxt.slice(3);
+        if (d.length > 1)
+            dtxt = "<span class='paren1'>[</span>" + dtxt + "<span class='paren1'>]</span>";
+        dtxt = "<li>&nbsp;" + eloj + dtxt + "</li></ul>";
+        out2 += dtxt;
+    } else
+        return;
+    return out + out1 + out2;
+};
+
+function b_tabla(s, rev) {
+    const n = s.length;
+    var bk = s.slice(0, -1).filter(y => y > 1);
+    const lasts = _.last(s);
+    const h = Math.max(_.max(bk) - 1, lasts);
+    var bkv = [];
+    var l0 = -1;
+    for (var j = 0; j < n - 1; j++) {
+        if (s[j] > 1)
+            bkv.push(j)
+    };
+    var ni = _.sum(bk) - bk.length;
+    if (lasts > 1) {
+        bkv.push(n - 1);
+        bk.push(lasts);
+        l0 = lasts - 1;
+        ni += lasts;
+    };
+    var bkk = kum(bk.map(y => y - 1));
+    bkk.unshift(0);
+    sorsz = {};
+    for (var j = 0; j < bkv.length; j++) {
+        var m = bk[j]
+        for (var i = 1; i < m; i++) {
+            var indx = [i, bkv[j]].toString();
+            sorsz[indx] = ni + 1 - i - bkk[j];
+        }
+    };
+    if (lasts > 1) {
+        var indx = [l0 + 1, _.last(bkv)].toString();
+        sorsz[indx] = 1;
+    };
+
+    function specelem(l, t) {
+        var indx = sorsz[[l + 1, t].toString()];
+        if (rev) {
+            if (bkv.includes(t)) {
+                indx = ni + 1 - indx;
+                const st = JSON.stringify([indx, s[t] - l, ...s.slice(t + 1)]);
+                const onc = "onclick='b_sor(";
+                tbl += "<td class='bk' data-bt='" + indx + "' " + onc + st + ");hlbtc(this);'>" + (s[t] - l) + "<span class='bknum'>" + indx + "</span></td>";
+            } else
+                tbl += "<td>" + s[t] + "</td>";
+        } else {
+            const onc = "onclick='valami(";
+            if (bkv.includes(t)) {
+                tbl += "<td class='bk' data-bt='" + indx + "' " + onc + indx + ");'>" + (s[t] - l) + "<span class='bknum'>" + indx + "</span></td>";
+            } else
+                tbl += "<td>" + s[t] + "</td>";
+        };
+    };
+    var cls = "class='btable s'"
+    if (rev)
+        cls = "class='btable c'"
+    var tbl = "<table " + cls + "><thead><tr><th>k</th>";
+    for (var i = 0; i < n; i++) {
+        if (rev)
+            tbl += "<th>" + (n - i) + ".</th>";
+        else
+            tbl += "<th>" + (i + 1) + ".</th>";
+    };
+    tbl += "</tr></thead><tbody><tr><th>" + 1 + ".</th>";
+    for (var t = 0; t < n; t++) {
+        specelem(0, t);
+    };
+    tbl += "</tr>";
+    for (var l = 1; l < h; l++) {
+        tbl += "<tr><th>" + (l + 1) + ".</th>";
+        if (l != l0) {
+            for (var t = 0; t < n; t++) {
+                if (s[t] < l + 2)
+                    tbl += "<td></td>";
+                else
+                    specelem(l, t);
+            }
+        } else {
+            for (var t = 0; t < n - 1; t++) {
+                if (s[t] < l + 2)
+                    tbl += "<td></td>";
+                else
+                    specelem(l, t);
+            };
+            var indx = sorsz[[l + 1, t].toString()];
+            var onc = "hlbts(";
+            if (rev) {
+                indx = ni + 1 - indx;
+                onc = "hlbtc(";
+            };
+            tbl += "<td class='bk' data-bt='" + indx + "' onclick='" + onc + indx + ");'>( )<span class='bknum'>" + indx + "</span></td>";
+            //tbl += "<td class='bk'>( )<span class='bknum'>" + sorsz[[l + 1, t].toString()] + "</span></td>";
+        }
+        tbl += "</tr>";
+    };
+    tbl += "</tr></tbody></table>";
+    return tbl;
+};
+
+function b2tables(s) {
+    const tbls = b_tabla(s, false);
+    const tblc = b_tabla(conjcomp(s), true);
+    const btarto = "<div id='bsornak'>Válasszon egy indexet</div>";
+    const bdetnek = "<div id='bdetnek'></div>";
+    document.getElementById('bjelentes').innerHTML = tbls + tblc + btarto + bdetnek;
+};
+
+function b_bontasAll(s) {
+    const n = s.length;
+    var out = "<ol>";
+    var out1 = "<ol>";
+    var out2 = "<ol>";
+    for (var k = 1; k < n - 1; k++) {
+        var vk = s.slice(0, k);
+        var vnext = s[k] - 1;
+        var vege = [1, ...s.slice(k + 1)];
+        out += "<li>&nbsp;" + formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;&part;<sup>" + vnext + "</sup>(" + vk.toString() + ")&middot;(" + vege + ")<sup>*</sup></li>";
+
+        var eloj = " + ";
+        if (_.sum(vk) % 2 == 0)
+            eloj = " − "
+        var f = factorial(vnext);
+        if (f == 1)
+            f = "";
+        else if (f > 1)
+            f = formazottTortHTML(1, f);
+        var p = "";
+        if (vnext == 1)
+            p = "&nbsp;&part;"
+        else if (vnext > 1)
+            p = "&nbsp;&part;<sup>" + vnext + "</sup>"
+
+        out1 += "<li>&nbsp;" + eloj + f + p + "(" + vk.toString() + ")&middot;(" + conjcomp(vege).toString() + ")</li>";
+        var coeff = factorial(vnext);
+        var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
+        var dtxt = ""
+        for (let v of d)
+            dtxt += msv2HTML(v);
+        dtxt = dtxt.slice(3);
+        if (d.length > 1)
+            dtxt = "<span class='paren1'>[</span>" + dtxt + "<span class='paren1'>]</span>";
+        out2 += "<li>&nbsp;" + eloj + dtxt + "&middot;(" + conjcomp(vege).toString() + ")</li>";
+    };
+    var vk = s.slice(0, -1);
+    var vnext = _.last(s);
+    out += "<li>" + formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;&part;<sup>" + vnext + "</sup>(" + vk.toString() + ")</li></ol>";
+    var eloj = " + ";
+    if (_.sum(vk) % 2 == 0)
+        eloj = " − "
+    var f = factorial(vnext);
+    if (f == 1)
+        f = "";
+    else if (f > 1)
+        f = formazottTortHTML(1, f);
+    var p = "";
+    if (vnext == 1)
+        p = "&nbsp;&part;"
+    else if (vnext > 1)
+        p = "&nbsp;&part;<sup>" + vnext + "</sup>"
+
+    out1 += "<li>&nbsp;" + eloj + f + p + "(" + vk.toString() + ")</li></ol>";
+    var coeff = factorial(vnext);
+    var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
+    var dtxt = ""
+    for (let v of d)
+        dtxt += msv2HTML(v);
+    dtxt = dtxt.slice(3);
+    if (d.length > 1)
+        dtxt = "<span class='paren1'>[</span>" + dtxt + "<span class='paren1'>]</span>";
+    dtxt = "<li>&nbsp;" + eloj + dtxt + "</li></ol>";
+    out2 += dtxt;
+    document.getElementById('bjelentes').innerHTML = tbls + tblc + btarto + out + "<hr/>" + out1 + "<hr/>" + out2 + "<hr/>" + JSON.stringify(b_bontas(s));
+    return out;
 };
 
 function vec2obj(v, oszto) {
