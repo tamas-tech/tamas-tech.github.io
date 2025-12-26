@@ -2104,6 +2104,119 @@ p#keresztelem {
     padding: 0 2px;
 }
 
+#detbTable #bjelentes #bdetnek span.hlr {
+    background-color: #ffc1c1;
+    border-radius: 10px;
+}
+
+#detbTable #bjelentes #bdetnek span.hly {
+    background-color: #fff1c1;
+    border-radius: 10px;
+}
+
+#detbTable #bjelentes table.btable {
+    width: auto;
+    border-collapse: collapse;
+    margin: 10px;
+}
+
+#detbTable #bjelentes table.btable tbody tr:first-child td {
+    border: 1px solid #bbb;
+}
+
+#detbTable #bjelentes table.btable.b tbody tr:first-child td {
+    border: 2px solid #dfdfdf;
+}
+
+#detbTable #bjelentes table.btable tbody tr td {
+    user-select: none;
+    text-align: center;
+    max-width: auto;
+    padding: 3px;
+    white-space: nowrap;
+    min-width: 1.9em;
+}
+
+#detbTable #bjelentes table.btable.s tbody tr td.hl,
+#detbTable #bjelentes table.btable.b tbody tr td.hl {
+    background-color: #fff1c1;
+}
+
+#detbTable #bjelentes table.btable.b thead tr th.hl {
+    padding: 4px 0;
+    border-radius: 50%;
+    font-size: 70%;
+    background-color: #ffeb4a;
+    text-decoration: none;
+    color: black;
+}
+
+#detbTable #bjelentes table.btable.b tbody tr td.hle {
+    background-color: #ffc1c1;
+}
+
+#detbTable #bjelentes table.btable.b tbody tr:first-child td.bh {
+    border-right: 2px solid red;
+}
+
+#detbTable #bjelentes table.btable.c tbody tr td.hl {
+    background-color: #c1fff3;
+}
+
+#detbTable #bjelentes table.btable th {
+    font-size: 80%;
+    color: #777;
+    font-weight: normal;
+    user-select: none;
+    text-align: center;
+    max-width: auto;
+    /* border: 1px solid #d8d8d8; */
+    padding: 3px;
+    white-space: nowrap;
+    min-width: 1.9em;
+}
+
+#detbTable #bjelentes table.btable tbody tr td.bk {
+    background-color: #e3e3e3;
+    border: 1px solid #bbb;
+}
+
+#detbTable #bjelentes table.btable tbody tr td.bk span.bknum {
+    display: inline-block;
+    position: relative;
+    top: -15px;
+    right: -20px;
+    padding: 4px 0;
+    margin-left: -18px;
+    margin-bottom: -5px;
+    border-radius: 50%;
+    width: 25px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 70%;
+    background-color: #ffc;
+    border: 1px solid #b7b7b7;
+    color: #4ba0a5;
+}
+
+#detbTable #bjelentes table.btable.c tbody tr td.bk span.bknum.hl {
+    background-color: #71ebff;
+    text-decoration: none;
+    color: black;
+}
+
+#detbTable #bjelentes table.btable.s tbody tr td.bk span.bknum.hl {
+    background-color: #ffeb4a;
+    text-decoration: none;
+    color: black;
+}
+
+#detbTable #bjelentes table.btable.b tbody tr:first-child td:first-child {
+    background-color: #a8f3ff;
+    border-right: 2px solid red;
+    font-size: 80%;
+}
+
 #detT .tgomb.shown.nobben {
     opacity: 0.15;
     pointer-events: none;
@@ -2190,6 +2303,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
