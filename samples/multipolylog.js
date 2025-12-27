@@ -6858,7 +6858,6 @@ function b_bontasK(s, k) {
         var vnext = s[k] - 1;
         var vege = [1, ...s.slice(k + 1)];
         const indx = (_.sum(vk) - vk.length + vnext + bsora) + "-" + (boszlopa + k + 1);
-        console.log(indx)
         const invelem = $('#detT table tbody .tgomb.shown[rfb-data="' + indx + '"]');
         if (!invelem.hasClass('hl'))
             invelem.trigger('click');
@@ -6892,7 +6891,6 @@ function b_bontasK(s, k) {
         var vk = s.slice(0, -1);
         var vnext = _.last(s);
         const indx = (_.sum(vk) - vk.length + vnext + +bsora) + "-" + (boszlopa + k + 1);
-        console.log(indx)
         const invelem = $('#detT table tbody .tgomb.shown[rfb-data="' + indx + '"]');
         if (!invelem.hasClass('.hl'))
             invelem.trigger('click');
@@ -7576,3 +7574,4 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
