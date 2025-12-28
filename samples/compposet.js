@@ -4536,8 +4536,12 @@ function teglaTrim_det() {
         make_Deriv_det();
     vertVonal();
     $('#detbTable #bjelentes .bvec.hl').removeClass('hl');
+    const reszl = document.getElementById('rfb_detreszletes').checked;
     if (detAb == 'A') {
         setTimeout(() => { $('#detbTable #bjelentes .bvec[data-b="' + ds.toString() + '"]').addClass('hl'); }, 100);
+    } else if (detAb == 'b' && reszl) {
+        const idvec = ds.toString();
+        $('#detbTable #bjelentes .bvec[data-b="' + idvec + '"]').addClass('hl');
     } else {
         const idvec = [ds.toString() + '-' + c.toString(), c.toString() + '-' + ds.toString()];
         for (let v of idvec)
@@ -4704,10 +4708,9 @@ function fbcdat_det(el, s, o) {
         teglaTrim_det();
         if (document.getElementById("rfb_detreszletes").checked) {
             var indx = bdet.length + 1 - rfb_last.v.length + boszlopa;
-            //if (indx == 1)
-            //   indx = 0;
             hlbts(indx);
-        }
+            setTimeout(() => { $('#detT table tbody tr td div span.tgomb.sel.ye.move').trigger('click').trigger('click'); }, 200)
+        };
     };
 };
 
@@ -6842,6 +6845,9 @@ function b_sor(v0) {
 
     document.getElementById('bsornak').innerHTML = tbl;
     hlbts(n - 1);
+    const invelem = $('#detT table tbody tr th span[data-n=' + bind + ']');
+    if (!invelem.hasClass('hl'))
+        invelem.trigger('click');
 };
 
 
@@ -6894,10 +6900,13 @@ function b_bontasK(s, k) {
         out1 += "<li>&nbsp;" + eloj + f + p + "<span class='hlr'>(" + vk.toString() + ")</span>&middot;<span class='hly'>(" + conjcomp(vege).toString() + ")</span></li>";
         var coeff = factorial(vnext);
         var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
-        var dtxt = ""
-        for (let v of d)
-            dtxt += msv2HTML(v);
-        dtxt = dtxt.slice(3);
+        var dtxt = "";
+        const dl = d.length;
+        dtxt += "<span class='bvec' data-b='" + d[0].slice(1) + "'>" + msv2HTML(d[0]).slice(3) + "</span>";
+        if (dl > 1)
+            for (let v of d.slice(1))
+                dtxt += "<span class='bvec' data-b='" + v.slice(1) + "'>" + msv2HTML(v) + "</span>";
+        //dtxt = dtxt.slice(3);
         if (d.length > 1)
             dtxt = "<span class='paren1'>[</span>" + dtxt + "<span class='paren1'>]</span>";
         out2 += "<li>&nbsp;" + eloj + dtxt + "&middot;<span class='hly'>(" + conjcomp(vege).toString() + ")</span></li></ul>";
@@ -6927,10 +6936,13 @@ function b_bontasK(s, k) {
 
         var coeff = factorial(vnext);
         var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
-        var dtxt = ""
-        for (let v of d)
-            dtxt += msv2HTML(v);
-        dtxt = dtxt.slice(3);
+        var dtxt = "";
+        const dl = d.length;
+        dtxt += "<span class='bvec' data-b='" + d[0].slice(1) + "'>" + msv2HTML(d[0]).slice(3) + "</span>";
+        if (dl > 1)
+            for (let v of d.slice(1))
+                dtxt += "<span class='bvec' data-b='" + v.slice(1) + "'>" + msv2HTML(v) + "</span>";
+        //dtxt = dtxt.slice(3);
         if (d.length > 1)
             dtxt = "<span class='paren1'>[</span>" + dtxt + "<span class='paren1'>]</span>";
         dtxt = "<li>&nbsp;" + eloj + dtxt + "</li></ul>";
