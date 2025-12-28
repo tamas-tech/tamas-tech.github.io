@@ -4289,6 +4289,19 @@ var bblokkja = 1;
 var detAb = 'b';
 var bdet = [];
 
+function rfb_reszlCh() {
+    if (detAb == 'b') {
+        const el = $('#detT .tgomb.shown.hl');
+        var indx = "";
+        if (el.length > 0)
+            indx = el.attr('rfb-data');
+        $('.tsorszam-b.hl').trigger('click');
+        if (indx != "")
+            $('#detT .tgomb.shown[rfb-data=' + indx + ']').trigger('click');
+    } else
+        return;
+};
+
 function toggleTableRow_det(row) {
     const next = row.parentElement.nextElementSibling;
     if (next && next.classList.contains("child")) {
@@ -7574,3 +7587,4 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
