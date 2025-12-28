@@ -6841,6 +6841,7 @@ function b_sor(v0) {
     tbl += "</tr></tbody></table>";
 
     document.getElementById('bsornak').innerHTML = tbl;
+    hlbts(n - 1);
 };
 
 
@@ -7587,4 +7588,3 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
-
