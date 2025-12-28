@@ -2114,6 +2114,16 @@ p#keresztelem {
     border-radius: 10px;
 }
 
+#detbTable #bjelentes #bdetnek span.hlr {
+    background-color: #ffc1c1;
+    border-radius: 10px;
+}
+
+#detbTable #bjelentes #bdetnek span.hly {
+    background-color: #fff1c1;
+    border-radius: 10px;
+}
+
 #detbTable #bjelentes table.btable {
     width: auto;
     border-collapse: collapse;
@@ -2303,6 +2313,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
