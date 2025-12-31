@@ -5298,6 +5298,18 @@ function rfbGraph_det() {
     };
 };
 
+// jegcsapdiagram
+
+function setOutputFontjcs(v) {
+    var elem = document.getElementById("Jcs");
+    elem.style.fontSize = v + '%';
+};
+
+function JcsGraph() {
+    const elem = document.getElementById("Jcs")
+    elem.innerHTML = "Itt lesz a jégcsapdiagram kimentete."
+};
+
 // Általános Latex kimenet
 
 function setLatexFont(v) {
@@ -7600,3 +7612,4 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
