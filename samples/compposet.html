@@ -472,7 +472,7 @@
                     </td>
                 </tr>
             </table>
-            <table width="100%" id="ordersTable" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 17px;font-family:Cambria Math;">
+            <table width="100%" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 17px;font-family:Cambria Math;">
                 <tr class="parent">
                     <td colspan="3" onclick="toggleTableRow(this)">Magyarázat</td>
                 </tr>
@@ -729,7 +729,7 @@
                     </td>
                 </tr>
             </table>
-            <table width="100%" id="ordersTable" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 17px;font-family:Cambria Math;">
+            <table width="100%" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 17px;font-family:Cambria Math;">
                 <tr class="parent">
                     <td colspan="3" onclick="toggleTableRow_det(this)">Magyarázat</td>
                 </tr>
@@ -799,8 +799,103 @@
     </div>          
                         
     <div class="keret of odd" id="k13" style="padding-bottom:10px;margin-bottom:10px;">
-    <p>Még készülőben<br/>Implementálás kezdete:2025.12.31.</p>
+        <span class="uitok">    <b><big class="sorszam">13.</big></b><input class="kijelzoset" oninput="setkijelzoW('tablejcs',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
+        <div class="stickblock">
+            <p class="keplet" id="_jcs" style="height:180px;margin-bottom:0px;background-color: #dddddd;">\[\begin{gather*} \boldsymbol{b}_{i} =\boldsymbol{A}_{i,1}= {\LARGE \sum_{{\large \boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{c}\,=\,\boldsymbol{s}}}}\frac{(-1)^{\sum \boldsymbol{a}+1}}{p!}\,\zeta(\boldsymbol{c})\cdot\zeta\left(\partial^{p}(\boldsymbol{a}^{*})\right)\\[2mm]\text{Még
+                nem készült el.}\end{gather*}\]
+            </p>
+        </div>
+        <div class="stickblock">
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
+                <input class="inpvec" style="width:280px;" type="text" id="vjcs" value="1,1,2,1,1,3,1,1,1,4,1,1,2,3,1,1,5" oninput="idClear('#Jcs');">
+            </div>
+            <div class="nobr" style="padding: 10px;outline: 1px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
+                <button id="jcsbtn" onclick="JcsGraph();" class="showpre1" title="Insert code into editor">Calculate</button>
+                <button class="showpre1" style="width:56px;margin-left:3px" title="Clear output" onclick="idClear('#Jcs');">Clear</button>
+                <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('jcssetting');">⚙</button>
+                </span>
+            </div>
+            <div id="jcssetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+                <div>
+                    <label for="setoutputfontjcs" style="margin-right:-10px;">&#128474;</label>
+                    <input oninput="setOutputFontjcs(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontjcs" name="setoutputfontjcs">
+                </div>
+            </div>
+        </div>
+        <div id="tablejcs" style="max-width:100vw">
+            <p class="kijelzo" id="jcsout" style="font-family:Symbola,Cambria Math;">
+                <span id="Jcs" class="MathJax" style="padding-right:80px;">Ide kerül a jégcsapdiagram</span>
+            </p>
+            <table width="100%" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 17px;font-family:Cambria Math;">
+                <tr class="parent">
+                    <td colspan="3" onclick="toggleTableRow_det(this)">Magyarázat</td>
+                </tr>
+                <tr class="child" style="display: none;">
+                    <td colspan="3">
+                        <h3>A b<sub>i</sub>-állás és az <b>A</b><sub>i,j</sub>-állás közötti váltás. </h3>
+                        <span style="color:blue;"> A Calculate gombra kattintva a kimenet baloldalán  az <b>s</b> vektorhoz tartozó zig-zag gráf sorszámainak gombsora látható, amely gombokat egy dublán keretezett, fehér hátterű, <b>b</b><sub>i</sub> feliratú váltógomb előz meg. Ez mutatja, hogy a jelenlegi állásban a <b>b</b><sub>i</sub> komponenseket tudjuk kiszámítani. Ha erre a gombra kattintunk, akkor annak a felírata <b>A</b><sub>i,j</sub>-re vált, jelezvén, hogy most már az <b>A</b><sub>i,j</sub> értékek kiszámítására alkalmas állásban vagyunk. A két állás közötti váltáshoz csak erre a gombra kell kattintanunk.</span>
+                        <h3>A mátrix első oszlopában található <b>A</b><sub>i,1</sub> = <b>b</b><sub>i</sub> elemek kiszámítása</h3>
+                        <h4>A képlet magyarázata</h4>
+                        <ul>
+                            <li><i><b>a</b>: </i>A zig-zag gráfnak a kiválasztott piros elem által meghatározott négy negyed közül a <i>bal felső</i> negyedbe eső részében a sorok hosszaiból képzett vektor. Vagyis, a bal felső negyedben a zöld, a fekete és
+                                fehér golyókból álló sorok hosszaiból képzett vektor.</li>
+                            <li><i><b>c</b>: </i> A zig-zag gráfnak a kiválasztott piros elem által meghatározott négy negyed közül a <i>jobb alsó</i> negyedbe eső részében a sorok hosszaiból képzett vektor. Vagyis, a jobb alsó negyedben a piros, a fekete
+                                és fehér golyókból álló sorok hosszaiból képzett vektor.</li>
+                            <li><i>p: </i> A kiválasztott piros elem oszlopában a piros feletti elemek száma. (Ha nincs a kiválasztott piros elem felett elem, akkor <i>p = 0</i>.)</li>
+                            <li>A kiválasztott piros elmhez tartozó <i>előjelet</i> a &sum;<b>a</b>+1 adja meg, amely a fentiek szerint nem más, mint a bal felső negyedbe eső zöld, fekete és fehér golyók számához hozzáadva az egyetlen piros golyó számát.
+                                Így a lepotyogott sárga golyók száma nem befolyásolja az előjel alakulását. Gondoljunk csak arra, hogy a mátrix blokkjain belül egy sorban az előjelek változatlanok.<br><span style="color:#d40000;font-size:105%;">A képletben megjelenő zetaszorzatok előjelét a kiválasztott piros golyóig vett zöld, fekete és fehér (nem lepotyogott) golyók számának összege (a pirosat is beleszámolva) adja meg.</span></li>
+
+                        </ul>
+                        <h4>A kártya használata</h4>
+                        <ul>
+                            <li><i>A b<sub>i</sub> komponens kiválasztása:</i> A táblázat baloldalán található <i>i</i>-edik sorszámra kattintva megkapjuk a <b>b</b><sub>i</sub> komponenshez tartozó rész zig-zag gráfot. A rész zig-zag gráf kezdőeleme -amely
+                                mindig a kiválasztott sor utolsó eleme- zölddel van kiemelve, míg a többi elem színe fekete és fehér. (A zig-zag gráf levágott részét halvány X-ek jelölik.)</li>
+                            <li><i>A fekete elemek halottak:</i> A fekete elemekre hiába kattintunk, nem történik semmi. Ezek a sorok utolsó elemei, illetve az első egynél hosszabb sor első eleme.</li>
+                            <li><i>A fehér elemekben deriválhatunk:</i> Egy fehér elemre kattintva az összes felette lévő elem (ha van) lepotyog. A lepotyogott elemeket az összes lehetséges módon elrendezve megkapjuk a képletben szereplő zetaszorzatokat:</li>
+                            <li><i>A teljes <b>b</b><sub>i</sub> komponens megtekintése:</i> A táblázat alatti b<sub>i</sub> = ... részre kattintva megjelenik a teljes b<sub>i</sub> komponens. Egy fehér pontban vett deriválthoz a sárga elemek mozgatásával
+                                kapott aktuális zetaszorzat a teljes összegben aláhúzással van kiemelve.</li>
+                            <li><i>A teljes derivált megtekintése:</i> Egy konkrét fehér pontban vett derivált megtekinthető a táblázat alatti deriváltak részre kattintva. Egy konkrét sárga elem elrendezéshez tartózó tag keretezve jelenik meg a teljes deriváltban.</li>
+                        </ul>
+
+                        <h3>A mátrix első oszlopa utáni <b>A</b><sub>i,j</sub> (j>1) elemek kiszámítása</h3>
+                        <h4>A kártya használata</h4>
+                        <ul>
+                            <li><i>Az A<sub>i,j</sub> komponens kiválasztása:</i> A táblázat baloldalán található <i>i</i>-edik és <i>j</i>-edik sorszámra kattintva megkapjuk az <b>A</b><sub>i,j</sub> mátrixelemhez tartozó rész zig-zag gráfot. A rész zig-zag
+                                gráf kezdő-, illetve záróeleme -amelyek mindig a kiválasztott sorok utolsó elemei- zölddel, illetve pirossal vannak kiemelve. A két szélső elem közötti öszzes elem színe fekete. (A zig-zag gráf levágott részeit halvány
+                                X-ek jelölik.)<br/> A két sor kiválasztását igyekeztünk a lehető legtermészetesebbé tenni. Ezek az alábbi szabályokat követik:<br/>
+                                <b>Automatikus mozgatások</b>
+                                <ul>
+                                    <li>1. Ha a zöld golyóhoz tartozó sorszám feletti tetszőleges sorszámra kattintunk, akkor automatikusan zöld golyó mozdul feljebb a kattintás helyére.</li>
+                                    <li>2. Ha a piros golyóhoz tartozó sorszám alatti tetszőleges sorszámra kattintunk, akkor automatikusan piros golyó mozdul lejebb a kattintás helyére.</li>
+                                    <li>3. Ha zöld golyóhoz tartozó sorszám és a piros golyóhoz tartozó sorszám közötti tetszőleges sorszámra kattintunk, akkor automatikusan a kattintás helyéhez közelebbi golyó mozdul a kattintás helyére. (Ha a két golyó
+                                        sorszáma egyenlő távolságra van a kattintás helyétől, akkor a zöld golyó mozdul lejebb.)</li>
+                                </ul>
+                                A fenti három szabály ekvivalens azzal, hogy bárhová kattintva automatikusan a közelebbi sorszám mozdul a kattintás helyére.<br/>
+                                <b>Vezérelt mozgatások</b>
+                                <ul>
+                                    <li>1. Ha a zöld golyó sorszámára kattintunk, akkor az eltűnik. Ekkor bármely sorszámra kattintva a helyben maradó piros golyó és a kattintás helyére kerülő golyó (a kijelölés logikájának megfelelő esetleges átszínezéssel)
+                                        adja az ujabb választást.</li>
+                                    <li>2. Ugyanezt megtehetjük a piros golyó sorszámával is.</li>
+                                    <li>3. Akár mind a két golyó sorszáma eltüntethető, majd tetszőleges két sorszámra kattintva átrendezve megjeleníthető.</li>
+                                </ul>
+                            </li>
+
+                            <li><i>A fekete elemek halottak:</i> A fekete elemekre hiába kattintunk, nem történik semmi.</li>
+                            <li><i>Csak a piros elemnél deriválhatunk:</i> A két sor kiválasztása után az utolső piros elem feletti összes fekete golyó azonnal automatikausan lepotyog, nekünk már nem is kell rákattintanunk. A lepotyogott sárga elemeket az
+                                összes lehetséges módon elrendezve megkapjuk a képletben szereplő zetaértékeket:</li>
+                            <li><i>A teljes <b>A</b><sub>i,j</sub> komponens megtekintése:</i> A táblázat alatti A<sub>i,j</sub> = ... részre kattintva megjelenik a teljes A<sub>i,j</sub> komponens. A sárga elemek mozgatásával kapott zetaérték a teljes összegben
+                                aláhúzással van kiemelve.</li>
+                            <li><i>A teljes derivált megtekintése:</i> A teljes derivált megtekinthető a táblázat alatti deriváltak részre kattintva. Egy konkrét sárga elem elrendezéshez tartózó tag keretezve jelenik meg a teljes deriváltban.</li>
+                            <li>A kiválasztott rész zig-zag gráfhoz tartozó zetaérték <i>előjele</i> a bal felső negyedbe eső zöld, és fekete golyók számának összege. Így a lepotyogott sárga golyók száma nem befolyásolja az előjel alakulását. Gondoljunk csak
+                                arra, hogy a mátrix blokkjain belül egy sorban az előjelek változatlanok.<br><span style="color:#d40000;font-size:105%;">A képletben megjelenő zetaérték előjelét a kiválasztott zöld golyótól a piros golyóig vett zöld, és fekete (nem lepotyogott) golyók számának összege (a piros nem számít bele) adja meg.</span></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
+            
     <div class="keret of even" id="k14" style="margin-bottom:10px;padding-bottom: 10px;">
         <b><big class="sorszam">14. (LaTeX)</big></b>
         <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\LaTeX \text{ fordító}\]
@@ -836,6 +931,7 @@
     </script>
 </body>
 </html>
+
 
 
 
