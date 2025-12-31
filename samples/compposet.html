@@ -672,10 +672,10 @@
         <p id="keresztelem"></p>
     </div>
 
-    <div class="keret of odd" id="k12" style="padding-bottom:10px;margin-bottom:10px;">
+    <div class="keret of even" id="k12" style="padding-bottom:10px;margin-bottom:10px;">
         <span class="uitok">    <b><big class="sorszam">12.</big></b><input class="kijelzoset" oninput="setkijelzoW('tableof22',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="_det" style="height:180px;margin-bottom:0px;background-color: #dddddd;">\[\begin{gather*} \boldsymbol{b}_{i} =\boldsymbol{A}_{i,1}= {\LARGE \sum_{{\large \boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{c}\,=\,\boldsymbol{s}}}}\frac{(-1)^{\sum \boldsymbol{a}+1}}{p!}\,\zeta(\boldsymbol{c})\cdot\zeta\left(\partial^{p}(\boldsymbol{a}^{*})\right)\\[2mm]\text{Még
+            <p class="keplet" id="_det" style="height:180px;margin-bottom:0px;">\[\begin{gather*} \boldsymbol{b}_{i} =\boldsymbol{A}_{i,1}= {\LARGE \sum_{{\large \boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{c}\,=\,\boldsymbol{s}}}}\frac{(-1)^{\sum \boldsymbol{a}+1}}{p!}\,\zeta(\boldsymbol{c})\cdot\zeta\left(\partial^{p}(\boldsymbol{a}^{*})\right)\\[2mm]\text{Még
                 nem készült el.}\end{gather*}\]
             </p>
         </div>
@@ -684,7 +684,7 @@
                 <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
                 <input class="inpvec" style="width:280px;" type="text" id="dets" value="1,1,2,1,1,3,1,1,1,4,1,1,2,3,1,1,5" oninput="idClear('#detT');">
             </div>
-            <div class="nobr" style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
+            <div class="nobr" style="padding: 10px;outline: 1px solid #d9d9d9;outline-offset: -6px;">
                 <button id="okbtnrfb_det" onclick="rfbGraph_det();" class="showpre1" title="Insert code into editor">Calculate</button>
                 <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#detT');document.getElementById('bcimke').innerHTML = '';" title="Clear output">Clear</button>
                 <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('zzdetsetting');">⚙</button>
@@ -695,7 +695,7 @@
                     <label for="lastabfix">A det állás megőrzése</label>
                     <input type="checkbox" checked name="lastabfix" onchange="clearLastab(this.checked);" id="lastabfix" style="height:20px;width:20px;vertical-align:middle;">
                 </div>
-                 <div>
+                <div>
                     <label for="rfb_detreszletes">Részletes jelentés</label>
                     <input type="checkbox" name="rfb_detreszletes" id="rfb_detreszletes" onchange="rfb_reszlCh();" style="height:20px;width:20px;vertical-align:middle;">
                 </div>
@@ -796,10 +796,10 @@
                 </tr>
             </table>
         </div>
-    </div>            
+    </div>           
 
-    <div class="keret of even" id="k13" style="margin-bottom:10px;padding-bottom: 10px;">
-        <b><big class="sorszam">13. (LaTeX)</big></b>
+    <div class="keret of even" id="k14" style="margin-bottom:10px;padding-bottom: 10px;">
+        <b><big class="sorszam">14. (LaTeX)</big></b>
         <p class="keplet" id="keplet_k8" style="padding-bottom:10px;margin-bottom:10px;">\[\LaTeX \text{ fordító}\]
         </p>
         <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
@@ -833,6 +833,7 @@
     </script>
 </body>
 </html>
+
 
 
 
