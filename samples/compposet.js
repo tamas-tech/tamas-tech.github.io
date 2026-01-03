@@ -4953,6 +4953,7 @@ function setb(e) {
     const $table = $('#detT table');
     const n = $('.tsorszam-b:last').attr('data-n') * 1;
     const reszl = document.getElementById("rfb_detreszletes").checked;
+    const bov = document.getElementById("bov").checked;
     if (detAb == 'A') {
         $('#detT table tbody tr td div .tgomb.shown').css('filter', 'none');
         const vansora = $('#detT table .tsorszam-b.hl:first').attr('data-n') * 1 || 1;
@@ -4988,7 +4989,7 @@ function setb(e) {
         bsora = e.getAttribute('data-n') * 1;
         const belem = ($("#detT table tbody tr:nth(" + (bsora - 1) + ") td div .tgomb.shown:last"));
         boszlopa = belem.prevAll('.tgomb').length;
-        belem.addClass('belem').html('&#x25CF;');
+        belem.removeClass('aelem').addClass('belem').html('&#x25CF;');
         belem.prevAll('.tgomb.shown').addClass('nobben').html('&times;');
         $(e).addClass('hl');
         for (var i = 0; i < bsora - 1; i++)
@@ -5014,8 +5015,12 @@ function setb(e) {
             if ($("#detbTable #bjelentes table.btable.c").length == 0)
                 b2tables(s);
             $("#detbTable #bjelentes table.btable.c tbody tr td[data-bt=" + bsora + "]").trigger('click');
-        } else
-            document.getElementById('bjelentes').innerHTML = monomvec2HTMLWithId(symbOv(vList2obj(bvector(s)[n - bsora], 1)));
+        } else {
+            if (bov)
+                document.getElementById('bjelentes').innerHTML = monomvec2HTMLWithId(symbOv(vList2obj(bvector(s)[n - bsora], 1)));
+            else
+                document.getElementById('bjelentes').innerHTML = monomvec2HTMLWithId(vList2obj(bvector(s)[n - bsora], 1));
+        }
         document.getElementById('bfeje').innerHTML = "b";
         document.getElementById('bindexe').innerHTML = bsora;
     } else if (detAb == 'Ab') {
@@ -5029,7 +5034,7 @@ function setb(e) {
             bsora = e.getAttribute('data-n') * 1;
             const belem = $("#detT table tbody tr:nth(" + (bsora - 1) + ") td div .tgomb.shown:last");
             boszlopa = 0;
-            belem.addClass('belem').html('&#x25CF;')
+            belem.removeClass('aelem').addClass('belem').html('&#x25CF;')
             $(e).addClass('hl').addClass('lastbelem');
             const onelem = $("#detT table tbody .tsorszam-b.hlblock");
             onelem.removeClass('hlblock').removeClass('lastaelem');
@@ -5045,7 +5050,10 @@ function setb(e) {
             };
             //$table.find(".tgomb.shown.szelso").css('pointer-events', 'none');
             rfb_last["bfelett"] = $('#detT table .tgomb.bfelett').length;
-            document.getElementById('bjelentes').innerHTML = monomvec2HTML(symbOv(vList2obj(bvector(kiszed_c('dets'))[n - bsora], 1)));
+            if (bov)
+                document.getElementById('bjelentes').innerHTML = monomvec2HTML(symbOv(vList2obj(bvector(kiszed_c('dets'))[n - bsora], 1)));
+            else
+                document.getElementById('bjelentes').innerHTML = monomvec2HTML(vList2obj(bvector(kiszed_c('dets'))[n - bsora], 1));
             document.getElementById('bfeje').innerHTML = "b";
             document.getElementById('bindexe').innerHTML = bsora;
             document.getElementById("bcimke").innerHTML = "b<sub>" + bsora + "</sub>";
@@ -5064,7 +5072,7 @@ function setb(e) {
             const belem = ($("#detT table tbody tr:nth(" + (indx - 1) + ") td div .tgomb.shown:last"));
             bblokkja = $("#detT table tbody tr:nth(" + (indx - 1) + ") .tsorszam-b").attr('data-block') * 1;
             boszlopa = belem.prevAll('.tgomb').length;
-            belem.addClass('belem').html('&#x25CF;');
+            belem.removeClass('aelem').addClass('belem').html('&#x25CF;');
             belem.prevAll('.tgomb.shown').addClass('nobderiv').html('&#x25CF;');
             for (var j = 0; j <= indx - 2; j++) {
                 $("#detT table tbody tr:nth(" + (j) + ") td div .tgomb:nth(" + boszlopa + "):not(.no)")
@@ -5300,15 +5308,221 @@ function rfbGraph_det() {
 
 // jegcsapdiagram
 
+var jcsblokkok = [];
+var jcsak = [];
+var osztoelem = 1;
+
 function setOutputFontjcs(v) {
     var elem = document.getElementById("Jcs");
     elem.style.fontSize = v + '%';
 };
 
-function JcsGraph() {
-    const elem = document.getElementById("Jcs")
-    elem.innerHTML = "Itt lesz a jégcsapdiagram kimentete."
+function osztoMove(e, indx) {
+    $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto").removeClass('boszto');
+    const oindx = _.last(jcsblokkok.filter(y => y < osztoelem));
+    if (indx == osztoelem)
+        $(e).addClass('move');
+    else if (indx > oindx && !$(e).hasClass('hl')) {
+        $('#jcsout table.btable.c tbody tr td.bk.osztoelem').removeClass('osztoelem');
+        $('#jcsout table.btable.c tbody tr td.bk.move').removeClass('move');
+        $(e).addClass('osztoelem');
+        osztoelem = indx;
+        hljcs_c(e);
+    } else if (indx > oindx && $(e).hasClass('hl')) {
+        var m = $('#jcsout table.btable.c tbody tr td.bk.osztoelem.move');
+        if (m.length > 0) {
+            m.removeClass('osztoelem').removeClass('move');
+            $(e).addClass('osztoelem');
+            osztoelem = indx;
+            hljcs_c(e);
+        } else
+            hlboszto(e);
+    } else {
+        var m = $('#jcsout table.btable.c tbody tr td.bk.osztoelem.move');
+        if (m.length > 0) {
+            m.removeClass('osztoelem').removeClass('move');
+            $(e).addClass('osztoelem');
+            osztoelem = indx;
+            hljcs_c(e);
+        }
+    }
 };
+
+
+function indxBlokkja(indx) {
+    const a = _.last(jcsblokkok.filter(y => y < indx));
+    const b = _.first(jcsblokkok.filter(z => z >= indx));
+    for (var i = a + 1; i <= b; i++)
+        $('#jcsout table.btable.c tbody tr td.bk[data-bt=' + i + ']').removeClass('aelem');
+
+};
+
+function hljcs_c(e) {
+    $("#tablejcs #jcsout table.btable.c td.hl").removeClass('hl');
+    $("#tablejcs #jcsout table.btable.c td.bk .bknum.hl").removeClass('hl');
+    const n = $("#tablejcs #jcsout table.btable.c tr:nth(0) th").length;
+    $(e).children('.bknum').addClass('hl');
+    const $table = $("#tablejcs #jcsout table.btable.c");
+    const sor = e.closest('tr').rowIndex;
+    const oszlop = e.cellIndex;
+    $table.find("tr:nth(" + sor + ") td:nth(" + (oszlop - 1) + ").bk").addClass('hl');
+    for (var j = oszlop; j < n + 1; j++)
+        $table.find("tr:nth(1) td:nth(" + j + ")").removeClass('aelem').addClass('hl');
+    for (var i = osztoelem + 1; i < n + 1; i++)
+        $('#jcsout table.btable.c tbody tr td.bk[data-bt=' + i + ']').removeClass('aelem');
+};
+
+function updJcsak() {
+    jcsak = [];
+    const els = $("#tablejcs #jcsout table.btable.c td.bk.aelem");
+    els.each(function() {
+        jcsak.push(this.getAttribute('data-bt') * 1);
+    });
+};
+
+function hljcs_e(e, indx) {
+    const $e = $(e);
+    //const eind = $e.attr('data-bt') * 1;
+    if ($e.hasClass('aelem')) {
+        $e.removeClass('aelem');
+        //jcsak = jcsak.filter(y => y != eind);
+    } else {
+        indxBlokkja(indx)
+        const eindx = _.first(jcsblokkok);
+        const oindx = _.last(jcsblokkok.filter(y => y < osztoelem));
+        if (eindx < indx && indx <= oindx) {
+            $(e).addClass('aelem');
+            //jcsak.push(eind);
+        }
+    };
+    updJcsak();
+};
+
+function hlboszto(e) {
+    $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto").removeClass('boszto');
+    if ($(e).hasClass('hl'))
+        $(e).addClass('boszto')
+};
+
+function jcs_tabla(s, rev) {
+    const n = s.length;
+    var bk = s.slice(0, -1).filter(y => y > 1);
+    const lasts = _.last(s);
+    const h = Math.max(_.max(bk) - 1, lasts);
+    var bkv = [];
+    var l0 = -1;
+    if (!rev) {
+        jcsblokkok = [];
+        jcsak = [];
+    };
+    for (var j = 0; j < n - 1; j++) {
+        if (s[j] > 1) {
+            bkv.push(j);
+        };
+    };
+    var ni = _.sum(bk) - bk.length;
+    if (lasts > 1) {
+        bkv.push(n - 1);
+        bk.push(lasts);
+        l0 = lasts - 1;
+        ni += lasts;
+    };
+    var bkk = kum(bk.map(y => y - 1));
+    bkk.unshift(0);
+    var sorsz = {};
+    for (var j = 0; j < bkv.length; j++) {
+        var m = bk[j]
+        for (var i = 1; i < m; i++) {
+            var indx = [i, bkv[j]].toString();
+            sorsz[indx] = ni + 1 - i - bkk[j];
+        }
+    };
+    if (lasts > 1) {
+        var indx = [l0 + 1, _.last(bkv)].toString();
+        sorsz[indx] = 1;
+    };
+
+    function specelem(l, t) {
+        var indx = sorsz[[l + 1, t].toString()];
+        if (rev) {
+            if (bkv.includes(t)) {
+                indx = ni + 1 - indx;
+                const st = JSON.stringify([indx, s[t] - l, ...s.slice(t + 1)]);
+                const onc = "onclick='console.log(" + st + ");";
+                tbl += "<td class='bk' data-bt='" + indx + "' " + onc + "osztoMove(this," + indx + ");hljcs_e(this," + indx + ");'>" + (s[t] - l) + "<span class='bknum'>" + indx + "</span></td>";
+            } else
+                tbl += "<td onclick='hlboszto(this);'>" + s[t] + "</td>";
+        } else {
+            const onc = "onclick='console.log(";
+            if (bkv.includes(t)) {
+                tbl += "<td class='bk' data-bt='" + indx + "' " + onc + indx + ");'>" + (s[t] - l) + "<span class='bknum'>" + indx + "</span></td>";
+            } else
+                tbl += "<td>" + s[t] + "</td>";
+        };
+    };
+    var cls = "class='btable s'"
+    if (rev)
+        cls = "class='btable c'"
+    var tbl = "<table " + cls + "><thead><tr><th>k</th>";
+    for (var i = 0; i < n; i++) {
+        if (rev)
+            tbl += "<th>" + (n - i) + ".</th>";
+        else
+            tbl += "<th>" + (i + 1) + ".</th>";
+    };
+    tbl += "</tr></thead><tbody><tr><th>" + 1 + ".</th>";
+    for (var t = 0; t < n; t++) {
+        specelem(0, t);
+    };
+    tbl += "</tr>";
+    for (var l = 1; l < h; l++) {
+        tbl += "<tr><th>" + (l + 1) + ".</th>";
+        if (l != l0) {
+            for (var t = 0; t < n; t++) {
+                if (s[t] < l + 2)
+                    tbl += "<td></td>";
+                else
+                    specelem(l, t);
+            }
+        } else {
+            for (var t = 0; t < n - 1; t++) {
+                if (s[t] < l + 2)
+                    tbl += "<td></td>";
+                else
+                    specelem(l, t);
+            };
+            var indx = sorsz[[l + 1, t].toString()];
+            var onc = "console.log(";
+            if (rev) {
+                indx = ni + 1 - indx;
+                onc = "hlbtc(";
+            };
+            tbl += "<td class='bk' data-bt='" + indx + "' onclick='" + onc + indx + ");'>( )<span class='bknum'>" + indx + "</span></td>";
+            //tbl += "<td class='bk'>( )<span class='bknum'>" + sorsz[[l + 1, t].toString()] + "</span></td>";
+        }
+        tbl += "</tr>";
+    };
+    if (!rev) {
+        jcsblokkok = bkv;
+        osztoelem = _.last(bkv);
+    }
+    tbl += "</tr></tbody></table>";
+    return tbl;
+};
+
+function JcsGraph() {
+    const s = kiszed_c('vjcs');
+    const elem = document.getElementById("Jcs");
+    const tbls = jcs_tabla(s, false);
+    const tblc = jcs_tabla(conjcomp(s), true);
+    const btarto = "<div id='bsornak'>Válasszon egy indexet</div>";
+    const bdetnek = "<div id='bdetnek'></div>";
+    elem.innerHTML = tblc + btarto + tbls + bdetnek;
+    $('.btable.c .bk[data-bt=1]').addClass('elsoelem');
+    const oelem = $('.btable.c .bk[data-bt=' + _.last(jcsblokkok) + ']');
+    oelem.addClass('osztoelem');;
+    hljcs_c(oelem[0]);
+}
 
 // Általános Latex kimenet
 
@@ -6645,7 +6859,6 @@ function cleark29() {
     $("#outk29 span.shk29.hl").removeClass('hl');
 };
 
-
 function formk29() {
     const s0 = leading1(kiszed_dbl("sk29", "figyk29"));
     const n = document.getElementById("k29n").value * 1;
@@ -6984,7 +7197,7 @@ function b_tabla(s, rev) {
     };
     var bkk = kum(bk.map(y => y - 1));
     bkk.unshift(0);
-    sorsz = {};
+    var sorsz = {};
     for (var j = 0; j < bkv.length; j++) {
         var m = bk[j]
         for (var i = 1; i < m; i++) {
@@ -7612,4 +7825,3 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
-
