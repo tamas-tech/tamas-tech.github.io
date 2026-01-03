@@ -699,6 +699,10 @@
                     <label for="rfb_detreszletes">Részletes jelentés</label>
                     <input type="checkbox" name="rfb_detreszletes" id="rfb_detreszletes" onchange="rfb_reszlCh();" style="height:20px;width:20px;vertical-align:middle;">
                 </div>
+                 <div>
+                    <label for="bov">b<sub>i</sub> összevonása</label>
+                    <input type="checkbox" name="bov" id="bov" style="height:20px;width:20px;vertical-align:middle;">
+                </div>
                 <div>
                     <label for="setoutputfontrfb_det" style="margin-right:-10px;">&#128474;</label>
                     <input oninput="setOutputFontrfb_det(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontrfb_det" name="setoutputfontrfb_det">
@@ -824,7 +828,7 @@
             </div>
         </div>
         <div id="tablejcs" style="max-width:100vw">
-            <p class="kijelzo" id="jcsout" class="nicetbl" style="font-family:Symbola,Cambria Math;">
+            <p class="kijelzo nicetbl" id="jcsout" style="font-family:Symbola,Cambria Math;">
                 <span id="Jcs" class="MathJax" style="padding-right:80px;">Ide kerül a jégcsapdiagram</span>
             </p>
             <table width="100%" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 17px;font-family:Cambria Math;">
@@ -931,6 +935,7 @@
     </script>
 </body>
 </html>
+
 
 
 
