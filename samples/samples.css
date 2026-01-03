@@ -2217,6 +2217,28 @@ p#keresztelem {
     font-size: 80%;
 }
 
+.nicetbl table.btable.c tbody tr td.bk.elsoelem,
+.nicetbl table.btable.c tbody tr td.bk.osztoelem {
+    background-color: #7dff71;
+    text-decoration: none;
+    color: black;
+}
+
+.nicetbl table.btable.c tbody tr td.boszto {
+    background-color: #e0ff71;
+    text-decoration: none;
+    color: black;
+}
+
+.nicetbl table.btable.c tbody tr td.bk.osztoelem.move {
+    opacity: 0.7;
+    outline: 2px dotted green;
+}
+
+.nicetbl table.btable.c tbody tr td.bk.aelem {
+    background-color: #ffcbcb;
+}
+
 #detT .tgomb.shown.nobben {
     opacity: 0.15;
     pointer-events: none;
@@ -2311,6 +2333,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
