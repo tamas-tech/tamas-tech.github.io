@@ -443,11 +443,11 @@
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
-                <input class="inpvec" style="width:280px;" type="text" id="rfbs" value="1,4,1,1,1,1,1,5,2" oninput="idClear('#rfbT');">
+                <input class="inpvec" style="width:280px;" type="text" id="rfbs" value="1,4,1,1,1,1,1,5,2" oninput="idClear('#rfbT');idClear('#derivkij');idClear('#dcimke');">
             </div>
             <div class="nobr" style="padding: 10px;outline: 2px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
                 <button id="okbtnrfb" onclick="rfbGraph();" class="showpre1" title="Insert code into editor">Calculate</button>
-                <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#rfbT');" title="Clear output">Clear</button>
+                <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#rfbT');idClear('#derivkij');idClear('#dcimke');" title="Clear output">Clear</button>
                 <span class="lblwrap">
                 <label style="margin-left:5px;color: #456ab9;font-size:130%;">●</label>
                 <label class="switch" style="bottom:2px"><input  id="setlnLi" type="checkbox"><span class="slider round"></span></label><label style="margin-left:5px;margin-right:10px;color: #cca33c;font-size:130%;">●</label>
@@ -682,11 +682,11 @@
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
-                <input class="inpvec" style="width:280px;" type="text" id="dets" value="1,1,2,1,1,3,1,1,1,4,1,1,2,3,1,1,5" oninput="idClear('#detT');">
+                <input class="inpvec" style="width:280px;" type="text" id="dets" value="1,1,2,1,1,3,1,1,1,4,1,1,2,3,1,1,5" oninput="idClear('#detT');idClear('#bjelentes');idClear('#derivkijdet');idClear('#bcimke');idClear('#ddcimke');">
             </div>
             <div class="nobr" style="padding: 10px;outline: 1px solid #d9d9d9;outline-offset: -6px;">
                 <button id="okbtnrfb_det" onclick="rfbGraph_det();" class="showpre1" title="Insert code into editor">Calculate</button>
-                <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#detT');document.getElementById('bcimke').innerHTML = '';" title="Clear output">Clear</button>
+                <button class="showpre1" style="width:56px;margin-left:3px" onclick="idClear('#detT');idClear('#bjelentes');idClear('#derivkijdet');idClear('#bcimke');idClear('#ddcimke');" title="Clear output">Clear</button>
                 <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('zzdetsetting');">⚙</button>
                 </span>
             </div>
@@ -725,7 +725,7 @@
             </table>
             <table width="100%" id="detTable" style="cursor:pointer;background-color: #ececec;font-size: 20px;font-family:Cambria Math;">
                 <tr class="parent" style="padding-left:20px;background-color: #dfdfdf;">
-                    <td colspan="3" onclick="toggleTableRow_det(this)">Deriváltak: <span id="dcimke" style="margin-left:20px;"></span></td>
+                    <td colspan="3" onclick="toggleTableRow_det(this)">Deriváltak: <span id="ddcimke" style="margin-left:20px;"></span></td>
                 </tr>
                 <tr class="child" style="display: none;">
                     <td c colspan="3">
@@ -812,25 +812,33 @@
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:42px;display:inline-block;"><b style="padding: 2px 7px;">s</b> = </label>
-                <input class="inpvec" style="width:280px;" type="text" id="vjcs" value="1,1,2,1,1,3,1,1,1,4,1,1,2,3,1,1,5" oninput="idClear('#Jcs');">
+                <input class="inpvec" style="width:280px;" type="text" id="vjcs" value="1,1,2,1,1,3,1,1,1,4,1,1,2,3,1,1,5" oninput="idClear('#jcsout');">
+                <!-- <input class="inpvec" style="width:280px;" type="text" id="vjcs" value="1,1,1,1,4,1,1,1,1,4,1,1,1,1,1,4,1,1,1,1,1,1,4,1,1,1,1,1,1,1,4,1,1,4,1,4,3" oninput="idClear('#jcsout');"> -->
             </div>
             <div class="nobr" style="padding: 10px;outline: 1px solid #c0c9d0;outline-offset: -6px;background-color: #e7fdf5;">
                 <button id="jcsbtn" onclick="JcsGraph();" class="showpre1" title="Insert code into editor">Calculate</button>
-                <button class="showpre1" style="width:56px;margin-left:3px" title="Clear output" onclick="idClear('#Jcs');">Clear</button>
+                <button class="showpre1" style="width:56px;margin-left:3px" title="Clear output" onclick="idClear('#jcsout');idClear('#ajelentes');">Clear</button>
                 <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('jcssetting');">⚙</button>
                 </span>
             </div>
             <div id="jcssetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
                 <div>
                     <label for="setoutputfontjcs" style="margin-right:-10px;">&#128474;</label>
-                    <input oninput="setOutputFontjcs(this.value);" type="range" min="130" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontjcs" name="setoutputfontjcs">
+                    <input oninput="setOutputFontjcs(this.value);" type="range" min="100" max="200" value="130" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" id="setoutputfontjcs" name="setoutputfontjcs">
                 </div>
             </div>
         </div>
-        <div id="tablejcs" style="max-width:100vw">
-            <p class="kijelzo nicetbl" id="jcsout" style="font-family:Symbola,Cambria Math;">
-                <span id="Jcs" class="MathJax" style="padding-right:80px;">Ide kerül a jégcsapdiagram</span>
+        <div id="tablejcs" style="max-width:100vw;font-size:130%;">
+            <p class="kijelzo nicetbl" id="jcsout" style="font-size:inherit;font-family:Symbola,Cambria Math;padding:6px;margin-bottom:0;">
+                Ide kerül a jégcsapdiagram
             </p>
+            <table width="100%" style="cursor:pointer;background-color: #f1f1f1;font-family:Cambria Math;font-size:inherit;margin-bottom: 5px;border-bottom: 1px solid #d0d0d0;">
+                <tr>
+                    <td>
+                        <p id="ajelentes" class="nicetbl" style="padding-left: 5px;margin:5px 0;line-height: 1.6;"></p>
+                    </td>
+                </tr>
+            </table>
             <table width="100%" style="border:1px solid #bebebe;cursor:pointer;background-color: #ececec;font-size: 17px;font-family:Cambria Math;">
                 <tr class="parent">
                     <td colspan="3" onclick="toggleTableRow_det(this)">Magyarázat</td>
@@ -859,7 +867,8 @@
                             <li><i>A fehér elemekben deriválhatunk:</i> Egy fehér elemre kattintva az összes felette lévő elem (ha van) lepotyog. A lepotyogott elemeket az összes lehetséges módon elrendezve megkapjuk a képletben szereplő zetaszorzatokat:</li>
                             <li><i>A teljes <b>b</b><sub>i</sub> komponens megtekintése:</i> A táblázat alatti b<sub>i</sub> = ... részre kattintva megjelenik a teljes b<sub>i</sub> komponens. Egy fehér pontban vett deriválthoz a sárga elemek mozgatásával
                                 kapott aktuális zetaszorzat a teljes összegben aláhúzással van kiemelve.</li>
-                            <li><i>A teljes derivált megtekintése:</i> Egy konkrét fehér pontban vett derivált megtekinthető a táblázat alatti deriváltak részre kattintva. Egy konkrét sárga elem elrendezéshez tartózó tag keretezve jelenik meg a teljes deriváltban.</li>
+                            <li><i>A teljes derivált megtekintése:</i> Egy konkrét fehér pontban vett derivált megtekinthető a táblázat alatti deriváltak részre kattintva. Egy konkrét sárga elem elrendezéshez tartózó tag keretezve jelenik meg a teljes deriváltban.
+                            </li>
                         </ul>
 
                         <h3>A mátrix első oszlopa utáni <b>A</b><sub>i,j</sub> (j>1) elemek kiszámítása</h3>
@@ -935,6 +944,7 @@
     </script>
 </body>
 </html>
+
 
 
 
