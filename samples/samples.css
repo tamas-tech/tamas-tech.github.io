@@ -2190,7 +2190,7 @@ p#keresztelem {
     margin-left: -18px;
     margin-bottom: -5px;
     border-radius: 50%;
-    width: 25px;
+    width:1.7em;
     vertical-align: middle;
     text-align: center;
     font-size: 70%;
@@ -2274,7 +2274,7 @@ table tr.trvonal {
     text-decoration: underline;
     text-decoration-color: fuchsia;
     text-decoration-thickness: 2px;
-    text-underline-offset: 12px
+    text-underline-offset: 0.6em;
 }
 
 .nicetbl #bdetnek {
@@ -2333,6 +2333,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
