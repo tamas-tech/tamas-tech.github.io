@@ -2842,7 +2842,7 @@ function detM(mat) {
         out = "A determináns közel " + det.length + "hosszú amit már nagyon időigényes összevonni."
     else {
         det = symbOv(det);
-        console.log("összevonás kész")
+        //console.log("összevonás kész")
     };
 
     return det;
@@ -2936,7 +2936,6 @@ function dominof(v, k) {
     for (i = 0; i < vn - 1; i++)
         L.push([v[i], v[i + 1]]);
     L = L.sort();
-    console.log(L)
     for (ii = 0; ii < L.length - 1; ii++)
         out += "&middot;A<sub>" + L[ii].toString() + "</sub>";
     out += "&middot;A<sub>" + L[vn - 1].toString() + "</sub>"
@@ -3646,7 +3645,6 @@ function bugrik(ii) {
         indx.value = blepes + 1;
         hlblepes(blepesek[blepes]);
     }
-    console.log(blep, blepes)
 };
 
 function hlblepes(L) {
@@ -4559,7 +4557,7 @@ function derivSor_det(s, n) {
     const ss = _.dropRight(s, 1);
     const de = expDeriv(ss, n).reverse();
     const fakt = factorial(n);
-    const el = $('#detTable tr.parent td #dcimke');
+    const el = $('#detTable tr.parent td #ddcimke');
     const elem = $('#detTable tr.child td p');
     el.html("<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td>p!</td></tr></table></span> &#8706;<sup>p</sup>(<b>a</b>*) = <span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td class='licolor'>" + fakt + "</td></tr></table></span>" + " (" + ss.toString() + ")<sup class='licolor'>(" + n + ")</sup> = ...")
     var dtxt = '=';
@@ -4722,7 +4720,7 @@ function zzClear() {
     $('#detT .tsorszam-e').css("visibility", "hidden");
     $('#detT .tsorszam-s,#detT .tsorszam-fix').css("visibility", "hidden");
     $("#detT #binomkijelzo").html("");
-    $('#detTable tr.parent td #dcimke').html("");
+    $('#detTable tr.parent td #ddcimke').html("");
     $("#detTable #derivkijdet").html("");
     $('#detT .tgomb.szelso').html('&#x25CE;');
     $('#detT .tgomb.d-path').removeClass('d-path');
@@ -4876,8 +4874,8 @@ function zetaSor_der(s, n) {
     var dtxt = '';
     for (let v of de) {
         var c = v[0] / fakt;
-        var ertek = "[" + v[1].toString() + "]";
-        //var ertek = v[1].toString(); //MAPLEBE
+        //var ertek = "[" + v[1].toString() + "]";//MAPLEBE
+        var ertek = v[1].toString();
         if (c == 1)
             c = " + ";
         else if (c > 1)
@@ -4893,7 +4891,7 @@ function zetaSor_der(s, n) {
 function zetaAbHl(e, k) {
     $('#detbTable #bjelentes .hl').removeClass('hl');
     $(e).addClass('hl');
-    $('#detbTable #bjelentes .bvec[data-Ab="' + k + '"]').addClass('hl');
+    $('#detbTable #bjelentes .bvec[data-ab="' + k + '"]').addClass('hl');
 };
 
 function kepletDetzz(s) {
@@ -4917,7 +4915,7 @@ function kepletDetzz(s) {
     for (var j = 0; j < b.length - 1; j++)
         b[j + 1].unshift(_.last(b[j]));
     var txt = "";
-    var dtxt = "<span class='bvec' data-Ab='0'><span class='paren1'>(</span>" + monomvec2HTML(vList2obj(bvector(ss)[n - bsora], 1)) + "<span class='paren1'>)</span></span>";
+    var dtxt = "<span class='bvec' data-ab='0'><span class='paren1'>(</span>" + monomvec2HTML(vList2obj(bvector(ss)[n - bsora], 1)) + "<span class='paren1'>)</span></span>";
     var cimke = "b<sub>" + bsora + "</sub>&times;";
     var szamlalo = 1;
     var ossz = 0;
@@ -4926,11 +4924,11 @@ function kepletDetzz(s) {
         w = _.dropRight(w);
         var v = w.map(y => y[0]);
         ossz += _.sum(v)
-        txt += "<span  onclick='zetaAbHl(this," + szamlalo + ");'><span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>" + formazottTortHTML("&part;<sup>" + k + "</sup>", k + "!") + "(" + v.toString() + ")<span class='paren'>]</span></span>&middot;";
-        if (v.length > 1)
-            dtxt += "&middot;<span class='bvec' data-Ab='" + szamlalo + "'><span class='paren1'>(</span>" + zetaSor_der(v, k) + "<span class='paren1'>)</span></span>"; // MAPLEBE * &middot;
+        txt += "<span  onclick='zetaAbHl(this," + szamlalo + ");'><span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>" + formazottTortHTML("&part;<sup>" + k + "</sup>", k + "!") + "&nbsp;(" + v.toString() + ")<span class='paren'>]</span></span>&middot;";
+        if (k > 0 && v.length > 1)
+            dtxt += "&middot;<span class='bvec' data-ab='" + szamlalo + "'><span class='paren1'>(</span>" + zetaSor_der(v, k) + "<span class='paren1'>)</span></span>"; // MAPLEBE * &middot;
         else
-            dtxt += "&middot;<span class='bvec' data-Ab='" + szamlalo + "'>" + zetaSor_der(v, k) + "</span>"; // MAPLEBE * &middot;
+            dtxt += "&middot;<span class='bvec' data-ab='" + szamlalo + "'>" + zetaSor_der(v, k) + "</span>"; // MAPLEBE * &middot;
         cimke += "A<sub>" + indxs[szamlalo - 1] + "," + indxs[szamlalo] + "</sub>&middot;";
         szamlalo++;
     };
@@ -5313,7 +5311,7 @@ var jcsak = [];
 var osztoelem = 1;
 
 function setOutputFontjcs(v) {
-    var elem = document.getElementById("Jcs");
+    var elem = document.getElementById("tablejcs");
     elem.style.fontSize = v + '%';
 };
 
@@ -5348,7 +5346,6 @@ function osztoMove(e, indx) {
     }
 };
 
-
 function indxBlokkja(indx) {
     const a = _.last(jcsblokkok.filter(y => y < indx));
     const b = _.first(jcsblokkok.filter(z => z >= indx));
@@ -5378,6 +5375,7 @@ function updJcsak() {
     els.each(function() {
         jcsak.push(this.getAttribute('data-bt') * 1);
     });
+    A_bontas();
 };
 
 function hljcs_e(e, indx) {
@@ -5512,17 +5510,120 @@ function jcs_tabla(s, rev) {
 
 function JcsGraph() {
     const s = kiszed_c('vjcs');
-    const elem = document.getElementById("Jcs");
+    const elem = document.getElementById("jcsout");
     const tbls = jcs_tabla(s, false);
     const tblc = jcs_tabla(conjcomp(s), true);
     const btarto = "<div id='bsornak'>Válasszon egy indexet</div>";
-    const bdetnek = "<div id='bdetnek'></div>";
-    elem.innerHTML = tblc + btarto + tbls + bdetnek;
+    //const bdetnek = "<div id='bdetnek'></div>";
+    //const bdetnek = "<p id='ajelentes'></p>";
+    elem.innerHTML = tblc /*+   btarto + tbls +  bdetnek*/ ;
     $('.btable.c .bk[data-bt=1]').addClass('elsoelem');
     const oelem = $('.btable.c .bk[data-bt=' + _.last(jcsblokkok) + ']');
     oelem.addClass('osztoelem');;
     hljcs_c(oelem[0]);
-}
+    A_bontas();
+};
+
+function invrbontas(p, k) {
+    var out = [];
+    out.push(p + 1);
+    for (var i = 0; i < k - 1; i++)
+        out.push(1);
+    return out;
+};
+
+function a_bontas(v, a) {
+    const na = a.length;
+    const rb = rbontas(v);
+    const rb1 = rb[0];
+    const rb2 = rb[1];
+    var out = [];
+    var out0 = [
+        [invrbontas(rb1[0], rb2[0]), a[0]]
+    ];
+    for (var i = 1; i < na; i++) {
+        var p = a[i - 1];
+        if (p > -1)
+            out0.push([invrbontas(rb1[i] - p, rb2[i]), a[i]]);
+        else
+            out0.push([invrbontas(rb1[i], rb2[i]), a[i]]);
+    };
+    var blokk = [];
+    for (var j = 0; j < out0.length; j++) {
+        var v = out0[j];
+        blokk = _.concat(blokk, v[0]);
+        if (v[1] > -1) {
+            out.push([blokk, v[1]]);
+            blokk = [];
+        }
+    };
+    return out;
+};
+
+function jcsak2a() {
+    const bl = jcsblokkok;
+    const ak = jcsak.sort();
+    const bl0 = bl.filter(y => y < osztoelem);
+    const L = bl0.length - 1;
+    var a = [];
+    for (var i = 0; i < L; i++) {
+        var e = ak.filter(y => (y > bl[i] && y <= bl[i + 1]));
+        var k = -1;
+        if (e.length > 0)
+            k = e[0] - bl[i] - 1;
+        a.push(k);
+    }
+    a.push(osztoelem - _.last(bl0) - 1);
+    return a;
+};
+
+function zetajcsHl(e, k) {
+    $('#tablejcs  #ajelentes .hl').removeClass('hl');
+    $(e).addClass('hl');
+    $('#tablejcs  #ajelentes .bvec[data-ab="' + k + '"]').addClass('hl');
+};
+
+function formAbontas(b) {
+    var txt = "";
+    //var dtxt = "<span class='bvec' data-ab='0'><span class='paren1'>(</span>" + monomvec2HTML(vList2obj(bvector(ss)[n - bsora], 1)) + "<span class='paren1'>)</span></span>";
+    var dtxt = "<span class='bvec' data-ab='0'>b<sub>100</sub></span>";
+    //var cimke = "b<sub>" + bsora + "</sub>&times;";
+    var szamlalo = 1;
+    var ossz = 0;
+    for (let w of b) {
+        var k = w[1];
+        var v = w[0]
+        ossz += _.sum(v)
+        txt += "<span  onclick='zetajcsHl(this," + szamlalo + ");'><span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>" + formazottTortHTML("&part;<sup>" + k + "</sup>", k + "!") + "&nbsp;(" + v.toString() + ")<span class='paren'>]</span></span>&middot;";
+        if (k > 0 && v.length > 1)
+            dtxt += "&middot;<span class='bvec' data-ab='" + szamlalo + "'><span class='paren1'>(</span>" + zetaSor_der(v, k) + "<span class='paren1'>)</span></span>"; // MAPLEBE * &middot;
+        else
+            dtxt += "&middot;<span class='bvec' data-ab='" + szamlalo + "'>" + zetaSor_der(v, k) + "</span>"; // MAPLEBE * &middot;
+        //cimke += "A<sub>" + indxs[szamlalo - 1] + "," + indxs[szamlalo] + "</sub>&middot;";
+        szamlalo++;
+    };
+    txt = txt.slice(0, -8);
+    var elojel = "";
+    //if (cimke.endsWith('&middot;'))
+    //   cimke = cimke.slice(0, -8);
+    if ((szamlalo + ossz + 1) % 2 == 1)
+        elojel = " − ";
+    var bsora = 100;
+    txt = "<span  onclick='zetajcsHl(this,0);'>b<sub>" + bsora + "</sub></span>&middot;" + txt
+        //document.getElementById("bjelentes").innerHTML = elojel + txt + " =<br/> = " + elojel + dtxt;
+    return elojel + txt + " =<br/> = " + elojel + dtxt
+        // document.getElementById("bcimke").innerHTML = cimke;
+};
+
+function A_bontas() {
+    const el = document.getElementById("ajelentes");
+    el.innerHTML = "";
+    const c = conjcomp(kiszed_c('vjcs'));
+    const a = jcsak2a();
+    const v = a_bontas(c, a);
+    el.innerHTML = formAbontas(v);
+    //return v;
+};
 
 // Általános Latex kimenet
 
