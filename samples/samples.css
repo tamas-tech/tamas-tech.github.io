@@ -2135,6 +2135,7 @@ p#keresztelem {
     padding: 3px;
     white-space: nowrap;
     min-width: 1.9em;
+    cursor: pointer;
 }
 
 .nicetbl table.btable.s tbody tr td.hl,
@@ -2160,7 +2161,8 @@ p#keresztelem {
 }
 
 .nicetbl table.btable.c tbody tr td.hl {
-    background-color: #c1fff3;
+   background-color: #c1fff3;
+   box-shadow: inset 0px 0px 1px 1px blue;
 }
 
 .nicetbl table.btable th {
@@ -2224,8 +2226,8 @@ p#keresztelem {
     color: black;
 }
 
-.nicetbl table.btable.c tbody tr td.boszto {
-    background-color: #e0ff71;
+.nicetbl table.btable.c tbody tr td.bosztoelott {
+    background-color: #7fd9d9;
     text-decoration: none;
     color: black;
 }
@@ -2333,6 +2335,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
