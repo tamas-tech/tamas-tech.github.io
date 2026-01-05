@@ -5309,6 +5309,7 @@ function rfbGraph_det() {
 var jcsblokkok = [];
 var jcsak = [];
 var osztoelem = 1;
+var ooszlop = 1;
 
 function setOutputFontjcs(v) {
     var elem = document.getElementById("tablejcs");
@@ -5316,15 +5317,20 @@ function setOutputFontjcs(v) {
 };
 
 function osztoMove(e, indx) {
-    $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto").removeClass('boszto');
+    const newoszlop = e.cellIndex;
+    const oldoszlop = ooszlop;
     const oindx = _.last(jcsblokkok.filter(y => y < osztoelem));
     if (indx == osztoelem)
-        $(e).addClass('move');
+        if ($(e).hasClass('move'))
+            $(e).removeClass('move');
+        else
+            $(e).addClass('move');
     else if (indx > oindx && !$(e).hasClass('hl')) {
         $('#jcsout table.btable.c tbody tr td.bk.osztoelem').removeClass('osztoelem');
         $('#jcsout table.btable.c tbody tr td.bk.move').removeClass('move');
         $(e).addClass('osztoelem');
         osztoelem = indx;
+        ooszlop = newoszlop;
         hljcs_c(e);
     } else if (indx > oindx && $(e).hasClass('hl')) {
         var m = $('#jcsout table.btable.c tbody tr td.bk.osztoelem.move');
@@ -5332,6 +5338,7 @@ function osztoMove(e, indx) {
             m.removeClass('osztoelem').removeClass('move');
             $(e).addClass('osztoelem');
             osztoelem = indx;
+            ooszlop = newoszlop;
             hljcs_c(e);
         } else
             hlboszto(e);
@@ -5341,8 +5348,13 @@ function osztoMove(e, indx) {
             m.removeClass('osztoelem').removeClass('move');
             $(e).addClass('osztoelem');
             osztoelem = indx;
+            ooszlop = newoszlop;
             hljcs_c(e);
         }
+    }
+    if (ooszlop != oldoszlop) {
+        $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto").removeClass('boszto');
+        $("#tablejcs #jcsout table.btable.c tr:nth(1) td.bosztoelott").removeClass('bosztoelott');
     }
 };
 
@@ -5398,8 +5410,12 @@ function hljcs_e(e, indx) {
 
 function hlboszto(e) {
     $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto").removeClass('boszto');
+    $("#tablejcs #jcsout table.btable.c tr:nth(1) td.bosztoelott").removeClass('bosztoelott');
     if ($(e).hasClass('hl'))
-        $(e).addClass('boszto')
+        $(e).addClass('boszto');
+    const o2 = e.cellIndex - 1;
+    for (var j = ooszlop; j < o2; j++)
+        $('#tablejcs #jcsout table.btable.c tr:nth(1) td:nth(' + j + ')').addClass('bosztoelott');
 };
 
 function jcs_tabla(s, rev) {
@@ -5519,7 +5535,8 @@ function JcsGraph() {
     elem.innerHTML = tblc /*+   btarto + tbls +  bdetnek*/ ;
     $('.btable.c .bk[data-bt=1]').addClass('elsoelem');
     const oelem = $('.btable.c .bk[data-bt=' + _.last(jcsblokkok) + ']');
-    oelem.addClass('osztoelem');;
+    oelem.addClass('osztoelem');
+    ooszlop = oelem[0].cellIndex;
     hljcs_c(oelem[0]);
     A_bontas();
 };
