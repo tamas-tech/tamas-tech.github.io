@@ -5681,11 +5681,12 @@ function JcsGraph() {
     $('.btable.c .bk[data-bt=1]').addClass('elsoelem');
     const oelem = $('.btable.c .bk[data-bt=' + _.last(jcsblokkok) + ']');
     oelem.addClass('osztoelem').addClass('move');
+    setTimeout(()=>{
     oelem.trigger('click');
     ooszlop = oelem[0].cellIndex;
     $("#tablejcs #jcsout table.btable.c thead th:nth(" + (ooszlop + 1) + ")").addClass('hl');
     hljcs_c(oelem[0]);
-    A_bontas();
+    A_bontas();},50);
 };
 
 function invrbontas(p, k) {
@@ -8086,3 +8087,4 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
+
