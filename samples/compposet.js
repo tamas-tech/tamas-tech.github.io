@@ -5523,7 +5523,7 @@ function triggerboszto(e) {
                 const o2 = el[0].cellIndex - 1;
                 //console.log("triggerboszto 2 -> ab_bontasK")
                 ab_bontasK(bdet, o2 - ooszlop + 1);
-            });
+            }, 20);
         }
     }
 };
@@ -5676,17 +5676,20 @@ function jcs_tabla(s, rev) {
 function JcsGraph() {
     const s = kiszed_c('vjcs');
     const elem = document.getElementById("jcsout");
+    const tbls = jcs_tabla(s, false);
     const tblc = jcs_tabla(conjcomp(s), true);
-    elem.innerHTML = tblc;
+    const btarto = "<div id='bsornak'>Válasszon egy indexet</div>";
+    //const bdetnek = "<div id='bdetnek'></div>";
+    //const bdetnek = "<p id='ajelentes'></p>";
+    elem.innerHTML = tblc /*+   btarto + tbls +  bdetnek*/ ;
     $('.btable.c .bk[data-bt=1]').addClass('elsoelem');
     const oelem = $('.btable.c .bk[data-bt=' + _.last(jcsblokkok) + ']');
     oelem.addClass('osztoelem').addClass('move');
-    setTimeout(()=>{
     oelem.trigger('click');
     ooszlop = oelem[0].cellIndex;
     $("#tablejcs #jcsout table.btable.c thead th:nth(" + (ooszlop + 1) + ")").addClass('hl');
     hljcs_c(oelem[0]);
-    A_bontas();},50);
+    A_bontas();
 };
 
 function invrbontas(p, k) {
@@ -8087,4 +8090,3 @@ function derivInput() {
         document.getElementById("diffout").innerHTML = ms2HTML(d);
     }
 };
-
