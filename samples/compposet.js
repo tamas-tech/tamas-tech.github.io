@@ -5502,7 +5502,7 @@ function ab_bontasK(s, k) {
     document.getElementById('abvege1').innerHTML = out2;
     document.getElementById('abvegec').innerHTML = outc;
     document.getElementById('abvege1c').innerHTML = out2c;
-    const ab_dersor = _.concat(a_dersor, b_dersor)
+    const ab_dersor = _.concat(a_dersor, b_dersor);
     document.getElementById('abkibontva').innerHTML = monomvec2HTML(symbVProd(ab_dersor));
     //return [out, out1, out2];
 };
