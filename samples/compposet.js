@@ -2993,6 +2993,7 @@ function bhezV(k) {
 //document.getElementById("callout").innerHTML=monomvec2HTML(bhezt(PmA8,6))
 
 function detMnew(A0) {
+    const ovtilos = document.getElementById("setdetov").checked;
     const A = _.cloneDeep(A0);
     dettagok = 0;
     var out = [];
@@ -3001,13 +3002,19 @@ function detMnew(A0) {
         out.push(bhez(A, k));
     out = dense0(_.flatten(out));
     dettagok = out.length;
+
     if (dettagok > 1050) {
         detov = false;
         return out;
     } else {
-        detov = true;
-        out = symbOv(out);
-        dettagok = out.length;
+        if (!ovtilos) {
+            detov = true;
+            out = symbOv(out);
+            dettagok = out.length;
+        } else {
+            detov = false;
+            return out;
+        }
     }
 
     return out;
@@ -5310,6 +5317,8 @@ var jcsblokkok = [];
 var jcsak = [];
 var osztoelem = 1;
 var ooszlop = 1;
+var a_dersor = [];
+var b_dersor = [];
 
 function setOutputFontjcs(v) {
     var elem = document.getElementById("tablejcs");
@@ -5340,8 +5349,9 @@ function osztoMove(e, indx) {
             osztoelem = indx;
             ooszlop = newoszlop;
             hljcs_c(e);
-        } else
+        } else {
             setTimeout(() => { hlboszto(e); }, 0);
+        }
     } else {
         var m = $('#jcsout table.btable.c tbody tr td.bk.osztoelem.move');
         if (m.length > 0) {
@@ -5386,17 +5396,21 @@ function hljcs_c(e) {
 function setabeloj(vk) {
     const aeloj = document.getElementById("aelojel").innerHTML;
     const elojelem = document.getElementById("abelojel");
+    var c = 1;
     var eloj = "";
     if (_.sum(vk) % 2 == 0)
         eloj = " − ";
-    if (aeloj != eloj)
+    if (aeloj != eloj) {
         elojelem.innerHTML = (" − ");
-    else
+        c = -1;
+    } else
         elojelem.innerHTML = ("");
+    return c;
 };
 
 function ab_bontasK(s, k) {
     //console.log('ab_bontasK')
+    b_dersor = [];
     const n = s.length;
     var out = "";
     var outc = "";
@@ -5409,7 +5423,7 @@ function ab_bontasK(s, k) {
         out += "&nbsp;" + formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;<span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>&part;<sup>" + vnext + "</sup><span class='hlr'>(" + vk.toString() + ")</span><span class='paren'>]</span>";
         outc += "&middot;<span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span><span class='hly'>(" + vege + ")</span><sup>*</sup><span class='paren'>]</span>";
 
-        setabeloj(vk);
+        var ce = setabeloj(vk);
         var f = factorial(vnext);
         if (f == 1)
             f = "";
@@ -5423,6 +5437,7 @@ function ab_bontasK(s, k) {
 
         var coeff = factorial(vnext);
         var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
+        b_dersor.push(vList2obj(d, ce));
         var dtxt = "";
         const dl = d.length;
         var cc = ""
@@ -5441,12 +5456,15 @@ function ab_bontasK(s, k) {
         //out2 += "&nbsp;" + dtxt + "&middot;&zeta;<sub>" + conjcomp(vege).toString() + "</sub>";
         out2 += "&nbsp;" + dtxt;
         out2c += "&middot;&zeta;<sub>" + conjcomp(vege).toString() + "</sub>";
+        b_dersor.push(vList2obj([
+            [1, conjcomp(vege)]
+        ], 1));
     } else if (k == n - 1) {
         var vk = s.slice(0, -1);
         var vnext = _.last(s);
         out += formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;&part;<sup>" + vnext + "</sup><span class='hlr'>(" + vk.toString() + ")</span>";
 
-        setabeloj(vk);
+        var ce = setabeloj(vk);
         var f = factorial(vnext);
         if (f == 1)
             f = "";
@@ -5460,6 +5478,7 @@ function ab_bontasK(s, k) {
 
         var coeff = factorial(vnext);
         var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
+        b_dersor.push(vList2obj(d, ce));
         var dtxt = "";
         const dl = d.length;
         var cc = ""
@@ -5483,6 +5502,8 @@ function ab_bontasK(s, k) {
     document.getElementById('abvege1').innerHTML = out2;
     document.getElementById('abvegec').innerHTML = outc;
     document.getElementById('abvege1c').innerHTML = out2c;
+    const ab_dersor = _.concat(a_dersor, b_dersor)
+    document.getElementById('abkibontva').innerHTML = monomvec2HTML(symbVProd(ab_dersor));
     //return [out, out1, out2];
 };
 
@@ -5521,8 +5542,9 @@ function triggerboszto(e) {
             setTimeout(() => {
                 el = $("#tablejcs #jcsout table.btable.c td.hl:not(.osztoelem):nth(0)");
                 const o2 = el[0].cellIndex - 1;
-                //console.log("triggerboszto 2 -> ab_bontasK")
+                console.log("triggerboszto 2 -> ab_bontasK")
                 ab_bontasK(bdet, o2 - ooszlop + 1);
+                $("#tablejcs #jcsout table.btable.c thead th:nth(" + (o2 + 1) + ")").addClass('hl');
             }, 20);
         }
     }
@@ -5752,6 +5774,7 @@ function zetajcsHl(e, k) {
 };
 
 function formAbontas(b) {
+    a_dersor = [];
     var txt = "";
     var dtxt = "";
     //const btxt = "&times;<span id='abvege' onclick='zetajcsHl(this,0);'>b<sub>" + osztoelem + "</sub></span>"
@@ -5764,10 +5787,11 @@ function formAbontas(b) {
         var v = w[0]
         ossz += _.sum(v)
         txt += "<span  onclick='zetajcsHl(this," + szamlalo + ");'><span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>" + formazottTortHTML("&part;<sup>" + k + "</sup>", k + "!") + "&nbsp;(" + v.toString() + ")<span class='paren'>]</span></span>&middot;";
-        if (k > 0 && v.length > 1)
+        if (k > 0 && v.length > 1) {
             dtxt += "&middot;<span class='bvec' data-ab='" + szamlalo + "'><span class='paren1'>(</span>" + zetaSor_der(v, k) + "<span class='paren1'>)</span></span>"; // MAPLEBE * &middot;
-        else
+        } else
             dtxt += "&middot;<span class='bvec' data-ab='" + szamlalo + "'>" + zetaSor_der(v, k) + "</span>"; // MAPLEBE * &middot;
+        a_dersor.push(vList2obj(expDeriv(v, k), factorial(k)));
         szamlalo++;
     };
     txt = txt.slice(0, -8);
@@ -5777,7 +5801,7 @@ function formAbontas(b) {
         elojel = "<span id='aelojel'> − </span>";
     txt += btxt;
     dtxt += btxt1;
-    return elojel + txt + " =<br/> = " + "<span id='abelojel'>" + elojel + "</span>" + dtxt
+    return elojel + txt + " =<br/> = " + "<span id='abelojel'>" + elojel + "</span>" + dtxt + " = <div id='abkibontva' style='border: 1px solid #b7b7b7;padding: 0 5px;font-size: 90%;background-color: #e1e1e1;'><div>"
 };
 
 function A_bontas() {
