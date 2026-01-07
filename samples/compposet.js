@@ -5341,7 +5341,7 @@ function osztoMove(e, indx) {
             ooszlop = newoszlop;
             hljcs_c(e);
         } else
-            hlboszto(e);
+            setTimeout(() => { hlboszto(e); }, 0);
     } else {
         var m = $('#jcsout table.btable.c tbody tr td.bk.osztoelem.move');
         if (m.length > 0) {
@@ -5353,6 +5353,7 @@ function osztoMove(e, indx) {
         }
     }
     if (ooszlop != oldoszlop) {
+        $("#tablejcs #jcsout table.btable.c thead th.hl").removeClass('hl');
         $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto").removeClass('boszto');
         $("#tablejcs #jcsout table.btable.c tr:nth(1) td.bosztoelott").removeClass('bosztoelott');
     }
@@ -5379,6 +5380,110 @@ function hljcs_c(e) {
         $table.find("tr:nth(1) td:nth(" + j + ")").removeClass('aelem').addClass('hl');
     for (var i = osztoelem + 1; i < n + 1; i++)
         $('#jcsout table.btable.c tbody tr td.bk[data-bt=' + i + ']').removeClass('aelem');
+
+};
+
+function setabeloj(vk) {
+    const aeloj = document.getElementById("aelojel").innerHTML;
+    const elojelem = document.getElementById("abelojel");
+    var eloj = "";
+    if (_.sum(vk) % 2 == 0)
+        eloj = " − ";
+    if (aeloj != eloj)
+        elojelem.innerHTML = (" − ");
+    else
+        elojelem.innerHTML = ("");
+};
+
+function ab_bontasK(s, k) {
+    //console.log('ab_bontasK')
+    const n = s.length;
+    var out = "";
+    var outc = "";
+    var out2 = "";
+    var out2c = "";
+    if (k < n - 1) {
+        var vk = s.slice(0, k);
+        var vnext = s[k] - 1;
+        var vege = [1, ...s.slice(k + 1)];
+        out += "&nbsp;" + formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;<span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>&part;<sup>" + vnext + "</sup><span class='hlr'>(" + vk.toString() + ")</span><span class='paren'>]</span>";
+        outc += "&middot;<span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span><span class='hly'>(" + vege + ")</span><sup>*</sup><span class='paren'>]</span>";
+
+        setabeloj(vk);
+        var f = factorial(vnext);
+        if (f == 1)
+            f = "";
+        else if (f > 1)
+            f = formazottTortHTML(1, f);
+        var p = "";
+        if (vnext == 1)
+            p = "&nbsp;&part;"
+        else if (vnext > 1)
+            p = "&nbsp;&part;<sup>" + vnext + "</sup>"
+
+        var coeff = factorial(vnext);
+        var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
+        var dtxt = "";
+        const dl = d.length;
+        var cc = ""
+        if (d[0][0] != 1)
+            cc = d[0][0]
+        dtxt += cc + "&nbsp;&zeta;<sub>" + d[0][1].toString() + "</sub>";
+        if (dl > 1)
+            for (let v of d.slice(1)) {
+                var dd = ""
+                if (v[0] != 1)
+                    dd = v[0]
+                dtxt += " + " + dd + "&nbsp;&zeta;<sub>" + v[1].toString() + "</sub>"
+            }
+        if (dl > 1)
+            dtxt = "<span class='paren1'>(</span>" + dtxt + "<span class='paren1'>)</span>";
+        //out2 += "&nbsp;" + dtxt + "&middot;&zeta;<sub>" + conjcomp(vege).toString() + "</sub>";
+        out2 += "&nbsp;" + dtxt;
+        out2c += "&middot;&zeta;<sub>" + conjcomp(vege).toString() + "</sub>";
+    } else if (k == n - 1) {
+        var vk = s.slice(0, -1);
+        var vnext = _.last(s);
+        out += formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;&part;<sup>" + vnext + "</sup><span class='hlr'>(" + vk.toString() + ")</span>";
+
+        setabeloj(vk);
+        var f = factorial(vnext);
+        if (f == 1)
+            f = "";
+        else if (f > 1)
+            f = formazottTortHTML(1, f);
+        var p = "";
+        if (vnext == 1)
+            p = "&nbsp;&part;"
+        else if (vnext > 1)
+            p = "&nbsp;&part;<sup>" + vnext + "</sup>"
+
+        var coeff = factorial(vnext);
+        var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
+        var dtxt = "";
+        const dl = d.length;
+        var cc = ""
+        if (d[0][0] != 1)
+            cc = d[0][0]
+        dtxt += cc + "&nbsp;&zeta;<sub>" + d[0][1].toString() + "</sub>";
+        if (dl > 1)
+            for (let v of d.slice(1)) {
+                var dd = ""
+                if (v[0] != 1)
+                    dd = v[0]
+                dtxt += " + " + dd + "&nbsp;&zeta;<sub>" + v[1].toString() + "</sub>"
+            }
+        if (dl > 1)
+            dtxt = "<span class='paren1'>(</span>" + dtxt + "<span class='paren1'>)</span>";
+        dtxt = "&nbsp;" + dtxt;
+        out2 += dtxt;
+    } else
+        return;
+    document.getElementById('abvege').innerHTML = out;
+    document.getElementById('abvege1').innerHTML = out2;
+    document.getElementById('abvegec').innerHTML = outc;
+    document.getElementById('abvege1c').innerHTML = out2c;
+    //return [out, out1, out2];
 };
 
 function updJcsak() {
@@ -5392,30 +5497,68 @@ function updJcsak() {
 
 function hljcs_e(e, indx) {
     const $e = $(e);
-    //const eind = $e.attr('data-bt') * 1;
     if ($e.hasClass('aelem')) {
         $e.removeClass('aelem');
-        //jcsak = jcsak.filter(y => y != eind);
     } else {
         indxBlokkja(indx)
         const eindx = _.first(jcsblokkok);
         const oindx = _.last(jcsblokkok.filter(y => y < osztoelem));
         if (eindx < indx && indx <= oindx) {
             $(e).addClass('aelem');
-            //jcsak.push(eind);
         }
     };
     updJcsak();
 };
 
+function triggerboszto(e) {
+    if (!($(e).hasClass('bk') && $(e).hasClass('hl')) || $(e).hasClass('osztoelem')) {
+        var el = $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto");
+        if (el.length > 0) {
+            const o2 = el[0].cellIndex - 1;
+            //console.log("triggerboszto 1 -> ab_bontasK")
+            ab_bontasK(bdet, o2 - ooszlop + 1);
+        } else {
+            setTimeout(() => {
+                el = $("#tablejcs #jcsout table.btable.c td.hl:not(.osztoelem):nth(0)");
+                const o2 = el[0].cellIndex - 1;
+                //console.log("triggerboszto 2 -> ab_bontasK")
+                ab_bontasK(bdet, o2 - ooszlop + 1);
+            });
+        }
+    }
+};
+
 function hlboszto(e) {
-    $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto").removeClass('boszto');
-    $("#tablejcs #jcsout table.btable.c tr:nth(1) td.bosztoelott").removeClass('bosztoelott');
-    if ($(e).hasClass('hl'))
+    if ($(e).hasClass('hl')) {
+        $("#tablejcs #jcsout table.btable.c thead th.hl").removeClass('hl');
+        $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto").removeClass('boszto');
+        $("#tablejcs #jcsout table.btable.c tr:nth(1) td.bosztoelott").removeClass('bosztoelott');
         $(e).addClass('boszto');
-    const o2 = e.cellIndex - 1;
-    for (var j = ooszlop; j < o2; j++)
-        $('#tablejcs #jcsout table.btable.c tr:nth(1) td:nth(' + j + ')').addClass('bosztoelott');
+        const o2 = e.cellIndex - 1;
+        for (var j = ooszlop; j < o2; j++)
+            $('#tablejcs #jcsout table.btable.c tr:nth(1) td:nth(' + j + ')').addClass('bosztoelott');
+        $("#tablejcs #jcsout table.btable.c thead th:nth(" + (o2 + 1) + ")").addClass('hl');
+        if (!$("#tablejcs #jcsout table.btable.c tr td.osztoelem").hasClass('move')) {
+            //console.log("hlboszto -> ab_bontasK")
+            ab_bontasK(bdet, o2 - ooszlop + 1);
+        }
+    }
+};
+
+function setbdet(e, s) {
+    if ((!$(e).hasClass('hl') || $(e).hasClass('osztoelem')) && !$(e).hasClass('aelem'))
+        bdet = s;
+};
+
+function setboszto(e) {
+    const indx = e.cellIndex;
+    if (indx > ooszlop) {
+        $("#tablejcs #jcsout table.btable.c thead th.hl").removeClass('hl');
+        $(e).addClass('hl');
+        $("#tablejcs #jcsout table.btable.c td.boszto").removeClass('boszto');
+        $("#tablejcs #jcsout table.btable.c td:nth(" + (indx - 1) + ")").trigger('click');
+        // ab_bontasK(bdet, indx - ooszlop + 1);
+    }
 };
 
 function jcs_tabla(s, rev) {
@@ -5461,11 +5604,17 @@ function jcs_tabla(s, rev) {
         if (rev) {
             if (bkv.includes(t)) {
                 indx = ni + 1 - indx;
-                const st = JSON.stringify([indx, s[t] - l, ...s.slice(t + 1)]);
-                const onc = "onclick='console.log(" + st + ");";
-                tbl += "<td class='bk' data-bt='" + indx + "' " + onc + "osztoMove(this," + indx + ");hljcs_e(this," + indx + ");'>" + (s[t] - l) + "<span class='bknum'>" + indx + "</span></td>";
+                const st = JSON.stringify([s[t] - l, ...s.slice(t + 1)]);
+                const onc = "onclick='";
+                if (t > 0)
+                    tbl += "<td class='bk' data-bt='" + indx + "' " + onc + "osztoMove(this," + indx + ");hljcs_e(this," + indx + ");setbdet(this," + st + ");triggerboszto(this);'>" + (s[t] - l) + "<span class='bknum'>" + indx + "</span></td>";
+                else
+                    tbl += "<td class='bk' data-bt='" + indx + "'>" + (s[t] - l) + "<span class='bknum'>" + indx + "</span></td>";
             } else
+            if (t > 0)
                 tbl += "<td onclick='hlboszto(this);'>" + s[t] + "</td>";
+            else
+                tbl += "<td>" + s[t] + "</td>";
         } else {
             const onc = "onclick='console.log(";
             if (bkv.includes(t)) {
@@ -5480,7 +5629,7 @@ function jcs_tabla(s, rev) {
     var tbl = "<table " + cls + "><thead><tr><th>k</th>";
     for (var i = 0; i < n; i++) {
         if (rev)
-            tbl += "<th>" + (n - i) + ".</th>";
+            tbl += "<th onclick='setboszto(this)'>" + (n - i) + ".</th>";
         else
             tbl += "<th>" + (i + 1) + ".</th>";
     };
@@ -5527,16 +5676,14 @@ function jcs_tabla(s, rev) {
 function JcsGraph() {
     const s = kiszed_c('vjcs');
     const elem = document.getElementById("jcsout");
-    const tbls = jcs_tabla(s, false);
     const tblc = jcs_tabla(conjcomp(s), true);
-    const btarto = "<div id='bsornak'>Válasszon egy indexet</div>";
-    //const bdetnek = "<div id='bdetnek'></div>";
-    //const bdetnek = "<p id='ajelentes'></p>";
-    elem.innerHTML = tblc /*+   btarto + tbls +  bdetnek*/ ;
+    elem.innerHTML = tblc;
     $('.btable.c .bk[data-bt=1]').addClass('elsoelem');
     const oelem = $('.btable.c .bk[data-bt=' + _.last(jcsblokkok) + ']');
-    oelem.addClass('osztoelem');
+    oelem.addClass('osztoelem').addClass('move');
+    oelem.trigger('click');
     ooszlop = oelem[0].cellIndex;
+    $("#tablejcs #jcsout table.btable.c thead th:nth(" + (ooszlop + 1) + ")").addClass('hl');
     hljcs_c(oelem[0]);
     A_bontas();
 };
@@ -5602,9 +5749,10 @@ function zetajcsHl(e, k) {
 
 function formAbontas(b) {
     var txt = "";
-    //var dtxt = "<span class='bvec' data-ab='0'><span class='paren1'>(</span>" + monomvec2HTML(vList2obj(bvector(ss)[n - bsora], 1)) + "<span class='paren1'>)</span></span>";
-    var dtxt = "<span class='bvec' data-ab='0'>b<sub>100</sub></span>";
-    //var cimke = "b<sub>" + bsora + "</sub>&times;";
+    var dtxt = "";
+    //const btxt = "&times;<span id='abvege' onclick='zetajcsHl(this,0);'>b<sub>" + osztoelem + "</sub></span>"
+    const btxt = "&times;<span id='abvege' onclick='zetajcsHl(this,-1);'></span><span id='abvegec' onclick='zetajcsHl(this,0);'></span>";
+    const btxt1 = "&times;<span id='abvege1' class='bvec' data-ab='-1'>b<sub>" + osztoelem + "</sub></span><span id='abvege1c' class='bvec' data-ab='0'></span>";
     var szamlalo = 1;
     var ossz = 0;
     for (let w of b) {
@@ -5616,20 +5764,16 @@ function formAbontas(b) {
             dtxt += "&middot;<span class='bvec' data-ab='" + szamlalo + "'><span class='paren1'>(</span>" + zetaSor_der(v, k) + "<span class='paren1'>)</span></span>"; // MAPLEBE * &middot;
         else
             dtxt += "&middot;<span class='bvec' data-ab='" + szamlalo + "'>" + zetaSor_der(v, k) + "</span>"; // MAPLEBE * &middot;
-        //cimke += "A<sub>" + indxs[szamlalo - 1] + "," + indxs[szamlalo] + "</sub>&middot;";
         szamlalo++;
     };
     txt = txt.slice(0, -8);
-    var elojel = "";
-    //if (cimke.endsWith('&middot;'))
-    //   cimke = cimke.slice(0, -8);
+    dtxt = dtxt.slice(8);
+    var elojel = "<span id='aelojel'></span>";
     if ((szamlalo + ossz + 1) % 2 == 1)
-        elojel = " − ";
-    var bsora = 100;
-    txt = "<span  onclick='zetajcsHl(this,0);'>b<sub>" + bsora + "</sub></span>&middot;" + txt
-        //document.getElementById("bjelentes").innerHTML = elojel + txt + " =<br/> = " + elojel + dtxt;
-    return elojel + txt + " =<br/> = " + elojel + dtxt
-        // document.getElementById("bcimke").innerHTML = cimke;
+        elojel = "<span id='aelojel'> − </span>";
+    txt += btxt;
+    dtxt += btxt1;
+    return elojel + txt + " =<br/> = " + "<span id='abelojel'>" + elojel + "</span>" + dtxt
 };
 
 function A_bontas() {
@@ -7193,7 +7337,6 @@ function b_sor(v0) {
         invelem.trigger('click');
 };
 
-
 function b_bontas(s) {
     const n = s.length;
     var out = [];
@@ -7275,7 +7418,7 @@ function b_bontasK(s, k) {
             p = "&nbsp;&part;"
         else if (vnext > 1)
             p = "&nbsp;&part;<sup>" + vnext + "</sup>"
-        out1 += "<li>&nbsp;" + eloj + f + p + "<span class='hlr'>(" + vk.toString() + ")</span></li></ol>";
+        out1 += "<li>&nbsp;" + eloj + f + p + "<span class='hlr'>(" + vk.toString() + ")</span></li></ul>";
 
         var coeff = factorial(vnext);
         var d = expDeriv(vk, vnext).map(y => [y[0] / coeff, y[1]]);
