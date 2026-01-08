@@ -5319,6 +5319,7 @@ var osztoelem = 1;
 var ooszlop = 1;
 var a_dersor = [];
 var b_dersor = [];
+var schossza = 1;
 
 function setOutputFontjcs(v) {
     var elem = document.getElementById("tablejcs");
@@ -5420,7 +5421,10 @@ function ab_bontasK(s, k) {
         var vk = s.slice(0, k);
         var vnext = s[k] - 1;
         var vege = [1, ...s.slice(k + 1)];
-        out += "&nbsp;" + formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;<span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>&part;<sup>" + vnext + "</sup><span class='hlr'>(" + vk.toString() + ")</span><span class='paren'>]</span>";
+        if (schossza == ooszlop)
+            out += "0";
+        else
+            out += "&nbsp;" + formazottTortHTML("(-1)<sup>" + (_.sum(vk) + 1) + "</sup>", vnext + "!") + "&nbsp;<span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span>&part;<sup>" + vnext + "</sup><span class='hlr'>(" + vk.toString() + ")</span><span class='paren'>]</span>";
         outc += "&middot;<span style='font-size:120%;'>&zeta;</span><span class='paren'>[</span><span class='hly'>(" + vege + ")</span><sup>*</sup><span class='paren'>]</span>";
 
         var ce = setabeloj(vk);
@@ -5454,11 +5458,15 @@ function ab_bontasK(s, k) {
         if (dl > 1)
             dtxt = "<span class='paren1'>(</span>" + dtxt + "<span class='paren1'>)</span>";
         //out2 += "&nbsp;" + dtxt + "&middot;&zeta;<sub>" + conjcomp(vege).toString() + "</sub>";
-        out2 += "&nbsp;" + dtxt;
-        out2c += "&middot;&zeta;<sub>" + conjcomp(vege).toString() + "</sub>";
-        b_dersor.push(vList2obj([
-            [1, conjcomp(vege)]
-        ], 1));
+        if (schossza == ooszlop)
+            out2 += "0";
+        else {
+            out2 += "&nbsp;" + dtxt;
+            out2c += "&middot;&zeta;<sub>" + conjcomp(vege).toString() + "</sub>";
+            b_dersor.push(vList2obj([
+                [1, conjcomp(vege)]
+            ], 1));
+        }
     } else if (k == n - 1) {
         var vk = s.slice(0, -1);
         var vnext = _.last(s);
@@ -5532,6 +5540,14 @@ function hljcs_e(e, indx) {
 };
 
 function triggerboszto(e) {
+    if (schossza == ooszlop) {
+        document.getElementById('abvege').innerHTML = "0";
+        document.getElementById('abvege1').innerHTML = "0";
+        document.getElementById('abvegec').innerHTML = "";
+        document.getElementById('abvege1c').innerHTML = "";
+        document.getElementById('abkibontva').innerHTML = "0";
+        return;
+    }
     if (!($(e).hasClass('bk') && $(e).hasClass('hl')) || $(e).hasClass('osztoelem')) {
         var el = $("#tablejcs #jcsout table.btable.c tr:nth(1) td.boszto");
         if (el.length > 0) {
@@ -5585,11 +5601,12 @@ function setboszto(e) {
 
 function jcs_tabla(s, rev) {
     const n = s.length;
+    schossza = n;
     var bk = s.slice(0, -1).filter(y => y > 1);
     const lasts = _.last(s);
     const h = Math.max(_.max(bk) - 1, lasts);
     var bkv = [];
-    var l0 = -1;
+    var l0 = 1;
     if (!rev) {
         jcsblokkok = [];
         jcsak = [];
@@ -5677,12 +5694,11 @@ function jcs_tabla(s, rev) {
                     specelem(l, t);
             };
             var indx = sorsz[[l + 1, t].toString()];
-            var onc = "console.log(";
             if (rev) {
                 indx = ni + 1 - indx;
-                onc = "hlbtc(";
+                onc = "";
             };
-            tbl += "<td class='bk' data-bt='" + indx + "' onclick='" + onc + indx + ");'>( )<span class='bknum'>" + indx + "</span></td>";
+            tbl += "<td class='bk'>( )</td>";
             //tbl += "<td class='bk'>( )<span class='bknum'>" + sorsz[[l + 1, t].toString()] + "</span></td>";
         }
         tbl += "</tr>";
@@ -5801,7 +5817,7 @@ function formAbontas(b) {
         elojel = "<span id='aelojel'> − </span>";
     txt += btxt;
     dtxt += btxt1;
-    return elojel + txt + " =<br/> = " + "<span id='abelojel'>" + elojel + "</span>" + dtxt + " = <div id='abkibontva' style='border: 1px solid #b7b7b7;padding: 0 5px;font-size: 90%;background-color: #e1e1e1;'><div>"
+    return elojel + txt + " =<br/> = " + "<span id='abelojel'>" + elojel + "</span>" + dtxt + " = <div id='abkibontva' style='border: 1px solid #b7b7b7;padding: 0 5px;font-size: 90%;background-color: #e1e1e1;margin-top:10px;'><div>"
 };
 
 function A_bontas() {
@@ -7472,7 +7488,7 @@ function b_tabla(s, rev) {
     const lasts = _.last(s);
     const h = Math.max(_.max(bk) - 1, lasts);
     var bkv = [];
-    var l0 = -1;
+    var l0 = -11;
     for (var j = 0; j < n - 1; j++) {
         if (s[j] > 1)
             bkv.push(j)
@@ -7510,7 +7526,7 @@ function b_tabla(s, rev) {
             } else
                 tbl += "<td onclick='hlbtclear();'>" + s[t] + "</td>";
         } else {
-            const onc = "onclick='valami(";
+            const onc = "onclick='console.log(";
             if (bkv.includes(t)) {
                 tbl += "<td class='bk' data-bt='" + indx + "' " + onc + indx + ");'>" + (s[t] - l) + "<span class='bknum'>" + indx + "</span></td>";
             } else
