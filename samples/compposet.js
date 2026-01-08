@@ -5586,7 +5586,7 @@ function hlboszto(e) {
 };
 
 function setbdet(e, s) {
-    if ((!$(e).hasClass('hl') || $(e).hasClass('osztoelem')) && !$(e).hasClass('aelem') && !$(e).hasClass('aelemvolt'))
+    if ((!$(e).hasClass('hl') || $(e).hasClass('osztoelem')) && !$(e).hasClass('aelem') && !($(e).hasClass('aelemvolt') && !$(e).hasClass('osztoelem')))
         bdet = s;
 };
 
