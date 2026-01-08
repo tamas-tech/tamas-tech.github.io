@@ -5510,8 +5510,8 @@ function ab_bontasK(s, k) {
     document.getElementById('abvege1').innerHTML = out2;
     document.getElementById('abvegec').innerHTML = outc;
     document.getElementById('abvege1c').innerHTML = out2c;
-    const ab_dersor = _.concat(a_dersor, b_dersor);
-    document.getElementById('abkibontva').innerHTML = monomvec2HTML(symbVProd(ab_dersor));
+    //const ab_dersor = _.concat(a_dersor, b_dersor);
+    //document.getElementById('abkibontva').innerHTML = monomvec2HTML(symbVProd(ab_dersor));
     //return [out, out1, out2];
 };
 
@@ -5527,7 +5527,8 @@ function updJcsak() {
 function hljcs_e(e, indx) {
     const $e = $(e);
     if ($e.hasClass('aelem')) {
-        $e.removeClass('aelem');
+        $e.addClass('aelemvolt').removeClass('aelem');
+        setTimeout(() => { $e.removeClass('aelemvolt'); }, 40);
     } else {
         indxBlokkja(indx)
         const eindx = _.first(jcsblokkok);
@@ -5557,8 +5558,9 @@ function triggerboszto(e) {
         } else {
             setTimeout(() => {
                 el = $("#tablejcs #jcsout table.btable.c td.hl:not(.osztoelem):nth(0)");
+                el.addClass('boszto');
                 const o2 = el[0].cellIndex - 1;
-                console.log("triggerboszto 2 -> ab_bontasK")
+                // console.log("triggerboszto 2 -> ab_bontasK")
                 ab_bontasK(bdet, o2 - ooszlop + 1);
                 $("#tablejcs #jcsout table.btable.c thead th:nth(" + (o2 + 1) + ")").addClass('hl');
             }, 20);
@@ -5584,7 +5586,7 @@ function hlboszto(e) {
 };
 
 function setbdet(e, s) {
-    if ((!$(e).hasClass('hl') || $(e).hasClass('osztoelem')) && !$(e).hasClass('aelem'))
+    if ((!$(e).hasClass('hl') || $(e).hasClass('osztoelem')) && !$(e).hasClass('aelem') && !$(e).hasClass('aelemvolt'))
         bdet = s;
 };
 
