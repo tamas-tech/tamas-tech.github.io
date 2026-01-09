@@ -2233,6 +2233,12 @@ p#keresztelem {
     color: black;
 }
 
+.nicetbl table.btable.c tbody tr td.bk.elsoelem.osztoelem {
+    background-image: linear-gradient(to right, #7dff71 50%, rgb(0, 174, 247) 50%);
+    background-size: 20% 6px;
+}
+
+
 .nicetbl table.btable.c tbody tr td.bosztoelott {
     background-color: #7fd9d9;
     text-decoration: none;
@@ -2337,6 +2343,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
