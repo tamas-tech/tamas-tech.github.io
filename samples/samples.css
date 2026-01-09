@@ -2234,8 +2234,7 @@ p#keresztelem {
 }
 
 .nicetbl table.btable.c tbody tr td.bk.elsoelem.osztoelem {
-    background-image: linear-gradient(to right, #7dff71 50%, rgb(0, 174, 247) 50%);
-    background-size: 20% 6px;
+    background-image: linear-gradient(-45deg, #4bff3b 50%, rgb(0, 174, 247) 50%);
 }
 
 
@@ -2343,6 +2342,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
