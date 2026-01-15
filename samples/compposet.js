@@ -2425,8 +2425,9 @@ function hatas1(nv, mv) {
 
 function Lifbint(s) {
     oCt = [];
-    const rc = ribbon_comp(s);
-    const rcl = rc.slice(0, -1);
+    /*const rc = ribbon_comp(s);
+    const rcl = rc.slice(0, -1);*/
+    const rcl = ribbon_comp(s);
     const ss = _.sum(s);
     const d = 1 - (ss % 2);
     var szamlalo = 0;
@@ -2466,8 +2467,9 @@ function Lifbint(s) {
 
 function Lifbkibontva(s) {
     oCt = [];
-    const rc = ribbon_comp(s);
-    const rcl = rc.slice(0, -1);
+    /*const rc = ribbon_comp(s);
+    const rcl = rc.slice(0, -1);*/
+    const rcl = ribbon_comp(s);
     const ss = _.sum(s);
     const d = 1 - (ss % 2);
     var szamlalo = 0;
@@ -3296,11 +3298,12 @@ function k29zeta2gp(s) {
 
 function k29_det(s) {
     k29tagok = 0;
+    const ovszabad = !document.getElementById("setdetov").checked;
     const de = keplet29zeta(s);
     const deobj = vList2obj(de, 1);
     k29tagok = deobj.length;
     var dtxt = '&zeta;<sub>k29</sub>(' + s.toString() + ')';
-    if (de.length < 1050) {
+    if (ovszabad && de.length < 1050) {
         var ov = symbOv(deobj);
         k29tagok = ov.length;
         dtxt += " (összevonás után) = " + monomvec2HTML(ov);
@@ -4033,7 +4036,7 @@ function teglaTrim() {
     const lo = rfb_last.o;
     const ls = rfb_last.s;
     const p = $('#rfbT .tsorszam-s.ln').text() * 1;
-    var elojel = Math.pow(-1, _.sum(_.dropRight(lv)) + p + 1);
+    var elojel = Math.pow(-1, _.sum(_.dropRight(lv)) /* + p + 1*/ );
     if (elojel < 0)
         elojel = "−";
     else
@@ -5512,6 +5515,7 @@ function ab_bontasK(s, k) {
     document.getElementById('abvege1c').innerHTML = out2c;
     const ab_dersor = _.concat(a_dersor, b_dersor);
     document.getElementById('abkibontva').innerHTML = monomvec2HTML(symbVProd(ab_dersor));
+    //return [out, out1, out2];
 };
 
 function updJcsak() {
@@ -6998,7 +7002,7 @@ function stuff() {
             sh = "Nem megfelelő bemenet"
         else {
             sh = "(" + a.toString() + ") <span style='font-size:1.5em;'>&lowast;</span> (" + b.toString() + ") = " + sh;
-            sh = sh.slice(0, -3)
+            sh = sh.slice(0, -2)
         }
     };
     elem.innerHTML = sh;
@@ -8100,6 +8104,7 @@ function str2ms(str, muv) {
 function ms_kiszed(id, muv) {
     var str = document.getElementById(id).value;
     str = str2ms(str, muv);
+    console.log(str)
     return str;
     //document.getElementById("diffout").innerHTML = JSON.stringify(str);
 };
