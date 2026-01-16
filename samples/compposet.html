@@ -302,7 +302,7 @@
         <span class="uiset" onclick="setCard(this);">&#8677;</span>
         </span>
         <div class="stickblock">
-            <p class="keplet" id="keplet_k4" style="padding-bottom:10px;margin-bottom:0px;">\[\begin{gather*} \zeta(\boldsymbol{a})=\zeta(\boldsymbol{a}^{\dagger})\hspace{0.7cm}\text{, ahol } \boldsymbol{a}^{\dagger} = \left((-1)\odot\boldsymbol{a}\cdot (1)\right)^{-1*} \\ \text{Vagyis, }(a_{1},a_{2},\ldots,a_{n})^{\dagger} =(1,a_{n},a_{n-1},\ldots,a_{2},a_{1}-1)^{*}\hspace{0.7cm}(a_{1}\geq2)
+            <p class="keplet" id="keplet_k4" style="padding-bottom:10px;margin-bottom:0px;">\[\begin{gather*} \zeta(\boldsymbol{a})=\zeta(\boldsymbol{a}^{\dagger})\hspace{0.7cm}\text{, ahol } \boldsymbol{a}^{\dagger} = \left((-1)\odot\boldsymbol{a}\bullet (1)\right)^{-1*} \\ \text{Vagyis, }(a_{1},a_{2},\ldots,a_{n})^{\dagger} =(1,a_{n},a_{n-1},\ldots,a_{2},a_{1}-1)^{*}\hspace{0.7cm}(a_{1}\geq2)
                 \end{gather*}\]
             </p>
         </div>
@@ -514,7 +514,7 @@
     <div class="keret of even" id="k10" style="margin-bottom:10px;padding-bottom: 10px;">
         <span class="uitok">    <b><big class="sorszam">10.</big></b><input class="kijelzoset" oninput="setkijelzoW('outk29',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="keplet_k10" style="padding-bottom:10px;margin-bottom:0px;">\[\begin{gather*} \boldsymbol{c} \text{ admissible},\;\boldsymbol{s}=(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{c}),\;\hat{\boldsymbol{c}}=(1)\bullet(-1)\odot\boldsymbol{c},\;(\,)^{\dagger}:=(\,) \\(1)\hspace{6mm} \frac{(-1)^{n}}{n!}\partial^{n}(\boldsymbol{c}^{\dagger})
+            <p class="keplet" id="keplet_k10" style="padding-bottom:10px;margin-bottom:0px;">\[\begin{gather*} \boldsymbol{c} \text{ admissible},\;\boldsymbol{s}=(\underset{n}{\underbrace{1,1,\ldots,1}},\boldsymbol{c}),\;\hat{\boldsymbol{c}}=\left[(1)\bullet(-1)\odot\boldsymbol{c}\,\right]^{\dagger}=\left[(-1)\odot\boldsymbol{c}\bullet(1)\right]^{-*},\;(\,)^{\dagger}:=(\,) \\(1)\hspace{6mm} \frac{(-1)^{n}}{n!}\partial^{n}(\boldsymbol{c}^{\dagger})
                 = {\LARGE \sum_{{\large \begin{subarray}{c}\boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{b}\,=\,\boldsymbol{s}\\ \boldsymbol{a}\neq(\,),\;\boldsymbol{b}\text{ admissible}\end{subarray}}}}\frac{(-1)^{\sum \boldsymbol{a}+p+1}}{p!}{\Large
                 \sum_{{\large k = p\cdot\delta_{|\boldsymbol{b}|,0}}}^{{\large p}}}(-1)^{k}\,\dbinom{p}{k}\partial^{k}(\boldsymbol{a}^{*})\;{\large\underline{\unicode{x29E2}}}\;\partial^{p-k}(\boldsymbol{b}^{\dagger}) \\(2)\hspace{6mm} \boldsymbol{c}
                 = {\LARGE \sum_{{\large \begin{subarray}{c}\boldsymbol{a}\odot (1)^{p}\bullet\boldsymbol{b}\,=\,\hat{\boldsymbol{c}}\\ \boldsymbol{a}\neq(\,),\;\boldsymbol{b}\text{ admissible}\end{subarray}}}}\frac{(-1)^{\sum \boldsymbol{a}+p+1}}{p!}{\Large
@@ -948,6 +948,7 @@
     </script>
 </body>
 </html>
+
 
 
 
