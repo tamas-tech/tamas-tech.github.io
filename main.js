@@ -220,7 +220,6 @@ function sampleTglOLD() {
 };
 
 function sampleTgl() {
-    //$('#sample-container').toggle(100);
     $('.btn-open').toggleClass('shown');
     var btn = $('.sample-open');
     var txt = btn.html();
@@ -228,11 +227,13 @@ function sampleTgl() {
     if (txt == "❭") {
         btn.html('&#x276C;');
         setTimeout(() => {
+            $('#sample-container').toggle(1200);
+        }, 300);
+        setTimeout(() => {
             document.querySelector('button.btn-open').scrollIntoView({
                 behavior: "smooth",
             });
-            $('#sample-container').toggle(1200);
-        }, 300);
+        }, 1500);
     } else {
         btn.html('&#x276D;');
         $('#sample-container').toggle(100);
@@ -620,4 +621,5 @@ function cmSj() {
         className: 'valami'
     });
 }
+
 
