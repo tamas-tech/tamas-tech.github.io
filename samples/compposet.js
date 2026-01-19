@@ -38,8 +38,6 @@ function setkijelzoW(id, val) {
     elem.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
     setTimeout(() => { $(elem).parent().animate({ scrollLeft: w + 50 }, w); }, 800);
     setTimeout(() => { $(elem).parent().animate({ scrollLeft: -w - 50 }, w); }, 1200 + w);
-    //setTimeout(() => { elem.scrollIntoView({ behavior: "smooth", block: "center", inline: "end" }); }, 800);
-    //setTimeout(() => { elem.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" }); }, 1800);
 };
 
 var ra = undefined;
@@ -8220,6 +8218,13 @@ function kawaLeft(a, b, m) {
     return symbOv(_.flatten(out));
 };
 
+function kawaRight(a, b, m) {
+    const usab = usigma(a, b);
+    console.log(usab)
+    const out = vList2obj(kawa_w(usab, m), 1);
+    return symbOv(out);
+};
+
 function kawashima() {
     clearKaw();
     const elem1 = document.getElementById("figykaw");
@@ -8235,7 +8240,8 @@ function kawashima() {
         a_sor = a_sor.map(y => y - 1);
         b_sor = b_sor.map(y => y - 1);
     };
-    var sh = "",
+    var sh1 = "",
+        sh2 = "",
         txt = "",
         meret;
     if (a_sor == undefined || b_sor == undefined)
@@ -8248,31 +8254,46 @@ function kawashima() {
         nnn = kk + b_sor.length;
         meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
         if (meret < 150000000) {
-            if (m == 1)
-                sh = usigma2Pari(a0, b0);
-            else {
-                sh = monomvec2gp(kawaLeft(a0, b0, m));
+            if (m == 1) {
+                sh1 = usigma2Pari(a0, b0);
+                sh2 = "";
+            } else {
+                sh1 = monomvec2gp(kawaLeft(a0, b0, m));
+                sh2 = monomvec2gp(kawaRight(a0, b0, m));
             }
         } else {
-            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+            sh1 = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+            sh2 = "";
         }
     };
     if (a_sor != undefined && b_sor != undefined) {
-        sh = sh.replace("+-", "-");
-        txt += sh.slice(4, -2);
+        sh1 = sh1.replace("+-", "-");
+        sh2 = sh2.replace("+-", "-");
+        txt += sh1.slice(4, -2)
         txt = txt.replaceAll("1*", "")
         txt = txt.replaceAll("zetamult([", "&zeta;(");
-        txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&middot;")
+        txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&middot;");
         if (m == 1)
-            txt = "<span style='font-size:130%;font-weight: 700;margin-right:3px;'>&zeta;<sup>+</sup></span><span class='paren'>[</span><i>u</i>&sigma;<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>(</span>(" + a0.toString() + ")&lowast;(" + b0.toString() + ")" + "<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>)</span><span class='paren'>]</span> = " + txt;
-        else
-            txt = "<span>&circledast;</span>" + txt;
+            txt = "<span style='display:inline-block;margin-bottom:5px;background-color:#ffccd4;border:1px solid #ff7b7b;padding:2px 4px;'><span style='font-size:130%;font-weight: 700;margin-right:3px;'>&zeta;<sup>+</sup></span><span class='paren'>[</span><i>u</i>&sigma;<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>(</span>(" + a0.toString() + ")&lowast;(" + b0.toString() + ")" + "<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>)</span><span class='paren'>]</span></span> = " + txt;
+        else {
+            txt = "<span style='display:inline-block;margin-bottom:5px;background-color:#ffccd4;border:1px solid #ff7b7b;padding:2px 4px;'><span class='block' style='transform:scale(1.5);margin-top:10px;margin-left: 1em;'>∑</span><sub style='vertical-align:-1.6em;margin-left:-2.2em;font-size:70%;'>0&lt;k&lt;" + m + "</sub><span style='font-size:110%;font-weight:700;'>&zeta;</span><span style='display:inline-block;transform-origin:center;transform:scale(1.1, 1.2);'>[</span><i>u</i>&sigma;((" + a0 + "))&nbsp;&circledast;&nbsp;(1)<sup>k</sup>&nbsp;&middot;&nbsp;<span style='font-size:110%;font-weight:700;'>&zeta;</span><span style='display:inline-block;transform-origin:center;transform:scale(1.1, 1.2);'>[</span><i>u</i>&sigma;((" + b0 + "))&nbsp;&circledast;&nbsp;(1)<sup>" + m + " - k</sup><span style='display:inline-block;transform-origin:center;transform:scale(1.1, 1.2);'>]</span></span> = <br/>= " + txt;
+            txt += "<hr/>";
+            txt += "<span style='display:inline-block;margin-bottom:5px;background-color:#cce2ff;border:1px solid #7b83ff;padding:2px 4px;'><span style='font-size:110%;font-weight: 700;margin-right:4px;'>&zeta;</span><span style='display: inline-block;transform-origin: center;transform: scale(1.1, 1.2);'>[</span><i>u</i>&sigma;((" + a0 + ")&lowast;(" + b0 + "))&nbsp;&circledast;&nbsp;(1)<sup>" + m + "</sup><span style='display: inline-block;transform-origin: center;transform: scale(1.1, 1.2);'>]</span></span> = <br/>= ";
+            var txt2 = sh2.slice(4, -2);
+            txt2 = txt2.replaceAll("1*", "")
+            txt2 = txt2.replaceAll("zetamult([", "&zeta;(");
+            txt2 = txt2.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&middot;");
+            txt += txt2;
+        }
         txt = txt.replace("=  +", "=")
     }
 
     elem.innerHTML = txt;
     if (a_sor != undefined && b_sor != undefined && a_sor.length != 0 && b_sor.length != 0) {
-        $('#mycell1 .sagecell_editor textarea.sagecell_commands').val(sh);
+        if (m > 1)
+            $('#mycell1 .sagecell_editor textarea.sagecell_commands').val("[" + sh1 + "," + sh2 + "]");
+        else
+            $('#mycell1 .sagecell_editor textarea.sagecell_commands').val(sh1);
         $('#mycell1 .sagecell_input button.sagecell_evalButton').click();
         $('div.sagecell_sessionOutput').css('font-size', '22px');
         var ra = setInterval(() => {
@@ -8280,12 +8301,17 @@ function kawashima() {
             if (valasz != "") {
                 clearInterval(ra);
                 clearInterval(to);
-                elem.innerHTML = elem.innerHTML + " = <span style='color:red;font-weight:700;'>" + valasz + "</span>";
+                if (m > 1) {
+                    //var va = JSON.parse(valasz);
+                    var va = valasz.split(",")
+                    elem.innerHTML = elem.innerHTML + "<hr/><span style='color:red;font-weight:700;'>" + va[0].slice(1) + "</span><br/><span style='color:blue;font-weight:700;'>" + va[1].slice(0, -1) + "</span>";
+                } else
+                    elem.innerHTML = elem.innerHTML + "<span style='color:red;font-weight:700;'> = " + valasz + "</span>";
             }
         }, 50);
         var to = setTimeout(() => {
             clearInterval(ra);
-            elem.innerHTML = elem.innerHTML + " &rightarrow; <span style='color:red;font-weight:700;'>A válasz " + t / 1000 + " sec alatt nem érkezett meg.</span>";
+            elem.innerHTML = elem.innerHTML + " &rightarrow; <span style='color:blue;font-weight:700;'>A válasz " + t / 1000 + " sec alatt nem érkezett meg.</span>";
         }, t)
     }
 };
