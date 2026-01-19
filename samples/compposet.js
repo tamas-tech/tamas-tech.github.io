@@ -3533,6 +3533,7 @@ function drawDet() {
         if (detmk29kell) {
             var det00 = _.cloneDeep(det0);
             var kul = symbOv(_.flatten([det00, symbVprod([{ "c": -1 }], vList2obj(keplet29zeta(s), 1))]));
+            console.log(kul)
             var detmk29 = monomvec2HTML(kul);
             var detmk29tagok = kul.length;
             if (detmk29tagok > tagmax)
@@ -8155,6 +8156,10 @@ function clearKaw() {
         $('#ideout1 .sagecell_sessionOutput pre').text("")
 };
 
+function usigma0(v) {
+    return invPv(v).map(y => [Math.pow(-1, v.length), y]);
+}
+
 function usigma(v, w) {
     var out1 = _.flatten(stuffle(v, w).map(y => invPv(y).map(z => [Math.pow(-1, y.length), z])));
     out1 = _.groupBy(out1, y => y[1]);
@@ -8180,23 +8185,39 @@ function usigma2Pari(v, w) {
     return gp;
 };
 
-function usigmaValasz(v, w) {
-    const elem = document.getElementById("shoutdbl");
-    const t = 3000;
-    $('#mycelldetshuff .sagecell_editor textarea.sagecell_commands').val(usigma2Pari(v, w));
-    $('#mycelldetshuff .sagecell_input button.sagecell_evalButton').click();
-    var ra = setInterval(() => {
-        valasz = $('#ideoutdetshuff .sagecell_sessionOutput pre').text();
-        if (valasz != "") {
-            clearInterval(ra);
-            clearInterval(to);
-            elem.innerHTML = " = " + valasz;
-        }
-    }, 50);
-    var to = setTimeout(() => {
-        clearInterval(ra);
-        elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
-    }, t)
+function kawa(a, b) {
+    /* if (a.length == 0)
+        return b;
+    else if (b.length == 0)
+        return a;
+    else { */
+    const st = stuffle(a.slice(1), b.slice(1));
+    const A = a[0] + b[0];
+    return st.map(y => [A, ...y]);
+    //}
+};
+
+function kawa_w(usw, t) {
+    const e = Array(t).fill(1);
+    var out = [];
+    for (let y of usw) {
+        var u = kawa(y[1], e);
+        for (let z of u)
+            out.push([y[0], z])
+    }
+    return ms_Ov(out);
+};
+
+function kawaLeft(a, b, m) {
+    const usa = usigma0(a);
+    const usb = usigma0(b);
+    var out = [];
+    for (var p = 1; p < m; p++) {
+        var ka = vList2obj(kawa_w(usa, p), 1);
+        var kb = vList2obj(kawa_w(usb, m - p), 1);
+        out.push(symbOv(symbVprod(ka, kb)));
+    }
+    return symbOv(_.flatten(out));
 };
 
 function kawashima() {
@@ -8205,6 +8226,7 @@ function kawashima() {
     elem1.innerHTML = "";
     const elem = document.getElementById("outkaw");
     const t = document.getElementById("tkaw").value * 1000;
+    const m = document.getElementById("mkawa").value * 1;
     a_sor = kiszed_dbl("akaw", "figykaw");
     b_sor = kiszed_dbl("bkaw", "figykaw");
     var a0 = a_sor;
@@ -8226,7 +8248,11 @@ function kawashima() {
         nnn = kk + b_sor.length;
         meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
         if (meret < 150000000) {
-            sh = usigma2Pari(a0, b0)
+            if (m == 1)
+                sh = usigma2Pari(a0, b0);
+            else {
+                sh = monomvec2gp(kawaLeft(a0, b0, m));
+            }
         } else {
             sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
         }
@@ -8236,8 +8262,11 @@ function kawashima() {
         txt += sh.slice(4, -2);
         txt = txt.replaceAll("1*", "")
         txt = txt.replaceAll("zetamult([", "&zeta;(");
-        txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&lowast;")
-        txt = "<span style='font-size:130%;font-weight: 700;margin-right:3px;'>&zeta;<sup>+</sup></span><span class='paren'>[</span><i>u</i>&sigma;<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>(</span>(" + a0.toString() + ")&lowast;(" + b0.toString() + ")" + "<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>)</span><span class='paren'>]</span> = " + txt;
+        txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&middot;")
+        if (m == 1)
+            txt = "<span style='font-size:130%;font-weight: 700;margin-right:3px;'>&zeta;<sup>+</sup></span><span class='paren'>[</span><i>u</i>&sigma;<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>(</span>(" + a0.toString() + ")&lowast;(" + b0.toString() + ")" + "<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>)</span><span class='paren'>]</span> = " + txt;
+        else
+            txt = "<span>&circledast;</span>" + txt;
         txt = txt.replace("=  +", "=")
     }
 
