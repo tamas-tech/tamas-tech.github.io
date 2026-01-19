@@ -6737,6 +6737,11 @@ function setOutputFontDet(v) {
     elem.style.fontSize = v + 'px';
 };
 
+function setOutputFontKaw(v) {
+    var elem = document.getElementById("outkaw");
+    elem.style.fontSize = v + 'px';
+};
+
 function Shuffle(a, b) {
     var s = [];
     if (a.length == 0)
@@ -8138,5 +8143,120 @@ function derivInput() {
         d = d.map(y => [y[0] / oszto, y[1]])
             //document.getElementById("diffout").innerHTML = JSON.stringify(d);
         document.getElementById("diffout").innerHTML = ms2HTML(d);
+    }
+};
+
+//Linear part of  Kawashima's relations
+
+function clearKaw() {
+    const elem = document.querySelector("#outkaw");
+    elem.innerHTML = "";
+    if ($('#ideout1 .sagecell_sessionOutput pre') != undefined)
+        $('#ideout1 .sagecell_sessionOutput pre').text("")
+};
+
+function usigma(v, w) {
+    var out1 = _.flatten(stuffle(v, w).map(y => invPv(y).map(z => [Math.pow(-1, y.length), z])));
+    out1 = _.groupBy(out1, y => y[1]);
+    var out = [];
+    _.forEach(out1, function(value, key) {
+        out.push([_.sum(value.map(y => y[0])), JSON.parse("[" + key + "]")]);
+    });
+    return out;
+};
+
+function usigma2Pari(v, w) {
+    const us = usigma(v, w);
+    var gp = "";
+    for (let a of us) {
+        var a0 = a[0] * 1;
+        var eloj = "+";
+        if (a0 < 0)
+            eloj = "-";
+        if (a0 != 0)
+            gp += eloj + Math.abs(a[0]) + "*zetamult([" + nconc([1], a[1]).toString() + "])";
+    }
+    gp = "gp(\"" + gp + "\")";
+    return gp;
+};
+
+function usigmaValasz(v, w) {
+    const elem = document.getElementById("shoutdbl");
+    const t = 3000;
+    $('#mycelldetshuff .sagecell_editor textarea.sagecell_commands').val(usigma2Pari(v, w));
+    $('#mycelldetshuff .sagecell_input button.sagecell_evalButton').click();
+    var ra = setInterval(() => {
+        valasz = $('#ideoutdetshuff .sagecell_sessionOutput pre').text();
+        if (valasz != "") {
+            clearInterval(ra);
+            clearInterval(to);
+            elem.innerHTML = " = " + valasz;
+        }
+    }, 50);
+    var to = setTimeout(() => {
+        clearInterval(ra);
+        elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
+    }, t)
+};
+
+function kawashima() {
+    clearKaw();
+    const elem1 = document.getElementById("figykaw");
+    elem1.innerHTML = "";
+    const elem = document.getElementById("outkaw");
+    const t = document.getElementById("tkaw").value * 1000;
+    a_sor = kiszed_dbl("akaw", "figykaw");
+    b_sor = kiszed_dbl("bkaw", "figykaw");
+    var a0 = a_sor;
+    var b0 = b_sor;
+    if (a_sor !== undefined && b_sor != undefined) {
+        a_sor = a_sor.map(y => y - 1);
+        b_sor = b_sor.map(y => y - 1);
+    };
+    var sh = "",
+        txt = "",
+        meret;
+    if (a_sor == undefined || b_sor == undefined)
+        txt = "HIBA";
+    else if (a_sor.length == 0 || b_sor.length == 0)
+        txt = "&zeta;( )";
+    else {
+        sumab = a_sor.reduce((x, y) => x + y, 0) + b_sor.reduce((x, y) => x + y, 0);
+        kk = a_sor.length;
+        nnn = kk + b_sor.length;
+        meret = binomial(sumab + nnn - 1, nnn - 1) * binomial(nnn, kk);
+        if (meret < 150000000) {
+            sh = usigma2Pari(a0, b0)
+        } else {
+            sh = "<div class='meret'>A számítás mérete: <b>" + meret + "</b>  meghaladja a maximálisan megengedett 150 000 000-t</div>";
+        }
+    };
+    if (a_sor != undefined && b_sor != undefined) {
+        sh = sh.replace("+-", "-");
+        txt += sh.slice(4, -2);
+        txt = txt.replaceAll("1*", "")
+        txt = txt.replaceAll("zetamult([", "&zeta;(");
+        txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&lowast;")
+        txt = "<span style='font-size:130%;font-weight: 700;margin-right:3px;'>&zeta;<sup>+</sup></span><span class='paren'>[</span><i>u</i>&sigma;<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>(</span>(" + a0.toString() + ")&lowast;(" + b0.toString() + ")" + "<span style='display: inline-block;transform-origin: center;transform: scale(1.2, 1.4);padding: 0 2px;'>)</span><span class='paren'>]</span> = " + txt;
+        txt = txt.replace("=  +", "=")
+    }
+
+    elem.innerHTML = txt;
+    if (a_sor != undefined && b_sor != undefined && a_sor.length != 0 && b_sor.length != 0) {
+        $('#mycell1 .sagecell_editor textarea.sagecell_commands').val(sh);
+        $('#mycell1 .sagecell_input button.sagecell_evalButton').click();
+        $('div.sagecell_sessionOutput').css('font-size', '22px');
+        var ra = setInterval(() => {
+            valasz = $('#ideout1 .sagecell_sessionOutput pre').text();
+            if (valasz != "") {
+                clearInterval(ra);
+                clearInterval(to);
+                elem.innerHTML = elem.innerHTML + " = <span style='color:red;font-weight:700;'>" + valasz + "</span>";
+            }
+        }, 50);
+        var to = setTimeout(() => {
+            clearInterval(ra);
+            elem.innerHTML = elem.innerHTML + " &rightarrow; <span style='color:red;font-weight:700;'>A válasz " + t / 1000 + " sec alatt nem érkezett meg.</span>";
+        }, t)
     }
 };
