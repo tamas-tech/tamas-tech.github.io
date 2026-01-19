@@ -1411,7 +1411,9 @@ div#kepek {
 #shoutdbl span.paren,
 #outnm span.paren,
 #outfb span.paren,
-#outk29 span.paren {
+#outk29 span.paren,
+#shoutdbl span.paren,
+#outkaw span.paren{
     transform: scale(1.2, 1.5);
     display: inline-block;
     transform-origin: center;
@@ -2342,6 +2344,7 @@ table tr.trvonal {
     left: 15px;
     margin-top: 10px;
 }
+
 
 
 
