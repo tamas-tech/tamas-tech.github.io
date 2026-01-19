@@ -200,7 +200,7 @@ function calcTgl() {
     $('#calcbar').toggle(300);
 };
 
-function sampleTgl() {
+function sampleTglOLD() {
     //$('#sample-container').toggle(100);
     $('.btn-open').toggleClass('shown');
     var btn = $('.sample-open');
@@ -217,6 +217,26 @@ function sampleTgl() {
         btn.html('&#x276D;');
     }
     $('#sample-container').toggle(100);
+};
+
+function sampleTgl() {
+    //$('#sample-container').toggle(100);
+    $('.btn-open').toggleClass('shown');
+    var btn = $('.sample-open');
+    var txt = btn.html();
+    $('#sample-c').toggleClass('opened', 300);
+    if (txt == "❭") {
+        btn.html('&#x276C;');
+        setTimeout(() => {
+            document.querySelector('button.btn-open').scrollIntoView({
+                behavior: "smooth",
+            });
+            $('#sample-container').toggle(1200);
+        }, 300);
+    } else {
+        btn.html('&#x276D;');
+        $('#sample-container').toggle(100);
+    }
 };
 
 function megnyitfn(x) {
@@ -600,3 +620,4 @@ function cmSj() {
         className: 'valami'
     });
 }
+
