@@ -8395,7 +8395,7 @@ function IKDer() {
     const a = kiszed_dbl("aik", "figyik");;
     const n = document.getElementById('nik').value * 1;
 
-    const t = document.getElementById("tdbl").value * 1000;
+    const t = document.getElementById("tik").value * 1000;
 
     var sh = "",
         txt = "";
@@ -8440,3 +8440,4 @@ function IKDer() {
         }, t)
     }
 };
+
