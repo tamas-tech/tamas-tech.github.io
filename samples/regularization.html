@@ -185,11 +185,32 @@
         <p id="figykaw" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
         <p id="outkaw" style="margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
     </div>
-    
+
+    <div class="keret of odd" id="k6">
+        <b><big class="sorszam" style="margin-right: 15px;">6.</big></b>Derivation relations
+        <p class="keplet" style="padding:10px;margin-bottom:10px;text-align: center;"><span style='font-size:120%;'>&part;</span><sub>n</sub>(<b>a</b>) = 0
+        </p>
+
+        <div style="margin-left:2px;margin-bottom:10px;padding:3px;">
+            <label for="nik"><b style="padding: 2px 7px;">n</b> =  </label>
+            <input type="number" id="nik" value="2" min="0" step="1" onchange="IKDer();" name="nik" style="width:50px;margin-right:10px;">
+            <label for="aik"><b style="padding: 2px 7px;">a</b> = </label>
+            <input class="inpvec" type="text" id="aik" value="2,1,3" name="aik" style="margin-right:10px;"> (admissible)
+        </div>
+        <button class="showpre1" style="width:60px;margin-left:10px" onclick="IKDer();" title="Calculate series">∂<sub>n</sub>(<b>a</b>)</button>
+        <button class="showpre1" style="width:60px;margin-left:3px" onclick="idClear('#outik');" title="Clear series">Clear</button>
+        <label for="setik" style="margin-left: 5px;">with &zeta;</label>
+        <input type="checkbox" name="setik" id="setik" oninput="IKDer()" style="height:20px;width:20px;vertical-align:middle;">
+        <label for="setoutputfontIK">&#128474;</label>
+        <input id="setOutputFontIK" oninput="setOutputFontIK(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setOutputFontIK" />
+        <p class="kijelzo" id="outik" style="margin-top:10px;line-height: 1.5;"></p>
+        <p id="figyik" style="display:none;padding:0 10px;background-color:#fff1eb"></p>
+    </div>
 </body>
 
 
 </html>
+
 
 
 
