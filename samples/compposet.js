@@ -8316,3 +8316,127 @@ function kawashima() {
     }
 };
 
+
+// Ihara-Kaneko derivation and Derivation relations
+
+function setOutputFontIK(v) {
+    var elem = document.getElementById("outik");
+    elem.style.fontSize = v + 'px';
+};
+
+function n2str01(n) {
+    return powerSet(range(1, n)).map(y => set2digit(y, n).toString().replaceAll(",", ""));
+};
+
+function cserelAt(str, indx, repl) {
+    return str.slice(0, indx) + repl + str.slice(indx + 1);
+};
+
+function xpyn(str, n) {
+    var out = {};
+    const N = str.length;
+    const ps = n2str01(n - 1).map(y => "0" + y + "1");
+    for (let v of ps) {
+        for (var i = 0; i < N; i++) {
+            var rp = cserelAt(str, i, v);
+            var benne = out.hasOwnProperty(rp);
+            if (str.charAt(i) == "0") {
+                if (benne)
+                    out[rp]++;
+                else
+                    out[rp] = 1;
+            } else {
+                if (benne)
+                    out[rp]--;
+                else
+                    out[rp] = -1;
+            };
+        };
+    };
+    out = _.omitBy(out, y => y == 0);
+    return out;
+};
+
+function strobj2vec(obj) {
+    var v = [];
+    _.forEach(obj, function(value, key) {
+        v.push([value, str2vec(key).map(y => y + 1)]);
+    });
+    return v;
+};
+
+function IKder(v, n) {
+    const v01 = convertstr01(v.map(y => y - 1))
+    return strobj2vec(xpyn(v01, n));
+};
+
+function vecList2Pari(v) {
+    var gp = "";
+    for (let a of v) {
+        var a0 = a[0] * 1;
+        var eloj = "+";
+        if (a0 < 0)
+            eloj = "-";
+        if (a0 != 0)
+            var c = Math.abs(a[0]);
+        if (c == 1)
+            c = "";
+        else
+            c += "*";
+        gp += eloj + c + "zetamult([" + a[1].toString() + "])";
+    }
+    gp = "gp(\"" + gp + "\")";
+    return gp;
+};
+
+function IKDer() {
+    const elem = document.getElementById('outik');
+    const relkell = document.getElementById('setik').checked;
+    const a = kiszed_dbl("aik", "figyik");;
+    const n = document.getElementById('nik').value * 1;
+
+    const t = document.getElementById("tdbl").value * 1000;
+
+    var sh = "",
+        txt = "";
+    if (a == undefined)
+        txt = "HIBA";
+    else if (a.length == 0)
+        txt = "most ures";
+    else {
+        const der = IKder(a, n);
+        sh = vecList2Pari(der);
+        sh = sh.replace("+-", "-");
+        txt += sh.slice(4, -2);
+        if (relkell)
+            txt = txt.replaceAll("zetamult([", "&zeta;(");
+        else
+            txt = txt.replaceAll("zetamult([", "(");
+
+        txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&lowast;")
+        if (relkell)
+            txt = "<span style='font-size:130%;font-weight: 700;margin-right:3px;'>&zeta;</span><span class='paren'>[</span><span style='font-size:120%;'>&part;</span><sub>" + n + "</sub>(" + a + ")<span class='paren'>]</span> = " + txt;
+        else
+            txt = "<span style='font-size:120%;'>&part;</span><sub>" + n + "</sub>(" + a + ") = " + txt;
+        txt = txt.replace("=  +", "=")
+    }
+
+    elem.innerHTML = txt;
+    if (relkell && a != undefined && a.length != 0) {
+        $('#mycell1 .sagecell_editor textarea.sagecell_commands').val(sh);
+        $('#mycell1 .sagecell_input button.sagecell_evalButton').click();
+        $('div.sagecell_sessionOutput').css('font-size', '22px');
+        var ra = setInterval(() => {
+            valasz = $('#ideout1 .sagecell_sessionOutput pre').text();
+            if (valasz != "") {
+                clearInterval(ra);
+                clearInterval(to);
+                elem.innerHTML = elem.innerHTML + " = <span style='color:red;font-weight:700;'>" + valasz + "</span>";
+            }
+        }, 50);
+        var to = setTimeout(() => {
+            clearInterval(ra);
+            elem.innerHTML = elem.innerHTML + " &rightarrow; <span style='color:red;font-weight:700;'>A válasz " + t / 1000 + " sec alatt nem érkezett meg.</span>";
+        }, t)
+    }
+};
