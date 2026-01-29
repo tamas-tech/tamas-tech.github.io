@@ -6603,6 +6603,7 @@ function setAllk(e) {
 
 function reg_shuff() {
     const osszevet = document.getElementById('setshr').checked;
+    const dualja = document.getElementById('setshd').checked;
     const mivel = document.getElementById('shrvallaszto').checked;
     const elem = document.getElementById('shreg');
     var s = kiszed_gd('ad');
@@ -6612,10 +6613,16 @@ function reg_shuff() {
         s.unshift(1);
     const de = genDual(s);
 
-    var dtxt = 'reg<sub><span style="font-size:larger;">&#x29E2;</span></sub>(' + s.toString() + ') = ';
+    if (dualja)
+        var dtxt = 'reg<sup>&dagger;</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + s.toString() + ') = ';
+    else
+        var dtxt = 'reg<sub><span style="font-size:larger;">&#x29E2;</span></sub>(' + s.toString() + ') = ';
     for (let v of de) {
         var c = v[0];
-        var ertek = dualofv(v[1]).toString();
+        if (dualja)
+            var ertek = v[1].toString();
+        else
+            var ertek = dualofv(v[1]).toString();
         if (c == -1)
             c = " −<span der-data='" + ertek.replaceAll(",", "-") + "'>";
         else if (c == 1)
@@ -6630,7 +6637,7 @@ function reg_shuff() {
 
 
     dtxt = dtxt.replaceAll("=  +", "= ");
-    if (osszevet) {
+    if (osszevet && !dualja) {
         if (!mivel) {
             shrbindx = 0;
             var k = _.first(comp0(n, r));
@@ -6738,6 +6745,11 @@ function setOutputFontDet(v) {
 
 function setOutputFontKaw(v) {
     var elem = document.getElementById("outkaw");
+    elem.style.fontSize = v + 'px';
+};
+
+function setOutputFontH(v) {
+    var elem = document.getElementById("shouth");
     elem.style.fontSize = v + 'px';
 };
 
@@ -8441,3 +8453,316 @@ function IKDer() {
     }
 };
 
+// algebra of Q(x,y) = h
+
+function yvec2xy(v) {
+    str = "";
+    for (let i of v) {
+        for (var j = 0; j < i - 1; j++) {
+            str += "x";
+        }
+        str += "y";
+    }
+    return str;
+};
+
+function xy2vec(xy) {
+    var v = xy.split("y");
+    var t = "y";
+    const la = _.last(v);
+    if (la != "")
+        t = "x";
+    v = v.slice(0, -1).map(function(z) {
+        if (z == "")
+            return 1;
+        else if (z == "x")
+            return 2;
+        else
+            return z.split("").length + 1
+    });
+    if (t == "x")
+        if (la == "x")
+            v.push(1)
+        else
+            v.push(la.split("").length);
+    return [v, t];
+};
+
+/**
+ * Computes the shuffle product of two arrays.
+ * Returns an array of all possible interleaved sequences.
+ */
+function shuffleProduct(arr1, arr2) {
+    // Base Case: If one array is empty, return the other as the only possible shuffle
+    if (arr1.length === 0) return [arr2];
+    if (arr2.length === 0) return [arr1];
+
+    const result = [];
+
+    // Inductive Step:
+    // 1. Take the first element of arr1 and shuffle it with the rest
+    const shuffles1 = shuffleProduct(arr1.slice(1), arr2);
+    shuffles1.forEach(s => result.push([arr1[0], ...s]));
+
+    // 2. Take the first element of arr2 and shuffle it with the rest
+    const shuffles2 = shuffleProduct(arr1, arr2.slice(1));
+    shuffles2.forEach(s => result.push([arr2[0], ...s]));
+
+    return result;
+};
+
+function regHighlight(elem) {
+    $("#shouth span.hreg.hl").removeClass('hl');
+    //$("#outk29 span.shk29.hl").removeClass('hl');
+    const dat = elem.getAttribute('data-reg');
+    $("#shouth span.hreg[data-reg='" + dat + "']").addClass('hl');
+};
+
+function formazShuffle(v, blokk, withid) {
+    v = _.groupBy(v);
+    var txt = ""
+    var szamlalo = 1;
+    _.forEach(v, function(val, key) {
+        var c = val.length;
+        var eloj = "+ "
+        if (szamlalo == 1)
+            eloj = "";
+        if (withid) {
+            if (c > 1)
+                c = eloj + c + "&middot;";
+            else
+                c = eloj;
+            var xy = key.replaceAll(',', '');
+            xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this)'>" + c.toString() + xy + "</span>"
+            txt += xy;
+            szamlalo++;
+        } else {
+            if (c > 1)
+                c = " + " + c + "&middot;";
+            else
+                c = " + ";
+            var xy = key.replaceAll(',', '');
+            txt += c + xy;
+        }
+    });
+    //txt = txt.slice(3);
+    if (blokk)
+        txt = txt.replaceAll('y', 'y|');
+    txt = xy2XY(txt);
+    return txt;
+};
+
+function shufflexy(str1, str2) {
+    const w1 = str1.split("");
+    const w2 = str2.split("");
+    const sh = shuffleProduct(w1, w2);
+    const txt = formazShuffle(sh, false, true);
+    return txt;
+};
+
+function shuffleW() {
+    const w1 = document.getElementById("w1").value.split("");
+    const w2 = document.getElementById("w2").value.split("");
+    const sh = shuffleProduct(w1, w2);
+    const txt = formazShuffle(sh, false, false);
+
+    document.getElementById("shouth").innerHTML = txt;
+};
+
+
+/** 
+ * EZT MÉG ÁT KELL ÍRNI
+ * 
+ * Computes the stuffle (quasi-shuffle) product of two arrays.
+ * Elements are interleaved, and matching indices may be summed.
+ */
+function stuffleProduct(arr1, arr2) {
+    // Base Case: If one array is empty, return the other as the only result
+    if (arr1.length === 0) return [arr2];
+    if (arr2.length === 0) return [arr1];
+
+    const result = [];
+    const a = arr1[0];
+    const b = arr2[0];
+    const rest1 = arr1.slice(1);
+    const rest2 = arr2.slice(1);
+
+    // 1. Take first of arr1, stuffle remaining
+    stuffleProduct(rest1, arr2).forEach(s => {
+        result.push([a, ...s]);
+    });
+
+    // 2. Take first of arr2, stuffle remaining
+    stuffleProduct(arr1, rest2).forEach(s => {
+        result.push([b, ...s]);
+    });
+
+    // 3. Combine (stuff) first elements of both, then stuffle remaining
+    const combined = a + b; // "a + b" for numbers; adjust for other types
+    stuffleProduct(rest1, rest2).forEach(s => {
+        result.push([combined, ...s]);
+    });
+
+    return result;
+};
+
+function xy2XY(str) {
+    if (document.getElementById('xX').checked) {
+        var X = "X";
+        var Y = "Y";
+        const toX = document.getElementById("setX").value;
+        const toY = document.getElementById("setY").value;
+        if (toX.length > 0)
+            X = toX;
+        if (toY.length > 0)
+            Y = toY;
+        return str.replaceAll('x', X).replaceAll('y', Y);
+    } else
+        return str;
+};
+
+function stuffleW() {
+    const v1 = document.getElementById("w1").value.toLowerCase();
+    const v2 = document.getElementById("w2").value.toLowerCase();
+    var txt = "";
+    if (v1.endsWith("x") && v2.endsWith("x"))
+        txt = " w<sub>1</sub>, w<sub>2</sub>&nbsp;&notin;&nbsp;&#x1d525;y<br/>Mind a két szónak y-ra kel végződnie.";
+    else if (v1.endsWith("x"))
+        txt = " w<sub>1</sub>&nbsp;&notin;&nbsp;&#x1d525;y<br/>Mind a két szónak y-ra kel végződnie.";
+    else if (v2.endsWith("x"))
+        txt = " w<sub>2</sub>&nbsp;&notin;&nbsp;&#x1d525;y<br/>Mind a két szónak y-ra kel végződnie."
+    else {
+        const w1 = xy2vec(v1);
+        const w2 = xy2vec(v2);
+        const st = stuffleProduct(w1[0], w2[0]);
+        var txt1 = "";
+        var u = []
+        for (let v of st)
+            u.push(yvec2xy(v))
+        txt1 = formazShuffle(u, false, false);
+        //txt1 = txt1.slice(3);
+        txt1 = xy2XY(txt1)
+        txt = txt1 + "<hr/><span style='font-size:70%;color:#3e3e3e;'>" + JSON.stringify(st) + "</span>";
+    };
+
+    document.getElementById("shouth").innerHTML = txt;
+};
+
+function shtuffleW() {
+    const reg0w1 = document.getElementById("reg0w1").checked;
+    const reg0w2 = document.getElementById("reg0w2").checked;
+    const st = document.getElementById("shH").checked;
+    if (reg0w1)
+        formazS0reg("w1")
+    else if (reg0w2)
+        formazS0reg("w2")
+    else if (st)
+        stuffleW();
+    else
+        shuffleW();
+};
+
+function oksHSet(e) {
+    document.getElementById("reg0w1").checked = false;
+    document.getElementById("reg0w2").checked = false;
+    const st = e.checked;
+    const btn = document.getElementById("oksH");
+    if (st)
+        btn.innerHTML = "<span style='margin:0 5px;'>&lowast;</span>";
+    else
+        btn.innerHTML = '<span style="margin:0 3px;font-size:160%;line-height:0.4;"><span style="margin:0 3px;">&#x29E2;</span></span>';
+};
+
+function setReg0(e) {
+    const w1 = document.getElementById("reg0w1");
+    const w2 = document.getElementById("reg0w2");
+    if (e.id.endsWith("1"))
+        w2.checked = false;
+    else
+        w1.checked = false;
+    shtuffleW();
+};
+
+function countEndingX(str) {
+    // Matches one or more 'x' at the end of string ($)
+    const match = str.match(/x+$/);
+    return match ? match[0].length : 0;
+};
+
+function hlh(e, j) {
+    $("#shouth span.hreg.hl").removeClass('hl');
+    $('#shouth .ashx,#shouth .kashx').removeClass('hl');
+    $(e).addClass('hl');
+    $('#shouth .kashx[data-h=' + j + ']').addClass('hl');
+
+};
+
+function khlh(e, j) {
+    $('#shouth .ashx,#shouth .kashx').removeClass('hl');
+    $(e).addClass('hl');
+    $('#shouth .ashx[data-h=' + j + ']').addClass('hl');
+
+}
+
+function formazS0reg(id) {
+    const str = document.getElementById(id).value.toLowerCase();
+    const n = countEndingX(str);
+    const a = str.slice(0, str.length - n);
+    var ob = [
+        [1, [str.split("")]]
+    ];
+    var txt = 'reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(str) + ') = <span class="block" style="transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;' + n + '</sub>  (-1)<sup>j</sup> ' + xy2XY(a) + xy2XY("x") + '<sup>' + n + ' - j</sup><span style="margin:0 3px;">&#x29E2;</span>' + xy2XY("x") + '<sup>j</sup> = ';
+    txt += ' <span class="ashx" onclick="hlh(this,0)" data-h="0">' + xy2XY(a) + '<span style="font-weight:600;color:red;">' + xy2XY("x".repeat(n)) + '</span><span style="margin:0 3px;">&#x29E2;</span>( )</span>';
+    var txt2 = " <hr/><span onclick='khlh(this,0)' class='kashx' data-h='0'>" + xy2XY(str) + '</span>';
+    if (str.endsWith("y")) {
+        document.getElementById("shouth").innerHTML = txt + txt2;
+        return;
+    };
+    var v = "x",
+        e = "x".repeat(n - 1);
+    for (var j = 1; j < n; j++) {
+        var eloj = "+ "
+        if (j % 2 == 1)
+            var eloj = " − "
+        txt += ' <span class="ashx" onclick="hlh(this,' + j + ')" data-h="' + j + '">' + eloj + xy2XY(a) + '<span style="font-weight:600;color:red;">' + xy2XY(e) + '</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XY(v) + '</span></span>';
+        ob.push([Math.pow(-1, j), shuffleProduct((a + e).split(""), v.split(""))]);
+        txt2 += " <span onclick='khlh(this," + j + ")' class='kashx' data-h='" + j + "'>" + eloj + "<span class='paren'>(</span>" + shufflexy(a + e, v) + "<span class='paren'>)</span></span>";
+        v += "x";
+        e = e.slice(0, -1);
+    }
+    var eloj = " + "
+    if (n % 2 == 1)
+        var eloj = "− "
+    txt += ' <span class="ashx" onclick="hlh(this,' + n + ')" data-h="' + n + '">' + eloj + xy2XY(a + e) + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XY(v) + '</span></span>';
+    txt2 += " <span onclick='khlh(this," + n + ")' class='kashx' data-h='" + n + "'>" + eloj + "<span class='paren'>(</span>" + xy2XY(shufflexy(a + e, v)) + "<span class='paren'>)</span></span>";
+    ob.push([Math.pow(-1, n), shuffleProduct((a + e).split(""), v.split(""))]);
+
+    ob = ob.map(y => y[1].map(z => [y[0], z.join('')]));
+    ob = _.groupBy(_.flatten(ob), y => y[1]);
+    var ovtxt = "";
+    var adm = "";
+    var szamlalo = 0;
+    _.forEach(ob, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        var pl = "+ ";
+        if (szamlalo == 0)
+            pl = "";
+        if (s != 0) {
+            if (s == 1) {
+                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + xy2XY(key.replaceAll("y", "y|")) + "</span>";
+                adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + "(" + xy2vec(key)[0] + ")" + "</span>";
+            } else if (s == -1) {
+                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + "− " + xy2XY(key.replaceAll("y", "y|")) + "</span>";
+                adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + " − (" + xy2vec(key)[0] + ")" + "</span>";
+            } else if (s > 1) {
+                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + s + "&middot;" + xy2XY(key.replaceAll("y", "y|")) + "</span>";
+                adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + s + "&middot;(" + xy2vec(key)[0] + ")" + "</span>";
+            } else if (s < 1) {
+                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + "− " + Math.abs(s) + "&middot;" + xy2XY(key.replaceAll("y", "y|")) + "</span>";
+                adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + " − " + Math.abs(s) + "&middot;(" + xy2vec(key)[0] + ")" + "</span>";
+            }
+            szamlalo++;
+        };
+    });
+    document.getElementById("shouth").innerHTML = txt + " = " + txt2 + " = " + "<hr/>" + ovtxt + " = " + "<hr/>" + adm;
+};
