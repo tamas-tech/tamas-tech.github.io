@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Algebra of h</title>
+    <script src="../../../Redmentor/jquery-1.12.1.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script> -->
+
+    <link rel="stylesheet" href="samples.css">
+    <script src="multipolylog.js"></script>
+    <script src="compposet.js"></script>
+    <script src="../tools/fraction.min.js"></script>
+    <script src="../tools/YourCombinations.js"></script>
+    <!-- from cdn -->
+    <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+                preview: "none",
+            },
+            TeX: {
+                MAXBUFFER: 5 * 1024, // Set size of buffer in bytes
+                MAXMACROS: 1000000,
+                noErrors: {
+                    disabled: true
+                }, // Show error messages
+            },
+            menuSettings: {
+                zoom: "Double-Click",
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+    <div class="keret of even" id="k1" style="margin-bottom:10px;">
+        <b><big class="sorszam">1.</big></b>
+        <span style="font-size:130%;display:inline-block;width:80%;text-align:center;">w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&#x29E2;</span>w<sub>2</sub> és w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&lowast;</span>w<sub>2</sub></span>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
+            <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w1" value="yyxy">
+            <label for="reg0w1" style="margin-left: 5px;">reg0w1</label>
+            <input type="checkbox" name="reg0w1" id="reg0w1" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
+        </div>
+        <div style="margin-left:2px;padding:3px;">
+            <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
+            <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w2" value="xxyxyyx" name="b">
+            <label for="reg0w2" style="margin-left: 5px;">reg0w2</label>
+            <input type="checkbox" name="reg0w2" id="reg0w2" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
+        </div>
+        <div style="margin-top:2px;padding:5px;">
+            <button class="showpre1" onclick="shtuffleW();" title="Calculate input"><b>a</b><span  id="oksH"><span style="margin:0 3px;font-size:160%;line-height:0.4;text-decoration:underline;"><span style="margin:0 3px;">&#x29E2;</span></span></span><b>b</b></button>
+            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#shouth');" title="Clear output">Clear</button>
+            <span style="font-size:22px;margin-left:5px;text-decoration:underline;text-underline-offset: 3px;">&#x29E2;</span>
+            <label class="switch">
+            <input type="checkbox" id="shH" onchange="oksHSet(this);shtuffleW();"><span class="slider round"></span></label>
+            <span style="margin-right:10px;font-size:120%;">&lowast;</span>
+            <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
+        </div>
+        <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+            <div>
+                <label for="xX">xy | XY</label>
+                <input type="checkbox" name="xX" onchange="shtuffleW();" id="xX" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">|
+                <label for="setX">x&rightarrow;</label>
+                <input type="text" name="setX" value="X" onchange="shtuffleW();" id="setX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;">
+                <label for="setY">y&rightarrow;</label>
+                <input type="text" name="setY" value="Y" onchange="shtuffleW();" id="setY" style="height:20px;width:60px;vertical-align:middle;text-align:center;">
+            </div>
+            <!--  <div>
+                <label for="rfb_detreszletes">Részletes jelentés</label>
+                <input type="checkbox" name="rfb_detreszletes" id="rfb_detreszletes" onchange="rfb_reszlCh();" style="height:20px;width:20px;vertical-align:middle;">
+            </div>
+            <div>
+                <label for="bov">b<sub>i</sub> összevonása</label>
+                <input type="checkbox" name="bov" id="bov" style="height:20px;width:20px;vertical-align:middle;">
+            </div> -->
+            <div>
+                <label for="setoutputfontH">&#128474;</label>
+                <input id="outfont-sliderH" oninput="setOutputFontH(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfontH" />
+            </div>
+        </div>
+        <p id="figysh" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
+        <p id="shouth" style="margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
+    </div>
+</body>
+
+</html>
