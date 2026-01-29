@@ -2346,6 +2346,36 @@ table tr.trvonal {
     margin-top: 10px;
 }
 
+#shouth .ashx,
+#shouth .kashx,
+#shouth .hreg {
+    cursor: pointer
+}
+
+#shouth .ashx.hl,
+#shouth .kashx.hl {
+    background-color: #e8d6f4;
+    outline: 1px solid #ae00ff;
+    box-shadow: 0px 0px 2px 2px #d9d9d9;
+}
+
+#shouth .hreg.hl {
+    background-color: #fffbc0;
+    box-shadow: 0px 0px 2px 2px #c8b98e;
+}
+
+#shouth hr {
+    color: #d9d9d9;
+}
+
+#shouth span.paren {
+    transform: scale(1.4);
+    display: inline-block;
+    font-weight: 600;
+    color: red;
+}
+
+
 
 
 
