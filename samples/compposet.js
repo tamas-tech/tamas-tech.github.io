@@ -8989,3 +8989,14 @@ function formazinvS0reg(id) {
     }
     document.getElementById("shouth").innerHTML = txt;
 };
+
+function helpTglafh1(id) {
+    var elem = document.getElementById(id);
+    var open = elem.style.display;
+    var doc = elem.childNodes[1].src;
+    if (open == "none" || !doc.endsWith("base_of_halgebra_1.pdf")) {
+        elem.childNodes[1].src = "../docs/base_of_halgebra_1.pdf";
+        elem.style.display = "block";
+    } else
+        elem.style.display = "none";
+};
