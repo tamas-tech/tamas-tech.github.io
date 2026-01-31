@@ -2359,8 +2359,14 @@ table tr.trvonal {
     box-shadow: 0px 0px 2px 2px #d9d9d9;
 }
 
-#shouth .hreg.hl {
+#shouth .kashx .hreg.hl,
+#shouth .kashx.hreg.hl {
     background-color: #fffbc0;
+    box-shadow: 0px 0px 2px 2px #c8b98e;
+}
+
+#shouth .hreg.hl {
+    background-color: #ffe3ac;
     box-shadow: 0px 0px 2px 2px #c8b98e;
 }
 
@@ -2373,6 +2379,85 @@ table tr.trvonal {
     display: inline-block;
     font-weight: 600;
     color: red;
+}
+
+#shouth div.reg0sor {
+    font-size: 85%;
+    margin-bottom: 6px;
+    padding: 2px 4px;
+    outline: 2px solid #444;
+}
+
+#shouth div.reg0sor span.reg0pl {
+    cursor: pointer;
+}
+
+#shouth div.reg0sor span.reg0pl:hover {
+    outline: 1px solid #959595;
+    outline-offset: 2px;
+}
+
+#shouth div.reg0sor span.reg0pl.active {
+    outline: 2px solid #ff0000;
+    outline-offset: 2px;
+    background-color: #ffd6d6;
+    padding-bottom: 7px;
+}
+
+#shouth div.reg0sor span.reg0veg {
+    font-size: 120%;
+    display: block;
+    margin-top: 4px;
+    padding: 2px 4px;
+    border-top: 1px solid #c4ca8f;
+    background-color: #fffdf7;
+}
+
+#shouth div.reg0sor span.masodik {
+    display: none;
+}
+
+#shouth div.reg0sor span.reg0kijelzo {
+    display: none;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    padding: 2px 4px;
+    border: 2px solid #ff0000;
+    background-color: #ffd6d6
+}
+
+#shouth div.reg0sor span.reg0kijelzo.active {
+    display: block;
+}
+
+div#k1 span.kepletvalaszto {
+    display: block;
+    margin: 5px;
+    padding: 3px;
+    cursor: pointer;
+    border: 1px solid #cecece;
+    border-radius: 5px;
+}
+
+div#k1 span.kepletvalaszto.selected {
+    border: 1px solid #aaa;
+    background-color: #ffe1e1;
+}
+
+#floatkijelzo {
+    z-index: 100;
+    display: none;
+    position: sticky;
+    top: 10px;
+    max-height: calc(20vh);
+    max-width: calc(100vw);
+    overflow-y: auto;
+    line-height: 1.3;
+    text-align: center;
+    background-color: #166d71;
+    color: #fff3de;
+    padding: 5px 3px;
+    box-shadow: 0px 0px 3px 3px #126368;
 }
 
 
