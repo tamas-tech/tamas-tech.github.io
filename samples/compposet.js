@@ -8455,6 +8455,8 @@ function IKDer() {
 
 // algebra of Q(x,y) = h
 
+var reg0inv = false;
+
 function yvec2xy(v) {
     str = "";
     for (let i of v) {
@@ -8511,11 +8513,73 @@ function shuffleProduct(arr1, arr2) {
     return result;
 };
 
+function polyShuffle(strL1, strL2) {
+    if (document.getElementById('xX').checked) {
+        strL1 = strL1.map(y => [y[0], XY2xy(y[1])]);
+        strL2 = strL2.map(y => [y[0], XY2xy(y[1])]);
+    };
+    var sh = []
+    for (let u of strL1) {
+        for (let v of strL2) {
+            sh.push([u[0] * v[0], shuffleProduct(u[1], v[1])]);
+        }
+    };
+    sh = _.flatten(sh.map(y => y[1].map(z => [y[0], z])));
+    sh = _.groupBy(sh, y => y[1]);
+    var shobj = [];
+    _.forEach(sh, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            shobj.push([s, xy2XY(key.replaceAll(",", ""))]);
+        };
+    });
+    document.getElementById("shouth").innerHTML = JSON.stringify(shobj);
+    return shobj;
+};
+
 function regHighlight(elem) {
     $("#shouth span.hreg.hl").removeClass('hl');
     //$("#outk29 span.shk29.hl").removeClass('hl');
     const dat = elem.getAttribute('data-reg');
+    //console.log($(elem).parent())
     $("#shouth span.hreg[data-reg='" + dat + "']").addClass('hl');
+    if (reg0inv) {
+        if ($(elem).parent('.reg0veg').length > 0)
+            $("#floatkijelzo").css("display", "block").html(($(".reg0veg .hreg.hl").text()));
+        else if ($(elem).parent('.kashx').length > 0) {
+            const sor = $(".kashx .hreg.hl");
+            var txt = "";
+            sor.each(function(e) {
+                var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).text().trim();
+                tx = tx.replaceAll("−−", " + ");
+                tx = tx.replaceAll("−+", " − ");
+                tx = tx.replaceAll("+−", " − ");
+                tx = tx.replaceAll("++", " + ");
+                txt += tx;
+            })
+            if (txt.startsWith(" + "))
+                txt = txt.slice(3);
+            $("#floatkijelzo").css("display", "block").html(txt);
+        } else
+            $("#floatkijelzo").css("display", "none");
+    } else {
+        if ($(elem).parent('.kashx').length > 0) {
+            const sor = $(".kashx .hreg.hl");
+            var txt = "";
+            sor.each(function(e) {
+                var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).text().trim();
+                tx = tx.replaceAll("−−", " +");
+                tx = tx.replaceAll("−+", " −");
+                tx = tx.replaceAll("+−", "−");
+                tx = tx.replaceAll("++", " +");
+                txt += tx;
+            })
+            if (txt.startsWith(" + "))
+                txt = txt.slice(3);
+            $("#floatkijelzo").css("display", "block").html(txt);
+        } else
+            $("#floatkijelzo").css("display", "none");
+    }
 };
 
 function formazShuffle(v, blokk, withid) {
@@ -8545,7 +8609,8 @@ function formazShuffle(v, blokk, withid) {
             txt += c + xy;
         }
     });
-    //txt = txt.slice(3);
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
     if (blokk)
         txt = txt.replaceAll('y', 'y|');
     txt = xy2XY(txt);
@@ -8568,7 +8633,6 @@ function shuffleW() {
 
     document.getElementById("shouth").innerHTML = txt;
 };
-
 
 /** 
  * EZT MÉG ÁT KELL ÍRNI
@@ -8621,6 +8685,21 @@ function xy2XY(str) {
         return str;
 };
 
+function XY2xy(str) {
+    if (document.getElementById('xX').checked) {
+        var X = "X";
+        var Y = "Y";
+        const toX = document.getElementById("setX").value;
+        const toY = document.getElementById("setY").value;
+        if (toX.length > 0)
+            X = toX;
+        if (toY.length > 0)
+            Y = toY;
+        return str.replaceAll(X, 'x').replaceAll(Y, 'y');
+    } else
+        return str;
+};
+
 function stuffleW() {
     const v1 = document.getElementById("w1").value.toLowerCase();
     const v2 = document.getElementById("w2").value.toLowerCase();
@@ -8640,7 +8719,8 @@ function stuffleW() {
         for (let v of st)
             u.push(yvec2xy(v))
         txt1 = formazShuffle(u, false, false);
-        //txt1 = txt1.slice(3);
+        if (txt1.startsWith(" + "))
+            txt1 = txt1.slice(3);
         txt1 = xy2XY(txt1)
         txt = txt1 + "<hr/><span style='font-size:70%;color:#3e3e3e;'>" + JSON.stringify(st) + "</span>";
     };
@@ -8653,24 +8733,29 @@ function shtuffleW() {
     const reg0w2 = document.getElementById("reg0w2").checked;
     const st = document.getElementById("shH").checked;
     if (reg0w1)
-        formazS0reg("w1")
+        if (reg0inv)
+            formazinvS0reg("w1")
+        else
+            formazS0reg("w1", "")
     else if (reg0w2)
-        formazS0reg("w2")
+        if (reg0inv)
+            formazinvS0reg("w2")
+        else
+            formazS0reg("w2", "")
     else if (st)
         stuffleW();
     else
         shuffleW();
 };
 
-function oksHSet(e) {
-    document.getElementById("reg0w1").checked = false;
-    document.getElementById("reg0w2").checked = false;
-    const st = e.checked;
-    const btn = document.getElementById("oksH");
-    if (st)
-        btn.innerHTML = "<span style='margin:0 5px;'>&lowast;</span>";
-    else
-        btn.innerHTML = '<span style="margin:0 3px;font-size:160%;line-height:0.4;"><span style="margin:0 3px;">&#x29E2;</span></span>';
+function pickReg0(e, b) {
+    reg0inv = b;
+    $("#k1 span.kepletvalaszto.selected").removeClass("selected");
+    $(e).addClass("selected");
+    const reg0w1 = document.getElementById("reg0w1").checked;
+    const reg0w2 = document.getElementById("reg0w2").checked;
+    if (reg0w1 || reg0w2)
+        shtuffleW();
 };
 
 function setReg0(e) {
@@ -8698,22 +8783,27 @@ function hlh(e, j) {
 };
 
 function khlh(e, j) {
-    $('#shouth .ashx,#shouth .kashx').removeClass('hl');
+    $('#shouth .ashx,#shouth .kashx:not(.hreg)').removeClass('hl');
     $(e).addClass('hl');
     $('#shouth .ashx[data-h=' + j + ']').addClass('hl');
 
-}
+};
 
-function formazS0reg(id) {
-    const str = document.getElementById(id).value.toLowerCase();
+function formazS0reg(id, str0) {
+    if (id == "")
+        var str = str0;
+    else
+        str = document.getElementById(id).value.toLowerCase();
+    //const str = document.getElementById(id).value.toLowerCase();
     const n = countEndingX(str);
     const a = str.slice(0, str.length - n);
     var ob = [
         [1, [str.split("")]]
     ];
-    var txt = 'reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(str) + ') = <span class="block" style="transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;' + n + '</sub>  (-1)<sup>j</sup> ' + xy2XY(a) + xy2XY("x") + '<sup>' + n + ' - j</sup><span style="margin:0 3px;">&#x29E2;</span>' + xy2XY("x") + '<sup>j</sup> = ';
+    var txt = "<span style='display:block;background-color:#bfbfbf4f;;margin-bottom:10px;padding-left:5px;'>(A)-ban: u = " + xy2XY(a) + "&in;&nbsp;&#x1d525;y;&nbsp;n = " + n;
+    txt += '</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(str) + ') = <span class="block" style="transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;' + n + '</sub>  (-1)<sup>j</sup> ' + xy2XY(a) + xy2XY("x") + '<sup>' + n + ' - j</sup><span style="margin:0 3px;">&#x29E2;</span>' + xy2XY("x") + '<sup>j</sup> = ';
     txt += ' <span class="ashx" onclick="hlh(this,0)" data-h="0">' + xy2XY(a) + '<span style="font-weight:600;color:red;">' + xy2XY("x".repeat(n)) + '</span><span style="margin:0 3px;">&#x29E2;</span>( )</span>';
-    var txt2 = " <hr/><span onclick='khlh(this,0)' class='kashx' data-h='0'>" + xy2XY(str) + '</span>';
+    var txt2 = " <hr/><span class='kashx' data-h='0' onclick='khlh(this,0);'>   <span onclick='regHighlight(this);' class='hreg' data-reg='" + xy2XY(str) + "'>" + xy2XY(str) + '</span></span>';
     if (str.endsWith("y")) {
         document.getElementById("shouth").innerHTML = txt + txt2;
         return;
@@ -8734,7 +8824,7 @@ function formazS0reg(id) {
     if (n % 2 == 1)
         var eloj = "− "
     txt += ' <span class="ashx" onclick="hlh(this,' + n + ')" data-h="' + n + '">' + eloj + xy2XY(a + e) + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XY(v) + '</span></span>';
-    txt2 += " <span onclick='khlh(this," + n + ")' class='kashx' data-h='" + n + "'>" + eloj + "<span class='paren'>(</span>" + xy2XY(shufflexy(a + e, v)) + "<span class='paren'>)</span></span>";
+    txt2 += " <span onclick='khlh(this," + n + ");' class='kashx' data-h='" + n + "'>" + eloj + "<span class='paren'>(</span>" + xy2XY(shufflexy(a + e, v)) + "<span class='paren'>)</span></span>";
     ob.push([Math.pow(-1, n), shuffleProduct((a + e).split(""), v.split(""))]);
 
     ob = ob.map(y => y[1].map(z => [y[0], z.join('')]));
@@ -8764,5 +8854,138 @@ function formazS0reg(id) {
             szamlalo++;
         };
     });
-    document.getElementById("shouth").innerHTML = txt + " = " + txt2 + " = " + "<hr/>" + ovtxt + " = " + "<hr/>" + adm;
+    if (id == "")
+        return txt + " = " + txt2 + " = " + "<hr/>" + ovtxt + " = " + "<hr/>" + adm;
+    else
+        document.getElementById("shouth").innerHTML = txt + " = " + txt2 + " = " + "<hr/>" + ovtxt + " = " + "<hr/>" + adm;
+};
+
+function reg0(str) {
+    const n = countEndingX(str);
+    if (n == 0)
+        return [
+            [1, str], xy2XY(str.replaceAll("y", "y|"))
+        ];
+    const a = str.slice(0, str.length - n);
+    var ob = [
+        [1, [str.split("")]]
+    ];
+    var v = "x",
+        e = "x".repeat(n - 1);
+    for (var j = 1; j < n; j++) {
+        ob.push([Math.pow(-1, j), shuffleProduct((a + e).split(""), v.split(""))]);
+        v += "x";
+        e = e.slice(0, -1);
+    };
+    ob.push([Math.pow(-1, n), shuffleProduct((a + e).split(""), v.split(""))]);
+
+    ob = ob.map(y => y[1].map(z => [y[0], z.join('')]));
+    ob = _.groupBy(_.flatten(ob), y => y[1]);
+    var ovtxt = "";
+    var shobj = [];
+    var szamlalo = 0;
+    _.forEach(ob, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        var pl = " + ";
+        if (szamlalo == 0)
+            pl = "";
+        if (s != 0) {
+            shobj.push([s, key]);
+            if (s == 1 || s == -1) {
+                ovtxt += pl + xy2XY(key);
+            } else {
+                ovtxt += pl + Math.abs(s) + "&middot;" + xy2XY(key);
+            }
+            szamlalo++;
+        };
+    });
+    if (shobj[0][0] < 0)
+        ovtxt = ' − <span class="paren">(</span>' + ovtxt + '<span class="paren">)</span>';
+    else
+        ovtxt = '<span class="paren">(</span>' + ovtxt + '<span class="paren">)</span>';
+    //document.getElementById("shouth").innerHTML = ovtxt;
+    return [shobj, ovtxt];
+};
+
+function formazPoly2Reg0(vL) {
+    var txt = "";
+    var szamlalo = 0;
+    for (let v of vL) {
+        var s = v[0];
+        var xy = v[1];
+        var pl = "+ ";
+        if (szamlalo == 0)
+            pl = "";
+        if (s == 1) {
+            txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + pl + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
+        } else if (s == -1) {
+            txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + "− " + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
+        } else if (s > 1) {
+            txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + pl + s + "&middot;" + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
+        } else if (s < 1) {
+            txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + "− " + Math.abs(s) + "&middot;" + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
+        }
+        szamlalo++;
+    };
+    return txt;
+};
+
+function reg0pl(e, str) {
+    if ($(e).hasClass('active')) {
+        $('#shouth span.reg0kijelzo[data-xy=' + str + ']').removeClass('active');
+        $(e).removeClass('active');
+        return;
+    } else {
+        $('#shouth span.reg0pl.active').removeClass('active');
+        $('#shouth span.reg0kijelzo.active').removeClass('active');
+        $(e).addClass('active');
+        const kij = $('#shouth span.reg0kijelzo[data-xy=' + str + ']');
+        if (!str.endsWith('y')) {
+            var strki = formazS0reg("", str);
+            kij.addClass('active');
+            kij[0].innerHTML = strki;
+        } else {
+            kij.addClass('active');
+            kij[0].innerHTML = str;
+        }
+    };
+};
+
+function masodiktgl(j) {
+    var elem = $('.masodik[data-id=' + j + ']')[0];
+    $(elem).toggle();
+};
+
+function formazinvS0reg(id) {
+    const str = document.getElementById(id).value.toLowerCase();
+    const n = countEndingX(str);
+    const a = str.slice(0, str.length - n);
+    var txt = "<span style='display:block;background-color:#bfbfbf4f;margin-bottom:10px;padding-left:5px;'>(A')-ben: u = " + xy2XY(a) + "&in;&nbsp;&#x1d525;y;&nbsp;n = " + n;
+    if (n == 0) {
+        txt += '</span><div class="reg0sor"><b style="background-color:#bfbfbf54;padding:0 5px;outline:1px solid #aaa;margin-right: 10px;">j = 0</b><span class="reg0pl" onclick="reg0pl(this,\'' + str + '\');">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(a) + '<span style="font-weight:600;color:red;">' + "x".repeat(n) + '</span>)</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">( )</span> =<br/><span class="reg0kijelzo" data-xy="' + str + '"></span><span class="reg0veg">' + str + '<span></div>';
+        document.getElementById("shouth").innerHTML = txt;
+        return;
+    }
+    const r0 = reg0(str);
+    const r00 = polyShuffle(r0[0], [
+        [1, ""]
+    ]);
+    txt += '</span><div class="reg0sor"><b style="background-color:#bfbfbf54;padding:0 5px;outline:1px solid #aaa;margin-right: 10px;">j = 0</b><span class="reg0pl" onclick="reg0pl(this,\'' + str + '\');">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(a) + '<span style="font-weight:600;color:red;">' + xy2XY("x".repeat(n)) + '</span>)</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">( )</span><span style="display:inline;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;" onclick="masodiktgl(&quot;0&quot;);">=</span><br/><span class="reg0kijelzo" data-xy="' + str + '"></span><span class="masodik" data-id="0">' + r0[1] + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">( )</span> =</span><span class="reg0veg">' + formazPoly2Reg0(r00) + '<span></div>';
+    var v = "x",
+        e = "x".repeat(n - 1);
+    for (var j = 1; j <= n; j++) {
+        var r = reg0(a + e);
+        if (j == n)
+            var er = polyShuffle([r[0]], [
+                [1, v]
+            ]);
+        else
+            var er = polyShuffle(r[0], [
+                [1, v]
+            ]);
+        txt += '<div class="reg0sor"><b style="background-color:#bfbfbf54;padding:0 5px;outline:1px solid #aaa;margin-right: 10px;">j = ' + j + '</b><span class="reg0pl" onclick="reg0pl(this,\'' + (a + e).toString().trim() + '\');">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(a) + '<span style="font-weight:600;color:red;">' + xy2XY(e) + '</span>)</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XY(v) + '</span></span> <span style="display:inline;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;" onclick="masodiktgl(&quot;' + j + '&quot;);">=</span><span class="reg0kijelzo" data-xy="' + (a + e) + '"></span><span class="masodik" data-id="' + j + '">' + r[1] + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XY(v) + '</span> =</span><span class="reg0veg">' + formazPoly2Reg0(er) + '<span></div>';
+        v += "x";
+        e = e.slice(0, -1);
+    }
+    document.getElementById("shouth").innerHTML = txt;
 };
