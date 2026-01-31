@@ -35,58 +35,77 @@
     </script>
 
 </head>
-
 <body>
+    <div id="floatkijelzo"></div>
     <div class="keret of even" id="k1" style="margin-bottom:10px;">
-        <b><big class="sorszam">1.</big></b>
-        <span style="font-size:130%;display:inline-block;width:80%;text-align:center;">w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&#x29E2;</span>w<sub>2</sub> és w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&lowast;</span>w<sub>2</sub></span>
-        <div style="margin-left:2px;padding:3px;">
-            <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
-            <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w1" value="yyxy">
-            <label for="reg0w1" style="margin-left: 5px;">reg0w1</label>
-            <input type="checkbox" name="reg0w1" id="reg0w1" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
+        <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shoutcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
+        <div class="stickblock">
+            <p class="keplet" id="_det" style="font-size:110%;height:160px;margin-bottom:0px;text-align:center;background-color:inherit;">
+                w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&#x29E2</span>w<sub>2</sub> és w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&lowast;</span>w<sub>2</sub> <br/><span class="kepletvalaszto selected" onclick="pickReg0(this,false)"><span style="margin-left:10px;float:right;">(A)</span>                reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n</sup>) =
+                <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub> (-1)<sup>j</sup> ux<sup>n - j</sup><span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&in;&nbsp;&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
+                <span class="kepletvalaszto" onclick="pickReg0(this,true)"><span style="margin-left:10px;float:right;">(A')</span>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n - j</sup>)<span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
+            </p>
         </div>
-        <div style="margin-left:2px;padding:3px;">
-            <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
-            <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w2" value="xxyxyyx" name="b">
-            <label for="reg0w2" style="margin-left: 5px;">reg0w2</label>
-            <input type="checkbox" name="reg0w2" id="reg0w2" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
-        </div>
-        <div style="margin-top:2px;padding:5px;">
-            <button class="showpre1" onclick="shtuffleW();" title="Calculate input"><b>a</b><span  id="oksH"><span style="margin:0 3px;font-size:160%;line-height:0.4;"><span style="margin:0 3px;">&#x29E2;</span></span></span><b>b</b></button>
-            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#shouth');" title="Clear output">Clear</button>
-            <span style="font-size:22px;margin-left:5px;">&#x29E2;</span>
-            <label class="switch">
-            <input type="checkbox" id="shH" onchange="oksHSet(this);shtuffleW();"><span class="slider round"></span></label>
-            <span style="margin-right:10px;font-size:120%;">&lowast;</span>
-            <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
-        </div>
-        <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
-            <div>
-                <label for="xX">xy | XY</label>
-                <input type="checkbox" name="xX" onchange="shtuffleW();" id="xX" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">|
-                <label for="setX">x&rightarrow;</label>
-                <input type="text" name="setX" value="X" onchange="shtuffleW();" id="setX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;">
-                <label for="setY">y&rightarrow;</label>
-                <input type="text" name="setY" value="Y" onchange="shtuffleW();" id="setY" style="height:20px;width:60px;vertical-align:middle;text-align:center;">
+        <div class="stickblock">
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
+                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w1" value="yyxy">
+                <label for="reg0w1" style="margin-left: 5px;">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
+                <input type="checkbox" name="reg0w1" id="reg0w1" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
             </div>
-            <!--  <div>
-                <label for="rfb_detreszletes">Részletes jelentés</label>
-                <input type="checkbox" name="rfb_detreszletes" id="rfb_detreszletes" onchange="rfb_reszlCh();" style="height:20px;width:20px;vertical-align:middle;">
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
+                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w2" value="xxyxyyx" name="b">
+                <label for="reg0w2" style="margin-left: 5px;">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
+                <input type="checkbox" name="reg0w2" id="reg0w2" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
             </div>
-            <div>
-                <label for="bov">b<sub>i</sub> összevonása</label>
-                <input type="checkbox" name="bov" id="bov" style="height:20px;width:20px;vertical-align:middle;">
-            </div> -->
-            <div>
-                <label for="setoutputfontH">&#128474;</label>
-                <input id="outfont-sliderH" oninput="setOutputFontH(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfontH" />
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <button class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
+                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="idClear('#shouth');" title="Clear output">Clear</button>
+                <span style="font-size:22px;margin-left:5px;">&#x29E2;</span>
+                <label class="switch">
+            <input type="checkbox" id="shH" onchange="shtuffleW();"><span class="slider round"></span></label>
+                <span style="margin-right:10px;font-size:120%;">&lowast;</span>
+                <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
+            </div>
+            <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+                <div>
+                    <label for="xX">xy | XY</label>
+                    <input type="checkbox" name="xX" onchange="shtuffleW();" id="xX" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">|
+                    <label for="setX">x&rightarrow;</label>
+                    <input list="chars" type="text" name="setX" value="" onchange="shtuffleW();" id="setX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;">
+                    <label for="setY">y&rightarrow;</label>
+                    <input list="chars" type="text" name="setY" value="" onchange="shtuffleW();" id="setY" style="height:20px;width:60px;vertical-align:middle;text-align:center;">
+                    <datalist id="chars">
+                        <option value="&rightarrow;"></option>
+                        <option value="&downarrow;"></option>
+                        <option value="&#x25CF;"></option>
+                        <option value="&#x25CB;"></option>
+                        <option value="&#x25FB;"></option>
+                        <option value="&#x25FC;"></option>
+                        <option value="&#x25B7;"></option>
+                        <option value="&#x25BC;"></option>
+                      </datalist>
+                </div>
+                <div>
+                    <label for="setoutputfontH">&#128474;</label>
+                    <input id="outfont-sliderH" oninput="setOutputFontH(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfontH" />
+                </div>
             </div>
         </div>
-        <p id="figysh" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
-        <p id="shouth" style="margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
+        <div id="shoutcontainer" style="max-width:100vw">
+            <p id="figysh" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
+            <p id="shouth" style="margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
+        </div>
     </div>
+    <script>
+        $(document).on('click', function(e) {
+            if (!$(e.target).hasClass("hreg hl"))
+                $("#floatkijelzo").css("display", "none");
+        })
+    </script>
 </body>
-
-
 </html>
+
