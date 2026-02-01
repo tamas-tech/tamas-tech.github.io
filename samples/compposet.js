@@ -8846,10 +8846,10 @@ function formazS0reg(id, str0) {
                 adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + " − (" + xy2vec(key)[0] + ")" + "</span>";
             } else if (s > 1) {
                 ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + s + "&middot;" + xy2XY(key.replaceAll("y", "y|")) + "</span>";
-                adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + s + "&middot;(" + xy2vec(key)[0] + ")" + "</span>";
+                adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + s + "&lowast;(" + xy2vec(key)[0] + ")" + "</span>";
             } else if (s < 1) {
                 ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + "− " + Math.abs(s) + "&middot;" + xy2XY(key.replaceAll("y", "y|")) + "</span>";
-                adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + " − " + Math.abs(s) + "&middot;(" + xy2vec(key)[0] + ")" + "</span>";
+                adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + " − " + Math.abs(s) + "&lowast;(" + xy2vec(key)[0] + ")" + "</span>";
             }
             szamlalo++;
         };
@@ -9000,3 +9000,4 @@ function helpTglafh1(id) {
     } else
         elem.style.display = "none";
 };
+
