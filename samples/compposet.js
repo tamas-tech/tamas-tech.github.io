@@ -8823,12 +8823,14 @@ function setReg10(e) {
 
 function countEndingX(str) {
     // Matches one or more 'x' at the end of string ($)
+    str = XY2xy(str);
     const match = str.match(/x+$/);
     return match ? match[0].length : 0;
 };
 
 function countLeadingY(str) {
     // Regex to match one or more 'x' characters at the start of the string
+    str = XY2xy(str);
     const regex = /^y+/;
 
     // Use the match() method to find the matching portion
@@ -9541,3 +9543,4 @@ function nonAdm(n, k) {
     comp(n, k);
     return allcomp.filter(y => y[0] == 1);
 };
+
