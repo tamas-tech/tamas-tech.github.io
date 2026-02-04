@@ -9142,6 +9142,8 @@ function setOvjelj() {
     var eleje = txt.slice(0, indx - 1).replace('·', '');
     if (eleje == "")
         eleje = "1";
+    else if (eleje == "-")
+        eleje = "-1";
     eleje = "<span class='oveleje'>" + eleje + "</span>";
     const vege = txt.slice(indx);
 
@@ -9312,3 +9314,4 @@ function nonAdm(n, k) {
     comp(n, k);
     return allcomp.filter(y => y[0] == 1);
 };
+
