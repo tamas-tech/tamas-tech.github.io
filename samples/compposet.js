@@ -8730,6 +8730,8 @@ function stuffleW() {
 };
 
 function shtuffleW() {
+    ovosszeg = 0;
+    ovelem = "";
     const reg0w1 = document.getElementById("reg0w1").checked;
     const reg0w2 = document.getElementById("reg0w2").checked;
     const reg10w1 = document.getElementById("reg10w1").checked;
@@ -9085,7 +9087,7 @@ function formazxyV(vL, blokk, withid) {
         if (blokk)
             xy = xy.replaceAll('y', 'y|');
         if (withid) {
-            xy = " <span class='hreg' data-reg=" + xyid + " data-c='" + v[0] + "' onclick='regHighlight(this);clearOv();'>" + c + xy + "</span>"
+            xy = " <span class='hreg' data-reg=" + xyid + " data-c='" + v[0] + "' onclick='regHighlight(this);clearOv();setOvelem(this);'>" + c + xy + "</span>"
             txt += xy;
         } else {
             txt += c + xy;
@@ -9099,7 +9101,7 @@ function formazxyV(vL, blokk, withid) {
 
 var ovosszeg = 0;
 
-function reg10hl(e) {
+function reg10hlREGI(e) {
     const $e = $(e);
     $('#shouth table td.hl').removeClass('hl');
     $e.addClass('hl');
@@ -9125,18 +9127,81 @@ function reg10hl(e) {
                 $e.append('<span class="ov halvany">' + c + '</span>');
             else
                 $e.append('<span class="ov">' + c + '</span>');
-        };
+        } else if (ovelem != "") {
+            document.getElementById("ovjelentes").classList.add('active');
+            document.getElementById("ovjelentesj").innerHTML = '<span class="oveleje">0</span>' + ovelem;
+            document.getElementById("ovjelentesb").innerHTML = "0";
+            let parja = $('#shouth #reg10r .hreg[data-reg=' + ovelem + ']');
+            let c = 0;
+            if (parja.length > 0) {
+                c = parja.attr('data-c');
+                ovosszeg += 1 * c;
+                document.getElementById("ovjelentesb").innerHTML = ovosszeg.toString();
+                parja.addClass('hl');
+            };
+            if (c == 0)
+                $e.append('<span class="ov halvany">' + c + '</span>');
+            else
+                $e.append('<span class="ov">' + c + '</span>');
+        } else
+            return;
     } else {
+        if (ovelem != "") {
+            let parja = $('#shouth #reg10r .hreg[data-reg=' + ovelem + ']');
+            parja.addClass('hl');
+        }
+    };
+};
+
+function reg10hl(e) {
+    const $e = $(e);
+    $('#shouth table td.hl').removeClass('hl');
+    $e.addClass('hl');
+    const rs = formazxyV(JSON.parse($e.attr('data-reg')), true, true);
+    const elem = $('#shouth #reg10r');
+    elem.addClass('active').html(rs);
+
+    if ($e.find('.ov').length == 0) {
         const fixelem = $('#shouth #reg10ov .hreg.hl');
         const fixreg = fixelem.attr('data-reg');
-        let parja = $('#shouth #reg10r .hreg[data-reg=' + fixreg + ']');
-        parja.addClass('hl');
+        fixelem.addClass('szamlalva');
+        if (fixreg != undefined) {
+            setOvjelj();
+        } else if (ovelem != "") {
+            document.getElementById("ovjelentes").classList.add('active');
+            document.getElementById("ovjelentesj").innerHTML = '<span class="oveleje">0</span>' + ovelem;
+            document.getElementById("ovjelentesb").innerHTML = "0";
+        } else
+            return;
+        let parja = $('#shouth #reg10r .hreg[data-reg=' + ovelem + ']');
+        let c = 0;
+        if (parja.length > 0) {
+            c = parja.attr('data-c');
+            ovosszeg += 1 * c;
+            document.getElementById("ovjelentesb").innerHTML = ovosszeg.toString();
+            parja.addClass('hl');
+        };
+        if (c == 0)
+            $e.append('<span class="ov halvany">' + c + '</span>');
+        else
+            $e.append('<span class="ov">' + c + '</span>');
+    } else {
+        if (ovelem != "") {
+            let parja = $('#shouth #reg10r .hreg[data-reg=' + ovelem + ']');
+            parja.addClass('hl');
+        }
     };
+};
+
+var ovelem = "";
+
+function setOvelem(e) {
+    ovelem = $(e).attr('data-reg');
 };
 
 function setOvjelj() {
     document.getElementById("ovjelentes").classList.add('active');
-    const txt = $('#shouth #reg10ov .hreg.hl.szamlalva').html().trim().replace("+", "").replace("−", "-");
+    const txt = $('#shouth #reg10ov .hreg.hl.szamlalva').html().trim().replace("+", "").replace("−", "-") || ovelem;
     const pat = new RegExp(`[(${xy2XY('x')}${xy2XY('y')})]`);
     const indx = txt.search(pat);
     var eleje = txt.slice(0, indx - 1).replace('·', '');
@@ -9153,6 +9218,7 @@ function setOvjelj() {
 function clearOv() {
     clearInterval(ra);
     ovosszeg = 0;
+    ovelem = "";
     $("#shouth .hreg.hl.szamlalva").removeClass("szamlalva");
     $('#shouth table td .ov').remove();
     document.getElementById("ovjelentes").classList.remove('active');
@@ -9185,6 +9251,60 @@ function reg10(str) {
     const n = countEndingX(str);
     const u = xy2XY(str.slice(m, str.length - n));
     var sh = [];
+    const X = xy2XY('x');
+    const Y = xy2XY('y');
+    for (var i = 0; i <= m; i++) {
+        let y = Y.repeat(i) || "";
+        for (var j = 0; j <= n; j++) {
+            let x = X.repeat(j) || "";
+            let my = Y.repeat(m - i);
+            let nx = X.repeat(n - j);
+            let yux = my + u + nx;
+            let sij = polyShuffle(polyShuffle([
+                [Math.pow(-1, i), y]
+            ], [
+                [1, yux]
+            ]), [
+                [Math.pow(-1, j), x]
+            ]);
+            sh = [...sh, ...sij];
+        };
+    }
+    sh = _.groupBy(sh, y => y[1]);
+    var shobj = [];
+    _.forEach(sh, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            shobj.push([s, xy2XY(key.replaceAll(",", ""))]);
+        };
+    });
+    return shobj;
+};
+
+function polyreg10(strL) {
+    if (document.getElementById('xX').checked)
+        strL = strL.map(y => [y[0], XY2xy(y[1])]);
+    var sh = []
+    for (let u of strL)
+        sh.push(reg10(u[1]).map(y => [u[0] * y[0], y[1]]));
+    sh = _.flatten(sh);
+    sh = _.groupBy(sh, y => y[1]);
+    var shobj = [];
+    _.forEach(sh, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            shobj.push([s, xy2XY(key.replaceAll(",", ""))]);
+        };
+    });
+    document.getElementById("shouth").innerHTML = JSON.stringify(shobj);
+    return shobj;
+};
+
+function reg10With(str) {
+    const m = countLeadingY(str);
+    const n = countEndingX(str);
+    const u = xy2XY(str.slice(m, str.length - n));
+    var sh = [];
     var sc = 2 * m + 1.2;
     var scx = 2.5;
     if (m == 0)
@@ -9201,7 +9321,7 @@ function reg10(str) {
         if (n == 0)
             scx = 1;
         if (j == 0)
-            tblx += "<tr><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scxx + ");display: inline-block;'>(</span><td style='font-weight:800;'>1</td><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scxx + ");display: inline-block;'>)</span></td><td rowspan=" + (n + 1) + "><span id='ovjelentes'><span id='ovjelentesb'></span><span class='lepteto' onclick='ovAnimate();' style='display:inline-block;padding:5px 5px 5px 7px;margin:4px 5px 4px 5px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;box-shadow: 0 0 10px 3px #bdbdbd;'>▶</span><span id='ovjelentesj'></span><span class='ovclose' onclick='clearOv();'>&times;</span></span></td></tr>";
+            tblx += "<tr><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scx + ");display: inline-block;'>(</span><td style='font-weight:800;'>1</td><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scx + ");display: inline-block;'>)</span></td><td rowspan=" + (n + 1) + "><span id='ovjelentes'><span id='ovjelentesb'></span><span class='lepteto' onclick='ovAnimate();' style='display:inline-block;padding:5px 5px 5px 7px;margin:4px 5px 4px 5px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;box-shadow: 0 0 10px 3px #bdbdbd;'>▶</span><span id='ovjelentesj'></span><span class='ovclose' onclick='clearOv();'>&times;</span></span></td></tr>";
         else
             tblx += "<tr><td>" + x + "</td></tr>";
     };
@@ -9249,7 +9369,7 @@ function reg10(str) {
             }
         };
         if (i == 0)
-            tbl += "<td class='matrixzj' rowspan=" + (m + 1) + "><span style='transform: scaleY(" + sc + ") scaleX(" + scx + ");display: inline-block;'>)</span></td>"
+            tbl += "<td class='matrixzj' rowspan=" + (m + 1) + "><span style='transform: scaleY(" + sc + ") scaleX(" + scxx + ");display: inline-block;'>)</span></td>"
         tbl += "</tr>";
     }
     tbl += "</table>";
@@ -9271,7 +9391,7 @@ function reg10(str) {
             else if (s < -1)
                 s = " − " + (-1 * s) + "&middot;";
             var xy = key.replaceAll(',', '');
-            xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();'>" + s + xy.replaceAll('y', 'y|') + "</span>";
+            xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();setOvelem(this);'>" + s + xy.replaceAll('y', 'y|') + "</span>";
             txt += xy;
         };
     });
@@ -9287,7 +9407,7 @@ function formazS10reg(id, str0) {
         var str = str0;
     else
         str = document.getElementById(id).value.toLowerCase();
-    const reg = reg10(str);
+    const reg = reg10With(str);
     const fej = reg[0];
     const tbl = reg[1];
     const txt = reg[2];
@@ -9295,10 +9415,117 @@ function formazS10reg(id, str0) {
     document.getElementById("shouth").innerHTML = fej + tbl + kij + txt;
 };
 
-function formazinvS10reg(id, str0) {
-    document.getElementById("shouth").innerHTML = "Még nincs implementálva!";
+function invreg10With(str) {
+    const m = countLeadingY(str);
+    const n = countEndingX(str);
+    const u = xy2XY(str.slice(m, str.length - n));
+    var sh = [];
+    var sc = 2 * m + 1.2;
+    var scx = 2.5;
+    if (m == 0)
+        scx = 1;
+    var tbl = "<table id='reg10tbl' class='table-hideable'><tr><td class='matrixzj' rowspan=" + (m + 1) + "><span style='transform: scaleY(" + sc + ") scaleX(" + scx + ");display: inline-block;'>(</span></td>";
+    var tbly = "<table id='regytbl' class='table-hideable'>";
+    var tblx = "<table  id='regxtbl' class='table-hideable'>";
+    const X = xy2XY('x');
+    const Y = xy2XY('y');
+    for (var j = 0; j <= n; j++) {
+        let x = X.repeat(j) || "";
+        var scy = 2 * n + 1.2;
+        var scxx = 2.3;
+        if (n == 0)
+            scx = 1;
+        if (j == 0)
+            tblx += "<tr><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scx + ");display: inline-block;'>(</span><td style='font-weight:800;'>1</td><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scx + ");display: inline-block;'>)</span></td><td rowspan=" + (n + 1) + "><span id='ovjelentes'><span id='ovjelentesb'></span><span class='lepteto' onclick='ovAnimate();' style='display:inline-block;padding:5px 5px 5px 7px;margin:4px 5px 4px 5px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;box-shadow: 0 0 10px 3px #bdbdbd;'>▶</span><span id='ovjelentesj'></span><span class='ovclose' onclick='clearOv();'>&times;</span></span></td></tr>";
+        else
+            tblx += "<tr><td>" + x + "</td></tr>";
+    };
+    tblx += "</table>";
+    var vesszo = ","
+    for (var i = 0; i <= m; i++) {
+        if (i > 0)
+            tbl += "<tr>";
+        let y = Y.repeat(i) || "";
+        for (var j = 0; j <= n; j++) {
+            let x = X.repeat(j) || "";
+            let my = Y.repeat(m - i);
+            let nx = X.repeat(n - j);
+            let yux = reg10(my + u + nx);
+            let sij = polyShuffle(polyShuffle([
+                [1, y]
+            ], yux), [
+                [1, x]
+            ]);
+            sh = [...sh, ...sij];
+
+            vesszo = "";
+            if (m == 0 && j != n)
+                vesszo = ","
+            var ustr = u;
+            if (i == m && j == n && u == "")
+                ustr = "1";
+            tbl += "<td data-reg='" + JSON.stringify(sij) + "' onclick='reg10hl(this);'>" + "<span class='yux y'>" + my + "</span><span class='yux u'>" + ustr + "</span><span class='yux x'>" + nx + "</span>" + vesszo + "</td>";
+
+            if (j == 0) {
+                vesszo = ",";
+                if (i == m)
+                    vesszo = "";
+                if (i == 0)
+                    tbly += "<tr><td class='matrixzj'><span style='transform: scaleX(1.2);display: inline-block;'>(</span><td style='font-weight:800;'>1" + vesszo + "</td>";
+                else
+                    tbly += "<td>" + y + vesszo + "</td>";
+                if (i == m)
+                    tbly += "<td class='matrixzj'><span style='transform: scaleX(1.2);display: inline-block;'>)</span></td></tr>";
+            }
+        };
+        if (i == 0)
+            tbl += "<td class='matrixzj' rowspan=" + (m + 1) + "><span style='transform: scaleY(" + sc + ") scaleX(" + scxx + ");display: inline-block;'>)</span></td>"
+        tbl += "</tr>";
+    }
+    tbl += "</table>";
+    tbly += "</table>";
+    tbl = "<div class='reg10tarto'>" + tbly + "<span style='margin:0 3px;'>⧢</span>" + tbl + "<span style='margin:0 3px;'>⧢</span>" + tblx + "</div>";
+    sh = _.groupBy(sh, y => y[1]);
+    var shobj = [];
+    var txt = "";
+    _.forEach(sh, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            shobj.push([s, xy2XY(key.replaceAll(",", ""))]);
+            if (s == 1)
+                s = " + ";
+            else if (s > 1)
+                s = " + " + s + "&middot"
+            else if (s == -1)
+                s = " − ";
+            else if (s < -1)
+                s = " − " + (-1 * s) + "&middot;";
+            var xy = key.replaceAll(',', '');
+            xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();setOvelem(this);'>" + s + xy.replaceAll('y', 'y|') + "</span>";
+            txt += xy;
+        };
+    });
+    if (txt.startsWith("+ "))
+        txt = txt.slice(2);
+    txt = "<div id='reg10ov'>" + txt + "</div>"
+    let fej = "<span style='display:block;background-color:#bfbfbf4f;;margin-bottom:10px;padding-left:5px;'>(B)-ben: u = " + xy2XY(u) + "&in;&nbsp;&#x1d525;y;&nbsp;m = " + m + ";&nbsp;n = " + n + "</span>";
+    return [fej, tbl, txt, shobj];
 };
 
+function formazinvS10reg(id, str0) {
+    const elem = document.getElementById("shouth");
+    if (id == "")
+        var str = str0;
+    else
+        str = document.getElementById(id).value.toLowerCase();
+    const reg = invreg10With(str);
+    const fej = reg[0];
+    const tbl = reg[1];
+    const txt = reg[2];
+    const kij = "<div id='reg10r'></div>";
+    elem.innerHTML = fej + tbl + kij + txt;
+
+};
 // Admissible kiterjesztes
 
 function Adm(n, k) {
@@ -9314,4 +9541,3 @@ function nonAdm(n, k) {
     comp(n, k);
     return allcomp.filter(y => y[0] == 1);
 };
-
