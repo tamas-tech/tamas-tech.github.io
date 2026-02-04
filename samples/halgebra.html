@@ -40,26 +40,41 @@
    <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shoutcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="_det" style="font-size:110%;height:160px;margin-bottom:0px;text-align:center;background-color:inherit;">
+            <p class="keplet active" id="reg0_keplet">
                 w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&#x29E2</span>w<sub>2</sub> és w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&lowast;</span>w<sub>2</sub> <br/><span class="kepletvalaszto selected" onclick="pickReg0(this,false)"><span style="margin-left:10px;float:right;">(A)</span>                reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n</sup>) =
                 <span class="block" style="transform: scale(1.5);">∑</span>
                 <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub> (-1)<sup>j</sup> ux<sup>n - j</sup><span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&in;&nbsp;&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
                 <span class="kepletvalaszto" onclick="pickReg0(this,true)"><span style="margin-left:10px;float:right;">(A')</span>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
                 <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n - j</sup>)<span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
             </p>
+            <p class="keplet" id="reg10_keplet" style="font-size:110%;height:160px;margin-bottom:0px;text-align:center;background-color:inherit;">
+                w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&#x29E2</span>w<sub>2</sub> és w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&lowast;</span>w<sub>2</sub> <br/><span class="kepletvalaszto selected" onclick="pickReg10(this,false)"><span style="margin-left:10px;float:right;">(B)</span>                reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(y<sup>m</sup></sup>ux<sup>n</sup>) =
+                <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub> <span class="block" style="transform:scale(1.5);margin-left:15px;">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub> (-1)<sup>i + j</sup>&nbsp;y<sup>i</sup>
+                <span style="margin:0 3px;">&#x29E2;</span>y<sup>m - i</sup>ux<sup>n - j</sup>
+                <span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&in;&nbsp;x&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+                <span class="kepletvalaszto" onclick="pickReg10(this,true)"><span style="margin-left:10px;float:right;">(B')</span>y<sup>m</sup>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub><span class="block" style="transform: scale(1.5);margin-left:15px;">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub>&nbsp;y<sup>i</sup><span style="margin:0 3px;">&#x29E2;</span>reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(y<sup>m - i</sup>ux<sup>n - j</sup>)
+                <span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+            </p>
         </div>
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
-                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w1" value="yyxy">
+                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w1" value="yyxyxxx">
                 <label for="reg0w1" style="margin-left: 5px;">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
                 <input type="checkbox" name="reg0w1" id="reg0w1" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
+                <label for="reg10w1" style="margin-left: 5px;">reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
+                <input type="checkbox" name="reg10w1" id="reg10w1" oninput="setReg10(this);" style="height:20px;width:20px;vertical-align:middle;">
             </div>
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
-                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w2" value="xxyxyyx" name="b">
+                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w2" value="yyxyyxx" name="b">
                 <label for="reg0w2" style="margin-left: 5px;">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
                 <input type="checkbox" name="reg0w2" id="reg0w2" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
+                <label for="reg10w2" style="margin-left: 5px;">reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
+                <input type="checkbox" name="reg10w2" id="reg10w2" oninput="setReg10(this);" style="height:20px;width:20px;vertical-align:middle;">
             </div>
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <button class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
@@ -71,7 +86,7 @@
                 <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
             </div>
             <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
-                <div>
+                <div style="margin-bottom:10px;">
                     <label for="xX">xy | XY</label>
                     <input type="checkbox" name="xX" onchange="shtuffleW();" id="xX" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">|
                     <label for="setX">x&rightarrow;</label>
@@ -89,7 +104,11 @@
                         <option value="&#x25BC;"></option>
                       </datalist>
                 </div>
-                <div>
+                <div style="margin-bottom:10px;">
+                    <label for="animt"><b>Animation step(ms):</b> = </label>
+                    <input type="number" id="animt" value="600" min="100" step="100" name="t" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
+                </div>
+                <div style="margin-bottom:10px;">
                     <label for="setoutputfontH">&#128474;</label>
                     <input id="outfont-sliderH" oninput="setOutputFontH(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfontH" />
                 </div>
@@ -112,6 +131,7 @@
     </script>
 </body>
 </html>
+
 
 
 
