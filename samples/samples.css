@@ -2460,6 +2460,164 @@ div#k1 span.kepletvalaszto.selected {
     box-shadow: 0px 0px 3px 3px #126368;
 }
 
+#shouth div.reg10tarto {
+    max-width: calc(100vw);
+    overflow-x: auto;
+    overflow-y: clip;
+    position: sticky;
+    left: 0;
+    white-space: pre;
+    border-bottom: 1px solid #888;
+    margin-bottom: 10px;
+    padding: 10px 20px 10px 10px;
+}
+
+#shouth table.table-hideable {
+    margin: 0;
+    outline: none;
+    display: inline-table;
+    vertical-align: middle;
+}
+
+#shouth table.table-hideable td {
+    border: none;
+}
+
+#shouth table.table-hideable td.hl {
+    background-color: #ffeec6;
+    outline: 2px solid #ccb88b;
+    outline-offset: -2px;
+    border-radius: 6px;
+}
+
+#shouth .hreg.hl.szamlalva {
+    background-color: #ffc6c6;
+    outline: 2px solid #f00;
+    outline-offset: -2px;
+}
+
+#shouth table.table-hideable td #ovjelentes {
+    display: none;
+    padding: 7px 5px;
+    border: 1px solid #b5b5b5;
+    border-radius: 5px;
+    background-color: #fff4f4;
+    box-shadow: 0px 0px 3px 3px #ddd;
+}
+
+#shouth table.table-hideable td #ovjelentes.active {
+    display: inline-block;
+}
+
+#shouth table.table-hideable td .ov,
+#shouth table.table-hideable td #ovjelentesb {
+    position: relative;
+    top: -2px;
+    right: 0;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #b90000;
+    padding: 0 4px;
+    box-shadow: 0px 0px 5px 5px #b31717;
+    margin-left: 8px;
+    font-size: 75%;
+    font-family: Cambria Math;
+    color: white;
+    min-width: 1.1em;
+    border-radius: 50%;
+}
+
+#shouth table.table-hideable td .ov.halvany {
+    opacity: 0.3;
+}
+
+#shouth table.table-hideable td #ovjelentesb {
+    right: 0;
+    margin-right: 10px;
+}
+
+#shouth table.table-hideable td .ovclose {
+    position: relative;
+    top: -20px;
+    right: -10px;
+    background-color: #820000;
+    color: white;
+    font-weight: 800;
+    box-shadow: 0 0 3px 3px #cacaca;
+    border-radius: 50%;
+    width: 1.5em;
+    display: inline-block;
+    height: 1.5em;
+}
+
+#shouth table.table-hideable td .oveleje {
+    position: relative;
+    right: 0;
+    display: inline-block;
+    background-color: #34b900;
+    padding: 0 4px;
+    box-shadow: 0px 0px 5px 5px #27b70b;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-size: 90%;
+    font-family: Cambria Math;
+    color: white;
+    min-width: 1.2em;
+    border-radius: 50%;
+}
+
+#shouth table#regytbl.table-hideable td {
+    min-width: 10px;
+}
+
+#shouth table.table-hideable td span.yux.u {
+    font-weight: 800;
+}
+
+#shouth table.table-hideable td span.yux.x {
+    color: red;
+}
+
+#shouth table.table-hideable td span.yux.y {
+    color: blue;
+}
+
+#shouth table.table-hideable tr td.matrixzj {
+    min-width: 5px;
+}
+
+#shouth #reg10r {
+    display: none;
+    padding: 5px;
+    border: 1px solid #ccb88b;
+    background-color: #ffeec6;
+    margin-bottom: 10px;
+}
+
+#shouth #reg10r.active {
+    display: block;
+}
+
+#shouth #reg10ov {
+    padding: 5px;
+    border: 1px solid #dd9393;
+    background-color: #ffd6cd
+}
+
+#reg0_keplet.keplet,
+#reg10_keplet.keplet {
+    display: none;
+    font-size: 110%;
+    height: 160px;
+    margin-bottom: 0px;
+    text-align: center;
+    background-color: inherit;
+}
+
+#reg0_keplet.keplet.active,
+#reg10_keplet.keplet.active {
+    display: block;
+}
 
 
 
