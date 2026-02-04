@@ -8456,6 +8456,7 @@ function IKDer() {
 // algebra of Q(x,y) = h
 
 var reg0inv = false;
+var reg10inv = false;
 
 function yvec2xy(v) {
     str = "";
@@ -8533,7 +8534,7 @@ function polyShuffle(strL1, strL2) {
             shobj.push([s, xy2XY(key.replaceAll(",", ""))]);
         };
     });
-    document.getElementById("shouth").innerHTML = JSON.stringify(shobj);
+    //document.getElementById("shouth").innerHTML = JSON.stringify(shobj);
     return shobj;
 };
 
@@ -8731,17 +8732,30 @@ function stuffleW() {
 function shtuffleW() {
     const reg0w1 = document.getElementById("reg0w1").checked;
     const reg0w2 = document.getElementById("reg0w2").checked;
+    const reg10w1 = document.getElementById("reg10w1").checked;
+    const reg10w2 = document.getElementById("reg10w2").checked;
     const st = document.getElementById("shH").checked;
     if (reg0w1)
         if (reg0inv)
-            formazinvS0reg("w1")
+            formazinvS0reg("w1");
         else
-            formazS0reg("w1", "")
+            formazS0reg("w1", "");
     else if (reg0w2)
         if (reg0inv)
-            formazinvS0reg("w2")
+            formazinvS0reg("w2");
         else
-            formazS0reg("w2", "")
+            formazS0reg("w2", "");
+    else if (reg10w1)
+        if (reg10inv)
+            formazinvS10reg("w1");
+        else
+            formazS10reg("w1", "");
+    else if (reg10w2)
+        if (reg10inv)
+            formazinvS10reg("w2");
+        else
+            formazS10reg("w2", "");
+
     else if (st)
         stuffleW();
     else
@@ -8758,13 +8772,50 @@ function pickReg0(e, b) {
         shtuffleW();
 };
 
+function pickReg10(e, b) {
+    reg10inv = b;
+    $("#k1 span.kepletvalaszto.selected").removeClass("selected");
+    $(e).addClass("selected");
+    const reg10w1 = document.getElementById("reg10w1").checked;
+    const reg10w2 = document.getElementById("reg10w2").checked;
+    if (reg10w1 || reg10w2)
+        shtuffleW();
+};
+
 function setReg0(e) {
     const w1 = document.getElementById("reg0w1");
     const w2 = document.getElementById("reg0w2");
+    const w11 = document.getElementById("reg10w1");
+    const w12 = document.getElementById("reg10w2");
+    w11.checked = false;
+    w12.checked = false;
     if (e.id.endsWith("1"))
         w2.checked = false;
     else
         w1.checked = false;
+    console.log(e.id)
+    shtuffleW();
+    if (!$('#reg0_keplet.keplet').hasClass('active')) {
+        $('#reg10_keplet.keplet').removeClass('active');
+        $('#reg0_keplet.keplet').addClass('active');
+    }
+};
+
+function setReg10(e) {
+    const w1 = document.getElementById("reg0w1");
+    const w2 = document.getElementById("reg0w2");
+    const w11 = document.getElementById("reg10w1");
+    const w12 = document.getElementById("reg10w2");
+    w1.checked = false;
+    w2.checked = false;
+    if (e.id.endsWith("1"))
+        w12.checked = false;
+    else
+        w11.checked = false;
+    if (!$('#reg10_keplet.keplet').hasClass('active')) {
+        $('#reg0_keplet.keplet').removeClass('active');
+        $('#reg10_keplet.keplet').addClass('active');
+    }
     shtuffleW();
 };
 
@@ -8773,6 +8824,22 @@ function countEndingX(str) {
     const match = str.match(/x+$/);
     return match ? match[0].length : 0;
 };
+
+function countLeadingY(str) {
+    // Regex to match one or more 'x' characters at the start of the string
+    const regex = /^y+/;
+
+    // Use the match() method to find the matching portion
+    const match = str.match(regex);
+
+    // If a match is found, return the length of the matched substring
+    if (match) {
+        return match[0].length;
+    } else {
+        // If no match (string doesn't start with 'x'), return 0
+        return 0;
+    }
+}
 
 function hlh(e, j) {
     $("#shouth span.hreg.hl").removeClass('hl');
@@ -9001,3 +9068,247 @@ function helpTglafh1(id) {
         elem.style.display = "none";
 };
 
+function formazxyV(vL, blokk, withid) {
+    var txt = ""
+    for (let v of vL) {
+        var c = v[0];
+        if (c == 1)
+            c = " + ";
+        else if (c > 1)
+            c = " + " + c + "&middot;"
+        else if (c == -1)
+            c = " − ";
+        else if (c < -1)
+            c = " − " + (-1 * c) + "&middot";
+        var xy = v[1];
+        const xyid = xy;
+        if (blokk)
+            xy = xy.replaceAll('y', 'y|');
+        if (withid) {
+            xy = " <span class='hreg' data-reg=" + xyid + " data-c='" + v[0] + "' onclick='regHighlight(this);clearOv();'>" + c + xy + "</span>"
+            txt += xy;
+        } else {
+            txt += c + xy;
+        }
+    };
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+    txt = xy2XY(txt);
+    return txt;
+};
+
+var ovosszeg = 0;
+
+function reg10hl(e) {
+    const $e = $(e);
+    $('#shouth table td.hl').removeClass('hl');
+    $e.addClass('hl');
+    const rs = formazxyV(JSON.parse($e.attr('data-reg')), true, true);
+    const elem = $('#shouth #reg10r');
+    elem.addClass('active').html(rs);
+
+    if ($e.find('.ov').length == 0) {
+        const fixelem = $('#shouth #reg10ov .hreg.hl');
+        const fixreg = fixelem.attr('data-reg');
+        fixelem.addClass('szamlalva');
+        if (fixreg != undefined) {
+            setOvjelj();
+            let parja = $('#shouth #reg10r .hreg[data-reg=' + fixreg + ']');
+            let c = 0;
+            if (parja.length > 0) {
+                c = parja.attr('data-c');
+                ovosszeg += 1 * c;
+                document.getElementById("ovjelentesb").innerHTML = ovosszeg.toString();
+                parja.addClass('hl');
+            };
+            if (c == 0)
+                $e.append('<span class="ov halvany">' + c + '</span>');
+            else
+                $e.append('<span class="ov">' + c + '</span>');
+        };
+    } else {
+        const fixelem = $('#shouth #reg10ov .hreg.hl');
+        const fixreg = fixelem.attr('data-reg');
+        let parja = $('#shouth #reg10r .hreg[data-reg=' + fixreg + ']');
+        parja.addClass('hl');
+    };
+};
+
+function setOvjelj() {
+    document.getElementById("ovjelentes").classList.add('active');
+    const txt = $('#shouth #reg10ov .hreg.hl.szamlalva').html().trim().replace("+", "").replace("−", "-");
+    const pat = new RegExp(`[(${xy2XY('x')}${xy2XY('y')})]`);
+    const indx = txt.search(pat);
+    var eleje = txt.slice(0, indx - 1).replace('·', '');
+    if (eleje == "")
+        eleje = "1";
+    eleje = "<span class='oveleje'>" + eleje + "</span>";
+    const vege = txt.slice(indx);
+
+    document.getElementById("ovjelentesj").innerHTML = eleje + vege;
+};
+
+function clearOv() {
+    clearInterval(ra);
+    ovosszeg = 0;
+    $("#shouth .hreg.hl.szamlalva").removeClass("szamlalva");
+    $('#shouth table td .ov').remove();
+    document.getElementById("ovjelentes").classList.remove('active');
+    document.getElementById("ovjelentesj").innerHTML = "";
+    document.getElementById("ovjelentesb").innerHTML = ovosszeg;
+};
+
+function ovAnimate() {
+    ovosszeg = 0;
+    document.getElementById("ovjelentesb").innerHTML = ovosszeg;
+    $('#shouth table td .ov').remove();
+    $('#reg10tbl td.hl').removeClass('hl');
+    const N = $('#reg10tbl td:not(.matrixzj)').length;
+    const t = document.getElementById("animt").value * 1;
+    if (N > 0) {
+        var i = 0;
+        ra = setInterval(() => {
+            $('#reg10tbl td:not(.matrixzj):nth(' + i + ')').click();
+            i++;
+            if (i == N) {
+                clearInterval(ra);
+            }
+        }, t);
+    } else
+        return;
+};
+
+function reg10(str) {
+    const m = countLeadingY(str);
+    const n = countEndingX(str);
+    const u = xy2XY(str.slice(m, str.length - n));
+    var sh = [];
+    var sc = 2 * m + 1.2;
+    var scx = 2.5;
+    if (m == 0)
+        scx = 1;
+    var tbl = "<table id='reg10tbl' class='table-hideable'><tr><td class='matrixzj' rowspan=" + (m + 1) + "><span style='transform: scaleY(" + sc + ") scaleX(" + scx + ");display: inline-block;'>(</span></td>";
+    var tbly = "<table id='regytbl' class='table-hideable'>";
+    var tblx = "<table  id='regxtbl' class='table-hideable'>";
+    const X = xy2XY('x');
+    const Y = xy2XY('y');
+    for (var j = 0; j <= n; j++) {
+        let x = X.repeat(j) || "";
+        var scy = 2 * n + 1.2;
+        var scxx = 2.3;
+        if (n == 0)
+            scx = 1;
+        if (j == 0)
+            tblx += "<tr><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scxx + ");display: inline-block;'>(</span><td style='font-weight:800;'>1</td><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scxx + ");display: inline-block;'>)</span></td><td rowspan=" + (n + 1) + "><span id='ovjelentes'><span id='ovjelentesb'></span><span class='lepteto' onclick='ovAnimate();' style='display:inline-block;padding:5px 5px 5px 7px;margin:4px 5px 4px 5px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;box-shadow: 0 0 10px 3px #bdbdbd;'>▶</span><span id='ovjelentesj'></span><span class='ovclose' onclick='clearOv();'>&times;</span></span></td></tr>";
+        else
+            tblx += "<tr><td>" + x + "</td></tr>";
+    };
+    tblx += "</table>";
+    var vesszo = ","
+    for (var i = 0; i <= m; i++) {
+        if (i > 0)
+            tbl += "<tr>";
+        let y = Y.repeat(i) || "";
+        for (var j = 0; j <= n; j++) {
+            let x = X.repeat(j) || "";
+            let my = Y.repeat(m - i);
+            let nx = X.repeat(n - j);
+            let yux = my + u + nx;
+            let sij = polyShuffle(polyShuffle([
+                [Math.pow(-1, i), y]
+            ], [
+                [1, yux]
+            ]), [
+                [Math.pow(-1, j), x]
+            ]);
+            sh = [...sh, ...sij];
+
+            vesszo = "";
+            if (m == 0 && j != n)
+                vesszo = ","
+            let eloj = "";
+            if ((i + j) % 2 == 1)
+                eloj = "−";
+            var ustr = u;
+            if (i == m && j == n && u == "")
+                ustr = "1";
+            tbl += "<td data-reg='" + JSON.stringify(sij) + "' onclick='reg10hl(this);'>" + eloj + "<span class='yux y'>" + my + "</span><span class='yux u'>" + ustr + "</span><span class='yux x'>" + nx + "</span>" + vesszo + "</td>";
+
+            if (j == 0) {
+                vesszo = ",";
+                if (i == m)
+                    vesszo = "";
+                if (i == 0)
+                    tbly += "<tr><td class='matrixzj'><span style='transform: scaleX(1.2);display: inline-block;'>(</span><td style='font-weight:800;'>1" + vesszo + "</td>";
+                else
+                    tbly += "<td>" + y + vesszo + "</td>";
+                if (i == m)
+                    tbly += "<td class='matrixzj'><span style='transform: scaleX(1.2);display: inline-block;'>)</span></td></tr>";
+            }
+        };
+        if (i == 0)
+            tbl += "<td class='matrixzj' rowspan=" + (m + 1) + "><span style='transform: scaleY(" + sc + ") scaleX(" + scx + ");display: inline-block;'>)</span></td>"
+        tbl += "</tr>";
+    }
+    tbl += "</table>";
+    tbly += "</table>";
+    tbl = "<div class='reg10tarto'>" + tbly + "<span style='margin:0 3px;'>⧢</span>" + tbl + "<span style='margin:0 3px;'>⧢</span>" + tblx + "</div>";
+    sh = _.groupBy(sh, y => y[1]);
+    var shobj = [];
+    var txt = "";
+    _.forEach(sh, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            shobj.push([s, xy2XY(key.replaceAll(",", ""))]);
+            if (s == 1)
+                s = " + ";
+            else if (s > 1)
+                s = " + " + s + "&middot"
+            else if (s == -1)
+                s = " − ";
+            else if (s < -1)
+                s = " − " + (-1 * s) + "&middot;";
+            var xy = key.replaceAll(',', '');
+            xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();'>" + s + xy.replaceAll('y', 'y|') + "</span>";
+            txt += xy;
+        };
+    });
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+    txt = "<div id='reg10ov'>" + txt + "</div>"
+    let fej = "<span style='display:block;background-color:#bfbfbf4f;;margin-bottom:10px;padding-left:5px;'>(B)-ben: u = " + xy2XY(u) + "&in;&nbsp;&#x1d525;y;&nbsp;m = " + m + ";&nbsp;n = " + n + "</span>";
+    return [fej, tbl, txt, shobj];
+};
+
+function formazS10reg(id, str0) {
+    if (id == "")
+        var str = str0;
+    else
+        str = document.getElementById(id).value.toLowerCase();
+    const reg = reg10(str);
+    const fej = reg[0];
+    const tbl = reg[1];
+    const txt = reg[2];
+    const kij = "<div id='reg10r'></div>";
+    document.getElementById("shouth").innerHTML = fej + tbl + kij + txt;
+};
+
+function formazinvS10reg(id, str0) {
+    document.getElementById("shouth").innerHTML = "Még nincs implementálva!";
+};
+
+// Admissible kiterjesztes
+
+function Adm(n, k) {
+    var out = [];
+    if (n > k) {
+        comp(n, k);
+        out = allcomp.filter(y => y[0] > 1 || y.every(v => v == 1))
+    };
+    return out;
+};
+
+function nonAdm(n, k) {
+    comp(n, k);
+    return allcomp.filter(y => y[0] == 1);
+};
