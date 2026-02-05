@@ -8800,6 +8800,10 @@ function setReg0(e) {
     if (!$('#reg0_keplet.keplet').hasClass('active')) {
         $('#reg10_keplet.keplet').removeClass('active');
         $('#reg0_keplet.keplet').addClass('active');
+        if (reg0inv)
+            $('#reg0_keplet .kepletvalaszto:nth(1)').trigger('click');
+        else
+            $('#reg0_keplet .kepletvalaszto:nth(0)').trigger('click');
     }
 };
 
@@ -8817,8 +8821,11 @@ function setReg10(e) {
     if (!$('#reg10_keplet.keplet').hasClass('active')) {
         $('#reg0_keplet.keplet').removeClass('active');
         $('#reg10_keplet.keplet').addClass('active');
+        if (reg10inv)
+            $('#reg10_keplet .kepletvalaszto:nth(1)').trigger('click');
+        else
+            $('#reg10_keplet .kepletvalaszto:nth(0)').trigger('click');
     }
-    shtuffleW();
 };
 
 function countEndingX(str) {
@@ -9543,4 +9550,5 @@ function nonAdm(n, k) {
     comp(n, k);
     return allcomp.filter(y => y[0] == 1);
 };
+
 
