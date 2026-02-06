@@ -5,7 +5,7 @@
     <title>Algebra of h</title>
     <script src="../../../Redmentor/jquery-1.12.1.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script> -->
+    <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script> 
 
     <link rel="stylesheet" href="samples.css">
     <script src="multipolylog.js"></script>
@@ -31,6 +31,13 @@
             menuSettings: {
                 zoom: "Double-Click",
             }
+        });
+         sagecell.makeSagecell({
+            inputLocation: '#mycellst',
+            outputLocation: '#ideoutst',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink", "output"],
         });
     </script>
 
@@ -62,7 +69,7 @@
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
-                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w1" value="yyxyxxx">
+                <input class="inpvec" oninput="idClear('#shouth');if(!shstHom) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w1" value="yy">
                 <label for="reg0w1" style="margin-left: 5px;">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
                 <input type="checkbox" name="reg0w1" id="reg0w1" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
                 <label for="reg10w1" style="margin-left: 5px;">reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
@@ -70,7 +77,7 @@
             </div>
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
-                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w2" value="yyxyyxx" name="b">
+                <input class="inpvec" oninput="idClear('#shouth');if(!shstHom) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w2" value="yxy" name="b">
                 <label for="reg0w2" style="margin-left: 5px;">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
                 <input type="checkbox" name="reg0w2" id="reg0w2" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
                 <label for="reg10w2" style="margin-left: 5px;">reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
@@ -83,6 +90,8 @@
                 <label class="switch">
             <input type="checkbox" id="shH" onchange="shtuffleW();"><span class="slider round"></span></label>
                 <span style="margin-right:10px;font-size:120%;">&lowast;</span>
+                <label for="hom" style="margin-left: 5px;">Hom.</label>
+                <input type="checkbox" name="hom" id="hom" oninput="setHom(this);" style="margin-left:9px;margin-right:15px;height:20px;width:20px;vertical-align:middle;">
                 <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
             </div>
             <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
@@ -118,6 +127,12 @@
             <p id="figysh" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
             <p id="shouth" style="margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
         </div>
+        <div id="mycellst" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv" style="padding:0;margin:0;">
+            <div id="ideoutst"></div>
+        </div>
     </div>
     <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTglafh1('helpbarh1');" title="Open/Close help">Toggle help</button>
     <div id="helpbarh1" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
@@ -131,6 +146,7 @@
     </script>
 </body>
 </html>
+
 
 
 
