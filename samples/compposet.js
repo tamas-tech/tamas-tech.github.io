@@ -3531,7 +3531,6 @@ function drawDet() {
         if (detmk29kell) {
             var det00 = _.cloneDeep(det0);
             var kul = symbOv(_.flatten([det00, symbVprod([{ "c": -1 }], vList2obj(keplet29zeta(s), 1))]));
-            console.log(kul)
             var detmk29 = monomvec2HTML(kul);
             var detmk29tagok = kul.length;
             if (detmk29tagok > tagmax)
@@ -7911,9 +7910,9 @@ function msv2HTML(msv) {
     else if (C == -1)
         C = " − ";
     else if (C > 1)
-        C = " + " + C + "&lowast;";
+        C = " + " + Fraction(C).toFraction() + "&lowast;";
     else if (C < 1)
-        C = " − " + -C + "&lowast;";
+        C = " − " + Fraction(-C).toFraction() + "&lowast;";
     var m = C + "(" + msv[1] + ")";
     return m;
 };
@@ -8120,7 +8119,6 @@ function str2ms(str, muv) {
 function ms_kiszed(id, muv) {
     var str = document.getElementById(id).value;
     str = str2ms(str, muv);
-    console.log(str)
     return str;
     //document.getElementById("diffout").innerHTML = JSON.stringify(str);
 };
@@ -8232,7 +8230,6 @@ function kawaLeft(a, b, m) {
 
 function kawaRight(a, b, m) {
     const usab = usigma(a, b);
-    console.log(usab)
     const out = vList2obj(kawa_w(usab, m), 1);
     return symbOv(out);
 };
@@ -8390,7 +8387,7 @@ function vecList2Pari(v) {
         if (a0 < 0)
             eloj = "-";
         if (a0 != 0)
-            var c = Math.abs(a[0]);
+            var c = Fraction(Math.abs(a[0])).toFraction();
         if (c == 1)
             c = "";
         else
@@ -8457,6 +8454,7 @@ function IKDer() {
 
 var reg0inv = false;
 var reg10inv = false;
+var shstHom = false;
 
 function yvec2xy(v) {
     str = "";
@@ -8630,7 +8628,7 @@ function shuffleW() {
     const w1 = document.getElementById("w1").value.split("");
     const w2 = document.getElementById("w2").value.split("");
     const sh = shuffleProduct(w1, w2);
-    const txt = formazShuffle(sh, false, false);
+    const txt = formazShuffle(sh, true, false);
 
     document.getElementById("shouth").innerHTML = txt;
 };
@@ -8701,32 +8699,232 @@ function XY2xy(str) {
         return str;
 };
 
-function stuffleW() {
-    const v1 = document.getElementById("w1").value.toLowerCase();
-    const v2 = document.getElementById("w2").value.toLowerCase();
-    var txt = "";
-    if (v1.endsWith("x") && v2.endsWith("x"))
-        txt = " w<sub>1</sub>, w<sub>2</sub>&nbsp;&notin;&nbsp;&#x1d525;y<br/>Mind a két szónak y-ra kel végződnie.";
-    else if (v1.endsWith("x"))
-        txt = " w<sub>1</sub>&nbsp;&notin;&nbsp;&#x1d525;y<br/>Mind a két szónak y-ra kel végződnie.";
-    else if (v2.endsWith("x"))
-        txt = " w<sub>2</sub>&nbsp;&notin;&nbsp;&#x1d525;y<br/>Mind a két szónak y-ra kel végződnie."
+function ybontas(str) {
+    const pos = str.lastIndexOf("y");
+    return str.slice(0, pos + 1);
+};
+
+function xystuffle(s1, s2) {
+    var result = [];
+    if (s1 == "")
+        result = [
+            [1, s2]
+        ];
+    else if (s2 == "")
+        result = [
+            [1, s1]
+        ];
+    else if (s1.search("y") < 0)
+        result = [
+            [1, s2 + s1]
+        ];
+    else if (s2.search("y") < 0)
+        result = [
+            [1, s1 + s2]
+        ];
     else {
-        const w1 = xy2vec(v1);
-        const w2 = xy2vec(v2);
-        const st = stuffleProduct(w1[0], w2[0]);
-        var txt1 = "";
-        var u = []
-        for (let v of st)
-            u.push(yvec2xy(v))
-        txt1 = formazShuffle(u, false, false);
-        if (txt1.startsWith(" + "))
-            txt1 = txt1.slice(3);
-        txt1 = xy2XY(txt1)
-        txt = txt1 + "<hr/><span style='font-size:70%;color:#3e3e3e;'>" + JSON.stringify(st) + "</span>";
+        const b1 = ybontas(s1);
+        const b2 = ybontas(s2);
+        const n = countEndingX(s1);
+        const m = countEndingX(s2);
+        const xveg = "x".repeat(n + m);
+        const v1 = xy2vec(b1)[0];
+        const v2 = xy2vec(b2)[0];
+        const v = vecList_Ov(stuffleProduct(v1, v2));
+        result = v.map(z => [z[0], yvec2xy(z[1]) + xveg]);
+    };
+    return result;
+};
+
+function xyStuffleList(strL) {
+    var out = [
+        [1, ""]
+    ];
+    for (let w of strL)
+        out = polyStuffle(out, [w]);
+    return out;
+};
+
+function polyStuffle(strL1, strL2) {
+    if (document.getElementById('xX').checked) {
+        strL1 = strL1.map(y => [y[0], XY2xy(y[1])]);
+        strL2 = strL2.map(y => [y[0], XY2xy(y[1])]);
+    };
+    var st = []
+    for (let u of strL1) {
+        for (let v of strL2) {
+            st.push([u[0] * v[0], xystuffle(u[1], v[1])]);
+        }
+    };
+    st = _.flatten(st.map(y => y[1].map(z => [y[0] * z[0], z[1]])));
+    st = _.groupBy(st, y => y[1]);
+    var stobj = [];
+    _.forEach(st, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            stobj.push([s, xy2XY(key)]);
+        };
+    });
+    return stobj;
+};
+
+function xystuffleW(s1, s2, jelent) {
+    var result = [];
+    var jelentes = "";
+    var st = [];
+    if (s1 == "") {
+        st = [
+            [1, s2]
+        ];
+        if (jelent) {
+            jelentes = "Ha w<sub>1</sub> az üres szó, akkor w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub> = w<sub>2</sub>"
+        }
+    } else if (s2 == "") {
+        st = [
+            [1, s1]
+        ];
+        if (jelent) {
+            jelentes = "Ha w<sub>2</sub> az üres szó, akkor w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub> = w<sub>1</sub>"
+        }
+    } else if (s1.search("y") < 0) {
+        st = [
+            [1, s2 + s1]
+        ];
+        if (jelent) {
+            jelentes = "Ha w<sub>1</sub>  szó csak x-et tartalmaz, akkor w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub> = w<sub>2</sub>&nbsp;&bullet;&nbsp;w<sub>1</sub>"
+        }
+    } else if (s2.search("y") < 0) {
+        st = [
+            [1, s1 + s2]
+        ];
+        if (jelent) {
+            jelentes = "Ha w<sub>2</sub>  szó csak x-et tartalmaz, akkor w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub> = w<sub>1</sub>&nbsp;&bullet;&nbsp;w<sub>2</sub>"
+        }
+    } else {
+        const b1 = ybontas(s1);
+        const b2 = ybontas(s2);
+        const n = countEndingX(s1);
+        const m = countEndingX(s2);
+        const xveg = "x".repeat(n + m);
+        const v1 = xy2vec(b1)[0];
+        const v2 = xy2vec(b2)[0];
+        const v = vecList_Ov(stuffleProduct(v1, v2));
+        st = v.map(z => [z[0], yvec2xy(z[1]) + xveg]);
+        if (jelent) {
+            jelentes = "1. A w<sub>1</sub> = " + xy2XY(s1) + " szó végéről levágjuk a(z) <b>" + n + "</b> darab " + xy2XY('x') + " karaktert így a(z) " + xy2XY('y') + " karakterre végzödő <b>" + xy2XY(b1) + "</b>  szót kapjuk, amit átalakítunk <b>v<sub>1</sub></b> = (" + v1 + ") vektorrá.<br/>2. A w<sub>2</sub> = " + xy2XY(s2) + " szó végéről levágjuk a(z) <b>" + m + "</b> darab " + xy2XY('x') + " karaktert  így a(z)  " + xy2XY('y') + " karakterre végzödő <b>" + xy2XY(b2) + "</b> szót kapjuk, amit átalakítunk <b>v<sub>2</sub></b> = (" + v2 + ") vektorrá.<br/>3. Kiszámítjuk a(z) (" + v1 + ")&nbsp;&lowast;&nbsp;(" + v2 + ") stuffle-szorzatot:<br/>";
+            jelentes += ms2HTML(v);
+            jelentes += "<br>4. Végül mindent vektort visszaalakítunk xy-szóvá, és mindegyik végéhez " + n + " + " + m + " = <b>" + (n + m) + "</b> darab " + xy2XY('x') + " karaktert írunk."
+        };
     };
 
+    if (jelent)
+        result = [st, jelentes];
+    else
+        result = st;
+    return result;
+};
+
+function stuffleW() {
+    const s1 = document.getElementById("w1").value.toLowerCase();
+    const s2 = document.getElementById("w2").value.toLowerCase();
+    var txt = "";
+    const st = xystuffleW(s1, s2, true);
+    var txt1 = "";
+    txt1 = formazxyV(st[0], true, false);
+    if (txt1.startsWith(" + "))
+        txt1 = txt1.slice(3);
+    txt1 = xy2XY(txt1)
+    txt = txt1 + "<hr/><span style='font-size:70%;color:#3e3e3e;'>" + st[1] + "</span>";
+
     document.getElementById("shouth").innerHTML = txt;
+};
+
+function stValasz(det, stprod) {
+    var elem = document.getElementById("sthomertek");
+    if (stprod)
+        elem = document.getElementById("stprodertek");
+    const t = 100000;
+    $('#mycellst .sagecell_editor textarea.sagecell_commands').val(det);
+    $('#mycellst .sagecell_input button.sagecell_evalButton').click();
+    var ra = setInterval(() => {
+        valasz = $('#ideoutst .sagecell_sessionOutput pre').text();
+        if (valasz != "") {
+            clearInterval(ra);
+            clearInterval(to);
+            elem.innerHTML = " = " + valasz;
+        }
+    }, 50);
+    var to = setTimeout(() => {
+        clearInterval(ra);
+        elem.innerHTML = " &rightarrow;A válasz " + t / 1000 + " sec alatt nem érkezett meg.";
+    }, t)
+};
+
+function stHom() {
+    const s1 = document.getElementById("w1").value.toLowerCase();
+    const s2 = document.getElementById("w2").value.toLowerCase();
+    var txt = "<i>A </i>w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub> = " + s1 + "&nbsp;&lowast;&nbsp;" + s2 + " = <br/>";
+    const st = xystuffleW(s1, s2, true);
+    var nreg = st[0].filter(y => y[1].startsWith(xy2XY('y')));
+
+    var txt1 = formazxyV(st[0], false, false);
+    if (txt1.startsWith(" + "))
+        txt1 = txt1.slice(3);
+    txt += txt1 + "<br/> <i>stuffle szorzatban a non-asmissible </i>"
+    txt += nreg.map(z => " <b>" + z[1] + "</b>") + " <i>szavakat helyettesítjük a stuffle-regularizáltjukkal</i>.<br/>";
+    const na = nreg.length;
+    for (var j = 0; j < na; j++)
+        txt += (j + 1) + ". reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + nreg[j][1] + ") = " + formazxyV(reghar(nreg[j][1])) + "<br/>";
+
+    const stvec = _.flatten(st[0].map(y => reghar(y[1]).map(z => [y[0] * z[0], xy2vec(z[1])[0]])));
+    const stPari = vecList2Pari(stvec);
+    const regst = formazxyV(_.flatten(st[0].map(y => reghar(y[1]).map(z => [y[0] * z[0], z[1]]))));
+    txt += "<i>A megfelelő behelyettesítés és összevonás után a(z)</i><br/>reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s1 + "&nbsp;&lowast;&nbsp;" + s2 + ") = <span style='background-color:#ffd0c6;'>" + regst + "</span> ~ " + ms2HTML(stvec) + "<br/> <i>összeget kapjuk.</i><br/> ";
+    const r1 = reghar(s1);
+    const r2 = reghar(s2);
+    const r1vec = r1.map(y => [y[0], xy2vec(y[1])[0]]);
+    const r2vec = r2.map(y => [y[0], xy2vec(y[1])[0]]);
+    txt += "<i>A </i>w<sub>1</sub> = " + s1 + "<i> és a </i>w<sub>2</sub> = " + s2 + "<i> szavak  stuffle-regularizáltja pedig</i><br/>";
+    txt += "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s1 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r1) + "</span> ~ " + ms2HTML(r1vec) + "<br/>" + "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s2 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r2) + "</span> ~ " + ms2HTML(r2vec) + "<br/>";
+
+    st12Pari = "gp(\"(" + vecList2Pari(r1vec).slice(4, -2) + ")*(" + vecList2Pari(r2vec).slice(4, -2) + ")\")";
+
+    txt += "<i> A homomorfizmus teljesülése:</i><br/>&zeta;&hairsp;[reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub>)] <span id='sthomertek' style='color:blue;'></span><br/>";
+    txt += "&zeta;&hairsp;[reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(w<sub>1</sub>)]&nbsp;&middot;&nbsp;&zeta;&hairsp;[reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(w<sub>2</sub>)] <span id='stprodertek' style='color:blue;'></span>";
+    txt = xy2XY(txt)
+    document.getElementById("shouth").innerHTML = txt;
+    stValasz(stPari, false);
+    stValasz(st12Pari, true);
+}
+
+function reghar(str) {
+    const m = countLeadingY(str);
+    const u = xy2XY(str.slice(m));
+    var sh = [];
+    const Y = xy2XY('y');
+    for (var i = 0; i <= m; i++) {
+        let yst = [
+            [Fraction(Math.pow(-1, i), factorial(i)), ""]
+        ];
+        if (i > 0)
+            for (var j = 1; j <= i; j++)
+                yst.push([1, Y]);
+        let my = Y.repeat(m - i);
+        let yu = my + u;
+        let sij = polyStuffle(xyStuffleList(yst), [
+            [1, yu]
+        ]);
+        sh = [...sh, ...sij];
+    }
+    sh = _.groupBy(sh, y => y[1]);
+    var shobj = [];
+    _.forEach(sh, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            shobj.push([s, xy2XY(key)]);
+        };
+    });
+    return shobj;
 };
 
 function shtuffleW() {
@@ -8759,7 +8957,10 @@ function shtuffleW() {
             formazS10reg("w2", "");
 
     else if (st)
-        stuffleW();
+        if (shstHom)
+            stHom();
+        else
+            stuffleW();
     else
         shuffleW();
 };
@@ -8795,7 +8996,6 @@ function setReg0(e) {
         w2.checked = false;
     else
         w1.checked = false;
-    console.log(e.id)
     shtuffleW();
     if (!$('#reg0_keplet.keplet').hasClass('active')) {
         $('#reg10_keplet.keplet').removeClass('active');
@@ -8818,6 +9018,7 @@ function setReg10(e) {
         w12.checked = false;
     else
         w11.checked = false;
+    shtuffleW();
     if (!$('#reg10_keplet.keplet').hasClass('active')) {
         $('#reg0_keplet.keplet').removeClass('active');
         $('#reg10_keplet.keplet').addClass('active');
@@ -8828,6 +9029,11 @@ function setReg10(e) {
     }
 };
 
+function setHom(e) {
+    shstHom = e.checked;
+    shtuffleW();
+};
+
 function countEndingX(str) {
     // Matches one or more 'x' at the end of string ($)
     str = XY2xy(str);
@@ -8836,8 +9042,8 @@ function countEndingX(str) {
 };
 
 function countLeadingY(str) {
-    // Regex to match one or more 'x' characters at the start of the string
     str = XY2xy(str);
+    // Regex to match one or more 'x' characters at the start of the string
     const regex = /^y+/;
 
     // Use the match() method to find the matching portion
@@ -9085,12 +9291,12 @@ function formazxyV(vL, blokk, withid) {
         var c = v[0];
         if (c == 1)
             c = " + ";
-        else if (c > 1)
-            c = " + " + c + "&middot;"
+        else if (c > 0)
+            c = " + " + Fraction(c).toFraction() + "&middot;"
         else if (c == -1)
             c = " − ";
-        else if (c < -1)
-            c = " − " + (-1 * c) + "&middot";
+        else if (c < 0)
+            c = " − " + Fraction(-1 * c).toFraction() + "&middot";
         var xy = v[1];
         const xyid = xy;
         if (blokk)
@@ -9109,58 +9315,6 @@ function formazxyV(vL, blokk, withid) {
 };
 
 var ovosszeg = 0;
-
-function reg10hlREGI(e) {
-    const $e = $(e);
-    $('#shouth table td.hl').removeClass('hl');
-    $e.addClass('hl');
-    const rs = formazxyV(JSON.parse($e.attr('data-reg')), true, true);
-    const elem = $('#shouth #reg10r');
-    elem.addClass('active').html(rs);
-
-    if ($e.find('.ov').length == 0) {
-        const fixelem = $('#shouth #reg10ov .hreg.hl');
-        const fixreg = fixelem.attr('data-reg');
-        fixelem.addClass('szamlalva');
-        if (fixreg != undefined) {
-            setOvjelj();
-            let parja = $('#shouth #reg10r .hreg[data-reg=' + fixreg + ']');
-            let c = 0;
-            if (parja.length > 0) {
-                c = parja.attr('data-c');
-                ovosszeg += 1 * c;
-                document.getElementById("ovjelentesb").innerHTML = ovosszeg.toString();
-                parja.addClass('hl');
-            };
-            if (c == 0)
-                $e.append('<span class="ov halvany">' + c + '</span>');
-            else
-                $e.append('<span class="ov">' + c + '</span>');
-        } else if (ovelem != "") {
-            document.getElementById("ovjelentes").classList.add('active');
-            document.getElementById("ovjelentesj").innerHTML = '<span class="oveleje">0</span>' + ovelem;
-            document.getElementById("ovjelentesb").innerHTML = "0";
-            let parja = $('#shouth #reg10r .hreg[data-reg=' + ovelem + ']');
-            let c = 0;
-            if (parja.length > 0) {
-                c = parja.attr('data-c');
-                ovosszeg += 1 * c;
-                document.getElementById("ovjelentesb").innerHTML = ovosszeg.toString();
-                parja.addClass('hl');
-            };
-            if (c == 0)
-                $e.append('<span class="ov halvany">' + c + '</span>');
-            else
-                $e.append('<span class="ov">' + c + '</span>');
-        } else
-            return;
-    } else {
-        if (ovelem != "") {
-            let parja = $('#shouth #reg10r .hreg[data-reg=' + ovelem + ']');
-            parja.addClass('hl');
-        }
-    };
-};
 
 function reg10hl(e) {
     const $e = $(e);
@@ -9310,6 +9464,7 @@ function polyreg10(strL) {
 };
 
 function reg10With(str) {
+    //str = XY2xy(str);
     const m = countLeadingY(str);
     const n = countEndingX(str);
     const u = xy2XY(str.slice(m, str.length - n));
@@ -9425,6 +9580,7 @@ function formazS10reg(id, str0) {
 };
 
 function invreg10With(str) {
+    //str = XY2xy(str);
     const m = countLeadingY(str);
     const n = countEndingX(str);
     const u = xy2XY(str.slice(m, str.length - n));
@@ -9535,6 +9691,7 @@ function formazinvS10reg(id, str0) {
     elem.innerHTML = fej + tbl + kij + txt;
 
 };
+
 // Admissible kiterjesztes
 
 function Adm(n, k) {
@@ -9550,5 +9707,3 @@ function nonAdm(n, k) {
     comp(n, k);
     return allcomp.filter(y => y[0] == 1);
 };
-
-
