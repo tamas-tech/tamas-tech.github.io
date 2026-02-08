@@ -44,7 +44,7 @@
 </head>
 <body>
     <div id="floatkijelzo"></div>
-   <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
+    <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shoutcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <p class="keplet active" id="reg0_keplet"><span class="kepletvalaszto" data-reg="homsh0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;"> (Hom)</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2</span></sub>(w<sub>1</sub>&nbsp;&#x29E2;&nbsp;w<sub>2</sub>)
@@ -149,6 +149,17 @@
                 </div>
             </div>
         </div>
+        <div id="shoutcontainer" style="max-width:100vw">
+            <p id="figysh" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
+            <p id="shouth" style="margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
+        </div>
+        <div id="mycellst" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv" style="padding:0;margin:0;">
+            <div id="ideoutst"></div>
+        </div>
+    </div>
     <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTglafh1('helpbarh1');" title="Open/Close help">Toggle help</button>
     <div id="helpbarh1" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
         <iframe name="helpframe" width="99%" height="100%" src="../docs/base_of_halgebra_1.pdf" style="width:99%;height:100vh;border:none;"></iframe>
@@ -161,6 +172,7 @@
     </script>
 </body>
 </html>
+
 
 
 
