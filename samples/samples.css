@@ -2608,19 +2608,29 @@ div#k1 span.kepletvalaszto.selected {
 }
 
 #reg0_keplet.keplet,
-#reg10_keplet.keplet {
+#reg10_keplet.keplet,
+#reghar0_keplet.keplet,
+#reghar10_keplet.keplet {
     display: none;
     font-size: 110%;
-    height: 160px;
     margin-bottom: 0px;
     text-align: center;
-    background-color: inherit;
+    background-color: #fff1f1;
 }
 
 #reg0_keplet.keplet.active,
-#reg10_keplet.keplet.active {
+#reg10_keplet.keplet.active,
+#reghar0_keplet.keplet.active,
+#reghar10_keplet.keplet.active {
     display: block;
 }
+
+.shstlabel {
+    font-size: larger;
+    margin-left: -0.2em;
+    vertical-align: -3px;
+}
+
 
 
 
