@@ -47,52 +47,78 @@
    <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shoutcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet active" id="reg0_keplet">
-                w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&#x29E2</span>w<sub>2</sub> és w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&lowast;</span>w<sub>2</sub> <br/><span class="kepletvalaszto selected" onclick="pickReg0(this,false)"><span style="margin-left:10px;float:right;">(A)</span>                reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n</sup>) =
+            <p class="keplet active" id="reg0_keplet"><span class="kepletvalaszto" data-reg="homsh0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;"> (Hom)</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2</span></sub>(w<sub>1</sub>&nbsp;&#x29E2;&nbsp;w<sub>2</sub>)
+                = reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(w<sub>1</sub>)
+                <span style='font-size: 1.2em;margin:0 3px;'>&middot;</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(w<sub>2</sub>)&nbsp;&nbsp;(w<sub>1</sub>,w<sub>2</sub>&in;&nbsp;&#x1d525;y)</span>
+                <span class="kepletvalaszto" data-reg="Ash0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n</sup>)
+                =
                 <span class="block" style="transform: scale(1.5);">∑</span>
                 <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub> (-1)<sup>j</sup> ux<sup>n - j</sup><span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&in;&nbsp;&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
-                <span class="kepletvalaszto" onclick="pickReg0(this,true)"><span style="margin-left:10px;float:right;">(A')</span>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                <span class="kepletvalaszto" data-reg="Ainvsh0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A')</span>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
                 <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n - j</sup>)<span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
             </p>
-            <p class="keplet" id="reg10_keplet" style="font-size:110%;height:160px;margin-bottom:0px;text-align:center;background-color:inherit;">
-                w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&#x29E2</span>w<sub>2</sub> és w<sub>1</sub><span style='font-size: 1.2em;margin:0 3px;'>&lowast;</span>w<sub>2</sub> <br/><span class="kepletvalaszto selected" onclick="pickReg10(this,false)"><span style="margin-left:10px;float:right;">(B)</span>                reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(y<sup>m</sup></sup>ux<sup>n</sup>) =
+            <p class="keplet" id="reg10_keplet" style="font-size:110%;margin-bottom:0px;text-align:center;background-color:inherit;">
+                <span class="kepletvalaszto" data-reg="homsh10" onclick="pickKeplet(this)"><span style="margin-left:10px;float:right;"> (Hom)</span> reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2</span></sub>(w<sub>1</sub>&nbsp;&#x29E2;&nbsp;w<sub>2</sub>)
+                = reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(w<sub>1</sub>)
+                <span style='font-size: 1.2em;margin:0 3px;'>&middot;</span>reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(w<sub>2</sub>)&nbsp;&nbsp;(w<sub>1</sub>,w<sub>2</sub>&in;&nbsp;&#x1d525;)</span>
+                <span class="kepletvalaszto" data-reg="Ash10" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(B)</span> reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(y<sup>m</sup></sup>ux<sup>n</sup>)
+                =
                 <span class="block" style="transform: scale(1.5);">∑</span>
                 <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub> <span class="block" style="transform:scale(1.5);margin-left:15px;">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub> (-1)<sup>i + j</sup>&nbsp;y<sup>i</sup>
                 <span style="margin:0 3px;">&#x29E2;</span>y<sup>m - i</sup>ux<sup>n - j</sup>
                 <span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&in;&nbsp;x&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
-                <span class="kepletvalaszto" onclick="pickReg10(this,true)"><span style="margin-left:10px;float:right;">(B')</span>y<sup>m</sup>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                <span class="kepletvalaszto" data-reg="Ainvsh10" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(B')</span>y<sup>m</sup>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
                 <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub><span class="block" style="transform: scale(1.5);margin-left:15px;">∑</span>
                 <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub>&nbsp;y<sup>i</sup><span style="margin:0 3px;">&#x29E2;</span>reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(y<sup>m - i</sup>ux<sup>n - j</sup>)
                 <span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
             </p>
+            <div class="keplet" id="reghar0_keplet"><span class="kepletvalaszto" data-reg="homst0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;"> (Hom)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub>)
+                = reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(w<sub>1</sub>)
+                <span style='font-size: 1.2em;margin:0 3px;'>&middot;</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(w<sub>2</sub>)&nbsp;&nbsp;(w<sub>1</sub>,w<sub>2</sub>&in;&nbsp;&#x1d525;y)</span>
+                <span class="kepletvalaszto" data-reg="Ast0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(y<sup>m</sup>&hairsp;u)
+                =
+                <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;i&leq;m</sub><span style='display:inline-block;vertical-align:middle;text-align:center;font-size:90%;margin-right:-0.2em;line-height:normal;'><table class='tort' style='border-collapse:collapse;margin:0 3px;display:inline-table;'><tr><td style='border-bottom:1px solid;'>(-1)<sup>i</sup></td></tr><tr><td style="text-align:center;">i!</td></tr></table></span>&nbsp;y<sup>&lowast;i</sup>&lowast;(y<sup>m - i</sup>&hairsp;u)&nbsp;&in;&nbsp;x&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+                <span class="kepletvalaszto" data-reg="Ainvst0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A')</span>y<sup>m</sup>&hairsp;u = <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;i&leq;m</sub><span style='display:inline-block;vertical-align:middle;text-align:center;font-size:90%;margin-right:-0.2em;line-height:normal;'><table class='tort' style='border-collapse:collapse;margin:0 3px;display:inline-table;'><tr><td style='border-bottom:1px solid;'>y<sup>&lowast;i</sup></td></tr><tr><td style="text-align:center;">i!</td></tr></table></span>&nbsp;&lowast;
+                reg
+                <sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(y<sup>m - i</sup>&hairsp;u)&nbsp;&in;&nbsp;&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+            </div>
+            <div class="keplet" id="reghar10_keplet">
+                <span class="kepletvalaszto" data-reg="Ast10" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(B)</span> reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(y<sup>m</sup>&hairsp;u&hairsp;x<sup>n</sup>)
+                =
+                <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub><span class="block" style="margin-left:20px;transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-1.8em;">0&leq;j&leq;n</sub><span style='display:inline-block;vertical-align:middle;text-align:center;font-size:90%;margin-right:-0.2em;line-height:normal;'><table class='tort' style='border-collapse:collapse;margin:0 3px;display:inline-table;'><tr><td style='border-bottom:1px solid;'>(-1)<sup>i + j</sup></td></tr><tr><td style="text-align:center;">i!&hairsp;j!</td></tr></table></span>&nbsp;y<sup>&lowast;i</sup>&hairsp;&lowast;&hairsp;(y<sup>m - i</sup>&hairsp;u&hairsp;x<sup>n - j</sup>)&hairsp;&lowast;&hairsp;x<sup>&lowast;j</sup>&nbsp;&in;&nbsp;&#x1d525;x&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+                <span class="kepletvalaszto" data-reg="Ainvst10" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(B')</span>y<sup>m</sup>&hairsp;u&hairsp;x<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub><span class="block" style="margin-left:20px;transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-1.8em;">0&leq;j&leq;n</sub><span style='display:inline-block;vertical-align:middle;text-align:center;font-size:90%;margin-right:-0.2em;line-height:normal;'><table class='tort' style='border-collapse:collapse;margin:0 3px;display:inline-table;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td style="text-align:center;">i!&hairsp;j!</td></tr></table></span>&nbsp;y<sup>&lowast;i</sup>&hairsp;&lowast;&hairsp;reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(y<sup>m - i</sup>&hairsp;u&hairsp;x<sup>n - j</sup>)&hairsp;&lowast;&hairsp;x<sup>&lowast;j</sup>&nbsp;&in;&nbsp;&#x1d525;x&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+            </div>
         </div>
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
-                <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
-                <input class="inpvec" oninput="idClear('#shouth');if(!shstHom) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w1" value="yy">
-                <label for="reg0w1" style="margin-left: 5px;">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
-                <input type="checkbox" name="reg0w1" id="reg0w1" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
-                <label for="reg10w1" style="margin-left: 5px;">reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
-                <input type="checkbox" name="reg10w1" id="reg10w1" oninput="setReg10(this);" style="height:20px;width:20px;vertical-align:middle;">
+                <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw1"  class="kiur" onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
+                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w1" value="yy">
             </div>
             <div class="nobr" style="margin-left:2px;padding:3px;">
-                <label style="cursor:pointer;width:52px;display:inline-block;"><span style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
-                <input class="inpvec" oninput="idClear('#shouth');if(!shstHom) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w2" value="yxy" name="b">
-                <label for="reg0w2" style="margin-left: 5px;">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
-                <input type="checkbox" name="reg0w2" id="reg0w2" oninput="setReg0(this);" style="height:20px;width:20px;vertical-align:middle;">
-                <label for="reg10w2" style="margin-left: 5px;">reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub></label>
-                <input type="checkbox" name="reg10w2" id="reg10w2" oninput="setReg10(this);" style="height:20px;width:20px;vertical-align:middle;">
+                <label style="cursor:pointer;width:52px;display:inline-block;"><span id="calcw2" onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
+                <input class="inpvec" oninput="idClear('#shouth');shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;" type="text" id="w2" value="yxy" name="b">
             </div>
-            <div class="nobr" style="margin-left:2px;padding:3px;">
-                <button class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
-                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="idClear('#shouth');" title="Clear output">Clear</button>
+            <div class="nobr" style="margin-left:2px;margin:7px 3px;padding:3px;">
                 <span style="font-size:22px;margin-left:5px;">&#x29E2;</span>
                 <label class="switch">
-            <input type="checkbox" id="shH" onchange="shtuffleW();"><span class="slider round"></span></label>
-                <span style="margin-right:10px;font-size:120%;">&lowast;</span>
-                <label for="hom" style="margin-left: 5px;">Hom.</label>
-                <input type="checkbox" name="hom" id="hom" oninput="setHom(this);" style="margin-left:9px;margin-right:15px;height:20px;width:20px;vertical-align:middle;">
-                <button style="margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
+                 <input type="checkbox" id="shH" onchange="shstValtas(this);"><span class="slider round"></span>
+                </label>
+                <span style="margin-right:10px;font-size:120%;">&lowast;</sub>
+                </span>
+                <label style="margin-left:5px;display:inline-block;min-width:38px;">reg<sup>0</sup><sub><span class="shstlabel">&#x29E2;</span></label>
+                <label class="switch">
+                 <input type="checkbox" id="regv" onchange="regValtas(this);"><span class="slider round"></span>
+                </label>
+                <label style="margin-right:10px;">reg<sup>10</sup><sub><span class="shstlabel">&#x29E2;</span></label>
+            </div>
+            <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
+                <button class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
+                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="idClear('#shouth');" title="Clear output">Clear</button>
+                <button style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
             </div>
             <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
                 <div style="margin-bottom:10px;">
@@ -123,17 +149,6 @@
                 </div>
             </div>
         </div>
-        <div id="shoutcontainer" style="max-width:100vw">
-            <p id="figysh" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
-            <p id="shouth" style="margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
-        </div>
-        <div id="mycellst" width="100">
-            <script type="text/x-sage"></script>
-        </div>
-        <div class="outputoutdiv" style="padding:0;margin:0;">
-            <div id="ideoutst"></div>
-        </div>
-    </div>
     <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTglafh1('helpbarh1');" title="Open/Close help">Toggle help</button>
     <div id="helpbarh1" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
         <iframe name="helpframe" width="99%" height="100%" src="../docs/base_of_halgebra_1.pdf" style="width:99%;height:100vh;border:none;"></iframe>
@@ -146,6 +161,7 @@
     </script>
 </body>
 </html>
+
 
 
 
