@@ -181,7 +181,8 @@ div.keret.even .pre-container {
     background-color: #ffe5e5;
 }
 
-p.keplet {
+p.keplet,
+div.keplet {
     margin-top: 0;
     margin-bottom: -76px;
     padding: 5px 10px;
@@ -203,7 +204,8 @@ div.keret.odd p.keplet {
     min-width: max-content;
 }
 
-div.keret.even p.keplet {
+div.keret.even p.keplet,
+div.keret.even div.keplet {
     background-color: #ffe4e4;
     outline: 2px solid #ffbfbf;
     outline-offset: -6px;
@@ -354,6 +356,7 @@ input::-webkit-inner-spin-button {
     flex: 0 0 auto;
 }
 
+.kiur,
 b.kiur {
     color: #ff0000;
     background-color: #ffe8e8;
@@ -2618,6 +2621,7 @@ div#k1 span.kepletvalaszto.selected {
 #reg10_keplet.keplet.active {
     display: block;
 }
+
 
 
 
