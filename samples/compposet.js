@@ -8452,9 +8452,8 @@ function IKDer() {
 
 // algebra of Q(x,y) = h
 
-var reg0inv = false;
-var reg10inv = false;
-var shstHom = false;
+var regw = "w1";
+var regvalt = "alap";
 
 function yvec2xy(v) {
     str = "";
@@ -8542,7 +8541,7 @@ function regHighlight(elem) {
     const dat = elem.getAttribute('data-reg');
     //console.log($(elem).parent())
     $("#shouth span.hreg[data-reg='" + dat + "']").addClass('hl');
-    if (reg0inv) {
+    if (regvalt == "Ainvsh0") {
         if ($(elem).parent('.reg0veg').length > 0)
             $("#floatkijelzo").css("display", "block").html(($(".reg0veg .hreg.hl").text()));
         else if ($(elem).parent('.kashx').length > 0) {
@@ -8927,111 +8926,216 @@ function reghar(str) {
     return shobj;
 };
 
+function invreghar(str) {
+    const m = countLeadingY(str);
+    const u = xy2XY(str.slice(m));
+    var sh = [];
+    const Y = xy2XY('y');
+    for (var i = 0; i <= m; i++) {
+        let yst = [
+            [1 / factorial(i), ""]
+        ];
+        if (i > 0)
+            for (var j = 1; j <= i; j++)
+                yst.push([1, Y]);
+        let my = Y.repeat(m - i);
+        let yu = reghar(my + u);
+        let sij = polyStuffle(yu, xyStuffleList(yst));
+        sh = [...sh, ...sij];
+    }
+    sh = _.groupBy(sh, y => y[1]);
+    var shobj = [];
+    _.forEach(sh, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            shobj.push([s, xy2XY(key)]);
+        };
+    });
+    return shobj;
+};
+
+function reghar10(str) {
+    const m = countLeadingY(str);
+    const n = countEndingX(str);
+    const u = xy2XY(str.slice(m, str.length - n));
+    var sh = [];
+    const X = xy2XY('x');
+    const Y = xy2XY('y');
+    for (var i = 0; i <= m; i++) {
+        let y = [
+            [Math.pow(-1, i) / factorial(i), ""]
+        ];
+        if (i > 0)
+            for (var k = 1; k <= i; k++)
+                y.push([1, Y]);
+        for (var j = 0; j <= n; j++) {
+            let x = X.repeat(j) || "";
+            let my = Y.repeat(m - i);
+            let nx = X.repeat(n - j);
+            let yux = my + u + nx;
+            let sij = polyStuffle(polyStuffle(xyStuffleList(y), [
+                [1, yux]
+            ]), [
+                [Math.pow(-1, j) / factorial(j), x]
+            ]);
+            //console.log("i=", i, "j=", j, sij)
+            sh = [...sh, ...sij];
+        };
+    }
+    sh = _.groupBy(sh, y => y[1]);
+    var shobj = [];
+    _.forEach(sh, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            shobj.push([s, xy2XY(key.replaceAll(",", ""))]);
+        };
+    });
+    //shobj = shobj.map(y => [Fraction(y[0]).toFraction(), y[1]]).filter(z => z[0] != "0");
+    return shobj;
+};
+
+function invreghar10(str) {
+    const m = countLeadingY(str);
+    const n = countEndingX(str);
+    const u = xy2XY(str.slice(m, str.length - n));
+    var sh = [];
+    const X = xy2XY('x');
+    const Y = xy2XY('y');
+    for (var i = 0; i <= m; i++) {
+        let y = [
+            [1 / factorial(i), ""]
+        ];
+        if (i > 0)
+            for (var k = 1; k <= i; k++)
+                y.push([1, Y]);
+        for (var j = 0; j <= n; j++) {
+            let x = X.repeat(j) || "";
+            let my = Y.repeat(m - i);
+            let nx = X.repeat(n - j);
+            let yux = reghar10(my + u + nx);
+            let sij = polyStuffle(polyStuffle(xyStuffleList(y),
+                yux
+            ), [
+                [1 / factorial(j), x]
+            ]);
+            //console.log("i=", i, "j=", j, sij)
+            sh = [...sh, ...sij];
+        };
+    }
+    sh = _.groupBy(sh, y => y[1]);
+    var shobj = [];
+    _.forEach(sh, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            shobj.push([s, xy2XY(key.replaceAll(",", ""))]);
+        };
+    });
+    //shobj = shobj.map(y => [Fraction(y[0]).toFraction(), y[1]]).filter(z => z[0] != "0");
+    return shobj;
+};
+
 function shtuffleW() {
-    ovosszeg = 0;
-    ovelem = "";
-    const reg0w1 = document.getElementById("reg0w1").checked;
-    const reg0w2 = document.getElementById("reg0w2").checked;
-    const reg10w1 = document.getElementById("reg10w1").checked;
-    const reg10w2 = document.getElementById("reg10w2").checked;
+    const elem = document.getElementById("shouth");
+    const actel = $('#k1 .keplet.active .kepletvalaszto.selected');
     const st = document.getElementById("shH").checked;
-    if (reg0w1)
-        if (reg0inv)
-            formazinvS0reg("w1");
-        else
-            formazS0reg("w1", "");
-    else if (reg0w2)
-        if (reg0inv)
-            formazinvS0reg("w2");
-        else
-            formazS0reg("w2", "");
-    else if (reg10w1)
-        if (reg10inv)
-            formazinvS10reg("w1");
-        else
-            formazS10reg("w1", "");
-    else if (reg10w2)
-        if (reg10inv)
-            formazinvS10reg("w2");
-        else
-            formazS10reg("w2", "");
+    const w = regw;
+    regvalt = "alap";
+    if (actel.length > 0)
+        regvalt = actel.attr('data-reg');
 
-    else if (st)
-        if (shstHom)
-            stHom();
+    if (regvalt == "alap")
+        if (st)
+            stuffleW(w);
         else
-            stuffleW();
+            shuffleW(w);
+    else if (regvalt == "homsh0")
+        elem.innerHTML = regvalt + " még nem implementált.";
+    else if (regvalt == "Ash0")
+        formazS0reg(w, "");
+    else if (regvalt == "Ainvsh0")
+        formazinvS0reg(w);
+    else if (regvalt == "homsh10")
+        elem.innerHTML = regvalt + " még nem implementált.";
+    else if (regvalt == "Ash10")
+        formazS10reg(w, "");
+    else if (regvalt == "Ainvsh10")
+        formazinvS10reg(w);
+    else if (regvalt == "homst0")
+        stHom();
+    else if (regvalt == "Ast0")
+        elem.innerHTML = regvalt + " még nem implementált.";
+    else if (regvalt == "Ainvst0")
+        elem.innerHTML = regvalt + " még nem implementált.";
+    else if (regvalt == "Ast10")
+        elem.innerHTML = regvalt + " még nem implementált.";
+    else if (regvalt == "Ainvst10")
+        elem.innerHTML = regvalt + " még nem implementált.";
     else
-        shuffleW();
+        elem.innerHTML = regvalt;
 };
 
-function pickReg0(e, b) {
-    reg0inv = b;
-    $("#k1 span.kepletvalaszto.selected").removeClass("selected");
-    $(e).addClass("selected");
-    const reg0w1 = document.getElementById("reg0w1").checked;
-    const reg0w2 = document.getElementById("reg0w2").checked;
-    if (reg0w1 || reg0w2)
-        shtuffleW();
-};
-
-function pickReg10(e, b) {
-    reg10inv = b;
-    $("#k1 span.kepletvalaszto.selected").removeClass("selected");
-    $(e).addClass("selected");
-    const reg10w1 = document.getElementById("reg10w1").checked;
-    const reg10w2 = document.getElementById("reg10w2").checked;
-    if (reg10w1 || reg10w2)
-        shtuffleW();
-};
-
-function setReg0(e) {
-    const w1 = document.getElementById("reg0w1");
-    const w2 = document.getElementById("reg0w2");
-    const w11 = document.getElementById("reg10w1");
-    const w12 = document.getElementById("reg10w2");
-    w11.checked = false;
-    w12.checked = false;
-    if (e.id.endsWith("1"))
-        w2.checked = false;
-    else
-        w1.checked = false;
-    shtuffleW();
-    if (!$('#reg0_keplet.keplet').hasClass('active')) {
-        $('#reg10_keplet.keplet').removeClass('active');
-        $('#reg0_keplet.keplet').addClass('active');
-        if (reg0inv)
-            $('#reg0_keplet .kepletvalaszto:nth(1)').trigger('click');
-        else
-            $('#reg0_keplet .kepletvalaszto:nth(0)').trigger('click');
+function pickKeplet(e) {
+    if (!$(e).hasClass("selected")) {
+        $(e).parent().find(".selected").removeClass("selected");
+        $(e).addClass("selected");
+    } else {
+        $(e).removeClass("selected");
     }
+    shtuffleW();
 };
 
-function setReg10(e) {
-    const w1 = document.getElementById("reg0w1");
-    const w2 = document.getElementById("reg0w2");
-    const w11 = document.getElementById("reg10w1");
-    const w12 = document.getElementById("reg10w2");
-    w1.checked = false;
-    w2.checked = false;
-    if (e.id.endsWith("1"))
-        w12.checked = false;
-    else
-        w11.checked = false;
-    shtuffleW();
-    if (!$('#reg10_keplet.keplet').hasClass('active')) {
-        $('#reg0_keplet.keplet').removeClass('active');
-        $('#reg10_keplet.keplet').addClass('active');
-        if (reg10inv)
-            $('#reg10_keplet .kepletvalaszto:nth(1)').trigger('click');
-        else
-            $('#reg10_keplet .kepletvalaszto:nth(0)').trigger('click');
+function setCalcw(e) {
+    const id = e.id;
+    if (id == "calcw1") {
+        document.getElementById("calcw2").classList.remove("kiur");
+        document.getElementById("calcw1").classList.add("kiur");
+        regw = "w1";
+    } else {
+        document.getElementById("calcw1").classList.remove("kiur");
+        document.getElementById("calcw2").classList.add("kiur");
+        regw = "w2";
     }
+    shtuffleW();
 };
 
-function setHom(e) {
-    shstHom = e.checked;
+function shstValtas(e) {
+    const st = e.checked;
+    if (st) {
+        $(".shstlabel").html("&lowast;")
+        if ($('#reg0_keplet.keplet').hasClass('active')) {
+            $('#reg0_keplet.keplet').removeClass('active');
+            $('#reghar0_keplet.keplet').addClass('active');
+        } else {
+            $('#reg10_keplet.keplet').removeClass('active');
+            $('#reghar10_keplet.keplet').addClass('active');
+        }
+    } else {
+        $(".shstlabel").html("&#x29E2;")
+        if ($('#reghar0_keplet.keplet').hasClass('active')) {
+            $('#reghar0_keplet.keplet').removeClass('active');
+            $('#reg0_keplet.keplet').addClass('active');
+        } else {
+            $('#reghar10_keplet.keplet').removeClass('active');
+            $('#reg10_keplet.keplet').addClass('active');
+        }
+    }
     shtuffleW();
+};
+
+function regValtas() {
+    const old = $("#k1 .keplet.active")
+    const oid = old[0].id;
+    var newid = "";
+    if (oid == "reg0_keplet")
+        newid = "reg10_keplet";
+    else if (oid == "reg10_keplet")
+        newid = "reg0_keplet";
+    else if (oid == "reghar0_keplet")
+        newid = "reghar10_keplet";
+    else if (oid == "reghar10_keplet")
+        newid = "reghar0_keplet";
+    document.getElementById(oid).classList.remove("active");
+    document.getElementById(newid).classList.add("active");
 };
 
 function countEndingX(str) {
