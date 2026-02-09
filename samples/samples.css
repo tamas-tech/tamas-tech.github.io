@@ -2631,6 +2631,17 @@ div#k1 span.kepletvalaszto.selected {
     vertical-align: -3px;
 }
 
+#xXsetting {
+    filter: none;
+    cursor: pointer;
+    pointer-events: all;
+}
+
+#xXsetting.dumb {
+    filter: blur(2px);
+    cursor: not-allowed;
+    pointer-events: none;
+}
 
 
 
