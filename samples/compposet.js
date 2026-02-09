@@ -7902,6 +7902,7 @@ function setOutputFontdiff(v) {
 };
 
 function msv2HTML(msv) {
+    var m = "";
     var C = msv[0] * 1;
     if (C == 0)
         return "";
@@ -7909,11 +7910,22 @@ function msv2HTML(msv) {
         C = " + "
     else if (C == -1)
         C = " − ";
-    else if (C > 1)
-        C = " + " + Fraction(C).toFraction() + "&lowast;";
-    else if (C < 1)
-        C = " − " + Fraction(-C).toFraction() + "&lowast;";
-    var m = C + "(" + msv[1] + ")";
+    else if (C > 0) {
+        var cc = Fraction(1 * C).toFraction();
+        if (cc != "0")
+            C = " − " + cc + "&lowast;";
+        else
+            C = 0;
+    } else if (C < 0) {
+        var cc = Fraction(-1 * C).toFraction();
+        if (cc != "0")
+            C = " − " + cc + "&lowast;";
+        else
+            C = 0;
+    }
+    if (C != 0 && C != "0")
+        m = C + "(" + msv[1] + ")";
+
     return m;
 };
 
@@ -8392,6 +8404,7 @@ function vecList2Pari(v) {
             c = "";
         else
             c += "*";
+        var shobj = [];
         gp += eloj + c + "zetamult([" + a[1].toString() + "])";
     }
     gp = "gp(\"" + gp + "\")";
@@ -8669,7 +8682,7 @@ function stuffleProduct(arr1, arr2) {
 };
 
 function xy2XY(str) {
-    if (document.getElementById('xX').checked) {
+    if (!regvalt.startsWith('hom') && document.getElementById('xX').checked) {
         var X = "X";
         var Y = "Y";
         const toX = document.getElementById("setX").value;
@@ -8767,6 +8780,19 @@ function polyStuffle(strL1, strL2) {
     return stobj;
 };
 
+function xyList_Ov(st) {
+    st = _.groupBy(st, y => y[1]);
+    var stobj = [];
+    _.forEach(st, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            stobj.push([s, xy2XY(key)]);
+        };
+    });
+    return stobj;
+};
+
+
 function xystuffleW(s1, s2, jelent) {
     var result = [];
     var jelentes = "";
@@ -8859,9 +8885,11 @@ function stValasz(det, stprod) {
     }, t)
 };
 
-function stHom() {
+function stHom0() {
+    $('#xXsetting').addClass('dumb');
     const s1 = document.getElementById("w1").value.toLowerCase();
     const s2 = document.getElementById("w2").value.toLowerCase();
+
     var txt = "<i>A </i>w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub> = " + s1 + "&nbsp;&lowast;&nbsp;" + s2 + " = <br/>";
     const st = xystuffleW(s1, s2, true);
     var nreg = st[0].filter(y => y[1].startsWith(xy2XY('y')));
@@ -8873,24 +8901,37 @@ function stHom() {
     txt += nreg.map(z => " <b>" + z[1] + "</b>") + " <i>szavakat helyettesítjük a stuffle-regularizáltjukkal</i>.<br/>";
     const na = nreg.length;
     for (var j = 0; j < na; j++)
-        txt += (j + 1) + ". reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + nreg[j][1] + ") = " + formazxyV(reghar(nreg[j][1])) + "<br/>";
+        txt += "<span style='text-decoration: underline;text-underline-offset: 10px;'>(<b>" + (j + 1) + "</b>) reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + nreg[j][1] + ")</span> = " + formazxyV(reghar(nreg[j][1])) + "<br/>";
 
-    const stvec = _.flatten(st[0].map(y => reghar(y[1]).map(z => [y[0] * z[0], xy2vec(z[1])[0]])));
+    //const stvec = _.flatten(st[0].map(y => reghar(y[1]).map(z => [y[0] * z[0], xy2vec(z[1])[0]])));
+    //const stPari = vecList2Pari(stvec);
+    const regst = _.flatten(st[0].map(y => reghar(y[1]).map(z => [y[0] * z[0], z[1]])));
+    const regstov = xyList_Ov(regst);
+    var formregst = formazxyV(regst)
+    if (regst.length != regstov.length)
+        formregst += " = <sspan style='background-color:#ffaeae;'>" + formazxyV(regstov) + "</span>";
+    const stvec = regstov.map(z => [z[0], xy2vec(z[1])[0]]);
     const stPari = vecList2Pari(stvec);
-    const regst = formazxyV(_.flatten(st[0].map(y => reghar(y[1]).map(z => [y[0] * z[0], z[1]]))));
-    txt += "<i>A megfelelő behelyettesítés és összevonás után a(z)</i><br/>reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s1 + "&nbsp;&lowast;&nbsp;" + s2 + ") = <span style='background-color:#ffd0c6;'>" + regst + "</span> ~ " + ms2HTML(stvec) + "<br/> <i>összeget kapjuk.</i><br/> ";
+    txt += "<i>A megfelelő behelyettesítés és összevonás után a</i><br/>reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s1 + "&nbsp;&lowast;&nbsp;" + s2 + ") = <span style='background-color:#ffd0c6;'>" + formregst + "</span> ~ " + ms2HTML(stvec) + "<br/> <i>összeget kapjuk.</i><br/> ";
     const r1 = reghar(s1);
     const r2 = reghar(s2);
     const r1vec = r1.map(y => [y[0], xy2vec(y[1])[0]]);
     const r2vec = r2.map(y => [y[0], xy2vec(y[1])[0]]);
+    console.log(r1vec, r2vec)
     txt += "<i>A </i>w<sub>1</sub> = " + s1 + "<i> és a </i>w<sub>2</sub> = " + s2 + "<i> szavak  stuffle-regularizáltja pedig</i><br/>";
     txt += "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s1 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r1) + "</span> ~ " + ms2HTML(r1vec) + "<br/>" + "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s2 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r2) + "</span> ~ " + ms2HTML(r2vec) + "<br/>";
 
-    st12Pari = "gp(\"(" + vecList2Pari(r1vec).slice(4, -2) + ")*(" + vecList2Pari(r2vec).slice(4, -2) + ")\")";
+    var pari1 = "1"
+    if (r1vec.length > 0)
+        pari1 = vecList2Pari(r1vec).slice(4, -2);
+    var pari2 = "1"
+    if (r2vec.length > 0)
+        pari2 = vecList2Pari(r2vec).slice(4, -2);
+    st12Pari = "gp(\"(" + pari1 + ")*(" + pari2 + ")\")";
 
     txt += "<i> A homomorfizmus teljesülése:</i><br/>&zeta;&hairsp;[reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub>)] <span id='sthomertek' style='color:blue;'></span><br/>";
     txt += "&zeta;&hairsp;[reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(w<sub>1</sub>)]&nbsp;&middot;&nbsp;&zeta;&hairsp;[reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(w<sub>2</sub>)] <span id='stprodertek' style='color:blue;'></span>";
-    txt = xy2XY(txt)
+    //txt = xy2XY(txt)
     document.getElementById("shouth").innerHTML = txt;
     stValasz(stPari, false);
     stValasz(st12Pari, true);
@@ -8926,6 +8967,12 @@ function reghar(str) {
     return shobj;
 };
 
+function formazreghar(id) {
+    var str = document.getElementById(id).value.toLowerCase();
+    var txt = formazxyV(reghar(str));
+    document.getElementById("shouth").innerHTML = txt;
+};
+
 function invreghar(str) {
     const m = countLeadingY(str);
     const u = xy2XY(str.slice(m));
@@ -8952,6 +8999,12 @@ function invreghar(str) {
         };
     });
     return shobj;
+};
+
+function formazinvreghar(id) {
+    var str = document.getElementById(id).value.toLowerCase();
+    var txt = formazxyV(invreghar(str));
+    document.getElementById("shouth").innerHTML = txt;
 };
 
 function reghar10(str) {
@@ -8994,6 +9047,12 @@ function reghar10(str) {
     return shobj;
 };
 
+function formazreghar10(id) {
+    var str = document.getElementById(id).value.toLowerCase();
+    var txt = formazxyV(reghar10(str));
+    document.getElementById("shouth").innerHTML = txt;
+};
+
 function invreghar10(str) {
     const m = countLeadingY(str);
     const n = countEndingX(str);
@@ -9034,7 +9093,14 @@ function invreghar10(str) {
     return shobj;
 };
 
+function formazinvreghar10(id) {
+    var str = document.getElementById(id).value.toLowerCase();
+    var txt = formazxyV(invreghar10(str));
+    document.getElementById("shouth").innerHTML = txt;
+};
+
 function shtuffleW() {
+    $('#xXsetting').removeClass('dumb');
     const elem = document.getElementById("shouth");
     const actel = $('#k1 .keplet.active .kepletvalaszto.selected');
     const st = document.getElementById("shH").checked;
@@ -9061,15 +9127,15 @@ function shtuffleW() {
     else if (regvalt == "Ainvsh10")
         formazinvS10reg(w);
     else if (regvalt == "homst0")
-        stHom();
+        stHom0();
     else if (regvalt == "Ast0")
-        elem.innerHTML = regvalt + " még nem implementált.";
+        formazreghar(w);
     else if (regvalt == "Ainvst0")
-        elem.innerHTML = regvalt + " még nem implementált.";
+        formazinvreghar(w);
     else if (regvalt == "Ast10")
-        elem.innerHTML = regvalt + " még nem implementált.";
+        formazreghar10(w);
     else if (regvalt == "Ainvst10")
-        elem.innerHTML = regvalt + " még nem implementált.";
+        formazinvreghar10(w);
     else
         elem.innerHTML = regvalt;
 };
@@ -9390,26 +9456,39 @@ function helpTglafh1(id) {
 };
 
 function formazxyV(vL, blokk, withid) {
+    if (vL.length == 0)
+        return "( )";
     var txt = ""
     for (let v of vL) {
         var c = v[0];
         if (c == 1)
             c = " + ";
-        else if (c > 0)
-            c = " + " + Fraction(c).toFraction() + "&middot;"
-        else if (c == -1)
+        else if (c > 0) {
+            var cc = Fraction(1 * c).toFraction();
+            if (cc != "0")
+                c = " − " + cc + "&middot";
+            else
+                c = 0;
+        } else if (c == -1)
             c = " − ";
-        else if (c < 0)
-            c = " − " + Fraction(-1 * c).toFraction() + "&middot";
+        else if (c < 0) {
+            var cc = Fraction(-1 * c).toFraction();
+            if (cc != "0")
+                c = " − " + cc + "&middot";
+            else
+                c = 0;
+        }
         var xy = v[1];
         const xyid = xy;
         if (blokk)
             xy = xy.replaceAll('y', 'y|');
         if (withid) {
-            xy = " <span class='hreg' data-reg=" + xyid + " data-c='" + v[0] + "' onclick='regHighlight(this);clearOv();setOvelem(this);'>" + c + xy + "</span>"
+            if (c != 0)
+                xy = " <span class='hreg' data-reg=" + xyid + " data-c='" + v[0] + "' onclick='regHighlight(this);clearOv();setOvelem(this);'>" + c + xy + "</span>"
             txt += xy;
         } else {
-            txt += c + xy;
+            if (c != 0)
+                txt += c + xy;
         }
     };
     if (txt.startsWith(" + "))
