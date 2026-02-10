@@ -33,8 +33,15 @@
             }
         });
          sagecell.makeSagecell({
-            inputLocation: '#mycellst',
-            outputLocation: '#ideoutst',
+            inputLocation: '#mycellst1',
+            outputLocation: '#ideoutst1',
+            evalButtonText: 'OK',
+            editor: 'textarea',
+            hide: ["editor", "evalButton", "permalink", "output"],
+        });
+        sagecell.makeSagecell({
+            inputLocation: '#mycellst2',
+            outputLocation: '#ideoutst2',
             evalButtonText: 'OK',
             editor: 'textarea',
             hide: ["editor", "evalButton", "permalink", "output"],
@@ -44,14 +51,10 @@
 </head>
 <body>
     <div id="floatkijelzo"></div>
-   <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
+    <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shoutcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet active" id="reg0_keplet"><span class="kepletvalaszto" data-reg="homsh0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;"> (Hom)</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2</span></sub>(w<sub>1</sub>&nbsp;&#x29E2;&nbsp;w<sub>2</sub>)
-                = reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(w<sub>1</sub>)
-                <span style='font-size: 1.2em;margin:0 3px;'>&middot;</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(w<sub>2</sub>)&nbsp;&nbsp;(w<sub>1</sub>,w<sub>2</sub>&in;&nbsp;&#x1d525;y)</span>
-                <span class="kepletvalaszto" data-reg="Ash0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n</sup>)
-                =
+            <p class="keplet active" id="reg0_keplet"><span class="kepletvalaszto" data-reg="Ash0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n</sup>) =
                 <span class="block" style="transform: scale(1.5);">∑</span>
                 <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub> (-1)<sup>j</sup> ux<sup>n - j</sup><span style="margin:0 3px;">&#x29E2;</span>x<sup>j</sup>&nbsp;&in;&nbsp;&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
                 <span class="kepletvalaszto" data-reg="Ainvsh0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A')</span>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
@@ -153,11 +156,17 @@
             <p id="figysh" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
             <p id="shouth" style="margin-top:10px;outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
         </div>
-        <div id="mycellst" width="100">
+        <div id="mycellst1" width="100">
             <script type="text/x-sage"></script>
         </div>
         <div class="outputoutdiv" style="padding:0;margin:0;">
-            <div id="ideoutst"></div>
+            <div id="ideoutst1"></div>
+        </div>
+        <div id="mycellst2" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv" style="padding:0;margin:0;">
+            <div id="ideoutst2"></div>
         </div>
     </div>
     <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTglafh1('helpbarh1');" title="Open/Close help">Toggle help</button>
@@ -172,6 +181,7 @@
     </script>
 </body>
 </html>
+
 
 
 
