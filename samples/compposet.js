@@ -7911,14 +7911,14 @@ function msv2HTML(msv) {
     else if (C == -1)
         C = " − ";
     else if (C > 0) {
-        var cc = Fraction(1 * C).toFraction();
-        if (cc != "0")
-            C = " − " + cc + "&lowast;";
+        var cc = Fraction(C).toFraction();
+        if (cc != 0)
+            C = " + " + cc + "&lowast;";
         else
             C = 0;
     } else if (C < 0) {
         var cc = Fraction(-1 * C).toFraction();
-        if (cc != "0")
+        if (cc != 0)
             C = " − " + cc + "&lowast;";
         else
             C = 0;
@@ -8404,7 +8404,6 @@ function vecList2Pari(v) {
             c = "";
         else
             c += "*";
-        var shobj = [];
         gp += eloj + c + "zetamult([" + a[1].toString() + "])";
     }
     gp = "gp(\"" + gp + "\")";
@@ -9544,7 +9543,7 @@ function formazxyV(vL, blokk, withid) {
         else if (c > 0) {
             var cc = Fraction(1 * c).toFraction();
             if (cc != "0")
-                c = " − " + cc + "&middot";
+                c = " + " + cc + "&middot";
             else
                 c = 0;
         } else if (c == -1)
@@ -9729,13 +9728,13 @@ function reg10With(str) {
     const m = countLeadingY(str);
     const n = countEndingX(str);
     const u = xy2XY(str.slice(m, str.length - n));
-    if (u.length == 0 && n * m == 0) {
+    /* if (u.length == 0 && n * m == 0) {
         let fej = "<span style='display:block;background-color:#bfbfbf4f;;margin-bottom:10px;padding-left:5px;'>(B)-ben: u = ( ) " + "&notin;&nbsp;&#x1d525;y;&nbsp;m = " + m + ";&nbsp;n = " + n + "</span>";
         let tbl = "";
         let txt = "Ezen speciális paraméterekkel az implementáció nem működik.";
         shobj = [];
         return [fej, tbl, txt, shobj];
-    }
+    } */
 
     var sh = [];
     var sc = 2 * m + 1.2;
