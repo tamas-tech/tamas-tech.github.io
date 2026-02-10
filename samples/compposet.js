@@ -8866,7 +8866,7 @@ function stuffleW() {
 
 function stValasz1(det) {
     const elem = document.getElementById("sthomertek");
-    const t = 3000;
+    const t = 100000;
     $('#mycellst1 .sagecell_editor textarea.sagecell_commands').val(det);
     $('#mycellst1 .sagecell_input button.sagecell_evalButton').click();
     var ra = setInterval(() => {
@@ -8885,7 +8885,7 @@ function stValasz1(det) {
 
 function stValasz2(det) {
     const elem = document.getElementById("stprodertek");
-    const t = 3000;
+    const t = 100000;
     $('#mycellst2 .sagecell_editor textarea.sagecell_commands').val(det);
     $('#mycellst2 .sagecell_input button.sagecell_evalButton').click();
     var ra = setInterval(() => {
@@ -8916,7 +8916,7 @@ function shHom10() {
     const s1 = document.getElementById("w1").value.toLowerCase();
     const s2 = document.getElementById("w2").value.toLowerCase();
 
-    var txt = "<i>A </i>w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub> = " + s1 + "&nbsp;&lowast;&nbsp;" + s2 + " = <br/>";
+    var txt = "<i>A </i>w<sub>1</sub>&nbsp;<span style='font-size:larger;'>&#x29E2;</span>&nbsp;w<sub>2</sub> = " + s1 + "&nbsp;<span style='font-size:larger;'>&#x29E2;</span>&nbsp;" + s2 + " = <br/>";
     const st = polyShuffle([
         [1, s1]
     ], [
@@ -8924,13 +8924,11 @@ function shHom10() {
     ]);
 
     var txt1 = formazxyV(st, false, false);
-
-    txt += txt1 + "<br/> <i>stuffle szorzatban a non-asmissible </i>"
-    txt += st.map(z => " <b>" + z[1] + "</b>") + " <i>szavakat helyettesítjük a shuffle-regularizáltjukkal</i>.<br/>";
+    txt += txt1 + "<br/> <i>shuffle szorzatban minden szót helyettesítünk a shuffle-regularizáltjával</i><br/>"
     const na = st.length;
     for (var j = 0; j < na; j++) {
         var str = reg10(st[j][1]);
-        txt += "<span style='text-decoration: underline;text-underline-offset: 10px;'>(<b>" + (j + 1) + "</b>) reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + st[j][1] + ")</span> = " + formazxyV(str) + "<br/>";
+        txt += "<span style='text-decoration: underline;text-underline-offset: 10px;'>(<b>" + (j + 1) + "</b>) reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + st[j][1] + ")</span> = " + formazxyV(str) + "<br/>";
     }
     const regst = _.flatten(st.map(y => reg10(y[1]).map(z => [y[0] * z[0], z[1]])));
     const regstov = xyList_Ov(regst);
@@ -8943,14 +8941,14 @@ function shHom10() {
     if (stvec.length > 0)
         stPari = vecList2Pari(stvec);
 
-    txt += "<i>A megfelelő behelyettesítés és összevonás után a</i><br/>reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s1 + "&nbsp;&lowast;&nbsp;" + s2 + ") = <span style='background-color:#ffd0c6;'>" + formregst + "</span> ~ " + ms2HTML(stvec) + "<br/> <i>összeget kapjuk.</i><br/> ";
+    txt += "<i>A megfelelő behelyettesítés és összevonás után a</i><br/>reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + s1 + "&nbsp;&#x29E2;&nbsp;" + s2 + ") = <span style='background-color:#ffd0c6;'>" + formregst + "</span> ~ " + ms2HTML(stvec) + "<br/> <i>összeget kapjuk.</i><br/> ";
     const r1 = reg10(s1);
     const r2 = reg10(s2);
     const r1vec = r1.map(y => [y[0], xy2vec(y[1])[0]]);
     const r2vec = r2.map(y => [y[0], xy2vec(y[1])[0]]);
 
-    txt += "<i>A </i>w<sub>1</sub> = " + s1 + "<i> és a </i>w<sub>2</sub> = " + s2 + "<i> szavak  stuffle-regularizáltja pedig</i><br/>";
-    txt += "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s1 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r1) + "</span> ~ " + ms2HTML(r1vec) + "<br/>" + "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s2 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r2) + "</span> ~ " + ms2HTML(r2vec) + "<br/>";
+    txt += "<i>A </i>w<sub>1</sub> = " + s1 + "<i> és a </i>w<sub>2</sub> = " + s2 + "<i> szavak  shuffle-regularizáltja pedig</i><br/>";
+    txt += "reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + s1 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r1) + "</span> ~ " + ms2HTML(r1vec) + "<br/>" + "reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + s2 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r2) + "</span> ~ " + ms2HTML(r2vec) + "<br/>";
     var pari1 = "1"
     if (r1vec.length > 0)
         pari1 = vecList2Pari(r1vec).slice(4, -2);
@@ -8958,8 +8956,8 @@ function shHom10() {
     if (r2vec.length > 0)
         pari2 = vecList2Pari(r2vec).slice(4, -2);
     st12Pari = "gp(\"(" + pari1 + ")*(" + pari2 + ")\")";
-    txt += "<i> A homomorfizmus teljesülése:</i><br/>&zeta;&hairsp;[reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub>)] <span id='sthomertek' style='color:blue;'></span><br/>";
-    txt += "<span>&zeta;&hairsp;[reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(w<sub>1</sub>)]&nbsp;&middot;&nbsp;&zeta;&hairsp;[reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(w<sub>2</sub>)] <span id='stprodertek' style='color:blue;'></span>";
+    txt += "<i> A homomorfizmus teljesülése:</i><br/>&zeta;&hairsp;[reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(w<sub>1</sub>&nbsp;&#x29E2;&nbsp;w<sub>2</sub>)] <span id='sthomertek' style='color:blue;'></span><br/>";
+    txt += "<span>&zeta;&hairsp;[reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(w<sub>1</sub>)]&nbsp;&middot;&nbsp;&zeta;&hairsp;[reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(w<sub>2</sub>)] <span id='stprodertek' style='color:blue;'></span>";
 
     document.getElementById("shouth").innerHTML = txt;
     stValasz1(stPari);
