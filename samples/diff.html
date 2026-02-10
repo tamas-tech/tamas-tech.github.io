@@ -69,7 +69,8 @@
             <label for="leibniz" style="margin-left: 10px;">Leibniz</label>
             <input type="checkbox" name="leibniz" id="leibniz" onchange="derivInput();" style="height:20px;width:20px;vertical-align:middle;">
             <div>
-                Művelet:
+                <label for="oszto"><b style="padding: 2px 7px;">1/k!</b>&times;</label>
+                <input type="number" id="oszto" value="1" min="0" step="1" onchange="derivInput();" name="oszto" style="width:100px;margin-right:10px;"> Művelet:
                 <select id="selectmuv" onchange="derivInput();" style="height:30px;border:none;border-bottom: 1px solid #7c7c7c;font-size:100%;background-color:inherit;text-align:center;margin-right:10px;">
                     <option value="vec_add">összeadás</option>
                     <option value="conc">összefűzés</option>
@@ -81,10 +82,6 @@
             <div style="margin-top:2px;padding:5px;">
                 <button class="showpre1" onclick="derivInput();" title="Calculate input">Calculate</button>
                 <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#diffout');" title="Clear output">Clear</button>
-                <!-- <span style="font-size:22px;margin-left:5px;text-decoration:underline;text-underline-offset: 3px;">&#x29E2;</span>
-                <label class="switch">
-                <input type="checkbox" id="diffset" onchange=""><span class="slider round"></span></label>
-                <span style="margin-right:10px;font-size:120%;">&lowast;</span> -->
                 <label for="setoutputfontdiff">&#128474;</label>
                 <input id="outfont-sliderdiff" oninput="setOutputFontdiff(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfontdiff" />
             </div>
@@ -95,5 +92,6 @@
 
 
 </html>
+
 
 
