@@ -2643,6 +2643,20 @@ div#k1 span.kepletvalaszto.selected {
     pointer-events: none;
 }
 
+#k1 .derivtok {
+    margin-left: 10px;
+    display: none;
+    pointer-events: all;
+}
+
+#k1 .derivtok.shown {
+    display: inline-block;
+}
+
+#k1 .derivtok.dumb {
+    opacity: 0.3;
+    pointer-events: none;
+}
 
 
 
