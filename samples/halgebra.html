@@ -131,12 +131,18 @@
             </div>
             <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
                 <div id="dersetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
-                    <label for="derxy">Deriválás:</label>
-                    <input type="checkbox" name="derxy" onchange="derActivate(this);idClear('#shouth');" id="derxy" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">|
-                    <label for="setdX">x&rightarrow;</label>
-                    <input list="dersx" type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');idClear('#shouth');" id="setdX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
-                    <label for="setdY">y&rightarrow;</label>
-                    <input list="dersy" type="text" name="setdY" value="xy" onchange="setxyDer(this,'y');idClear('#shouth');" id="setdY" style="height:20px;width:60px;vertical-align:middle;text-align:center;font-size: 100%;padding-bottom: 5px;">
+                    <div style="padding: 5px 0;">
+                        <label for="derxy">Deriválás:</label>
+                        <input type="checkbox" name="derxy" onchange="derActivate(this);idClear('#shouth');" id="derxy" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                    </div>
+                    <div style="padding: 5px 0;">
+                        <label for="setdX">x&rightarrow;</label>
+                        <input list="dersx" type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');idClear('#shouth');" id="setdX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
+                    </div>
+                    <div style="padding: 5px 0;">
+                        <label for="setdY">y&rightarrow;</label>
+                        <input list="dersy" type="text" name="setdY" value="xy" onchange="setxyDer(this,'y');idClear('#shouth');" id="setdY" style="height:20px;width:60px;vertical-align:middle;text-align:center;font-size: 100%;padding-bottom: 5px;">
+                    </div>
                     <datalist id="dersx">
                         <option value="xx">derx1</option>
                         <option value="&downarrow;">derx2</option>
@@ -215,6 +221,7 @@
     </script>
 </body>
 </html>
+
 
 
 
