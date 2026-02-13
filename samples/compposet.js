@@ -8466,6 +8466,7 @@ function IKDer() {
 
 var regw = "w1";
 var regvalt = "alap";
+var derivkell = false;
 
 function yvec2xy(v) {
     str = "";
@@ -8643,6 +8644,29 @@ function shuffleW() {
 
     document.getElementById("shouth").innerHTML = txt;
 };
+
+function shuffleD() {
+    const w1 = document.getElementById("w1").value;
+    const w2 = document.getElementById("w2").value;
+    const n1 = document.getElementById("xfok").value;
+    const n2 = document.getElementById("yfok").value;
+    const sh = polyShuffle(derivHn(w1, n1), derivHn(w2, n2));
+    const txt = formazxyV(sh, true, false);
+
+    document.getElementById("shouth").innerHTML = txt;
+};
+
+function stuffleD() {
+    const w1 = document.getElementById("w1").value;
+    const w2 = document.getElementById("w2").value;
+    const n1 = document.getElementById("xfok").value;
+    const n2 = document.getElementById("yfok").value;
+    const sh = polyStuffle(derivHn(w1, n1), derivHn(w2, n2));
+    const txt = formazxyV(sh, true, false);
+
+    document.getElementById("shouth").innerHTML = txt;
+};
+
 
 /** 
  * EZT MÉG ÁT KELL ÍRNI
@@ -9185,15 +9209,22 @@ function shtuffleW() {
     regvalt = "alap";
     if (actel.length > 0)
         regvalt = actel.attr('data-reg');
+    $('.derivtok').addClass('dumb');
 
-    if (regvalt == "alap")
-        if (st)
-            stuffleW(w);
-        else
-            shuffleW(w);
-        /* else if (regvalt == "homsh0")
-            shHom10(); */
-    else if (regvalt == "Ash0")
+    if (regvalt == "alap") {
+        if (derivkell) {
+            $('.derivtok').removeClass('dumb');
+            if (st)
+                stuffleD(w);
+            else
+                shuffleD(w);
+        } else {
+            if (st)
+                stuffleW(w);
+            else
+                shuffleW(w);
+        }
+    } else if (regvalt == "Ash0")
         formazS0reg(w, "");
     else if (regvalt == "Ainvsh0")
         formazinvS0reg(w);
@@ -9974,4 +10005,76 @@ function Adm(n, k) {
 function nonAdm(n, k) {
     comp(n, k);
     return allcomp.filter(y => y[0] == 1);
+};
+
+
+// derivalas h-n
+
+derivOfX = "xx";
+derivOfY = "xy";
+
+function setxyDer(elem, ch) {
+    if (ch == "x")
+        derivOfX = elem.value;
+    else
+        derivOfY = elem.value;
+};
+
+function derActivate(elem) {
+    derivkell = elem.checked;
+    if (derivkell) {
+        $('.derivtok').addClass('shown');
+        if (regvalt == "alap")
+            $('.derivtok').removeClass('dumb');
+        else
+            $('.derivtok').addClass('dumb');
+    } else
+        $('.derivtok').removeClass('shown').removeClass('dumb');
+};
+
+function strList_Ov(st) {
+    st = _.groupBy(st, y => y[1]);
+    var stobj = [];
+    _.forEach(st, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            stobj.push([s, key]);
+        };
+    });
+    return stobj;
+};
+
+function charDer(ch) {
+    if (ch == "x")
+        return derivOfX;
+    else
+        return derivOfY;
+};
+
+function wordDer(w, coeff) {
+    const n = w.length;
+    var out = [];
+    for (var i = 0; i < n; i++)
+        out.push([coeff, cserelAt(w, i, charDer(w.charAt(i)))]);
+    out = strList_Ov(out);
+    return out;
+};
+
+function derivH(strL) {
+    var der = [];
+    for (let v of strL) {
+        der.push(wordDer(v[1], v[0]));
+    };
+    der = strList_Ov(_.flatten(der));
+    return der;
+};
+
+function derivHn(str, n) {
+    var out = [
+        [1, str]
+    ];
+    if (n > 0 && str.length > 0)
+        for (var j = 0; j < n; j++)
+            out = derivH(out);
+    return out;
 };
