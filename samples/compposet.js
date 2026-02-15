@@ -8555,13 +8555,17 @@ function regHighlight(elem) {
     //console.log($(elem).parent())
     $("#shouth span.hreg[data-reg='" + dat + "']").addClass('hl');
     if (regvalt == "Ainvsh0") {
-        if ($(elem).parent('.reg0veg').length > 0)
-            $("#floatkijelzo").css("display", "block").html(($(".reg0veg .hreg.hl").text()));
-        else if ($(elem).parent('.kashx').length > 0) {
+        if ($(elem).parent('.reg0veg').length > 0) {
+            var fltxt = ""
+            $(".reg0veg .hreg.hl").each(function() {
+                fltxt += this.innerHTML;
+            });
+            $("#floatkijelzo").css("display", "block").html((fltxt));
+        } else if ($(elem).parent('.kashx').length > 0) {
             const sor = $(".kashx .hreg.hl");
             var txt = "";
             sor.each(function(e) {
-                var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).text().trim();
+                var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).html().trim();
                 tx = tx.replaceAll("−−", " + ");
                 tx = tx.replaceAll("−+", " − ");
                 tx = tx.replaceAll("+−", " − ");
@@ -8578,7 +8582,7 @@ function regHighlight(elem) {
             const sor = $(".kashx .hreg.hl");
             var txt = "";
             sor.each(function(e) {
-                var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).text().trim();
+                var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).html().trim();
                 tx = tx.replaceAll("−−", " +");
                 tx = tx.replaceAll("−+", " −");
                 tx = tx.replaceAll("+−", "−");
@@ -8608,7 +8612,7 @@ function formazShuffle(v, blokk, withid) {
             else
                 c = eloj;
             var xy = key.replaceAll(',', '');
-            xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this)'>" + c.toString() + xy + "</span>"
+            xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this)'>" + c.toString() + xy2XYmonom(xy) + "</span>"
             txt += xy;
             szamlalo++;
         } else {
@@ -8617,12 +8621,15 @@ function formazShuffle(v, blokk, withid) {
             else
                 c = " + ";
             var xy = key.replaceAll(',', '');
-            txt += c + xy;
+            if (xy2mon)
+                txt += c + xy2monom(xy2XY(xy));
+            else
+                txt += c + xy;
         }
     });
     if (txt.startsWith(" + "))
         txt = txt.slice(3);
-    if (blokk)
+    if (blokk && !xy2mon)
         txt = txt.replaceAll('y', 'y|');
     txt = xy2XY(txt);
     return txt;
@@ -8648,10 +8655,39 @@ function shuffleW() {
 function shuffleD() {
     const w1 = document.getElementById("w1").value;
     const w2 = document.getElementById("w2").value;
-    const n1 = document.getElementById("xfok").value;
-    const n2 = document.getElementById("yfok").value;
-    const sh = polyShuffle(derivHn(w1, n1), derivHn(w2, n2));
-    const txt = formazxyV(sh, true, false);
+    const n1 = document.getElementById("xfok").value * 1;
+    const n2 = document.getElementById("yfok").value * 1;
+    var cw1 = document.getElementById("w1coeff").value;
+    var cw2 = document.getElementById("w2coeff").value;
+    if (/\//.test(cw1)) {
+        var f1 = cw1.split("/")
+        cw1 = Fraction(f1[0].trim() * 1, f1[1].trim() * 1)
+    } else
+        cw1 = Fraction(cw1 * 1);
+    if (/\//.test(cw2)) {
+        var f2 = cw2.split("/")
+        cw2 = Fraction(f2[0].trim() * 1, f2[1].trim() * 1)
+    } else
+        cw2 = Fraction(cw2 * 1);
+    var coeff = cw1.mul(cw2);
+    var sh = polyShuffle(derivHn(w1, n1), derivHn(w2, n2));
+    var fakt = 1;
+    if (document.getElementById("derxfakt").checked)
+        fakt *= factorial(n1);
+    if (document.getElementById("derxfakte").checked)
+        fakt *= Math.pow(-1, n1) * factorial(n1);
+    if (document.getElementById("deryfakt").checked)
+        fakt *= factorial(n2);
+    if (document.getElementById("deryfakte").checked)
+        fakt *= Math.pow(-1, n2) * factorial(n2);
+
+    if (coeff != 1 || fakt != 1)
+        sh = sh.map(y => [Fraction(y[0]).mul(coeff).div(Fraction(fakt)), y[1]]);
+
+    if (document.getElementById("xymonom").checked)
+        var txt = formazxyMonom(sh, true, false);
+    else
+        var txt = formazxyV(sh, true, false);
 
     document.getElementById("shouth").innerHTML = txt;
 };
@@ -8859,7 +8895,7 @@ function xystuffleW(s1, s2, jelent) {
         const v = vecList_Ov(stuffleProduct(v1, v2));
         st = v.map(z => [z[0], yvec2xy(z[1]) + xveg]);
         if (jelent) {
-            jelentes = "1. A w<sub>1</sub> = " + xy2XY(s1) + " szó végéről levágjuk a(z) <b>" + n + "</b> darab " + xy2XY('x') + " karaktert így a(z) " + xy2XY('y') + " karakterre végzödő <b>" + xy2XY(b1) + "</b>  szót kapjuk, amit átalakítunk <b>v<sub>1</sub></b> = (" + v1 + ") vektorrá.<br/>2. A w<sub>2</sub> = " + xy2XY(s2) + " szó végéről levágjuk a(z) <b>" + m + "</b> darab " + xy2XY('x') + " karaktert  így a(z)  " + xy2XY('y') + " karakterre végzödő <b>" + xy2XY(b2) + "</b> szót kapjuk, amit átalakítunk <b>v<sub>2</sub></b> = (" + v2 + ") vektorrá.<br/>3. Kiszámítjuk a(z) (" + v1 + ")&nbsp;&lowast;&nbsp;(" + v2 + ") stuffle-szorzatot:<br/>";
+            jelentes = "1. A w<sub>1</sub> = " + xy2XYmonom(s1) + " szó végéről levágjuk a(z) <b>" + n + "</b> darab " + xy2XYmonom('x') + " karaktert így a(z) " + xy2XY('y') + " karakterre végzödő <b>" + xy2XYmonom(b1) + "</b>  szót kapjuk, amit átalakítunk <b>v<sub>1</sub></b> = (" + v1 + ") vektorrá.<br/>2. A w<sub>2</sub> = " + xy2XYmonom(s2) + " szó végéről levágjuk a(z) <b>" + m + "</b> darab " + xy2XY('x') + " karaktert  így a(z)  " + xy2XY('y') + " karakterre végzödő <b>" + xy2XYmonom(b2) + "</b> szót kapjuk, amit átalakítunk <b>v<sub>2</sub></b> = (" + v2 + ") vektorrá.<br/>3. Kiszámítjuk a(z) (" + v1 + ")&nbsp;&lowast;&nbsp;(" + v2 + ") stuffle-szorzatot:<br/>";
             jelentes += ms2HTML(v);
             jelentes += "<br>4. Végül mindent vektort visszaalakítunk xy-szóvá, és mindegyik végéhez " + n + " + " + m + " = <b>" + (n + m) + "</b> darab " + xy2XY('x') + " karaktert írunk."
         };
@@ -8938,8 +8974,10 @@ function shHom10() {
     $('#xXsetting').addClass('dumb');
     const s1 = document.getElementById("w1").value.toLowerCase();
     const s2 = document.getElementById("w2").value.toLowerCase();
+    const ms1 = xy2XYmonom(s1);
+    const ms2 = xy2XYmonom(s2);
 
-    var txt = "<i>A </i>w<sub>1</sub>&nbsp;<span style='font-size:larger;'>&#x29E2;</span>&nbsp;w<sub>2</sub> = " + s1 + "&nbsp;<span style='font-size:larger;'>&#x29E2;</span>&nbsp;" + s2 + " = <br/>";
+    var txt = "<i>A </i>w<sub>1</sub>&nbsp;<span style='font-size:larger;'>&#x29E2;</span>&nbsp;w<sub>2</sub> = " + ms1 + "&nbsp;<span style='font-size:larger;'>&#x29E2;</span>&nbsp;" + ms2 + " = <br/>";
     const st = polyShuffle([
         [1, s1]
     ], [
@@ -8951,7 +8989,7 @@ function shHom10() {
     const na = st.length;
     for (var j = 0; j < na; j++) {
         var str = reg10(st[j][1]);
-        txt += "<span style='text-decoration: underline;text-underline-offset: 10px;'>(<b>" + (j + 1) + "</b>) reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + st[j][1] + ")</span> = " + formazxyV(str) + "<br/>";
+        txt += "<span style='text-decoration: underline;text-underline-offset: 10px;'>(<b>" + (j + 1) + "</b>) reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + xy2XYmonom(st[j][1]) + ")</span> = " + formazxyV(str) + "<br/>";
     }
     const regst = _.flatten(st.map(y => reg10(y[1]).map(z => [y[0] * z[0], z[1]])));
     const regstov = xyList_Ov(regst);
@@ -8964,14 +9002,14 @@ function shHom10() {
     if (stvec.length > 0)
         stPari = vecList2Pari(stvec);
 
-    txt += "<i>A megfelelő behelyettesítés és összevonás után a</i><br/>reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + s1 + "&nbsp;&#x29E2;&nbsp;" + s2 + ") = <span style='background-color:#ffd0c6;'>" + formregst + "</span> ~ " + ms2HTML(stvec) + "<br/> <i>összeget kapjuk.</i><br/> ";
+    txt += "<i>A megfelelő behelyettesítés és összevonás után a</i><br/>reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + ms1 + "&nbsp;&#x29E2;&nbsp;" + ms2 + ") = <span style='background-color:#ffd0c6;'>" + formregst + "</span> ~ " + ms2HTML(stvec) + "<br/> <i>összeget kapjuk.</i><br/> ";
     const r1 = reg10(s1);
     const r2 = reg10(s2);
     const r1vec = r1.map(y => [y[0], xy2vec(y[1])[0]]);
     const r2vec = r2.map(y => [y[0], xy2vec(y[1])[0]]);
 
-    txt += "<i>A </i>w<sub>1</sub> = " + s1 + "<i> és a </i>w<sub>2</sub> = " + s2 + "<i> szavak  shuffle-regularizáltja pedig</i><br/>";
-    txt += "reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + s1 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r1) + "</span> ~ " + ms2HTML(r1vec) + "<br/>" + "reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + s2 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r2) + "</span> ~ " + ms2HTML(r2vec) + "<br/>";
+    txt += "<i>A </i>w<sub>1</sub> = " + ms1 + "<i> és a </i>w<sub>2</sub> = " + ms2 + "<i> szavak  shuffle-regularizáltja pedig</i><br/>";
+    txt += "reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + ms1 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r1) + "</span> ~ " + ms2HTML(r1vec) + "<br/>" + "reg<sup>10</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -10px;'>&#x29E2;</sub>(" + ms2 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r2) + "</span> ~ " + ms2HTML(r2vec) + "<br/>";
     var pari1 = "1"
     if (r1vec.length > 0)
         pari1 = vecList2Pari(r1vec).slice(4, -2);
@@ -8993,17 +9031,19 @@ function stHom0() {
     $('#xXsetting').addClass('dumb');
     const s1 = document.getElementById("w1").value.toLowerCase();
     const s2 = document.getElementById("w2").value.toLowerCase();
+    const ms1 = xy2XYmonom(s1);
+    const ms2 = xy2XYmonom(s2);
 
-    var txt = "<i>A </i>w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub> = " + s1 + "&nbsp;&lowast;&nbsp;" + s2 + " = <br/>";
+    var txt = "<i>A </i>w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub> = " + ms1 + "&nbsp;&lowast;&nbsp;" + ms2 + " = <br/>";
     const st = xystuffleW(s1, s2, true);
     var nreg = st[0].filter(y => y[1].startsWith('y'));
     var txt1 = formazxyV(st[0], false, false);
     txt1 = txt1.slice(3);
     txt += txt1 + "<br/> <i>stuffle szorzatban a non-asmissible </i>"
-    txt += nreg.map(z => " <b>" + z[1] + "</b>") + " <i>szavakat helyettesítjük a stuffle-regularizáltjukkal</i>.<br/>";
+    txt += nreg.map(z => " <b>" + xy2XYmonom(z[1]) + "</b>") + " <i>szavakat helyettesítjük a stuffle-regularizáltjukkal</i>.<br/>";
     const na = nreg.length;
     for (var j = 0; j < na; j++)
-        txt += "<span style='text-decoration: underline;text-underline-offset: 10px;'>(<b>" + (j + 1) + "</b>) reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + nreg[j][1] + ")</span> = " + formazxyV(reghar(nreg[j][1])) + "<br/>";
+        txt += "<span style='text-decoration: underline;text-underline-offset: 10px;'>(<b>" + (j + 1) + "</b>) reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + xy2XYmonom(nreg[j][1]) + ")</span> = " + formazxyV(reghar(nreg[j][1])) + "<br/>";
 
     const regst = _.flatten(st[0].map(y => reghar(y[1]).map(z => [y[0] * z[0], z[1]])));
     const regstov = xyList_Ov(regst);
@@ -9019,8 +9059,8 @@ function stHom0() {
     const r2 = reghar(s2);
     const r1vec = r1.map(y => [y[0], xy2vec(y[1])[0]]);
     const r2vec = r2.map(y => [y[0], xy2vec(y[1])[0]]);
-    txt += "<i>A </i>w<sub>1</sub> = " + s1 + "<i> és a </i>w<sub>2</sub> = " + s2 + "<i> szavak  stuffle-regularizáltja pedig</i><br/>";
-    txt += "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s1 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r1) + "</span> ~ " + ms2HTML(r1vec) + "<br/>" + "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + s2 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r2) + "</span> ~ " + ms2HTML(r2vec) + "<br/>";
+    txt += "<i>A </i>w<sub>1</sub> = " + ms1 + "<i> és a </i>w<sub>2</sub> = " + ms2 + "<i> szavak  stuffle-regularizáltja pedig</i><br/>";
+    txt += "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + ms1 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r1) + "</span> ~ " + ms2HTML(r1vec) + "<br/>" + "reg<sup>0</sup><sub style='font-size: unset;vertical-align: -8px;margin-left: -5px;'>&lowast;</sub>(" + ms2 + ") = <span style='background-color:#cad2ff;'>" + formazxyV(r2) + "</span> ~ " + ms2HTML(r2vec) + "<br/>";
     var pari1 = "1"
     if (r1vec.length > 0)
         pari1 = vecList2Pari(r1vec).slice(4, -2);
@@ -9362,10 +9402,10 @@ function formazS0reg(id, str0) {
     var ob = [
         [1, [str.split("")]]
     ];
-    var txt = "<span style='display:block;background-color:#bfbfbf4f;;margin-bottom:10px;padding-left:5px;'>(A)-ban: u = " + xy2XY(a) + "&in;&nbsp;&#x1d525;y;&nbsp;n = " + n;
-    txt += '</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(str) + ') = <span class="block" style="transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;' + n + '</sub>  (-1)<sup>j</sup> ' + xy2XY(a) + xy2XY("x") + '<sup>' + n + ' - j</sup><span style="margin:0 3px;">&#x29E2;</span>' + xy2XY("x") + '<sup>j</sup> = ';
-    txt += ' <span class="ashx" onclick="hlh(this,0)" data-h="0">' + xy2XY(a) + '<span style="font-weight:600;color:red;">' + xy2XY("x".repeat(n)) + '</span><span style="margin:0 3px;">&#x29E2;</span>( )</span>';
-    var txt2 = " <hr/><span class='kashx' data-h='0' onclick='khlh(this,0);'>   <span onclick='regHighlight(this);' class='hreg' data-reg='" + xy2XY(str) + "'>" + xy2XY(str) + '</span></span>';
+    var txt = "<span style='display:block;background-color:#bfbfbf4f;;margin-bottom:10px;padding-left:5px;'>(A)-ban: u = " + xy2XYmonom(a) + "&in;&nbsp;&#x1d525;y;&nbsp;n = " + n;
+    txt += '</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XYmonom(str) + ') = <span class="block" style="transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;' + n + '</sub>  (-1)<sup>j</sup> ' + xy2XYmonom(a) + xy2XYmonom("x") + '<sup>' + n + ' - j</sup><span style="margin:0 3px;">&#x29E2;</span>' + xy2XYmonom("x") + '<sup>j</sup> = ';
+    txt += ' <span class="ashx" onclick="hlh(this,0)" data-h="0">' + xy2XYmonom(a) + '<span style="font-weight:600;color:red;">' + xy2XYmonom("x".repeat(n)) + '</span><span style="margin:0 3px;">&#x29E2;</span>( )</span>';
+    var txt2 = " <hr/><span class='kashx' data-h='0' onclick='khlh(this,0);'>   <span onclick='regHighlight(this);' class='hreg' data-reg='" + xy2XY(str) + "'>" + xy2XYmonom(str) + '</span></span>';
     if (str.endsWith("y")) {
         document.getElementById("shouth").innerHTML = txt + txt2;
         return;
@@ -9376,7 +9416,7 @@ function formazS0reg(id, str0) {
         var eloj = "+ "
         if (j % 2 == 1)
             var eloj = " − "
-        txt += ' <span class="ashx" onclick="hlh(this,' + j + ')" data-h="' + j + '">' + eloj + xy2XY(a) + '<span style="font-weight:600;color:red;">' + xy2XY(e) + '</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XY(v) + '</span></span>';
+        txt += ' <span class="ashx" onclick="hlh(this,' + j + ')" data-h="' + j + '">' + eloj + xy2XYmonom(a) + '<span style="font-weight:600;color:red;">' + xy2XYmonom(e) + '</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XYmonom(v) + '</span></span>';
         ob.push([Math.pow(-1, j), shuffleProduct((a + e).split(""), v.split(""))]);
         txt2 += " <span onclick='khlh(this," + j + ")' class='kashx' data-h='" + j + "'>" + eloj + "<span class='paren'>(</span>" + shufflexy(a + e, v) + "<span class='paren'>)</span></span>";
         v += "x";
@@ -9385,7 +9425,7 @@ function formazS0reg(id, str0) {
     var eloj = " + "
     if (n % 2 == 1)
         var eloj = "− "
-    txt += ' <span class="ashx" onclick="hlh(this,' + n + ')" data-h="' + n + '">' + eloj + xy2XY(a + e) + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XY(v) + '</span></span>';
+    txt += ' <span class="ashx" onclick="hlh(this,' + n + ')" data-h="' + n + '">' + eloj + xy2XYmonom(a + e) + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XYmonom(v) + '</span></span>';
     txt2 += " <span onclick='khlh(this," + n + ");' class='kashx' data-h='" + n + "'>" + eloj + "<span class='paren'>(</span>" + xy2XY(shufflexy(a + e, v)) + "<span class='paren'>)</span></span>";
     ob.push([Math.pow(-1, n), shuffleProduct((a + e).split(""), v.split(""))]);
 
@@ -9401,16 +9441,16 @@ function formazS0reg(id, str0) {
             pl = "";
         if (s != 0) {
             if (s == 1) {
-                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + xy2XY(key.replaceAll("y", "y|")) + "</span>";
+                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + xy2XYmonom(key.replaceAll("y", "y|")) + "</span>";
                 adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + "(" + xy2vec(key)[0] + ")" + "</span>";
             } else if (s == -1) {
-                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + "− " + xy2XY(key.replaceAll("y", "y|")) + "</span>";
+                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + "− " + xy2XYmonom(key.replaceAll("y", "y|")) + "</span>";
                 adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + " − (" + xy2vec(key)[0] + ")" + "</span>";
             } else if (s > 1) {
-                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + s + "&middot;" + xy2XY(key.replaceAll("y", "y|")) + "</span>";
+                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + s + "&middot;" + xy2XYmonom(key.replaceAll("y", "y|")) + "</span>";
                 adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + pl + s + "&lowast;(" + xy2vec(key)[0] + ")" + "</span>";
             } else if (s < 1) {
-                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + "− " + Math.abs(s) + "&middot;" + xy2XY(key.replaceAll("y", "y|")) + "</span>";
+                ovtxt += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + "− " + Math.abs(s) + "&middot;" + xy2XYmonom(key.replaceAll("y", "y|")) + "</span>";
                 adm += " <span class='hreg' data-reg=" + xy2XY(key) + " onclick='regHighlight(this)'>" + " − " + Math.abs(s) + "&lowast;(" + xy2vec(key)[0] + ")" + "</span>";
             }
             szamlalo++;
@@ -9425,9 +9465,14 @@ function formazS0reg(id, str0) {
 function reg0(str) {
     const n = countEndingX(str);
     if (n == 0)
-        return [
-            [1, str], xy2XY(str.replaceAll("y", "y|"))
-        ];
+        if (xy2mon)
+            return [
+                [1, str], xy2XYmonom(str)
+            ];
+        else
+            return [
+                [1, str], xy2XY(str.replaceAll("y", "y|"))
+            ];
     const a = str.slice(0, str.length - n);
     var ob = [
         [1, [str.split("")]]
@@ -9454,9 +9499,9 @@ function reg0(str) {
         if (s != 0) {
             shobj.push([s, key]);
             if (s == 1 || s == -1) {
-                ovtxt += pl + xy2XY(key);
+                ovtxt += pl + xy2XYmonom(key);
             } else {
-                ovtxt += pl + Math.abs(s) + "&middot;" + xy2XY(key);
+                ovtxt += pl + Math.abs(s) + "&middot;" + xy2XYmonom(key);
             }
             szamlalo++;
         };
@@ -9479,13 +9524,25 @@ function formazPoly2Reg0(vL) {
         if (szamlalo == 0)
             pl = "";
         if (s == 1) {
-            txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + pl + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
+            if (xy2mon)
+                txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + pl + xy2XYmonom(xy) + "</span>";
+            else
+                txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + pl + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
         } else if (s == -1) {
-            txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + "− " + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
+            if (xy2mon)
+                txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + "− " + xy2XYmonom(xy) + "</span>";
+            else
+                txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + "− " + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
         } else if (s > 1) {
-            txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + pl + s + "&middot;" + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
+            if (xy2mon)
+                txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + pl + s + "&middot;" + xy2XYmonom(xy) + "</span>";
+            else
+                txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + pl + s + "&middot;" + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
         } else if (s < 1) {
-            txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + "− " + Math.abs(s) + "&middot;" + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
+            if (xy2mon)
+                txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + "− " + Math.abs(s) + "&middot;" + xy2XYmonom(xy) + "</span>";
+            else
+                txt += " <span class='hreg' data-reg=" + xy2XY(xy) + " onclick='regHighlight(this)'>" + "− " + Math.abs(s) + "&middot;" + xy2XY(xy.replaceAll("y", "y|")) + "</span>";
         }
         szamlalo++;
     };
@@ -9522,9 +9579,9 @@ function formazinvS0reg(id) {
     const str = document.getElementById(id).value.toLowerCase();
     const n = countEndingX(str);
     const a = str.slice(0, str.length - n);
-    var txt = "<span style='display:block;background-color:#bfbfbf4f;margin-bottom:10px;padding-left:5px;'>(A')-ben: u = " + xy2XY(a) + "&in;&nbsp;&#x1d525;y;&nbsp;n = " + n;
+    var txt = "<span style='display:block;background-color:#bfbfbf4f;margin-bottom:10px;padding-left:5px;'>(A')-ben: u = " + xy2XYmonom(a) + "&in;&nbsp;&#x1d525;y;&nbsp;n = " + n;
     if (n == 0) {
-        txt += '</span><div class="reg0sor"><b style="background-color:#bfbfbf54;padding:0 5px;outline:1px solid #aaa;margin-right: 10px;">j = 0</b><span class="reg0pl" onclick="reg0pl(this,\'' + str + '\');">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(a) + '<span style="font-weight:600;color:red;">' + "x".repeat(n) + '</span>)</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">( )</span> =<br/><span class="reg0kijelzo" data-xy="' + str + '"></span><span class="reg0veg">' + str + '<span></div>';
+        txt += '</span><div class="reg0sor"><b style="background-color:#bfbfbf54;padding:0 5px;outline:1px solid #aaa;margin-right: 10px;">j = 0</b><span class="reg0pl" onclick="reg0pl(this,\'' + str + '\');">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XYmonom(a) + '<span style="font-weight:600;color:red;">' + xy2XYmonom("x".repeat(n)) + '</span>)</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">( )</span> =<br/><span class="reg0kijelzo" data-xy="' + str + '"></span><span class="reg0veg">' + str + '<span></div>';
         document.getElementById("shouth").innerHTML = txt;
         return;
     }
@@ -9532,7 +9589,7 @@ function formazinvS0reg(id) {
     const r00 = polyShuffle(r0[0], [
         [1, ""]
     ]);
-    txt += '</span><div class="reg0sor"><b style="background-color:#bfbfbf54;padding:0 5px;outline:1px solid #aaa;margin-right: 10px;">j = 0</b><span class="reg0pl" onclick="reg0pl(this,\'' + str + '\');">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(a) + '<span style="font-weight:600;color:red;">' + xy2XY("x".repeat(n)) + '</span>)</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">( )</span><span style="display:inline;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;" onclick="masodiktgl(&quot;0&quot;);">=</span><br/><span class="reg0kijelzo" data-xy="' + str + '"></span><span class="masodik" data-id="0">' + r0[1] + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">( )</span> =</span><span class="reg0veg">' + formazPoly2Reg0(r00) + '<span></div>';
+    txt += '</span><div class="reg0sor"><b style="background-color:#bfbfbf54;padding:0 5px;outline:1px solid #aaa;margin-right: 10px;">j = 0</b><span class="reg0pl" onclick="reg0pl(this,\'' + str + '\');">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XYmonom(a) + '<span style="font-weight:600;color:red;">' + xy2XYmonom("x".repeat(n)) + '</span>)</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">( )</span><span style="display:inline;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;" onclick="masodiktgl(&quot;0&quot;);">=</span><br/><span class="reg0kijelzo" data-xy="' + str + '"></span><span class="masodik" data-id="0">' + r0[1] + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">( )</span> =</span><span class="reg0veg">' + formazPoly2Reg0(r00) + '<span></div>';
     var v = "x",
         e = "x".repeat(n - 1);
     for (var j = 1; j <= n; j++) {
@@ -9545,7 +9602,7 @@ function formazinvS0reg(id) {
             var er = polyShuffle(r[0], [
                 [1, v]
             ]);
-        txt += '<div class="reg0sor"><b style="background-color:#bfbfbf54;padding:0 5px;outline:1px solid #aaa;margin-right: 10px;">j = ' + j + '</b><span class="reg0pl" onclick="reg0pl(this,\'' + (a + e).toString().trim() + '\');">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XY(a) + '<span style="font-weight:600;color:red;">' + xy2XY(e) + '</span>)</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XY(v) + '</span></span> <span style="display:inline;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;" onclick="masodiktgl(&quot;' + j + '&quot;);">=</span><span class="reg0kijelzo" data-xy="' + (a + e) + '"></span><span class="masodik" data-id="' + j + '">' + r[1] + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XY(v) + '</span> =</span><span class="reg0veg">' + formazPoly2Reg0(er) + '<span></div>';
+        txt += '<div class="reg0sor"><b style="background-color:#bfbfbf54;padding:0 5px;outline:1px solid #aaa;margin-right: 10px;">j = ' + j + '</b><span class="reg0pl" onclick="reg0pl(this,\'' + (a + e).toString().trim() + '\');">reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(' + xy2XYmonom(a) + '<span style="font-weight:600;color:red;">' + xy2XYmonom(e) + '</span>)</span>' + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XYmonom(v) + '</span></span> <span style="display:inline;border:1px solid #eac2c2;padding:2px 10px;margin:0 10px;vertical-align: middle;cursor:pointer;background-color:#fffd9f;border-radius: 4px;" onclick="masodiktgl(&quot;' + j + '&quot;);">=</span><span class="reg0kijelzo" data-xy="' + (a + e) + '"></span><span class="masodik" data-id="' + j + '">' + r[1] + '<span style="margin:0 3px;">&#x29E2;</span><span style="font-weight:600;color:blue;">' + xy2XYmonom(v) + '</span> =</span><span class="reg0veg">' + formazPoly2Reg0(er) + '<span></div>';
         v += "x";
         e = e.slice(0, -1);
     }
@@ -9574,7 +9631,7 @@ function formazxyV(vL, blokk, withid) {
         else if (c > 0) {
             var cc = Fraction(1 * c).toFraction();
             if (cc != "0")
-                c = " + " + cc + "&middot";
+                c = " + " + cc + "&middot;";
             else
                 c = 0;
         } else if (c == -1)
@@ -9582,21 +9639,24 @@ function formazxyV(vL, blokk, withid) {
         else if (c < 0) {
             var cc = Fraction(-1 * c).toFraction();
             if (cc != "0")
-                c = " − " + cc + "&middot";
+                c = " − " + cc + "&middot;";
             else
                 c = 0;
         }
         var xy = v[1];
         const xyid = xy;
-        if (blokk)
+        if (blokk && !xy2mon)
             xy = xy.replaceAll('y', 'y|');
         if (withid) {
             if (c != 0)
-                xy = " <span class='hreg' data-reg=" + xyid + " data-c='" + v[0] + "' onclick='regHighlight(this);clearOv();setOvelem(this);'>" + (c + xy) + "</span>"
+                xy = " <span class='hreg' data-reg=" + xyid + " data-c='" + v[0] + "' onclick='regHighlight(this);clearOv();setOvelem(this);'>" + (c + xy2XYmonom(xy)) + "</span>"
             txt += xy;
         } else {
             if (c != 0)
-                txt += c + xy;
+                if (xy2mon)
+                    txt += c + xy2monom(xy2XY(xy));
+                else
+                    txt += c + xy;
         }
     };
     if (txt.startsWith(" + "))
@@ -9623,7 +9683,7 @@ function reg10hl(e) {
             setOvjelj();
         } else if (ovelem != "") {
             document.getElementById("ovjelentes").classList.add('active');
-            document.getElementById("ovjelentesj").innerHTML = '<span class="oveleje">0</span>' + ovelem;
+            document.getElementById("ovjelentesj").innerHTML = '<span class="oveleje">0</span>' + xy2XYmonom(ovelem);
             document.getElementById("ovjelentesb").innerHTML = "0";
         } else
             return;
@@ -9672,7 +9732,7 @@ function setOvjelj() {
 function clearOv() {
     clearInterval(ra);
     ovosszeg = 0;
-    ovelem = "";
+    //ovelem = "";
     $("#shouth .hreg.hl.szamlalva").removeClass("szamlalva");
     $('#shouth table td .ov').remove();
     document.getElementById("ovjelentes").classList.remove('active');
@@ -9786,7 +9846,7 @@ function reg10With(str) {
         if (j == 0)
             tblx += "<tr><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scx + ");display: inline-block;'>(</span><td style='font-weight:800;'>1</td><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scx + ");display: inline-block;'>)</span></td><td rowspan=" + (n + 1) + "><span id='ovjelentes'><span id='ovjelentesb'></span><span class='lepteto' onclick='ovAnimate();' style='display:inline-block;padding:5px 5px 5px 7px;margin:4px 5px 4px 5px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;box-shadow: 0 0 10px 3px #bdbdbd;'>▶</span><span id='ovjelentesj'></span><span class='ovclose' onclick='clearOv();'>&times;</span></span></td></tr>";
         else
-            tblx += "<tr><td>" + x + "</td></tr>";
+            tblx += "<tr><td>" + xy2XYmonom(x) + "</td></tr>";
     };
     tblx += "</table>";
     var vesszo = ","
@@ -9817,7 +9877,7 @@ function reg10With(str) {
             var ustr = u;
             if (i == m && j == n && u == "")
                 ustr = "1";
-            tbl += "<td data-reg='" + JSON.stringify(sij) + "' onclick='reg10hl(this);'>" + eloj + "<span class='yux y'>" + my + "</span><span class='yux u'>" + ustr + "</span><span class='yux x'>" + nx + "</span>" + vesszo + "</td>";
+            tbl += "<td data-reg='" + JSON.stringify(sij) + "' onclick='reg10hl(this);'>" + eloj + "<span class='yux y'>" + xy2XYmonom(my) + "</span><span class='yux u'>" + xy2XYmonom(ustr) + "</span><span class='yux x'>" + xy2XYmonom(nx) + "</span>" + vesszo + "</td>";
 
             if (j == 0) {
                 vesszo = ",";
@@ -9826,7 +9886,7 @@ function reg10With(str) {
                 if (i == 0)
                     tbly += "<tr><td class='matrixzj'><span style='transform: scaleX(1.2);display: inline-block;'>(</span><td style='font-weight:800;'>1" + vesszo + "</td>";
                 else
-                    tbly += "<td>" + y + vesszo + "</td>";
+                    tbly += "<td>" + xy2XYmonom(y) + vesszo + "</td>";
                 if (i == m)
                     tbly += "<td class='matrixzj'><span style='transform: scaleX(1.2);display: inline-block;'>)</span></td></tr>";
             }
@@ -9848,20 +9908,23 @@ function reg10With(str) {
             if (s == 1)
                 s = " + ";
             else if (s > 1)
-                s = " + " + s + "&middot"
+                s = " + " + s + "&middot;"
             else if (s == -1)
                 s = " − ";
             else if (s < -1)
                 s = " − " + (-1 * s) + "&middot;";
             var xy = key.replaceAll(',', '');
-            xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();setOvelem(this);'>" + s + xy.replaceAll('y', 'y|') + "</span>";
+            if (xy2mon)
+                xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();setOvelem(this);'>" + s + xy2monom(xy) + "</span>";
+            else
+                xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();setOvelem(this);'>" + s + xy.replaceAll('y', 'y|') + "</span>";
             txt += xy;
         };
     });
     if (txt.startsWith(" + "))
         txt = txt.slice(3);
     txt = "<div id='reg10ov'>" + txt + "</div>"
-    let fej = "<span style='display:block;background-color:#bfbfbf4f;;margin-bottom:10px;padding-left:5px;'>(B)-ben: u = " + xy2XY(u) + "&in;&nbsp;&#x1d525;y;&nbsp;m = " + m + ";&nbsp;n = " + n + "</span>";
+    let fej = "<span style='display:block;background-color:#bfbfbf4f;;margin-bottom:10px;padding-left:5px;'>(B)-ben: u = " + xy2XYmonom(u) + "&in;&nbsp;&#x1d525;y;&nbsp;m = " + m + ";&nbsp;n = " + n + "</span>";
     return [fej, tbl, txt, shobj];
 };
 
@@ -9902,7 +9965,7 @@ function invreg10With(str) {
         if (j == 0)
             tblx += "<tr><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scx + ");display: inline-block;'>(</span><td style='font-weight:800;'>1</td><td class='matrixzj' rowspan=" + (n + 1) + "><span style='transform: scaleY(" + scy + ") scaleX(" + scx + ");display: inline-block;'>)</span></td><td rowspan=" + (n + 1) + "><span id='ovjelentes'><span id='ovjelentesb'></span><span class='lepteto' onclick='ovAnimate();' style='display:inline-block;padding:5px 5px 5px 7px;margin:4px 5px 4px 5px;border:1px solid #a1a1a1;border-radius:50%;width:20px;height:20px;text-align: center;vertical-align:baseline;cursor:pointer;font-size:20px;line-height: 20px;user-select: none;box-shadow: 0 0 10px 3px #bdbdbd;'>▶</span><span id='ovjelentesj'></span><span class='ovclose' onclick='clearOv();'>&times;</span></span></td></tr>";
         else
-            tblx += "<tr><td>" + x + "</td></tr>";
+            tblx += "<tr><td>" + xy2XYmonom(x) + "</td></tr>";
     };
     tblx += "</table>";
     var vesszo = ","
@@ -9928,7 +9991,7 @@ function invreg10With(str) {
             var ustr = u;
             if (i == m && j == n && u == "")
                 ustr = "1";
-            tbl += "<td data-reg='" + JSON.stringify(sij) + "' onclick='reg10hl(this);'>" + "<span class='yux y'>" + my + "</span><span class='yux u'>" + ustr + "</span><span class='yux x'>" + nx + "</span>" + vesszo + "</td>";
+            tbl += "<td data-reg='" + JSON.stringify(sij) + "' onclick='reg10hl(this);'>" + "<span class='yux y'>" + xy2XYmonom(my) + "</span><span class='yux u'>" + xy2XYmonom(ustr) + "</span><span class='yux x'>" + xy2XYmonom(nx) + "</span>" + vesszo + "</td>";
 
             if (j == 0) {
                 vesszo = ",";
@@ -9937,7 +10000,7 @@ function invreg10With(str) {
                 if (i == 0)
                     tbly += "<tr><td class='matrixzj'><span style='transform: scaleX(1.2);display: inline-block;'>(</span><td style='font-weight:800;'>1" + vesszo + "</td>";
                 else
-                    tbly += "<td>" + y + vesszo + "</td>";
+                    tbly += "<td>" + xy2XYmonom(y) + vesszo + "</td>";
                 if (i == m)
                     tbly += "<td class='matrixzj'><span style='transform: scaleX(1.2);display: inline-block;'>)</span></td></tr>";
             }
@@ -9959,13 +10022,16 @@ function invreg10With(str) {
             if (s == 1)
                 s = " + ";
             else if (s > 1)
-                s = " + " + s + "&middot"
+                s = " + " + s + "&middot;"
             else if (s == -1)
                 s = " − ";
             else if (s < -1)
                 s = " − " + (-1 * s) + "&middot;";
             var xy = key.replaceAll(',', '');
-            xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();setOvelem(this);'>" + s + xy.replaceAll('y', 'y|') + "</span>";
+            if (xy2mon)
+                xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();setOvelem(this);'>" + s + xy2monom(xy) + "</span>";
+            else
+                xy = " <span class='hreg' data-reg=" + xy + " onclick='regHighlight(this);clearOv();setOvelem(this);'>" + s + xy.replaceAll('y', 'y|') + "</span>";
             txt += xy;
         };
     });
@@ -10010,14 +10076,170 @@ function nonAdm(n, k) {
 
 // derivalas h-n
 
-derivOfX = "xx";
-derivOfY = "xy";
+var derivOfX = ["xx"];
+var derivOfY = ["xy"];
+var dxcoeff = [1];
+var dycoeff = [1];
+var xy2mon = false;
+
+//       "-2x^7y^3xy^4x^7".replace(/(x\^\d)|(y\^\d)/g,)
+function html2maple() {
+    const elem = document.getElementById("shouth");
+    const txt = elem.innerText.replace(/[·|]/g, "");
+    elem.innerHTML = txt
+};
+
+function pow2xysor(str) {
+    if (str.indexOf("^") < 0)
+        return str;
+    else {
+        const b = str.split("^");
+        return b[0].repeat(b[1] * 1);
+    }
+};
+
+function monom2xysor(str) {
+    var e = str.match(/^[\+\-]?\d?/);
+    if (e[0] != "")
+        str = str.replace(e, "");
+    return e + str.match(/(x\^\d)|(y\^\d)/g).map(y => pow2xysor(y)).join('');
+}
+
+function xy2monom(str) {
+    const pat = new RegExp(`(${xy2XY('x')})+|(${xy2XY('y')})+`, "g");
+    const v = str.match(pat);
+    //const v = str.match(/(y)+|(x)+/g);
+    if (!v)
+        return str;
+    var txt = "";
+    for (let c of v) {
+        if (c.length == 1)
+            txt += c[0];
+        else
+            txt += c[0] + "<sup>" + c.length + "</sup>";
+    }
+    return txt;
+};
+
+function formazxyMonom(vL) {
+    if (vL.length == 0)
+        return "( )";
+    var txt = ""
+    for (let v of vL) {
+        var c = v[0];
+        if (c == 1)
+            c = " + ";
+        else if (c > 0) {
+            var cc = Fraction(1 * c).toFraction();
+            if (cc != "0")
+                c = " + " + cc + "&middot;";
+            else
+                c = 0;
+        } else if (c == -1)
+            c = " − ";
+        else if (c < 0) {
+            var cc = Fraction(-1 * c).toFraction();
+            if (cc != "0")
+                c = " − " + cc + "&middot;";
+            else
+                c = 0;
+        }
+        var xy = v[1];
+
+        if (xy.length == 0)
+            c = c.replace("&middot;", "");
+        if (c != 0)
+            txt += c + xy2monom(xy2XY(xy));
+    };
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+    return txt;
+};
+
+function set2monom(e) {
+    xy2mon = e.checked;
+};
+
+function xy2XYmonom(str) {
+    if (xy2mon)
+        return xy2monom(xy2XY(str));
+    else
+        return xy2XY(str);
+};
+
+function countX(str) {
+    return str.match(/x/g).length;
+};
+
+function countY(str) {
+    return str.match(/y/g).length;
+};
+
+function makexCoeff(str) {
+    if (/[^xy]/.test(str)) {
+        derivOfX.push(str.replace(/[^xy]/g, ""));
+        var nonxy = str.match(/[^xy]/g).join('')
+        if (nonxy == "-")
+            dxcoeff.push(-1);
+        else if (nonxy == "+")
+            dxcoeff.push(1);
+        else
+            dxcoeff.push(nonxy * 1);
+    } else {
+        derivOfX.push(str);
+        dxcoeff.push(1);
+    }
+};
+
+function makeyCoeff(str) {
+    if (/[^xy]/.test(str)) {
+        derivOfY.push(str.replace(/[^xy]/g, ""));
+        var nonxy = str.match(/[^xy]/g).join('')
+        if (nonxy == "-")
+            dycoeff.push(-1);
+        else if (nonxy == "+")
+            dycoeff.push(1);
+        else
+            dycoeff.push(nonxy * 1);
+    } else {
+        derivOfY.push(str);
+        dycoeff.push(1);
+    }
+};
 
 function setxyDer(elem, ch) {
-    if (ch == "x")
-        derivOfX = elem.value;
-    else
-        derivOfY = elem.value;
+    var nstr = elem.value;
+    if (nstr.indexOf("^") > -1)
+        nstr = nstr.match(/^[\+\-]?\d?|(x(\^\d)?)|(y(\^\d)?)|\+(\d)?|\-(\d)?/g).map(y => pow2xysor(y)).join('');
+    var strv = nstr.match(/(\++|\-+)*(\d)*[xy]*/g);
+    if (strv[0] != "")
+        strv = strv.filter(y => y != "");
+
+    if (ch == "x") {
+        derivOfX = [];
+        dxcoeff = [];
+        for (let str of strv)
+            makexCoeff(str);
+        console.log(derivOfX, dxcoeff)
+    } else {
+        derivOfY = [];
+        dycoeff = [];
+        for (let str of strv)
+            makeyCoeff(str);
+        console.log(derivOfY, dycoeff)
+    }
+};
+
+function setxyFakt(e) {
+    const id = e.id;
+    if (id == "derxfakt")
+        document.getElementById("derxfakte").checked = false;
+    else if (id == "derxfakte")
+        document.getElementById("derxfakt").checked = false;
+    else if (id == "deryfakt")
+        document.getElementById("deryfakte").checked = false;
+    else if (id == "deryfakte")
+        document.getElementById("deryfakt").checked = false;
 };
 
 function derActivate(elem) {
@@ -10044,18 +10266,19 @@ function strList_Ov(st) {
     return stobj;
 };
 
-function charDer(ch) {
-    if (ch == "x")
-        return derivOfX;
-    else
-        return derivOfY;
-};
-
 function wordDer(w, coeff) {
     const n = w.length;
     var out = [];
-    for (var i = 0; i < n; i++)
-        out.push([coeff, cserelAt(w, i, charDer(w.charAt(i)))]);
+    for (var i = 0; i < n; i++) {
+        var xy = w.charAt(i);
+        if (xy == "x") {
+            for (var j = 0; j < derivOfX.length; j++)
+                out.push([coeff * dxcoeff[j], cserelAt(w, i, derivOfX[j])]);
+        } else {
+            for (var j = 0; j < derivOfY.length; j++)
+                out.push([coeff * dycoeff[j], cserelAt(w, i, derivOfY[j])]);
+        }
+    }
     out = strList_Ov(out);
     return out;
 };
@@ -10073,7 +10296,7 @@ function derivHn(str, n) {
     var out = [
         [1, str]
     ];
-    if (n > 0 && str.length > 0)
+    if (n > 0 /*&& str.length > 0*/ )
         for (var j = 0; j < n; j++)
             out = derivH(out);
     return out;
