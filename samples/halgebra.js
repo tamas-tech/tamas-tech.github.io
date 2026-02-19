@@ -19,7 +19,6 @@ function resetStore() {
     };
     Store.L = n;
     Store.n = 0;
-    console.log(Store);
     updLstore();
     closeStore();
 };
@@ -27,7 +26,6 @@ function resetStore() {
 function trimStore() {
     const N = Store.n * 1;
     const n = document.getElementById("nstore").value * 1;
-    console.log(N, n);
     if (n < N) {
         for (var i = n + 1; i < N + 1; i++) {
             delete Store["v" + i];
@@ -42,13 +40,33 @@ function trimStore() {
     }
     Store.L = n;
     updLstore();
-    console.log(Store)
+    const opened = $("#shoutstore").css("display") == "block";
+    closeStore();
+    if (opened)
+        $('#storebtn').trigger('click');
 };
 
 function updLstore() {
     const n = Store.n;
     const L = Store.L;
     document.getElementById("lstore").innerHTML = n + " / " + L;
+};
+
+function updOpenedStore() {
+    if ($("#shoutstore").css("display") == "block") {
+        const n = Store.n * 1;
+        $('.lastviewer[data-view=' + n + ']').html(Store["txt" + n]);
+        var w = []
+        var txt = "";
+        for (var j = 1; j <= n; j++)
+            w.push(Store["v" + j])
+        w = strList_Ov(_.flatten(w));
+        if (document.getElementById("xymonom").checked)
+            txt += formazxyMonom(w);
+        else
+            txt += formazxyV(w, true, true);
+        $('#lastprev').html(txt);
+    };
 };
 
 function shiftStore() {
@@ -61,14 +79,16 @@ function shiftStore() {
         Store.txt2 = curr_txt;
         if (n < L)
             Store.n++;
+        updOpenedStore();
         $('#shouth').addClass('villbgdark');
         setTimeout(() => { $('#shouth').removeClass('villbgdark') }, 300);
     } else if (n == L) {
-        alert("A tár megtelt" + n + " = " + L)
+        alert("A tár megtelt" + n + " = " + L);
     } else if (n < L) {
         Store["v" + (n + 1)] = [...curr_v];
         Store["txt" + (n + 1)] = curr_txt;
         Store.n++;
+        updOpenedStore();
         $('#shouth').addClass('villbgdark');
         setTimeout(() => { $('#shouth').removeClass('villbgdark') }, 300);
     };
@@ -101,16 +121,19 @@ function tglStore(e) {
     if (opened == "block") {
         sto.html("").css("display", "none");
         $(e).html("&#x23FF;");
+        $("#shouth").css("opacity", "");
         return;
     } else if (L == 2) {
         $(e).html("&#x2297;");
-        txt += "A legutóbbi <button class='lastprebtn' onclick='tglLast(" + 2 + ");'>...</button><br/><div class='lastviewer' data-view='2' onclick='tglLast(" + 2 + ");'>" + Store.txt2 + "</div>és az azt megelöző<button class='lastprebtn' onclick='tglLast(" + 1 + ");'>...</button><br/><div class='lastviewer' data-view='1' onclick='tglLast(" + 1 + ");'>" + Store.txt1 + "</div> két kimenet különbsége: <div id='lastprev'>";
+        $("#shouth").css("opacity", "0.7");
+        txt += "A legutóbbi <button class='lastprebtn' onclick='tglLast(" + 2 + ");'>...</button><br/><div class='lastviewer shown' data-view='2'>" + Store.txt2 + "</div>és az azt megelöző<button class='lastprebtn' onclick='tglLast(" + 1 + ");'>...</button><br/><div class='lastviewer shown' data-view='1'>" + Store.txt1 + "</div> két kimenet különbsége: <div id='lastprev'>";
         var w = strList_Ov(_.flatten([Store.v2, Store.v1.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])]));
     } else if (L > 2) {
         $(e).html("&#x2297;");
+        $("#shouth").css("opacity", "0.7");
         txt += "A legutóbbi " + L + " kimenet<br/>"
         for (var i = 1; i <= L; i++)
-            txt += "Kimenet (" + (i - 1 - L) + ") :<button class='lastprebtn' onclick='tglLast(" + i + ");'>...</button><br/><div class='lastviewer' data-view='" + i + "' onclick='tglLast(" + i + ");'>" + Store["txt" + i] + "</div>";
+            txt += "Kimenet (" + (i - 1 - L) + ") :<button class='lastprebtn' onclick='tglLast(" + i + ");'>...</button><br/><div class='lastviewer shown' data-view='" + i + "'>" + Store["txt" + i] + "</div>";
         txt += "összege:  <div id='lastprev'>"
         var w = []
         for (var j = 1; j <= L; j++)
@@ -118,9 +141,9 @@ function tglStore(e) {
         w = strList_Ov(_.flatten(w));
     };
     if (document.getElementById("xymonom").checked)
-        txt += formazxyMonom(w, true, false);
+        txt += formazxyMonom(w);
     else
-        txt += formazxyV(w, true, false);
+        txt += formazxyV(w, true, true);
     txt += "<div>";
     sto.css("display", "block");
     sto.html(txt);
@@ -129,6 +152,7 @@ function tglStore(e) {
 function closeStore() {
     $("#shoutstore").html("").css("display", "none");
     $("#storebtn").html("&#x23FF;");
+    $("#shouth").css("opacity", "");
 };
 
 function tglLast(i) {
@@ -316,57 +340,70 @@ function polyShuffle(strL1, strL2) {
             shobj.push([s, xy2XY(key.replaceAll(",", ""))]);
         };
     });
-    //document.getElementById("shouth").innerHTML = JSON.stringify(shobj);
     return shobj;
 };
 
 function regHighlight(elem) {
-    $("#shouth span.hreg.hl").removeClass('hl');
-    //$("#outk29 span.shk29.hl").removeClass('hl');
-    const dat = elem.getAttribute('data-reg');
-    //console.log($(elem).parent())
-    $("#shouth span.hreg[data-reg='" + dat + "']").addClass('hl');
-    if (regvalt == "Ainvsh0") {
-        if ($(elem).parent('.reg0veg').length > 0) {
-            var fltxt = ""
-            $(".reg0veg .hreg.hl").each(function() {
-                fltxt += this.innerHTML;
-            });
-            $("#floatkijelzo").css("display", "block").html((fltxt));
-        } else if ($(elem).parent('.kashx').length > 0) {
-            const sor = $(".kashx .hreg.hl");
-            var txt = "";
-            sor.each(function(e) {
-                var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).html().trim();
-                tx = tx.replaceAll("−−", " + ");
-                tx = tx.replaceAll("−+", " − ");
-                tx = tx.replaceAll("+−", " − ");
-                tx = tx.replaceAll("++", " + ");
-                txt += tx;
-            })
-            if (txt.startsWith(" + "))
-                txt = txt.slice(3);
-            $("#floatkijelzo").css("display", "block").html(txt);
-        } else
-            $("#floatkijelzo").css("display", "none");
+    const tartotarto = elem.parentElement.parentElement.id;
+    const tarto = elem.parentElement.id;
+    if (tarto == "shoutcontainer")
+        return;
+    else if (tartotarto == "shoutstore") {
+        $("#shoutstore span.hreg.hl").removeClass('hl');
+        const dat = elem.getAttribute('data-reg');
+        $("#shoutstore span.hreg[data-reg='" + dat + "']").addClass('hl');
+
+        var fltxt = ""
+        $(".lastviewer .hreg.hl").each(function() {
+            fltxt += this.innerHTML;
+        });
+        $("#floatkijelzo").css("display", "block").html((fltxt));
     } else {
-        if ($(elem).parent('.kashx').length > 0) {
-            const sor = $(".kashx .hreg.hl");
-            var txt = "";
-            sor.each(function(e) {
-                var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).html().trim();
-                tx = tx.replaceAll("−−", " +");
-                tx = tx.replaceAll("−+", " −");
-                tx = tx.replaceAll("+−", "−");
-                tx = tx.replaceAll("++", " +");
-                txt += tx;
-            })
-            if (txt.startsWith(" + "))
-                txt = txt.slice(3);
-            $("#floatkijelzo").css("display", "block").html(txt);
-        } else
-            $("#floatkijelzo").css("display", "none");
-    }
+        $("#shouth span.hreg.hl").removeClass('hl');
+        const dat = elem.getAttribute('data-reg');
+        $("#shouth span.hreg[data-reg='" + dat + "']").addClass('hl');
+        if (regvalt == "Ainvsh0") {
+            if ($(elem).parent('.reg0veg').length > 0) {
+                var fltxt = ""
+                $(".reg0veg .hreg.hl").each(function() {
+                    fltxt += this.innerHTML;
+                });
+                $("#floatkijelzo").css("display", "block").html((fltxt));
+            } else if ($(elem).parent('.kashx').length > 0) {
+                const sor = $(".kashx .hreg.hl");
+                var txt = "";
+                sor.each(function(e) {
+                    var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).html().trim();
+                    tx = tx.replaceAll("−−", " + ");
+                    tx = tx.replaceAll("−+", " − ");
+                    tx = tx.replaceAll("+−", " − ");
+                    tx = tx.replaceAll("++", " + ");
+                    txt += tx;
+                })
+                if (txt.startsWith(" + "))
+                    txt = txt.slice(3);
+                $("#floatkijelzo").css("display", "block").html(txt);
+            } else
+                $("#floatkijelzo").css("display", "none");
+        } else {
+            if ($(elem).parent('.kashx').length > 0) {
+                const sor = $(".kashx .hreg.hl");
+                var txt = "";
+                sor.each(function(e) {
+                    var tx = $(this).parent('.kashx').text().slice(0, 2).trim() + $(this).html().trim();
+                    tx = tx.replaceAll("−−", " +");
+                    tx = tx.replaceAll("−+", " −");
+                    tx = tx.replaceAll("+−", "−");
+                    tx = tx.replaceAll("++", " +");
+                    txt += tx;
+                })
+                if (txt.startsWith(" + "))
+                    txt = txt.slice(3);
+                $("#floatkijelzo").css("display", "block").html(txt);
+            } else
+                $("#floatkijelzo").css("display", "none");
+        }
+    };
 };
 
 function formazShuffle(v, blokk, withid) {
@@ -422,17 +459,20 @@ function shuffleW() {
     const w2 = in2_ci(document.getElementById("w2").value).split("");
     var sh = shuffleProduct(w1, w2);
     var txt = "";
-    if (doutfok < 1)
-        txt = formazShuffle(sh, true, false)[0];
-    else {
-        sh = formazShuffle(sh, true, false)[1];
-        dsh = derivOutHn(sh, doutfok);
-        if (document.getElementById("xymonom").checked)
-            txt = formazxyMonom(dsh, true, false);
-        else
-            txt = formazxyV(dsh, true, false);
-    };
+
+    txt = formazShuffle(sh, true, false)[0];
+
+    sh = formazShuffle(sh, true, false)[1];
+    sh = derivOutHn(sh, doutfok);
+    if (document.getElementById("xymonom").checked)
+        txt = formazxyMonom(sh);
+    else
+        txt = formazxyV(sh, true, true);
+
     document.getElementById("shouth").innerHTML = txt;
+
+    txt = txt.replaceAll("clearOv();setOvelem(this);", "");
+    inStore(sh, txt);
 };
 
 function derivGen(muv) {
@@ -463,11 +503,14 @@ function derivGen(muv) {
     if (doutfok > 0)
         sh = derivOutHn(sh, doutfok);
     if (document.getElementById("xymonom").checked)
-        var txt = formazxyMonom(sh, true, false);
+        var txt = formazxyMonom(sh);
     else
-        var txt = formazxyV(sh, true, false);
+        var txt = formazxyV(sh, true, true);
 
     document.getElementById("shouth").innerHTML = txt;
+
+    txt = txt.replaceAll("clearOv();setOvelem(this);", "");
+    inStore(sh, txt);
 };
 
 
@@ -587,13 +630,15 @@ function concW() {
     var dst = derivHn(st, doutfok, doutconj, doutinv);
     dst = dst.map(y => [Fraction(y[0]).mul(woutcoeff).div(Fraction(fakt)), y[1]]);
     if (document.getElementById("xymonom").checked)
-        var txt = formazxyMonom(dst, true, false);
+        var txt = formazxyMonom(dst);
     else
         var txt = formazxyV(dst, true, false);
     if (txt.startsWith(" + "))
         txt = txt.slice(3);
 
     document.getElementById("shouth").innerHTML = txt;
+
+    txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(dst, txt);
 };
 
@@ -740,6 +785,8 @@ function stuffleW() {
     txt = txt1 + jelentes;
 
     document.getElementById("shouth").innerHTML = txt;
+
+    txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(dst, txt1)
 };
 
@@ -992,7 +1039,6 @@ function reghar10(str) {
             ]), [
                 [Math.pow(-1, j) / factorial(j), x]
             ]);
-            //console.log("i=", i, "j=", j, sij)
             sh = [...sh, ...sij];
         };
     }
@@ -1038,7 +1084,6 @@ function invreghar10(str) {
             ), [
                 [1 / factorial(j), x]
             ]);
-            //console.log("i=", i, "j=", j, sij)
             sh = [...sh, ...sij];
         };
     }
@@ -1064,7 +1109,7 @@ function formazinvreghar10(id) {
 
 
 function shtuffleW() {
-    closeStore();
+    //closeStore();
     $('#xXsetting').removeClass('dumb');
     const elem = document.getElementById("shouth");
     const actel = $('#k1 .keplet.active .kepletvalaszto.selected');
@@ -1157,7 +1202,6 @@ function setCalcw(e) {
 
 $(document).on('jt:toggled:multi', function(event, target) {
     const id = $(target).parent().parent().parent().parent()[0].id;
-    console.log(id)
     const regvelem = document.getElementById("regv");
     regvelem.parentElement.parentElement.classList.remove('dumb');
     $('.keplet.active').removeClass('active');
@@ -1174,7 +1218,6 @@ $(document).on('jt:toggled:multi', function(event, target) {
                 $('#alap_keplet.keplet').addClass('active');
         } else if (allas == 0) {
             $(".shstlabel").html("&#x29E2;");
-            $(".shstlabel").html("&lowast;");
             if (regvallas == 0) {
                 $('#reg0_keplet.keplet').addClass('active');
             } else if (regvallas == 2) {
@@ -1631,12 +1674,11 @@ function setOvjelj() {
 function clearOv() {
     clearInterval(ra);
     ovosszeg = 0;
-    //ovelem = "";
     $("#shouth .hreg.hl.szamlalva").removeClass("szamlalva");
     $('#shouth table td .ov').remove();
-    document.getElementById("ovjelentes").classList.remove('active');
-    document.getElementById("ovjelentesj").innerHTML = "";
-    document.getElementById("ovjelentesb").innerHTML = ovosszeg;
+    $("#ovjelentes").removeClass('active');
+    $("#ovjelentesj").html("");
+    $("#ovjelentesb").html(ovosszeg);
 };
 
 function ovAnimate() {
@@ -2049,8 +2091,12 @@ function formazxyMonom(vL) {
 
         if (xy.length == 0)
             c = c.replace("&middot;", "");
+        /*  if (c != 0)
+             txt += c + xy2monom(xy2XY(xy)); */
+
         if (c != 0)
-            txt += c + xy2monom(xy2XY(xy));
+            txt += " <span class='hreg' data-reg=" + xy + " data-c='" + v[0] + "' onclick='regHighlight(this);'>" + (c + xy2XYmonom(xy)) + "</span>"
+
     };
     if (txt.startsWith(" + "))
         txt = txt.slice(3);
