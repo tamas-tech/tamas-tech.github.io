@@ -2672,7 +2672,7 @@ div#k1 span.kepletvalaszto.selected {
 #shoutstore {
     display: none;
     margin-top: 10px;
-    outline: 2px solid #d0c0c0;
+    outline: 2px solid #bf9635;
     outline-offset: -2px;
     background-color: #fffed3;
     margin: 5px;
@@ -2768,6 +2768,14 @@ div#k1 span.kepletvalaszto.selected {
     border-radius: 5px;
 }
 
+#shoutstore .hreg {
+    cursor: pointer;
+}
+
+#shoutstore .hreg.hl {
+    background-color: #ffe3ac;
+    box-shadow: 0px 0px 2px 2px #c8b98e;
+}
 
 
 
