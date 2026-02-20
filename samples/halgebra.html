@@ -54,7 +54,7 @@
 </head>
 <body>
     <div id="floatkijelzo"></div>
-     <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
+    <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shoutcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <p class="keplet active" id="alap_keplet">w<sub>1</sub>w<sub>2</sub></p>
@@ -179,20 +179,21 @@
             <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
                 <button class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
                 <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="idClear('#shouth');" title="Clear output">Clear</button>
+                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="tglshouth(this);" title="Toggle output">Close</button>
                 <button style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
             </div>
             <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
                 <span class="derivtok">
-                    <button style="vertical-align: middle;margin-left:10px;padding:3px 3px 9px 3px;font-size:30px;" class="sbtglbtn" onclick="storeSign(this)">+</button>
-                    <button style="vertical-align: middle;margin-left:10px;padding:0 3px 9px 3px;font-size:30px;" class="sbtglbtn" onclick="shiftStore()">&#x2A61;</button>
-                    <button id="storebtn" style="vertical-align: middle;margin-left:10px;padding:0 3px 5px 3px;font-size:24px;" class="sbtglbtn" onclick=" tglStore(this)">&#x23FF;</button>
+                    <button style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;" class="sbtglbtn" onclick="storeSign(this)">+</button>
+                    <button style="vertical-align: middle;margin-left:10px;padding:0 3px ;width: fit-content;font-size:17px;" class="sbtglbtn" onclick="shiftStore();">Add</button>
+                    <button id="storebtn" style="vertical-align: middle;margin-left:10px;padding:0 3px;font-size:22px;" class="sbtglbtn" onclick=" tglStore(this);">&#x23FF;</button>
                     <label for="nstore"><b style="padding: 2px 8px;vertical-align: middle;">&sum;</b></label>
                     <input type="number" onchange="trimStore();" id="nstore" value="2" min="2" step="1" name="nstore" style="width:45px;vertical-align:middle;">
                     <span id="lstore"></span>
                 <button id="resetstore" class="sbtglbtn" onclick="resetStore()">Reset</button>
                 </span>
             </div>
-            <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 1px solid #cecece;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+            <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
                 <div id="dersetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                     <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;">
                         <label for="xymonom">xxxyy&rightarrow;x<sup>3</sup>y<sup>2</sup></label>
@@ -252,6 +253,10 @@
                     <label for="animt"><b>Animation step(ms):</b> = </label>
                     <input type="number" id="animt" value="600" min="100" step="100" name="t" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
                 </div>
+                <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;">
+                    <label for="setfejlec">Fejlécek tiltása a kimenetben</label>
+                    <input type="checkbox" name="setfejlec" oninput="setFejlec(this);shtuffleW();" id="setfejlec" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                </div>
                 <div style="margin-bottom:10px;">
                     <label for="setoutputfontH">&#128474;</label>
                     <input id="outfont-sliderH" oninput="setOutputFontH(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfontH" />
@@ -293,6 +298,7 @@
     </script>
 </body>
 </html>
+
 
 
 
