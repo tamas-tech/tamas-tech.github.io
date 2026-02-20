@@ -1,12 +1,17 @@
 var curr_v = [];
 var curr_txt = "0";
 var sign_store = 1;
+var wfejlec = "";
+var nofejlec = false;
+var storefej = "";
 
 var Store = {};
 Store.v1 = [];
 Store.v2 = [];
 Store.txt1 = "0";
 Store.txt2 = "0";
+Store.fej1 = "";
+Store.fej2 = "";
 Store.L = 2;
 Store.n = 0;
 
@@ -15,7 +20,8 @@ function resetStore() {
     Store = {};
     for (var i = 1; i <= n; i++) {
         Store["v" + i] = [];
-        Store["txt" + i] = "";
+        Store["txt" + i] = "0";
+        Store["fej" + i] = "";
     };
     Store.L = n;
     Store.n = 0;
@@ -30,12 +36,14 @@ function trimStore() {
         for (var i = n + 1; i < N + 1; i++) {
             delete Store["v" + i];
             delete Store["txt" + i];
+            delete Store["fej" + i];
         }
         Store.n = n;
     } else if (n > N) {
         for (var i = N + 1; i < n + 1; i++) {
             Store["v" + i] = [];
             Store["txt" + i] = "0";
+            Store["fej" + i] = "";
         }
     }
     Store.L = n;
@@ -54,8 +62,9 @@ function updLstore() {
 
 function updOpenedStore() {
     if ($("#shoutstore").css("display") == "block") {
-        const n = Store.n * 1;
-        $('.lastviewer[data-view=' + n + ']').html(Store["txt" + n]);
+        var n = Store.n * 1;
+        $('.lastviewer[data-view="' + n + '"]').html(Store["txt" + n]);
+        $('.lastprebtn:nth("' + (n - 1) + '")').html(Store["fej" + n]);
         var w = []
         var txt = "";
         for (var j = 1; j <= n; j++)
@@ -77,16 +86,21 @@ function shiftStore() {
         Store.v2 = [...curr_v];
         Store.txt1 = Store.txt2;
         Store.txt2 = curr_txt;
+        Store.fej1 = Store.fej2;
+        Store.fej2 = storefej;
         if (n < L)
             Store.n++;
         updOpenedStore();
         $('#shouth').addClass('villbgdark');
-        setTimeout(() => { $('#shouth').removeClass('villbgdark') }, 300);
+        setTimeout(() => {
+            $('#shouth').removeClass('villbgdark');
+        }, 300);
     } else if (n == L) {
-        alert("A tár megtelt" + n + " = " + L);
+        alert("A tár megtelt: " + n + " = " + L);
     } else if (n < L) {
         Store["v" + (n + 1)] = [...curr_v];
         Store["txt" + (n + 1)] = curr_txt;
+        Store["fej" + (n + 1)] = storefej;
         Store.n++;
         updOpenedStore();
         $('#shouth').addClass('villbgdark');
@@ -121,20 +135,17 @@ function tglStore(e) {
     if (opened == "block") {
         sto.html("").css("display", "none");
         $(e).html("&#x23FF;");
-        $("#shouth").css("opacity", "");
         return;
     } else if (L == 2) {
         $(e).html("&#x2297;");
-        $("#shouth").css("opacity", "0.7");
-        txt += "A legutóbbi <button class='lastprebtn' onclick='tglLast(" + 2 + ");'>...</button><br/><div class='lastviewer shown' data-view='2'>" + Store.txt2 + "</div>és az azt megelöző<button class='lastprebtn' onclick='tglLast(" + 1 + ");'>...</button><br/><div class='lastviewer shown' data-view='1'>" + Store.txt1 + "</div> két kimenet különbsége: <div id='lastprev'>";
+        txt += "A legutóbbi <span class='lastprebtn' onclick='tglLast(" + 2 + ");'>" + (Store.fej2 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='2'>" + Store.txt2 + "</div>és az azt megelöző<span class='lastprebtn' onclick='tglLast(" + 1 + ");'>" + (Store.fej1 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='1'>" + Store.txt1 + "</div><br/> két kimenet különbsége: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>Különbség</span><div id='lastprev' class='shown'>";
         var w = strList_Ov(_.flatten([Store.v2, Store.v1.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])]));
     } else if (L > 2) {
         $(e).html("&#x2297;");
-        $("#shouth").css("opacity", "0.7");
         txt += "A legutóbbi " + L + " kimenet<br/>"
         for (var i = 1; i <= L; i++)
-            txt += "Kimenet (" + (i - 1 - L) + ") :<button class='lastprebtn' onclick='tglLast(" + i + ");'>...</button><br/><div class='lastviewer shown' data-view='" + i + "'>" + Store["txt" + i] + "</div>";
-        txt += "összege:  <div id='lastprev'>"
+            txt += "Kimenet (" + (i - 1 - L) + ") :<span class='lastprebtn' onclick='tglLast(" + i + ");'>" + (Store["fej" + i] || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='" + i + "'>" + Store["txt" + i] + "</div>";
+        txt += "összege: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>&sum;</span> <div id='lastprev' class='shown'>"
         var w = []
         for (var j = 1; j <= L; j++)
             w.push(Store["v" + j])
@@ -152,12 +163,19 @@ function tglStore(e) {
 function closeStore() {
     $("#shoutstore").html("").css("display", "none");
     $("#storebtn").html("&#x23FF;");
-    $("#shouth").css("opacity", "");
 };
 
 function tglLast(i) {
     $('.lastviewer[data-view=' + i + ']').toggleClass('shown');
 };
+
+function tglLastPrev() {
+    $('#lastprev').toggleClass('shown');
+};
+
+function setFejlec(elem) {
+    nofejlec = elem.checked;
+}
 
 // algebra of Q(x,y) = h
 
@@ -191,7 +209,13 @@ var doutconj = false;
 var doutinv = false;
 var woutcoeff = 1;
 
-
+function tglshouth(elem) {
+    $('#shouth').toggleClass('hide');
+    if (elem.innerText == "Show")
+        elem.innerText = "Hide";
+    else
+        elem.innerText = "Show";
+};
 
 function par2tort(id) {
     var cw = document.getElementById(id).value;
@@ -231,6 +255,229 @@ function setParams() {
     doutfakte = document.getElementById("doutfakte").checked;
     woutcoeff = par2tort("woutcoeff");
 }
+
+function w1forma() {
+    var coeff = w1coeff
+    var txt = "w<sub>1</sub>";
+    //var txt = document.getElementById("w1").value;
+    if (w1conj && w1inv)
+        txt += "<sup>&dagger;</sup>";
+    //txt = "(" + txt + ")<sup>&dagger;</sup>";
+    else if (w1inv)
+        txt += "<sup class='invsign'>−</sup>";
+    //txt = "(" + txt + ")<sup class='invsign'>−</sup>";
+    else if (w1conj)
+        txt += "*";
+    //txt = "(" + txt + ")*";
+    if (dw1fok > 0) {
+        if (dw1fok == 1) {
+            if (dw1inv && dw1conj)
+                txt = "∂<sub class='dersub'>&dagger;</sub>(" + txt + ")";
+            else if (dw1inv)
+                txt = "∂_(" + txt + ")";
+            else if (dw1conj)
+                txt = "∂<sub  class='dersub'>&lowast;</sub>(" + txt + ")";
+            else
+                txt = "∂(" + txt + ")";
+        } else if (dw1fok > 1) {
+            if (dw1inv && dw1conj)
+                txt = "∂<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + dw1fok + "</sup>(" + txt + ")";
+            else if (dw1inv)
+                txt = "∂_<sup class='derkitevo'>" + dw1fok + "</sup>(" + txt + ")";
+            else if (dw1conj)
+                txt = "∂<sub  class='dersub'>&lowast;</sub><sup class='derkitevo'>" + dw1fok + "</sup>(" + txt + ")";
+            else
+                txt = "∂<sup>" + dw1fok + "</sup>(" + txt + ")";
+        };
+
+        if (dw1fakt) {
+            coeff = Fraction(1 / factorial(dw1fok)).mul(coeff);
+            var eloj = ""
+            if (coeff.s == -1)
+                eloj = "−"
+            if (coeff == 1 || coeff == -1)
+                txt = eloj + txt;
+            else
+                txt = eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;" + txt;
+        };
+        if (dw1fakte) {
+            coeff = Fraction(Math.pow(-1, dw1fok) / factorial(dw1fok)).mul(coeff);
+            var eloj = ""
+            if (coeff.s == -1)
+                eloj = "−"
+            if (coeff == 1 || coeff == -1)
+                txt = eloj + txt;
+            else
+                txt = eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;" + txt;
+        };
+    }
+    if (w1coeff != 1 && !(dw1fok > 0 && (dw1fakt || dw1fakte))) {
+        var eloj = ""
+        if (coeff.s == -1)
+            eloj = "−"
+        if (coeff.n == 1)
+            txt = eloj + txt;
+        else if (coeff.d != 1)
+            txt = eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;" + txt;
+        else
+            txt = eloj + coeff.n + "&nbsp;" + txt;
+    };
+    if (txt.startsWith("−"))
+        txt = "<span id='w1tok'><span class='wtokzj left'></span>" + txt + "<span class='wtokzj right'></span></span>";
+    else
+        txt = "<span id='w2tok'>" + txt + "</span>";
+    return txt;
+};
+
+function w2forma() {
+    var coeff = w2coeff
+    var txt = "w<sub>2</sub>";
+    if (w2conj && w2inv)
+        txt += "<sup>&dagger;</sup>";
+    else if (w2inv)
+        txt += "<sup class='invsign'>−</sup>";
+    else if (w2conj)
+        txt += "*";
+    if (dw2fok > 0) {
+        if (dw2fok == 1) {
+            if (dw2inv && dw2conj)
+                txt = "∂<sub class='dersub'>&dagger;</sub>(" + txt + ")";
+            else if (dw2inv)
+                txt = "∂_(" + txt + ")";
+            else if (dw2conj)
+                txt = "∂<sub  class='dersub'>&lowast;</sub>(" + txt + ")";
+            else
+                txt = "∂(" + txt + ")";
+        } else if (dw2fok > 1) {
+            if (dw2inv && dw2conj)
+                txt = "∂<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
+            else if (dw2inv)
+                txt = "∂_<sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
+            else if (dw2conj)
+                txt = "∂<sub  class='dersub'>&lowast;</sub><sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
+            else
+                txt = "∂<sup>" + dw2fok + "</sup>(" + txt + ")";
+        };
+
+        if (dw2fakt) {
+            coeff = Fraction(1 / factorial(dw2fok)).mul(coeff);
+            var eloj = ""
+            if (coeff.s == -1)
+                eloj = "−"
+            if (coeff == 1 || coeff == -1)
+                txt = eloj + txt;
+            else
+                txt = eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;" + txt;
+        };
+        if (dw2fakte) {
+            coeff = Fraction(Math.pow(-1, dw2fok) / factorial(dw2fok)).mul(coeff);
+            var eloj = ""
+            if (coeff.s == -1)
+                eloj = "−"
+            if (coeff == 1 || coeff == -1)
+                txt = eloj + txt;
+            else
+                txt = eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;" + txt;
+        };
+    }
+    if (w2coeff != 1 && !(dw2fok > 0 && (dw2fakt || dw2fakte))) {
+        var eloj = ""
+        if (coeff.s == -1)
+            eloj = "−"
+        if (coeff.n == 1)
+            txt = eloj + txt;
+        else if (coeff.d != 1)
+            txt = eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;" + txt;
+        else
+            txt = eloj + coeff.n + "&nbsp;" + txt;
+    };
+    if (txt.startsWith("−"))
+        txt = "<span id='w2tok'><span class='wtokzj left'></span>" + txt + "<span class='wtokzj right'></span></span>";
+    else
+        txt = "<span id='w2tok'>" + txt + "</span>";
+    return txt;
+};
+
+function w1w2forma(allas) {
+    //const allas = $('#shH #cshstselecttarto .jtoggler-btn-wrapper.is-active').index() * 1;
+    var muvelet = "&bullet;"
+    if (allas * 1 < 1)
+        muvelet = "<span style='font-size:130%;'>⧢</span>";
+    if (allas * 1 > 1)
+        muvelet = "<span style='font-size:120%;'>&lowast;</span>";
+    const bzj = "<span class='wouttokzj left'></span>";
+    const jzj = "<span class='wouttokzj right'></span>";
+    const bbzj = "<span class='wouttokzjbig  left'></span>";
+    const bjzj = "<span class='wouttokzjbig  right'></span>";
+    var zjvan = false;
+    var coeff = woutcoeff;
+    if (outconj || outinv) {
+        var txt = "<span id='w1w2tok'>" + bzj + w1forma() + muvelet + w2forma() + jzj + "</span>";
+        zjvan = true;
+    } else
+        var txt = "<span id='w1w2tok'>" + w1forma() + muvelet + w2forma() + "</span>";
+
+    if (outconj && outinv)
+        txt += "<sup class='outsup'>&dagger;</sup>";
+    else if (outinv)
+        txt += "<sup class='outsup'>−</sup>";
+    else if (outconj)
+        txt += "<span class='outsuplow'>&lowast;</span>";
+
+    if (doutfok > 0) {
+        if (!zjvan)
+            txt = bzj + txt + jzj;
+        else
+            txt = bbzj + txt + bjzj;
+        if (doutfok == 1) {
+            if (doutinv && doutconj)
+                txt = "<span class='outbig'>∂<sub class='dersub'>&dagger;</sub></span>" + txt;
+            else if (doutinv)
+                txt = "<span class='outbig'>∂_</span>" + txt;
+            else if (doutconj)
+                txt = "<span class='outbig'>∂<sub  class='dersub'>&lowast;</sub></span>" + txt;
+            else
+                txt = "<span class='outbig'>∂</span>" + txt;
+        } else if (doutfok > 1) {
+            if (doutinv && doutconj)
+                txt = "<span class='outbig'>∂<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + doutfok + "</sup></span>" + txt;
+            else if (doutinv)
+                txt = "<span class='outbig'>∂_<sup class='derkitevo'>" + doutfok + "</sup></span>" + txt;
+            else if (doutconj)
+                txt = "<span class='outbig'>∂<sub  class='dersub'>&lowast;</sub><sup class='derkitevo'>" + doutfok + "</sup></span>" + txt;
+            else
+                txt = "<span class='outbig'>∂<sup>" + doutfok + "</sup></span>" + txt;
+        };
+
+        if (doutfakt) {
+            coeff = Fraction(1 / factorial(doutfok)).mul(coeff);
+            var eloj = ""
+            if (coeff.s == -1)
+                eloj = "−"
+            if (coeff == 1 || coeff == -1)
+                txt = eloj + txt;
+            else
+                txt = "<span class='outbig'>" + eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;</span>" + txt;
+        };
+        if (doutfakte) {
+            coeff = Fraction(Math.pow(-1, doutfok) / factorial(doutfok)).mul(coeff);
+            var eloj = ""
+            if (coeff.s == -1)
+                eloj = "−"
+            if (coeff == 1 || coeff == -1)
+                txt = eloj + txt;
+            else
+                txt = "<span class='outbig'>" + eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;</span>" + txt;
+        };
+    };
+    storefej = "<span class='storefej'>" + txt + "</span>";
+    txt = "<div id='wform'>" + txt + "</div>";
+    if (!nofejlec)
+        wfejlec = txt;
+    else
+        wfejlec = "";
+    //return txt;
+};
 
 function in1_ci(str) {
     if (w1conj)
@@ -469,7 +716,7 @@ function shuffleW() {
     else
         txt = formazxyV(sh, true, true);
 
-    document.getElementById("shouth").innerHTML = txt;
+    document.getElementById("shouth").innerHTML = wfejlec + txt;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(sh, txt);
@@ -507,7 +754,7 @@ function derivGen(muv) {
     else
         var txt = formazxyV(sh, true, true);
 
-    document.getElementById("shouth").innerHTML = txt;
+    document.getElementById("shouth").innerHTML = wfejlec + txt;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(sh, txt);
@@ -636,7 +883,7 @@ function concW() {
     if (txt.startsWith(" + "))
         txt = txt.slice(3);
 
-    document.getElementById("shouth").innerHTML = txt;
+    document.getElementById("shouth").innerHTML = wfejlec + txt;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(dst, txt);
@@ -784,7 +1031,7 @@ function stuffleW() {
         jelentes = "<hr/><span style='font-size:70%;color:#3e3e3e;'>" + st[1] + "</span>";
     txt = txt1 + jelentes;
 
-    document.getElementById("shouth").innerHTML = txt;
+    document.getElementById("shouth").innerHTML = wfejlec + txt;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(dst, txt1)
@@ -1105,15 +1352,13 @@ function formazinvreghar10(id) {
     document.getElementById("shouth").innerHTML = txt;
 };
 
-
-
-
 function shtuffleW() {
     //closeStore();
     $('#xXsetting').removeClass('dumb');
     const elem = document.getElementById("shouth");
     const actel = $('#k1 .keplet.active .kepletvalaszto.selected');
     const allas = $('#shH #cshstselecttarto .jtoggler-btn-wrapper.is-active').index();
+    w1w2forma(allas);
     const w = regw;
     regvalt = "alap";
     if (actel.length > 0)
@@ -1242,6 +1487,7 @@ $(document).on('jt:toggled:multi', function(event, target) {
                 $('#reghar0_keplet.keplet').addClass('active');
             else if (shalla == 1)
                 $('#alap_keplet.keplet').addClass('active');
+            closeStore();
         } else if (allas == 2) {
             if (shallas == 0)
                 $('#reg10_keplet.keplet').addClass('active');
@@ -1249,6 +1495,7 @@ $(document).on('jt:toggled:multi', function(event, target) {
                 $('#reghar10_keplet.keplet').addClass('active');
             else if (shalla == 1)
                 $('#alap_keplet.keplet').addClass('active');
+            closeStore();
         }
     }
     shtuffleW();
