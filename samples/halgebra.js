@@ -170,7 +170,7 @@ function inStore(v, txt) {
         curr_txt = txt;
     } else {
         curr_v = [...v.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])];
-        curr_txt = " − (" + txt + ")";
+        curr_txt = "<span class='negstore'> − (</span>" + txt + "<span class='negstore'>)<span>";
     }
 };
 
@@ -831,6 +831,15 @@ function polyShuffle(strL1, strL2) {
     return shobj;
 };
 
+function elojelCsere(str) {
+    if (str.startsWith(" −")) {
+        str = " +" + str.slice(2);
+    } else if (str.startsWith(" +")) {
+        str = " −" + str.slice(2);
+    }
+    return str;
+};
+
 function regHighlight(elem) {
     const tartotarto = elem.parentElement.parentElement.id;
     const tarto = elem.parentElement.id;
@@ -843,7 +852,10 @@ function regHighlight(elem) {
 
         var fltxt = ""
         $(".lastviewer .hreg.hl").each(function() {
-            fltxt += this.innerHTML;
+            var str = this.innerHTML;
+            if ($($(this).parent().children()[0]).hasClass('negstore'))
+                str = elojelCsere(str);
+            fltxt += str;
         });
         $("#floatkijelzo").css("display", "block").html((fltxt));
     } else {
