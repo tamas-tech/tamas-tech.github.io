@@ -2739,6 +2739,12 @@ div#k1 span.kepletvalaszto.selected {
     pointer-events: none;
 }
 
+.lastviewer .negstore {
+    font-weight: 800;
+    color: red;
+    background-color: #ffdddd;
+}
+
 #lastprev {
     display: none;
     border: 1px solid #c1c1c1;
@@ -2936,6 +2942,7 @@ div#k1 span.kepletvalaszto.selected {
     color: red;
     padding: 0 0.3em;
 }
+
 
 
 
