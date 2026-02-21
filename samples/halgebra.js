@@ -1,6 +1,6 @@
 var curr_v = [];
 var curr_txt = "0";
-var sign_store = 1;
+var store_sign = 1;
 var wfejlec = "";
 var nofejlec = false;
 var storefej = "";
@@ -8,10 +8,12 @@ var storefej = "";
 var Store = {};
 Store.v1 = [];
 Store.v2 = [];
-Store.txt1 = "0";
-Store.txt2 = "0";
+Store.txt1 = "";
+Store.txt2 = "";
 Store.fej1 = "";
 Store.fej2 = "";
+Store.state1 = {};
+Store.state2 = {};
 Store.L = 2;
 Store.n = 0;
 
@@ -20,13 +22,17 @@ function resetStore() {
     Store = {};
     for (var i = 1; i <= n; i++) {
         Store["v" + i] = [];
-        Store["txt" + i] = "0";
+        Store["txt" + i] = "";
         Store["fej" + i] = "";
+        Store["state" + i] = {};
     };
     Store.L = n;
     Store.n = 0;
     updLstore();
-    closeStore();
+    if ($("#shoutstore").css("display") == "block") {
+        closeStore();
+        $('#storetglbtn').trigger('click');
+    };
 };
 
 function trimStore() {
@@ -42,7 +48,7 @@ function trimStore() {
     } else if (n > N) {
         for (var i = N + 1; i < n + 1; i++) {
             Store["v" + i] = [];
-            Store["txt" + i] = "0";
+            Store["txt" + i] = "";
             Store["fej" + i] = "";
         }
     }
@@ -51,43 +57,91 @@ function trimStore() {
     const opened = $("#shoutstore").css("display") == "block";
     closeStore();
     if (opened)
-        $('#storebtn').trigger('click');
+        $('#storetglbtn').trigger('click');
 };
 
 function updLstore() {
     const n = Store.n;
     const L = Store.L;
     document.getElementById("lstore").innerHTML = n + " / " + L;
+    if (n == 0) {
+        $('#storebackbtn').addClass('dumb');
+        $('#storeinbtn').removeClass('dumb');
+    } else if (n == L && L > 2) {
+        $('#storeinbtn').addClass('dumb');
+    } else if (n > 0) {
+        $('#storeinbtn,#storebackbtn').removeClass('dumb');
+    };
+};
+
+function undoStore() {
+    const n = Store.n * 1;
+    Store["v" + n] = [];
+    Store["txt" + n] = "";
+    Store["fej" + n] = "";
+    Store["state" + n] = {};
+    updOpenedStore();
+    if (n > 0)
+        Store.n--;
+    updLstore();
+    $('.lastviewer[data-view=' + n + ']').html('').addClass('dumb');
+    $('.storeback[data-back=' + n + ']').addClass('dumb');
 };
 
 function updOpenedStore() {
     if ($("#shoutstore").css("display") == "block") {
         var n = Store.n * 1;
-        $('.lastviewer[data-view="' + n + '"]').html(Store["txt" + n]);
-        $('.lastprebtn:nth("' + (n - 1) + '")').html(Store["fej" + n]);
-        var w = []
-        var txt = "";
-        for (var j = 1; j <= n; j++)
-            w.push(Store["v" + j])
-        w = strList_Ov(_.flatten(w));
-        if (document.getElementById("xymonom").checked)
-            txt += formazxyMonom(w);
-        else
-            txt += formazxyV(w, true, true);
-        $('#lastprev').html(txt);
+        var L = Store.L * 1;
+        const stxt = Store["txt" + n];
+        if (stxt.length > 0) {
+            $('.lastviewer[data-view=' + n + ']').html(stxt).removeClass('dumb');
+            $('.storeback[data-back=' + n + ']').removeClass('dumb');
+        };
+        if (L == 2) {
+            $('.lastviewer[data-view="2"]').html(Store.txt2);
+            $('.lastviewer[data-view="1"]').html(Store.txt1);
+            $('.lastprebtn:nth(1)').html(Store.fej2 || "&#x2205;");
+            $('.lastprebtn:nth(0)').html(Store.fej1 || "&#x2205;");
+            var w = strList_Ov(_.flatten([Store.v1, Store.v2.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])]));
+            if (document.getElementById("xymonom").checked)
+                txt += formazxyMonom(w);
+            else
+                txt += formazxyV(w, true, true);
+            txt = txt.replace("undefined", "")
+            $('#lastprev').html(txt);
+        } else {
+            $('.lastprebtn:nth(' + (n - 1) + ')').html(Store["fej" + n] || "&#x2205;");
+            var w = []
+            var txt = "";
+            for (var j = 1; j <= n; j++)
+                w.push(Store["v" + j])
+            w = strList_Ov(_.flatten(w));
+            if (document.getElementById("xymonom").checked)
+                txt += formazxyMonom(w);
+            else
+                txt += formazxyV(w, true, true);
+            $('#lastprev').html(txt);
+        }
     };
 };
 
 function shiftStore() {
+    //$(btn).removeClass('dumb');
     const L = Store.L * 1;
     const n = Store.n * 1;
     if (L == 2) {
-        Store.v1 = [...Store.v2];
+        /* Store.v1 = [...Store.v2];
         Store.v2 = [...curr_v];
         Store.txt1 = Store.txt2;
         Store.txt2 = curr_txt;
         Store.fej1 = Store.fej2;
-        Store.fej2 = storefej;
+        Store.fej2 = storefej; */
+        Store.v2 = [...Store.v1];
+        Store.v1 = [...curr_v];
+        Store.txt2 = Store.txt1;
+        Store.txt1 = curr_txt;
+        Store.fej2 = Store.fej1;
+        Store.fej1 = storefej;
         if (n < L)
             Store.n++;
         updOpenedStore();
@@ -96,11 +150,12 @@ function shiftStore() {
             $('#shouth').removeClass('villbgdark');
         }, 300);
     } else if (n == L) {
-        alert("A tár megtelt: " + n + " = " + L);
+        return;
     } else if (n < L) {
         Store["v" + (n + 1)] = [...curr_v];
         Store["txt" + (n + 1)] = curr_txt;
         Store["fej" + (n + 1)] = storefej;
+        Store["state" + (n + 1)] = makeParamObj();
         Store.n++;
         updOpenedStore();
         $('#shouth').addClass('villbgdark');
@@ -110,7 +165,7 @@ function shiftStore() {
 };
 
 function inStore(v, txt) {
-    if (Store.L == 2 || sign_store == 1) {
+    if (Store.L == 2 || store_sign == 1) {
         curr_v = [...v];
         curr_txt = txt;
     } else {
@@ -120,11 +175,14 @@ function inStore(v, txt) {
 };
 
 function storeSign(e) {
-    sign_store = -1 * sign_store;
-    if (sign_store == -1)
+    store_sign = -1 * store_sign;
+    if (store_sign == -1) {
         e.innerHTML = "-";
-    else
-        e.innerHTML = "+"
+        e.style.backgroundColor = "#f2b9b9";
+    } else {
+        e.innerHTML = "+";
+        e.style.backgroundColor = "";
+    }
 };
 
 function tglStore(e) {
@@ -138,13 +196,18 @@ function tglStore(e) {
         return;
     } else if (L == 2) {
         $(e).html("&#x2297;");
-        txt += "A legutóbbi <span class='lastprebtn' onclick='tglLast(" + 2 + ");'>" + (Store.fej2 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='2'>" + Store.txt2 + "</div>és az azt megelöző<span class='lastprebtn' onclick='tglLast(" + 1 + ");'>" + (Store.fej1 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='1'>" + Store.txt1 + "</div><br/> két kimenet különbsége: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>Különbség</span><div id='lastprev' class='shown'>";
-        var w = strList_Ov(_.flatten([Store.v2, Store.v1.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])]));
+        txt += "A legutóbbi <span class='lastprebtn' onclick='tglLast(" + 1 + ");'>" + (Store.fej1 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='1'>" + Store.txt1 + "</div>és az azt megelöző<span class='lastprebtn' onclick='tglLast(" + 2 + ");'>" + (Store.fej2 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='2'>" + Store.txt2 + "</div><br/> két kimenet különbsége: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>Különbség</span><div id='lastprev' class='shown'>";
+        var w = strList_Ov(_.flatten([Store.v1, Store.v2.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])]));
     } else if (L > 2) {
         $(e).html("&#x2297;");
         txt += "A legutóbbi " + L + " kimenet<br/>"
-        for (var i = 1; i <= L; i++)
-            txt += "Kimenet (" + (i - 1 - L) + ") :<span class='lastprebtn' onclick='tglLast(" + i + ");'>" + (Store["fej" + i] || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='" + i + "'>" + Store["txt" + i] + "</div>";
+        for (var i = 1; i <= L; i++) {
+            var stxt = Store["txt" + i];
+            var dumb = "dumb";
+            if (stxt.length > 0)
+                dumb = "";
+            txt += "<span class='storeback " + dumb + "' onclick='storeBack(this);' data-back=" + i + ">Kimenet (" + (i - 1 - L) + ")</span><span class='lastprebtn' onclick='tglLast(" + i + ");'>" + (Store["fej" + i] || "&#x2205;") + "</span><br/><div class='lastviewer shown " + dumb + "' data-view='" + i + "'>" + stxt + "</div>";
+        };
         txt += "összege: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>&sum;</span> <div id='lastprev' class='shown'>"
         var w = []
         for (var j = 1; j <= L; j++)
@@ -162,7 +225,7 @@ function tglStore(e) {
 
 function closeStore() {
     $("#shoutstore").html("").css("display", "none");
-    $("#storebtn").html("&#x23FF;");
+    $("#storetglbtn").html("&#x23FF;");
 };
 
 function tglLast(i) {
@@ -200,14 +263,16 @@ var dw2conj = false;
 var dw2inv = false;
 var dw2fakt = false;
 var dw2fakte = false;
-var w2coeff = 1;
+var w2coeff = Fraction(1);
 
 var outconj = false;
 var outinv = false;
 var doutfok = 0;
 var doutconj = false;
 var doutinv = false;
-var woutcoeff = 1;
+var doutfakt = false;
+var doutfakte = false;
+var woutcoeff = Fraction(1);
 
 function tglshouth(elem) {
     $('#shouth').toggleClass('hide');
@@ -225,6 +290,15 @@ function par2tort(id) {
     } else
         cw = Fraction(cw * 1);
     return cw;
+};
+
+function setMuvelet(indx) {
+    $('#shH #cshstselecttarto .jtoggler-btn-wrapper').removeClass('is-active');
+    $('#shH #cshstselecttarto .jtoggler-control').removeClass('is-fully-active');
+    if (indx * 1 != 1)
+        $('#shH #cshstselecttarto .jtoggler-control').addClass('is-fully-active');
+    $('#shH #cshstselecttarto .jtoggler-btn-wrapper:nth(' + indx + ')').addClass('is-active');
+    //$('#shH #cshstselecttarto .jtoggler-btn-wrapper:nth(' + indx + ') input.jtoggler-radio').trigger('change');
 };
 
 function setParams() {
@@ -254,7 +328,162 @@ function setParams() {
     doutfakt = document.getElementById("doutfakt").checked;
     doutfakte = document.getElementById("doutfakte").checked;
     woutcoeff = par2tort("woutcoeff");
-}
+};
+
+function makeParamObj() {
+    var pobj = {};
+    pobj.w1conj = w1conj;
+    pobj.w1inv = w1inv;
+    pobj.dw1fok = dw1fok;
+    pobj.dw1conj = dw1conj;
+    pobj.dw1inv = dw1inv;
+    pobj.dw1fakt = dw1fakt;
+    pobj.dw1fakte = dw1fakte;
+    pobj.w1coeff = w1coeff;
+
+    pobj.w2conj = w2conj;
+    pobj.w2inv = w2inv;
+    pobj.dw2fok = dw2fok;
+    pobj.dw2conj = dw2conj;
+    pobj.dw2inv = dw2inv;
+    pobj.dw2fakt = dw2fakt;
+    pobj.dw2fakte = dw2fakte;
+    pobj.w2coeff = w2coeff;
+
+    pobj.outconj = outconj;
+    pobj.outinv = outinv;
+    pobj.doutfok = doutfok;
+    pobj.doutconj = doutconj;
+    pobj.doutinv = doutinv;
+    pobj.doutfakt = doutfakt;
+    pobj.doutfakte = doutfakte;
+    pobj.woutcoeff = woutcoeff;
+
+    pobj.w1 = document.getElementById("w1").value;
+    pobj.w2 = document.getElementById("w2").value;
+    pobj.muvelet = $('#shH #cshstselecttarto .jtoggler-btn-wrapper.is-active').index();
+    pobj.sign = store_sign;
+
+    return pobj;
+};
+
+function stateBack(obj) {
+    document.getElementById("w1conj").checked = obj.w1conj;
+    document.getElementById("w1inv").checked = obj.w1inv;
+    document.getElementById("dw1fok").value = obj.dw1fok;
+    document.getElementById("dw1conj").checked = obj.dw1conj;
+    document.getElementById("dw1inv").checked = obj.dw1inv;
+    document.getElementById("dw1fakt").checked = obj.dw1fakt;
+    document.getElementById("dw1fakte").checked = obj.dw1fakte;
+    document.getElementById("w1coeff").value = obj.w1coeff.toFraction();
+
+    document.getElementById("w2conj").checked = obj.w2conj;
+    document.getElementById("w2inv").checked = obj.w2inv;
+    document.getElementById("dw2fok").value = obj.dw2fok;
+    document.getElementById("dw2conj").checked = obj.dw2conj;
+    document.getElementById("dw2inv").checked = obj.dw2inv;
+    document.getElementById("dw2fakt").checked = obj.dw2fakt;
+    document.getElementById("dw2fakte").checked = obj.dw2fakte;
+    document.getElementById("w2coeff").value = obj.w2coeff.toFraction();
+
+    document.getElementById("outconj").checked = obj.outconj;
+    document.getElementById("outinv").checked = obj.outinv;
+    document.getElementById("doutfok").value = obj.doutfok;
+    document.getElementById("doutconj").checked = obj.doutconj;
+    document.getElementById("doutinv").checked = obj.doutinv;
+    document.getElementById("doutfakt").checked = obj.doutfakt;
+    document.getElementById("doutfakte").checked = obj.doutfakte;
+    document.getElementById("woutcoeff").value = obj.woutcoeff.toFraction();
+
+    document.getElementById("w1").value = obj.w1;
+    document.getElementById("w2").value = obj.w2;
+    setMuvelet(obj.muvelet);
+    store_sign = obj.sign;
+    const signbtn = document.getElementById("setsign");
+    if (store_sign == -1)
+        signbtn.innerHTML = "-";
+    else
+        signbtn.innerHTML = "+";
+    $("#w1coeff").trigger('change');
+};
+
+function cancelBack() {
+    const cel = $('#shoutstore .storeback.active');
+    const cel1 = $('#shoutstore .storeback.atiro');
+    if (cel1.length > 0) {
+        cel1.html(cel1.html().replace("Átírás?", "Kimenet"));
+        cel1.removeClass('atiro');
+        $('.derivtok:nth(3)').removeClass('dumb');
+    };
+    if (cel.length > 0) {
+        cel.html(cel.html().replace("Visszaállás?", "Kimenet"));
+        cel.removeClass('active');
+        $('.derivtok:nth(3)').removeClass('dumb');
+    };
+};
+
+function storeBack(elem) {
+    const $e = $(elem);
+    const act = $e.hasClass('active');
+    const atiro = $e.hasClass('atiro');
+    const panel = $('.derivtok:nth(3)');
+    if (!act && !atiro) {
+        const indx = "state" + $e.attr('data-back');
+        let st = Store[indx];
+        if (st != undefined && st.hasOwnProperty("w1")) {
+            $('#shoutstore .storeback.active').removeClass('active');
+            $('#shoutstore .storeback.atiro').removeClass('atiro');
+            $e.addClass('active');
+            elem.innerHTML = elem.innerHTML.replace("Kimenet", "Visszaállás?");
+            panel.addClass('dumb');
+        } else {
+            alert("A kiválasztott cimkéhez még nem tartozik bejegyzés a tárolóban.");
+        };
+    } else if (atiro) {
+        $('#shoutstore .storeback.active').removeClass('active');
+        $('#shoutstore .storeback.atiro').removeClass('atiro');
+        const indx = $e.attr('data-back');
+
+        shtuffleW();
+        Store["v" + indx] = [...curr_v];
+        Store["txt" + indx] = curr_txt;
+        Store["fej" + indx] = storefej;
+        Store["state" + indx] = makeParamObj();
+
+        $('.lastviewer[data-view=' + indx + ']').html(Store["txt" + indx]);
+        $('.lastprebtn:nth(' + (indx - 1) + ')').html(Store["fej" + indx] || "&#x2205;");
+        var w = []
+        var txt = "";
+        for (var j = 1; j <= Store.n; j++)
+            w.push(Store["v" + j])
+        w = strList_Ov(_.flatten(w));
+        if (document.getElementById("xymonom").checked)
+            txt += formazxyMonom(w);
+        else
+            txt += formazxyV(w, true, true);
+        $('#lastprev').html(txt);
+
+        const kij = $('.lastviewer[data-view=' + indx + ']');
+        kij.addClass('villbgdark');
+        setTimeout(() => { kij.removeClass('villbgdark'); }, 500);
+        elem.innerHTML = elem.innerHTML.replace("Átírás?", "Kimenet");
+        $e.removeClass('atiro');
+        panel.removeClass('dumb');
+    } else {
+        const indx = "state" + $e.attr('data-back');
+        let st = Store[indx];
+        if (st != undefined && st.hasOwnProperty("w1")) {
+            stateBack(st);
+            $e.removeClass('active').addClass('atiro');
+            elem.innerHTML = elem.innerHTML.replace("Visszaállás?", "Átírás?");
+            panel.addClass('dumb');
+        } else {
+            alert("A kiválasztott cimkéhez még nem tartozik bejegyzés a tárolóban.");
+            $e.removeClass('active');
+            elem.innerHTML = elem.innerHTML.replace("Visszaállás?", "Kimenet");
+        };
+    };
+};
 
 function w1forma() {
     var coeff = w1coeff
@@ -458,7 +687,7 @@ function w1w2forma(allas) {
                 txt = eloj + txt;
             else
                 txt = "<span class='outbig'>" + eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;</span>" + txt;
-        };
+        }
         if (doutfakte) {
             coeff = Fraction(Math.pow(-1, doutfok) / factorial(doutfok)).mul(coeff);
             var eloj = ""
@@ -468,15 +697,27 @@ function w1w2forma(allas) {
                 txt = eloj + txt;
             else
                 txt = "<span class='outbig'>" + eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;</span>" + txt;
-        };
+        }
+    } else {
+        var eloj = ""
+        if (coeff.s == -1)
+            eloj = "−"
+        if (coeff == 1 || coeff == -1)
+            txt = eloj + txt;
+        else
+            txt = "<span class='outbig'>" + eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;</span>" + txt;
     };
+
+    var signinfo = '';
+    if (store_sign == -1)
+        signinfo = '<span class="storeneg">&#x25ac;</span>';
+    txt = signinfo + txt;
     storefej = "<span class='storefej'>" + txt + "</span>";
     txt = "<div id='wform'>" + txt + "</div>";
     if (!nofejlec)
         wfejlec = txt;
     else
         wfejlec = "";
-    //return txt;
 };
 
 function in1_ci(str) {
@@ -711,6 +952,8 @@ function shuffleW() {
 
     sh = formazShuffle(sh, true, false)[1];
     sh = derivOutHn(sh, doutfok);
+    const coeff = w1coeff.mul(w2coeff);
+    sh = sh.map(y => [Fraction(y[0]).mul(coeff), y[1]]);
     if (document.getElementById("xymonom").checked)
         txt = formazxyMonom(sh);
     else
@@ -875,11 +1118,12 @@ function concW() {
     if (doutfakte)
         fakt *= Math.pow(-1, n) * factorial(n);
     var dst = derivHn(st, doutfok, doutconj, doutinv);
-    dst = dst.map(y => [Fraction(y[0]).mul(woutcoeff).div(Fraction(fakt)), y[1]]);
+    const coeff = woutcoeff.mul(w1coeff).mul(w2coeff).div(Fraction(fakt))
+    dst = dst.map(y => [Fraction(y[0]).mul(coeff), y[1]]);
     if (document.getElementById("xymonom").checked)
         var txt = formazxyMonom(dst);
     else
-        var txt = formazxyV(dst, true, false);
+        var txt = formazxyV(dst, true, true);
     if (txt.startsWith(" + "))
         txt = txt.slice(3);
 
@@ -1021,8 +1265,10 @@ function stuffleW() {
     var txt = "";
     const st = xystuffleW(s1, s2, true);
     var txt1 = "";
-    const dst = derivOutHn(st[0], doutfok);
-    txt1 = formazxyV(vLout_ci(dst), true, false);
+    var dst = derivOutHn(st[0], doutfok);
+    const coeff = w1coeff.mul(w2coeff);
+    dst = dst.map(y => [Fraction(y[0]).mul(coeff), y[1]]);
+    txt1 = formazxyV(vLout_ci(dst), true, true);
     if (txt1.startsWith(" + "))
         txt1 = txt1.slice(3);
     txt1 = xy2XY(txt1)
@@ -1034,7 +1280,7 @@ function stuffleW() {
     document.getElementById("shouth").innerHTML = wfejlec + txt;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
-    inStore(dst, txt1)
+    inStore(dst, txt1);
 };
 
 function stValasz1(det) {
@@ -1366,7 +1612,11 @@ function shtuffleW() {
     $('.derivtok').addClass('dumb');
 
     if (regvalt == "alap") {
-        $('.derivtok').removeClass('dumb');
+        $('.derivtok:not(:nth(3))').removeClass('dumb');
+        const cel = $('#shoutstore .storeback.active');
+        const cel1 = $('#shoutstore .storeback.atiro');
+        if (cel.length + cel1.length == 0)
+            $('.derivtok:nth(3)').removeClass('dumb');
         if (dw1fok + dw2fok != 0) {
             if (allas == 2)
                 derivGen(polyStuffle);
