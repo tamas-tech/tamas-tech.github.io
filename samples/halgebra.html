@@ -148,7 +148,7 @@
             <div class="nobr" style="margin-left:2px;margin:7px 3px;padding:3px;">
                 <span id="shH" class="tooltips">
                     <span style="font-size:22px;margin-left:5px;">&#x29E2;</span>
-                <span id="cshstselecttarto" class="dumb">
+                <span id="cshstselecttarto" class="">
                 <input id="cshstselect" type="checkbox" style="vertical-align:baseline" class="jtoggler" data-jtmulti-state>
                 </span>
                 <span style="margin-right:7px;font-size:120%;">&lowast;</sub></span>
@@ -179,14 +179,15 @@
             <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
                 <button class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
                 <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="idClear('#shouth');" title="Clear output">Clear</button>
-                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="tglshouth(this);" title="Toggle output">Close</button>
+                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="tglshouth(this);" title="Toggle output">Hide</button>
                 <button style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
             </div>
             <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
                 <span class="derivtok">
-                    <button style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;" class="sbtglbtn" onclick="storeSign(this)">+</button>
-                    <button style="vertical-align: middle;margin-left:10px;padding:0 3px ;width: fit-content;font-size:17px;" class="sbtglbtn" onclick="shiftStore();">Add</button>
-                    <button id="storebtn" style="vertical-align: middle;margin-left:10px;padding:0 3px;font-size:22px;" class="sbtglbtn" onclick=" tglStore(this);">&#x23FF;</button>
+                    <button id="setsign" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" class="sbtglbtn" onclick="storeSign(this);shtuffleW();">+</button>
+                    <button id="storeinbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn" onclick="shiftStore();">&#x2356;</button>
+                    <button id="storebackbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn dumb" onclick="undoStore();">&#x234F;</button>
+                    <button id="storetglbtn" style="vertical-align:middle;margin-left:10px;padding:0 3px;font-size:22px;" class="sbtglbtn" onclick=" tglStore(this);">&#x23FF;</button>
                     <label for="nstore"><b style="padding: 2px 8px;vertical-align: middle;">&sum;</b></label>
                     <input type="number" onchange="trimStore();" id="nstore" value="2" min="2" step="1" name="nstore" style="width:45px;vertical-align:middle;">
                     <span id="lstore"></span>
@@ -298,6 +299,7 @@
     </script>
 </body>
 </html>
+
 
 
 
