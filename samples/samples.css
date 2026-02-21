@@ -2676,11 +2676,11 @@ div#k1 span.kepletvalaszto.selected {
 #shoutstore {
     display: none;
     margin-top: 10px;
-    outline: 2px solid #bf9635;
+    outline: 4px solid #bf9635;
     outline-offset: -2px;
     background-color: #fffed3;
     margin: 5px;
-    padding: 7px;
+    padding: 7px 7px 10px 7px;
     min-height: 20px;
     line-height: 1.5;
     font-size: 105%;
@@ -2725,6 +2725,13 @@ div#k1 span.kepletvalaszto.selected {
     background-color: #ffffb9;
     padding: 3px;
     font-size: 120%;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.lastviewer.dumb {
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 #lastprev {
@@ -2742,7 +2749,7 @@ div#k1 span.kepletvalaszto.selected {
 }
 
 #shoutstore .lastprebtn {
-    border: 1px solid #8c8c8c;
+    border: 1px solid #d0d0d0;
     padding: 4px;
     margin: 10px 10px -6px 10px;
     vertical-align: middle;
@@ -2891,8 +2898,39 @@ div#k1 span.kepletvalaszto.selected {
     padding: 2px;
 }
 
+.storeback {
+    background-color: #fff38e;
+    padding: 3px 5px;
+    border: 1px solid #d0d0d0;
+    cursor: pointer;
+    border-radius: 4px;
+    display: inline-block;
+    opacity: 1;
+    pointer-events: all;
+}
 
+.storeback.dumb {
+    opacity: 0.3;
+    pointer-events: none;
+}
 
+.storeback.active {
+    background-color: #ffc58e;
+    border: 1px solid #df9f63;
+}
+
+.storeback.atiro {
+    background-color: #ffc58e;
+    border: 2px solid #ff1111;
+}
+
+.storeneg {
+    background-color: #f2b9b9;
+    border-radius: 50%;
+    margin-right: 10px;
+    color: red;
+    padding: 0 0.3em;
+}
 
 
 
