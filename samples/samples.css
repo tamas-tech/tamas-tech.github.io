@@ -399,6 +399,11 @@ button.showpre1:hover {
     vertical-align: middle;
 }
 
+.sbtglbtn.dumb {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
 #setsForma {
     background-color: #e6e6e6;
     color: #636363;
@@ -2931,6 +2936,7 @@ div#k1 span.kepletvalaszto.selected {
     color: red;
     padding: 0 0.3em;
 }
+
 
 
 
