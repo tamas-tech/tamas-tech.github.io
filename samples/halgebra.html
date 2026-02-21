@@ -295,6 +295,10 @@
             if (!$(e.target).hasClass("hreg hl"))
                 $("#floatkijelzo").css("display", "none");
         });
+         $('#shoutstore').on('click', function(e) {
+            if (!$(e.target).hasClass("storeback active") && !$(e.target).hasClass("storeback atiro"))
+                cancelBack();
+        });
         updLstore();
          setTimeout(() => {
             $('#w1coeff').trigger('change');
@@ -302,6 +306,7 @@
     </script>
 </body>
 </html>
+
 
 
 
