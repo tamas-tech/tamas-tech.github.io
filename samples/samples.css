@@ -2789,7 +2789,7 @@ div#k1 span.kepletvalaszto.selected {
     padding: 3px 5px;
     width: fit-content;
     font-size: 16px;
-    background-color: #0700e1c4;
+    background-color:#9f1811c4;
     color: white;
     border-radius: 5px;
 }
@@ -2942,6 +2942,28 @@ div#k1 span.kepletvalaszto.selected {
     color: red;
     padding: 0 0.3em;
 }
+
+.hide-col0 {
+    overflow: hidden !important;
+    max-width: 3.3em !important;
+    text-overflow: ellipsis !important;
+    /* white-space: nowrap !important; */
+}
+
+#regtbl tr:first-child td {
+    min-width: 3.3em;
+}
+
+#regtbl tr td input.forderiv {
+    display: inline-block;
+    pointer-events: all;
+}
+
+#regtbl tr td input.forderiv.dumb {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
 
 
 
