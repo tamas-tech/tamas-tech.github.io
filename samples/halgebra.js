@@ -1,3 +1,23 @@
+function HideColumnIndex0() {
+    var $el = $(this);
+    var $cell = $el.closest('th,td');
+    var $table = $cell.closest('table');
+
+    if ($el.hasClass('hide-col0')) {
+        var colIndex = $cell[0].cellIndex + 1;
+        $table.find("tbody tr, thead tr")
+            .children(":nth-child(" + colIndex + ")")
+            .removeClass('hide-col0')
+    } else {
+        var colIndex = $cell[0].cellIndex + 1;
+        $table.find("tbody tr, thead tr")
+            .children(":nth-child(" + colIndex + ")")
+            .addClass('hide-col0');
+    };
+};
+
+$(document).on('click', '.hide-column0', HideColumnIndex0);
+
 var curr_v = [];
 var curr_txt = "0";
 var store_sign = 1;
@@ -185,6 +205,20 @@ function storeSign(e) {
     }
 };
 
+function storeTglAll(elem) {
+    const state = elem.innerText == 'Hide All';
+    if (state) {
+        $('#shoutstore .lastviewer.shown').removeClass('shown');
+        $('#lastprev.shown').removeClass('shown');
+        elem.innerText = "Show All";
+    } else {
+        console.log("kinyit");
+        $('#shoutstore .lastviewer').addClass('shown');
+        $('#lastprev.shown').addClass('shown');
+        elem.innerText = "Hide All";
+    };
+};
+
 function tglStore(e) {
     const sto = $("#shoutstore");
     const L = Store.L;
@@ -200,13 +234,13 @@ function tglStore(e) {
         var w = strList_Ov(_.flatten([Store.v1, Store.v2.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])]));
     } else if (L > 2) {
         $(e).html("&#x2297;");
-        txt += "A legutóbbi " + L + " kimenet<br/>"
+        txt += "A legutóbbi " + L + " kimenet<button  class='showpre1' style='margin-left:20px;margin-bottom:10px;background-color:#ae8404;' onclick='storeTglAll(this);'>Hide All</button><br/>"
         for (var i = 1; i <= L; i++) {
             var stxt = Store["txt" + i];
             var dumb = "dumb";
             if (stxt.length > 0)
                 dumb = "";
-            txt += "<span class='storeback " + dumb + "' onclick='storeBack(this);' data-back=" + i + ">Kimenet (" + (i - 1 - L) + ")</span><span class='lastprebtn' onclick='tglLast(" + i + ");'>" + (Store["fej" + i] || "&#x2205;") + "</span><br/><div class='lastviewer shown " + dumb + "' data-view='" + i + "'>" + stxt + "</div>";
+            txt += "<span class='storeback'" + dumb + "' onclick='storeBack(this);' data-back=" + i + ">Kimenet (" + (i - 1 - L) + ")</span><span class='lastprebtn' onclick='tglLast(" + i + ");'>" + (Store["fej" + i] || "&#x2205;") + "</span><br/><div class='lastviewer shown " + dumb + "' data-view='" + i + "'>" + stxt + "</div>";
         };
         txt += "összege: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>&sum;</span> <div id='lastprev' class='shown'>"
         var w = []
@@ -413,12 +447,12 @@ function cancelBack() {
     if (cel1.length > 0) {
         cel1.html(cel1.html().replace("Átírás?", "Kimenet"));
         cel1.removeClass('atiro');
-        $('.derivtok:nth(3)').removeClass('dumb');
+        $('.derivtok').removeClass('dumb');
     };
     if (cel.length > 0) {
         cel.html(cel.html().replace("Visszaállás?", "Kimenet"));
         cel.removeClass('active');
-        $('.derivtok:nth(3)').removeClass('dumb');
+        $('.derivtok').removeClass('dumb');
     };
 };
 
@@ -426,7 +460,7 @@ function storeBack(elem) {
     const $e = $(elem);
     const act = $e.hasClass('active');
     const atiro = $e.hasClass('atiro');
-    const panel = $('.derivtok:nth(3)');
+    const panel = $('.derivtok');
     if (!act && !atiro) {
         const indx = "state" + $e.attr('data-back');
         let st = Store[indx];
@@ -849,7 +883,6 @@ function regHighlight(elem) {
         $("#shoutstore span.hreg.hl").removeClass('hl');
         const dat = elem.getAttribute('data-reg');
         $("#shoutstore span.hreg[data-reg='" + dat + "']").addClass('hl');
-
         var fltxt = ""
         $(".lastviewer .hreg.hl").each(function() {
             var str = this.innerHTML;
@@ -1622,13 +1655,14 @@ function shtuffleW() {
     if (actel.length > 0)
         regvalt = actel.attr('data-reg');
     $('.derivtok').addClass('dumb');
+    $('#regtbl tr td input.forderiv').addClass('dumb');
 
     if (regvalt == "alap") {
-        $('.derivtok:not(:nth(3))').removeClass('dumb');
+        $('#regtbl tr td input.forderiv').removeClass('dumb');
         const cel = $('#shoutstore .storeback.active');
         const cel1 = $('#shoutstore .storeback.atiro');
         if (cel.length + cel1.length == 0)
-            $('.derivtok:nth(3)').removeClass('dumb');
+            $('.derivtok').removeClass('dumb');
         if (dw1fok + dw2fok != 0) {
             if (allas == 2)
                 derivGen(polyStuffle);
