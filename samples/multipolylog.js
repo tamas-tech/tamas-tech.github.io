@@ -25,7 +25,7 @@ const COLORS = [
     "#807ece", "#8db27c", "#be66a2", "#9ed3c6", "#00644b", "#005064", "#77979f", "#77e079", "#9c73ab", "#1f79a7"
 ];
 
-const TITLES = ["Multiple Zeta Values online tools", "Regularization", "Explicit formula", "Generalized zeta", "Poset of Compositions", "Differentiation"];
+const TITLES = ["Multiple Zeta Values online tools", "Regularization", "Explicit formula", "Generalized zeta", "Poset of Compositions", "Differentiation",  "Algebra of h"];
 
 var lepessor = [];
 var mode = "Li";
@@ -10617,3 +10617,4 @@ function genoutput1() {
     else
         genoutput1s();
 };
+
