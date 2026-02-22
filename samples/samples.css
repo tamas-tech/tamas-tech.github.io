@@ -2935,6 +2935,11 @@ div#k1 span.kepletvalaszto.selected {
     border: 2px solid #ff1111;
 }
 
+.storeback.tempdumb {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
 .storeneg {
     background-color: #f2b9b9;
     border-radius: 50%;
@@ -2963,6 +2968,7 @@ div#k1 span.kepletvalaszto.selected {
     opacity: 0.3;
     pointer-events: none;
 }
+
 
 
 
