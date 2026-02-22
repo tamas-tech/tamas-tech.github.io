@@ -24,6 +24,7 @@ var store_sign = 1;
 var wfejlec = "";
 var nofejlec = false;
 var storefej = "";
+var tempstoreback = "";
 
 var Store = {};
 Store.v1 = [];
@@ -63,6 +64,7 @@ function trimStore() {
             delete Store["v" + i];
             delete Store["txt" + i];
             delete Store["fej" + i];
+            delete Store["state" + i];
         }
         Store.n = n;
     } else if (n > N) {
@@ -70,6 +72,7 @@ function trimStore() {
             Store["v" + i] = [];
             Store["txt" + i] = "";
             Store["fej" + i] = "";
+            Store["state" + i] = {};
         }
     }
     Store.L = n;
@@ -162,6 +165,8 @@ function shiftStore() {
         Store.txt1 = curr_txt;
         Store.fej2 = Store.fej1;
         Store.fej1 = storefej;
+        Store.state2 = {...Store.state1 };
+        Store.state1 = makeParamObj();
         if (n < L)
             Store.n++;
         updOpenedStore();
@@ -226,21 +231,29 @@ function tglStore(e) {
     var txt = "";
     if (opened == "block") {
         sto.html("").css("display", "none");
-        $(e).html("&#x23FF;");
+        $(e).html("&#128448;");
         return;
     } else if (L == 2) {
-        $(e).html("&#x2297;");
-        txt += "A legutóbbi <span class='lastprebtn' onclick='tglLast(" + 1 + ");'>" + (Store.fej1 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='1'>" + Store.txt1 + "</div>és az azt megelöző<span class='lastprebtn' onclick='tglLast(" + 2 + ");'>" + (Store.fej2 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='2'>" + Store.txt2 + "</div><br/> két kimenet különbsége: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>Különbség</span><div id='lastprev' class='shown'>";
+        $(e).html("&#128449;");
+        var stxt1 = Store.txt1;
+        var stxt2 = Store.txt2;
+        var dumb1 = " dumb";
+        var dumb2 = " dumb";
+        if (stxt1.length > 0)
+            dumb1 = "";
+        if (stxt2.length > 0)
+            dumb2 = "";
+        txt += "<span class='storeback" + dumb1 + "' onclick='storeBack(this);' data-back='1'>A legutóbbi (1)</span> <span class='lastprebtn' onclick='tglLast(" + 1 + ");'>" + (Store.fej1 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='1'>" + (stxt1 || "()") + "</div><span class='storeback" + dumb2 + "' onclick='storeBack(this);' data-back='2'>és az azt megelöző (2)</span><span class='lastprebtn' onclick='tglLast(" + 2 + ");'>" + (Store.fej2 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='2'>" + (stxt2 || "()") + "</div><br/> két kimenet különbsége: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>(1) - (2)</span><div id='lastprev' class='shown'>";
         var w = strList_Ov(_.flatten([Store.v1, Store.v2.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])]));
     } else if (L > 2) {
-        $(e).html("&#x2297;");
+        $(e).html("&#128449;");
         txt += "A legutóbbi " + L + " kimenet<button  class='showpre1' style='margin-left:20px;margin-bottom:10px;background-color:#ae8404;' onclick='storeTglAll(this);'>Hide All</button><br/>"
         for (var i = 1; i <= L; i++) {
             var stxt = Store["txt" + i];
             var dumb = " dumb";
             if (stxt.length > 0)
                 dumb = "";
-            txt += "<span class='storeback" + dumb + "' onclick='storeBack(this);' data-back=" + i + ">Kimenet (" + (i - 1 - L) + ")</span><span class='lastprebtn' onclick='tglLast(" + i + ");'>" + (Store["fej" + i] || "&#x2205;") + "</span><br/><div class='lastviewer shown " + dumb + "' data-view='" + i + "'>" + stxt + "</div>";
+            txt += "<span class='storeback" + dumb + "' onclick='storeBack(this);' data-back=" + i + ">Kimenet (" + (i - 1 - L) + ")</span><span class='lastprebtn' onclick='tglLast(" + i + ");'>" + (Store["fej" + i] || "&#x2205;") + "</span><br/><div class='lastviewer shown " + dumb + "' data-view='" + i + "'>" + (stxt || "()") + "</div>";
         };
         txt += "összege: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>&sum;</span> <div id='lastprev' class='shown'>"
         var w = []
@@ -259,7 +272,7 @@ function tglStore(e) {
 
 function closeStore() {
     $("#shoutstore").html("").css("display", "none");
-    $("#storetglbtn").html("&#x23FF;");
+    $("#storetglbtn").html("&#128448;");
 };
 
 function tglLast(i) {
@@ -445,15 +458,16 @@ function cancelBack() {
     const cel = $('#shoutstore .storeback.active');
     const cel1 = $('#shoutstore .storeback.atiro');
     if (cel1.length > 0) {
-        cel1.html(cel1.html().replace("Átírás?", "Kimenet"));
+        cel1.html(cel1.html().replace("Átírás?", tempstoreback));
         cel1.removeClass('atiro');
         $('.derivtok').removeClass('dumb');
     };
     if (cel.length > 0) {
-        cel.html(cel.html().replace("Visszaállás?", "Kimenet"));
+        cel.html(cel.html().replace("Visszaállás?", tempstoreback));
         cel.removeClass('active');
         $('.derivtok').removeClass('dumb');
     };
+    $('#shoutstore .storeback.tempdumb').removeClass('tempdumb');
 };
 
 function storeBack(elem) {
@@ -466,12 +480,15 @@ function storeBack(elem) {
         let st = Store[indx];
         if (st != undefined && st.hasOwnProperty("w1")) {
             $('#shoutstore .storeback.active').removeClass('active');
-            $('#shoutstore .storeback.atiro').removeClass('atiro');
+            $('#shoutstore .storeback.atiro').removeClass('atiro');;
+
             $e.addClass('active');
-            elem.innerHTML = elem.innerHTML.replace("Kimenet", "Visszaállás?");
+            tempstoreback = elem.innerHTML;
+            elem.innerHTML = "Visszaállás?";
             panel.addClass('dumb');
+            $('#shoutstore .storeback:not(.active)').addClass('tempdumb');
         } else {
-            alert("A kiválasztott cimkéhez még nem tartozik bejegyzés a tárolóban.");
+            $e.addClass('dumb');
         };
     } else if (atiro) {
         $('#shoutstore .storeback.active').removeClass('active');
@@ -500,7 +517,8 @@ function storeBack(elem) {
         const kij = $('.lastviewer[data-view=' + indx + ']');
         kij.addClass('villbgdark');
         setTimeout(() => { kij.removeClass('villbgdark'); }, 500);
-        elem.innerHTML = elem.innerHTML.replace("Átírás?", "Kimenet");
+        elem.innerHTML = elem.innerHTML.replace("Átírás?", tempstoreback);
+        $('#shoutstore .storeback.tempdumb').removeClass('tempdumb');
         $e.removeClass('atiro');
         panel.removeClass('dumb');
     } else {
@@ -511,6 +529,7 @@ function storeBack(elem) {
             $e.removeClass('active').addClass('atiro');
             elem.innerHTML = elem.innerHTML.replace("Visszaállás?", "Átírás?");
             panel.addClass('dumb');
+            $('#shoutstore .storeback:not(.atiro)').addClass('tempdumb');
         } else {
             alert("A kiválasztott cimkéhez még nem tartozik bejegyzés a tárolóban.");
             $e.removeClass('active');
