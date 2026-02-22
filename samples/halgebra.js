@@ -237,10 +237,10 @@ function tglStore(e) {
         txt += "A legutóbbi " + L + " kimenet<button  class='showpre1' style='margin-left:20px;margin-bottom:10px;background-color:#ae8404;' onclick='storeTglAll(this);'>Hide All</button><br/>"
         for (var i = 1; i <= L; i++) {
             var stxt = Store["txt" + i];
-            var dumb = "dumb";
+            var dumb = " dumb";
             if (stxt.length > 0)
                 dumb = "";
-            txt += "<span class='storeback'" + dumb + "' onclick='storeBack(this);' data-back=" + i + ">Kimenet (" + (i - 1 - L) + ")</span><span class='lastprebtn' onclick='tglLast(" + i + ");'>" + (Store["fej" + i] || "&#x2205;") + "</span><br/><div class='lastviewer shown " + dumb + "' data-view='" + i + "'>" + stxt + "</div>";
+            txt += "<span class='storeback" + dumb + "' onclick='storeBack(this);' data-back=" + i + ">Kimenet (" + (i - 1 - L) + ")</span><span class='lastprebtn' onclick='tglLast(" + i + ");'>" + (Store["fej" + i] || "&#x2205;") + "</span><br/><div class='lastviewer shown " + dumb + "' data-view='" + i + "'>" + stxt + "</div>";
         };
         txt += "összege: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>&sum;</span> <div id='lastprev' class='shown'>"
         var w = []
