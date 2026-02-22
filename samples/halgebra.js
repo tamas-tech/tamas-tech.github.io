@@ -1331,8 +1331,8 @@ function stuffleW() {
     var txt1 = "";
     var dst = derivOutHn(st[0], doutfok);
     const coeff = w1coeff.mul(w2coeff);
-    dst = dst.map(y => [Fraction(y[0]).mul(coeff), y[1]]);
-    txt1 = formazxyV(vLout_ci(dst), true, true);
+    dst = vLout_ci(dst).map(y => [Fraction(y[0]).mul(coeff), y[1]]);
+    txt1 = formazxyV(dst, true, true);
     if (txt1.startsWith(" + "))
         txt1 = txt1.slice(3);
     txt1 = xy2XY(txt1)
