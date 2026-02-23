@@ -2899,8 +2899,8 @@ div#k1 span.kepletvalaszto.selected {
     background-color: #e1e1e1;
     font-size: 90%;
     padding: 10px 5px;
-    border-bottom: 1px solid black;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #bdbdbd;
+    margin: -5px -5px 10px -5px;
     line-height: 0;
 }
 
@@ -2968,6 +2968,7 @@ div#k1 span.kepletvalaszto.selected {
     opacity: 0.3;
     pointer-events: none;
 }
+
 
 
 
