@@ -246,19 +246,7 @@
                 <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="tglshouth(this);" title="Toggle output">Hide</button>
                 <button style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
             </div>
-            <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
-                <span class="derivtok">
-                    <button id="setsign" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" class="sbtglbtn" onclick="storeSign(this);shtuffleW();">+</button>
-                    <button id="storeinbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn" onclick="shiftStore();">&#x2356;</button>
-                    <button id="storebackbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn dumb" onclick="undoStore();">&#x234F;</button>
-                    <button id="storetglbtn" style="vertical-align:middle;margin-left:10px;padding:0 2px;font-size:20px;" class="sbtglbtn" onclick=" tglStore(this);">&#128448;</button>
-                    <label for="nstore"><b style="padding: 2px 8px;vertical-align: middle;">&sum;</b></label>
-                    <input type="number" onchange="trimStore();" id="nstore" value="2" min="2" step="1" name="nstore" style="width:45px;vertical-align:middle;">
-                    <span id="lstore"></span>
-                <button id="resetstore" class="sbtglbtn" onclick="resetStore()">Reset</button>
-                </span>
-            </div>
-            <div id="hsetting" class="nobr" style="display:none;margin-left:5px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+            <div id="hsetting" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
                 <div id="dersetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                     <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;">
                         <label for="xymonom">xxxyy&rightarrow;x<sup>3</sup>y<sup>2</sup></label>
@@ -269,32 +257,18 @@
                     </div>
                     <div style="padding: 5px 0;">
                         <label for="setdX">x&rightarrow;</label>
-                        <input list="dersx" type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');shtuffleW();" id="setdX" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
+                        <input type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');shtuffleW();" id="setdX" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:15px;font-size: 100%;padding-bottom: 5px;">
+                        <label for="selectdiff">&part;,d,...</label>
+                        <select id="selectdiff" onchange="derivSelect(this);" style="height:30px;border:none;border-bottom: 1px solid #7c7c7c;font-size:90%;background-color:inherit;text-align:center;margin-right:10px;">
+                            <option value="none">Egyik sem</option>
+                            <option value="mienk">&part;</option>
+                            <option value="d">d (KIZ)</sub></option>
+                        </select>
                     </div>
                     <div style="padding: 5px 0;">
                         <label for="setdY">y&rightarrow;</label>
-                        <input list="dersy" type="text" name="setdY" value="xy" onchange="setxyDer(this,'y');shtuffleW();" id="setdY" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
+                        <input type="text" name="setdY" value="xy" onchange="setxyDer(this,'y');shtuffleW();" id="setdY" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
                     </div>
-                    <datalist id="dersx">
-                        <option value="xx">derx1</option>
-                        <option value="&downarrow;">derx2</option>
-                        <option value="&#x25CF;">derx3</option>
-                        <option value="&#x25CB;">derx4</option>
-                        <option value="&#x25FB;">derx5</option>
-                        <option value="&#x25FC;">derx6</option>
-                        <option value="&#x25B7;">derx7</option>
-                        <option value="&#x25BC;">derx8</option>
-                      </datalist>
-                    <datalist id="dersy">
-                        <option value="xy">dery1</option>
-                        <option value="&downarrow;">dery2</option>
-                        <option value="&#x25CF;">dery3</option>
-                        <option value="&#x25CB;">dery4</option>
-                        <option value="&#x25FB;">dery5</option>
-                        <option value="&#x25FC;">dery6</option>
-                        <option value="&#x25B7;">dery7</option>
-                        <option value="&#x25BC;">dery8</option>
-                      </datalist>
                 </div>
                 <div id="xXsetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                     <label for="xX">xy | XY</label>
@@ -326,6 +300,18 @@
                     <label for="setoutputfontH">&#128474;</label>
                     <input id="outfont-sliderH" oninput="setOutputFontH(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfontH" />
                 </div>
+            </div>
+            <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
+                <span class="derivtok">
+                    <button id="setsign" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" class="sbtglbtn" onclick="storeSign(this);shtuffleW();">+</button>
+                    <button id="storeinbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn" onclick="shiftStore();">&#x2356;</button>
+                    <button id="storebackbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn dumb" onclick="undoStore();">&#x234F;</button>
+                    <button id="storetglbtn" style="vertical-align:middle;margin-left:10px;padding:0 2px;font-size:20px;" class="sbtglbtn" onclick=" tglStore(this);">&#128448;</button>
+                    <label for="nstore"><b style="padding: 2px 8px;vertical-align: middle;">&sum;</b></label>
+                    <input type="number" onchange="trimStore();" id="nstore" value="2" min="2" step="1" name="nstore" style="width:45px;vertical-align:middle;">
+                    <span id="lstore"></span>
+                <button id="resetstore" class="sbtglbtn" onclick="resetStore()">Reset</button>
+                </span>
             </div>
         </div>
         <div id="shoutcontainer" style="max-width:100vw">
@@ -371,6 +357,7 @@
 </body>
 
 </html>
+
 
 
 
