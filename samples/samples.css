@@ -2901,7 +2901,7 @@ div#k1 span.kepletvalaszto.selected {
     padding: 10px 5px;
     border-bottom: 1px solid #bdbdbd;
     margin: -5px -5px 10px -5px;
-    line-height: 0;
+    line-height: 1;
 }
 
 .storefej {
@@ -2968,6 +2968,7 @@ div#k1 span.kepletvalaszto.selected {
     opacity: 0.3;
     pointer-events: none;
 }
+
 
 
 
