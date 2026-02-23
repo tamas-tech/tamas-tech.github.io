@@ -327,6 +327,19 @@ function setWform(b) {
     shtuffleW();
 };
 
+function derivSelect(e) {
+    var diff = e.value;
+    if (diff == "none") {
+        return;
+    } else if (diff == "mienk") {
+        $("#setdX").val("xx").trigger("change");
+        $("#setdY").val("yx").trigger("change");
+    } else if (diff == "d") {
+        $("#setdX").val("xy").trigger("change");
+        $("#setdY").val("yy").trigger("change");
+    };
+};
+
 function tglshouth(elem) {
     $('#shouth').toggleClass('hide');
     if (elem.innerText == "Show")
@@ -412,8 +425,8 @@ function makeParamObj() {
     pobj.doutfakte = doutfakte;
     pobj.woutcoeff = woutcoeff;
 
-    pobj.w1 = document.getElementById("w1").value;
-    pobj.w2 = document.getElementById("w2").value;
+    pobj.w1 = w2xysor(document.getElementById("w1").value);
+    pobj.w2 = w2xysor(document.getElementById("w2").value);
     pobj.muvelet = $('#shH #cshstselecttarto .jtoggler-btn-wrapper.is-active').index();
     pobj.sign = store_sign;
 
@@ -549,7 +562,7 @@ function w1forma() {
     var coeff = w1coeff
     var txt = "w<sub>1</sub>";
     if (wertekkel)
-        txt = xy2XYmonom(document.getElementById("w1").value.trim()) || "( )";
+        txt = xy2XYmonom(w2xysor(document.getElementById("w1").value).trim()) || "( )";
     if (w1conj && w1inv)
         if (wertekkel)
             txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>&dagger;</sup>";
@@ -629,7 +642,7 @@ function w2forma() {
     var coeff = w2coeff
     var txt = "w<sub>2</sub>";
     if (wertekkel)
-        txt = document.getElementById("w2").value.trim() || "( )";
+        txt = w2xysor(document.getElementById("w2").value).trim() || "( )";
     if (w2conj && w2inv)
         if (wertekkel)
             txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>&dagger;</sup>";
@@ -796,6 +809,12 @@ function w1w2forma(allas) {
         wfejlec = txt;
     else
         wfejlec = "";
+};
+
+function w2xysor(str) {
+    if (/\d/.test(str))
+        str = str.replace(/(\d)/g, "^$1").match(/(x(\^\d)?)|(y(\^\d)?)|\+(\d)?|\-(\d)?|^[\+\-]?(\d)?/g).map(y => pow2xysor(y)).join('');
+    return str
 };
 
 function in1_ci(str) {
@@ -1032,8 +1051,8 @@ function shufflexy(str1, str2) {
 };
 
 function shuffleW() {
-    const w1 = in1_ci(document.getElementById("w1").value).split("");
-    const w2 = in2_ci(document.getElementById("w2").value).split("");
+    const w1 = in1_ci(w2xysor(document.getElementById("w1").value)).split("");
+    const w2 = in2_ci(w2xysor(document.getElementById("w2").value)).split("");
     var sh = shuffleProduct(w1, w2);
     var txt = "";
 
@@ -1055,8 +1074,8 @@ function shuffleW() {
 };
 
 function derivGen(muv) {
-    const w1 = in1_ci(document.getElementById("w1").value);
-    const w2 = in2_ci(document.getElementById("w2").value);
+    const w1 = in1_ci(w2xysor(document.getElementById("w1").value));
+    const w2 = in2_ci(w2xysor(document.getElementById("w2").value));
     const n1 = dw1fok;
     const n2 = dw2fok;
     var cw1 = w1coeff;
@@ -1197,8 +1216,8 @@ function xystuffle(s1, s2) {
 };
 
 function concW() {
-    const s1 = in1_ci(document.getElementById("w1").value).toLowerCase();
-    const s2 = in2_ci(document.getElementById("w2").value).toLowerCase();
+    const s1 = in1_ci(w2xysor(document.getElementById("w1").value)).toLowerCase();
+    const s2 = in2_ci(w2xysor(document.getElementById("w2").value)).toLowerCase();
     const st = out_ci(s1 + s2);
     const n = doutfok;
     var fakt = 1;
@@ -1349,8 +1368,8 @@ function xystuffleW(s1, s2, jelent) {
 };
 
 function stuffleW() {
-    const s1 = in1_ci(document.getElementById("w1").value).toLowerCase();
-    const s2 = in2_ci(document.getElementById("w2").value).toLowerCase();
+    const s1 = in1_ci(w2xysor(document.getElementById("w1").value)).toLowerCase();
+    const s2 = in2_ci(w2xysor(document.getElementById("w2").value)).toLowerCase();
     var txt = "";
     const st = xystuffleW(s1, s2, true);
     var txt1 = "";
@@ -1421,8 +1440,8 @@ function make2ms(vl) {
 
 function shHom10() {
     $('#xXsetting').addClass('dumb');
-    const s1 = document.getElementById("w1").value.toLowerCase();
-    const s2 = document.getElementById("w2").value.toLowerCase();
+    const s1 = w2xysor(document.getElementById("w1").value).toLowerCase();
+    const s2 = w2xysor(document.getElementById("w2").value).toLowerCase();
     const ms1 = xy2XYmonom(s1);
     const ms2 = xy2XYmonom(s2);
 
@@ -1478,8 +1497,8 @@ function shHom10() {
 
 function stHom0() {
     $('#xXsetting').addClass('dumb');
-    const s1 = document.getElementById("w1").value.toLowerCase();
-    const s2 = document.getElementById("w2").value.toLowerCase();
+    const s1 = w2xysor(document.getElementById("w1").value).toLowerCase();
+    const s2 = w2xysor(document.getElementById("w2").value).toLowerCase();
     const ms1 = xy2XYmonom(s1);
     const ms2 = xy2XYmonom(s2);
 
@@ -1558,7 +1577,7 @@ function reghar(str) {
 };
 
 function formazreghar(id) {
-    var str = document.getElementById(id).value.toLowerCase();
+    var str = w2xysor(document.getElementById(id).value).toLowerCase();
     var txt = formazxyV(reghar(str));
     document.getElementById("shouth").innerHTML = txt;
 };
@@ -1592,7 +1611,7 @@ function invreghar(str) {
 };
 
 function formazinvreghar(id) {
-    var str = document.getElementById(id).value.toLowerCase();
+    var str = w2xysor(document.getElementById(id).value).toLowerCase();
     var txt = formazxyV(invreghar(str));
     document.getElementById("shouth").innerHTML = txt;
 };
@@ -1637,7 +1656,7 @@ function reghar10(str) {
 };
 
 function formazreghar10(id) {
-    var str = document.getElementById(id).value.toLowerCase();
+    var str = w2xysor(document.getElementById(id).value).toLowerCase();
     var txt = formazxyV(reghar10(str));
     document.getElementById("shouth").innerHTML = txt;
 };
@@ -1682,7 +1701,7 @@ function invreghar10(str) {
 };
 
 function formazinvreghar10(id) {
-    var str = document.getElementById(id).value.toLowerCase();
+    var str = w2xysor(document.getElementById(id).value).toLowerCase();
     var txt = formazxyV(invreghar10(str));
     document.getElementById("shouth").innerHTML = txt;
 };
@@ -1924,8 +1943,7 @@ function formazS0reg(id, str0) {
     if (id == "")
         var str = str0;
     else
-        str = document.getElementById(id).value.toLowerCase();
-    //const str = document.getElementById(id).value.toLowerCase();
+        str = w2xysor(document.getElementById(id).value).toLowerCase();
     const n = countEndingX(str);
     const a = str.slice(0, str.length - n);
     var ob = [
@@ -2105,7 +2123,7 @@ function masodiktgl(j) {
 };
 
 function formazinvS0reg(id) {
-    const str = document.getElementById(id).value.toLowerCase();
+    const str = w2xysor(document.getElementById(id).value).toLowerCase();
     const n = countEndingX(str);
     const a = str.slice(0, str.length - n);
     var txt = "<span style='display:block;background-color:#bfbfbf4f;margin-bottom:10px;padding-left:5px;'>(A')-ben: u = " + xy2XYmonom(a) + "&in;&nbsp;&#x1d525;y;&nbsp;n = " + n;
@@ -2460,7 +2478,7 @@ function formazS10reg(id, str0) {
     if (id == "")
         var str = str0;
     else
-        str = document.getElementById(id).value.toLowerCase();
+        str = w2xysor(document.getElementById(id).value).toLowerCase();
     const reg = reg10With(str);
     const fej = reg[0];
     const tbl = reg[1];
@@ -2575,7 +2593,7 @@ function formazinvS10reg(id, str0) {
     if (id == "")
         var str = str0;
     else
-        str = document.getElementById(id).value.toLowerCase();
+        str = w2xysor(document.getElementById(id).value).toLowerCase();
     const reg = invreg10With(str);
     const fej = reg[0];
     const tbl = reg[1];
@@ -2757,7 +2775,8 @@ function makeyCoeff(str) {
 function setxyDer(elem, ch) {
     var nstr = elem.value;
     if (nstr.indexOf("^") > -1)
-        nstr = nstr.match(/^[\+\-]?\d?|(x(\^\d)?)|(y(\^\d)?)|\+(\d)?|\-(\d)?/g).map(y => pow2xysor(y)).join('');
+        nstr = nstr.match(/(x(\^\d)?)|(y(\^\d)?)|\+(\d)?|\-(\d)?|^[\+\-]?(\d)?/g).map(y => pow2xysor(y)).join('');
+    //nstr = nstr.match(/^[\+\-]?\d?|(x(\^\d)?)|(y(\^\d)?)|\+(\d)?|\-(\d)?/g).map(y => pow2xysor(y)).join(''); régi változat
     var strv = nstr.match(/(\++|\-+)*(\d)*[xy]*/g);
     if (strv[0] != "")
         strv = strv.filter(y => y != "");
@@ -2775,6 +2794,7 @@ function setxyDer(elem, ch) {
             makeyCoeff(str);
         console.log(derivOfY, dycoeff)
     }
+    document.getElementById("selectdiff").value = "none";
 };
 
 function setxyFakt(e) {
