@@ -102,8 +102,15 @@
         <div class="stickblock">
             <table id="regtbl" class="table-hideable" style="outline: 1px solid #4f4f4f;">
                 <tr>
-                    <td class="hide-column0">
-                        w<span style="position:relative;left: 80px;opacity: 0.5;">(Csukható/nyitható)</span>
+                    <td class="hide-column0" style="text-align: left;">
+                        <span style="padding:0 20px 0 10px;font-weight:800">w</span>
+                        <label style="margin-right:3px;">w<sub>i</sub></label>
+                        <label class="switch" style="bottom:2px;">
+                            <input  type="checkbox" onchange="setWform(this.checked);">
+                            <span class="slider round"></span>
+                        </label>
+                        <label style="margin-left:3px;margin-right:10px;">xyyxy</label>
+                        <span style="opacity: 0.5;">(Csukható/nyitható)</span>
                     </td>
                     <td>
                         ( )*
@@ -364,6 +371,7 @@
 </body>
 
 </html>
+
 
 
 
