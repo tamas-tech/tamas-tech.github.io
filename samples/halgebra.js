@@ -25,6 +25,7 @@ var wfejlec = "";
 var nofejlec = false;
 var storefej = "";
 var tempstoreback = "";
+var wertekkel = false;
 
 var Store = {};
 Store.v1 = [];
@@ -321,6 +322,11 @@ var doutfakt = false;
 var doutfakte = false;
 var woutcoeff = Fraction(1);
 
+function setWform(b) {
+    wertekkel = b;
+    shtuffleW();
+};
+
 function tglshouth(elem) {
     $('#shouth').toggleClass('hide');
     if (elem.innerText == "Show")
@@ -461,13 +467,14 @@ function cancelBack() {
         cel1.html(cel1.html().replace("Átírás?", tempstoreback));
         cel1.removeClass('atiro');
         $('.derivtok').removeClass('dumb');
+        $('#shoutstore .storeback.tempdumb').removeClass('tempdumb');
     };
     if (cel.length > 0) {
-        cel.html(cel.html().replace("Visszaállás?", tempstoreback));
-        cel.removeClass('active');
-        $('.derivtok').removeClass('dumb');
+        //cel.html(cel.html().replace("Visszaállás?", tempstoreback));
+        cel.html(cel.html().replace("Visszaállás?", "Átírás?"));
+        cel.removeClass('active').addClass("atiro");
+        //$('.derivtok').removeClass('dumb');
     };
-    $('#shoutstore .storeback.tempdumb').removeClass('tempdumb');
 };
 
 function storeBack(elem) {
@@ -541,16 +548,23 @@ function storeBack(elem) {
 function w1forma() {
     var coeff = w1coeff
     var txt = "w<sub>1</sub>";
-    //var txt = document.getElementById("w1").value;
+    if (wertekkel)
+        txt = xy2XYmonom(document.getElementById("w1").value.trim()) || "( )";
     if (w1conj && w1inv)
-        txt += "<sup>&dagger;</sup>";
-    //txt = "(" + txt + ")<sup>&dagger;</sup>";
+        if (wertekkel)
+            txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>&dagger;</sup>";
+        else
+            txt += "<sup>&dagger;</sup>";
     else if (w1inv)
-        txt += "<sup class='invsign'>−</sup>";
-    //txt = "(" + txt + ")<sup class='invsign'>−</sup>";
+        if (wertekkel)
+            txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>−</sup>";
+        else
+            txt += "<sup class='invsign'>−</sup>";
     else if (w1conj)
-        txt += "*";
-    //txt = "(" + txt + ")*";
+        if (wertekkel)
+            txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;*";
+        else
+            txt += "*";
     if (dw1fok > 0) {
         if (dw1fok == 1) {
             if (dw1inv && dw1conj)
@@ -614,12 +628,23 @@ function w1forma() {
 function w2forma() {
     var coeff = w2coeff
     var txt = "w<sub>2</sub>";
+    if (wertekkel)
+        txt = document.getElementById("w2").value.trim() || "( )";
     if (w2conj && w2inv)
-        txt += "<sup>&dagger;</sup>";
+        if (wertekkel)
+            txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>&dagger;</sup>";
+        else
+            txt += "<sup>&dagger;</sup>";
     else if (w2inv)
-        txt += "<sup class='invsign'>−</sup>";
+        if (wertekkel)
+            txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>−</sup>";
+        else
+            txt += "<sup class='invsign'>−</sup>";
     else if (w2conj)
-        txt += "*";
+        if (wertekkel)
+            txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;*";
+        else
+            txt += "*";
     if (dw2fok > 0) {
         if (dw2fok == 1) {
             if (dw2inv && dw2conj)
