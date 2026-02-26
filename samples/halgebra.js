@@ -286,7 +286,18 @@ function tglLastPrev() {
 
 function setFejlec(elem) {
     nofejlec = elem.checked;
-}
+};
+
+function setOutputFontH(v) {
+    var elem = document.getElementById("shouth");
+    var elem1 = document.getElementById("shoutstore");
+    elem.style.fontSize = v + 'px';
+    elem1.style.fontSize = v + 'px';
+};
+
+function settblw(v) {
+    $('#regtbl tr:first-child td').css('min-width', v + 'em');
+};
 
 // algebra of Q(x,y) = h
 
@@ -333,7 +344,7 @@ function derivSelect(e) {
         return;
     } else if (diff == "mienk") {
         $("#setdX").val("xx").trigger("change");
-        $("#setdY").val("yx").trigger("change");
+        $("#setdY").val("xy").trigger("change");
     } else if (diff == "d") {
         $("#setdX").val("xy").trigger("change");
         $("#setdY").val("yy").trigger("change");
@@ -471,6 +482,152 @@ function stateBack(obj) {
     else
         signbtn.innerHTML = "+";
     $("#w1coeff").trigger('change');
+};
+
+function resetLap() {
+    document.getElementById("w1conj").checked = false;
+    document.getElementById("w1inv").checked = false;
+    document.getElementById("dw1fok").value = '0';
+    document.getElementById("dw1conj").checked = false;
+    document.getElementById("dw1inv").checked = false;
+    document.getElementById("dw1fakt").checked = false;
+    document.getElementById("dw1fakte").checked = false;
+    document.getElementById("w1coeff").value = "1";
+
+    document.getElementById("w2conj").checked = false;
+    document.getElementById("w2inv").checked = false;
+    document.getElementById("dw2fok").value = '0';
+    document.getElementById("dw2conj").checked = false;
+    document.getElementById("dw2inv").checked = false;
+    document.getElementById("dw2fakt").checked = false;
+    document.getElementById("dw2fakte").checked = false;
+    document.getElementById("w2coeff").value = "1";
+
+    document.getElementById("outconj").checked = false;
+    document.getElementById("outinv").checked = false;
+    document.getElementById("doutfok").value = '0';
+    document.getElementById("doutconj").checked = false;
+    document.getElementById("doutinv").checked = false;
+    document.getElementById("doutfakt").checked = false;
+    document.getElementById("doutfakte").checked = false;
+    document.getElementById("woutcoeff").value = "1";
+
+    document.getElementById("w1").value = "xy";
+    document.getElementById("w2").value = "yy";
+    //setMuvelet(1);
+
+    $('#regvtarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(1)').click()
+    $('#cshstselecttarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(1)').click();
+
+    if (regw == "w2")
+        document.getElementById("calcw1").click();
+
+
+    store_sign = 1;
+    const signbtn = document.getElementById("setsign");
+    signbtn.innerHTML = "+";
+    document.getElementById("setwform").checked = false;
+
+    document.getElementById("nstore").value = '2';
+    trimStore();
+    resetStore();
+    closeStore();
+
+    const tblf = $('table#regtbl.table-hideable tbody tr td.hide-column0')
+    if (tblf.hasClass("hide-col0"))
+        tblf.trigger("click")
+
+    const hbtn = document.getElementById("hideoutbtn");
+    if (hbtn.innerText == "Show")
+        tglshouth(hbtn);
+    if (document.getElementById("hsetting").style.display = "block")
+        sbTgl('hsetting')
+
+    const setm = document.getElementById("xymonom");
+    setm.checked = false;
+    set2monom(setm);
+    document.getElementById("xX").checked = false;
+    document.getElementById("setfejlec").checked = false;
+    $("#setdX").val("xx").trigger("change");
+    $("#setdY").val("xy").trigger("change");
+    document.getElementById("setX").value = '';
+    document.getElementById("setY").value = '';
+
+    $("#w1coeff").trigger('change');
+};
+
+
+function setAll() {
+    document.getElementById("w1conj").checked = true;
+    document.getElementById("w1inv").checked = true;
+    document.getElementById("dw1fok").value = '1';
+    document.getElementById("dw1conj").checked = true;
+    document.getElementById("dw1inv").checked = true;
+    document.getElementById("dw1fakt").checked = true;
+    document.getElementById("dw1fakte").checked = false;
+    document.getElementById("w1coeff").value = "11";
+
+    document.getElementById("w2conj").checked = true;
+    document.getElementById("w2inv").checked = true;
+    document.getElementById("dw2fok").value = '2';
+    document.getElementById("dw2conj").checked = true;
+    document.getElementById("dw2inv").checked = true;
+    document.getElementById("dw2fakt").checked = false;
+    document.getElementById("dw2fakte").checked = true;
+    document.getElementById("w2coeff").value = "1/3";
+
+    document.getElementById("outconj").checked = true;
+    document.getElementById("outinv").checked = true;
+    document.getElementById("doutfok").value = '1';
+    document.getElementById("doutconj").checked = true;
+    document.getElementById("doutinv").checked = true;
+    document.getElementById("doutfakt").checked = false;
+    document.getElementById("doutfakte").checked = true;
+    document.getElementById("woutcoeff").value = "-2/7";
+
+    document.getElementById("w1").value = "x";
+    document.getElementById("w2").value = "-yx";
+    //setMuvelet(1);
+
+    $('#regvtarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(0)').click()
+    $('#cshstselecttarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(2)').click();
+
+    if (regw == "w1")
+        document.getElementById("calcw2").click();
+
+    store_sign = -1;
+    const signbtn = document.getElementById("setsign");
+    signbtn.innerHTML = "-";
+    document.getElementById("setwform").checked = true;
+
+    document.getElementById("nstore").value = '4';
+    trimStore();
+
+    const tblf = $('table#regtbl.table-hideable tbody tr td.hide-column0')
+    if (!tblf.hasClass("hide-col0"))
+        tblf.trigger("click")
+
+    const hbtn = document.getElementById("hideoutbtn");
+    if (hbtn.innerText == "Hide")
+        tglshouth(hbtn);
+    if (document.getElementById("hsetting").style.display = "none")
+        sbTgl('hsetting')
+
+    const setm = document.getElementById("xymonom");
+    setm.checked = true;
+    set2monom(setm);
+    document.getElementById("xX").checked = true;
+    document.getElementById("setfejlec").checked = true;
+    $("#setdX").val("xyx").trigger("change");
+    $("#setdY").val("-y").trigger("change");
+    document.getElementById("setX").value = 'a';
+    document.getElementById("setY").value = 'b';
+
+    const storbabtn = document.getElementById("storeinbtn");
+    $("#w1coeff").trigger('change');
+    for (var i = 0; i < 4; i++)
+        storbabtn.click();
+    tglStore(document.getElementById("nstore"));
 };
 
 function cancelBack() {
@@ -642,7 +799,7 @@ function w2forma() {
     var coeff = w2coeff
     var txt = "w<sub>2</sub>";
     if (wertekkel)
-        txt = w2xysor(document.getElementById("w2").value).trim() || "( )";
+        txt = xy2XYmonom(w2xysor(document.getElementById("w2").value).trim()) || "( )";
     if (w2conj && w2inv)
         if (wertekkel)
             txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>&dagger;</sup>";
@@ -1818,20 +1975,25 @@ $(document).on('jt:toggled:multi', function(event, target) {
                 $('#reghar0_keplet.keplet').addClass('active');
             } else if (regvallas == 2) {
                 $('#reghar10_keplet.keplet').addClass('active');
-            } else if (regvallas == 1)
+            } else if (regvallas == 1) {
                 $('#alap_keplet.keplet').addClass('active');
+                $('#alap_keplet.keplet #muveletjel').html("&lowast;");
+            }
         } else if (allas == 0) {
             $(".shstlabel").html("&#x29E2;");
             if (regvallas == 0) {
                 $('#reg0_keplet.keplet').addClass('active');
             } else if (regvallas == 2) {
                 $('#reg10_keplet.keplet').addClass('active');
-            } else if (regvallas == 1)
+            } else if (regvallas == 1) {
                 $('#alap_keplet.keplet').addClass('active');
+                $('#alap_keplet.keplet #muveletjel').html("&#x29E2;");
+            }
         } else {
             regvelem.parentElement.parentElement.classList.add("dumb");
             $('.keplet').removeClass('active');
             $('#alap_keplet.keplet').addClass('active');
+            $('#alap_keplet.keplet #muveletjel').html("&bullet;");
             shtuffleW();
         }
     } else if (id == "regvtarto") {
@@ -1844,7 +2006,7 @@ $(document).on('jt:toggled:multi', function(event, target) {
                 $('#reg0_keplet.keplet').addClass('active');
             else if (shallas == 2)
                 $('#reghar0_keplet.keplet').addClass('active');
-            else if (shalla == 1)
+            else if (shallas == 1)
                 $('#alap_keplet.keplet').addClass('active');
             closeStore();
         } else if (allas == 2) {
@@ -1852,7 +2014,7 @@ $(document).on('jt:toggled:multi', function(event, target) {
                 $('#reg10_keplet.keplet').addClass('active');
             else if (shallas == 2)
                 $('#reghar10_keplet.keplet').addClass('active');
-            else if (shalla == 1)
+            else if (shallas == 1)
                 $('#alap_keplet.keplet').addClass('active');
             closeStore();
         }
@@ -2633,8 +2795,24 @@ function html2string() {
     const elem = document.getElementById("shouth");
     var txt = elem.innerHTML;
     txt = txt.replace(/[·|]/g, "");
-    txt = txt.replace(/\<sup\>(\d+)\<\/sup\>/g, "^$1");
-    elem.innerHTML = txt
+    txt = txt.replace(/\<sup\>(\d+)\<\/sup\>/g, "^$1 ");
+    elem.innerHTML = txt;
+};
+
+function store2string() {
+    $('.lastviewer').each(function() {
+        var txt = this.innerHTML;
+        txt = txt.replace(/[·|]/g, "");
+        txt = txt.replace(/\<sup\>(\d+)\<\/sup\>/g, "^$1 ");
+        this.innerHTML = txt;
+    });
+    const elem = document.getElementById("lastprev");
+    if (elem) {
+        var txt = elem.innerHTML;
+        txt = txt.replace(/[·|]/g, "");
+        txt = txt.replace(/\<sup\>(\d+)\<\/sup\>/g, "^$1 ");
+        elem.innerHTML = txt;
+    };
 };
 
 function pow2xysor(str) {
@@ -2794,6 +2972,9 @@ function setxyDer(elem, ch) {
             makeyCoeff(str);
         console.log(derivOfY, dycoeff)
     }
+};
+
+function resetSelectDiff() {
     document.getElementById("selectdiff").value = "none";
 };
 
