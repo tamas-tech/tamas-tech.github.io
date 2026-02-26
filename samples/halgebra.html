@@ -18,6 +18,8 @@
     <script src="multipolylog.js"></script>
     <script src="compposet.js"></script>
     <script src="halgebra.js"></script>
+    <script src="../tools/sugorun.js"></script>
+    <script id="fnpsugos" type="text/javascript" src="../sugo/dummy.js"></script>
     <script>
         MathJax.Hub.Config({
             tex2jax: {
@@ -53,10 +55,10 @@
 
 <body>
     <div id="floatkijelzo"></div>
-    <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
+   <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shoutcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet active" id="alap_keplet">w<sub>1</sub>w<sub>2</sub></p>
+            <p class="keplet active" id="alap_keplet">w<sub>1</sub><span id="muveletjel" style="font-size:22px;margin:0 3px;vertical-align: middle;">&bullet;</span>w<sub>2</sub></p>
             <p class="keplet" id="reg0_keplet"><span class="kepletvalaszto" data-reg="Ash0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n</sup>) =
                 <span class="block" style="transform: scale(1.5);">∑</span>
                 <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub> (-1)<sup>j</sup> ux<sup>n - j</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>x<sup>j</sup>&nbsp;&in;&nbsp;&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
@@ -106,7 +108,7 @@
                         <span style="padding:0 20px 0 10px;font-weight:800">w</span>
                         <label style="margin-right:3px;">w<sub>i</sub></label>
                         <label class="switch" style="bottom:2px;">
-                            <input  type="checkbox" onchange="setWform(this.checked);">
+                            <input id="setwform" type="checkbox" onchange="setWform(this.checked);">
                             <span class="slider round"></span>
                         </label>
                         <label style="margin-left:3px;margin-right:10px;">xyyxy</label>
@@ -140,7 +142,7 @@
                 <tr>
                     <td>
                         <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw1"  class="kiur" onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
-                        <input class="inpvec" oninput="idClear('#shouth');if(!regvalt.startsWith('hom')) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w1" value="yxyxxy">
+                        <input class="inpvec" oninput="idClear('#shouth');if(!regvalt.startsWith('hom')) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w1" value="xy">
                     </td>
                     <td>
                         <input type="checkbox" oninput="setParams();shtuffleW();" id="w1conj" style="height:20px;width:20px;vertical-align:middle;">
@@ -170,7 +172,7 @@
                 <tr>
                     <td>
                         <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw2"   onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
-                        <input class="inpvec" oninput="idClear('#shouth');if(!regvalt.startsWith('hom')) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w2" value="yx">
+                        <input class="inpvec" oninput="idClear('#shouth');if(!regvalt.startsWith('hom')) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w2" value="yy">
                     </td>
                     <td>
                         <input type="checkbox" oninput="setParams();shtuffleW();" id="w2conj" style="height:20px;width:20px;vertical-align:middle;">
@@ -236,18 +238,39 @@
                         <input class="forderiv" type="text" id="woutcoeff" value="1" style="width:65px;text-align:center;" onchange="setParams();shtuffleW();">
                     </td>
                 </tr>
-
             </table>
         </div>
         <div class="stickblock">
-            <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
+            <div class="nobr" style="margin-left:2px;padding:3px;">
                 <button class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
                 <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="idClear('#shouth');" title="Clear output">Clear</button>
-                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="tglshouth(this);" title="Toggle output">Hide</button>
-                <button style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting');">⚙</button>
+                <button class="showpre1" id="hideoutbtn" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="tglshouth(this);" title="Toggle output">Hide</button>
+                <button id="tglopts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting'); document.getElementById('hsetting').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });">⚙</button>
+                <span class="derivtok"><button id="tglanims" style="width:fit-content;font-family: Tahoma;font-size:15px;line-height:1;vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('helpanims'); document.getElementById('helpanims').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });">Animations</button></span>
+                <button id="resetpage" style="width:fit-content;font-family: Tahoma;font-size:15px;line-height:1;vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="resetLap();">Reset Page</button>
+            </div>
+            <div id="helpanims" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;color: #484848;border-radius: 3px;font-size: 16px;">
+                <h3 style="margin:5px 0px;">SÚGÓ FÁJLOK</h3>
+                <ul style="padding-left:15px;">
+                    <li>
+                        <a class="sugolink" onclick="sbTgl('helpanims');setTimeout(() =>{fnploadjs('../sugo/x_nw.js')},500)"><b>1. </b>x_nw</a> (21 lépés)
+                        <div style='border:1px solid;margin:5px 0;padding:3px;width:fit-content;'>x<sup>n</sup>w =
+                            <span class="block" style="transform: scale(1.5);">∑</span>
+                            <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub> (-1)<sup>k</sup>&nbsp;&part;_(w)<span style="margin:0 3px;font-size:130%;">&#x29E2;</span> x<sup>n - k</sup>&nbsp;&nbsp;&nbsp;(w&in;&nbsp;&#x1d525;)</div>
+                        n = 3; w = yxyy paraméterekkel<br/> <i>Ajánlott beállítások</i>: Mobilon a kijelző szélességét szabályozó zöld csuszkát <br/> ajánlott legalább a felére állítani. <button style="color:inherit;background-color: #d9d3d3;border: 1px solid #b5b5b5;"
+                            onclick="$('input.kijelzoset').val(4).trigger('input');">Beállítom</button>
+                    </li>
+                </ul>
+
             </div>
             <div id="hsetting" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
                 <div id="dersetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                    <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding: 5px 0 10px 0;">
+                        <label for="setoutputfontH">&#128474;</label>
+                        <input id="outfont-sliderH" oninput="setOutputFontH(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-right:15px;" title="set output's fontsize" name="setoutputfontH" />
+                        <label style="display:inline-block;vertical-align:middle;font-size:120%;" for="settblw">&#x27DB;</label>
+                        <input id="settblw" oninput="settblw(this.value);" type="range" min="2" max="5" value="3.3" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="settblw" />
+                    </div>
                     <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;">
                         <label for="xymonom">xxxyy&rightarrow;x<sup>3</sup>y<sup>2</sup></label>
                         <input type="checkbox" name="xymonom" oninput="set2monom(this);shtuffleW();" id="xymonom" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
@@ -257,7 +280,7 @@
                     </div>
                     <div style="padding: 5px 0;">
                         <label for="setdX">x&rightarrow;</label>
-                        <input type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');shtuffleW();" id="setdX" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:15px;font-size: 100%;padding-bottom: 5px;">
+                        <input type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');shtuffleW();" onfocus="resetSelectDiff();" id="setdX" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:15px;font-size: 100%;padding-bottom: 5px;">
                         <label for="selectdiff">&part;,d,...</label>
                         <select id="selectdiff" onchange="derivSelect(this);" style="height:30px;border:none;border-bottom: 1px solid #7c7c7c;font-size:90%;background-color:inherit;text-align:center;margin-right:10px;">
                             <option value="none">Egyik sem</option>
@@ -267,7 +290,7 @@
                     </div>
                     <div style="padding: 5px 0;">
                         <label for="setdY">y&rightarrow;</label>
-                        <input type="text" name="setdY" value="xy" onchange="setxyDer(this,'y');shtuffleW();" id="setdY" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
+                        <input type="text" name="setdY" value="xy" onchange="setxyDer(this,'y');shtuffleW();" onfocus="resetSelectDiff();" id="setdY" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
                     </div>
                 </div>
                 <div id="xXsetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
@@ -292,14 +315,11 @@
                     <label for="animt"><b>Animation step(ms):</b> = </label>
                     <input type="number" id="animt" value="600" min="100" step="100" name="t" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
                 </div>
-                <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;">
+                <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
                     <label for="setfejlec">Fejlécek tiltása a kimenetben</label>
                     <input type="checkbox" name="setfejlec" oninput="setFejlec(this);shtuffleW();" id="setfejlec" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
                 </div>
-                <div style="margin-bottom:10px;">
-                    <label for="setoutputfontH">&#128474;</label>
-                    <input id="outfont-sliderH" oninput="setOutputFontH(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="setoutputfontH" />
-                </div>
+
             </div>
             <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
                 <span class="derivtok">
@@ -311,7 +331,6 @@
                     <input type="number" onchange="trimStore();" id="nstore" value="2" min="2" step="1" name="nstore" style="width:45px;vertical-align:middle;">
                     <span id="lstore"></span>
                 <button id="resetstore" class="sbtglbtn" onclick="resetStore()">Reset</button>
-                </span>
             </div>
         </div>
         <div id="shoutcontainer" style="max-width:100vw">
@@ -332,18 +351,17 @@
             <div id="ideoutst2"></div>
         </div>
     </div>
+    <span id="buttonb" class=""><span class="blepteto" onclick="sugotLeptet();">▶</span><span class="blepteto" onclick="sugoStop();" style="padding:5px 7px 5px 5px;">⏹</span><span style="display:inline-block;width: 40px;" id="blepeskijelzo"></span>
+    <span id="blepesall">/ </span>
+    </span>
     <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTglafh1('helpbarh1');" title="Open/Close help">Toggle help</button>
-    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="html2string()" title="Open/Close help">Plain string</button>
+    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="html2string();store2string();" title="Open/Close help">Plain string</button>
     <div id="helpbarh1" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
         <iframe name="helpframe" width="99%" height="100%" src="../docs/base_of_halgebra_1.pdf" style="width:99%;height:100vh;border:none;"></iframe>
     </div>
     <script>
         $(document).ready(() => {
             $('.jtoggler').jtoggler();
-        });
-        $(document).on('click', function(e) {
-            if (!$(e.target).hasClass("hreg hl"))
-                $("#floatkijelzo").css("display", "none");
         });
         $('#shoutstore').on('click', function(e) {
             if (!$(e.target).hasClass("storeback active") && !$(e.target).hasClass("storeback atiro"))
@@ -357,6 +375,7 @@
 </body>
 
 </html>
+
 
 
 
