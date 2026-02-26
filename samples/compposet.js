@@ -6747,13 +6747,6 @@ function setOutputFontKaw(v) {
     elem.style.fontSize = v + 'px';
 };
 
-function setOutputFontH(v) {
-    var elem = document.getElementById("shouth");
-    var elem1 = document.getElementById("shoutstore");
-    elem.style.fontSize = v + 'px';
-    elem1.style.fontSize = v + 'px';
-};
-
 function Shuffle(a, b) {
     var s = [];
     if (a.length == 0)
@@ -8463,3 +8456,4 @@ function IKDer() {
         }, t)
     }
 };
+
