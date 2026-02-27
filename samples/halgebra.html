@@ -9,6 +9,7 @@
     <script src=" https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js "></script>
     <script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
 
+    <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="samples.css">
     <link rel="stylesheet" href="../tools/jtoggler.styles.css">
     <script src="../tools/jtoggler.js"></script>
@@ -60,7 +61,7 @@
 
 <body>
     <div id="floatkijelzo"></div>
-   <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
+    <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shoutcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <p class="keplet active" id="alap_keplet">w<sub>1</sub><span id="muveletjel" style="font-size:22px;margin:0 3px;vertical-align: middle;">&bullet;</span>w<sub>2</sub></p>
@@ -261,9 +262,71 @@
                         <a class="sugolink" onclick="sbTgl('helpanims');setTimeout(() =>{fnploadjs('../sugo/x_nw.js')},500)"><b>1. </b>x_nw</a> (21 lépés)
                         <div style='border:1px solid;margin:5px 0;padding:3px;width:fit-content;'>x<sup>n</sup>w =
                             <span class="block" style="transform: scale(1.5);">∑</span>
-                            <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub> (-1)<sup>k</sup>&nbsp;&part;_(w)<span style="margin:0 3px;font-size:130%;">&#x29E2;</span> x<sup>n - k</sup>&nbsp;&nbsp;&nbsp;(w&in;&nbsp;&#x1d525;)</div>
+                            <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub> (-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;_(w)</td></tr><tr><td>n!</td></tr></table></span>
+                            <span style="margin:0 3px;font-size:130%;">&#x29E2;</span> x<sup>n - k</sup>&nbsp;&nbsp;&nbsp;(w&in;&nbsp;&#x1d525;)</div>
                         n = 3; w = yxyy paraméterekkel<br/> <i>Ajánlott beállítások</i>: Mobilon a kijelző szélességét szabályozó zöld csuszkát <br/> ajánlott legalább a felére állítani. <button style="color:inherit;background-color: #d9d3d3;border: 1px solid #b5b5b5;"
                             onclick="$('input.kijelzoset').val(4).trigger('input');">Beállítom</button>
+                    </li>
+                    <li><b>1. Alapformula</b><br/> A táblázat egy elemére kattintva válassza ki a kívánt formulát, majd állítsa be <i>n</i> és <i>w</i> értékét.
+                        <table id="animtbl">
+                            <tr>
+                                <td style="border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(1.a)</span><span class="animkeplet">w<span style="margin:0 3px;font-size:130%;">&#x29E2;</span>x<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>
+                                    <span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'>
+                                        <table class='tort' style='border-collapse: collapse;margin: 0 3px;'>
+                                            <tr>
+                                                <td style='border-bottom:1px solid;'>&part;<sup>k</sup>(w)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>k!</td>
+                                            </tr>
+                                        </table>
+                                        </span>
+                                    <span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>x<sup>n - k</sup></span>
+                                </td>
+                                <td style="border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(2.a)</span><span class="animkeplet">y<sup>n</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>w = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>y<sup>n - k</sup><span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span><span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sub>&dagger;</sub><sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom:1px solid #555;border-right:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(1.b)</span><span class="animkeplet">w <span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>x<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub> (-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span>
+                                    <span style="margin:0 3px;font-size:130%;">&#x29E2;</span> x<sup>n - k</sup></span>
+                                </td>
+                                <td style="border-bottom:1px solid #555;border-left:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(2.b)</span><span class="animkeplet">y<sup>n</sup><span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>w = <span class="block" style="transform:scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>y<sup>n - k</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>(-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sup>k</sup><sub>&dagger;</sub>(w)</td></tr><tr><td>k!</td></tr></table></span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-top:1px solid #555;border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(3.a)</span><span class="animkeplet">x<sup>n</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>w = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>x<sup>n - k</sup><span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span><span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;_<sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span></span>
+                                </td>
+                                <td style="border-top:1px solid #555;border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(4.a)</span><span class="animkeplet">w<span style="margin:0 3px;font-size:130%;">&#x29E2;</span>y<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub><span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sub>&lowast;</sub><sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span>
+                                    <span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>y<sup>n - k</sup></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-right:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(3.b)</span><span class="animkeplet">x<sup>n</sup><span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>w = <span class="block" style="transform:scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>x<sup>n - k</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>(-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sup>k</sup>_(w)</td></tr><tr><td>k!</td></tr></table></span></span>
+                                </td>
+                                <td style="border-left:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(4.b)</span><span class="animkeplet">w <span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>y<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub> (-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sub>&lowast;</sub><sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span>
+                                    <span style="margin:0 3px;font-size:130%;">&#x29E2;</span>y<sup>n - k</sup></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <label style="display:inline-block;margin-right:5px;width:30px;">w = </label><input style="font-size:20px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;vertical-align: middle;text-align:center;margin-bottom:10px;"
+                            type="text" id="wofanim" value="yxyy" /><br/>
+                        <label style="display:inline-block;margin-right:5px;width:30px;">n = </label><input type="number" id="nofanim" value="0" min="0" step="1" style="width:50px;vertical-align:middle;margin-right:15px;font-size:16px;"><button id="startanim"
+                            style="width:fit-content;font-size:20px;line-height:0.7;vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;background-color:#b6ffb0;border-color: #78d917;" class="sbtglbtn" onclick="sbTgl('helpanims');alapAnim();">&#x23FB;</button>
                     </li>
                 </ul>
 
@@ -328,7 +391,7 @@
             </div>
             <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
                 <span class="derivtok">
-                    <button id="setsign" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" class="sbtglbtn" onclick="storeSign(this);shtuffleW();">+</button>
+                    <button id="setsign"  class="sbtglbtn dumb" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" onclick="storeSign(this);shtuffleW();">+</button>
                     <button id="storeinbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn" onclick="shiftStore();">&#x2356;</button>
                     <button id="storebackbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn dumb" onclick="undoStore();">&#x234F;</button>
                     <button id="storetglbtn" style="vertical-align:middle;margin-left:10px;padding:0 2px;font-size:20px;" class="sbtglbtn" onclick=" tglStore(this);">&#128448;</button>
@@ -380,6 +443,7 @@
 </body>
 
 </html>
+
 
 
 
