@@ -27,8 +27,8 @@ function fnploadjsOK(file) {
     script.id = "fnpsugos";
     document.body.appendChild(script);
     console.log(script)
-    resetLap();
-    initLepes()
+    resetNoForm();
+    initLepes();
 };
 
 function sugoStop() {
@@ -62,7 +62,16 @@ function elemClick(id, time, inline) {
     } else if (typeof id == "object") {
         const name = id["name"];
         const indx = id["indx"];
-        elem = document.querySelectorAll(name)[indx];
+        if (indx == "all") {
+            elem = document.querySelectorAll(name).forEach(function(elem) {
+                elem.classList.add("clicked");
+                elem.scrollIntoView({ behavior: "smooth", block: "center", inline: inline });
+                setTimeout(() => { elem.click(); }, time - 500);
+                setTimeout(() => { elem.classList.remove("clicked") }, time);
+            });
+            return;
+        } else
+            elem = document.querySelectorAll(name)[indx];
     }
     if (id["hl"] == undefined) {
         elem.classList.add("clicked");
@@ -97,12 +106,13 @@ function sugotLeptet() {
         var inline = lepes["inline"];
         if (inline == undefined)
             inline = "center";
-        elemClick(id, 2000, inline);
         str2float(txt);
-        if (param != undefined)
-            setTimeout(() => { elemBeir(id, param) }, 1500);
-
         lepessoronkov++;
+        if (id != "") {
+            elemClick(id, 2000, inline);
+            if (param != undefined)
+                setTimeout(() => { elemBeir(id, param) }, 1500);
+        };
     } else
         sugoStop();
 };
