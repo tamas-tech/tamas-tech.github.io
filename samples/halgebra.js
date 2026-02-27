@@ -77,6 +77,10 @@ function trimStore() {
         }
     }
     Store.L = n;
+    if (n > 2)
+        $("#setsign").removeClass("dumb");
+    else
+        $("#setsign").addClass("dumb");
     updLstore();
     const opened = $("#shoutstore").css("display") == "block";
     closeStore();
@@ -196,7 +200,7 @@ function inStore(v, txt) {
         curr_txt = txt;
     } else {
         curr_v = [...v.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])];
-        curr_txt = "<span class='negstore'> − (</span>" + txt + "<span class='negstore'>)<span>";
+        curr_txt = "<span class='negstore'> − (</span>" + txt + "<span class='negstore'>)</span>";
     }
 };
 
@@ -514,7 +518,6 @@ function resetLap() {
 
     document.getElementById("w1").value = "xy";
     document.getElementById("w2").value = "yy";
-    //setMuvelet(1);
 
     $('#regvtarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(1)').click()
     $('#cshstselecttarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(1)').click();
@@ -556,6 +559,68 @@ function resetLap() {
     $("#w1coeff").trigger('change');
 };
 
+
+function resetNoForm() {
+    document.getElementById("w1conj").checked = false;
+    document.getElementById("w1inv").checked = false;
+    document.getElementById("dw1fok").value = '0';
+    document.getElementById("dw1conj").checked = false;
+    document.getElementById("dw1inv").checked = false;
+    document.getElementById("dw1fakt").checked = false;
+    document.getElementById("dw1fakte").checked = false;
+    document.getElementById("w1coeff").value = "1";
+
+    document.getElementById("w2conj").checked = false;
+    document.getElementById("w2inv").checked = false;
+    document.getElementById("dw2fok").value = '0';
+    document.getElementById("dw2conj").checked = false;
+    document.getElementById("dw2inv").checked = false;
+    document.getElementById("dw2fakt").checked = false;
+    document.getElementById("dw2fakte").checked = false;
+    document.getElementById("w2coeff").value = "1";
+
+    document.getElementById("outconj").checked = false;
+    document.getElementById("outinv").checked = false;
+    document.getElementById("doutfok").value = '0';
+    document.getElementById("doutconj").checked = false;
+    document.getElementById("doutinv").checked = false;
+    document.getElementById("doutfakt").checked = false;
+    document.getElementById("doutfakte").checked = false;
+    document.getElementById("woutcoeff").value = "1";
+
+    document.getElementById("w1").value = "xy";
+    document.getElementById("w2").value = "yy";
+
+    $('#regvtarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(1)').click()
+    $('#cshstselecttarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(1)').click();
+
+    if (regw == "w2")
+        document.getElementById("calcw1").click();
+
+    store_sign = 1;
+    const signbtn = document.getElementById("setsign");
+    signbtn.innerHTML = "+";
+
+    document.getElementById("nstore").value = '2';
+    trimStore();
+    resetStore();
+    closeStore();
+
+    const tblf = $('table#regtbl.table-hideable tbody tr td.hide-column0')
+    if (tblf.hasClass("hide-col0"))
+        tblf.trigger("click")
+
+    const hbtn = document.getElementById("hideoutbtn");
+    if (hbtn.innerText == "Show")
+        tglshouth(hbtn);
+    if (document.getElementById("hsetting").style.display = "block")
+        sbTgl('hsetting')
+
+    $("#setdX").val("xx").trigger("change");
+    $("#setdY").val("xy").trigger("change");
+
+    $("#w1coeff").trigger('change');
+};
 
 function setAll() {
     document.getElementById("w1conj").checked = true;
@@ -3063,4 +3128,132 @@ function derivOutHn(strL, n) {
     if (woutcoeff != 1 || fakt != 1)
         out = out.map(y => [Fraction(y[0]).mul(woutcoeff).div(Fraction(fakt)), y[1]]);
     return out;
+};
+
+function setAnimKeplet(elem) {
+    $('#animtbl td.selected').removeClass('selected');
+    $(elem).addClass("selected");
+};
+
+function alapAnim() {
+    sugorun = true;
+    lepessoronkov = 1;
+    const nstr = document.getElementById("nofanim").value;
+    const n = nstr * 1;
+    const w = w2xysor(document.getElementById("wofanim").value);
+    const label = $("#animtbl td.selected .animlabel").text().replace(/[\(\)]/g, "");
+    const keplet = $("#animtbl td.selected .animkeplet").html().replaceAll("\n", "").replace(/\s\s+/g, "");
+    const Nab = label.split(".")
+    const N = Nab[0];
+    const ab = Nab[1]
+    var xy = "x";
+    if (N % 2 == 0)
+        xy = "y";
+    var muvelet = 0;
+    var muvstr = "Műveletnek a shuffle-szorzatot állítjuk be.";
+    var bomuvstr = "A baloldal művelete az összefűzés, így azon nem kell állítanunk.";
+    if (ab == "a") {
+        muvelet = 1;
+        muvstr = "A művelet maradhat az összefűzés.";
+        bomuvstr = "A baloldali művelet shuffle-szorzatára állunk";
+    };
+    var w1be = w;
+    var dw = "1";
+    var xynsora = "2";
+    var w2be = xy.repeat(n);
+    if (N == 2 || N == 3) {
+        w1be = xy.repeat(n);
+        w2be = w;
+        dw = "2";
+        xynsora = "1";
+    };
+    var dwfokid = "dw" + dw + "fok";
+    var rare = "-re";
+    if ([3, 6, 8].includes(nstr.slice(-1) * 1 + 2))
+        rare = "-ra";
+
+    strinit = "A(z) <div style='border:1px solid;margin:5px 0;padding:3px;'>" + keplet + "</div> képletet fogjuk ellenőrizni <i>n</i> = " + n + ", és <i>w</i> = " + w + " paraméterekkel.";
+
+    lepesObj = {
+        "1": { "id": "nstore", "txt": "A tár méretét <i>n</i> + 2 = <b>" + (n + 2) + "</b>" + rare + " állítjuk.", "param": n + 2 },
+        "2": { "id": "w1", "txt": "A w<sub>1</sub> szónak <b>" + w1be + "</b> értéket adunk", "param": w1be },
+        "3": { "id": "w2", "txt": "A w<sub>2</sub> szónak <b>" + w2be + "</b> értéket adunk", "param": w2be },
+        "4": {
+            "id": {
+                "name": "#cshstselecttarto input.jtoggler-radio",
+                "indx": (muvelet + 1) % 2,
+                "hl": "#cshstselecttarto .jtoggler-control"
+            },
+            "txt": bomuvstr
+        },
+        "5": { "id": "setsign", "txt": "A baloldali szorzatnak ellentétes előjelet adunk..." },
+        "6": { "id": "storeinbtn", "txt": "..., és bevisszük a tárba." },
+        "7": { "id": "setsign", "txt": "Az ellentétes előjel gombot visszaállítjuk pozitívra." },
+        "8": {
+            "id": {
+                "name": "#cshstselecttarto input.jtoggler-radio",
+                "indx": muvelet,
+                "hl": "#cshstselecttarto .jtoggler-control"
+            },
+            "txt": muvstr
+        },
+        "9": {
+            "id": {
+                "name": "#setwform",
+                "indx": 0,
+                "hl": "table#regtbl.table-hideable tbody tr td.hide-column0",
+            },
+            "txt": "A kimenet képleteit <b>xxyy...</b> formára állítjuk és a táblázat első oszlopát bezárjuk."
+        },
+    };
+
+    if (N == 1)
+        lepesObj["10"] = { "id": "", "txt": "Mivel a képletben a &part; derivált szerepel, ezért w<sub>" + dw + "</sub> sorában a &part;<sub>&lowast;</sub> konjugált és a &part;_ inverz transzformáltak maradhatnak üresen." };
+    else if (N == 2)
+        lepesObj["10"] = {
+            "id": {
+                "name": "#dw" + dw + "conj,#dw" + dw + "inv",
+                "indx": "all",
+            },
+            "txt": "Mivel a képletben a &part;<sub>&dagger;</sub> duális derivált szerepel, ezért w<sub>" + dw + "</sub> sorában ki kell pipálnunk a derivált &part;<sub>&lowast;</sub> konjugáltát és a derivált &part;_ inverzét is."
+        };
+    else if (N == 3)
+        lepesObj["10"] = { "id": "dw" + dw + "inv", "txt": "Mivel a képletben a &part;_ inverz derivált szerepel, ezért w<sub>" + dw + "</sub> sorában ki kell pipálnunk a derivált &part;_ inverz transzfolmátját." };
+    else if (N == 4)
+        lepesObj["10"] = { "id": "dw" + dw + "conj", "txt": "Mivel a képletben a &part;<sub>&lowast;</sub>  konjugált derivált szerepel, ezért w<sub>" + dw + "</sub> sorában ki kell pipálnunk a derivált &part;<sub>&lowast;</sub> konjugált transzfolmátját." };
+    if (ab == "a")
+        lepesObj["11"] = { "id": "dw" + dw + "fakt", "txt": "A deriváltakat  a fokszámuk faktoriálisával osztva számítjuk." };
+    else
+        lepesObj["11"] = { "id": "dw" + dw + "fakte", "txt": "A deriváltakat  a fokszámuknak megfelelő előjellel és annak faktoriálisával osztva számítjuk." },
+        " + dw + "
+
+    lepesObj["12"] = { "id": "storeinbtn", "txt": "A jobboldali összeg k = 0-hoz tartozó tagját bevisszük a tárba." };
+    lepesObj["13"] = { "id": "regtbl.table-hideable tbody tr td.hide-column0", "txt": "A táblázat első oszlopát kinyitjuk." };
+
+    for (var i = 0; i < n; i++) {
+        var w2cs = xy.repeat(n - 1 - i);
+        lepesObj[(14 + 3 * i).toString()] = { "id": "w" + xynsora, "txt": "A w<sub>" + xynsora + "</sub> szónak <b>" + (w2cs || "üres") + "</b> értéket adunk", "param": w2cs };
+        lepesObj[(15 + 3 * i).toString()] = { "id": dwfokid, "txt": "A derivált fokát <b>" + (i + 1) + "</b>-re növeljük.", "param": (i + 1).toString() };
+        lepesObj[(16 + 3 * i).toString()] = { "id": "storeinbtn", "txt": "A kimenetet bevisszük a tárba" };
+    };
+
+    lepesObj[(14 + 3 * n).toString()] = { "id": "storetglbtn", "txt": "Megnyitjuk a tárat" };
+    lepesObj[(15 + 3 * n).toString()] = {
+        "id": "lastprev",
+        "txt": "Megnézzük a tagok összegét.",
+        "inline": "start"
+    };
+    lepesObj[(16 + 3 * n).toString()] = { "id": "storetglbtn", "txt": "Bezárjuk a tárat" };
+
+
+    $('body,body input:not([type="text"]),body .sbtglbtn,body input[type="text"].forderiv').css({
+        'pointer-events': 'none',
+        'filter': 'contrast(70%)',
+    });
+    $('#buttonb').addClass('showndown');
+    sugolepes = Object.keys(lepesObj).length;
+    document.getElementById("blepesall").innerHTML = " / " + sugolepes;
+    $("#blepeskijelzo").html("0");
+    resetLap();
+    initLepes();
 };
