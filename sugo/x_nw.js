@@ -1,7 +1,7 @@
 lepessoronkov = 1;
 strinit = "Az <div style='border:1px solid;margin:5px 0;padding:3px;'>x<sup>n</sup>w = <span class='block' style='transform: scale(1.5);'>∑</span> <sub style='vertical-align:-1.6em;margin-left:-2em;'>0&leq;k&leq;n</sub> (-1)<sup>k</sup>&nbsp;&part;_(w)<span style='margin:0 3px;font-size:130%;'>&#x29E2;</span> x<sup>n - k</sup>&nbsp;&nbsp;&nbsp;(w&in;&nbsp;&#x1d525;)</div> képletet fogjuk ellenőrizni n = 3, és w = yxyy paraméterekkel.";
 
-var lepesObj = {
+lepesObj = {
     "1": { "id": "nstore", "txt": "A tár méretét <b>4</b>-re állítjuk.", "param": "4" },
     "2": { "id": "w1", "txt": "A w1 szónak <b>yxyy</b> értéket adunk", "param": "yxyy" },
     "3": { "id": "w2", "txt": "A w2 szónak <b>xxx</b> értéket adunk", "param": "xxx" },
@@ -20,7 +20,7 @@ var lepesObj = {
             "indx": 0,
             "hl": "table#regtbl.table-hideable tbody tr td.hide-column0",
         },
-        "txt": "A kimenet képlateit <b>xxyy...</b> formára állítjuk és a táblázat első oszlopát bezárjuk."
+        "txt": "A kimenet képleteit <b>xxyy...</b> formára állítjuk és a táblázat első oszlopát bezárjuk."
     },
     "6": { "id": "dw1inv", "txt": "Kipipáljuk a derivált &part;_ inverz transzfolmátját." },
     "7": { "id": "dw1fakte", "txt": "A &part;_ inverz deriváltakat váltakozó elójellel, és faktoriálissal osztva számítjuk." },
