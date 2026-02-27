@@ -258,7 +258,7 @@
             <div id="helpanims" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;color: #484848;border-radius: 3px;font-size: 16px;">
                 <h3 style="margin:5px 0px;">SÚGÓ FÁJLOK</h3>
                 <ul style="padding-left:15px;">
-                    <li>
+                    <li style="padding-left:15px;">
                         <a class="sugolink" onclick="sbTgl('helpanims');setTimeout(() =>{fnploadjs('../sugo/x_nw.js')},500)"><b>1. </b>x_nw</a> (21 lépés)
                         <div style='border:1px solid;margin:5px 0;padding:3px;width:fit-content;'>x<sup>n</sup>w =
                             <span class="block" style="transform: scale(1.5);">∑</span>
@@ -267,7 +267,7 @@
                         n = 3; w = yxyy paraméterekkel<br/> <i>Ajánlott beállítások</i>: Mobilon a kijelző szélességét szabályozó zöld csuszkát <br/> ajánlott legalább a felére állítani. <button style="color:inherit;background-color: #d9d3d3;border: 1px solid #b5b5b5;"
                             onclick="$('input.kijelzoset').val(4).trigger('input');">Beállítom</button>
                     </li>
-                    <li><b>1. Alapformula</b><br/> A táblázat egy elemére kattintva válassza ki a kívánt formulát, majd állítsa be <i>n</i> és <i>w</i> értékét.
+                    <li><b>2. Alapformula (mind a 8 változat) állítható bemenetekkel</b><br/> A táblázat egy elemére kattintva válassza ki a kívánt formulát, majd állítsa be <i>n</i> és <i>w</i> értékét.
                         <table id="animtbl">
                             <tr>
                                 <td class="selected" style="border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setAnimKeplet(this)">
@@ -443,6 +443,7 @@
 </body>
 
 </html>
+
 
 
 
