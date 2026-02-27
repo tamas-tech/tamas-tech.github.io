@@ -3011,6 +3011,35 @@ div#k1 span.kepletvalaszto.selected {
     font-family: monospace;
 }
 
+table#animtbl {
+    font-family: Katex_Math;
+    font-size: 1.1em;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    outline: 1px solid #c8c8c8;
+}
+
+table#animtbl tr td {
+    padding: 2px 5px;
+}
+
+table#animtbl tr td.selected {
+    background-color: #fffad1;
+}
+
+table#animtbl .animkeplet {
+    cursor: pointer;
+    display: inline-block;
+    margin-inline: 5px 0;
+    padding: 3px;
+}
+
+#setsign.dumb {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+
 
 
 
