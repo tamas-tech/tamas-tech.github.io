@@ -2990,7 +2990,7 @@ div#k1 span.kepletvalaszto.selected {
 }
 
 .clicked {
-    animation: shadow-change 1s 200;
+    animation: shadow-change var(--anim-time) 200;
 }
 
 @keyframes shadow-change {
@@ -3038,6 +3038,7 @@ table#animtbl .animkeplet {
     opacity: 0.3;
     pointer-events: none;
 }
+
 
 
 
