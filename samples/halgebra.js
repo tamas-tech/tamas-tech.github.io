@@ -299,6 +299,10 @@ function setOutputFontH(v) {
     elem1.style.fontSize = v + 'px';
 };
 
+function setResetForm(v) {
+    resetWithForm = v;
+};
+
 function settblw(v) {
     $('#regtbl tr:first-child td').css('min-width', v + 'em');
 };
@@ -308,7 +312,7 @@ function settblw(v) {
 var regw = "w1";
 var regvalt = "alap";
 var derivkell = false;
-
+var resetWithForm = true;
 
 var w1conj = false;
 var w1inv = false;
@@ -525,77 +529,9 @@ function resetLap() {
     if (regw == "w2")
         document.getElementById("calcw1").click();
 
-
-    store_sign = 1;
-    const signbtn = document.getElementById("setsign");
-    signbtn.innerHTML = "+";
-    document.getElementById("setwform").checked = false;
-
-    document.getElementById("nstore").value = '2';
-    trimStore();
-    resetStore();
-    closeStore();
-
     const tblf = $('table#regtbl.table-hideable tbody tr td.hide-column0')
     if (tblf.hasClass("hide-col0"))
         tblf.trigger("click")
-
-    const hbtn = document.getElementById("hideoutbtn");
-    if (hbtn.innerText == "Show")
-        tglshouth(hbtn);
-    if (document.getElementById("hsetting").style.display = "block")
-        sbTgl('hsetting')
-
-    const setm = document.getElementById("xymonom");
-    setm.checked = false;
-    set2monom(setm);
-    document.getElementById("xX").checked = false;
-    document.getElementById("setfejlec").checked = false;
-    $("#setdX").val("xx").trigger("change");
-    $("#setdY").val("xy").trigger("change");
-    document.getElementById("setX").value = '';
-    document.getElementById("setY").value = '';
-
-    $("#w1coeff").trigger('change');
-};
-
-
-function resetNoForm() {
-    document.getElementById("w1conj").checked = false;
-    document.getElementById("w1inv").checked = false;
-    document.getElementById("dw1fok").value = '0';
-    document.getElementById("dw1conj").checked = false;
-    document.getElementById("dw1inv").checked = false;
-    document.getElementById("dw1fakt").checked = false;
-    document.getElementById("dw1fakte").checked = false;
-    document.getElementById("w1coeff").value = "1";
-
-    document.getElementById("w2conj").checked = false;
-    document.getElementById("w2inv").checked = false;
-    document.getElementById("dw2fok").value = '0';
-    document.getElementById("dw2conj").checked = false;
-    document.getElementById("dw2inv").checked = false;
-    document.getElementById("dw2fakt").checked = false;
-    document.getElementById("dw2fakte").checked = false;
-    document.getElementById("w2coeff").value = "1";
-
-    document.getElementById("outconj").checked = false;
-    document.getElementById("outinv").checked = false;
-    document.getElementById("doutfok").value = '0';
-    document.getElementById("doutconj").checked = false;
-    document.getElementById("doutinv").checked = false;
-    document.getElementById("doutfakt").checked = false;
-    document.getElementById("doutfakte").checked = false;
-    document.getElementById("woutcoeff").value = "1";
-
-    document.getElementById("w1").value = "xy";
-    document.getElementById("w2").value = "yy";
-
-    $('#regvtarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(1)').click()
-    $('#cshstselecttarto div.jtoggler-wrapper.jtoggler-wrapper-multistate div.jtoggler-control label.jtoggler-btn-wrapper input.jtoggler-radio:nth(1)').click();
-
-    if (regw == "w2")
-        document.getElementById("calcw1").click();
 
     store_sign = 1;
     const signbtn = document.getElementById("setsign");
@@ -606,10 +542,6 @@ function resetNoForm() {
     resetStore();
     closeStore();
 
-    const tblf = $('table#regtbl.table-hideable tbody tr td.hide-column0')
-    if (tblf.hasClass("hide-col0"))
-        tblf.trigger("click")
-
     const hbtn = document.getElementById("hideoutbtn");
     if (hbtn.innerText == "Show")
         tglshouth(hbtn);
@@ -619,8 +551,20 @@ function resetNoForm() {
     $("#setdX").val("xx").trigger("change");
     $("#setdY").val("xy").trigger("change");
 
+    if (resetWithForm) {
+        document.getElementById("setwform").checked = false;
+        document.getElementById("xX").checked = false;
+        document.getElementById("setfejlec").checked = false;
+        const setm = document.getElementById("xymonom");
+        setm.checked = false;
+        set2monom(setm);
+        document.getElementById("setX").value = '';
+        document.getElementById("setY").value = '';
+    }
+
     $("#w1coeff").trigger('change');
 };
+
 
 function setAll() {
     document.getElementById("w1conj").checked = true;
@@ -3257,7 +3201,9 @@ function alapAnim() {
         'filter': 'contrast(70%)',
     });
     if (auto) {
-        alapAnimateAuto(sugolepes + 1)
+        alapAnimateAuto(sugolepes + 1);
+        resetLap();
+        initLepes();
     } else {
         $('#buttonb').addClass('showndown');
         document.getElementById("blepesall").innerHTML = " / " + sugolepes;
