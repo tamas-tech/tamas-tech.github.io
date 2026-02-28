@@ -97,6 +97,7 @@ function initLepes() {
 };
 
 function sugotLeptet() {
+    const T = root.style.getPropertyValue('--anim-time').replace("s", "") * 2000;
     if (lepessoronkov <= sugolepes) {
         $("#blepeskijelzo").html(lepessoronkov);
         const lepes = lepesObj[lepessoronkov];
@@ -109,9 +110,9 @@ function sugotLeptet() {
         str2float(txt);
         lepessoronkov++;
         if (id != "") {
-            elemClick(id, 2000, inline);
+            elemClick(id, T, inline);
             if (param != undefined)
-                setTimeout(() => { elemBeir(id, param) }, 1500);
+                setTimeout(() => { elemBeir(id, param) }, T * 0.75);
         };
     } else
         sugoStop();
