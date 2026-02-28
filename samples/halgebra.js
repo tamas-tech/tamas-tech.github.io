@@ -3135,9 +3135,14 @@ function setAnimKeplet(elem) {
     $(elem).addClass("selected");
 };
 
+function setAnimTime(t) {
+    root.style.setProperty('--anim-time', t * 0.5 + "s")
+};
+
 function alapAnim() {
     sugorun = true;
     lepessoronkov = 1;
+    const auto = document.getElementById("setauto").checked;
     const nstr = document.getElementById("nofanim").value;
     const n = nstr * 1;
     const w = w2xysor(document.getElementById("wofanim").value);
@@ -3246,14 +3251,33 @@ function alapAnim() {
     lepesObj[(16 + 3 * n).toString()] = { "id": "storetglbtn", "txt": "Bezárjuk a tárat" };
 
 
+    sugolepes = Object.keys(lepesObj).length;
     $('body,body input:not([type="text"]),body .sbtglbtn,body input[type="text"].forderiv').css({
         'pointer-events': 'none',
         'filter': 'contrast(70%)',
     });
-    $('#buttonb').addClass('showndown');
-    sugolepes = Object.keys(lepesObj).length;
-    document.getElementById("blepesall").innerHTML = " / " + sugolepes;
-    $("#blepeskijelzo").html("0");
-    resetLap();
-    initLepes();
+    if (auto) {
+        alapAnimateAuto(sugolepes + 1)
+    } else {
+        $('#buttonb').addClass('showndown');
+        document.getElementById("blepesall").innerHTML = " / " + sugolepes;
+        $("#blepeskijelzo").html("0");
+        resetLap();
+        initLepes();
+    }
 };
+
+function alapAnimateAuto(N) {
+    const t = root.style.getPropertyValue('--anim-time').replace("s", "") * 2500;
+    if (N > 0) {
+        var i = 0;
+        ra = setInterval(() => {
+            sugotLeptet();
+            i++;
+            if (i == N) {
+                clearInterval(ra);
+            }
+        }, t);
+    } else
+        return;
+}
