@@ -22,11 +22,13 @@
     <script src="../tools/sugorun.js"></script>
     <script id="fnpsugos" type="text/javascript" src="../sugo/dummy.js"></script>
     <script>
-             var sT = 1;
+        var sT = 1;
         var sugolepes = 0;
         var lepessoronkov = 1;
         var strinit = "";
         var lepesObj = {};
+        var root = document.querySelector(':root');
+        root.style.setProperty('--anim-time', '1s');
         MathJax.Hub.Config({
             tex2jax: {
                 preview: "none",
@@ -443,6 +445,7 @@
 </body>
 
 </html>
+
 
 
 
