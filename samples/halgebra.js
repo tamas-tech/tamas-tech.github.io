@@ -308,7 +308,6 @@ function settblw(v) {
 };
 
 // algebra of Q(x,y) = h
-
 var regw = "w1";
 var regvalt = "alap";
 var derivkell = false;
@@ -1169,6 +1168,7 @@ function regHighlight(elem) {
 };
 
 function formazShuffle(v, blokk, withid) {
+    const Y = xy2XY('y');
     v = _.groupBy(v);
     var txt = ""
     var ob = [];
@@ -1227,7 +1227,7 @@ function shuffleW() {
     sh = formazShuffle(sh, true, false)[1];
     sh = derivOutHn(sh, doutfok);
     const coeff = w1coeff.mul(w2coeff);
-    sh = sh.map(y => [Fraction(y[0]).mul(coeff), y[1]]);
+    sh = sh.map(y => [Fraction(y[0]).mul(coeff), xy2XY(y[1])]);
     if (document.getElementById("xymonom").checked)
         txt = formazxyMonom(sh);
     else
@@ -1242,6 +1242,7 @@ function shuffleW() {
 function derivGen(muv) {
     const w1 = in1_ci(w2xysor(document.getElementById("w1").value));
     const w2 = in2_ci(w2xysor(document.getElementById("w2").value));
+    const Y = xy2XY('y');
     const n1 = dw1fok;
     const n2 = dw2fok;
     var cw1 = w1coeff;
@@ -1264,12 +1265,15 @@ function derivGen(muv) {
         sh = sh.map(y => [Fraction(y[0]).mul(coeff).div(Fraction(fakt)), y[1]]);
 
     sh = vLout_ci(sh);
-    if (doutfok > 0)
+    if (doutfok > 0) {
         sh = derivOutHn(sh, doutfok);
+    };
+
     if (document.getElementById("xymonom").checked)
         var txt = formazxyMonom(sh);
-    else
-        var txt = formazxyV(sh, true, true);
+    else {
+        var txt = formazxyV(sh, true, true)
+    }
 
     document.getElementById("shouth").innerHTML = wfejlec + txt;
 
@@ -1393,7 +1397,7 @@ function concW() {
         fakt *= Math.pow(-1, n) * factorial(n);
     var dst = derivHn(st, doutfok, doutconj, doutinv);
     const coeff = woutcoeff.mul(w1coeff).mul(w2coeff).div(Fraction(fakt))
-    dst = dst.map(y => [Fraction(y[0]).mul(coeff), y[1]]);
+    dst = dst.map(y => [Fraction(y[0]).mul(coeff), xy2XY(y[1])]);
     if (document.getElementById("xymonom").checked)
         var txt = formazxyMonom(dst);
     else
@@ -1541,7 +1545,7 @@ function stuffleW() {
     var txt1 = "";
     var dst = derivOutHn(st[0], doutfok);
     const coeff = w1coeff.mul(w2coeff);
-    dst = vLout_ci(dst).map(y => [Fraction(y[0]).mul(coeff), y[1]]);
+    dst = vLout_ci(dst).map(y => [Fraction(y[0]).mul(coeff), xy2XY(y[1])]);
     txt1 = formazxyV(dst, true, true);
     if (txt1.startsWith(" + "))
         txt1 = txt1.slice(3);
@@ -2339,6 +2343,7 @@ function helpTglafh1(id) {
 };
 
 function formazxyV(vL, blokk, withid) {
+    const Y = xy2XY('y');
     if (vL.length == 0)
         return "( )";
     var txt = ""
@@ -2363,12 +2368,17 @@ function formazxyV(vL, blokk, withid) {
         }
         var xy = v[1];
         const xyid = xy;
-        if (blokk && !xy2mon)
+        if (blokk && !xy2mon) {
             xy = xy.replaceAll('y', 'y|');
+        }
         if (withid) {
-            if (c != 0)
-                xy = " <span class='hreg' data-reg=" + xyid + " data-c='" + v[0] + "' onclick='regHighlight(this);clearOv();setOvelem(this);'>" + (c + xy2XYmonom(xy)) + "</span>"
-            txt += xy;
+            if (c != 0) {
+                var xystr = xy;
+                if (Y != "y")
+                    xystr = xy.replaceAll(Y, Y + '|')
+                xy = " <span class='hreg' data-reg=" + xyid + " data-c='" + v[0] + "' onclick='regHighlight(this);clearOv();setOvelem(this);'>" + (c + xy2XYmonom(xystr)) + "</span>"
+                txt += xy;
+            }
         } else {
             if (c != 0)
                 if (xy2mon)
@@ -2379,6 +2389,7 @@ function formazxyV(vL, blokk, withid) {
     };
     if (txt.startsWith(" + "))
         txt = txt.slice(3);
+
     txt = xy2XY(txt);
     return txt;
 };
@@ -3148,9 +3159,8 @@ function alapAnim() {
         },
         "9": {
             "id": {
-                "name": "#setwform",
-                "indx": 0,
-                "hl": "table#regtbl.table-hideable tbody tr td.hide-column0",
+                "name": "#setwform,regtbl.table-hideable tbody tr td.hide-column0",
+                "indx": "all",
             },
             "txt": "A kimenet képleteit <b>xxyy...</b> formára állítjuk és a táblázat első oszlopát bezárjuk."
         },
