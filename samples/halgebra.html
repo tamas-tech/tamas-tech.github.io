@@ -15,6 +15,7 @@
     <script src="../tools/jtoggler.js"></script>
     <script src="../tools/fraction.min.js"></script>
     <script src="../tools/YourCombinations.js"></script>
+    <script src="../tools/mathjs.js" type="text/javascript"></script>
     <script src="../tools/cytoscape.min.js"></script>
     <script src="multipolylog.js"></script>
     <script src="compposet.js"></script>
@@ -143,7 +144,7 @@
                     <td>
                         (-1)<sup>n</sup>/n! &part;
                     </td>
-                    <td>
+                     <td class="hide-column0 hide-col0">
                         C&hairsp;&times;
                     </td>
                 </tr>
@@ -173,8 +174,8 @@
                     <td>
                         <input class="forderiv" type="checkbox" id="dw1fakte" oninput="setxyFakt(this);setParams();shtuffleW();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
                     </td>
-                    <td>
-                        <input class="forderiv" type="text" id="w1coeff" value="1" style="width:65px;text-align:center;" onchange="setParams();shtuffleW();">
+                   <td class="hide-col0">
+                        <input class="forderiv" type="text" id="w1coeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="setParams();shtuffleW();">
                     </td>
                 </tr>
                 <tr>
@@ -203,8 +204,8 @@
                     <td>
                         <input class="forderiv" type="checkbox" id="dw2fakte" oninput="setxyFakt(this);setParams();shtuffleW();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
                     </td>
-                    <td>
-                        <input class="forderiv" type="text" id="w2coeff" value="1" style="width:65px;text-align:center;" onchange="setParams();shtuffleW();">
+                    <td class="hide-col0">
+                        <input class="forderiv" type="text" id="w2coeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="setParams();shtuffleW();">
                     </td>
                 </tr>
                 <tr>
@@ -242,8 +243,8 @@
                     <td>
                         <input class="forderiv" type="checkbox" id="doutfakte" oninput="setxyFakt(this);setParams();shtuffleW();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
                     </td>
-                    <td>
-                        <input class="forderiv" type="text" id="woutcoeff" value="1" style="width:65px;text-align:center;" onchange="setParams();shtuffleW();">
+                    <td class="hide-col0">
+                        <input class="forderiv" type="text" id="woutcoeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="setParams();shtuffleW();">
                     </td>
                 </tr>
             </table>
@@ -455,6 +456,7 @@
 </body>
 
 </html>
+
 
 
 
