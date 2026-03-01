@@ -222,7 +222,6 @@ function storeTglAll(elem) {
         $('#lastprev.shown').removeClass('shown');
         elem.innerText = "Show All";
     } else {
-        console.log("kinyit");
         $('#shoutstore .lastviewer').addClass('shown');
         $('#lastprev.shown').addClass('shown');
         elem.innerText = "Hide All";
@@ -340,6 +339,11 @@ var doutfakt = false;
 var doutfakte = false;
 var woutcoeff = Fraction(1);
 
+function kiszamitfp(id) { //fparse alapon
+    const fObj = new Formula(document.getElementById(id).value);
+    return Fraction(fObj.evaluate());
+};
+
 function setWform(b) {
     wertekkel = b;
     shtuffleW();
@@ -366,7 +370,7 @@ function tglshouth(elem) {
         elem.innerText = "Show";
 };
 
-function par2tort(id) {
+function par2tort_REGI(id) {
     var cw = document.getElementById(id).value;
     if (/\//.test(cw)) {
         var f1 = cw.split("/")
@@ -374,6 +378,13 @@ function par2tort(id) {
     } else
         cw = Fraction(cw * 1);
     return cw;
+};
+
+
+function par2tort(id) { //fparse alapon
+    var expr = document.getElementById(id).value;
+    expr = expr.replace(/(\d+)C(\d+)/g, "combinations($1,$2)");
+    return Fraction(math.evaluate(expr));
 };
 
 function setMuvelet(indx) {
