@@ -751,7 +751,7 @@ function w1forma() {
     var coeff = w1coeff
     var txt = "w<sub>1</sub>";
     if (wertekkel)
-        txt = xy2XYmonom(w2xysor(document.getElementById("w1").value).trim()) || "( )";
+        txt = xy2XYmonom(w2xysor(document.getElementById("w1").value).trim()) // || "( )";
     if (w1conj && w1inv)
         if (wertekkel)
             txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>&dagger;</sup>";
@@ -813,7 +813,7 @@ function w1forma() {
         var eloj = ""
         if (coeff.s == -1)
             eloj = "−"
-        if (coeff.n == 1)
+        if (coeff.n == 1 && coeff.d == 1)
             txt = eloj + txt;
         else if (coeff.d != 1)
             txt = eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;" + txt;
@@ -823,7 +823,7 @@ function w1forma() {
     if (txt.startsWith("−"))
         txt = "<span id='w1tok'><span class='wtokzj left'></span>" + txt + "<span class='wtokzj right'></span></span>";
     else
-        txt = "<span id='w2tok'>" + txt + "</span>";
+        txt = "<span id='w1tok'>" + txt + "</span>";
     return txt;
 };
 
@@ -831,7 +831,7 @@ function w2forma() {
     var coeff = w2coeff
     var txt = "w<sub>2</sub>";
     if (wertekkel)
-        txt = xy2XYmonom(w2xysor(document.getElementById("w2").value).trim()) || "( )";
+        txt = xy2XYmonom(w2xysor(document.getElementById("w2").value).trim()) //|| "( )";
     if (w2conj && w2inv)
         if (wertekkel)
             txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>&dagger;</sup>";
@@ -893,7 +893,7 @@ function w2forma() {
         var eloj = ""
         if (coeff.s == -1)
             eloj = "−"
-        if (coeff.n == 1)
+        if (coeff.n == 1 && coeff.d == 1)
             txt = eloj + txt;
         else if (coeff.d != 1)
             txt = eloj + formazottTortHTML(coeff.n, coeff.d) + "&nbsp;" + txt;
@@ -910,10 +910,17 @@ function w2forma() {
 function w1w2forma(allas) {
     //const allas = $('#shH #cshstselecttarto .jtoggler-btn-wrapper.is-active').index() * 1;
     var muvelet = "&bullet;"
-    if (allas * 1 < 1)
-        muvelet = "<span style='font-size:130%;'>⧢</span>";
-    if (allas * 1 > 1)
-        muvelet = "<span style='font-size:120%;'>&lowast;</span>";
+    const w1f = w1forma();
+    const w2f = w2forma();
+    const vanures = w1f.startsWith("<span id='w1tok'></span>") || w2f.startsWith("<span id='w2tok'></span>");
+    if (wertekkel && vanures)
+        muvelet = "";
+    else {
+        if (allas * 1 < 1)
+            muvelet = "<span style='font-size:130%;'>⧢</span>";
+        if (allas * 1 > 1)
+            muvelet = "<span style='font-size:120%;'>&lowast;</span>";
+    }
     const bzj = "<span class='wouttokzj left'></span>";
     const jzj = "<span class='wouttokzj right'></span>";
     const bbzj = "<span class='wouttokzjbig  left'></span>";
@@ -921,10 +928,10 @@ function w1w2forma(allas) {
     var zjvan = false;
     var coeff = woutcoeff;
     if (outconj || outinv) {
-        var txt = "<span id='w1w2tok'>" + bzj + w1forma() + muvelet + w2forma() + jzj + "</span>";
+        var txt = "<span id='w1w2tok'>" + bzj + w1f + muvelet + w2f + jzj + "</span>";
         zjvan = true;
     } else
-        var txt = "<span id='w1w2tok'>" + w1forma() + muvelet + w2forma() + "</span>";
+        var txt = "<span id='w1w2tok'>" + w1f + muvelet + w2f + "</span>";
 
     if (outconj && outinv)
         txt += "<sup class='outsup'>&dagger;</sup>";
@@ -2390,7 +2397,7 @@ function formazxyV(vL, blokk, withid) {
                 c = 0;
         }
         var xy = v[1];
-        const xyid = xy;
+        const xyid = xy || "''";
         if (blokk && !xy2mon) {
             xy = xy.replaceAll('y', 'y|');
         }
