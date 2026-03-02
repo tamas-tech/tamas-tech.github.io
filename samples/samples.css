@@ -3039,6 +3039,39 @@ table#animtbl .animkeplet {
     pointer-events: none;
 }
 
+#derntok {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10px;
+    height: 0;
+}
+
+#derntok.dumb {
+    display: none;
+}
+
+#shouth2zetabtn {
+    cursor: pointer;
+    border: 1px solid #d8d8d8;
+    padding: 5px;
+    border-radius: 3px;
+    height: 30px;
+    margin-right: 5px;
+    line-height: 0.6;
+    background-color: #bcefffad;
+    color: #01a4a4;
+    width: fit-content;
+    padding: 0 2px;
+    font-size: 80%;
+    vertical-align: middle;
+}
+
+#setregtok {
+    display: inline-block;
+    font-size: 70%;
+    color: blue;
+    vertical-align: middle;
+}
 
 
 
