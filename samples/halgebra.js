@@ -26,7 +26,7 @@ var nofejlec = false;
 var storefej = "";
 var tempstoreback = "";
 var wertekkel = false;
-const shouth2zetabtn = "<div style='border-top: 1px solid #c4c4c4;padding-top: 3px;'><button id='shouth2zetabtn' onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div id='setregtok'><label for='zetareg'>Regularizálás</label><input type='checkbox' name='zetareg' id='zetareg' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label><label for='tdern' style='vertical-align:middle;'>Válaszidő(sec) = </label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div>";
+const shouth2zetabtn = "<div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;'><button id='shouth2zetabtn' onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div id='setregtok'><label for='zetareg'>Regularizálás</label><input type='checkbox' name='zetareg' id='zetareg' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label><label for='tdern' style='vertical-align:middle;'>Válaszidő(sec) = </label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button></div>";
 var zetareg = false;
 var reghely = "stuffle";
 
@@ -360,7 +360,8 @@ function derivSelect(e, n) {
         var diff = e.value;
 
     if (diff == "none") {
-        return;
+        $("#setdX").val("1").trigger("change");
+        $("#setdY").val("1").trigger("change");
     } else if (diff == "mienk") {
         $("#setdX").val("xx").trigger("change");
         $("#setdY").val("xy").trigger("change");
@@ -3361,4 +3362,55 @@ function shouth2zeta() {
     } else {
         elem.innerHTML = fejtxt + sh;
     }
+};
+
+function shouth2vec3() {
+    var vL = [];
+    $("#shouth .hreg").each(function() {
+        var xy = this.getAttribute('data-reg');
+        var c = this.getAttribute('data-c') * 1;
+        xy = xy2vec(xy);
+        vL.push([c, ...xy])
+    });
+    return vL;
+};
+
+function formazVec3List(vL) {
+    if (vL.length == 0)
+        return "( )";
+    var txt = ""
+    for (let v of vL) {
+        var c = v[0];
+        var eloj = " + ";
+        const isimag = v[2] == "x";
+        var cc = Fraction(1 * c).toFraction();
+        if (cc == "0")
+            cc = "";
+        else
+            c0 = 0;
+        if (c < 0) {
+            eloj = " − ";
+        }
+        var szorzo = "&middot;";
+        if (!isimag && (c == 1 || c == -1)) {
+            cc = "";
+            szorzo = "";
+        }
+        var vec = v[1];
+        var cimag = cc.replace("-", "");
+        if (isimag)
+            cimag = "<span class='imagc'>" + cimag + "</span>"
+
+        if (c != 0)
+            txt += " <span class='hreg' data-vec=" + JSON.stringify(vec) + " data-c='" + cc + "' data-imag='" + v[2] + "' onclick=''>" + eloj + cimag + szorzo + "(" + vec + ")</span>"
+
+    };
+    txt = txt.replaceAll("− -", "− ");
+    return txt;
+
+};
+
+function shouth2vec() {
+    var elem = document.getElementById("shouth");
+    elem.innerHTML = formazVec3List(shouth2vec3());
 };
