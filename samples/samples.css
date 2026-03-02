@@ -3071,7 +3071,9 @@ table#animtbl .animkeplet {
     font-size: 70%;
     color: blue;
     vertical-align: middle;
+    opacity: 0.8;
 }
+
 
 
 
