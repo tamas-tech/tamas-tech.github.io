@@ -26,6 +26,9 @@ var nofejlec = false;
 var storefej = "";
 var tempstoreback = "";
 var wertekkel = false;
+const shouth2zetabtn = "<div style='border-top: 1px solid #c4c4c4;padding-top: 3px;'><button id='shouth2zetabtn' onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div id='setregtok'><label for='zetareg'>Regularizálás</label><input type='checkbox' name='zetareg' id='zetareg' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label><label for='tdern' style='vertical-align:middle;'>Válaszidő(sec) = </label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div>";
+var zetareg = false;
+var reghely = "stuffle";
 
 var Store = {};
 Store.v1 = [];
@@ -247,7 +250,7 @@ function tglStore(e) {
             dumb1 = "";
         if (stxt2.length > 0)
             dumb2 = "";
-        txt += "<span class='storeback" + dumb1 + "' onclick='storeBack(this);' data-back='1'>A legutóbbi (1)</span> <span class='lastprebtn' onclick='tglLast(" + 1 + ");'>" + (Store.fej1 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='1'>" + (stxt1 || "()") + "</div><span class='storeback" + dumb2 + "' onclick='storeBack(this);' data-back='2'>és az azt megelöző (2)</span><span class='lastprebtn' onclick='tglLast(" + 2 + ");'>" + (Store.fej2 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='2'>" + (stxt2 || "()") + "</div><br/> két kimenet különbsége: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>(1) - (2)</span><div id='lastprev' class='shown'>";
+        txt += "<span class='storeback" + dumb1 + "' onclick='storeBack(this);' data-back='1'>A legutóbbi (<b>1</b>)</span> <span class='lastprebtn' onclick='tglLast(" + 1 + ");'>" + (Store.fej1 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='1'>" + (stxt1 || "()") + "</div><span class='storeback" + dumb2 + "' onclick='storeBack(this);' data-back='2'>és az azt megelöző (<b>2</b>)</span><span class='lastprebtn' onclick='tglLast(" + 2 + ");'>" + (Store.fej2 || "&#x2205;") + "</span><br/><div class='lastviewer shown' data-view='2'>" + (stxt2 || "()") + "</div><br/> két kimenet különbsége: <span class='lastprebtn' style='background-color: #ffcbcb;' onclick='tglLastPrev();'>(<b>1</b>) - (<b>2</b>)</span><div id='lastprev' class='shown'>";
         var w = strList_Ov(_.flatten([Store.v1, Store.v2.map(y => [Fraction(y[0]).mul(Fraction(-1)), y[1]])]));
     } else if (L > 2) {
         $(e).html("&#128449;");
@@ -349,8 +352,13 @@ function setWform(b) {
     shtuffleW();
 };
 
-function derivSelect(e) {
-    var diff = e.value;
+function derivSelect(e, n) {
+    $("#derntok").addClass("dumb");
+    if (e == "dn")
+        var diff = "dn";
+    else
+        var diff = e.value;
+
     if (diff == "none") {
         return;
     } else if (diff == "mienk") {
@@ -359,7 +367,12 @@ function derivSelect(e) {
     } else if (diff == "d") {
         $("#setdX").val("xy").trigger("change");
         $("#setdY").val("yy").trigger("change");
-    };
+    } else if (diff == "dn") {
+        $("#derntok").removeClass("dumb");
+        const dxy = xyn(n);
+        $("#setdX").val(dxy).trigger("change");
+        $("#setdY").val("-" + dxy.replaceAll("+", "-")).trigger("change");
+    }
 };
 
 function tglshouth(elem) {
@@ -1244,7 +1257,7 @@ function shuffleW() {
     else
         txt = formazxyV(sh, true, true);
 
-    document.getElementById("shouth").innerHTML = wfejlec + txt;
+    document.getElementById("shouth").innerHTML = wfejlec + txt + shouth2zetabtn;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(sh, txt);
@@ -1286,7 +1299,7 @@ function derivGen(muv) {
         var txt = formazxyV(sh, true, true)
     }
 
-    document.getElementById("shouth").innerHTML = wfejlec + txt;
+    document.getElementById("shouth").innerHTML = wfejlec + txt + shouth2zetabtn;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(sh, txt);
@@ -1416,7 +1429,7 @@ function concW() {
     if (txt.startsWith(" + "))
         txt = txt.slice(3);
 
-    document.getElementById("shouth").innerHTML = wfejlec + txt;
+    document.getElementById("shouth").innerHTML = wfejlec + txt + shouth2zetabtn;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(dst, txt);
@@ -1565,8 +1578,7 @@ function stuffleW() {
     if (doutfok < 1)
         jelentes = "<hr/><span style='font-size:70%;color:#3e3e3e;'>" + st[1] + "</span>";
     txt = txt1 + jelentes;
-
-    document.getElementById("shouth").innerHTML = wfejlec + txt;
+    document.getElementById("shouth").innerHTML = wfejlec + txt + shouth2zetabtn;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
     inStore(dst, txt1);
@@ -3248,3 +3260,98 @@ function alapAnimateAuto(N) {
     } else
         return;
 }
+
+function xyn(n) {
+    var out = [];
+    for (var i = 0; i < n; i++) {
+        var vx = [
+            [1, "x".repeat(i)]
+        ];
+        var vy = [
+            [1, "y".repeat(n - 1 - i)]
+        ];
+        out.push(polyShuffle(vx, vy))
+    };
+    out = _.flatten(out).map(v => "x" + v[1] + "y").join("+");
+    return out;
+};
+
+function shouth2pari() {
+    const zetareg = document.getElementById("zetareg").checked;
+    const zetaregst = document.getElementById("zetaregsht").checked;
+    var vL = [];
+    var nonAdm = [];
+    $("#shouth .hreg").each(function() {
+        var xy = this.getAttribute('data-reg');
+        var c = this.getAttribute('data-c') * 1;
+        if (xy.startsWith("x") && xy.endsWith("y")) {
+            xy = xy2vec(xy)[0];
+            vL.push([c, xy])
+        } else {
+            nonAdm.push([c, xy])
+        }
+    });
+    if (!zetareg)
+        if (nonAdm.length > 0)
+            return "A kimenet tartalmazott olyan szavakat amelyek non-admissible vektorokat eredményeznek:<br/>" + JSON.stringify(nonAdm);
+        else
+            return vecList2Pari(vL);
+    else if (!zetaregst) {
+        for (let a of nonAdm) {
+            var reg = reg10(a[1]);
+            for (let r of reg) {
+                var s = Fraction(Math.abs(r[0]));
+                if (s != 0)
+                    vL.push([a[0] * r[0], xy2vec(r[1])[0]]);
+            }
+        }
+        return vecList2Pari(vL);
+    } else if (zetaregst) {
+        for (let a of nonAdm) {
+            var reg = reghar10(a[1]);
+            for (let r of reg) {
+                var s = Fraction(Math.abs(r[0]));
+                if (s != 0)
+                    vL.push([a[0] * r[0], xy2vec(r[1])[0]]);
+            }
+        }
+        return vecList2Pari(vL);
+    };
+};
+
+function shouth2zeta() {
+    const elem = document.getElementById('shouth');
+    const t = document.getElementById("tdern").value * 1000;
+    var fejtxt = "";
+    if (!nofejlec)
+        fejtxt = document.getElementById("wform").outerHTML || "";
+    var sh = shouth2pari();
+    var txt = "";
+    if (sh.startsWith("gp")) {
+        sh = sh.replace("+-", "-");
+        txt += sh.slice(4, -2);
+        txt = txt.replaceAll("zetamult([", "&zeta;(");
+        txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&lowast;")
+        txt = txt.replace("=  +", "=")
+
+        elem.innerHTML = fejtxt + txt;
+
+        $('#mycellst1 .sagecell_editor textarea.sagecell_commands').val(sh);
+        $('#mycellst1 .sagecell_input button.sagecell_evalButton').click();
+        $('div.sagecell_sessionOutput').css('font-size', '22px');
+        var ra = setInterval(() => {
+            valasz = $('#ideoutst1 .sagecell_sessionOutput pre').text();
+            if (valasz != "") {
+                clearInterval(ra);
+                clearInterval(to);
+                elem.innerHTML = elem.innerHTML + " = <span style='color:red;font-weight:700;'>" + valasz + "</span>";
+            }
+        }, 50);
+        var to = setTimeout(() => {
+            clearInterval(ra);
+            elem.innerHTML = elem.innerHTML + " &rightarrow; <span style='color:red;font-weight:700;'>A válasz " + t / 1000 + " sec alatt nem érkezett meg.</span>";
+        }, t)
+    } else {
+        elem.innerHTML = fejtxt + sh;
+    }
+};
