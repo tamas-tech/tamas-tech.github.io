@@ -26,7 +26,12 @@ var nofejlec = false;
 var storefej = "";
 var tempstoreback = "";
 var wertekkel = false;
-const shouth2zetabtn = "<div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;'><button id='shouth2zetabtn' onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div id='setregtok'><label for='zetareg'>Regularizálás</label><input type='checkbox' name='zetareg' id='zetareg' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label><label for='tdern' style='vertical-align:middle;'>Válaszidő(sec) = </label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button></div>";
+var ansmode = false;
+var windx = 2;
+var colorvar = 0;
+
+
+const shouth2zetabtn = "<div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;'><button id='shouth2zetabtn' onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div id='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label for='zetareg'>Regularizálás</label><input type='checkbox' name='zetareg' id='zetareg' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label><label for='tdern' style='vertical-align:middle;'>Válaszidő(sec) = </label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button></div>";
 var zetareg = false;
 var reghely = "stuffle";
 
@@ -349,7 +354,7 @@ function kiszamitfp(id) { //fparse alapon
 
 function setWform(b) {
     wertekkel = b;
-    shtuffleW();
+    changeParam();
 };
 
 function derivSelect(e, n) {
@@ -439,6 +444,12 @@ function setParams() {
     woutcoeff = par2tort("woutcoeff");
 };
 
+function changeParam() {
+    setParams();
+    if (!ansmode)
+        shtuffleW();
+};
+
 function makeParamObj() {
     var pobj = {};
     pobj.w1conj = w1conj;
@@ -517,6 +528,7 @@ function stateBack(obj) {
 };
 
 function resetLap() {
+    setOutput2w(false)
     document.getElementById("w1conj").checked = false;
     document.getElementById("w1inv").checked = false;
     document.getElementById("dw1fok").value = '0';
@@ -751,8 +763,15 @@ function storeBack(elem) {
 function w1forma() {
     var coeff = w1coeff
     var txt = "w<sub>1</sub>";
-    if (wertekkel)
+    if (ansmode && windx == 1) {
+        const bbzj = "<span class='wouttokzjbig  left' style='border-color:" + COLORS[colorvar] + ";'></span>";
+        const bjzj = "<span class='wouttokzjbig  right' style='border-color:" + COLORS[colorvar] + ";'></span>";
+        var fejtxt = $('#wform').html().split("→")[0].slice(0, -40).replace("w1tok", "").replace("w2tok", "").replace("w1w2tok", "");
+        var txt = bbzj + fejtxt + bjzj;
+        colorvar++;
+    } else if (wertekkel)
         txt = xy2XYmonom(w2xysor(document.getElementById("w1").value).trim()) // || "( )";
+
     if (w1conj && w1inv)
         if (wertekkel)
             txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>&dagger;</sup>";
@@ -829,10 +848,17 @@ function w1forma() {
 };
 
 function w2forma() {
-    var coeff = w2coeff
+    var coeff = w2coeff;
     var txt = "w<sub>2</sub>";
-    if (wertekkel)
+    if (ansmode && windx == 2) {
+        const bbzj = "<span class='wouttokzjbig  left' style='border-color:" + COLORS[colorvar] + ";'></span>";
+        const bjzj = "<span class='wouttokzjbig  right' style='border-color:" + COLORS[colorvar] + ";'></span>";
+        colorvar++;
+        var fejtxt = $('#wform').html().split("→")[0].slice(0, -40).replace("w1tok", "").replace("w2tok", "").replace("w1w2tok", "") || "";
+        var txt = bbzj + fejtxt + bjzj;
+    } else if (wertekkel)
         txt = xy2XYmonom(w2xysor(document.getElementById("w2").value).trim()) //|| "( )";
+
     if (w2conj && w2inv)
         if (wertekkel)
             txt = "&#x27E8;" + txt.replace("( )", " ") + "&#x27E9;<sup>&dagger;</sup>";
@@ -910,10 +936,14 @@ function w2forma() {
 
 function w1w2forma(allas) {
     //const allas = $('#shH #cshstselecttarto .jtoggler-btn-wrapper.is-active').index() * 1;
+    const bzj = "<span class='wouttokzj left'></span>";
+    const jzj = "<span class='wouttokzj right'></span>";
+    const bbzj = "<span class='wouttokzjbig  left'></span>";
+    const bjzj = "<span class='wouttokzjbig  right'></span>";
     var muvelet = "&bullet;"
     const w1f = w1forma();
     const w2f = w2forma();
-    const vanures = w1f.startsWith("<span id='w1tok'></span>") || w2f.startsWith("<span id='w2tok'></span>");
+    const vanures = $("#w1").val() == "" || $("#w2").val() == "";
     if (wertekkel && vanures)
         muvelet = "";
     else {
@@ -922,10 +952,6 @@ function w1w2forma(allas) {
         if (allas * 1 > 1)
             muvelet = "<span style='font-size:120%;'>&lowast;</span>";
     }
-    const bzj = "<span class='wouttokzj left'></span>";
-    const jzj = "<span class='wouttokzj right'></span>";
-    const bbzj = "<span class='wouttokzjbig  left'></span>";
-    const bjzj = "<span class='wouttokzjbig  right'></span>";
     var zjvan = false;
     var coeff = woutcoeff;
     if (outconj || outinv) {
@@ -1001,7 +1027,10 @@ function w1w2forma(allas) {
         signinfo = '<span class="storeneg">&#x25ac;</span>';
     txt = signinfo + txt;
     storefej = "<span class='storefej'>" + txt + "</span>";
-    txt = "<div id='wform'>" + txt + "</div>";
+    var ch = "";
+    if (ansmode)
+        ch = "checked";
+    txt = "<div id='wform'>" + txt + "<span class='ansbtn'><label for='out2w'>&rightarrow; w<sub id='windxsub'>" + windx + "</sub></label><input type='checkbox'  " + ch + " onchange='setOutput2w(this.checked);' name='out2w' id='out2w' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'></span></div>";
     if (!nofejlec)
         wfejlec = txt;
     else
@@ -1125,6 +1154,15 @@ function polyShuffle(strL1, strL2) {
     return shobj;
 };
 
+function xyShuffleList(strL) {
+    var out = [
+        [1, ""]
+    ];
+    for (let w of strL)
+        out = polyShuffle(out, [w]);
+    return out;
+};
+
 function elojelCsere(str) {
     if (str.startsWith(" −")) {
         str = " +" + str.slice(2);
@@ -1137,7 +1175,7 @@ function elojelCsere(str) {
 function regHighlight(elem) {
     const tartotarto = elem.parentElement.parentElement.id;
     const tarto = elem.parentElement.id;
-    if (tarto == "shoutcontainer")
+    if (tarto == "shouthcontainer")
         return;
     else if (tartotarto == "shoutstore") {
         $("#shoutstore span.hreg.hl").removeClass('hl');
@@ -1313,6 +1351,119 @@ function derivGen(muv) {
     inStore(sh, txt);
 };
 
+// Az ANS gomb implementációja
+
+function setOutput2w(b) {
+    ansmode = b;
+    $("#w1.dumb,#w2.dumb").removeClass('dumb');
+    if (b) {
+        $('.wbtn:not(.kiur)').parent().next('input').addClass('dumb');
+        $("#regtbl,#calcbtn").addClass('ans');
+    } else {
+        $('.wbtn:not(.kiur)').parent().next('input').removeClass('dumb');
+        $("#regtbl,#calcbtn").removeClass('ans');
+        colorvar = 0;
+    }
+};
+
+function shouth2w() {
+    var vL = [];
+    $("#shouth .hreg").each(function() {
+        var xy = this.getAttribute('data-reg');
+        var c = this.getAttribute('data-c') * 1;
+        vL.push([c, xy])
+    });
+    return vL;
+};
+
+function kiszedWOut() {
+    var out = shouth2w();
+    if (windx == 1) {
+        var w = [
+            [1, in2_ci(w2xysor(document.getElementById("w2").value)).toLowerCase()]
+        ];
+        out = out.map(y => [y[0], in1_ci(y[1])])
+        return [out, w]
+    } else {
+        var w = [
+            [1, in1_ci(w2xysor(document.getElementById("w1").value)).toLowerCase()]
+        ];
+        out = out.map(y => [y[0], in2_ci(y[1])])
+        return [w, out]
+    }
+};
+
+function genOutW(muv) {
+    const wout = kiszedWOut();
+    const s1 = wout[0];
+    const s2 = wout[1];
+    const st = muv(s1, s2);
+    const n = doutfok;
+    var fakt = 1;
+    if (doutfakt)
+        fakt *= factorial(n);
+    if (doutfakte)
+        fakt *= Math.pow(-1, n) * factorial(n);
+    //var dst = xyList_Ov(_.flatten(st.map(y => derivHn(y[1], doutfok, doutconj, doutinv).map(z => [z[0] * y[0], z[1]]))));
+    var dst = polyDerivHn(st, doutfok, doutconj, doutinv);
+    const coeff = woutcoeff.mul(w1coeff).mul(w2coeff).div(Fraction(fakt))
+    dst = dst.map(y => [Fraction(y[0]).mul(coeff), xy2XY(y[1])]);
+    if (document.getElementById("xymonom").checked)
+        var txt = formazxyMonom(dst);
+    else
+        var txt = formazxyV(dst, true, true);
+    if (txt.startsWith(" + "))
+        txt = txt.slice(3);
+
+    document.getElementById("shouth").innerHTML = wfejlec + txt + shouth2zetabtn;
+
+    txt = txt.replaceAll("clearOv();setOvelem(this);", "");
+    inStore(dst, txt);
+};
+
+function derivGenOutW(muv) {
+    const wout = kiszedWOut();
+    const w1 = wout[0];
+    const w2 = wout[1];
+    const Y = xy2XY('y');
+    const n1 = dw1fok;
+    const n2 = dw2fok;
+    var cw1 = w1coeff;
+    var cw2 = w2coeff;
+    var cw12 = woutcoeff;
+
+    var coeff = cw1.mul(cw2).mul(cw12);
+    var sh = muv(polyDerivHn(w1, n1, dw1conj, dw1inv), polyDerivHn(w2, n2, dw2conj, dw2inv));
+    var fakt = 1;
+    if (dw1fakt)
+        fakt *= factorial(n1);
+    if (dw1fakte)
+        fakt *= Math.pow(-1, n1) * factorial(n1);
+    if (dw2fakt)
+        fakt *= factorial(n2);
+    if (dw2fakte)
+        fakt *= Math.pow(-1, n2) * factorial(n2);
+
+    if (coeff != 1 || fakt != 1)
+        sh = sh.map(y => [Fraction(y[0]).mul(coeff).div(Fraction(fakt)), y[1]]);
+
+    sh = vLout_ci(sh);
+    if (doutfok > 0) {
+        sh = derivOutHn(sh, doutfok);
+    };
+
+    if (document.getElementById("xymonom").checked)
+        var txt = formazxyMonom(sh);
+    else {
+        var txt = formazxyV(sh, true, true)
+    }
+
+    document.getElementById("shouth").innerHTML = wfejlec + txt + shouth2zetabtn;
+
+    txt = txt.replaceAll("clearOv();setOvelem(this);", "");
+    inStore(sh, txt);
+};
+
 
 /** 
  * EZT MÉG ÁT KELL ÍRNI
@@ -1453,8 +1604,7 @@ function polyConc(m1, m2) {
         for (let y of m2) {
             out.push([x[0] * y[0], x[1] + y[1]])
         }
-    }
-
+    };
     var out1 = _.groupBy(out, y => y[1]);
     out1 = _.mapValues(out1, y => _.sum(y.map(z => z[0])));
     out = [];
@@ -1928,19 +2078,39 @@ function shtuffleW() {
         if (cel.length + cel1.length == 0)
             $('.derivtok').removeClass('dumb');
         if (dw1fok + dw2fok != 0) {
-            if (allas == 2)
-                derivGen(polyStuffle);
-            else if (allas == 0)
-                derivGen(polyShuffle);
-            else if (allas == 1)
-                derivGen(polyConc);
+            if (allas == 2) {
+                if (!ansmode)
+                    derivGen(polyStuffle);
+                else
+                    derivGenOutW(polyStuffle);
+            } else if (allas == 0) {
+                if (!ansmode)
+                    derivGen(polyShuffle);
+                else
+                    derivGenOutW(polyShuffle);
+            } else if (allas == 1) {
+                if (!ansmode)
+                    derivGen(polyConc);
+                else
+                    derivGenOutW(polyConc);
+            }
         } else {
-            if (allas == 2)
-                stuffleW();
-            else if (allas == 0)
-                shuffleW();
-            else if (allas == 1)
-                concW();
+            if (allas == 2) {
+                if (!ansmode)
+                    stuffleW();
+                else
+                    genOutW(polyStuffle);
+            } else if (allas == 0) {
+                if (!ansmode)
+                    shuffleW();
+                else
+                    genOutW(polyShuffle);
+            } else if (allas == 1) {
+                if (!ansmode)
+                    concW();
+                else
+                    genOutW(polyConc);
+            }
         }
     } else if (regvalt == "Ash0")
         formazS0reg(w, "");
@@ -1964,6 +2134,8 @@ function shtuffleW() {
         formazinvreghar10(w);
     else
         elem.innerHTML = regvalt;
+
+    //setOutput2w(false);
 };
 
 function pickKeplet(e) {
@@ -1988,9 +2160,10 @@ function w1w2Csere() {
 };
 
 function setCalcw(e) {
-    if ($(e).hasClass("kiur"))
+    if ($(e).hasClass("kiur")) {
         w1w2Csere();
-    else {
+        changeParam();
+    } else {
         const id = e.id;
         if (id == "calcw1") {
             document.getElementById("calcw2").classList.remove("kiur");
@@ -2001,8 +2174,11 @@ function setCalcw(e) {
             document.getElementById("calcw2").classList.add("kiur");
             regw = "w2";
         }
-        shtuffleW();
+        changeParam();
+        setOutput2w(ansmode);
     }
+    windx = $('.wbtn:not(.kiur)').attr('id').slice(-1) * 1;
+    $('#windxsub').html(windx);
 };
 
 $(document).on('jt:toggled:multi', function(event, target) {
@@ -2038,7 +2214,8 @@ $(document).on('jt:toggled:multi', function(event, target) {
             $('.keplet').removeClass('active');
             $('#alap_keplet.keplet').addClass('active');
             $('#alap_keplet.keplet #muveletjel').html("&bullet;");
-            shtuffleW();
+            if (!ansmode)
+                shtuffleW();
         }
     } else if (id == "regvtarto") {
         var allas = $(target).parent().index();
@@ -2063,7 +2240,8 @@ $(document).on('jt:toggled:multi', function(event, target) {
             closeStore();
         }
     }
-    shtuffleW();
+    if (!ansmode)
+        shtuffleW();
 });
 
 function regValtas() {
@@ -3015,13 +3193,13 @@ function setxyDer(elem, ch) {
         dxcoeff = [];
         for (let str of strv)
             makexCoeff(str);
-        console.log(derivOfX, dxcoeff)
+        //console.log(derivOfX, dxcoeff)
     } else {
         derivOfY = [];
         dycoeff = [];
         for (let str of strv)
             makeyCoeff(str);
-        console.log(derivOfY, dycoeff)
+        //console.log(derivOfY, dycoeff)
     }
 };
 
@@ -3099,6 +3277,10 @@ function derivHn(str, n, conj, inv) {
         for (var j = 0; j < n; j++)
             out = derivH(out, conj, inv);
     return out;
+};
+
+function polyDerivHn(strL, n, conj, inv) {
+    return xyList_Ov(_.flatten(strL.map(y => derivHn(y[1], n, conj, inv).map(z => [y[0] * z[0], z[1]]))))
 };
 
 function derivOutHn(strL, n) {
@@ -3313,6 +3495,7 @@ function shouth2pari() {
                     vL.push([a[0] * r[0], xy2vec(r[1])[0]]);
             }
         }
+        vL = ms_Ov(vL).filter(y => y[0] != 0);
         return vecList2Pari(vL);
     } else if (zetaregst) {
         for (let a of nonAdm) {
@@ -3330,14 +3513,19 @@ function shouth2pari() {
 function shouth2zeta() {
     const elem = document.getElementById('shouth');
     const t = document.getElementById("tdern").value * 1000;
+    const toPari = document.getElementById("onlyPari").checked;
     var fejtxt = "";
     if (!nofejlec)
         fejtxt = document.getElementById("wform").outerHTML || "";
     var sh = shouth2pari();
     var txt = "";
     if (sh.startsWith("gp")) {
-        sh = sh.replace("+-", "-");
+        sh = sh.replace("+-", "-").replaceAll("+", " + ").replaceAll("-", " - ");
         txt += sh.slice(4, -2);
+        if (toPari) {
+            elem.innerHTML = fejtxt + txt;
+            return;
+        };
         txt = txt.replaceAll("zetamult([", "&zeta;(");
         txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&lowast;")
         txt = txt.replace("=  +", "=")
@@ -3413,4 +3601,15 @@ function formazVec3List(vL) {
 function shouth2vec() {
     var elem = document.getElementById("shouth");
     elem.innerHTML = formazVec3List(shouth2vec3());
+};
+
+function copy2Clipboard() {
+    var txt = document.getElementById("shouth").innerText.replaceAll(" ", "");
+    if (!nofejlec)
+        txt = txt.split("\n")[1];
+    navigator.clipboard.writeText(txt);
+    $('#shouth').addClass('villbgdark');
+    setTimeout(() => {
+        $('#shouth').removeClass('villbgdark');
+    }, 300);
 };
