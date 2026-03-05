@@ -65,7 +65,7 @@
 <body>
     <div id="floatkijelzo"></div>
     <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
-        <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shoutcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
+        <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shouthcontainer',this.value);setkijelzoW('helpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <p class="keplet active" id="alap_keplet">w<sub>1</sub><span id="muveletjel" style="font-size:22px;margin:0 3px;vertical-align: middle;">&bullet;</span>w<sub>2</sub></p>
             <p class="keplet" id="reg0_keplet"><span class="kepletvalaszto" data-reg="Ash0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n</sup>) =
@@ -111,7 +111,7 @@
             </div>
         </div>
         <div class="stickblock">
-            <table id="regtbl" class="table-hideable" style="outline: 1px solid #4f4f4f;">
+            <table id="regtbl" class="table-hideable">
                 <tr>
                     <td class="hide-column0" style="text-align: left;">
                         <span style="padding:0 20px 0 10px;font-weight:800">w</span>
@@ -150,62 +150,62 @@
                 </tr>
                 <tr>
                     <td>
-                        <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw1"  class="kiur" onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
-                        <input class="inpvec" oninput="idClear('#shouth');if(!regvalt.startsWith('hom')) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w1" value="xy">
+                        <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw1"  class="wbtn kiur" onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
+                        <input class="inpvec" oninput="if(!regvalt.startsWith('hom')) changeParam();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w1" value="xy">
                     </td>
                     <td>
-                        <input type="checkbox" oninput="setParams();shtuffleW();" id="w1conj" style="height:20px;width:20px;vertical-align:middle;">
+                        <input type="checkbox" oninput="changeParam();" id="w1conj" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input type="checkbox" oninput="setParams();shtuffleW();" id="w1inv" style="height:20px;width:20px;vertical-align:middle;">
+                        <input type="checkbox" oninput="changeParam();" id="w1inv" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="number" id="dw1fok" value="0" min="0" step="1" style="width:45px;" oninput="setParams();shtuffleW();">
+                        <input class="forderiv" type="number" id="dw1fok" value="0" min="0" step="1" style="width:45px;" oninput="changeParam();">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" oninput="setParams();shtuffleW();" id="dw1conj" style="height:20px;width:20px;vertical-align:middle;">
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="dw1conj" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" oninput="setParams();shtuffleW();" id="dw1inv" style="height:20px;width:20px;vertical-align:middle;">
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="dw1inv" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" id="dw1fakt" oninput="setxyFakt(this);setParams();shtuffleW();" style="height:20px;width:20px;vertical-align:middle;">
+                        <input class="forderiv" type="checkbox" id="dw1fakt" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" id="dw1fakte" oninput="setxyFakt(this);setParams();shtuffleW();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
+                        <input class="forderiv" type="checkbox" id="dw1fakte" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
                     </td>
                     <td class="hide-col0">
-                        <input class="forderiv" type="text" id="w1coeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="setParams();shtuffleW();">
+                        <input class="forderiv" type="text" id="w1coeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="changeParam();">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw2"   onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
-                        <input class="inpvec" oninput="idClear('#shouth');if(!regvalt.startsWith('hom')) shtuffleW();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w2" value="yy">
+                        <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw2" class="wbtn"  onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
+                        <input class="inpvec" oninput="if(!regvalt.startsWith('hom')) changeParam();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w2" value="yy">
                     </td>
                     <td>
-                        <input type="checkbox" oninput="setParams();shtuffleW();" id="w2conj" style="height:20px;width:20px;vertical-align:middle;">
+                        <input type="checkbox" oninput="changeParam();" id="w2conj" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input type="checkbox" oninput="setParams();shtuffleW();" id="w2inv" style="height:20px;width:20px;vertical-align:middle;">
+                        <input type="checkbox" oninput="changeParam();" id="w2inv" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="number" id="dw2fok" value="0" min="0" step="1" style="width:45px;" oninput="setParams();shtuffleW();">
+                        <input class="forderiv" type="number" id="dw2fok" value="0" min="0" step="1" style="width:45px;" oninput="changeParam();">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" oninput="setParams();shtuffleW();" id="dw2conj" style="height:20px;width:20px;vertical-align:middle;">
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="dw2conj" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" oninput="setParams();shtuffleW();" id="dw2inv" style="height:20px;width:20px;vertical-align:middle;">
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="dw2inv" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" id="dw2fakt" oninput="setxyFakt(this);setParams();shtuffleW();" style="height:20px;width:20px;vertical-align:middle;">
+                        <input class="forderiv" type="checkbox" id="dw2fakt" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" id="dw2fakte" oninput="setxyFakt(this);setParams();shtuffleW();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
+                        <input class="forderiv" type="checkbox" id="dw2fakte" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
                     </td>
                     <td class="hide-col0">
-                        <input class="forderiv" type="text" id="w2coeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="setParams();shtuffleW();">
+                        <input class="forderiv" type="text" id="w2coeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="changeParam();">
                     </td>
                 </tr>
                 <tr>
@@ -223,36 +223,36 @@
                         </span>
                     </td>
                     <td>
-                        <input type="checkbox" oninput="setParams();shtuffleW();" id="outconj" style="height:20px;width:20px;vertical-align:middle;">
+                        <input type="checkbox" oninput="changeParam();" id="outconj" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input type="checkbox" oninput="setParams();shtuffleW();" id="outinv" style="height:20px;width:20px;vertical-align:middle;">
+                        <input type="checkbox" oninput="changeParam();" id="outinv" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="number" id="doutfok" value="0" min="0" step="1" style="width:45px;" oninput="setParams();shtuffleW();">
+                        <input class="forderiv" type="number" id="doutfok" value="0" min="0" step="1" style="width:45px;" oninput="changeParam();">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" oninput="setParams();shtuffleW();" id="doutconj" style="height:20px;width:20px;vertical-align:middle;">
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="doutconj" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" oninput="setParams();shtuffleW();" id="doutinv" style="height:20px;width:20px;vertical-align:middle;">
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="doutinv" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" id="doutfakt" oninput="setxyFakt(this);setParams();shtuffleW();" style="height:20px;width:20px;vertical-align:middle;">
+                        <input class="forderiv" type="checkbox" id="doutfakt" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;">
                     </td>
                     <td>
-                        <input class="forderiv" type="checkbox" id="doutfakte" oninput="setxyFakt(this);setParams();shtuffleW();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
+                        <input class="forderiv" type="checkbox" id="doutfakte" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
                     </td>
                     <td class="hide-col0">
-                        <input class="forderiv" type="text" id="woutcoeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="setParams();shtuffleW();">
+                        <input class="forderiv" type="text" id="woutcoeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="changeParam();">
                     </td>
                 </tr>
             </table>
         </div>
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
-                <button class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
-                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="idClear('#shouth');" title="Clear output">Clear</button>
+                <button id="calcbtn" class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
+                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="idClear('#shouth');setOutput2w(false);" title="Clear output">Clear</button>
                 <button class="showpre1" id="hideoutbtn" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="tglshouth(this);" title="Toggle output">Hide</button>
                 <button id="tglopts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting'); document.getElementById('hsetting').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });">⚙</button>
                 <span class="derivtok"><button id="tglanims" style="width:fit-content;font-family: Tahoma;font-size:15px;line-height:1;vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('helpanims'); document.getElementById('helpanims').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });">Animations</button></span>
@@ -420,9 +420,11 @@
                     <input type="number" onchange="trimStore();" id="nstore" value="2" min="2" step="1" name="nstore" style="width:45px;vertical-align:middle;">
                     <span id="lstore"></span>
                 <button id="resetstore" class="sbtglbtn" onclick="resetStore()">Reset</button>
+                <!--   <span id="magasito" style="display: inline-block;height: 2.5em;vertical-align: bottom;visibility: hidden;">&nbsp;</span>
+                </span> -->
             </div>
         </div>
-        <div id="shoutcontainer" style="max-width:100vw">
+        <div id="shouthcontainer" style="max-width:100vw">
             <p id="figysh" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
             <p id="shouth" style="outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:0 5px 5px 5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
             <p id="shoutstore"></p>
@@ -443,10 +445,17 @@
     <span id="buttonb" class=""><span class="blepteto" onclick="sugotLeptet();">▶</span><span class="blepteto" onclick="sugoStop();" style="padding:5px 7px 5px 5px;">⏹</span><span style="display:inline-block;width: 40px;" id="blepeskijelzo"></span>
     <span id="blepesall">/ </span>
     </span>
-    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="helpTglafh1('helpbarh1');" title="Open/Close help">Toggle help</button>
-    <button class="showpre1" style="position:relative;top:-46px;width:96px;margin-left:10px;margin-top:10px;" onclick="html2string();store2string();" title="Open/Close help">Plain string</button>
-    <div id="helpbarh1" style="display:none;position:relative;top:-30px;margin:5px;width:calc(100% - 0px);min-height:200px;">
-        <iframe name="helpframe" width="99%" height="100%" src="../docs/base_of_halgebra_1.pdf" style="width:99%;height:100vh;border:none;"></iframe>
+    <div id="helpcontainer" style="max-width:100vw;position:relative;top:-55px;">
+        <div class="stickblock">
+            <div class="nobr" style="padding:3px;">
+                <button class="showpre1" style="width:96px;margin-top:10px;" onclick="helpTglafh1('helpbarh1');" title="Open/Close help">Toggle help</button>
+                <button class="showpre1" style="width:96px;margin-left:8px;margin-top:10px;" onclick="html2string();store2string();" title="Open/Close help">Plain string</button>
+                <button class="showpre1" style="width:96px;margin-left:8px;margin-top:10px;" onclick="copy2Clipboard();" title="Open/Close help">Copy</button>
+            </div>
+            <div id="helpbarh1" style="display:none;position:relative;margin:5px;width:calc(100% - 0px);min-height:200px;">
+                <iframe name="helpframe" width="99%" height="100%" src="../docs/base_of_halgebra_1.pdf" style="width:99%;height:100vh;border:none;"></iframe>
+            </div>
+        </div>
     </div>
     <script>
         $(document).ready(() => {
@@ -456,6 +465,10 @@
             if (!$(e.target).hasClass("storeback active") && !$(e.target).hasClass("storeback atiro"))
                 cancelBack();
         });
+        $(document).on('click', function(e) {
+            if (!sugorun && !$(e.target).hasClass("hreg hl"))
+                $("#floatkijelzo").css("display", "none");
+        });
         updLstore();
         setTimeout(() => {
             $('#w1coeff').trigger('change');
@@ -464,6 +477,7 @@
 </body>
 
 </html>
+
 
 
 
