@@ -34,6 +34,7 @@ function fnploadjsOK(file) {
 function sugoStop() {
     console.log("most megállít")
     lepessoronkov = 1;
+    sugorun = false;
     $('body,body input:not([type="text"]),body .sbtglbtn,body input[type="text"].forderiv').css({
         'pointer-events': '',
         'filter': 'none',
