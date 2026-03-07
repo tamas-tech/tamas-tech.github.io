@@ -27,7 +27,7 @@ function fnploadjsOK(file) {
     script.id = "fnpsugos";
     document.body.appendChild(script);
     console.log(script)
-    resetNoForm();
+    resetLap();
     initLepes();
 };
 
@@ -117,4 +117,5 @@ function sugotLeptet() {
         };
     } else
         sugoStop();
+
 };
