@@ -3115,6 +3115,16 @@ table#animtbl .animkeplet {
     box-shadow: 0px 0px 10px 1px #373737e0;
 }
 
+#noAdm {
+    display: block;
+    border: 1px solid #ccc;
+    min-height: 10px;
+}
+
+#noAdm.hidden {
+    max-height: 40px;
+    overflow: auto;
+}
 
 
 
