@@ -3117,14 +3117,16 @@ table#animtbl .animkeplet {
 
 #noAdm {
     display: block;
-    border: 1px solid #ccc;
-    min-height: 10px;
+  border: 1px solid #a1b998;
+min-height: 10px;
+background-color: #eaeaea;
 }
 
 #noAdm.hidden {
     max-height: 40px;
     overflow: auto;
 }
+
 
 
 
