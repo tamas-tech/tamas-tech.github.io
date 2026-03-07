@@ -31,7 +31,7 @@ var windx = 2;
 var colorvar = 0;
 
 
-const shouth2zetabtn = "<div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;'><button id='shouth2zetabtn' onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div id='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label for='zetareg'>Regularizálás</label><input type='checkbox' name='zetareg' id='zetareg' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label><label for='tdern' style='vertical-align:middle;'>Válaszidő(sec) = </label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button></div>";
+const shouth2zetabtn = "<div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;'><button id='shouth2zetabtn' onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div id='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label for='zetareg'>Regularizálás</label><input type='checkbox' name='zetareg' id='zetareg' onchange='shouthReg();' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label><label for='tdern' style='vertical-align:middle;'>Válaszidő(sec) = </label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button></div>";
 var zetareg = false;
 var reghely = "stuffle";
 
@@ -3025,6 +3025,8 @@ function html2string() {
     var txt = elem.innerHTML;
     txt = txt.replace(/[·|]/g, "");
     txt = txt.replace(/\<sup\>(\d+)\<\/sup\>/g, "^$1 ");
+    //maple forma
+    txt = txt.replaceAll("(", "x[[").replaceAll(")", "]]");
     elem.innerHTML = txt;
 };
 
@@ -3466,10 +3468,54 @@ function xyn(n) {
     return out;
 };
 
-function shouth2pari() {
-    const zetareg = document.getElementById("zetareg").checked;
+function shouthReg() {
+    const elem = document.getElementById("shouth");
     const zetaregst = document.getElementById("zetaregsht").checked;
     var vL = [];
+    var nonAdm = [];
+    $("#shouth .hreg").each(function() {
+        var xy = this.getAttribute('data-reg');
+        var c = this.getAttribute('data-c') * 1;
+        if (xy.startsWith("x") && xy.endsWith("y")) {
+            vL.push([c, xy])
+        } else {
+            nonAdm.push([c, xy])
+        }
+    });
+
+    if (!zetaregst) {
+        if (nonAdm.length > 0)
+            for (let a of nonAdm) {
+                var reg = reg10(a[1]);
+                for (let r of reg) {
+                    var s = Fraction(Math.abs(r[0]));
+                    if (s != 0)
+                        vL.push([a[0] * r[0], r[1]]);
+                }
+            };
+        console.log(vL)
+        vL = xyList_Ov(vL).filter(y => y[0] != 0);
+    } else if (zetaregst) {
+        if (nonAdm.length > 0)
+            for (let a of nonAdm) {
+                var reg = reghar10(a[1]);
+                for (let r of reg) {
+                    var s = Fraction(Math.abs(r[0]));
+                    if (s != 0)
+                        vL.push([a[0] * r[0], r[1]]);
+                }
+            };
+        vL = xyList_Ov(vL).filter(y => y[0] != 0);
+    };
+    var txt = formazxyV(vL, true, true);
+    elem.innerHTML = txt;
+    inStore(vL, txt);
+};
+
+function shouth2pari() {
+    const zetaregst = document.getElementById("zetaregsht").checked;
+    var vL = [];
+    var noA = "";
     var nonAdm = [];
     $("#shouth .hreg").each(function() {
         var xy = this.getAttribute('data-reg');
@@ -3481,12 +3527,10 @@ function shouth2pari() {
             nonAdm.push([c, xy])
         }
     });
-    if (!zetareg)
-        if (nonAdm.length > 0)
-            return "A kimenet tartalmazott olyan szavakat amelyek non-admissible vektorokat eredményeznek:<br/>" + JSON.stringify(nonAdm);
-        else
-            return vecList2Pari(vL);
-    else if (!zetaregst) {
+    if (nonAdm.length > 0)
+        noA = "<div style='font-size:80%;color:#187568;'>A kimenet tartalmazott olyan szavakat amelyek non-admissible vektorokat reprezentálnak:<br/>" + JSON.stringify(nonAdm) + "<br/> Ezeknek a shuffle-regularizáltjait vettük</div>";
+
+    if (!zetaregst) {
         for (let a of nonAdm) {
             var reg = reg10(a[1]);
             for (let r of reg) {
@@ -3496,7 +3540,6 @@ function shouth2pari() {
             }
         }
         vL = ms_Ov(vL).filter(y => y[0] != 0);
-        return vecList2Pari(vL);
     } else if (zetaregst) {
         for (let a of nonAdm) {
             var reg = reghar10(a[1]);
@@ -3506,8 +3549,9 @@ function shouth2pari() {
                     vL.push([a[0] * r[0], xy2vec(r[1])[0]]);
             }
         }
-        return vecList2Pari(vL);
+        vL = ms_Ov(vL).filter(y => y[0] != 0);
     };
+    return [vecList2Pari(vL), noA];
 };
 
 function shouth2zeta() {
@@ -3517,7 +3561,9 @@ function shouth2zeta() {
     var fejtxt = "";
     if (!nofejlec)
         fejtxt = document.getElementById("wform").outerHTML || "";
-    var sh = shouth2pari();
+    var shnoa = shouth2pari();
+    var sh = shnoa[0];
+    const noA = shnoa[1];
     var txt = "";
     if (sh.startsWith("gp")) {
         sh = sh.replace("+-", "-").replaceAll("+", " + ").replaceAll("-", " - ");
@@ -3530,7 +3576,7 @@ function shouth2zeta() {
         txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&lowast;")
         txt = txt.replace("=  +", "=")
 
-        elem.innerHTML = fejtxt + txt;
+        elem.innerHTML = fejtxt + noA + "<hr/>" + txt;
 
         $('#mycellst1 .sagecell_editor textarea.sagecell_commands').val(sh);
         $('#mycellst1 .sagecell_input button.sagecell_evalButton').click();
@@ -3605,7 +3651,7 @@ function shouth2vec() {
 
 function copy2Clipboard() {
     var txt = document.getElementById("shouth").innerText.replaceAll(" ", "");
-    if (!nofejlec)
+    if (!nofejlec && txt.indexOf("\n") > 0)
         txt = txt.split("\n")[1];
     navigator.clipboard.writeText(txt);
     $('#shouth').addClass('villbgdark');
