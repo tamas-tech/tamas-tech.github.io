@@ -3512,6 +3512,10 @@ function shouthReg() {
     inStore(vL, txt);
 };
 
+function togglenoAdm() {
+    $("#noAdm").toggleClass('hidden')
+};
+
 function shouth2pari() {
     const zetaregst = document.getElementById("zetaregsht").checked;
     var vL = [];
@@ -3528,7 +3532,7 @@ function shouth2pari() {
         }
     });
     if (nonAdm.length > 0)
-        noA = "<div style='font-size:80%;color:#187568;'>A kimenet tartalmazott olyan szavakat amelyek non-admissible vektorokat reprezentálnak:<br/>" + JSON.stringify(nonAdm) + "<br/> Ezeknek a shuffle-regularizáltjait vettük</div><hr/>";
+        noA = "<div style='font-size:80%;color:#187568;'>A kimenet tartalmazott olyan szavakat amelyek non-admissible vektorokat reprezentálnak:<div id='noAdm' onclick='togglenoAdm();'>" + JSON.stringify(nonAdm) + "</div> Ezeknek a shuffle-regularizáltjait vettük</div><hr/>";
 
     if (!zetaregst) {
         for (let a of nonAdm) {
