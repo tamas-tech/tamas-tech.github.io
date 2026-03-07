@@ -3473,6 +3473,7 @@ function shouthReg() {
     const zetaregst = document.getElementById("zetaregsht").checked;
     var vL = [];
     var nonAdm = [];
+    var regjel = "&lowast;";
     $("#shouth .hreg").each(function() {
         var xy = this.getAttribute('data-reg');
         var c = this.getAttribute('data-c') * 1;
@@ -3484,6 +3485,7 @@ function shouthReg() {
     });
 
     if (!zetaregst) {
+        regjel = "⧢";
         if (nonAdm.length > 0)
             for (let a of nonAdm) {
                 var reg = reg10(a[1]);
@@ -3509,6 +3511,7 @@ function shouthReg() {
     };
     var txt = formazxyV(vL, true, true);
     elem.innerHTML = txt;
+    txt = "<div class='reglabel'>(reg<sup>10</sup><sub><span class='shstlabel'>" + regjel + "</span></sub>) &rightarrow; </div>" + txt;
     inStore(vL, txt);
 };
 
