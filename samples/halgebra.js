@@ -30,8 +30,8 @@ var ansmode = false;
 var windx = 2;
 var colorvar = 0;
 
+const shouth2zetabtn = "<table width='100%' id='detTable' style='cursor:pointer;background-color:transparent;width: fit-content;'><tr class='parent'><td style='padding:0 50px 0 10px;border: 1px solid #999;border-radius: 10px;display: inline-block;' onclick='toggleTableRow_det(this)'>...<span id='ddcimke' style='margin-left:20px;'></span></td></tr><tr class='child' style='display: none;'><td><div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;width: 100%;'><button id='shouth2zetabtn'  onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div class='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:10px;'><label for='tdern' style='vertical-align:middle;margin-right:3px;'>t(sec)</label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div class='setregtok' style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%;padding-bottom: 3px;'><button id='shouthregbtn' onclick='shouthReg();'>reg( )</button><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button></div></td></tr></table>"
 
-const shouth2zetabtn = "<div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;'><button id='shouth2zetabtn' onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div id='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label for='zetareg'>Regularizálás</label><input type='checkbox' name='zetareg' id='zetareg' onchange='shouthReg();' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label><label for='tdern' style='vertical-align:middle;'>Válaszidő(sec) = </label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button></div>";
 var zetareg = false;
 var reghely = "stuffle";
 
@@ -3528,7 +3528,7 @@ function shouth2pari() {
         }
     });
     if (nonAdm.length > 0)
-        noA = "<div style='font-size:80%;color:#187568;'>A kimenet tartalmazott olyan szavakat amelyek non-admissible vektorokat reprezentálnak:<br/>" + JSON.stringify(nonAdm) + "<br/> Ezeknek a shuffle-regularizáltjait vettük</div>";
+        noA = "<div style='font-size:80%;color:#187568;'>A kimenet tartalmazott olyan szavakat amelyek non-admissible vektorokat reprezentálnak:<br/>" + JSON.stringify(nonAdm) + "<br/> Ezeknek a shuffle-regularizáltjait vettük</div><hr/>";
 
     if (!zetaregst) {
         for (let a of nonAdm) {
@@ -3576,7 +3576,7 @@ function shouth2zeta() {
         txt = txt.replaceAll("])", ")").replaceAll("+", " + ").replaceAll("-", " − ").replaceAll("*", "&lowast;")
         txt = txt.replace("=  +", "=")
 
-        elem.innerHTML = fejtxt + noA + "<hr/>" + txt;
+        elem.innerHTML = fejtxt + noA + txt;
 
         $('#mycellst1 .sagecell_editor textarea.sagecell_commands').val(sh);
         $('#mycellst1 .sagecell_input button.sagecell_evalButton').click();
