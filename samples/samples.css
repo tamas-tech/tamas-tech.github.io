@@ -3138,6 +3138,32 @@ background-color: #eaeaea;
     line-height: 0.8;
 }
 
+#shouth #kmtbl td {
+    border: 1px solid #d8d8d8;
+}
+
+#kmkijelzo {
+    margin-top: 10px;
+    border: 1px solid #c4c4c4;
+    padding: 0 5px;
+    background-color: #fff
+}
+
+#descout .desctbl {
+    margin-bottom: 20px;
+    outline: 2px solid #ccc;
+}
+
+#descout .desctbl td {
+    border: 1px solid #d8d8d8;
+    text-align: center;
+}
+
+#descout .desctbl td.sorsz {
+    font-size: 80%;
+    color: #979797;
+    text-align: left;
+}
 
 
 
