@@ -30,7 +30,7 @@ var ansmode = false;
 var windx = 2;
 var colorvar = 0;
 
-const shouth2zetabtn = "<table width='100%' id='detTable' style='cursor:pointer;background-color:transparent;width: fit-content;'><tr class='parent'><td style='padding:0 50px 0 10px;border: 1px solid #999;border-radius: 10px;display: inline-block;' onclick='toggleTableRow_det(this)'>...<span id='ddcimke' style='margin-left:20px;'></span></td></tr><tr class='child' style='display: none;'><td><div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;width: 100%;'><button id='shouth2zetabtn'  onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div class='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:10px;'><label for='tdern' style='vertical-align:middle;margin-right:3px;'>t(sec)</label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div class='setregtok' style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%;padding-bottom: 3px;'><button id='shouthregbtn' onclick='shouthReg();'>reg( )</button><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button></div></td></tr></table>"
+const shouth2zetabtn = "<table width='100%' id='detTable' style='cursor:pointer;background-color:transparent;width: fit-content;'><tr class='parent'><td style='padding:0 50px 0 10px;border: 1px solid #999;border-radius: 10px;display: inline-block;' onclick='toggleTableRow_det(this)'>...<span id='ddcimke' style='margin-left:20px;'></span></td></tr><tr class='child' style='display: none;'><td><div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;width: 100%;'><button id='shouth2zetabtn'  onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div class='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:10px;'><label for='tdern' style='vertical-align:middle;margin-right:3px;'>t(sec)</label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div class='setregtok' style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%;padding-bottom: 3px;'><button id='shouthregbtn' onclick='shouthReg();'>reg( )</button><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button><button id='kimutatasbtn' onclick='shouthKimutatas();'>&#x25A4;</button></div></td></tr></table>"
 
 var zetareg = false;
 var reghely = "stuffle";
@@ -1310,6 +1310,7 @@ function shuffleW() {
 };
 
 function derivGen(muv) {
+    console.log("derivgenben vagyunk")
     const w1 = in1_ci(w2xysor(document.getElementById("w1").value));
     const w2 = in2_ci(w2xysor(document.getElementById("w2").value));
     const Y = xy2XY('y');
@@ -1320,7 +1321,9 @@ function derivGen(muv) {
     var cw12 = woutcoeff;
 
     var coeff = cw1.mul(cw2).mul(cw12);
+    //console.log(derivHn(w1, n1, dw1conj, dw1inv))
     var sh = muv(derivHn(w1, n1, dw1conj, dw1inv), derivHn(w2, n2, dw2conj, dw2inv));
+    //console.log(sh)
     var fakt = 1;
     if (dw1fakt)
         fakt *= factorial(n1);
@@ -1451,13 +1454,11 @@ function derivGenOutW(muv) {
     if (doutfok > 0) {
         sh = derivOutHn(sh, doutfok);
     };
-
     if (document.getElementById("xymonom").checked)
         var txt = formazxyMonom(sh);
     else {
         var txt = formazxyV(sh, true, true)
     }
-
     document.getElementById("shouth").innerHTML = wfejlec + txt + shouth2zetabtn;
 
     txt = txt.replaceAll("clearOv();setOvelem(this);", "");
@@ -1579,6 +1580,7 @@ function concW() {
     if (doutfakte)
         fakt *= Math.pow(-1, n) * factorial(n);
     var dst = derivHn(st, doutfok, doutconj, doutinv);
+
     const coeff = woutcoeff.mul(w1coeff).mul(w2coeff).div(Fraction(fakt))
     dst = dst.map(y => [Fraction(y[0]).mul(coeff), xy2XY(y[1])]);
     if (document.getElementById("xymonom").checked)
@@ -1598,7 +1600,7 @@ function polyConc(m1, m2) {
     var out = [];
     if (m2 == undefined)
         m2 = [
-            [1, ""]
+            [1, "", [0, "x"]]
         ];
     for (let x of m1) {
         for (let y of m2) {
@@ -1609,7 +1611,7 @@ function polyConc(m1, m2) {
     out1 = _.mapValues(out1, y => _.sum(y.map(z => z[0])));
     out = [];
     _.forEach(out1, function(value, key) {
-        out.push([value * 1, key]);
+        out.push([value * 1, key, key[1]]);
     });
     return out;
 };
@@ -2077,7 +2079,7 @@ function shtuffleW() {
         const cel1 = $('#shoutstore .storeback.atiro');
         if (cel.length + cel1.length == 0)
             $('.derivtok').removeClass('dumb');
-        if (dw1fok + dw2fok != 0) {
+        if ((dw1fok + dw2fok) != 0) {
             if (allas == 2) {
                 if (!ansmode)
                     derivGen(polyStuffle);
@@ -3660,9 +3662,255 @@ function copy2Clipboard() {
     var txt = document.getElementById("shouth").innerText.replaceAll(" ", "");
     if (!nofejlec && txt.indexOf("\n") > 0)
         txt = txt.split("\n")[1];
+    //txt = txt.replace(/[·|]/g, "").replaceAll("(", "x[[").replaceAll(")", "]]");;
     navigator.clipboard.writeText(txt);
     $('#shouth').addClass('villbgdark');
     setTimeout(() => {
         $('#shouth').removeClass('villbgdark');
     }, 300);
 };
+
+var kmVecs = [];
+
+function showVecs(elem, i, vec) {
+    const kijelzo = document.getElementById("kmkijelzo");
+    $('#shouth #kmtbl td.keresztelem').removeClass('keresztelem');
+    $(elem).addClass('keresztelem');
+    var vecs = kmVecs[i]
+    var txt = "";
+    if (!vec)
+        for (let v of vecs)
+            txt += xy2XYmonom(v) + ", ";
+    else
+        for (let v of vecs) {
+            var w = xy2vec(v);
+            if (w[1] == "x")
+                txt += "(" + w[0] + ")<sub>x</sub>, ";
+            else
+                txt += "(" + w[0] + "), ";
+        }
+    kijelzo.innerHTML = txt.slice(0, -2);
+};
+
+function shouthKimutatas() {
+    kmVecs = [];
+    const elem = document.getElementById("shouth");
+    var vL = [];
+    $("#shouth .hreg").each(function() {
+        var xy = this.getAttribute('data-reg');
+        var c = this.getAttribute('data-c') * 1;
+        vL.push([c, xy])
+    });
+
+    var c = [];
+    var db = [];
+    var gV = _.groupBy(vL, y => y[0]);
+
+    _.forEach(gV, function(value, key) {
+        c.push(key);
+        var vl = value.map(y => y[1])
+        db.push(vl.length);
+        kmVecs.push(vl);
+    });
+    const n = c.length;
+    tbl = "<table id='kmtbl' class='table-hideable' style='font-family:KatexMath;'><tr><td>C</td>";
+    for (var i = 0; i < n; i++)
+        tbl += "<td onclick='showVecs(this," + i + ",true)'>" + c[i] + "</td>";
+    tbl += "<td style='font-weight:800;'>&sum;</td></tr><tr><td>#</td>";
+    for (var j = 0; j < n; j++)
+        tbl += "<td onclick='showVecs(this," + j + ",false)'>" + db[j] + "</td>";
+    tbl += "<td style='font-weight:800;'>" + _.sum(db) + "</td></tr></table>";
+    const kijel = "<div id ='kmkijelzo'></div>";
+    elem.innerHTML = tbl + kijel;
+}
+
+// tree of derivation
+
+function tree_strList_Ov(st) {
+    st = _.groupBy(st, y => y[1][0]);
+    var stobj = [];
+    _.forEach(st, function(val, key) {
+        var derivpath = _.flatten(val.map(z => z[1][1]));
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            stobj.push([s, [key, derivpath]]);
+        };
+    });
+    return stobj;
+};
+
+function tree_wordDer(wpath, coeff) {
+    var w = wpath[0];
+    var path = wpath[1];
+    const n = w.length;
+    var out = [];
+    for (var i = 0; i < n; i++) {
+        var xy = w.charAt(i);
+        if (xy == "x") {
+            for (var j = 0; j < derivOfX.length; j++)
+                out.push([coeff * dxcoeff[j],
+                    [cserelAt(w, i, derivOfX[j]), [...path, [w, i, xy]]]
+                ]);
+        } else {
+            for (var j = 0; j < derivOfY.length; j++)
+                out.push([coeff * dycoeff[j],
+                    [cserelAt(w, i, derivOfY[j]), [...path, [w, i, xy]]]
+                ]);
+        }
+    }
+    console.log(out)
+        //document.getElementById("shouth").innerHTML = JSON.stringify(out)
+    out = tree_strList_Ov(out);
+    return out;
+};
+
+function tree_derivH(strpathL) {
+    var der = [];
+    for (let v of strpathL) {
+        der.push(tree_wordDer(v[1], v[0]));
+    };
+    der = tree_strList_Ov(_.flatten(der));
+    return der;
+};
+
+function tree_derivHn(strpath, n) {
+    var out = [
+        [1, strpath]
+    ];
+    if (n > 0 /*&& str.length > 0*/ )
+        for (var j = 0; j < n; j++)
+            out = tree_derivH(out);
+    document.getElementById("shouth").innerHTML = JSON.stringify(out)
+    return out;
+};
+
+function tree_xyList_Ov(st) {
+    st = _.groupBy(st, y => y[1]);
+    var stobj = [];
+    _.forEach(st, function(val, key) {
+        var s = _.sum(val.map(y => y[0]));
+        if (s != 0) {
+            stobj.push([s, xy2XY(key)]);
+        };
+    });
+    return stobj;
+};
+
+function tree_polyDerivHn(strL, n, conj, inv) {
+    return tree_xyList_Ov(_.flatten(strL.map(y => tree_derivHn(y[1], n, conj, inv).map(z => [y[0] * z[0], z[1]]))))
+};
+
+// descends of permutations
+
+function setOutputFontDesc(v) {
+    var elem = document.getElementById("descout");
+    elem.style.fontSize = v + 'px';
+};
+
+function descA(S, n) {
+    var m = 1;
+    const N = S.length;
+    if (N > 0) {
+        m = factorial(n) / factorial(S[0]);
+        for (var j = 0; j < N - 1; j++)
+            m /= factorial(S[j + 1] - S[j]);
+        m /= factorial(n - S[N - 1]);
+    }
+    return m;
+};
+
+function descB(S, n) {
+    const P = powerSet(S);
+    const e = Math.pow(-1, S.length);
+    var descB = 0;
+    for (let T of P)
+        descB += Math.pow(-1, T.length) * descA(T, n);
+    return e * descB;
+};
+
+function desW(str, m) {
+    const w = str.slice(1, -1);
+    const N = Math.floor(w.length / m);
+    var S = [];
+    for (var j = 0; j <= N; j++)
+        if (w.charAt(j * m - 1) == 'x')
+            S.push(j);
+    console.log(S, N + 1)
+    return Math.pow(-1, S.length) * descA(S, N + 1);
+};
+
+function drawBinomialMiddle(n, k) {
+    return "<span style='margin-right:3px;display:inline-block;vertical-align:middle;border-left: 2px solid;border-right: 2px solid;border-radius: calc(min(30%,10px));'><table style='border-collapse: collapse;margin: 0 5px;'><tr><td style='text-align:center;'>" + n + "</td></tr><tr><td>" + k + "</td></tr></table></span>";
+};
+
+function descSn() {
+    const elem = document.getElementById("descout");
+    const n = document.getElementById("descN").value * 1;
+    const ab = document.getElementById("setDesc").checked;
+    var out = "";
+    var s = document.getElementById("descS").value;
+    if (s.trim().endsWith(","))
+        return;
+    var S = [];
+
+    try {
+        S = _.sortBy(_.uniq(JSON.parse("[" + s + "]")));
+        const N = S.length;
+        if (Math.max(...S) > n - 1)
+            out = "S = {" + S + "} maximális értéke legfeljebb n -1 = " + (n - 1) + " lehet."
+        else if (ab) {
+            const er = descA(S, n);
+            out += "&alpha;({" + S + "}," + n + ") = " + er + "<hr/>";
+
+            out += "&Delta;S = (S<sub>1</sub> - 0, ";
+            for (var i = 1; i < N; i++)
+                out += "S<sub>" + (i + 1) + "</sub> - S<sub>" + i + "</sub>, ";
+            out += "n - S<sub>" + N + "</sub>) = ";
+
+            out += "(" + S[0] + " - 0, ";
+            for (var i = 1; i < N; i++)
+                out += S[i] + " - " + S[i - 1] + ", "
+            out += n + " - " + S[N - 1] + ") = ";
+
+            var dsor = "";
+            dsor += S[0] + ", ";
+            for (var i = 1; i < N; i++)
+                dsor += (S[i] - S[i - 1]) + ", ";
+            dsor += (n - S[N - 1]);
+            out += "(" + dsor + ")<br/><br/>";
+            out += drawBinomialMiddle("n", "&Delta;S") + " = " + drawBinomialMiddle(n, dsor) + " = ";
+
+            let dsorf = dsor.replaceAll(",", "!&middot;") + "!";
+            out += formazottTortHTML(n + "!", dsorf) + " = ";
+
+            let fsor = factorial(S[0] * 1) + "&middot;";
+            for (var i = 1; i < N; i++)
+                fsor += factorial(S[i] - S[i - 1]) + "&middot;";
+            fsor += factorial(n - S[N - 1]);
+            const fakt = factorial(n);
+            out += formazottTortHTML(fakt, fsor) + " = " + er;
+        } else {
+            const er = descB(S, n);
+            const N = S.length;
+            const P = _.sortBy(powerSet(S), y => y.length);
+            const e = Math.pow(-1, N);
+            var err = er;
+            if (e == -1)
+                err = "(−" + er + ")";
+            out += "&beta;({" + S + "}," + n + ") = " + er + "<hr/>"
+
+            out += "<table class='desctbl'><tr style='background-color:#ddd;'><td colspan='2'>T</td><td>(-1)<sup>|T|</sup>&middot;&alpha;(T,n)</td></tr>"
+            var szamlalo = 1;
+            for (let T of P) {
+                out += "<tr><td class='sorsz'>" + szamlalo + ".</td><td>{" + T + "}</td><td>" + Math.pow(-1, T.length) * descA(T, n) + "</td></tr>";
+                szamlalo++;
+            }
+            out += "<tr style='font-weight:800;background-color:#ddd;'><td colspan='2'>&sum;</td><td>" + e * er + "</td></tr></table>";
+            out += "&beta;({" + S + "}, " + n + ") = (-1)<sup>|{" + S + "}|</sup>&sum;<sub>T&subseteq;{" + S + "}</sub> &alpha;(T," + n + ") = (-1)<sup>" + N + "</sup>&middot;" + err + " = " + er;
+        }
+    } catch (error) {
+        out = "S = {" + document.getElementById("descS").value + "}; n = " + n + "."
+    };
+
+    elem.innerHTML = out;
+}
