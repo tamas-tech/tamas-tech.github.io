@@ -353,14 +353,14 @@
                     </div>
                     <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;">
                         <label for="xymonom">xxxyy&rightarrow;x<sup>3</sup>y<sup>2</sup></label>
-                        <input type="checkbox" name="xymonom" oninput="set2monom(this);shtuffleW();" id="xymonom" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                        <input type="checkbox" name="xymonom" oninput="set2monom(this);shtuffleWans();" id="xymonom" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
                     </div>
                     <div style="padding: 5px 0;">
                         <label for="derxy">A derivált megadása:</label>
                     </div>
                     <div style="padding: 5px 0;">
                         <label for="setdX">x&rightarrow;</label>
-                        <input type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');shtuffleW();" onfocus="resetSelectDiff();" id="setdX" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:15px;font-size: 100%;padding-bottom: 5px;">
+                        <input type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');shtuffleWans();" onfocus="resetSelectDiff();" id="setdX" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:15px;font-size: 100%;padding-bottom: 5px;">
                         <label for="selectdiff">&part;,d,...</label>
                         <select id="selectdiff" onchange="derivSelect(this,1);" style="height:30px;border:none;border-bottom: 1px solid #7c7c7c;font-size:90%;background-color:inherit;text-align:center;margin-right:10px;">
                             <option value="none">Egyik sem</option>
@@ -378,16 +378,16 @@
                     </div>
                     <div style="padding: 5px 0;">
                         <label for="setdY">y&rightarrow;</label>
-                        <input type="text" name="setdY" value="xy" onchange="setxyDer(this,'y');shtuffleW();" onfocus="resetSelectDiff();" id="setdY" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
+                        <input type="text" name="setdY" value="xy" onchange="setxyDer(this,'y');shtuffleWans();" onfocus="resetSelectDiff();" id="setdY" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
                     </div>
                 </div>
                 <div id="xXsetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                     <label for="xX">xy | XY</label>
-                    <input type="checkbox" name="xX" onchange="shtuffleW();" id="xX" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">|
+                    <input type="checkbox" name="xX" onchange="shtuffleWans();" id="xX" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">|
                     <label for="setX">x&rightarrow;</label>
-                    <input list="chars" type="text" name="setX" value="" onchange="shtuffleW();" id="setX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
+                    <input list="chars" type="text" name="setX" value="" onchange="shtuffleWans();" id="setX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
                     <label for="setY">y&rightarrow;</label>
-                    <input list="chars" type="text" name="setY" value="" onchange="shtuffleW();" id="setY" style="height:20px;width:60px;vertical-align:middle;text-align:center;font-size: 100%;padding-bottom: 5px;">
+                    <input list="chars" type="text" name="setY" value="" onchange="shtuffleWans();" id="setY" style="height:20px;width:60px;vertical-align:middle;text-align:center;font-size: 100%;padding-bottom: 5px;">
                     <datalist id="chars">
                         <option value="&rightarrow;"></option>
                         <option value="&downarrow;"></option>
@@ -405,7 +405,7 @@
                 </div>
                 <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
                     <label for="setfejlec">Fejlécek tiltása a kimenetben</label>
-                    <input type="checkbox" name="setfejlec" oninput="setFejlec(this);shtuffleW();" id="setfejlec" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                    <input type="checkbox" name="setfejlec" oninput="setFejlec(this);shtuffleWans();" id="setfejlec" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
                 </div>
                 <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
                     <label for="setresetform" style="vertical-align: middle;">Reset után a formázás marad</label>
@@ -414,7 +414,7 @@
             </div>
             <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
                 <span class="derivtok">
-                    <button id="setsign"  class="sbtglbtn dumb" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" onclick="storeSign(this);shtuffleW();">+</button>
+                    <button id="setsign"  class="sbtglbtn dumb" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" onclick="storeSign(this);shtuffleWans();">+</button>
                     <button id="storeinbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn" onclick="shiftStore();">&#x2356;</button>
                     <button id="storebackbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn dumb" onclick="undoStore();">&#x234F;</button>
                     <button id="storetglbtn" style="vertical-align:middle;margin-left:10px;padding:0 2px;font-size:20px;" class="sbtglbtn" onclick=" tglStore(this);">&#128448;</button>
@@ -523,6 +523,7 @@
 </body>
 
 </html>
+
 
 
 
