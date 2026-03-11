@@ -1310,7 +1310,6 @@ function shuffleW() {
 };
 
 function derivGen(muv) {
-    console.log("derivgenben vagyunk")
     const w1 = in1_ci(w2xysor(document.getElementById("w1").value));
     const w2 = in2_ci(w2xysor(document.getElementById("w2").value));
     const Y = xy2XY('y');
@@ -2138,6 +2137,13 @@ function shtuffleW() {
         elem.innerHTML = regvalt;
 
     //setOutput2w(false);
+};
+
+function shtuffleWans() {
+    if (!ansmode)
+        shtuffleW();
+    else
+        return;
 };
 
 function pickKeplet(e) {
