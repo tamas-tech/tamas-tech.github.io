@@ -29,6 +29,11 @@
         var sugorun = false;
         var strinit = "";
         var lepesObj = {};
+        var diffact = "dn";
+        var diffused = "&part;"
+        var diffbzj = "";
+        var diffjzj = "";
+        var difffok = 0;
         var root = document.querySelector(':root');
         root.style.setProperty('--anim-time', '1s');
 
@@ -66,7 +71,7 @@
 
 <body>
     <div id="floatkijelzo"></div>
-    <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
+     <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shouthcontainer',this.value);setkijelzoW('helpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <p class="keplet active" id="alap_keplet">w<sub>1</sub><span id="muveletjel" style="font-size:22px;margin:0 3px;vertical-align: middle;">&bullet;</span>w<sub>2</sub></p>
@@ -132,19 +137,19 @@
                         ( )<sup>−</sup>
                     </td>
                     <td>
-                        &part;<sup>n</sup>
+                        <span class="diffbzj"></span><span class="diffkijelzo">&part;</span><span class="diffjzj"></span><sup>n</sup>
                     </td>
                     <td>
-                        &part;<sub>&lowast;</sub>
+                        <span class="diffbzj"></span><span class="diffkijelzo">&part;</span><span class="diffjzj"></span><sub>&lowast;</sub>
                     </td>
                     <td>
-                        &part;_
+                        <span class="diffbzj"></span><span class="diffkijelzo">&part;</span><span class="diffjzj"></span>_
                     </td>
                     <td>
-                        1/n! &part;
+                        1/n! <span class="diffkijelzo">&part;</span>
                     </td>
                     <td>
-                        (-1)<sup>n</sup>/n! &part;
+                        (-1)<sup>n</sup>/n! <span class="diffkijelzo">&part;</span>
                     </td>
                     <td class="hide-column0 hide-col0">
                         C&hairsp;&times;
@@ -362,16 +367,20 @@
                         <label for="setdX">x&rightarrow;</label>
                         <input type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');shtuffleWans();" onfocus="resetSelectDiff();" id="setdX" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:15px;font-size: 100%;padding-bottom: 5px;">
                         <label for="selectdiff">&part;,d,...</label>
-                        <select id="selectdiff" onchange="derivSelect(this,1);" style="height:30px;border:none;border-bottom: 1px solid #7c7c7c;font-size:90%;background-color:inherit;text-align:center;margin-right:10px;">
-                            <option value="none">Egyik sem</option>
+                        <select id="selectdiff" onchange="derivSet(this);derivSelect(this,1);">
+                            <option value="none">Én adom meg</option>
                             <option value="mienk" selected>&part;</option>
-                            <option value="d">d (KIZ)</sub></option>
-                            <option value="dn">&part;<sub>n</sub> (KI)</option>
+                            <option value="d">d (= &part;&dagger; = &delta;&#x209b;)</sub></option>
+                            <option value="dh"> &delta;&#x2095; (= &delta;&#x2081;)</sub></option>
+                            <option value="D"> D (= &part; - D&#x2081;)</sub></option>
+                            <option value="dn">&part;&#x2099; (IK)</option>
+                            <option value="den"> &delta;&#x2099;</sub></option>
+                            <option value="Dn"> D&#x2099;</sub></option>
                         </select>
                         <div id="derntok" class="dumb">
                             <div style="margin-bottom: 5px;">
                                 <label for="dern"><b>n</b> = </label>
-                                <input type="number" id="dern" value="1" min="1" step="1" name="dern" style="width:55px;margin-right: 5px;" onchange="derivSelect('dn',this.value);">
+                                <input type="number" id="dern" value="1" min="1" step="1" name="dern" style="width:55px;margin-right: 5px;" onchange="derivSelect(diffact,this.value);">
                             </div>
 
                         </div>
@@ -385,7 +394,7 @@
                     <label for="xX">xy | XY</label>
                     <input type="checkbox" name="xX" onchange="shtuffleWans();" id="xX" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">|
                     <label for="setX">x&rightarrow;</label>
-                    <input list="chars" type="text" name="setX" value="" onchange="shtuffleWans();" id="setX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
+                    <input list="chars" type="text" name="setX" value="" onchange="shtuffleWansans();" id="setX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
                     <label for="setY">y&rightarrow;</label>
                     <input list="chars" type="text" name="setY" value="" onchange="shtuffleWans();" id="setY" style="height:20px;width:60px;vertical-align:middle;text-align:center;font-size: 100%;padding-bottom: 5px;">
                     <datalist id="chars">
