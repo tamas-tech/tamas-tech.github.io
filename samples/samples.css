@@ -2924,6 +2924,11 @@ div#k1 span.kepletvalaszto.selected {
     line-height: 1;
 }
 
+#wform.ans {
+    filter: invert(100%) contrast(70%) brightness(145.5%);
+    background-color: white;
+}
+
 .storefej {
     line-height: 0;
     padding: 2px;
