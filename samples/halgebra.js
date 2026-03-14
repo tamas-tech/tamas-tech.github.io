@@ -509,6 +509,7 @@ function changeParam() {
         w1w2forma(allas);
         document.getElementById("wform").outerHTML = wfejlec;
         $("#storeinbtn").addClass('dumb');
+        $('#wform').nextAll().css("opacity", "0.3");
     };
 };
 
@@ -1457,6 +1458,7 @@ function setOutput2w(b) {
     ansmode = b;
     $("#w1.dumb,#w2.dumb,#storeinbtn.dumb").removeClass('dumb');
     if (b) {
+        $('#wform').nextAll().css("opacity", "0.3");
         $('.wbtn:not(.kiur)').parent().next('input').addClass('dumb');
         $("#storeinbtn").addClass('dumb');
         $("#regtbl,#calcbtn,#wform").addClass('ans');
@@ -2252,6 +2254,7 @@ function shtuffleWans() {
         w1w2forma(allas);
         document.getElementById("wform").outerHTML = wfejlec;
         $("#storeinbtn").addClass('dumb');
+        $('#wform').nextAll().css("opacity", "0.3");
     }
 };
 
