@@ -3165,6 +3165,22 @@ background-color: #eaeaea;
     text-align: left;
 }
 
+#selectdiff {
+    font-family: Cambria Math;
+    font-size: 18px;
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid #7c7c7c;
+    background-color: inherit;
+    text-align: center;
+    margin-right: 10px;
+}
+
+#selectdiff option {
+    font-family: Cambria Math;
+    font-size: 20px;
+}
+
 
 
 
