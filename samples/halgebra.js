@@ -357,28 +357,84 @@ function setWform(b) {
     changeParam();
 };
 
+function derivSet(e) {
+    diffact = e.value;
+    document.getElementById("dern").value = "1";
+}
+
 function derivSelect(e, n) {
+    difffok = n;
     $("#derntok").addClass("dumb");
-    if (e == "dn")
+    if (e == "dn") {
         var diff = "dn";
-    else
+        diffact = "dn";
+    } else if (e == "Dn") {
+        var diff = "Dn";
+        diffact = "Dn";
+    } else if (e == "den") {
+        var diff = "den";
+        diffact = "den";
+    } else {
         var diff = e.value;
+        diffbzj = "";
+        diffjzj = "";
+    }
 
     if (diff == "none") {
         $("#setdX").val("1").trigger("change");
         $("#setdY").val("1").trigger("change");
+        diffact = "user";
+        diffused = "&Delta;"
     } else if (diff == "mienk") {
+        diffact = "mienk";
         $("#setdX").val("xx").trigger("change");
         $("#setdY").val("xy").trigger("change");
+        diffused = "&part;"
     } else if (diff == "d") {
+        diffact = "d";
         $("#setdX").val("xy").trigger("change");
         $("#setdY").val("yy").trigger("change");
-    } else if (diff == "dn") {
+        diffused = "d"
+    } else if (diff == "dh") {
+        diffact = "dh";
+        $("#setdX").val("0").trigger("change");
+        $("#setdY").val("xy+yy").trigger("change");
+        diffused = "&delta;<sub>h</sub>";
+        diffbzj = "(";
+        diffjzj = ")";
+    } else if (diff == "D") {
+        diffact = "D";
+        $("#setdX").val("xx").trigger("change");
+        $("#setdY").val("0").trigger("change");
+        diffused = "D";
+    } else if (diff == "Dn") {
+        diffused = "D<sub>" + n + "</sub>";
+        diffbzj = "(";
+        diffjzj = ")";
         $("#derntok").removeClass("dumb");
-        const dxy = xyn(n);
+        const dxy = xyDn(n);
+        $("#setdX").val("0").trigger("change");
+        $("#setdY").val(dxy).trigger("change");
+    } else if (diff == "den") {
+        diffused = "&delta;<sub>" + n + "</sub>";
+        diffbzj = "(";
+        diffjzj = ")";
+        $("#derntok").removeClass("dumb");
+        const dxy = xyden(n);
+        $("#setdX").val("0").trigger("change");
+        $("#setdY").val(dxy).trigger("change");
+    } else if (diff == "dn") {
+        diffused = "&part;<sub>" + n + "</sub>";
+        diffbzj = "(";
+        diffjzj = ")";
+        $("#derntok").removeClass("dumb");
+        const dxy = xydn(n);
         $("#setdX").val(dxy).trigger("change");
         $("#setdY").val("-" + dxy.replaceAll("+", "-")).trigger("change");
     }
+    $('.diffkijelzo').html(diffused);
+    $('.diffbzj').html(diffbzj);
+    $('.diffjzj').html(diffjzj);
 };
 
 function tglshouth(elem) {
@@ -483,11 +539,18 @@ function makeParamObj() {
     pobj.w2 = w2xysor(document.getElementById("w2").value);
     pobj.muvelet = $('#shH #cshstselecttarto .jtoggler-btn-wrapper.is-active').index();
     pobj.sign = store_sign;
+    pobj.diff = diffact;
+    pobj.difffok = difffok * 1;
+    pobj.diffused = diffused;
 
     return pobj;
 };
 
 function stateBack(obj) {
+    //document.getElementById("selectdiff") = pobj.diff;
+    $("#selectdiff").val(obj.diff).trigger("change");
+    $("#dern").val(obj.difffok).trigger("change");
+
     document.getElementById("w1conj").checked = obj.w1conj;
     document.getElementById("w1inv").checked = obj.w1inv;
     document.getElementById("dw1fok").value = obj.dw1fok;
@@ -597,7 +660,8 @@ function resetLap() {
         document.getElementById("setX").value = '';
         document.getElementById("setY").value = '';
     }
-
+    $("#selectdiff").val("mienk").trigger("change");
+    document.getElementById("dern").value = 1;
     $("#w1coeff").trigger('change');
 };
 
@@ -788,24 +852,25 @@ function w1forma() {
         else
             txt += "*";
     if (dw1fok > 0) {
+        const derivjel = "<span class='diffbzj'>" + diffbzj + "</span><span class='diffkijelzo'>" + diffused + "</span><span class='diffjzj'>" + diffjzj + "</span>";
         if (dw1fok == 1) {
             if (dw1inv && dw1conj)
-                txt = "∂<sub class='dersub'>&dagger;</sub>(" + txt + ")";
+                txt = derivjel + "<sub class='dersub'>&dagger;</sub>(" + txt + ")";
             else if (dw1inv)
-                txt = "∂_(" + txt + ")";
+                txt = derivjel + "_(" + txt + ")";
             else if (dw1conj)
-                txt = "∂<sub  class='dersub'>&lowast;</sub>(" + txt + ")";
+                txt = derivjel + "<sub  class='dersub'>&lowast;</sub>(" + txt + ")";
             else
-                txt = "∂(" + txt + ")";
+                txt = derivjel + "(" + txt + ")";
         } else if (dw1fok > 1) {
             if (dw1inv && dw1conj)
-                txt = "∂<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + dw1fok + "</sup>(" + txt + ")";
+                txt = derivjel + "<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + dw1fok + "</sup>(" + txt + ")";
             else if (dw1inv)
-                txt = "∂_<sup class='derkitevo'>" + dw1fok + "</sup>(" + txt + ")";
+                txt = derivjel + "_<sup class='derkitevo'>" + dw1fok + "</sup>(" + txt + ")";
             else if (dw1conj)
-                txt = "∂<sub  class='dersub'>&lowast;</sub><sup class='derkitevo'>" + dw1fok + "</sup>(" + txt + ")";
+                txt = derivjel + "<sub  class='dersub'>&lowast;</sub><sup class='derkitevo'>" + dw1fok + "</sup>(" + txt + ")";
             else
-                txt = "∂<sup>" + dw1fok + "</sup>(" + txt + ")";
+                txt = derivjel + "<sup>" + dw1fok + "</sup>(" + txt + ")";
         };
 
         if (dw1fakt) {
@@ -875,24 +940,25 @@ function w2forma() {
         else
             txt += "*";
     if (dw2fok > 0) {
+        const derivjel = "<span class='diffbzj'>" + diffbzj + "</span><span class='diffkijelzo'>" + diffused + "</span><span class='diffjzj'>" + diffjzj + "</span>";
         if (dw2fok == 1) {
             if (dw2inv && dw2conj)
-                txt = "∂<sub class='dersub'>&dagger;</sub>(" + txt + ")";
+                txt = derivjel + "<sub class='dersub'>&dagger;</sub>(" + txt + ")";
             else if (dw2inv)
-                txt = "∂_(" + txt + ")";
+                txt = derivjel + "_(" + txt + ")";
             else if (dw2conj)
-                txt = "∂<sub  class='dersub'>&lowast;</sub>(" + txt + ")";
+                txt = derivjel + "<sub  class='dersub'>&lowast;</sub>(" + txt + ")";
             else
                 txt = "∂(" + txt + ")";
         } else if (dw2fok > 1) {
             if (dw2inv && dw2conj)
-                txt = "∂<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
+                txt = derivjel + "<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
             else if (dw2inv)
-                txt = "∂_<sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
+                txt = derivjel + "_<sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
             else if (dw2conj)
-                txt = "∂<sub  class='dersub'>&lowast;</sub><sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
+                txt = derivjel + "<sub  class='dersub'>&lowast;</sub><sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
             else
-                txt = "∂<sup>" + dw2fok + "</sup>(" + txt + ")";
+                txt = derivjel + "<sup>" + dw2fok + "</sup>(" + txt + ")";
         };
 
         if (dw2fakt) {
@@ -968,28 +1034,29 @@ function w1w2forma(allas) {
         txt += "<span class='outsuplow'>&lowast;</span>";
 
     if (doutfok > 0) {
+        const derivjel = "<span class='diffbzj'>" + diffbzj + "</span><span class='diffkijelzo'>" + diffused + "</span><span class='diffjzj'>" + diffjzj + "</span>";
         if (!zjvan)
             txt = bzj + txt + jzj;
         else
             txt = bbzj + txt + bjzj;
         if (doutfok == 1) {
             if (doutinv && doutconj)
-                txt = "<span class='outbig'>∂<sub class='dersub'>&dagger;</sub></span>" + txt;
+                txt = "<span class='outbig'>" + derivjel + "<sub class='dersub'>&dagger;</sub></span>" + txt;
             else if (doutinv)
-                txt = "<span class='outbig'>∂_</span>" + txt;
+                txt = "<span class='outbig'>" + derivjel + "_</span>" + txt;
             else if (doutconj)
-                txt = "<span class='outbig'>∂<sub  class='dersub'>&lowast;</sub></span>" + txt;
+                txt = "<span class='outbig'>" + derivjel + "<sub  class='dersub'>&lowast;</sub></span>" + txt;
             else
-                txt = "<span class='outbig'>∂</span>" + txt;
+                txt = "<span class='outbig'>" + derivjel + "</span>" + txt;
         } else if (doutfok > 1) {
             if (doutinv && doutconj)
-                txt = "<span class='outbig'>∂<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + doutfok + "</sup></span>" + txt;
+                txt = "<span class='outbig'>" + derivjel + "<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + doutfok + "</sup></span>" + txt;
             else if (doutinv)
-                txt = "<span class='outbig'>∂_<sup class='derkitevo'>" + doutfok + "</sup></span>" + txt;
+                txt = "<span class='outbig'>" + derivjel + "_<sup class='derkitevo'>" + doutfok + "</sup></span>" + txt;
             else if (doutconj)
-                txt = "<span class='outbig'>∂<sub  class='dersub'>&lowast;</sub><sup class='derkitevo'>" + doutfok + "</sup></span>" + txt;
+                txt = "<span class='outbig'>" + derivjel + "<sub  class='dersub'>&lowast;</sub><sup class='derkitevo'>" + doutfok + "</sup></span>" + txt;
             else
-                txt = "<span class='outbig'>∂<sup>" + doutfok + "</sup></span>" + txt;
+                txt = "<span class='outbig'>" + derivjel + "<sup>" + doutfok + "</sup></span>" + txt;
         };
 
         if (doutfakt) {
@@ -1026,13 +1093,13 @@ function w1w2forma(allas) {
     if (store_sign == -1)
         signinfo = '<span class="storeneg">&#x25ac;</span>';
     txt = signinfo + txt;
-    storefej = "<span class='storefej'>" + txt + "</span>";
+    storefej = "<span class='storefej'>" + txt.replaceAll("diffkijelzo", "") + "</span>";
     var ch = "";
     if (ansmode)
         ch = "checked";
     txt = "<div id='wform'>" + txt + "<span class='ansbtn'><label for='out2w'>&rightarrow; w<sub id='windxsub'>" + windx + "</sub></label><input type='checkbox'  " + ch + " onchange='setOutput2w(this.checked);' name='out2w' id='out2w' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'></span></div>";
     if (!nofejlec)
-        wfejlec = txt;
+        wfejlec = txt.replaceAll("diffkijelzo", "");
     else
         wfejlec = "";
 };
@@ -1320,9 +1387,7 @@ function derivGen(muv) {
     var cw12 = woutcoeff;
 
     var coeff = cw1.mul(cw2).mul(cw12);
-    //console.log(derivHn(w1, n1, dw1conj, dw1inv))
     var sh = muv(derivHn(w1, n1, dw1conj, dw1inv), derivHn(w2, n2, dw2conj, dw2inv));
-    //console.log(sh)
     var fakt = 1;
     if (dw1fakt)
         fakt *= factorial(n1);
@@ -1930,8 +1995,9 @@ function reghar(str) {
 
 function formazreghar(id) {
     var str = w2xysor(document.getElementById(id).value).toLowerCase();
-    var txt = formazxyV(reghar(str));
+    var txt = formazxyV(reghar(str), false, true);
     document.getElementById("shouth").innerHTML = txt;
+    inStore(str, txt);
 };
 
 function invreghar(str) {
@@ -2125,9 +2191,10 @@ function shtuffleW() {
         formazinvS10reg(w);
     else if (regvalt == "homst0")
         stHom0();
-    else if (regvalt == "Ast0")
+    else if (regvalt == "Ast0") {
+        $('.derivtok').removeClass('dumb');
         formazreghar(w);
-    else if (regvalt == "Ainvst0")
+    } else if (regvalt == "Ainvst0")
         formazinvreghar(w);
     else if (regvalt == "Ast10")
         formazreghar10(w);
@@ -3461,7 +3528,7 @@ function alapAnimateAuto(N) {
         return;
 }
 
-function xyn(n) {
+function xydn(n) {
     var out = [];
     for (var i = 0; i < n; i++) {
         var vx = [
@@ -3474,6 +3541,14 @@ function xyn(n) {
     };
     out = _.flatten(out).map(v => "x" + v[1] + "y").join("+");
     return out;
+};
+
+function xyDn(n) {
+    return "x".repeat(n) + "y";
+};
+
+function xyden(n) {
+    return "x".repeat(n) + "y+y" + "x".repeat(n - 1) + "y";
 };
 
 function shouthReg() {
@@ -3503,7 +3578,6 @@ function shouthReg() {
                         vL.push([a[0] * r[0], r[1]]);
                 }
             };
-        console.log(vL)
         vL = xyList_Ov(vL).filter(y => y[0] != 0);
     } else if (zetaregst) {
         if (nonAdm.length > 0)
@@ -3518,7 +3592,7 @@ function shouthReg() {
         vL = xyList_Ov(vL).filter(y => y[0] != 0);
     };
     var txt = formazxyV(vL, true, true);
-    elem.innerHTML = txt;
+    elem.innerHTML = txt + shouth2zetabtn;
     txt = "<div class='reglabel'>(reg<sup>10</sup><sub><span class='shstlabel'>" + regjel + "</span></sub>) &rightarrow; </div>" + txt;
     inStore(vL, txt);
 };
@@ -3574,7 +3648,7 @@ function shouth2zeta() {
     const t = document.getElementById("tdern").value * 1000;
     const toPari = document.getElementById("onlyPari").checked;
     var fejtxt = "";
-    if (!nofejlec)
+    if (!nofejlec && document.getElementById("wform") != undefined)
         fejtxt = document.getElementById("wform").outerHTML || "";
     var shnoa = shouth2pari();
     var sh = shnoa[0];
@@ -3764,8 +3838,7 @@ function tree_wordDer(wpath, coeff) {
                 ]);
         }
     }
-    console.log(out)
-        //document.getElementById("shouth").innerHTML = JSON.stringify(out)
+    //document.getElementById("shouth").innerHTML = JSON.stringify(out)
     out = tree_strList_Ov(out);
     return out;
 };
@@ -3841,7 +3914,6 @@ function desW(str, m) {
     for (var j = 0; j <= N; j++)
         if (w.charAt(j * m - 1) == 'x')
             S.push(j);
-    console.log(S, N + 1)
     return Math.pow(-1, S.length) * descA(S, N + 1);
 };
 
