@@ -504,6 +504,12 @@ function changeParam() {
     setParams();
     if (!ansmode)
         shtuffleW();
+    else {
+        const allas = $('#shH #cshstselecttarto .jtoggler-btn-wrapper.is-active').index();
+        w1w2forma(allas);
+        document.getElementById("wform").outerHTML = wfejlec;
+        $("#storeinbtn").addClass('dumb');
+    };
 };
 
 function makeParamObj() {
@@ -660,6 +666,10 @@ function resetLap() {
         document.getElementById("setX").value = '';
         document.getElementById("setY").value = '';
     }
+    colorvar = 0;
+    answ1 = "";
+    answ2 = "";
+    ansfix = false;
     $("#selectdiff").val("mienk").trigger("change");
     document.getElementById("dern").value = 1;
     $("#w1coeff").trigger('change');
@@ -825,16 +835,22 @@ function storeBack(elem) {
 };
 
 function w1forma() {
+    const w1ertek = document.getElementById("w1").value.trim();
     var coeff = w1coeff
-    var txt = "w<sub>1</sub>";
+    var txt = "";
     if (ansmode && windx == 1) {
         const bbzj = "<span class='wouttokzjbig  left' style='border-color:" + COLORS[colorvar] + ";'></span>";
         const bjzj = "<span class='wouttokzjbig  right' style='border-color:" + COLORS[colorvar] + ";'></span>";
-        var fejtxt = $('#wform').html().split("→")[0].slice(0, -40).replace("w1tok", "").replace("w2tok", "").replace("w1w2tok", "");
-        var txt = bbzj + fejtxt + bjzj;
+        if (!ansfix)
+            answ1 = $('#wform').html().split("→")[0].slice(0, -40).replace("w1tok", "").replace("w2tok", "").replace("w1w2tok", "");
+        ansfix = true;
+        var txt = bbzj + answ1 + bjzj;
         colorvar++;
     } else if (wertekkel)
         txt = xy2XYmonom(w2xysor(document.getElementById("w1").value).trim()) // || "( )";
+    else if (w1ertek != "") {
+        txt = "w<sub>1</sub>";
+    };
 
     if (w1conj && w1inv)
         if (wertekkel)
@@ -913,16 +929,22 @@ function w1forma() {
 };
 
 function w2forma() {
+    const w2ertek = document.getElementById("w2").value.trim();
     var coeff = w2coeff;
-    var txt = "w<sub>2</sub>";
+    var txt = "";
     if (ansmode && windx == 2) {
         const bbzj = "<span class='wouttokzjbig  left' style='border-color:" + COLORS[colorvar] + ";'></span>";
         const bjzj = "<span class='wouttokzjbig  right' style='border-color:" + COLORS[colorvar] + ";'></span>";
+        if (!ansfix)
+            answ2 = $('#wform').html().split("→")[0].slice(0, -40).replace("w1tok", "").replace("w2tok", "").replace("w1w2tok", "") || "";
+        ansfix = true;
+        var txt = bbzj + answ2 + bjzj;
         colorvar++;
-        var fejtxt = $('#wform').html().split("→")[0].slice(0, -40).replace("w1tok", "").replace("w2tok", "").replace("w1w2tok", "") || "";
-        var txt = bbzj + fejtxt + bjzj;
     } else if (wertekkel)
         txt = xy2XYmonom(w2xysor(document.getElementById("w2").value).trim()) //|| "( )";
+    else if (w2ertek != "") {
+        txt = "w<sub>2</sub>";
+    }
 
     if (w2conj && w2inv)
         if (wertekkel)
@@ -1007,10 +1029,14 @@ function w1w2forma(allas) {
     const bbzj = "<span class='wouttokzjbig  left'></span>";
     const bjzj = "<span class='wouttokzjbig  right'></span>";
     var muvelet = "&bullet;"
-    const w1f = w1forma();
-    const w2f = w2forma();
+    var w1f = "";
+    if ($("#w1").val() != "")
+        w1f = w1forma();
+    var w2f = "";
+    if ($("#w2").val() != "")
+        w2f = w2forma();
     const vanures = $("#w1").val() == "" || $("#w2").val() == "";
-    if (wertekkel && vanures)
+    if (vanures)
         muvelet = "";
     else {
         if (allas * 1 < 1)
@@ -1095,9 +1121,12 @@ function w1w2forma(allas) {
     txt = signinfo + txt;
     storefej = "<span class='storefej'>" + txt.replaceAll("diffkijelzo", "") + "</span>";
     var ch = "";
-    if (ansmode)
+    var wclass = "";
+    if (ansmode) {
         ch = "checked";
-    txt = "<div id='wform'>" + txt + "<span class='ansbtn'><label for='out2w'>&rightarrow; w<sub id='windxsub'>" + windx + "</sub></label><input type='checkbox'  " + ch + " onchange='setOutput2w(this.checked);' name='out2w' id='out2w' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'></span></div>";
+        wclass = "class='ans'";
+    }
+    txt = "<div id='wform' " + wclass + ">" + txt + "<span class='ansbtn'><label for='out2w'>&rightarrow; w<sub id='windxsub'>" + windx + "</sub></label><input type='checkbox'  " + ch + " onchange='setOutput2w(this.checked);' name='out2w' id='out2w' style='height:20px;width:20px;vertical-align:middle;margin-right:20px;'></span></div>";
     if (!nofejlec)
         wfejlec = txt.replaceAll("diffkijelzo", "");
     else
@@ -1420,16 +1449,23 @@ function derivGen(muv) {
 
 // Az ANS gomb implementációja
 
+var answ1 = "";
+var answ2 = "";
+var ansfix = true;
+
 function setOutput2w(b) {
     ansmode = b;
-    $("#w1.dumb,#w2.dumb").removeClass('dumb');
+    $("#w1.dumb,#w2.dumb,#storeinbtn.dumb").removeClass('dumb');
     if (b) {
         $('.wbtn:not(.kiur)').parent().next('input').addClass('dumb');
-        $("#regtbl,#calcbtn").addClass('ans');
+        $("#storeinbtn").addClass('dumb');
+        $("#regtbl,#calcbtn,#wform").addClass('ans');
+        ansfix = false;
     } else {
         $('.wbtn:not(.kiur)').parent().next('input').removeClass('dumb');
-        $("#regtbl,#calcbtn").removeClass('ans');
+        $("#regtbl.ans,#calcbtn.ans,#wform.ans").removeClass('ans');
         colorvar = 0;
+        ansfix = true;
     }
 };
 
@@ -2202,15 +2238,21 @@ function shtuffleW() {
         formazinvreghar10(w);
     else
         elem.innerHTML = regvalt;
-
+    ansfix = false;
+    $("#storeinbtn.dumb").removeClass('dumb');
+    $("#wform").removeClass('ans');
     //setOutput2w(false);
 };
 
 function shtuffleWans() {
     if (!ansmode)
         shtuffleW();
-    else
-        return;
+    else {
+        const allas = $('#shH #cshstselecttarto .jtoggler-btn-wrapper.is-active').index();
+        w1w2forma(allas);
+        document.getElementById("wform").outerHTML = wfejlec;
+        $("#storeinbtn").addClass('dumb');
+    }
 };
 
 function pickKeplet(e) {
@@ -2289,8 +2331,8 @@ $(document).on('jt:toggled:multi', function(event, target) {
             $('.keplet').removeClass('active');
             $('#alap_keplet.keplet').addClass('active');
             $('#alap_keplet.keplet #muveletjel').html("&bullet;");
-            if (!ansmode)
-                shtuffleW();
+            //if (!ansmode)
+            shtuffleWans();
         }
     } else if (id == "regvtarto") {
         var allas = $(target).parent().index();
@@ -2315,8 +2357,8 @@ $(document).on('jt:toggled:multi', function(event, target) {
             closeStore();
         }
     }
-    if (!ansmode)
-        shtuffleW();
+    //if (!ansmode)
+    shtuffleWans();
 });
 
 function regValtas() {
