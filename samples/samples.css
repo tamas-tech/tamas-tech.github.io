@@ -3008,10 +3008,26 @@ div#k1 span.kepletvalaszto.selected {
 #regtbl #w2.dumb {
     opacity: 0.15;
     pointer-events: none;
+    display: none;
 }
 
 .clicked {
     animation: shadow-change var(--anim-time) 200;
+}
+
+#answ1 {
+    display: none;
+    width: 270px;
+    overflow: auto;
+    background-color: #ddc2dd;
+    padding: 3px 0;
+    vertical-align: middle;
+    font-size: 18px;
+    outline: 2px solid #0034ff;
+}
+
+#answ1.shown {
+    display: inline-block;
 }
 
 @keyframes shadow-change {
