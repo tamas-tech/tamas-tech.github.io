@@ -159,6 +159,7 @@
                     <td>
                         <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw1"  class="wbtn kiur" onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
                         <input class="inpvec" oninput="if(!regvalt.startsWith('hom')) changeParam();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w1" value="xy">
+                        <span id="answ1"></span>
                     </td>
                     <td>
                         <input type="checkbox" oninput="changeParam();" id="w1conj" style="height:20px;width:20px;vertical-align:middle;">
@@ -423,7 +424,7 @@
             </div>
             <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
                 <span class="derivtok">
-                    <button id="setsign"  class="sbtglbtn dumb" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" onclick="storeSign(this);shtuffleWans();">+</button>
+                    <button id="setsign"  class="sbtglbtn" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" onclick="storeSign(this);shtuffleWans();">+</button>
                     <button id="storeinbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn" onclick="shiftStore();">&#x2356;</button>
                     <button id="storebackbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn dumb" onclick="undoStore();">&#x234F;</button>
                     <button id="storetglbtn" style="vertical-align:middle;margin-left:10px;padding:0 2px;font-size:20px;" class="sbtglbtn" onclick=" tglStore(this);">&#128448;</button>
