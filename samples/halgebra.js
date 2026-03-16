@@ -27,7 +27,7 @@ var storefej = "";
 var tempstoreback = "";
 var wertekkel = false;
 var ansmode = false;
-var windx = 2;
+var windx = 1;
 var colorvar = 0;
 
 const shouth2zetabtn = "<table width='100%' id='detTable' style='cursor:pointer;background-color:transparent;width: fit-content;'><tr class='parent'><td style='padding:0 50px 0 10px;border: 1px solid #999;border-radius: 10px;display: inline-block;' onclick='toggleTableRow_det(this)'>...<span id='ddcimke' style='margin-left:20px;'></span></td></tr><tr class='child' style='display: none;'><td><div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;width: 100%;'><button id='shouth2zetabtn'  onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div class='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:10px;'><label for='tdern' style='vertical-align:middle;margin-right:3px;'>t(sec)</label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div class='setregtok' style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%;padding-bottom: 3px;'><button id='shouthregbtn' onclick='shouthReg();'>reg( )</button><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button><button id='kimutatasbtn' onclick='shouthKimutatas();'>&#x25A4;</button></div></td></tr></table>"
@@ -510,6 +510,8 @@ function changeParam() {
         document.getElementById("wform").outerHTML = wfejlec;
         $("#storeinbtn").addClass('dumb');
         $('#wform').nextAll().css("opacity", "0.3");
+        const txt = $('#wform').html().split("→")[0].slice(0, -40).replace("w1tok", "").replace("w2tok", "").replace("w1w2tok", "");
+        $('#answ1').html(txt);
     };
 };
 
@@ -972,7 +974,7 @@ function w2forma() {
             else if (dw2conj)
                 txt = derivjel + "<sub  class='dersub'>&lowast;</sub>(" + txt + ")";
             else
-                txt = "∂(" + txt + ")";
+                txt = derivjel + "(" + txt + ")";
         } else if (dw2fok > 1) {
             if (dw2inv && dw2conj)
                 txt = derivjel + "<sub class='dersub'>&dagger;</sub><sup class='derkitevo'>" + dw2fok + "</sup>(" + txt + ")";
@@ -1455,20 +1457,33 @@ var answ2 = "";
 var ansfix = true;
 
 function setOutput2w(b) {
+    if (!wertekkel) {
+        document.getElementById("setwform").checked = true;
+        setWform(true);
+    }
     ansmode = b;
     $("#w1.dumb,#w2.dumb,#storeinbtn.dumb").removeClass('dumb');
     if (b) {
         $('#wform').nextAll().css("opacity", "0.3");
-        $('.wbtn:not(.kiur)').parent().next('input').addClass('dumb');
+        //$('.wbtn:not(.kiur)').parent().next('input').addClass('dumb');
+        $('#w1').addClass('dumb');
+        const txt = $('#wform').html().split("→")[0].slice(0, -40).replace("w1tok", "").replace("w2tok", "").replace("w1w2tok", "");
+        $('#answ1').addClass('shown').html(txt);
         $("#storeinbtn").addClass('dumb');
         $("#regtbl,#calcbtn,#wform").addClass('ans');
+        $('#calcbtn').html('w<sub>1</sub> = &#x2713;');
+        $('#calcbtn').html('OK');
         ansfix = false;
     } else {
-        $('.wbtn:not(.kiur)').parent().next('input').removeClass('dumb');
+        //$('.wbtn:not(.kiur)').parent().next('input').removeClass('dumb');
+        $('#w1').removeClass('dumb')
+        $('#answ1').removeClass('shown');
         $("#regtbl.ans,#calcbtn.ans,#wform.ans").removeClass('ans');
+        $('#calcbtn').html('Calculate');
         colorvar = 0;
         ansfix = true;
     }
+    changeParam();
 };
 
 function shouth2w() {
@@ -1496,6 +1511,25 @@ function kiszedWOut() {
         out = out.map(y => [y[0], in2_ci(y[1])])
         return [w, out]
     }
+};
+
+function storeSum2w() {
+    var vL = [];
+    $("#lastprev .hreg").each(function() {
+        var xy = this.getAttribute('data-reg');
+        var c = this.getAttribute('data-c') * 1;
+        vL.push([c, xy])
+    });
+    return vL;
+};
+
+function store2Formula() {
+    var out = "";
+    for (var i = 1; i <= Store.n; i++)
+        out += " + " + Store["fej" + i];
+    out = out.slice(3);
+    $("#wform").html(out);
+    return out;
 };
 
 function genOutW(muv) {
@@ -2241,9 +2275,12 @@ function shtuffleW() {
     else
         elem.innerHTML = regvalt;
     ansfix = false;
+    if (ansmode) {
+        const txt = $('#wform').html().split("→")[0].slice(0, -40).replace("w1tok", "").replace("w2tok", "").replace("w1w2tok", "");
+        $('#answ1').html(txt);
+    }
     $("#storeinbtn.dumb").removeClass('dumb');
     $("#wform").removeClass('ans');
-    //setOutput2w(false);
 };
 
 function shtuffleWans() {
@@ -2294,10 +2331,13 @@ function setCalcw(e) {
             document.getElementById("calcw2").classList.add("kiur");
             regw = "w2";
         }
-        changeParam();
         setOutput2w(ansmode);
+        if (ansmode)
+            ansfix = true;
+        changeParam();
     }
-    windx = $('.wbtn:not(.kiur)').attr('id').slice(-1) * 1;
+    windx = 1;
+    //windx = $('.wbtn:not(.kiur)').attr('id').slice(-1) * 1;
     $('#windxsub').html(windx);
 };
 
