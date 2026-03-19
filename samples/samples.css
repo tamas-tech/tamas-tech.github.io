@@ -3202,7 +3202,115 @@ background-color: #eaeaea;
     font-size: 20px;
 }
 
+#wnmkijelzotarto {
+    margin-left: 2px;
+    padding: 3px;
+    outline: 2px solid #d0c0c0;
+    outline-offset: -2px;
+    background-color: #f7e4da;
+    font-size: 21px;
+}
 
+#wnmkijelzo .hreg {
+    cursor: pointer;
+}
+
+#wnmkijelzo .hreg.hl {
+    background-color: #ffc6c6;
+    outline: 2px solid #f00;
+    outline-offset: -2px;
+}
+
+#ranktbl.table-hideable tbody tr.active td.hl {
+    outline: 2px solid #f00;
+    outline-offset: -2px;
+}
+
+#ranktbl.table-hideable thead tr th {
+    text-align: center;
+}
+
+#ranktbl.table-hideable tr th {
+    text-align: right;
+}
+
+#ranktbl.table-hideable tr.irreg th {
+    background-color: #e3abab;
+}
+
+#ranktbl.table-hideable.shrink tr:not(.active) td {
+    display: none;
+    border: none
+}
+
+#ranktbl.table-hideable tr.fej.vert td {
+    writing-mode: vertical-lr;
+    line-height: 2.5;
+    font-size: 80%;
+    border-bottom: 4px double #757575;
+    background-color: #ffffff80;
+}
+
+#ranktbl.table-hideable.reghide tr:not(.irreg):not(.fej) {
+    display: none;
+    border: none;
+}
+
+#ranktarto {
+    margin-left: 10px;
+    background-color: #b0c7f2;
+    border: 1px solid #aaa;
+    height: 30px;
+    display: inline-block;
+    width: 124px;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#notinbase {
+    margin: 4px;
+    padding: 3px;
+    background-color: #ffc5c5;
+    outline: 2px solid red;
+    display: none;
+    font-size: 21px;
+}
+
+#notinbase.shown {
+    display: block;
+}
+
+#notinbase .irbe {
+    margin: 5px;
+    padding: 2px 7px;
+    border: 2px solid #cebebe;
+    background-color: #8c1616;
+    border-radius: 7px;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    color: white;
+}
+
+#notinbase .regbe {
+    margin: 5px;
+    padding: 2px 7px;
+    border: 2px solid #cebebe;
+    background-color: #8c1616;
+    border-radius: 7px;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    color: white;
+}
+
+#notinbase .irbe.volt,
+#notinbase .regbe.volt {
+    background-color: transparent;
+    border: 2px solid #fbb6b6;
+    color: #686060;
+}
 
 
 
