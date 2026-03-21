@@ -3258,6 +3258,7 @@ background-color: #eaeaea;
 
 #ranktarto {
     margin-left: 10px;
+    margin-right: 15px;
     background-color: #b0c7f2;
     border: 1px solid #aaa;
     height: 30px;
@@ -3275,6 +3276,8 @@ background-color: #eaeaea;
     outline: 2px solid red;
     display: none;
     font-size: 21px;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 #notinbase.shown {
@@ -3310,6 +3313,12 @@ background-color: #eaeaea;
     background-color: transparent;
     border: 2px solid #fbb6b6;
     color: #686060;
+}
+
+#rankminus.showpre1.dumb,
+#rankplus.showpre1.dumb {
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 
