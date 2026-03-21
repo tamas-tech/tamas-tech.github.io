@@ -520,9 +520,9 @@
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label for="rankN">N =  </label>
-                <input type="number" id="rankN" onchange="drawTable();" value="6" min="1" step="1" name="rankN" style="width:50px;margin-right:10px">
-                <button id="rankokbtn" onclick="idClear('#rankout');idClear('#wnmkijelzo');makeBaseH();" class="showpre1" title="Insert code into editor">All &part;<sub>n</sub>(reg)</sub></button>
-                <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#rankout');idClear('#wnmkijelzo');" title="Clear output">Clear</button>
+                <input type="number" id="rankN" onchange="drawTable();" onfocus="drawTable();" value="6" min="1" max="12" step="1" name="rankN" style="width:50px;margin-right:10px">
+                <button id="rankokbtn" onclick="idClear('#rankout');idClear('#wnmkijelzo');makeBaseHD();" class="showpre1" title="Insert code into editor">All &part;<sub>n</sub>(reg)</sub></button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="clearInterval(ra);idClear('#rankout');idClear('#wnmkijelzo');" title="Clear output">Clear</button>
                 <button id="tglropts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('ranksetting'); document.getElementById('ranksetting').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });">⚙</button>
             </div>
         </div>
@@ -539,6 +539,14 @@
                 <label for="regon" style="vertical-align: middle;">Admissible w-k mutatása</label>
                 <input type="checkbox" name="regon" id="regon" onchange="setbasereg(false);" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
             </div>
+            <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                <label for="allirregon">Az összes non-admissible w megadása</label>
+                <input type="checkbox" name="allirregon" checked id="allirregon" onchange=";" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+            </div>
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label for="epsilon">&epsilon; = (10<sup>-m</sup>)</label>
+                <input type="number" id="epsilon" value="5" min="1" step="1" name="epsilon" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
+            </div>
             <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                 <label for="ranimt">Animation step(ms) = </label>
                 <input type="number" id="ranimt" value="100" min="100" step="100" name="ranimt" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
@@ -551,6 +559,10 @@
                 <label for="setregsor" style="vertical-align: middle;">Admissible sorok nem látszódnak</label>
                 <input type="checkbox" name="setregsor" id="setregsor" onchange="$('#ranktbl').toggleClass('reghide');" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
             </div>
+            <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                <label for="nodraw" style="vertical-align: middle;">Számítás mátrix rajzolása nélkül</label>
+                <input type="checkbox" name="nodraw" id="nodraw" onchange="drawTable();" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+            </div>
         </div>
         <div id="rankcontainer" style="max-width:100vw">
             <p id="figyrank" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
@@ -558,8 +570,8 @@
         </div>
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
-                <button class="restore-button showpre1" onclick="rankRemove();" style="width:30px;">-</button>
-                <button class="restore-button showpre1" onclick="wIKDeriv(false,false);" style="margin-right:10px;width:30px;">+</button>
+                <button id="rankminus" class="showpre1" onclick="rankRemove();" style="width:30px;">-</button>
+                <button id="rankplus" class="showpre1" onclick="wIKDeriv(false,false);" style="margin-right:10px;width:30px;">+</button>
                 <label for="rankn">n =  </label>
                 <input type="number" id="rankn" value="1" min="1" step="1" onchange="setDerIK(this.value);wIKDeriv0();" name="rankn" style="width:50px;margin-right:10px;">
                 <label for="rankn">m =  </label>
@@ -567,7 +579,7 @@
                 <div style="margin-left:2px;padding:3px;margin-top:10px;">
                     <label for="rankw">w =  </label>
                     <input class="inpvec" oninput="wIKDeriv0();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="rankw" value="yxy">
-                    <button class="restore-button showpre1" onclick="baseIreg();" style="margin-right:10px;width:70px;">w<sub>non-adm</sub></button>
+                    <button class="restore-button showpre1" onclick="makeBaseIrreg();" style="margin-right:10px;width:70px;">w<sub>non-adm</sub></button>
                     <button class="restore-button showpre1" onclick="baseReg();" style="margin-right:10px;width:50px;">w<sub>adm</sub></button>
                 </div>
             </div>
