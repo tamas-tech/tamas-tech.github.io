@@ -4105,6 +4105,57 @@ var rref = [];
 var fejek = [];
 var matRank = 0;
 var notInBase = [];
+var inBase = [];
+
+function getMatrixRankEREDETI(matrix) {
+    if (!matrix || matrix.length === 0) return 0;
+
+    const rowCount = matrix.length;
+    const colCount = matrix[0].length;
+
+    // Másolat készítése, hogy ne módosítsuk az eredetit
+    let mat = matrix.map(row => [...row]);
+
+    let rank = 0;
+    //const EPSILON = 1e-5; // Küszöb a lebegőpontos pontatlanságokhoz
+    const EPSILON = parseFloat("1e-" + document.getElementById("epsilon").value);
+
+    let pivotRow = 0;
+    // Végigmegyünk az oszlopokon
+    for (let col = 0; col < colCount && pivotRow < rowCount; col++) {
+
+        // 1. Keressük a legnagyobb pivot elemet az aktuális oszlopban (stabilitás)
+        let maxRow = pivotRow;
+        for (let i = pivotRow + 1; i < rowCount; i++) {
+            if (Math.abs(mat[i][col]) > Math.abs(mat[maxRow][col])) {
+                maxRow = i;
+            }
+        }
+
+        // 2. Ha az oszlopban csak (majdnem) nullák vannak, ugrunk a következő oszlopra
+        if (Math.abs(mat[maxRow][col]) < EPSILON) {
+            continue;
+        }
+
+        // 3. Sorcsere
+        [mat[pivotRow], mat[maxRow]] = [mat[maxRow], mat[pivotRow]];
+
+        // 4. A pivot alatti sorok kinullázása
+        for (let i = pivotRow + 1; i < rowCount; i++) {
+            let factor = mat[i][col] / mat[pivotRow][col];
+            // Csak az aktuális oszloptól jobbra lévő elemekkel foglalkozunk
+            for (let j = col; j < colCount; j++) {
+                mat[i][j] -= factor * mat[pivotRow][j];
+            }
+        }
+
+        // Ha találtunk pivotot, nő a rang és lépünk a következő sorra
+        pivotRow++;
+        rank++;
+    }
+
+    return rank;
+};
 
 function getMatrixRank(matrix) {
     if (!matrix || matrix.length === 0) return 0;
@@ -4116,7 +4167,8 @@ function getMatrixRank(matrix) {
     let mat = matrix.map(row => [...row]);
 
     let rank = 0;
-    const EPSILON = 1e-10; // Küszöb a lebegőpontos pontatlanságokhoz
+    //const EPSILON = 1e-5; // Küszöb a lebegőpontos pontatlanságokhoz
+    const EPSILON = parseFloat("1e-" + document.getElementById("epsilon").value);
 
     let pivotRow = 0;
     // Végigmegyünk az oszlopokon
@@ -4386,6 +4438,7 @@ function wIKDeriv(ranking, norajz) {
     const n = document.getElementById("rankn").value * 1;
     const w = w2xysor(document.getElementById("rankw").value);
     const der = xyIKDeriv(w);
+
     var txt = "<p id='pirreg'>&part;<sub style='vertical-align:-0.5em;'>" + n + "</sub><sup style='margin-left:-0.4em'>" + m + "</sup>(" + w + ") = ";
     if (document.getElementById("xymonom").checked)
         txt += formazxyMonom(der);
@@ -4411,7 +4464,13 @@ function wIKDeriv(ranking, norajz) {
         };
         rmat.push(v);
         matRank = getMatrixRank(rmat);
-        if (ranking && matRank == rankprev) {
+        if (matRank < rankprev) {
+            //clearInterval(ra);
+            var hb = document.getElementById("rankout").appendChild(document.createElement("div"));
+            $(hb).css({ outline: "3px solid red", padding: "2px", margin: "10px" });
+            hb.innerHTML = "Numerikus instabilitás! Probálja meg a beállításokban az &epsilon; pontosságot meghatározó<b> m = " + document.getElementById("epsilon").value + "</b> szám értékét csökkenteni.<br/>n = " + n + ", m = " + m + ", w = " + w + " &varrho; = " + matRank + ", &varrho;<sub>prev</sub> = " + rankprev;
+            return;
+        } else if (ranking && matRank == rankprev) {
             rmat.pop();
             notInBase.push([n, m, w, matRank]);
             return;
@@ -4443,7 +4502,6 @@ function wIKDeriv(ranking, norajz) {
             };
         }
     } else txtr += "<br/>nem illeszthető be";
-    console.log(txt, txtr)
     const rfor = document.getElementById("rankofmat");
     document.getElementById("wnmkijelzo").innerHTML = txt + txtr;
     document.getElementById("rankofmat").innerHTML = matRank;
@@ -4459,7 +4517,18 @@ function rankRemove() {
     document.getElementById("rankofmat").innerHTML = matRank;
 };
 
+function stopra() {
+    clearInterval(ra);
+    setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
+    setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
+};
+
 function drawTable() {
+    const nodraw = document.getElementById("nodraw").checked;
+    $("#rankminus,#rankplus").removeClass("dumb");
+    if (nodraw) {
+        $("#rankminus,#rankplus").addClass("dumb");
+    };
     matRank = 0;
     notInBase = [];
     rmat = [];
@@ -4470,15 +4539,17 @@ function drawTable() {
     const n = document.getElementById("rankN").value * 1;
     const m = Math.pow(2, n - 2);
     const elem = document.getElementById("rankout");
-
-    var txt = '<span style="display:block;width:fit-content;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th>';
-    for (var j = 0; j < m; j++)
-        txt += '<th class="hide-column hide-col">' + (j + 1) + '</th>';
-    txt += '</tr></thead><tbody><tr class="fej vert"><td>w</td>';
-    for (var k = 0; k < m; k++)
-        txt += '<td>' + num2xy(k + m) + '</td>';
-    txt += '</tr></tbody></table></span>';
-    txt += "<div id='ranktarto'>&varrho; = <span id='rankofmat'>0</span></div>";
+    var txt = "";
+    if (!nodraw) {
+        txt += '<span style="display:block;width:fit-content;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th>';
+        for (var j = 0; j < m; j++)
+            txt += '<th class="hide-column hide-col">' + (j + 1) + '</th>';
+        txt += '</tr></thead><tbody><tr class="fej vert"><td>w</td>';
+        for (var k = 0; k < m; k++)
+            txt += '<td>' + num2xy(k + m) + '</td>';
+        txt += '</tr></tbody></table></span>';
+    };
+    txt += "<div id='ranktarto'>&varrho; = <span id='rankofmat'>0</span></div><button  style='vertical-align: middle;margin-left:10px;width:fit-content;height:42px;background-color:#ca1414;color:white;border: 2px solid #979797;' class='sbtglbtn' onclick='stopra();'>STOP</button>";
     elem.innerHTML = txt;
     $("#rankn").trigger("change");
     return txt;
@@ -4488,8 +4559,9 @@ function makeBaseH() {
     $("#notinbase").html('').removeClass("shown");
     const regsor = document.getElementById("setregsor").checked;
     const t = document.getElementById("ranimt").value * 1;
-    document.getElementById("rankm").value = 1;
-    const N = document.getElementById("rankN").value * 1;;
+    const N = document.getElementById("rankN").value * 1;
+    const me = document.getElementById("rankm");
+    me.value = 1;
     const ne = document.getElementById("rankn");
     const we = document.getElementById("rankw");
     var out = [];
@@ -4510,11 +4582,16 @@ function makeBaseH() {
                     ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ") (" + v[3] + ");&nbsp;";
                 ntb = ntb.slice(0, -7);
                 $("#notinbase").html(ntb).addClass("shown");
-                return out;
+                $(ne).val(1).trigger('change');
+                $(me).val(2).trigger('change');
+                $(we).val("").trigger('change');
+                we.focus();
+                setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
+                setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
             }
         }, t);
     } else
-        return out;
+        return;
 };
 
 function baseRegNnm(N, n, m) {
@@ -4531,15 +4608,21 @@ function baseRegNnm(N, n, m) {
 function baseIregNnm(N, n, m) {
     var out = [];
     if (m > 1) {
-        for (var a = 1; a < m; a++) {
-            var pre = "y".repeat(a);
-            var also = N - n * m - a - 2;
-            if (N > 3 && also >= 0)
-                for (var i = Math.pow(2, also + 1) - 1; i > Math.pow(2, also) - 1; i--) {
-                    var w = pre + num2xy(i);
-                    out.push(w);
-                }
+        for (var a = 0; a < m; a++) {
+            var b = N - m * n - a;
+            if (b > 0 && (a + b) < m) {
+                out.push("y".repeat(a) + "x".repeat(b));
+            };
         };
+        /*  for (var a = 1; a < m; a++) {
+             var pre = "y".repeat(a);
+             var also = N - n * m - a - 2;
+             if (N > 3 && also >= 0)
+                 for (var i = Math.pow(2, also + 1) - 1; i > Math.pow(2, also) - 1; i--) {
+                     var w = pre + num2xy(i);
+                     out.push(w);
+                 }
+         }; */
         for (var b = 1; b < m; b++) {
             var pro = "x".repeat(b);
             var also = N - n * m - b - 2;
@@ -4569,10 +4652,37 @@ function baseIregNnm(N, n, m) {
 function base2w(e) {
     const xy = e.innerText;
     e.classList.add('volt');
-    document.getElementById("rankw").value = xy;
+    if (xy.startsWith("[")) {
+        const nmxy = JSON.parse(xy);
+        $("#rankn").val(nmxy[0]).trigger("change");
+        $("#rankm").val(nmxy[1]).trigger("change");
+        $("#rankw").val(nmxy[2]).trigger("change");
+    } else
+        $("#rankw").val(xy).trigger("change");
+};
+
+function allBase2w() {
+    const t = document.getElementById("ranimt").value * 1;
+    const db = $("#notinbase .irbe").length;
+    var i = 0;
+    ra = setInterval(() => {
+        var el = $("#notinbase .irbe:nth(" + i + ")");
+        el.trigger("click");
+        //el[0].scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
+        wIKDeriv(true, false);
+        i++;
+        $("#irregszamlalo").html(db - i);
+        if (i == db) {
+            clearInterval(ra);
+            setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200)
+            setTimeout(() => { $('#rankout,#notinbase').removeClass('villbgdark') }, 800)
+        }
+    }, t);
 };
 
 function baseReg() {
+    $('#ranktbl tbody tr th').each(function() { inBase.push(this.getAttribute('data-reg')) });
+    inBase = _.uniq(inBase);
     const N = document.getElementById("rankN").value * 1;;
     const n = document.getElementById("rankn").value * 1;
     const m = document.getElementById("rankm").value * 1;
@@ -4582,12 +4692,17 @@ function baseReg() {
         txt += "Nincs a feltételeknek megfelelő reguláris monom"
     else {
         for (let xy of reg)
-            txt += "<span class='regbe' onclick='base2w(this);'>" + xy + "</span>";
+            if (inBase.includes(n + "-" + m + "-" + xy))
+                txt += "<span class='regbe volt' onclick='base2w(this);'>" + xy + "</span>";
+            else
+                txt += "<span class='regbe' onclick='base2w(this);'>" + xy + "</span>";
     }
     $("#notinbase").html(txt).addClass("shown");
 };
 
 function baseIreg() {
+    $('#ranktbl tbody tr th').each(function() { inBase.push(this.getAttribute('data-reg')) });
+    inBase = _.uniq(inBase);
     const N = document.getElementById("rankN").value * 1;;
     const n = document.getElementById("rankn").value * 1;
     const m = document.getElementById("rankm").value * 1;
@@ -4596,8 +4711,216 @@ function baseIreg() {
     if (irr.length == 0)
         txt += "Nincs a feltételeknek megfelelő irreguláris monom"
     else {
-        for (let xy of irr)
-            txt += "<span class='irbe' onclick='base2w(this);'>" + xy + "</span>";
+        for (let xy of irr) {
+            if (inBase.includes(n + "-" + m + "-" + xy))
+                txt += "<span class='irbe volt' onclick='base2w(this);'>" + xy + "</span>";
+            else
+                txt += "<span class='irbe' onclick='base2w(this);'>" + xy + "</span>";
+
+        }
     }
     $("#notinbase").html(txt).addClass("shown");
+};
+
+function allBaseIrreg() {
+    $('#ranktbl tbody tr th').each(function() { inBase.push(this.getAttribute('data-reg')) });
+    inBase = _.uniq(inBase);
+    const N = document.getElementById("rankN").value * 1;
+    var irr = [];
+    for (var n = 1; n < N; n++) {
+        for (var m = 2; m < Math.floor(N / n); m++) {
+            var irrNnm = baseIregNnm(N, n, m).map(y => JSON.stringify([n, m, y]));
+            if (irrNnm.length > 0)
+                irr = [...irr, ...irrNnm];
+        }
+    }
+
+    var txt = "";
+    const L = irr.length;
+    if (L == 0)
+        txt += "Nincs a feltételeknek megfelelő irreguláris monom"
+    else {
+        for (let xy of irr) {
+            if (inBase.includes(n + "-" + m + "-" + xy))
+                txt += "<span class='irbe volt' onclick='base2w(this);'>" + xy + "</span>";
+            else
+                txt += "<span class='irbe' onclick='base2w(this);'>" + xy + "</span>";
+
+        }
+    }
+    txt = '<div><button class="restore-button showpre1" onclick="allBase2wD();" style="margin-right:10px;width:50px;">All</button> Maradt: <span id="irregszamlalo">' + L + '</span> / ' + L + '</div>' + txt;
+    $("#notinbase").html(txt).addClass("shown");
+};
+
+function makeBaseIrreg() {
+    const all = document.getElementById("allirregon").checked;
+    if (all)
+        allBaseIrreg();
+    else
+        baseIreg();
+};
+
+// NODRAW/////////////////////////////////
+
+
+/* function getMatrixRank(matrix) {
+    if (!matrix || matrix.length === 0) return 0;
+    Sylvester.precision = parseFloat("1e-" + document.getElementById("epsilon").value);
+    let mat = $M(matrix.map(row => [...row]));
+    return mat.rank();
+}; */
+
+function _xyIKDeriv(xy, m) {
+    return derivHn(xy, m, false, false);
+};
+
+function _wIKDeriv(N, dim, n, m, w) {
+    const der = xyIKDeriv(w, m);
+
+    var v = Array(dim).fill(0);
+    const regst = wnmReg(der);
+    const a = countLeadingY(w);
+    const b = countEndingX(w);
+
+    if (a + b > 0)
+        irreg = true;
+    if (a + b >= m)
+        return;
+    else if (regst[0][1].length == N) {
+        var rankprev = matRank;
+        for (let t of regst) {
+            var indx = xy2num(t[1]);
+            v[indx] = t[0];
+        };
+        rmat.push(v);
+        matRank = getMatrixRank(rmat);
+        if (matRank < rankprev) {
+            //clearInterval(ra);
+            var hb = document.getElementById("rankout").appendChild(document.createElement("div"));
+            $(hb).css({ outline: "3px solid red", padding: "2px", margin: "10px" });
+            hb.innerHTML = "Numerikus instabilitás! Probálja meg a beállításokban az &epsilon; pontosságot meghatározó<b> m = " + document.getElementById("epsilon").value + "</b> szám értékét csökkenteni.<br/>n = " + n + ", m = " + m + ", w = " + w + " &varrho; = " + matRank + ", &varrho;<sub>prev</sub> = " + rankprev;
+            return;
+        } else if (matRank == rankprev) {
+            rmat.pop();
+            notInBase.push([n, m, w, matRank]);
+            return;
+        }
+    } else
+        return;
+    const rfor = document.getElementById("rankofmat");
+    rfor.innerHTML = matRank;
+    rfor.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
+    return v;
+};
+
+function _makeBaseH() {
+    var tbl = document.getElementById("ranktbl");
+    if (tbl == null) {
+        drawTable();
+        tbl = document.getElementById("ranktbl");
+    };
+    $("#notinbase").html('').removeClass("shown");
+    const t = document.getElementById("ranimt").value * 1;
+    const N = document.getElementById("rankN").value * 1;
+    const dim = Math.pow(2, N - 2);
+    const me = document.getElementById("rankm");
+    me.value = 1;
+    const ne = document.getElementById("rankn");
+    const we = document.getElementById("rankw");
+    if (N > 3) {
+        var i = Math.pow(2, N - 2) - 1;
+        ra = setInterval(() => {
+            var n = N - 1 - Math.ceil(Math.log2(i + 1));
+            var w = num2xy(i);
+            $(ne).val(n).trigger('change');
+            we.value = w;
+            _wIKDeriv(N, dim, n, 1, w);
+            i--;
+            if (i == 1) {
+                clearInterval(ra);
+                var ntb = "";
+                for (let v of notInBase)
+                    ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ") (" + v[3] + ");&nbsp;";
+                ntb = ntb.slice(0, -7);
+                $("#notinbase").html(ntb).addClass("shown");
+                $(ne).val(1).trigger('change');
+                $(me).val(2).trigger('change');
+                $(we).val("").trigger('change');
+                we.focus();
+                setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
+                setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
+            }
+        }, t);
+    } else
+        return;
+};
+
+function _allBaseIrreg() {
+    $('#ranktbl tbody tr th').each(function() { inBase.push(this.getAttribute('data-reg')) });
+    inBase = _.uniq(inBase);
+    const N = document.getElementById("rankN").value * 1;
+    var irr = [];
+    for (var n = 1; n < N; n++) {
+        for (var m = 2; m < Math.floor(N / n); m++) {
+            var irrNnm = baseIregNnm(N, n, m).map(y => JSON.stringify([n, m, y]));
+            if (irrNnm.length > 0)
+                irr = [...irr, ...irrNnm];
+        }
+    }
+
+    var txt = "";
+    const L = irr.length;
+    if (L == 0)
+        txt += "Nincs a feltételeknek megfelelő irreguláris monom"
+    else {
+        for (let xy of irr) {
+            if (inBase.includes(n + "-" + m + "-" + xy))
+                txt += "<span class='irbe volt' onclick='base2w(this);'>" + xy + "</span>";
+            else
+                txt += "<span class='irbe' onclick='base2w(this);'>" + xy + "</span>";
+
+        }
+    }
+    txt = '<div><button class="restore-button showpre1" onclick="allBase2w();" style="margin-right:10px;width:50px;">All</button> Összesen:<span id="irregszamlalo">' + L + '</span></div>' + txt;
+    $("#notinbase").html(txt).addClass("shown");
+};
+
+function _allBase2w() {
+    const t = document.getElementById("ranimt").value * 1;
+    const db = $("#notinbase .irbe").length;
+    var i = 0;
+    ra = setInterval(() => {
+        var el = $("#notinbase .irbe:nth(" + i + ")");
+        el.trigger("click");
+        //el[0].scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
+        const N = document.getElementById("rankN").value * 1;
+        const dim = Math.pow(2, N - 2);
+        const m = document.getElementById("rankm").value * 1;
+        const n = document.getElementById("rankn").value * 1;
+        const w = document.getElementById("rankw").value;
+        _wIKDeriv(N, dim, n, m, w);
+        i++;
+        $("#irregszamlalo").html(db - i);
+        if (i == db) {
+            clearInterval(ra);
+            setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200)
+            setTimeout(() => { $('#rankout,#notinbase').removeClass('villbgdark') }, 800)
+        }
+    }, t);
+};
+
+function allBase2wD() {
+    const nodraw = document.getElementById("nodraw").checked;
+    if (nodraw)
+        _allBase2w()
+    else
+        allBase2w();
+};
+
+function makeBaseHD() {
+    const nodraw = document.getElementById("nodraw").checked;
+    if (nodraw)
+        _makeBaseH()
+    else
+        makeBaseH();
 };
