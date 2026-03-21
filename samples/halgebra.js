@@ -1306,7 +1306,7 @@ function regHighlight(elem) {
             const cel = $('#ranktbl.table-hideable tbody tr.active td:nth(' + indx + ')');
             cel.addClass('hl');
             if (cel[0] != undefined)
-                cel[0].scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
+                cel[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     } else {
         $("#shouth span.hreg.hl").removeClass('hl');
@@ -4472,7 +4472,7 @@ function wIKDeriv(ranking, norajz) {
             return;
         } else if (ranking && matRank == rankprev) {
             rmat.pop();
-            notInBase.push([n, m, w, matRank]);
+            notInBase.push([n, m, w, xy2num(w), matRank]);
             return;
         } else if (!norajz) {
             const row = tbl.insertRow();
@@ -4502,10 +4502,10 @@ function wIKDeriv(ranking, norajz) {
             };
         }
     } else txtr += "<br/>nem illeszthető be";
-    const rfor = document.getElementById("rankofmat");
     document.getElementById("wnmkijelzo").innerHTML = txt + txtr;
     document.getElementById("rankofmat").innerHTML = matRank;
-    rfor.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
+    if ($('#ranktbl tr:last')[0] != undefined)
+        $('#ranktbl tr:last')[0].scrollIntoView({ inline: 'start', behavior: 'smooth', block: 'start' });
     return v;
 };
 
@@ -4541,13 +4541,13 @@ function drawTable() {
     const elem = document.getElementById("rankout");
     var txt = "";
     if (!nodraw) {
-        txt += '<span style="display:block;width:fit-content;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th>';
+        txt += '<div style="max-height:40vh;overflow-y:auto;width:fit-content;margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th>';
         for (var j = 0; j < m; j++)
             txt += '<th class="hide-column hide-col">' + (j + 1) + '</th>';
         txt += '</tr></thead><tbody><tr class="fej vert"><td>w</td>';
         for (var k = 0; k < m; k++)
             txt += '<td>' + num2xy(k + m) + '</td>';
-        txt += '</tr></tbody></table></span>';
+        txt += '</tr></tbody></table></div>';
     };
     txt += "<div id='ranktarto'>&varrho; = <span id='rankofmat'>0</span></div><button  style='vertical-align: middle;margin-left:10px;width:fit-content;height:42px;background-color:#ca1414;color:white;border: 2px solid #979797;' class='sbtglbtn' onclick='stopra();'>STOP</button>";
     elem.innerHTML = txt;
@@ -4558,7 +4558,7 @@ function drawTable() {
 function makeBaseH() {
     $("#notinbase").html('').removeClass("shown");
     const regsor = document.getElementById("setregsor").checked;
-    const t = document.getElementById("ranimt").value * 1;
+    const t = 0;
     const N = document.getElementById("rankN").value * 1;
     const me = document.getElementById("rankm");
     me.value = 1;
@@ -4570,16 +4570,20 @@ function makeBaseH() {
         ra = setInterval(() => {
             var n = N - 1 - Math.ceil(Math.log2(i + 1));
             var w = num2xy(i);
-            $(ne).val(n).trigger('change');
-            we.value = w;
-            wIKDeriv(true, regsor);
-            out.push([n, w]);
-            i--;
+            if (n > 1 && w.charAt(1) != "x") {
+                i--;
+            } else {
+                $(ne).val(n).trigger('change');
+                we.value = w;
+                wIKDeriv(true, regsor);
+                out.push([n, w]);
+                i--;
+            };
             if (i == 1) {
                 clearInterval(ra);
                 var ntb = "";
                 for (let v of notInBase)
-                    ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ") (" + v[3] + ");&nbsp;";
+                    ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
                 ntb = ntb.slice(0, -7);
                 $("#notinbase").html(ntb).addClass("shown");
                 $(ne).val(1).trigger('change');
@@ -4600,7 +4604,8 @@ function baseRegNnm(N, n, m) {
     if (N > 3 && also >= 0)
         for (var i = Math.pow(2, also + 1) - 1; i > Math.pow(2, also) - 1; i--) {
             var w = num2xy(i);
-            out.push(w);
+            if (w.charAt(1) == "x")
+                out.push(w);
         }
     return out;
 };
@@ -4629,10 +4634,11 @@ function baseIregNnm(N, n, m) {
             if (N > 3 && also >= 0)
                 for (var i = Math.pow(2, also + 1) - 1; i > Math.pow(2, also) - 1; i--) {
                     var w = num2xy(i) + pro;
-                    out.push(w);
+                    if (w.charAt(1) == "x")
+                        out.push(w);
                 }
         };
-        for (var a = 1; a < m; a++) {
+        /*for (var a = 1; a < m; a++) {
             var b = N - m * n - a;
             if (b > 1) {
                 var pre = "y".repeat(a);
@@ -4644,7 +4650,7 @@ function baseIregNnm(N, n, m) {
                         out.push(w);
                     }
             };
-        };
+        };*/
     };
     return out;
 };
@@ -4662,13 +4668,12 @@ function base2w(e) {
 };
 
 function allBase2w() {
-    const t = document.getElementById("ranimt").value * 1;
+    const t = 0;
     const db = $("#notinbase .irbe").length;
     var i = 0;
     ra = setInterval(() => {
         var el = $("#notinbase .irbe:nth(" + i + ")");
         el.trigger("click");
-        //el[0].scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
         wIKDeriv(true, false);
         i++;
         $("#irregszamlalo").html(db - i);
@@ -4781,7 +4786,6 @@ function _wIKDeriv(N, dim, n, m, w) {
     const regst = wnmReg(der);
     const a = countLeadingY(w);
     const b = countEndingX(w);
-
     if (a + b > 0)
         irreg = true;
     if (a + b >= m)
@@ -4802,14 +4806,15 @@ function _wIKDeriv(N, dim, n, m, w) {
             return;
         } else if (matRank == rankprev) {
             rmat.pop();
-            notInBase.push([n, m, w, matRank]);
+            notInBase.push([n, m, w, xy2num(w), matRank]);
             return;
         }
     } else
         return;
     const rfor = document.getElementById("rankofmat");
     rfor.innerHTML = matRank;
-    rfor.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
+    if ($('#ranktbl tr:last')[0] != undefined)
+        $('#ranktbl tr:last')[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
     return v;
 };
 
@@ -4820,7 +4825,7 @@ function _makeBaseH() {
         tbl = document.getElementById("ranktbl");
     };
     $("#notinbase").html('').removeClass("shown");
-    const t = document.getElementById("ranimt").value * 1;
+    const t = 0;
     const N = document.getElementById("rankN").value * 1;
     const dim = Math.pow(2, N - 2);
     const me = document.getElementById("rankm");
@@ -4828,19 +4833,23 @@ function _makeBaseH() {
     const ne = document.getElementById("rankn");
     const we = document.getElementById("rankw");
     if (N > 3) {
-        var i = Math.pow(2, N - 2) - 1;
+        var i = dim - 1;
         ra = setInterval(() => {
             var n = N - 1 - Math.ceil(Math.log2(i + 1));
             var w = num2xy(i);
-            $(ne).val(n).trigger('change');
-            we.value = w;
-            _wIKDeriv(N, dim, n, 1, w);
-            i--;
+            if (n > 1 && w.charAt(1) != "x") {
+                i--;
+            } else {
+                $(ne).val(n).trigger('change');
+                we.value = w;
+                _wIKDeriv(N, dim, n, 1, w);
+                i--;
+            };
             if (i == 1) {
                 clearInterval(ra);
                 var ntb = "";
                 for (let v of notInBase)
-                    ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ") (" + v[3] + ");&nbsp;";
+                    ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ") &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
                 ntb = ntb.slice(0, -7);
                 $("#notinbase").html(ntb).addClass("shown");
                 $(ne).val(1).trigger('change');
@@ -4886,13 +4895,12 @@ function _allBaseIrreg() {
 };
 
 function _allBase2w() {
-    const t = document.getElementById("ranimt").value * 1;
+    const t = 0;
     const db = $("#notinbase .irbe").length;
     var i = 0;
     ra = setInterval(() => {
         var el = $("#notinbase .irbe:nth(" + i + ")");
         el.trigger("click");
-        //el[0].scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
         const N = document.getElementById("rankN").value * 1;
         const dim = Math.pow(2, N - 2);
         const m = document.getElementById("rankm").value * 1;
@@ -4924,3 +4932,9 @@ function makeBaseHD() {
     else
         makeBaseH();
 };
+
+function elemzes(str) {
+    let a = xy2num(str);
+    let b = xy2num("x" + conjstr(str.slice(1, -1)) + "y");
+    console.log(str, a, "x" + conjstr(str.slice(1, -1)) + "y", b, a + b, Math.pow(2, str.length - 2) - 1)
+}
