@@ -3702,6 +3702,8 @@ function bleptet(b) {
 };
 
 function keresztelem() {
+    if (document.getElementById("detreszletes") == undefined)
+        return;
     const detreszletes = document.getElementById("detreszletes").checked;
     const alsoharomszog = document.getElementById('settukor').checked;
     const blepteto = $('#outdet #buttonb');
