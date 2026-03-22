@@ -4560,6 +4560,10 @@ function makeBaseH() {
     const regsor = document.getElementById("setregsor").checked;
     const t = 0;
     const N = document.getElementById("rankN").value * 1;
+    if (N > 11) {
+        document.getElementById("rankout").innerHTML = "N > 11 értékkel csak <code>'Számítás mátrix rajzolása nélkül'</code> beállítással futtatható.";
+        return;
+    };
     const me = document.getElementById("rankm");
     me.value = 1;
     const ne = document.getElementById("rankn");
@@ -4612,7 +4616,7 @@ function baseRegNnm(N, n, m) {
 
 function baseIregNnm(N, n, m) {
     var out = [];
-    if (m > 1) {
+    if (m > 1 && m < N - 3) {
         for (var a = 0; a < m; a++) {
             var b = N - m * n - a;
             if (b > 0 && (a + b) < m) {
@@ -4753,7 +4757,7 @@ function allBaseIrreg() {
 
         }
     }
-    txt = '<div><button class="restore-button showpre1" onclick="allBase2wD();" style="margin-right:10px;width:50px;">All</button> Maradt: <span id="irregszamlalo">' + L + '</span> / ' + L + '</div>' + txt;
+    txt = '<div style="position: sticky;top: 0;background-color: #c2ff56;padding: 3px;"><button class="restore-button showpre1" onclick="allBase2wD();" style="margin-right:10px;width:50px;">All</button> Maradt: <span id="irregszamlalo">' + L + '</span> / ' + L + '</div>' + txt;
     $("#notinbase").html(txt).addClass("shown");
 };
 
@@ -4780,8 +4784,8 @@ function _xyIKDeriv(xy, m) {
 };
 
 function _wIKDeriv(N, dim, n, m, w) {
-    const der = xyIKDeriv(w, m);
-
+    setDerIK(n);
+    const der = _xyIKDeriv(w, m);
     var v = Array(dim).fill(0);
     const regst = wnmReg(der);
     const a = countLeadingY(w);
@@ -4791,30 +4795,16 @@ function _wIKDeriv(N, dim, n, m, w) {
     if (a + b >= m)
         return;
     else if (regst[0][1].length == N) {
-        var rankprev = matRank;
+        //var rankprev = matRank;
         for (let t of regst) {
             var indx = xy2num(t[1]);
             v[indx] = t[0];
         };
         rmat.push(v);
-        matRank = getMatrixRank(rmat);
-        if (matRank < rankprev) {
-            //clearInterval(ra);
-            var hb = document.getElementById("rankout").appendChild(document.createElement("div"));
-            $(hb).css({ outline: "3px solid red", padding: "2px", margin: "10px" });
-            hb.innerHTML = "Numerikus instabilitás! Probálja meg a beállításokban az &epsilon; pontosságot meghatározó<b> m = " + document.getElementById("epsilon").value + "</b> szám értékét csökkenteni.<br/>n = " + n + ", m = " + m + ", w = " + w + " &varrho; = " + matRank + ", &varrho;<sub>prev</sub> = " + rankprev;
-            return;
-        } else if (matRank == rankprev) {
-            rmat.pop();
-            notInBase.push([n, m, w, xy2num(w), matRank]);
-            return;
-        }
     } else
         return;
     const rfor = document.getElementById("rankofmat");
     rfor.innerHTML = matRank;
-    if ($('#ranktbl tr:last')[0] != undefined)
-        $('#ranktbl tr:last')[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
     return v;
 };
 
@@ -4847,6 +4837,8 @@ function _makeBaseH() {
             };
             if (i == 1) {
                 clearInterval(ra);
+                matRank = getMatrixRank(rmat);
+                document.getElementById("rankofmat").innerHTML = matRank;
                 var ntb = "";
                 for (let v of notInBase)
                     ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ") &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
@@ -4862,6 +4854,22 @@ function _makeBaseH() {
         }, t);
     } else
         return;
+};
+
+function _base2w(e) {
+    const xy = e.innerText;
+    e.classList.add('volt');
+    const N = document.getElementById("rankN").value * 1;
+    const dim = Math.pow(2, N - 2);
+    const nmxy = JSON.parse(xy);
+    const n = nmxy[0];
+    const m = nmxy[1];
+    const w = nmxy[2];
+    $("#rankn").val(n);
+    $("#rankm").val(m);
+    $("#rankw").val(w);
+    if (m < 5)
+        _wIKDeriv(N, dim, n, m, w);
 };
 
 function _allBaseIrreg() {
@@ -4884,13 +4892,13 @@ function _allBaseIrreg() {
     else {
         for (let xy of irr) {
             if (inBase.includes(n + "-" + m + "-" + xy))
-                txt += "<span class='irbe volt' onclick='base2w(this);'>" + xy + "</span>";
+                txt += "<span class='irbe volt' onclick='_base2w(this);'>" + xy + "</span>";
             else
-                txt += "<span class='irbe' onclick='base2w(this);'>" + xy + "</span>";
+                txt += "<span class='irbe' onclick='_base2w(this);'>" + xy + "</span>";
 
         }
     }
-    txt = '<div><button class="restore-button showpre1" onclick="allBase2w();" style="margin-right:10px;width:50px;">All</button> Összesen:<span id="irregszamlalo">' + L + '</span></div>' + txt;
+    txt = '<div style="position: sticky;top: 0;background-color: #c2ff56;padding: 3px;"><button class="restore-button showpre1" onclick="allBase2wD();" style="margin-right:10px;width:50px;">All</button> Maradt: <span id="irregszamlalo">' + L + '</span></div>' + txt;
     $("#notinbase").html(txt).addClass("shown");
 };
 
@@ -4900,6 +4908,7 @@ function _allBase2w() {
     var i = 0;
     ra = setInterval(() => {
         var el = $("#notinbase .irbe:nth(" + i + ")");
+        el[0].scrollIntoView({ behavior: 'smooth', inline: 'start' });
         el.trigger("click");
         const N = document.getElementById("rankN").value * 1;
         const dim = Math.pow(2, N - 2);
@@ -4911,8 +4920,14 @@ function _allBase2w() {
         $("#irregszamlalo").html(db - i);
         if (i == db) {
             clearInterval(ra);
-            setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200)
-            setTimeout(() => { $('#rankout,#notinbase').removeClass('villbgdark') }, 800)
+            matRank = getMatrixRank(rmat);
+            document.getElementById("rankofmat").innerHTML = matRank;
+            $(ne).val(1).trigger('change');
+            $(me).val(2).trigger('change');
+            $(we).val("").trigger('change');
+            we.focus();
+            setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200);
+            setTimeout(() => { $('#rankout,#notinbase').removeClass('villbgdark') }, 800);
         }
     }, t);
 };
@@ -4931,6 +4946,14 @@ function makeBaseHD() {
         _makeBaseH()
     else
         makeBaseH();
+};
+
+function makeBaseIrregD() {
+    const nodraw = document.getElementById("nodraw").checked;
+    if (nodraw)
+        _allBaseIrreg();
+    else
+        makeBaseIrreg();
 };
 
 function elemzes(str) {
