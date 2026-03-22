@@ -520,7 +520,7 @@
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label for="rankN">N =  </label>
-                <input type="number" id="rankN" onchange="drawTable();" onfocus="drawTable();" value="6" min="1" max="12" step="1" name="rankN" style="width:50px;margin-right:10px">
+                <input type="number" id="rankN" onchange="drawTable();" onfocus="drawTable();" value="6" min="1" max="14" step="1" name="rankN" style="width:50px;margin-right:10px">
                 <button id="rankokbtn" onclick="idClear('#rankout');idClear('#wnmkijelzo');makeBaseHD();" class="showpre1" title="Insert code into editor">All &part;<sub>n</sub>(reg)</sub></button>
                 <button class="showpre1" style="width:76px;margin-left:3px" onclick="clearInterval(ra);idClear('#rankout');idClear('#wnmkijelzo');" title="Clear output">Clear</button>
                 <button id="tglropts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('ranksetting'); document.getElementById('ranksetting').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });">⚙</button>
@@ -575,7 +575,7 @@
                 <div style="margin-left:2px;padding:3px;margin-top:10px;">
                     <label for="rankw">w =  </label>
                     <input class="inpvec" oninput="wIKDeriv0();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="rankw" value="yxy">
-                    <button class="restore-button showpre1" onclick="makeBaseIrreg();" style="margin-right:10px;width:70px;">w<sub>non-adm</sub></button>
+                    <button class="restore-button showpre1" onclick="makeBaseIrregD();" style="margin-right:10px;width:70px;">w<sub>non-adm</sub></button>
                     <button class="restore-button showpre1" onclick="baseReg();" style="margin-right:10px;width:50px;">w<sub>adm</sub></button>
                 </div>
             </div>
