@@ -4107,15 +4107,14 @@ var matRank = 0;
 var notInBase = [];
 var inBase = [];
 
-function tgldimtbl(id) {
+/* function tgldimtbl(id) {
     var elem = document.getElementById(id);
     var open = elem.style.display;
-    console.log(open)
     if (open == "none") {
         elem.style.display = "block";;
     } else
         elem.style.display = "none";
-};
+}; */
 
 function getMatrixRankEREDETI(matrix) {
     if (!matrix || matrix.length === 0) return 0;
@@ -4922,9 +4921,12 @@ function _allBase2w() {
         el.trigger("click");
         const N = document.getElementById("rankN").value * 1;
         const dim = Math.pow(2, N - 2);
-        const m = document.getElementById("rankm").value * 1;
-        const n = document.getElementById("rankn").value * 1;
-        const w = document.getElementById("rankw").value;
+        const me = document.getElementById("rankm");
+        const ne = document.getElementById("rankn");
+        const we = document.getElementById("rankw");
+        const m = me.value * 1;
+        const n = ne.value * 1;
+        const w = we.value;
         _wIKDeriv(N, dim, n, m, w);
         i++;
         $("#irregszamlalo").html(db - i);
@@ -4971,3 +4973,66 @@ function elemzes(str) {
     let b = xy2num("x" + conjstr(str.slice(1, -1)) + "y");
     console.log(str, a, "x" + conjstr(str.slice(1, -1)) + "y", b, a + b, Math.pow(2, str.length - 2) - 1)
 }
+
+
+// Quasi-Derivation Relation
+
+function xyList_OvFrac(st) {
+    st = _.groupBy(st, y => y[1]);
+    var stobj = [];
+    _.forEach(st, function(val, key) {
+        const S = val.map(y => y[0]);
+        var s = Fraction(0);
+        for (let f of S)
+            s = s.add(f);
+        if (!s.equals(0)) {
+            stobj.push([s, xy2XY(key)]);
+        };
+    });
+    return stobj;
+};
+
+function quasiThetaw(c, w) {
+    c = Fraction(c)
+    var out = [];
+    let w0 = Fraction(w[0]);
+    let w1 = w[1];
+    console.log(c, w0, w1)
+    if (w1 == "x") {
+        out.push([w0, "xx"]);
+        out.push([w0, "xy"]);
+    } else if (w1 == "y") {
+        out.push([w0, "yx"]);
+        out.push([w0, "yy"]);
+    } else if (w1.startsWith("x") && w1.length > 1) {
+        var w2 = w1.slice(1);
+        var T = quasiThetaw(c, [w0, w2]);
+        var D1 = derivHn(w2, 1, false, false);
+        out.push([w0, "xx" + w2]);
+        out.push([w0, "xy" + w2]);
+        for (let u of T)
+            out.push([w0.mul(u[0]), "x" + u[1]]);
+        for (let v of D1)
+            out.push([w0.mul(c * v[0]), "x" + v[1]]);
+    } else if (w1.startsWith("y") && w1.length > 1) {
+        var w2 = w1.slice(1);
+        var T = quasiThetaw(c, [w0, w2]);
+        var D1 = derivHn(w2, 1, false, false);
+        out.push([w0, "yx" + w2]);
+        out.push([w0, "yy" + w2]);
+        for (let u of T)
+            out.push([w0.mul(u[0]), "y" + u[1]]);
+        for (let v of D1)
+            out.push([w0.mul(c * v[0]), "y" + v[1]]);
+    }
+    return out;
+};
+
+function quasiTheta(c, vL) {
+    out = [];
+    for (let w of vL)
+        out.push(quasiThetaw(c, w));
+
+    out = xyList_OvFrac(_.flatten(out));
+    return out;
+};
