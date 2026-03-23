@@ -3272,8 +3272,8 @@ background-color: #eaeaea;
 #notinbase {
     margin: 4px;
     padding: 3px;
-    background-color: #ffc5c5;
-    outline: 2px solid red;
+    background-color: #777;
+    outline: 2px solid #3e3e3e;
     display: none;
     font-size: 21px;
     max-height: 200px;
@@ -3287,32 +3287,34 @@ background-color: #eaeaea;
 #notinbase .irbe {
     margin: 5px;
     padding: 2px 7px;
-    border: 2px solid #cebebe;
-    background-color: #8c1616;
+    border: 2px solid #353535;
+    background-color: #3c3c3c;
     border-radius: 7px;
     display: inline-block;
     vertical-align: middle;
     cursor: pointer;
-    color: white;
+    color: #ffffffe5;
+    box-shadow: 0 0 2px 2px #626161;
 }
 
 #notinbase .regbe {
     margin: 5px;
     padding: 2px 7px;
-    border: 2px solid #cebebe;
-    background-color: #8c1616;
+    border: 2px solid #353535;
+    background-color: #3c3c3c;
     border-radius: 7px;
     display: inline-block;
     vertical-align: middle;
     cursor: pointer;
-    color: white;
+    color: #ffffffe5;
+    box-shadow: 0 0 2px 2px #626161;
 }
 
 #notinbase .irbe.volt,
 #notinbase .regbe.volt {
     background-color: transparent;
-    border: 2px solid #fbb6b6;
-    color: #686060;
+    border: 2px solid #777;
+    color: #484848;
 }
 
 #rankminus.showpre1.dumb,
@@ -3320,26 +3322,6 @@ background-color: #eaeaea;
     opacity: 0.3;
     pointer-events: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
