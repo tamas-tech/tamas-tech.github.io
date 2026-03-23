@@ -3323,6 +3323,24 @@ background-color: #eaeaea;
     pointer-events: none;
 }
 
+#dimtbl {
+    text-align: center;
+    border-collapse: collapse;
+    margin: 15px 20px;
+    outline: 1px solid #d7d7d7;
+    outline-offset: 10px;
+    width: fit-content;
+}
+
+#dimtbl tbody th {
+    border-right: 1px solid #555;
+}
+
+#dimtbl tr td,
+#dimtbl tr th {
+    padding: 2px 8px;
+}
+
 
 
 
