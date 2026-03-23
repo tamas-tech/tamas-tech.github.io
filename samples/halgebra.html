@@ -515,7 +515,96 @@
     <div class="keret of even" id="k3" style="margin-bottom:10px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">3.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('rankcontainer',this.value);setkijelzoW('rankhelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-            <p class="keplet" id="keplet_k3" style="margin-bottom:0;">Rank</p>
+           <button class="showpre1" style="width:90px;margin-left:10px" onclick="tgldimtbl('dimtbl');">Table</button>
+            <table id="dimtbl" style="display:none;">
+                <thead>
+                    <tr style="border-bottom:1px solid #555;">
+                        <th style="border-right:1px solid #555;">k</th>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>10</td>
+                        <td>11</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>14</td>
+                        <td>15</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>&part;<sub>n</sub></th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td>22</td>
+                        <td>44</td>
+                        <td>90</td>
+                        <td>181</td>
+                        <td>363</td>
+                        <td>727</td>
+                        <td>1456</td>
+                        <td>2912</td>
+                        <td>5825</td>
+                    </tr>
+                    <tr>
+                        <th>lin.kaw.</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td>23</td>
+                        <td>46</td>
+                        <td>98</td>
+                        <td>200</td>
+                        <td>413</td>
+                        <td>838</td>
+                        <td>1713</td>
+                        <td>...</td>
+                        <td>...</td>
+                    </tr>
+                    <tr>
+                        <th>reg<sub>⧢</sub>(&part;<sub>n</sub><sup style="margin-left:-0.5em; ">m</sup>)</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>11</td>
+                        <td>24</td>
+                        <td>50</td>
+                        <td>104</td>
+                        <td>213</td>
+                        <td>431</td>
+                        <td>873</td>
+                        <td>1756</td>
+                        <td>3532</td>
+                        <td>7080</td>
+                    </tr>
+                    <tr>
+                        <th>all</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>6</td>
+                        <td>14</td>
+                        <td>29</td>
+                        <td>60</td>
+                        <td>123</td>
+                        <td>449</td>
+                        <td>503</td>
+                        <td>1012</td>
+                        <td>2032</td>
+                        <td>4075</td>
+                        <td>...</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="keplet " id="keplet_k3 " style="margin-bottom:0; ">
+                \[\zeta\left[\text{reg}_{⧢}\left(\partial_{n}^{m}\left(y^{a}wx^{b}\right)\right)\right] = 0\text{ , if m > a+b}\hspace{1cm}(n,m\geq 0,\; w\in x\mathfrak{h}y)\]
+            </p>
         </div>
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
