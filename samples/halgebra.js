@@ -3671,7 +3671,7 @@ function shouthReg() {
             nonAdm.push([c, xy])
         }
     });
-
+    console.log(vL, nonAdm)
     if (!zetaregst) {
         regjel = "⧢";
         if (nonAdm.length > 0)
@@ -4757,7 +4757,7 @@ function allBaseIrreg() {
 
         }
     }
-    txt = '<div style="position: sticky;top: 0;background-color: #c2ff56;padding: 3px;"><button class="restore-button showpre1" onclick="allBase2wD();" style="margin-right:10px;width:50px;">All</button> Maradt: <span id="irregszamlalo">' + L + '</span> / ' + L + '</div>' + txt;
+    txt = '<div style="position: sticky;top: 0;background-color:#cececea3;padding: 3px;"><button class="restore-button showpre1" onclick="allBase2wD();" style="margin-right:10px;width:50px;">All</button> Maradt: <span id="irregszamlalo">' + L + '</span> / ' + L + '</div>' + txt;
     $("#notinbase").html(txt).addClass("shown");
 };
 
@@ -4868,17 +4868,17 @@ function _base2w(e) {
     $("#rankn").val(n);
     $("#rankm").val(m);
     $("#rankw").val(w);
-    if (m < 5)
-        _wIKDeriv(N, dim, n, m, w);
+    _wIKDeriv(N, dim, n, m, w);
 };
 
 function _allBaseIrreg() {
     $('#ranktbl tbody tr th').each(function() { inBase.push(this.getAttribute('data-reg')) });
     inBase = _.uniq(inBase);
     const N = document.getElementById("rankN").value * 1;
+    const Mmax = document.getElementById("derivkorlat").value * 1 + 1;
     var irr = [];
     for (var n = 1; n < N; n++) {
-        for (var m = 2; m < Math.floor(N / n); m++) {
+        for (var m = 2; m < Math.min(Mmax, Math.floor(N / n)); m++) {
             var irrNnm = baseIregNnm(N, n, m).map(y => JSON.stringify([n, m, y]));
             if (irrNnm.length > 0)
                 irr = [...irr, ...irrNnm];
@@ -4898,7 +4898,7 @@ function _allBaseIrreg() {
 
         }
     }
-    txt = '<div style="position: sticky;top: 0;background-color: #c2ff56;padding: 3px;"><button class="restore-button showpre1" onclick="allBase2wD();" style="margin-right:10px;width:50px;">All</button> Maradt: <span id="irregszamlalo">' + L + '</span></div>' + txt;
+    txt = '<div style="position: sticky;top: 0;background-color: #cececea3;padding: 3px;"><button class="restore-button showpre1" onclick="allBase2wD();" style="margin-right:10px;width:50px;">All</button> Maradt: <span id="irregszamlalo">' + L + '</span></div>' + txt;
     $("#notinbase").html(txt).addClass("shown");
 };
 
@@ -4908,7 +4908,7 @@ function _allBase2w() {
     var i = 0;
     ra = setInterval(() => {
         var el = $("#notinbase .irbe:nth(" + i + ")");
-        el[0].scrollIntoView({ behavior: 'smooth', inline: 'start' });
+        el[0].scrollIntoView({ behavior: 'smooth', inline: 'center' });
         el.trigger("click");
         const N = document.getElementById("rankN").value * 1;
         const dim = Math.pow(2, N - 2);
