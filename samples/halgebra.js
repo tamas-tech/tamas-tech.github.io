@@ -4107,6 +4107,16 @@ var matRank = 0;
 var notInBase = [];
 var inBase = [];
 
+function tgldimtbl(id) {
+    var elem = document.getElementById(id);
+    var open = elem.style.display;
+    console.log(open)
+    if (open == "none") {
+        elem.style.display = "block";;
+    } else
+        elem.style.display = "none";
+};
+
 function getMatrixRankEREDETI(matrix) {
     if (!matrix || matrix.length === 0) return 0;
 
