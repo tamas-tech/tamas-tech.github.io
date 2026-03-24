@@ -362,12 +362,17 @@ function derivSet(e) {
     document.getElementById("dern").value = "1";
 }
 
-function derivSelect(e, n) {
+function derivSelect(e, n, c) {
     difffok = n;
+    diffc = c;
     $("#derntok").addClass("dumb");
+    $("#derctok").addClass("dumb");
     if (e == "dn") {
         var diff = "dn";
         diffact = "dn";
+    } else if (e == "dcn") {
+        var diff = "dcn";
+        diffact = "dcn";
     } else if (e == "Dn") {
         var diff = "Dn";
         diffact = "Dn";
@@ -428,6 +433,15 @@ function derivSelect(e, n) {
         diffbzj = "(";
         diffjzj = ")";
         $("#derntok").removeClass("dumb");
+        const dxy = xydn(n);
+        $("#setdX").val(dxy).trigger("change");
+        $("#setdY").val("-" + dxy.replaceAll("+", "-")).trigger("change");
+    } else if (diff == "dcn") {
+        diffused = "&part;<sub style='vertical-align: -0.4em;'>" + n + "</sub><sup style='margin-left:-0.4em;vertical-align: 0.6em;'>(" + c + ")</sup>";
+        diffbzj = "(";
+        diffjzj = ")";
+        $("#derntok").removeClass("dumb");
+        $("#derctok").removeClass("dumb");
         const dxy = xydn(n);
         $("#setdX").val(dxy).trigger("change");
         $("#setdY").val("-" + dxy.replaceAll("+", "-")).trigger("change");
@@ -550,6 +564,7 @@ function makeParamObj() {
     pobj.sign = store_sign;
     pobj.diff = diffact;
     pobj.difffok = difffok * 1;
+    pobj.diffc = diffc * 1;
     pobj.diffused = diffused;
 
     return pobj;
@@ -559,6 +574,7 @@ function stateBack(obj) {
     //document.getElementById("selectdiff") = pobj.diff;
     $("#selectdiff").val(obj.diff).trigger("change");
     $("#dern").val(obj.difffok).trigger("change");
+    $("#derc").val(obj.diffc).trigger("change");
 
     document.getElementById("w1conj").checked = obj.w1conj;
     document.getElementById("w1inv").checked = obj.w1inv;
@@ -4107,14 +4123,14 @@ var matRank = 0;
 var notInBase = [];
 var inBase = [];
 
-/* function tgldimtbl(id) {
+function tgldimtbl(id) {
     var elem = document.getElementById(id);
     var open = elem.style.display;
     if (open == "none") {
         elem.style.display = "block";;
     } else
         elem.style.display = "none";
-}; */
+};
 
 function getMatrixRankEREDETI(matrix) {
     if (!matrix || matrix.length === 0) return 0;
@@ -4996,34 +5012,35 @@ function quasiThetaw(c, w) {
     c = Fraction(c)
     var out = [];
     let w0 = Fraction(w[0]);
+    //let w0 = Fraction(1);
     let w1 = w[1];
-    console.log(c, w0, w1)
+    let fel = Fraction(1, 2);
     if (w1 == "x") {
         out.push([w0, "xx"]);
-        out.push([w0, "xy"]);
+        out.push([w0.mul(fel), "xy"]);
+        out.push([w0.mul(fel), "yx"]);
     } else if (w1 == "y") {
-        out.push([w0, "yx"]);
         out.push([w0, "yy"]);
+        out.push([w0.mul(fel), "xy"]);
+        out.push([w0.mul(fel), "yx"]);
     } else if (w1.startsWith("x") && w1.length > 1) {
         var w2 = w1.slice(1);
-        var T = quasiThetaw(c, [w0, w2]);
-        var D1 = derivHn(w2, 1, false, false);
         out.push([w0, "xx" + w2]);
-        out.push([w0, "xy" + w2]);
+        out.push([w0.mul(fel), "xy" + w2]);
+        out.push([w0.mul(fel), "yx" + w2]);
+        out.push([w0.mul(c * w2.length), "xy" + w2]);
+        var T = quasiThetaw(c, [1, w2]);
         for (let u of T)
             out.push([w0.mul(u[0]), "x" + u[1]]);
-        for (let v of D1)
-            out.push([w0.mul(c * v[0]), "x" + v[1]]);
     } else if (w1.startsWith("y") && w1.length > 1) {
         var w2 = w1.slice(1);
-        var T = quasiThetaw(c, [w0, w2]);
-        var D1 = derivHn(w2, 1, false, false);
-        out.push([w0, "yx" + w2]);
         out.push([w0, "yy" + w2]);
+        out.push([w0.mul(fel), "xy" + w2]);
+        out.push([w0.mul(fel), "yx" + w2]);
+        out.push([w0.mul(-1 * c * w2.length), "xy" + w2]);
+        var T = quasiThetaw(c, [1, w2]);
         for (let u of T)
             out.push([w0.mul(u[0]), "y" + u[1]]);
-        for (let v of D1)
-            out.push([w0.mul(c * v[0]), "y" + v[1]]);
     }
     return out;
 };
@@ -5032,7 +5049,60 @@ function quasiTheta(c, vL) {
     out = [];
     for (let w of vL)
         out.push(quasiThetaw(c, w));
-
     out = xyList_OvFrac(_.flatten(out));
     return out;
+};
+
+function quasiTheta_k(c, vL, k) {
+    if (k == 0)
+        return vL.map(y => [Fraction(y[0]), y[1]]);
+    else {
+        for (var i = 0; i < k; i++)
+            vL = quasiTheta(c, vL);
+        return vL;
+    }
+};
+
+function quasiDeriv(c, n, w) {
+    var out = [];
+    for (var k = 0; k < n; k++) {
+        const f = Fraction(Math.pow(-1, k), factorial(k) * factorial(n - 1 - k));
+        const tagk = quasiTheta_k(c, w, k);
+        var tagdk = [];
+        for (let u of tagk) {
+            var der = derivHn(u[1], 1, false, false)
+            for (let t of der) {
+                var s = u[0].mul(t[0]);
+                tagdk.push([s, t[1]]);
+            }
+        }
+        var tagnmkdk = quasiTheta_k(c, tagdk, n - 1 - k).map(z => [f.mul(z[0]), z[1]]);
+        for (let v of tagnmkdk)
+            out.push(v);
+    };
+    out = xyList_OvFrac(out);
+
+    /*   if (document.getElementById("xymonom").checked)
+          var txt = formazxyMonom(out);
+      else {
+          var txt = formazxyV(out, true, true)
+      }
+
+      document.getElementById("shouth").innerHTML = txt + shouth2zetabtn; */
+    return out;
+};
+
+function quasiDerivk(c, n, k, w) {
+    var vL = quasiDeriv(c, n, w);;
+    for (var i = 1; i < k; i++)
+        vL = quasiDeriv(c, n, vL);
+    vL = xyList_OvFrac(vL);
+
+    if (document.getElementById("xymonom").checked)
+        var txt = formazxyMonom(vL);
+    else {
+        var txt = formazxyV(vL, true, true)
+    };
+    document.getElementById("shouth").innerHTML = txt + shouth2zetabtn;
+    return vL;
 };
