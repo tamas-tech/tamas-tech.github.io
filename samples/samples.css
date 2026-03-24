@@ -3083,7 +3083,15 @@ table#animtbl .animkeplet {
     height: 0;
 }
 
-#derntok.dumb {
+#derctok {
+    display: inline-block;
+    vertical-align: -40px;
+    margin-left: -110px;
+    height: 0;
+}
+
+#derntok.dumb,
+#derctok.dumb {
     display: none;
 }
 
