@@ -34,6 +34,7 @@
         var diffbzj = "";
         var diffjzj = "";
         var difffok = 0;
+        var diffc = 0;
         var root = document.querySelector(':root');
         root.style.setProperty('--anim-time', '1s');
 
@@ -512,10 +513,10 @@
         </div>
     </div>
     
-    <div class="keret of even" id="k3" style="margin-bottom:10px;">
+   <div class="keret of even" id="k3" style="margin-bottom:10px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">3.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('rankcontainer',this.value);setkijelzoW('rankhelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
-           <button class="showpre1" style="width:90px;margin-left:10px" onclick="tgldimtbl('dimtbl');">Table</button>
+            <button class="showpre1" style="width:90px;margin-left:10px" onclick="tgldimtbl('dimtbl');">Table</button>
             <table id="dimtbl" style="display:none;">
                 <thead>
                     <tr style="border-bottom:1px solid #555;">
@@ -551,6 +552,22 @@
                         <td>1456</td>
                         <td>2912</td>
                         <td>5825</td>
+                    </tr>
+                    <tr>
+                        <th>&part;<sub>n</sub><sup style="margin-left:-0.5em;">(c)</sup>)</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td>23</td>
+                        <td>46</td>
+                        <td>98</td>
+                        <td>200</td>
+                        <td>410</td>
+                        <td>830</td>
+                        <td>1679</td>
+                        <td>...</td>
+                        <td>...</td>
                     </tr>
                     <tr>
                         <th>lin.kaw.</th>
@@ -602,7 +619,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p class="keplet " id="keplet_k3 " style="margin-bottom:0;">
+            <p class="keplet" id="keplet_k3" style="margin-bottom:0;">
                 \[\zeta\left[\text{reg}_{⧢}\left(\partial_{n}^{m}\left(y^{a}wx^{b}\right)\right)\right] = 0\text{ , if m > a+b}\hspace{1cm}(n,m\geq 0,\; w\in x\mathfrak{h}y)\]
             </p>
         </div>
@@ -610,15 +627,16 @@
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <label for="rankN">N =  </label>
                 <input type="number" id="rankN" onchange="drawTable();" onfocus="drawTable();" value="6" min="1" max="14" step="1" name="rankN" style="width:50px;margin-right:10px">
-                <button id="rankokbtn" onclick="idClear('#rankout');idClear('#wnmkijelzo');makeBaseHD();" class="showpre1" title="Insert code into editor">All &part;<sub>n</sub>(reg)</sub></button>
-                <button class="showpre1" style="width:76px;margin-left:3px" onclick="clearInterval(ra);idClear('#rankout');idClear('#wnmkijelzo');" title="Clear output">Clear</button>
-                <button id="tglropts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('ranksetting'); document.getElementById('ranksetting').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });">⚙</button>
+                <button id="rankokbtn" onclick="idClear( '#rankout');idClear( '#wnmkijelzo');makeBaseHD();" class="showpre1" title="Insert code into editor">All &part;<sub>n</sub>(reg)</sub></button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="clearInterval(ra);idClear( '#rankout');idClear( '#wnmkijelzo');" title="Clear output">Clear</button>
+                <button id="tglropts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl( 'ranksetting'); document.getElementById( 'ranksetting').scrollIntoView({ behavior: 'smooth', block:
+                            'center', inline: 'start' });">⚙</button>
             </div>
         </div>
         <div id="ranksetting" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
             <div id="dersetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                 <label for="setoutputfontR">&#128474;</label>
-                <input oninput="setOutputFontRank(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output's fontsize" name="setoutputfontR" />
+                <input oninput="setOutputFontRank(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfontR" />
                 <label style="display:inline-block;vertical-align:middle;font-size:120%;" for="settblw">&#x27DB;</label>
                 <input id="settblw" oninput="settblw(this.value);" type="range" min="2" max="5" value="3.3" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="settblw" />
             </div>
@@ -638,11 +656,11 @@
             </div>
             <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
                 <label for="setrsor">Mátrix sorainak elrejtése</label>
-                <input type="checkbox" name="setrsor" id="setrsor" onchange="$('#ranktbl').toggleClass('shrink');" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                <input type="checkbox" name="setrsor" id="setrsor" onchange="$( '#ranktbl').toggleClass( 'shrink');" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
             </div>
             <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
                 <label for="setregsor" style="vertical-align: middle;">Admissible sorok nem látszódnak</label>
-                <input type="checkbox" name="setregsor" id="setregsor" onchange="$('#ranktbl').toggleClass('reghide');" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+                <input type="checkbox" name="setregsor" id="setregsor" onchange="$( '#ranktbl').toggleClass( 'reghide');" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
             </div>
             <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
                 <label for="nodraw" style="vertical-align: middle;">Számítás mátrix rajzolása nélkül</label>
@@ -673,7 +691,7 @@
                 </div>
             </div>
         </div>
-        <div id='notinbase' ondblclick="this.classList.remove('shown')"></div>
+        <div id='notinbase' ondblclick="this.classList.remove( 'shown')"></div>
         <div id="wnmkijelzotarto" class="nobr">
             <span id="wnmkijelzo"></span>
         </div>
