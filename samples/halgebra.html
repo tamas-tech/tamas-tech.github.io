@@ -376,6 +376,7 @@
                             <option value="dh"> &delta;&#x2095; (= &delta;&#x2081;)</sub></option>
                             <option value="D"> D (= &part; - D&#x2081;)</sub></option>
                             <option value="dn">&part;&#x2099; (IK)</option>
+                            <option value="dcn">&part;&#x2099;&#x207d;&#x1d9c;&#x207e;</option>
                             <option value="den"> &delta;&#x2099;</sub></option>
                             <option value="Dn"> D&#x2099;</sub></option>
                         </select>
@@ -384,7 +385,12 @@
                                 <label for="dern"><b>n</b> = </label>
                                 <input type="number" id="dern" value="1" min="1" step="1" name="dern" style="width:55px;margin-right: 5px;" onchange="derivSelect(diffact,this.value);">
                             </div>
-
+                        <div id="derctok" class="dumb">
+                            <div style="margin-bottom: 5px;">
+                                <label for="derc"><b>(c)</b> = </label>
+                                <input type="text" id="derc" value="0" name="derc" style="width:55px;margin-right: 5px;" onchange="derivSelect(diffact,document.getElementById('dern').value,this.value);">
+                            </div>
+                        </div>
                         </div>
                     </div>
                     <div style="padding: 5px 0;">
