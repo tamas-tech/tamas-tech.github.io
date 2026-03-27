@@ -4603,7 +4603,14 @@ function stopra() {
     clearInterval(ra);
     setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
     setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
-    runszamitas('k3', false)
+    runszamitas('k3', false);
+    var txt = "A futást a " + ra + ". számítás elvégzésekor megszakitották\nA memóriában tárolt mátrix jelenlegi mérete: " + rmat.length + " X " + rmat[0].length + "\nSzeretné kiszámítani a rangját?";
+    var conf = confirm(txt)
+    if (conf) {
+        matRank = getMatrixRank(rmat);
+        document.getElementById("rankofmat").innerHTML = matRank;
+    } else
+        return;
 };
 
 function rankHiba(N, irreg) {
