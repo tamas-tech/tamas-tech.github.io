@@ -2460,7 +2460,7 @@ table tr.trvonal {
     display: block;
 }
 
-div#k1 span.kepletvalaszto {
+span.kepletvalaszto {
     display: block;
     margin: 5px;
     padding: 3px;
@@ -2469,7 +2469,7 @@ div#k1 span.kepletvalaszto {
     border-radius: 5px;
 }
 
-div#k1 span.kepletvalaszto.selected {
+span.kepletvalaszto.selected {
     background-color: #ffe1e1;
     box-shadow: 0 0 5px 5px #ff9595;
     border: 1px solid #ffc8c8;
