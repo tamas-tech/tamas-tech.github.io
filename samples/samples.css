@@ -3277,6 +3277,12 @@ background-color: #eaeaea;
     font-weight: bold;
 }
 
+#ranktarto.hiba {
+    opacity: 0.5;
+    color: #fd0000;
+}
+
+
 #notinbase {
     margin: 4px;
     padding: 3px;
