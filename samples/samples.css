@@ -3354,7 +3354,19 @@ background-color: #eaeaea;
     padding: 2px 8px;
 }
 
+#rankhiba {
+    display: none;
+    margin: 10px;
+    font-size: 80%;
+    outline: 2px solid red;
+    padding: 3px;
+    background-color: #ffdfdf;
+    width: calc(100vw - 60px);
+}
 
+#rankhiba.shown {
+    display: block;
+}
 
 
 
