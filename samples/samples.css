@@ -3344,6 +3344,11 @@ background-color: #eaeaea;
     border-right: 1px solid #555;
 }
 
+#dimtbl tbody tr.reg {
+    border-bottom: 1px solid #555;
+    font-weight: 800;
+}
+
 #dimtbl tr td,
 #dimtbl tr th {
     padding: 2px 8px;
