@@ -4174,9 +4174,10 @@ function pickRankKeplet(e, b) {
 
 function runszamitas(id, run) {
     const elem = document.getElementById(id);
-    if (run)
+    if (run) {
         elem.style.filter = "invert(80%)";
-    else {
+        $('#rankhiba').removeClass('shown');
+    } else {
         elem.style.filter = "none";
         $('#ranktarto')[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -4614,23 +4615,30 @@ function stopra() {
 };
 
 function rankHiba(N, irreg) {
+    $('#ranktarto').removeClass('hiba');
     if (quasid) {
         if (irreg)
             var ert = $('#dimtbl tbody tr:nth-child(4) td:nth-child(' + (N - 1) + ')').text() * 1
         else
             var ert = $('#dimtbl tbody tr:nth-child(3) td:nth-child(' + (N - 1) + ')').text() * 1
-        txt = 'A kiszámított ' + matRank + ' értéke nem egyezik meg a táblázatban feltüntetett ' + ert + ' értékkel'
+        txt = 'A kiszámított ' + matRank + ' értéke nem egyezik meg a táblázatban feltüntetett ' + ert + ' értékkel.'
         const ccurr = document.getElementById("cmax").value * 1;
         if (ccurr < _cmaxt[N])
-            txt += ' Ennek a legvalószínűbb oka az lehet, hogy c<sub>max</sub> jelenlegi ' + ccurr + ' értéke kisebb, mint a javasolt ' + _cmaxt[N] + ' érték. Probálja meg a béállításokban c<sub>max</sub> értékét ' + _cmaxt[N] + ' értékre növelni.'
+            txt += ' Ennek a legvalószínűbb oka az lehet, hogy c<sub>max</sub> jelenlegi ' + ccurr + ' értéke kisebb, mint a javasolt ' + _cmaxt[N] + ' érték. Probálja meg a béállításokban c<sub>max</sub> értékét ' + _cmaxt[N] + '-ra/re növelni.';
+        const ccurr0 = document.getElementById("cmin").value * 1;
+        if (ccurr0 > 0)
+            txt += ' Ennek a legvalószínűbb oka az lehet, hogy c<sub>min</sub> jelenlegi ' + ccurr0 + ' értéke nagyobb, mint a javasolt 0 érték. Probálja meg a béállításokban c<sub>min</sub> értékét 0-ra csökkentani.';
     } else {
         if (irreg)
-            var ert = $('#dimtbl tbody tr:nth-child(2) td:nth-child(' + (N - 1) + ')').text() * 1
+            var ert = $('#dimtbl tbody tr:nth-child(2) td:nth-child(' + (N - 1) + ')').text() * 1;
         else
-            var ert = $('#dimtbl tbody tr:nth-child(1) td:nth-child(' + (N - 1) + ')').text() * 1
+            var ert = $('#dimtbl tbody tr:nth-child(1) td:nth-child(' + (N - 1) + ')').text() * 1;
+        txt = 'A kiszámított ' + matRank + ' értéke nem egyezik meg a táblázatban feltüntetett ' + ert + ' értékkel. Próbálkozzon a beállítások megváltoztatásával.';
     }
-    if (matRank != ert)
-        $('#rankhiba').addClass('shown').html(txt)
+    if (matRank != ert) {
+        $('#ranktarto').addClass('hiba');
+        $('#rankhiba').addClass('shown').html(txt);
+    }
 };
 
 function drawTable() {
@@ -4663,7 +4671,7 @@ function drawTable() {
             txt += '<td>' + num2xy(k + m) + '</td>';
         txt += '</tr></tbody></table></div>';
     };
-    txt += "<div id='ranktarto'>&varrho; = <span id='rankofmat'>0</span></div><button  style='vertical-align: middle;margin-left:10px;width:fit-content;height:42px;background-color:#ca1414;color:white;border: 2px solid #979797;' class='sbtglbtn' onclick='stopra();'>STOP</button><div id='rankhiba'>A fgjfgkfg fdfgdfgbgd</div>";
+    txt += "<div id='ranktarto'>&varrho; = <span id='rankofmat'>0</span></div><button  style='vertical-align: middle;margin-left:10px;width:fit-content;height:42px;background-color:#ca1414;color:white;border: 2px solid #979797;' class='sbtglbtn' onclick='stopra();'>STOP</button><div id='rankhiba'></div>";
     elem.innerHTML = txt;
     $("#rankn").trigger("change");
     return txt;
@@ -4708,7 +4716,10 @@ function makeBaseH() {
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
                 setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
-                setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
+                setTimeout(() => {
+                    $('#rankout').removeClass('villbgdark');
+                    rankHiba(N, false);
+                }, 800);
             }
         }, t);
     } else
@@ -4787,6 +4798,7 @@ function base2w(e) {
 function allBase2w() {
     const t = 0;
     const db = $("#notinbase .irbe").length;
+    const N = document.getElementById("rankN").value * 1;;
     var i = 0;
     if (db > 0)
         ra = setInterval(() => {
@@ -4799,8 +4811,11 @@ function allBase2w() {
             if (i == db) {
                 clearInterval(ra);
                 runszamitas("k3", false);
-                setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200)
-                setTimeout(() => { $('#rankout,#notinbase').removeClass('villbgdark') }, 800)
+                setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200);
+                setTimeout(() => {
+                    $('#rankout,#notinbase').removeClass('villbgdark');
+                    rankHiba(N, true);
+                }, 800);
             }
         }, t);
     else
@@ -4968,7 +4983,10 @@ function _makeBaseH() {
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
                 setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
-                setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
+                setTimeout(() => {
+                    $('#rankout').removeClass('villbgdark');
+                    rankHiba(N, false);
+                }, 800);
             }
         }, t);
     } else
@@ -5051,7 +5069,10 @@ function _allBase2w() {
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
                 setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200);
-                setTimeout(() => { $('#rankout,#notinbase').removeClass('villbgdark') }, 800);
+                setTimeout(() => {
+                    $('#rankout,#notinbase').removeClass('villbgdark');
+                    rankHiba(N, true);
+                }, 800);
             }
         }, t);
     else
@@ -5540,7 +5561,6 @@ function cmakeBaseH() {
             if (i == 1) {
                 clearInterval(ra);
                 runszamitas("k3", false);
-                rankHiba(N, false);
                 var ntb = "";
                 for (let v of notInBase)
                     ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
@@ -5550,7 +5570,10 @@ function cmakeBaseH() {
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
                 setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
-                setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
+                setTimeout(() => {
+                    $('#rankout').removeClass('villbgdark');
+                    rankHiba(N, false);
+                }, 800);
             }
         }, t);
     } else
@@ -5677,7 +5700,10 @@ function c_makeBaseH() {
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
                 setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
-                setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
+                setTimeout(() => {
+                    $('#rankout').removeClass('villbgdark');
+                    rankHiba(N, false);
+                }, 800);
             }
         }, t);
     } else
@@ -5767,7 +5793,10 @@ function c_allBase2w() {
             $(ce).val(0).trigger('change');
             $(we).val("").trigger('change');
             setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200);
-            setTimeout(() => { $('#rankout,#notinbase').removeClass('villbgdark') }, 800);
+            setTimeout(() => {
+                $('#rankout,#notinbase').removeClass('villbgdark');
+                rankHiba(N, true);
+            }, 800);
         }
     }, t);
 };
