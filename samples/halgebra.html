@@ -365,11 +365,11 @@
                     <div style="padding: 5px 0;">
                         <label for="derxy">A derivált megadása:</label>
                     </div>
-                    <div style="padding: 5px 0;">
+                     <div style="padding: 5px 0;">
                         <label for="setdX">x&rightarrow;</label>
                         <input type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');shtuffleWans();" onfocus="resetSelectDiff();" id="setdX" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:15px;font-size: 100%;padding-bottom: 5px;">
                         <label for="selectdiff">&part;,d,...</label>
-                        <select id="selectdiff" onchange="derivSet(this);derivSelect(this,1);">
+                        <select id="selectdiff" onchange="derivSet(this);derivSelect(this,1,0);">
                             <option value="none">Én adom meg</option>
                             <option value="mienk" selected>&part;</option>
                             <option value="d">d (= &part;&dagger; = &delta;&#x209b;)</sub></option>
@@ -383,7 +383,7 @@
                         <div id="derntok" class="dumb">
                             <div style="margin-bottom: 5px;">
                                 <label for="dern"><b>n</b> = </label>
-                                <input type="number" id="dern" value="1" min="1" step="1" name="dern" style="width:55px;margin-right: 5px;" onchange="derivSelect(diffact,this.value,0);">
+                                <input type="number" id="dern" value="1" min="1" step="1" name="dern" style="width:55px;margin-right: 5px;" onchange="derivSelect(diffact,this.value,document.getElementById('derc').value);">
                             </div>
                         </div>
                         <div id="derctok" class="dumb">
