@@ -4176,8 +4176,10 @@ function runszamitas(id, run) {
     const elem = document.getElementById(id);
     if (run)
         elem.style.filter = "invert(80%)";
-    else
+    else {
         elem.style.filter = "none";
+        $('#ranktarto')[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 };
 
 function getMatrixRankEREDETI(matrix) {
@@ -4601,6 +4603,27 @@ function stopra() {
     clearInterval(ra);
     setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
     setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
+    runszamitas('k3', false)
+};
+
+function rankHiba(N, irreg) {
+    if (quasid) {
+        if (irreg)
+            var ert = $('#dimtbl tbody tr:nth-child(4) td:nth-child(' + (N - 1) + ')').text() * 1
+        else
+            var ert = $('#dimtbl tbody tr:nth-child(3) td:nth-child(' + (N - 1) + ')').text() * 1
+        txt = 'A kiszámított ' + matRank + ' értéke nem egyezik meg a táblázatban feltüntetett ' + ert + ' értékkel'
+        const ccurr = document.getElementById("cmax").value * 1;
+        if (ccurr < _cmaxt[N])
+            txt += ' Ennek a legvalószínűbb oka az lehet, hogy c<sub>max</sub> jelenlegi ' + ccurr + ' értéke kisebb, mint a javasolt ' + _cmaxt[N] + ' érték. Probálja meg a béállításokban c<sub>max</sub> értékét ' + _cmaxt[N] + ' értékre növelni.'
+    } else {
+        if (irreg)
+            var ert = $('#dimtbl tbody tr:nth-child(2) td:nth-child(' + (N - 1) + ')').text() * 1
+        else
+            var ert = $('#dimtbl tbody tr:nth-child(1) td:nth-child(' + (N - 1) + ')').text() * 1
+    }
+    if (matRank != ert)
+        $('#rankhiba').addClass('shown').html(txt)
 };
 
 function drawTable() {
@@ -4633,7 +4656,7 @@ function drawTable() {
             txt += '<td>' + num2xy(k + m) + '</td>';
         txt += '</tr></tbody></table></div>';
     };
-    txt += "<div id='ranktarto'>&varrho; = <span id='rankofmat'>0</span></div><button  style='vertical-align: middle;margin-left:10px;width:fit-content;height:42px;background-color:#ca1414;color:white;border: 2px solid #979797;' class='sbtglbtn' onclick='stopra();'>STOP</button>";
+    txt += "<div id='ranktarto'>&varrho; = <span id='rankofmat'>0</span></div><button  style='vertical-align: middle;margin-left:10px;width:fit-content;height:42px;background-color:#ca1414;color:white;border: 2px solid #979797;' class='sbtglbtn' onclick='stopra();'>STOP</button><div id='rankhiba'>A fgjfgkfg fdfgdfgbgd</div>";
     elem.innerHTML = txt;
     $("#rankn").trigger("change");
     return txt;
@@ -4677,7 +4700,6 @@ function makeBaseH() {
                 $(ne).val(1).trigger('change');
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
-                we.focus();
                 setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
                 setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
             }
@@ -4938,7 +4960,6 @@ function _makeBaseH() {
                 $(ne).val(1).trigger('change');
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
-                we.focus();
                 setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
                 setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
             }
@@ -5022,7 +5043,6 @@ function _allBase2w() {
                 $(ne).val(1).trigger('change');
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
-                we.focus();
                 setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200);
                 setTimeout(() => { $('#rankout,#notinbase').removeClass('villbgdark') }, 800);
             }
@@ -5221,6 +5241,122 @@ function quasiDerivk_ci(c, n, k, w, conj, inv) {
     };
 };
 
+// if c is  integer
+
+function quasiThetawInt(c, w) {
+    var out = [];
+    let w0 = w[0];
+
+    let w1 = w[1];
+    let fel = 1 / 2;
+    if (w1 == "x") {
+        out.push([w0, "xx"]);
+        out.push([w0 * fel, "xy"]);
+        out.push([w0 * fel, "yx"]);
+    } else if (w1 == "y") {
+        out.push([w0, "yy"]);
+        out.push([w0 * fel, "xy"]);
+        out.push([w0 * fel, "yx"]);
+    } else if (w1.startsWith("x") && w1.length > 1) {
+        var w2 = w1.slice(1);
+        out.push([w0, "xx" + w2]);
+        out.push([w0 * fel, "xy" + w2]);
+        out.push([w0 * fel, "yx" + w2]);
+        out.push([w0 * c * w2.length, "xy" + w2]);
+        var T = quasiThetaw(c, [1, w2]);
+        for (let u of T)
+            out.push([w0 * u[0], "x" + u[1]]);
+    } else if (w1.startsWith("y") && w1.length > 1) {
+        var w2 = w1.slice(1);
+        out.push([w0, "yy" + w2]);
+        out.push([w0 * fel, "xy" + w2]);
+        out.push([w0 * fel, "yx" + w2]);
+        out.push([w0 * (-1 * c * w2.length), "xy" + w2]);
+        var T = quasiThetaw(c, [1, w2]);
+        for (let u of T)
+            out.push([w0 * u[0], "y" + u[1]]);
+    }
+    return out;
+};
+
+function quasiThetaInt(c, vL) {
+    out = [];
+    for (let w of vL)
+        out.push(quasiThetawInt(c, w));
+    out = xyList_Ov(_.flatten(out));
+    return out;
+};
+
+function quasiTheta_kInt(c, vL, k) {
+    if (k == 0)
+        return vL.map(y => [y[0], y[1]]);
+    else {
+        for (var i = 0; i < k; i++)
+            vL = quasiThetaInt(c, vL);
+        return vL;
+    };
+};
+
+function quasiDerivInt(c, n, w) {
+    var out = [];
+    for (var k = 0; k < n; k++) {
+        const f = Math.pow(-1, k) / (factorial(k) * factorial(n - 1 - k));
+        const tagk = quasiTheta_kInt(c, w, k);
+        var tagdk = [];
+        for (let u of tagk) {
+            var der = derivHn(u[1], 1, false, false)
+            for (let t of der) {
+                var s = u[0] * t[0];
+                tagdk.push([s, t[1]]);
+            }
+        }
+        var tagnmkdk = quasiTheta_kInt(c, tagdk, n - 1 - k).map(z => [f * z[0], z[1]]);
+        for (let v of tagnmkdk)
+            out.push(v);
+    };
+    out = xyList_Ov(out);
+    return out;
+};
+
+function quasiDerivkInt(c, n, k, w) {
+    if (k == 0)
+        return w;
+    var vL = quasiDerivInt(c, n, w);
+    for (var i = 1; i < k; i++)
+        vL = quasiDerivInt(c, n, vL);
+    vL = xyList_Ov(vL);
+
+    /*   if (document.getElementById("xymonom").checked)
+          var txt = formazxyMonom(vL);
+      else {
+          var txt = formazxyV(vL, true, true)
+      };
+      document.getElementById("shouth").innerHTML = txt + shouth2zetabtn; */
+    return vL;
+};
+
+function quasiDerivk_ciInt(c, n, k, w, conj, inv) {
+    if (w == "" || w == "1")
+        return [
+            [1, ""]
+        ];
+    else {
+        if (conj)
+            w = conjstr(w);
+        if (inv)
+            w = invstr(w);
+        var out = quasiDerivkInt(c, n, k, [
+            [1, w]
+        ]);
+        if (conj)
+            out = out.map(y => [y[0], conjstr(y[1])]);
+        if (inv)
+            out = out.map(y => [y[0], invstr(y[1])]);
+        out = xyList_Ov(out);
+        return out;
+    };
+};
+
 // BASE QUASI_DERIVATION
 
 function cwIKDeriv0() {
@@ -5397,6 +5533,7 @@ function cmakeBaseH() {
             if (i == 1) {
                 clearInterval(ra);
                 runszamitas("k3", false);
+                rankHiba(N, false);
                 var ntb = "";
                 for (let v of notInBase)
                     ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
@@ -5405,7 +5542,6 @@ function cmakeBaseH() {
                 $(ne).val(1).trigger('change');
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
-                we.focus();
                 setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
                 setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
             }
@@ -5533,7 +5669,6 @@ function c_makeBaseH() {
                 $(ne).val(1).trigger('change');
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
-                we.focus();
                 setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
                 setTimeout(() => { $('#rankout').removeClass('villbgdark') }, 800);
             }
@@ -5624,7 +5759,6 @@ function c_allBase2w() {
             $(me).val(2).trigger('change');
             $(ce).val(0).trigger('change');
             $(we).val("").trigger('change');
-            we.focus();
             setTimeout(() => { $('#rankout,#notinbase').addClass('villbgdark'); }, 200);
             setTimeout(() => { $('#rankout,#notinbase').removeClass('villbgdark') }, 800);
         }
