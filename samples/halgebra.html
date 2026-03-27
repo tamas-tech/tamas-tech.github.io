@@ -559,6 +559,22 @@
                         <td>2912</td>
                         <td>5825</td>
                     </tr>
+                    <tr class="reg">
+                        <th>reg<sub>⧢</sub>(&part;<sub>n</sub><sup style="margin-left:-0.5em;">m</sup>)</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>11</td>
+                        <td>24</td>
+                        <td>50</td>
+                        <td>104</td>
+                        <td>213</td>
+                        <td>431</td>
+                        <td>873</td>
+                        <td>1756</td>
+                        <td>3532</td>
+                        <td>7080</td>
+                    </tr>
                     <tr>
                         <th>&part;<sub>n</sub><sup style="margin-left:-0.5em;">(c)</sup>)</th>
                         <td>1</td>
@@ -572,6 +588,38 @@
                         <td>410</td>
                         <td>830</td>
                         <td>1679</td>
+                        <td>...</td>
+                        <td>...</td>
+                    </tr>
+                    <tr class="reg">
+                        <th>reg<sub>⧢</sub>([&part;<sub>n</sub><sup style="margin-left:-0.5em;">(c)</sup>)]<sup>m</sup>)</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>11</td>
+                        <td>24</td>
+                        <td>50</td>
+                        <td>105</td>
+                        <td>217</td>
+                        <td>445</td>
+                        <td>910</td>
+                        <td>...</td>
+                        <td>...</td>
+                        <td>...</td>
+                    </tr>
+                    <tr>
+                        <th>Ohno</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td>23</td>
+                        <td>46</td>
+                        <td>98</td>
+                        <td>199</td>
+                        <td>411</td>
+                        <td>830</td>
+                        <td>1691</td>
                         <td>...</td>
                         <td>...</td>
                     </tr>
@@ -591,24 +639,8 @@
                         <td>...</td>
                         <td>...</td>
                     </tr>
-                    <tr>
-                        <th>reg<sub>⧢</sub>(&part;<sub>n</sub><sup style="margin-left:-0.5em;">m</sup>)</th>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>5</td>
-                        <td>11</td>
-                        <td>24</td>
-                        <td>50</td>
-                        <td>104</td>
-                        <td>213</td>
-                        <td>431</td>
-                        <td>873</td>
-                        <td>1756</td>
-                        <td>3532</td>
-                        <td>7080</td>
-                    </tr>
-                    <tr>
-                        <th>all</th>
+                    <tr class="reg" style="border-top: 1px solid #555;background-color: #ececec;">
+                        <th>All</th>
                         <td>1</td>
                         <td>2</td>
                         <td>6</td>
@@ -616,7 +648,7 @@
                         <td>29</td>
                         <td>60</td>
                         <td>123</td>
-                        <td>449</td>
+                        <td>249</td>
                         <td>503</td>
                         <td>1012</td>
                         <td>2032</td>
@@ -626,7 +658,11 @@
                 </tbody>
             </table>
             <p class="keplet" id="keplet_k3" style="margin-bottom:0;">
-                \[\zeta\left[\text{reg}_{⧢}\left(\partial_{n}^{m}\left(y^{a}wx^{b}\right)\right)\right] = 0\text{ , if m > a+b}\hspace{1cm}(n,m\geq 0,\; w\in x\mathfrak{h}y)\]
+                <span class="kepletvalaszto selected" onclick="pickRankKeplet(this,false);">\[\zeta\left[\text{reg}_{⧢}\left(\partial_{n}^{m}\left(y^{a}wx^{b}\right)\right)\right] = 0\text{ , if m > a+b}\hspace{1cm}(n,m\geq 0,\; w\in x\mathfrak{h}y)\]
+                </span>
+                <span class="kepletvalaszto" onclick="pickRankKeplet(this,true);">\[\zeta\left[\text{reg}_{⧢}\left((\partial_{n}^{(c)})^{m}\left(y^{a}wx^{b}\right)\right)\right] = 0\text{ , if m > a+b}\hspace{1cm}(n,m\geq 0,\; w\in
+                x\mathfrak{h}y)\]
+                </span>
             </p>
         </div>
         <div class="stickblock">
@@ -660,6 +696,19 @@
                 <label for="epsilon">&epsilon; = (10<sup>-m</sup>)</label>
                 <input type="number" id="epsilon" value="5" min="1" step="1" name="epsilon" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
             </div>
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label for="derivkorlat">Deriválási korlát: m<sub>max</sub> = </label>
+                <input type="number" id="derivkorlat" value="5" min="2" step="1" name="derivkorlat" style="width:55px;margin-right: 5px;">
+            </div>
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label for="cmin">c<sub>min</sub> = </label>
+                <input type="number" id="cmin" value="0" name="cmin" onchange="_cmin=this.value*1" style="width:55px;margin-right: 10px;">
+                <label for="cmax">c<sub>max</sub> = </label>
+                <input type="number" id="cmax" value="2" name="cmax" onchange="_cmax=this.value*1" style="width:55px;margin-right: 10px;">
+                <label for="cstep">c<sub>step</sub> = </label>
+                <input type="text" id="cstep" value="1" name="cstep" onchange="_cstep=Number(Fraction(this.value))*1" style="width:55px;margin-right: 10px;">
+                <span id="cjavaslat">Javasolt értékek: c<sub>min</sub> = 0,  c<sub>max</sub> = 2, c<sub>step</sub> = 1</span>
+            </div>
             <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
                 <label for="setrsor">Mátrix sorainak elrejtése</label>
                 <input type="checkbox" name="setrsor" id="setrsor" onchange="$( '#ranktbl').toggleClass( 'shrink');" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
@@ -672,10 +721,6 @@
                 <label for="nodraw" style="vertical-align: middle;">Számítás mátrix rajzolása nélkül</label>
                 <input type="checkbox" name="nodraw" id="nodraw" onchange="drawTable();" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
             </div>
-            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
-                <label for="derivkorlat">Deriválási korlát: m<sub>max</sub> = </label>
-                <input type="number" id="derivkorlat" value="5" min="2" step="1" name="derivkorlat" style="width:55px;margin-right: 5px;">
-            </div>
         </div>
         <div id="rankcontainer" style="max-width:100vw">
             <p id="figyrank" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
@@ -684,11 +729,13 @@
         <div class="stickblock">
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <button id="rankminus" class="showpre1" onclick="rankRemove();" style="width:30px;">-</button>
-                <button id="rankplus" class="showpre1" onclick="wIKDeriv(false,false);" style="margin-right:10px;width:30px;">+</button>
+                <button id="rankplus" class="showpre1" onclick="addBase();" style="margin-right:10px;width:30px;">+</button>
                 <label for="rankn">n =  </label>
-                <input type="number" id="rankn" value="1" min="1" step="1" onchange="setDerIK(this.value);wIKDeriv0();" name="rankn" style="width:50px;margin-right:10px;">
+                <input type="number" id="rankn" value="1" min="1" step="1" onchange="nchange(this);" name="rankn" style="width:50px;margin-right:10px;">
                 <label for="rankn">m =  </label>
-                <input type="number" id="rankm" onchange="wIKDeriv0();" value="3" min="1" step="1" onchange="" name="rankm" style="width:50px;">
+                <input type="number" id="rankm" onchange="wIKDeriv0();" value="3" min="1" step="1" onchange="" name="rankm" style="width:50px;margin-right:10px;">
+                <label for="rankc">c =  </label>
+                <input type="text" id="rankc" value="0" name="rankc" style="width:55px;" onchange="">
                 <div style="margin-left:2px;padding:3px;margin-top:10px;">
                     <label for="rankw">w =  </label>
                     <input class="inpvec" oninput="wIKDeriv0();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="rankw" value="yxy">
