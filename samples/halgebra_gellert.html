@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Algebra of h</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../tools/jquery-1.12.1.min.js"></script>
+    <script src="../tools/lodash.min.js"></script>
+    <script src="../MathJax-2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
+
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="samples.css">
+    <link rel="stylesheet" href="../tools/jtoggler.styles.css">
+    <script src="../tools/jtoggler.js"></script>
+    <script src="../tools/fraction.min.js"></script>
+    <script src="../tools/YourCombinations.js"></script>
+    <script src="../tools/mathjs.js" type="text/javascript"></script>
+    <script src="../tools/cytoscape.min.js"></script>
+    <script src="multipolylog.js"></script>
+    <script src="compposet.js"></script>
+    <script src="halgebra.js"></script>
+    <script src="../tools/sugorun.js"></script>
+    <script id="fnpsugos" type="text/javascript" src="../sugo/dummy.js"></script>
+    <script>
+        var sT = 1;
+        var sugolepes = 0;
+        var lepessoronkov = 1;
+        var sugorun = false;
+        var strinit = "";
+        var lepesObj = {};
+        var diffact = "dn";
+        var diffused = "&part;"
+        var diffbzj = "";
+        var diffjzj = "";
+        var difffok = 0;
+        var diffc = 0;
+        var root = document.querySelector(':root');
+        root.style.setProperty('--anim-time', '1s');
+
+        MathJax.Hub.Config({
+            tex2jax: {
+                preview: "none",
+            },
+            TeX: {
+                MAXBUFFER: 5 * 1024,
+                MAXMACROS: 1000000,
+                noErrors: {
+                    disabled: true
+                },
+            },
+            menuSettings: {
+                zoom: "Double-Click",
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div id="floatkijelzo"></div>
+    <div class="keret of even" id="k1" style="margin-bottom:0;padding-bottom: 40px;">
+        <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">1.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('shouthcontainer',this.value);setkijelzoW('helpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
+        <div class="stickblock">
+            <p class="keplet active" id="alap_keplet">w<sub>1</sub><span id="muveletjel" style="font-size:22px;margin:0 3px;vertical-align: middle;">&bullet;</span>w<sub>2</sub></p>
+            <p class="keplet" id="reg0_keplet"><span class="kepletvalaszto" data-reg="Ash0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n</sup>) =
+                <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub> (-1)<sup>j</sup> ux<sup>n - j</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>x<sup>j</sup>&nbsp;&in;&nbsp;&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
+                <span class="kepletvalaszto" data-reg="Ainvsh0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A')</span>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(ux<sup>n - j</sup>)<span style="margin:0 3px;font-size:130%;">&#x29E2;</span>x<sup>j</sup>&nbsp;&nbsp;(u&in;&nbsp;&#x1d525;y)</span>
+            </p>
+            <p class="keplet" id="reg10_keplet" style="font-size:110%;margin-bottom:0px;text-align:center;background-color:inherit;">
+                <span class="kepletvalaszto" data-reg="homsh10" onclick="pickKeplet(this)"><span style="margin-left:10px;float:right;"> (Hom)</span> reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2</span></sub>(w<sub>1</sub>&nbsp;&#x29E2;&nbsp;w<sub>2</sub>)
+                = reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(w<sub>1</sub>)
+                <span style='font-size: 1.2em;margin:0 3px;'>&middot;</span>reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(w<sub>2</sub>)&nbsp;&nbsp;(w<sub>1</sub>,w<sub>2</sub>&in;&nbsp;&#x1d525;)</span>
+                <span class="kepletvalaszto" data-reg="Ash10" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(B)</span> reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(y<sup>m</sup></sup>ux<sup>n</sup>)
+                =
+                <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub> <span class="block" style="transform:scale(1.5);margin-left:15px;">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub> (-1)<sup>i + j</sup>&nbsp;y<sup>i</sup>
+                <span style="margin:0 3px;font-size:130%;">&#x29E2;</span>y<sup>m - i</sup>ux<sup>n - j</sup>
+                <span style="margin:0 3px;font-size:130%;">&#x29E2;</span>x<sup>j</sup>&nbsp;&in;&nbsp;x&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+                <span class="kepletvalaszto" data-reg="Ainvsh10" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(B')</span>y<sup>m</sup>ux<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub><span class="block" style="transform: scale(1.5);margin-left:15px;">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;j&leq;n</sub>&nbsp;y<sup>i</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;">&#x29E2;</span></sub>(y<sup>m - i</sup>ux<sup>n - j</sup>)
+                <span style="margin:0 3px;font-size:130%;">&#x29E2;</span>x<sup>j</sup>&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+            </p>
+            <div class="keplet" id="reghar0_keplet"><span class="kepletvalaszto" data-reg="homst0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;"> (Hom)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(w<sub>1</sub>&nbsp;&lowast;&nbsp;w<sub>2</sub>)
+                = reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(w<sub>1</sub>)
+                <span style='font-size: 1.2em;margin:0 3px;'>&middot;</span>reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(w<sub>2</sub>)&nbsp;&nbsp;(w<sub>1</sub>,w<sub>2</sub>&in;&nbsp;&#x1d525;y)</span>
+                <span class="kepletvalaszto" data-reg="Ast0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A)</span> reg<sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(y<sup>m</sup>&hairsp;u)
+                =
+                <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;i&leq;m</sub><span style='display:inline-block;vertical-align:middle;text-align:center;font-size:90%;margin-right:-0.2em;line-height:normal;'><table class='tort' style='border-collapse:collapse;margin:0 3px;display:inline-table;'><tr><td style='border-bottom:1px solid;'>(-1)<sup>i</sup></td></tr><tr><td style="text-align:center;">i!</td></tr></table></span>&nbsp;y<sup>&lowast;i</sup>&lowast;(y<sup>m - i</sup>&hairsp;u)&nbsp;&in;&nbsp;x&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+                <span class="kepletvalaszto" data-reg="Ainvst0" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(A')</span>y<sup>m</sup>&hairsp;u = <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;i&leq;m</sub><span style='display:inline-block;vertical-align:middle;text-align:center;font-size:90%;margin-right:-0.2em;line-height:normal;'><table class='tort' style='border-collapse:collapse;margin:0 3px;display:inline-table;'><tr><td style='border-bottom:1px solid;'>y<sup>&lowast;i</sup></td></tr><tr><td style="text-align:center;">i!</td></tr></table></span>&nbsp;&lowast;
+                reg
+                <sup>0</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(y<sup>m - i</sup>&hairsp;u)&nbsp;&in;&nbsp;&#x1d525;y&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+            </div>
+            <div class="keplet" id="reghar10_keplet">
+                <span class="kepletvalaszto" data-reg="Ast10" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(B)</span> reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(y<sup>m</sup>&hairsp;u&hairsp;x<sup>n</sup>)
+                =
+                <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub><span class="block" style="margin-left:20px;transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-1.8em;">0&leq;j&leq;n</sub><span style='display:inline-block;vertical-align:middle;text-align:center;font-size:90%;margin-right:-0.2em;line-height:normal;'><table class='tort' style='border-collapse:collapse;margin:0 3px;display:inline-table;'><tr><td style='border-bottom:1px solid;'>(-1)<sup>i + j</sup></td></tr><tr><td style="text-align:center;">i!&hairsp;j!</td></tr></table></span>&nbsp;y<sup>&lowast;i</sup>&hairsp;&lowast;&hairsp;(y<sup>m - i</sup>&hairsp;u&hairsp;x<sup>n - j</sup>)&hairsp;&lowast;&hairsp;x<sup>&lowast;j</sup>&nbsp;&in;&nbsp;&#x1d525;x&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+                <span class="kepletvalaszto" data-reg="Ainvst10" onclick="pickKeplet(this);"><span style="margin-left:10px;float:right;">(B')</span>y<sup>m</sup>&hairsp;u&hairsp;x<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                <sub style="vertical-align:-1.6em;margin-left:-2.5em;">0&leq;i&leq;m</sub><span class="block" style="margin-left:20px;transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-1.8em;">0&leq;j&leq;n</sub><span style='display:inline-block;vertical-align:middle;text-align:center;font-size:90%;margin-right:-0.2em;line-height:normal;'><table class='tort' style='border-collapse:collapse;margin:0 3px;display:inline-table;'><tr><td style='border-bottom:1px solid;'>1</td></tr><tr><td style="text-align:center;">i!&hairsp;j!</td></tr></table></span>&nbsp;y<sup>&lowast;i</sup>&hairsp;&lowast;&hairsp;reg<sup>10</sup><sub><span style="font-size:larger;margin-left:-0.2em;vertical-align: -5px;">&lowast;</span></sub>(y<sup>m - i</sup>&hairsp;u&hairsp;x<sup>n - j</sup>)&hairsp;&lowast;&hairsp;x<sup>&lowast;j</sup>&nbsp;&in;&nbsp;&#x1d525;x&nbsp;&nbsp;(u&in;&nbsp;x&#x1d525;y)</span>
+            </div>
+        </div>
+        <div class="stickblock">
+            <table id="regtbl" class="table-hideable">
+                <tr>
+                    <td class="hide-column0" style="text-align: left;">
+                        <span style="padding:0 20px 0 10px;font-weight:800">w</span>
+                        <label style="margin-right:3px;">w<sub>i</sub></label>
+                        <label class="switch" style="bottom:2px;">
+                            <input id="setwform" type="checkbox" onchange="setWform(this.checked);">
+                            <span class="slider round"></span>
+                        </label>
+                        <label style="margin-left:3px;margin-right:10px;">xyyxy</label>
+                        <span style="opacity: 0.5;">(Csukható/nyitható)</span>
+                    </td>
+                    <td>
+                        ( )*
+                    </td>
+                    <td>
+                        ( )<sup>−</sup>
+                    </td>
+                    <td>
+                        <span class="diffbzj"></span><span class="diffkijelzo">&part;</span><span class="diffjzj"></span><sup>n</sup>
+                    </td>
+                    <td>
+                        <span class="diffbzj"></span><span class="diffkijelzo">&part;</span><span class="diffjzj"></span><sub>&lowast;</sub>
+                    </td>
+                    <td>
+                        <span class="diffbzj"></span><span class="diffkijelzo">&part;</span><span class="diffjzj"></span>_
+                    </td>
+                    <td>
+                        1/n! <span class="diffkijelzo">&part;</span>
+                    </td>
+                    <td>
+                        (-1)<sup>n</sup>/n! <span class="diffkijelzo">&part;</span>
+                    </td>
+                    <td class="hide-column0 hide-col0">
+                        C&hairsp;&times;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw1"  class="wbtn kiur" onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>1</sub></span> = </label>
+                        <input class="inpvec" oninput="if(!regvalt.startsWith('hom')) changeParam();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w1" value="xy">
+                        <span id="answ1"></span>
+                    </td>
+                    <td>
+                        <input type="checkbox" oninput="changeParam();" id="w1conj" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input type="checkbox" oninput="changeParam();" id="w1inv" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="number" id="dw1fok" value="0" min="0" step="1" style="width:45px;" oninput="changeParam();">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="dw1conj" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="dw1inv" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" id="dw1fakt" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" id="dw1fakte" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
+                    </td>
+                    <td class="hide-col0">
+                        <input class="forderiv" type="text" id="w1coeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="changeParam();">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label style="cursor:pointer;width:52px;display:inline-block;"><span  id="calcw2" class="wbtn"  onclick="setCalcw(this);" style="padding: 2px 7px;">w<sub>2</sub></span> = </label>
+                        <input class="inpvec" oninput="if(!regvalt.startsWith('hom')) changeParam();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="w2" value="yy">
+                    </td>
+                    <td>
+                        <input type="checkbox" oninput="changeParam();" id="w2conj" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input type="checkbox" oninput="changeParam();" id="w2inv" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="number" id="dw2fok" value="0" min="0" step="1" style="width:45px;" oninput="changeParam();">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="dw2conj" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="dw2inv" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" id="dw2fakt" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" id="dw2fakte" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
+                    </td>
+                    <td class="hide-col0">
+                        <input class="forderiv" type="text" id="w2coeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="changeParam();">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span id="shH" class="tooltips">
+                            <span style="font-size:22px;margin-left:5px;">&#x29E2;</span>
+                        <span id="cshstselecttarto" class="">
+                            <input id="cshstselect" type="checkbox" style="vertical-align:baseline" class="jtoggler" data-jtmulti-state>
+                            </span>
+                        <span style="margin-right:7px;font-size:120%;">&lowast;</sub></span>
+                        <span id="regvtarto" class="dumb">
+                            <label style="margin-left:5px;display:inline-block;min-width:38px;">reg<sup>0</sup><sub><span class="shstlabel">&#x29E2;</span></label>
+                        <input id="regv" type="checkbox" style="vertical-align:baseline" class="jtoggler" data-jtmulti-state>
+                        <label style="margin-right:23px;min-width:44px;display: inline-block;">reg<sup>10</sup><sub><span class="shstlabel">&#x29E2;</span></label>
+                        </span>
+                    </td>
+                    <td>
+                        <input type="checkbox" oninput="changeParam();" id="outconj" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input type="checkbox" oninput="changeParam();" id="outinv" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="number" id="doutfok" value="0" min="0" step="1" style="width:45px;" oninput="changeParam();">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="doutconj" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" oninput="changeParam();" id="doutinv" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" id="doutfakt" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;">
+                    </td>
+                    <td>
+                        <input class="forderiv" type="checkbox" id="doutfakte" oninput="setxyFakt(this);changeParam();" style="height:20px;width:20px;vertical-align:middle;margin-right:5px;">
+                    </td>
+                    <td class="hide-col0">
+                        <input class="forderiv" type="text" id="woutcoeff" value="1" style="width: calc(100% - 10px);height: 22px;text-align:center;font-size: 14px;;" onchange="changeParam();">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="stickblock">
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <button id="calcbtn" class="showpre1" onclick="shtuffleW();" title="Calculate input">Calculate</button>
+                <button class="showpre1" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="setOutput2w(false);idClear('#shouth');" title="Clear output">Clear</button>
+                <button class="showpre1" id="hideoutbtn" style="width:76px;margin-left:3px;margin-bottom:10px;" onclick="tglshouth(this);" title="Toggle output">Hide</button>
+                <button id="tglopts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('hsetting'); document.getElementById('hsetting').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });">⚙</button>
+                <span class="derivtok"><button id="tglanims" style="width:fit-content;font-family: Tahoma;font-size:15px;line-height:1;vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl('helpanims'); document.getElementById('helpanims').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });">Animations</button></span>
+                <button id="resetpage" style="width:fit-content;font-family: Tahoma;font-size:15px;line-height:1;vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="resetLap();">Reset Page</button>
+            </div>
+            <div id="helpanims" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;color: #484848;border-radius: 3px;font-size: 16px;">
+                <h3 style="margin:5px 0px;">SÚGÓ FÁJLOK</h3>
+                <ul style="padding-left:15px;">
+                    <li style="margin-bottom: 10px;">
+                        <a class="sugolink" onclick="sbTgl('helpanims');setTimeout(() =>{fnploadjs('../sugo/x_nw.js')},500)"><b>1. </b>x_nw</a> (21 lépés)
+                        <div style='border:1px solid;margin:5px 0;padding:3px;width:fit-content;'>x<sup>n</sup>w =
+                            <span class="block" style="transform: scale(1.5);">∑</span>
+                            <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub> (-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;_(w)</td></tr><tr><td>n!</td></tr></table></span>
+                            <span style="margin:0 3px;font-size:130%;">&#x29E2;</span> x<sup>n - k</sup>&nbsp;&nbsp;&nbsp;(w&in;&nbsp;&#x1d525;)</div>
+                        n = 3; w = yxyy paraméterekkel<br/> <i>Ajánlott beállítások</i>: Mobilon a kijelző szélességét szabályozó zöld csuszkát <br/> ajánlott legalább a felére állítani. <button style="color:inherit;background-color: #d9d3d3;border: 1px solid #b5b5b5;"
+                            onclick="$('input.kijelzoset').val(4).trigger('input');">Beállítom</button>
+                    </li>
+                    <li><b>2. Alapformula (mind a 8 változat) állítható bemenetekkel</b><br/> A táblázat egy elemére kattintva válassza ki a kívánt formulát, majd állítsa be <i>n</i> és <i>w</i> értékét.
+                        <table id="animtbl">
+                            <tr>
+                                <td class="selected" style="border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(1.a)</span><span class="animkeplet">w<span style="margin:0 3px;font-size:130%;">&#x29E2;</span>x<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span><sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>
+                                    <span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'>
+                                        <table class='tort' style='border-collapse: collapse;margin: 0 3px;'>
+                                            <tr>
+                                                <td style='border-bottom:1px solid;'>&part;<sup>k</sup>(w)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>k!</td>
+                                            </tr>
+                                        </table>
+                                        </span>
+                                    <span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>x<sup>n - k</sup></span>
+                                </td>
+                                <td style="border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(2.a)</span><span class="animkeplet">y<sup>n</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>w = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>y<sup>n - k</sup><span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span><span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sub>&dagger;</sub><sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom:1px solid #555;border-right:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(1.b)</span><span class="animkeplet">w <span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>x<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub> (-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span>
+                                    <span style="margin:0 3px;font-size:130%;">&#x29E2;</span> x<sup>n - k</sup></span>
+                                </td>
+                                <td style="border-bottom:1px solid #555;border-left:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(2.b)</span><span class="animkeplet">y<sup>n</sup><span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>w = <span class="block" style="transform:scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>y<sup>n - k</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>(-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sup>k</sup><sub>&dagger;</sub>(w)</td></tr><tr><td>k!</td></tr></table></span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-top:1px solid #555;border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(3.a)</span><span class="animkeplet">x<sup>n</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>w = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>x<sup>n - k</sup><span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span><span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;_<sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span></span>
+                                </td>
+                                <td style="border-top:1px solid #555;border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(4.a)</span><span class="animkeplet">w<span style="margin:0 3px;font-size:130%;">&#x29E2;</span>y<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub><span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sub>&lowast;</sub><sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span>
+                                    <span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>y<sup>n - k</sup></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border-right:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(3.b)</span><span class="animkeplet">x<sup>n</sup><span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>w = <span class="block" style="transform:scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub>x<sup>n - k</sup><span style="margin:0 3px;font-size:130%;">&#x29E2;</span>(-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sup>k</sup>_(w)</td></tr><tr><td>k!</td></tr></table></span></span>
+                                </td>
+                                <td style="border-left:1px solid #555;" onclick="setAnimKeplet(this)">
+                                    <span class="animlabel">(4.b)</span><span class="animkeplet">w <span style="font-size:22px;margin:0 3px;vertical-align: middle;">•</span>y<sup>n</sup> = <span class="block" style="transform: scale(1.5);">∑</span>
+                                    <sub style="vertical-align:-1.6em;margin-left:-2em;">0&leq;k&leq;n</sub> (-1)<sup>k</sup>&nbsp;<span style='display:inline-block;vertical-align: middle;text-align:center;font-size:90%;margin-right: -0.2em;line-height:normal;'><table class='tort' style='border-collapse: collapse;margin: 0 3px;'><tr><td style='border-bottom:1px solid;'>&part;<sub>&lowast;</sub><sup>k</sup>(w)</td></tr><tr><td>k!</td></tr></table></span>
+                                    <span style="margin:0 3px;font-size:130%;">&#x29E2;</span>y<sup>n - k</sup></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <label style="display:inline-block;margin-right:5px;width:30px;">w = </label><input style="font-size:20px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:220px;vertical-align: middle;text-align:center;margin-bottom:10px;"
+                            type="text" id="wofanim" value="yxyy" /><br/>
+                        <label style="display:inline-block;margin-right:5px;width:30px;">n = </label><input type="number" id="nofanim" value="0" min="0" step="1" style="width:50px;vertical-align:middle;margin-right:15px;font-size:16px;">
+                        <button id="startanim" style="width:fit-content;font-size:20px;line-height:0.7;vertical-align: middle;margin-left:10px;margin-right:25px;padding: 5px 5px 9px 5px;background-color:#b6ffb0;border-color: #78d917;" class="sbtglbtn" onclick="sbTgl('helpanims');alapAnim();">&#x23FB;
+                        </button>
+                        <div style="padding: 5px 0;border-top: 1px solid #c1c1c1;margin-top:20px;">
+                            <label for="animtime" style="vertical-align: middle;">Step(sec)</label>
+                            <input type="number" id="animtime" value="2" min="0.2" step="0.1" name="animtime" style="width: 50px; margin-right: 5px;font-size: 16px;vertical-align:middle;" oninput="setAnimTime(this.value);">
+                            <label for="setauto" style="vertical-align: middle;">Autorun</label>
+                            <input type="checkbox" name="setauto" id="setauto" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px; filter: none;">
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+            <div id="hsetting" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+                <div id="dersetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                    <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding: 5px 0 10px 0;">
+                        <label for="setoutputfontH">&#128474;</label>
+                        <input id="outfont-sliderH" oninput="setOutputFontH(this.value);" type="range" min="12" max="30" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-right:15px;" title="set output's fontsize" name="setoutputfontH" />
+                        <label style="display:inline-block;vertical-align:middle;font-size:120%;" for="settblw">&#x27DB;</label>
+                        <input id="settblw" oninput="settblw(this.value);" type="range" min="2" max="5" value="3.3" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="settblw" />
+                    </div>
+                    <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;">
+                        <label for="xymonom">xxxyy&rightarrow;x<sup>3</sup>y<sup>2</sup></label>
+                        <input type="checkbox" name="xymonom" oninput="set2monom(this);shtuffleWans();" id="xymonom" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                    </div>
+                    <div style="padding: 5px 0;">
+                        <label for="derxy">A derivált megadása:</label>
+                    </div>
+                    <div style="padding: 5px 0;">
+                        <label for="setdX">x&rightarrow;</label>
+                        <input type="text" name="setdX" value="xx" onchange="setxyDer(this,'x');shtuffleWans();" onfocus="resetSelectDiff();" id="setdX" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:15px;font-size: 100%;padding-bottom: 5px;">
+                        <label for="selectdiff">&part;,d,...</label>
+                        <select id="selectdiff" onchange="derivSet(this);derivSelect(this,1,0);">
+                            <option value="none">Én adom meg</option>
+                            <option value="mienk" selected>&part;</option>
+                            <option value="d">d (= &part;&dagger; = &delta;&#x209b;)</sub></option>
+                            <option value="dh"> &delta;&#x2095; (= &delta;&#x2081;)</sub></option>
+                            <option value="D"> D (= &part; - D&#x2081;)</sub></option>
+                            <option value="dn">&part;&#x2099; (IK)</option>
+                            <option value="dcn">&part;&#x2099;&#x207d;&#x1d9c;&#x207e;</option>
+                            <option value="den"> &delta;&#x2099;</sub></option>
+                            <option value="Dn"> D&#x2099;</sub></option>
+                        </select>
+                        <div id="derntok" class="dumb">
+                            <div style="margin-bottom: 5px;">
+                                <label for="dern"><b>n</b> = </label>
+                                <input type="number" id="dern" value="1" min="1" step="1" name="dern" style="width:55px;margin-right: 5px;" onchange="derivSelect(diffact,this.value,document.getElementById('derc').value);">
+                            </div>
+                        </div>
+                        <div id="derctok" class="dumb">
+                            <div style="margin-bottom: 5px;">
+                                <label for="derc"><b>(c)</b> = </label>
+                                <input type="text" id="derc" value="0" name="derc" style="width:55px;margin-right: 5px;" onchange="derivSelect(diffact,document.getElementById('dern').value,this.value);">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 5px 0;">
+                        <label for="setdY">y&rightarrow;</label>
+                        <input type="text" name="setdY" value="xy" onchange="setxyDer(this,'y');shtuffleWans();" onfocus="resetSelectDiff();" id="setdY" style="height:20px;width:140px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
+                    </div>
+                </div>
+                <div id="xXsetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                    <label for="xX">xy | XY</label>
+                    <input type="checkbox" name="xX" onchange="shtuffleWans();" id="xX" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">|
+                    <label for="setX">x&rightarrow;</label>
+                    <input list="chars" type="text" name="setX" value="" onchange="shtuffleWansans();" id="setX" style="height:20px;width:60px;vertical-align:middle;text-align:center;margin-right:5px;font-size: 100%;padding-bottom: 5px;">
+                    <label for="setY">y&rightarrow;</label>
+                    <input list="chars" type="text" name="setY" value="" onchange="shtuffleWans();" id="setY" style="height:20px;width:60px;vertical-align:middle;text-align:center;font-size: 100%;padding-bottom: 5px;">
+                    <datalist id="chars">
+                        <option value="&rightarrow;"></option>
+                        <option value="&downarrow;"></option>
+                        <option value="&#x25CF;"></option>
+                        <option value="&#x25CB;"></option>
+                        <option value="&#x25FB;"></option>
+                        <option value="&#x25FC;"></option>
+                        <option value="&#x25B7;"></option>
+                        <option value="&#x25BC;"></option>
+                      </datalist>
+                </div>
+                <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                    <label for="animt">Animation step(ms) = </label>
+                    <input type="number" id="animt" value="600" min="100" step="100" name="t" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
+                </div>
+                <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                    <label for="setfejlec">Fejlécek tiltása a kimenetben</label>
+                    <input type="checkbox" name="setfejlec" oninput="setFejlec(this);shtuffleWans();" id="setfejlec" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                </div>
+                <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                    <label for="setresetform" style="vertical-align: middle;">Reset után a formázás marad</label>
+                    <input type="checkbox" name="setresetform" id="setresetform" onchange="setResetForm(!this.checked);" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+                </div>
+            </div>
+            <div class="nobr" style="margin-left:2px;margin-bottom:7px;padding:3px;">
+                <span class="derivtok">
+                    <button id="setsign"  class="sbtglbtn" style="vertical-align: middle;margin-left:10px;padding:3px;font-size:20px;background-color:#e6e6e6;" onclick="storeSign(this);shtuffleWans();">+</button>
+                    <button id="storeinbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn" onclick="shiftStore();">&#x2356;</button>
+                    <button id="storebackbtn" style="vertical-align: middle;margin-left:10px;font-weight: 800;" class="sbtglbtn dumb" onclick="undoStore();">&#x234F;</button>
+                    <button id="storetglbtn" style="vertical-align:middle;margin-left:10px;padding:0 2px;font-size:20px;" class="sbtglbtn" onclick=" tglStore(this);">&#128448;</button>
+                    <label for="nstore"><b style="padding: 2px 8px;vertical-align: middle;">&sum;</b></label>
+                    <input type="number" onchange="trimStore();" id="nstore" value="2" min="2" step="1" name="nstore" style="width:45px;vertical-align:middle;">
+                    <span id="lstore"></span>
+                <button id="resetstore" class="sbtglbtn" onclick="resetStore()">Reset</button>
+            </div>
+        </div>
+        <div id="shouthcontainer" style="max-width:100vw">
+            <p id="figysh" style="display:none;padding:0 10px;background-color:#f7e4da;line-height:1.7;"></p>
+            <p id="shouth" style="outline: 2px solid #d0c0c0;outline-offset:-2px;background-color: #f7e4da;margin:0 5px 5px 5px;padding:7px;font-size:130%;;min-height:20px;line-height:1.5"></p>
+            <p id="shoutstore"></p>
+        </div>
+        <div id="mycellst1" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv" style="padding:0;margin:0;">
+            <div id="ideoutst1"></div>
+        </div>
+        <div id="mycellst2" width="100">
+            <script type="text/x-sage"></script>
+        </div>
+        <div class="outputoutdiv" style="padding:0;margin:0;">
+            <div id="ideoutst2"></div>
+        </div>
+    </div>
+    <span id="buttonb" class=""><span class="blepteto" onclick="sugotLeptet();">▶</span><span class="blepteto" onclick="sugoStop();" style="padding:5px 7px 5px 5px;">⏹</span><span style="display:inline-block;width: 40px;" id="blepeskijelzo"></span>
+    <span id="blepesall">/ </span>
+    </span>
+
+    <div class="keret of even" id="k3" style="margin-bottom:10px;">
+        <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">3.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('rankcontainer',this.value);setkijelzoW('rankhelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
+        <div class="stickblock">
+            <button class="showpre1" style="width:90px;margin-left:10px" onclick="tgldimtbl('dimtbl');">Table</button>
+            <table id="dimtbl" style="display:none;">
+                <thead>
+                    <tr style="border-bottom:1px solid #555;">
+                        <th style="border-right:1px solid #555;">k</th>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>10</td>
+                        <td>11</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>14</td>
+                        <td>15</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>&part;<sub>n</sub></th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td>22</td>
+                        <td>44</td>
+                        <td>90</td>
+                        <td>181</td>
+                        <td>363</td>
+                        <td>727</td>
+                        <td>1456</td>
+                        <td>2912</td>
+                        <td>5825</td>
+                    </tr>
+                    <tr class="reg">
+                        <th>reg<sub>⧢</sub>(&part;<sub>n</sub><sup style="margin-left:-0.5em;">m</sup>)</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>11</td>
+                        <td>24</td>
+                        <td>50</td>
+                        <td>104</td>
+                        <td>213</td>
+                        <td>431</td>
+                        <td>873</td>
+                        <td>1756</td>
+                        <td>3532</td>
+                        <td>7080</td>
+                    </tr>
+                    <tr>
+                        <th>&part;<sub>n</sub><sup style="margin-left:-0.5em;">(c)</sup>)</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td>23</td>
+                        <td>46</td>
+                        <td>98</td>
+                        <td>200</td>
+                        <td>410</td>
+                        <td>830</td>
+                        <td>1679</td>
+                        <td>...</td>
+                        <td>...</td>
+                    </tr>
+                    <tr class="reg">
+                        <th>reg<sub>⧢</sub>([&part;<sub>n</sub><sup style="margin-left:-0.5em;">(c)</sup>)]<sup>m</sup>)</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>11</td>
+                        <td>24</td>
+                        <td>50</td>
+                        <td>105</td>
+                        <td>217</td>
+                        <td>445</td>
+                        <td>910</td>
+                        <td>...</td>
+                        <td>...</td>
+                        <td>...</td>
+                    </tr>
+                    <tr>
+                        <th>Ohno</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td>23</td>
+                        <td>46</td>
+                        <td>98</td>
+                        <td>199</td>
+                        <td>411</td>
+                        <td>830</td>
+                        <td>1691</td>
+                        <td>...</td>
+                        <td>...</td>
+                    </tr>
+                    <tr>
+                        <th>lin.kaw.</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td>23</td>
+                        <td>46</td>
+                        <td>98</td>
+                        <td>200</td>
+                        <td>413</td>
+                        <td>838</td>
+                        <td>1713</td>
+                        <td>...</td>
+                        <td>...</td>
+                    </tr>
+                    <tr class="reg" style="border-top: 1px solid #555;background-color: #ececec;">
+                        <th>All</th>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>6</td>
+                        <td>14</td>
+                        <td>29</td>
+                        <td>60</td>
+                        <td>123</td>
+                        <td>249</td>
+                        <td>503</td>
+                        <td>1012</td>
+                        <td>2032</td>
+                        <td>4075</td>
+                        <td>...</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="keplet" id="keplet_k3" style="margin-bottom:0;">
+                <span class="kepletvalaszto selected" onclick="pickRankKeplet(this,false);">\[\zeta\left[\text{reg}_{⧢}\left(\partial_{n}^{m}\left(y^{a}wx^{b}\right)\right)\right] = 0\text{ , if m > a+b}\hspace{1cm}(n,m\geq 0,\; w\in x\mathfrak{h}y)\]
+                </span>
+                <span class="kepletvalaszto" onclick="pickRankKeplet(this,true);">\[\zeta\left[\text{reg}_{⧢}\left((\partial_{n}^{(c)})^{m}\left(y^{a}wx^{b}\right)\right)\right] = 0\text{ , if m > a+b}\hspace{1cm}(n,m\geq 0,\; w\in
+                x\mathfrak{h}y)\]
+                </span>
+            </p>
+        </div>
+        <div class="stickblock">
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <label for="rankN">N =  </label>
+                <input type="number" id="rankN" onchange="drawTable();" onfocus="drawTable();" value="6" min="1" max="20" step="1" name="rankN" style="width:50px;margin-right:10px">
+                <button id="rankokbtn" onclick="idClear( '#rankout');idClear( '#wnmkijelzo');makeBaseHD();" class="showpre1" title="Insert code into editor">All &part;<sub>n</sub>(reg)</sub></button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="clearInterval(ra);idClear( '#rankout');idClear( '#wnmkijelzo');" title="Clear output">Clear</button>
+                <button id="tglropts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl( 'ranksetting'); document.getElementById( 'ranksetting').scrollIntoView({ behavior: 'smooth', block:
+                            'center', inline: 'start' });">⚙</button>
+            </div>
+        </div>
+        <div id="ranksetting" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+            <div id="dersetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label for="setoutputfontR">&#128474;</label>
+                <input oninput="setOutputFontRank(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfontR" />
+                <label style="display:inline-block;vertical-align:middle;font-size:120%;" for="settblw">&#x27DB;</label>
+                <input id="settblw" oninput="settblw(this.value);" type="range" min="2" max="5" value="3.3" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize" name="settblw" />
+            </div>
+            <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                <label for="irregon" style="vertical-align: middle;">Non-admissible w-k mutatása</label>
+                <input type="checkbox" name="irregon" id="irregon" onchange="setbasereg(true);" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+                <label for="regon" style="vertical-align: middle;">Admissible w-k mutatása</label>
+                <input type="checkbox" name="regon" id="regon" onchange="setbasereg(false);" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+            </div>
+            <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                <label for="allirregon">Az összes non-admissible w megadása</label>
+                <input type="checkbox" name="allirregon" checked id="allirregon" onchange=";" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+            </div>
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label for="epsilon">&epsilon; = (10<sup>-m</sup>)</label>
+                <input type="number" id="epsilon" value="5" min="1" step="1" name="epsilon" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
+            </div>
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label for="derivkorlat">Deriválási korlát: m<sub>max</sub> = </label>
+                <input type="number" id="derivkorlat" value="5" min="2" step="1" name="derivkorlat" style="width:55px;margin-right: 5px;">
+            </div>
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label for="cmin">c<sub>min</sub> = </label>
+                <input type="number" id="cmin" value="0" name="cmin" onchange="_cmin=this.value*1" style="width:55px;margin-right: 10px;">
+                <label for="cmax">c<sub>max</sub> = </label>
+                <input type="number" id="cmax" value="2" name="cmax" onchange="_cmax=this.value*1" style="width:55px;margin-right: 10px;">
+                <label for="cstep">c<sub>step</sub> = </label>
+                <input type="text" id="cstep" value="1" name="cstep" onchange="_cstep=Number(Fraction(this.value))*1" style="width:55px;margin-right: 10px;">
+                <span id="cjavaslat">Javasolt értékek: c<sub>min</sub> = 0,  c<sub>max</sub> = 2, c<sub>step</sub> = 1</span>
+            </div>
+            <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                <label for="setrsor">Mátrix sorainak elrejtése</label>
+                <input type="checkbox" name="setrsor" id="setrsor" onchange="$( '#ranktbl').toggleClass( 'shrink');" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+            </div>
+            <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                <label for="setregsor" style="vertical-align: middle;">Admissible sorok nem látszódnak</label>
+                <input type="checkbox" name="setregsor" id="setregsor" onchange="$( '#ranktbl').toggleClass( 'reghide');" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+            </div>
+            <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                <label for="nodraw" style="vertical-align: middle;">Számítás mátrix rajzolása nélkül</label>
+                <input type="checkbox" checked name="nodraw" id="nodraw" onchange="drawTable();" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+            </div>
+            <div style="padding: 5px 0;border-bottom: 1px solid #c1c1c1;margin-bottom:10px;">
+                <label for="kutatomode" style="vertical-align: middle;">Kutató mód</label>
+                <input type="checkbox" checked name="kutatomode" id="kutatomode" onchange="setKutatoMode(this.checked);" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+                <label for="sparsemode" style="vertical-align: middle;">mathJs sparseMatrix</label>
+                <input class="nodumb" type="checkbox" name="sparsemode" id="sparsemode" onchange="sparsemode=this.checked;" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+            </div>
+        </div>
+        <div id="rankcontainer" style="max-width:100vw">
+            <p id="figyrank" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+            <p id="rankout" style="width:fit-content;min-width:calc(100vw - 60px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
+            <p id="kutatokijelzo"></p>
+        </div>
+        <div class="stickblock">
+            <div class="nobr" style="margin-left:2px;padding:3px;">
+                <button id="rankminus" class="showpre1" onclick="rankRemove();" style="width:30px;">-</button>
+                <button id="rankplus" class="showpre1" onclick="addBase();" style="margin-right:10px;width:30px;">+</button>
+                <label for="rankn">n =  </label>
+                <input type="number" id="rankn" value="1" min="1" step="1" onchange="nchange(this);" name="rankn" style="width:50px;margin-right:10px;">
+                <label for="rankn">m =  </label>
+                <input type="number" id="rankm" onchange="wIKDeriv0();" value="3" min="1" step="1" onchange="" name="rankm" style="width:50px;margin-right:10px;">
+                <label for="rankc">c =  </label>
+                <input type="text" id="rankc" value="0" name="rankc" style="width:55px;" onchange="">
+                <div style="margin-left:2px;padding:3px;margin-top:10px;">
+                    <label for="rankw">w =  </label>
+                    <input class="inpvec" oninput="wIKDeriv0();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="rankw" value="yxy">
+                    <button class="restore-button showpre1" onclick="makeBaseIrregD();" style="margin-right:10px;width:70px;">w<sub>non-adm</sub></button>
+                    <button class="restore-button showpre1" onclick="baseReg();" style="margin-right:10px;width:50px;">w<sub>adm</sub></button>
+                </div>
+            </div>
+        </div>
+        <div id='notinbase' ondblclick="this.classList.remove( 'shown')"></div>
+        <div id="wnmkijelzotarto" class="nobr">
+            <span id="wnmkijelzo"></span>
+        </div>
+    </div>
+    <script>
+        $(document).ready(() => {
+            $('.jtoggler').jtoggler();
+        });
+        $('#shoutstore').on('click', function(e) {
+            if (!$(e.target).hasClass("storeback active") && !$(e.target).hasClass("storeback atiro"))
+                cancelBack();
+        });
+        $(document).on('click', function(e) {
+            if (!sugorun && !$(e.target).hasClass("hreg hl"))
+                $("#floatkijelzo").css("display", "none");
+        });
+        updLstore();
+        setTimeout(() => {
+            $('#w1coeff').trigger('change');
+        }, 1000);
+    </script>
+</body>
+
+</html>
