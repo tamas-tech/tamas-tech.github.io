@@ -3282,7 +3282,6 @@ background-color: #eaeaea;
     color: #fd0000;
 }
 
-
 #notinbase {
     margin: 4px;
     padding: 3px;
@@ -3372,6 +3371,26 @@ background-color: #eaeaea;
 
 #rankhiba.shown {
     display: block;
+}
+
+#sparsemode.dumb {
+    pointer-events: none;
+    opacity: 0.3
+}
+
+#startrunbtn {
+    display: none;
+    vertical-align: middle;
+    margin-left: 10px;
+    width: fit-content;
+    height: 42px;
+    background-color: #44ca14;
+    color: white;
+    border: 2px solid #1f9f14;
+}
+
+#startrunbtn.shown {
+    display: inline-block;
 }
 
 
