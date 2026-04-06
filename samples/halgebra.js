@@ -5422,7 +5422,7 @@ function allBase2wD() {
 
 function allBase2wD() {
     const nodraw = document.getElementById("nodraw").checked;
-    if (quasid) {
+    if (!quasid) {
         if (nodraw)
             _allBase2w()
         else
@@ -6146,9 +6146,160 @@ function c_allBase2w() {
     }, t);
 };
 
-
 function trM() {
     rmat.forEach(function(value, index, matrix) {
         console.log('value:', value, 'row:', index[0], 'colindex:', index[1])
     }, true)
-}
+};
+
+function pent_recc(n, m) {
+    var out;
+    if (n == 1 && m == 1)
+        out = 1;
+    else if (m <= 0)
+        out = 0;
+    else if (n == 1)
+        out = Math.pow(2, m - 2)
+    else
+        out = deriv_dims(n - 1, m - 1) - deriv_dims(n - 1, m - n);
+    return out
+};
+
+
+// pentagonal relation
+
+function Gk0(k) {
+    const c = Math.floor(k);
+    return 1 / 2 * c * (3 * c - 1);
+};
+
+function isPentagonal0(n) {
+    var out = 0;
+    const sq = Math.sqrt(24 * n + 1)
+    const p0 = Math.floor((sq + 1) / 6);
+    if (n == Gk0(p0))
+        out = 1;
+    return out;
+};
+
+function Gk1(k) {
+    const c = Math.floor(k);
+    return 1 / 2 * c * (3 * c + 1);
+};
+
+function isPentagonal1(n) {
+    var out = 0;
+    const sq = Math.sqrt(24 * n + 1)
+    const p0 = Math.floor((sq - 1) / 6);
+    if (n == Gk1(p0))
+        out = 1;
+    return out;
+};
+
+function Gk(k) {
+    const c = Math.ceil(k / 2);
+    return 1 / 2 * c * (3 * c + Math.pow(-1, k));
+};
+
+function derLIR(n) {
+    var out = 0;
+    var txt = "";
+    var k = 1;
+    var g = n - 2;
+    while (g > 0) {
+        var e = Math.pow(-1, 1 - Math.ceil(k / 2));
+        var eloj = " + ";
+        if (k == 1 && n > 3)
+            eloj = "";
+        else if (e == -1)
+            eloj = " - ";
+        out += e * Math.pow(2, g - 1);
+        txt += eloj + "2<sup>" + (g - 1) + "</sup>";
+        k++;
+        g = n - 1 - Gk(k);
+    };
+    k++
+    out -= 1;
+    txt += " - 1";
+    if (isPentagonal0(n - 1) || isPentagonal1(n - 1)) {
+        var e = Math.pow(-1, Math.ceil((k + 1) / 2));
+        out += e;
+        if (e == -1)
+            eloj = " - ";
+        txt += eloj + "&delta; = 1";
+    }
+    document.getElementById("rankout").innerHTML = txt + " = " + Fraction(out).toFraction();
+    return out;
+};
+
+function pentNalatt(n) {
+    const sq = Math.sqrt(24 * n + 1);
+    return Math.floor((sq - 1) / 6) + Math.floor((sq + 1) / 6);
+};
+
+function pentEuler(n) {
+    const N = pentNalatt(n);
+    var out = 0;
+    var txt0 = "";
+    var txt1 = "";
+    var txt2 = "";
+    for (k = 1; k <= N; k++) {
+        var e = Math.pow(-1, 1 - Math.ceil(k / 2));
+        var g = Gk(k)
+        out += e * Math.pow(2, n - g);
+        var eloj = " + ";
+        if (k == 1 && n > 3)
+            eloj = "";
+        else if (e == -1)
+            eloj = " − ";
+        txt0 += eloj + "2<sup>" + n + "− P<sub>" + k + "</sub></sup>";
+        txt1 += eloj + "2<sup>" + n + "−" + g + "</sup>";
+        txt2 += eloj + "2<sup>" + (n - g) + "</sup>";
+    };
+    return [out, txt0, txt1, txt2];
+};
+
+function deltaP(n) {
+    var out = 0;
+    if (isPentagonal0(n) || isPentagonal1(n))
+        out = Math.pow(-1, Math.floor((Math.sqrt(24 * n + 1) + 1) / 6) + 1);
+    return out;
+};
+
+function derLIR(n) {
+    const pE = pentEuler(n - 2);
+    const dP = deltaP(n - 1);
+    var eloj = "";
+    if (dP == -1)
+        eloj = " − ";
+    else if (dP == 1)
+        eloj = " + ";
+    var dPtxt = " + 0";
+    if (dP != 0)
+        dPtxt = eloj + Math.abs(dP);
+    const ert = pE[0] - 1 + dP;
+    var txt = "A &zeta;[&part;<sub>n</sub>(w)] = 0 derivációs relációval megkapható N = " + n + " súlyú többszörös zetaértékek közötti lineárisan független lineáris relációk száma: <div style='outline:2px solid red; padding:3px 5px;margin-bottom:4px; width:fit-content;text-align:center;display:inline-block;'><b>PE</b>(N − 2) + <b>&delta;</b>(N − 1) − 1</div> = <b>PE</b>(" + (n - 2) + ") + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
+    txt += pE[1] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
+    txt += pE[2] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
+    txt += pE[3] + dPtxt + " − 1";
+    document.getElementById("dimout").innerHTML = txt + " = " + Fraction(ert).toFraction();
+    return ert;
+};
+
+// dblshuffrel rangcsokkenese
+
+function doubshuffrel(str1, str2) {
+    const sh = polyShuffle([
+        [1, str1]
+    ], [
+        [1, str2]
+    ]);
+    const st = polyStuffle([
+        [1, str1]
+    ], [
+        [1, str2]
+    ]).map(y => [-1 * y[0], y[1]]);
+    const pr = xyList_Ov(_.flatten([sh, st]));
+    const out = polyreg10(pr);
+    return out;
+};
