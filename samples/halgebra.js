@@ -6168,6 +6168,11 @@ function pent_recc(n, m) {
 
 // pentagonal relation
 
+function setOutputFontDim(v) {
+    var elem = document.getElementById("dimout");
+    elem.style.fontSize = v + 'px';
+};
+
 function Gk0(k) {
     const c = Math.floor(k);
     return 1 / 2 * c * (3 * c - 1);
@@ -6278,7 +6283,7 @@ function derLIR(n) {
     if (dP != 0)
         dPtxt = eloj + Math.abs(dP);
     const ert = pE[0] - 1 + dP;
-    var txt = "A &zeta;[&part;<sub>n</sub>(w)] = 0 derivációs relációval megkapható N = " + n + " súlyú többszörös zetaértékek közötti lineárisan független lineáris relációk száma: <div style='outline:2px solid red; padding:3px 5px;margin-bottom:4px; width:fit-content;text-align:center;display:inline-block;'><b>PE</b>(N − 2) + <b>&delta;</b>(N − 1) − 1</div> = <b>PE</b>(" + (n - 2) + ") + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
+    var txt = "A &zeta;[&part;<sub>n</sub>(w)] = 0 derivációs relációból megkapható N = " + n + " súlyú többszörös zetaértékek közötti lineárisan független lineáris relációk száma: <div style='outline:2px solid red; padding:3px 5px;margin-bottom:4px; width:fit-content;text-align:center;display:inline-block;'><b>PE</b>(N − 2) + <b>&delta;</b>(N − 1) − 1</div> = <b>PE</b>(" + (n - 2) + ") + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
     txt += pE[1] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
     txt += pE[2] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
     txt += pE[3] + dPtxt + " − 1";
