@@ -3336,7 +3336,8 @@ background-color: #eaeaea;
     pointer-events: none;
 }
 
-#dimtbl {
+#dimtbl,
+#dimtbl1 {
     text-align: center;
     border-collapse: collapse;
     margin: 15px 20px;
@@ -3345,17 +3346,21 @@ background-color: #eaeaea;
     width: fit-content;
 }
 
-#dimtbl tbody th {
+#dimtbl tbody th,
+#dimtbl1 tbody th {
     border-right: 1px solid #555;
 }
 
-#dimtbl tbody tr.reg {
+#dimtbl tbody tr.reg,
+#dimtbl1 tbody tr.reg {
     border-bottom: 1px solid #555;
     font-weight: 800;
 }
 
 #dimtbl tr td,
-#dimtbl tr th {
+#dimtbl tr th,
+#dimtbl1 tr td,
+#dimtbl1 tr th {
     padding: 2px 8px;
 }
 
