@@ -3398,6 +3398,56 @@ background-color: #eaeaea;
     display: inline-block;
 }
 
+#recctbl th {
+    max-width: 100%!important;
+}
+
+#recctbl input.recca,
+#recctbl input.reccb {
+    margin: 0;
+    border: none;
+    appearance: none;
+    min-width: 30px;
+    line-height: 22px;
+    text-align: center;
+    font-size: 18px;
+}
+
+#recctbl {
+    outline-offset: 2px;
+}
+
+#recctbl input.reccb {
+    vertical-align: -1px;
+    background-color: #d5dff7;
+    color: #004a77;
+}
+
+#recctbl input.recca {
+    background-color: #f7dbd5;
+    color: #c10000;
+}
+
+#recctbl th.hide-column {
+    background-color: #a1a8ff;
+    border-color: transparent;
+}
+
+#recctbl th:not(.hide-column) {
+    background-color: #d08686;
+    border-color: transparent;
+}
+
+#recctbl tr#recctr {
+    outline: 2px solid green;
+    outline-offset: -2px;
+    background: #abf3b6;
+}
+
+#recctbl tr#recctr th {
+    background-color: #54c66b;
+}
+
 
 
 
