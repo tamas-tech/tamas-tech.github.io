@@ -6152,6 +6152,62 @@ function trM() {
     }, true)
 };
 
+// pentagonal transformation of two series
+
+function setOutputFontRecc(v) {
+    var elem = document.getElementById("reccout");
+    elem.style.fontSize = v + 'px';
+};
+
+// immediately call the function
+
+function resizeInput(e) {
+    e.style.width = e.value.length + "ch";
+};
+
+function reccTable() {
+    const elem = document.getElementById("reccout");
+    const tbl = document.getElementById("recctbl");
+    const N = document.getElementById("reccN").value * 1 + 1;
+    const M = document.getElementById("reccM").value * 1;
+    if (tbl != undefined) {
+        var a = _.dropRightWhile(Object.values($("#recctbl th:not(.hide-column) input")).map(y => y.value * 1), y => isNaN(y));
+        var b = _.dropRightWhile(Object.values($("#recctbl th.hide-column input")).map(y => y.value * 1), y => isNaN(y));
+    } else {
+        var a = Array(N - 1).fill(0);
+        a = [1, ...a];
+        var b = range(0, M - 1).map(y => Math.pow(2, y));
+    }
+    console.log(N, a.length, M, b.length)
+    if (N > a.length) {
+        var ap = Array(N - a.length).fill(0);
+        a = [...a, ...ap]
+    };
+    if (M > b.length) {
+        var bp = Array(M - b.length).fill(0);
+        b = [...b, ...bp]
+    };
+
+    var txt = "";
+
+    txt += '<div style="margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="recctbl" class="table-hideable"><thead><tr class="fej"><th ><input type="text" value="' + a[0] + '" class="recca" onchange="tblRec();" oninput="resizeInput(this);"></input></th>';
+    for (var j = 0; j < M; j++)
+        txt += '<th class="hide-column hide-col" onchange="tblRec();"><input type="text" value="' + b[j] + '" class="reccb" onchange="tblRec();" oninput="resizeInput(this);"></input></sub></th>';
+    txt += '</tr></thead><tbody>';
+    for (var i = 1; i < N; i++) {
+        txt += '<tr class="fej vert" onclick="hlThisRow(this);"><th><input type="text" value="' + a[i] + '" class="recca" onchange="tblRec();" oninput="resizeInput(this);"></input></th>';
+        for (var k = 1; k < M + 1; k++)
+            txt += '<td></td>';
+        txt += '</tr>'
+    }
+    txt += '<tr id="recctr"><th>&sum;</th>'
+    for (var k = 1; k < M + 1; k++)
+        txt += '<td>0</td>';
+    txt += '</tr></tbody></table></div>';
+    elem.innerHTML = txt;
+    tblRec();
+};
+
 function pent_recc(n, m) {
     var out;
     if (n == 1 && m == 1)
@@ -6161,10 +6217,41 @@ function pent_recc(n, m) {
     else if (n == 1)
         out = Math.pow(2, m - 2)
     else
-        out = deriv_dims(n - 1, m - 1) - deriv_dims(n - 1, m - n);
+        out = pent_recc(n - 1, m - 1) - pent_recc(n - 1, m - n);
     return out
 };
 
+function gen_recc(n, m, a, b) {
+    var out;
+    if (m == 1)
+        out = a[n - 1];
+    else if (m <= 0)
+        out = 0;
+    else if (n == 1)
+        out = b[m - 2]
+    else
+        out = gen_recc(n - 1, m - 1, a, b) - gen_recc(n - 1, m - n, a, b);
+    return out;
+};
+
+function tblRec() {
+    const N = document.getElementById("reccN").value * 1 + 1;
+    const M = document.getElementById("reccM").value * 1;
+    const a = Object.values($("#recctbl th:not(.hide-column) input")).map(y => y.value * 1);
+    const b = Object.values($("#recctbl th.hide-column input")).map(y => y.value * 1);
+    //ar s = Array(M).fill(0);
+    for (var j = 1; j < M + 1; j++) {
+        var sj = b[j - 1];
+        for (var i = 1; i < N; i++) {
+            var elem = $("#recctbl tbody tr:nth(" + (i - 1) + ") td:nth(" + (j - 1) + ")");
+            var r = gen_recc(i + 1, j + 1, a, b);
+            sj += r;
+            elem.html(r);
+        };
+        $("#recctbl tr#recctr td:nth(" + (j - 1) + ")").html(sj);
+    };
+    $('#recctbl tr input').trigger("input");
+};
 
 // pentagonal relation
 
