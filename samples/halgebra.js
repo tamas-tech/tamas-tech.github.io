@@ -4152,6 +4152,7 @@ var quasid = false;
 var _cmin = 0;
 var _cmax = 2;
 var _cstep = 1;
+var rankgrowth = [];
 const _cmaxt = { "1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 2, "10": 2, "11": 3, "12": 4, "13": 5, "14": 6, "15": 7 };
 var sparsemode = false;
 var kutatomode = true;
@@ -4523,6 +4524,15 @@ function num2xy(d) {
     return bin.replaceAll("1", "x").replaceAll("0", "y") + "y";
 };
 
+function Num2xy(d, N) {
+    const bin = d.toString(2)
+    var xy = bin.replaceAll("1", "x").replaceAll("0", "y") + "y";
+    const m = xy.length
+    if (m < N)
+        xy = "x" + "y".repeat(N - 1 - m) + xy;
+    return xy;
+};
+
 function setDerIK(n) {
     m = Math.pow(2, n - 1);
     var out = [];
@@ -4672,14 +4682,15 @@ function wIKDeriv(ranking, norajz) {
             v[indx] = t[0];
         };
         rmat.push(v);
+        rankgrowth.push(n)
         matRank = getMatrixRank(rmat);
         if (matRank < rankprev) {
-            //clearInterval(ra);
             var hb = document.getElementById("rankout").appendChild(document.createElement("div"));
             $(hb).css({ outline: "3px solid red", padding: "2px", margin: "10px" });
             hb.innerHTML = "Numerikus instabilitás! Probálja meg a beállításokban az &epsilon; pontosságot meghatározó<b> m = " + document.getElementById("epsilon").value + "</b> szám értékét csökkenteni.<br/>n = " + n + ", m = " + m + ", w = " + w + " &varrho; = " + matRank + ", &varrho;<sub>prev</sub> = " + rankprev;
             return;
         } else if (ranking && matRank == rankprev) {
+            rankgrowth.pop();
             rmat.pop();
             notInBase.push([n, m, w, xy2num(w), matRank]);
             return;
@@ -4886,6 +4897,58 @@ function makeBaseH() {
         return;
 };
 
+
+function makeBaseHn1() {
+    $("#notinbase").html('').removeClass("shown");
+    const regsor = document.getElementById("setregsor").checked;
+    const t = 0;
+    const N = document.getElementById("rankN").value * 1;
+    if (N > 11) {
+        document.getElementById("rankout").innerHTML = "N > 11 értékkel csak <code>'Számítás mátrix rajzolása nélkül'</code> beállítással futtatható.";
+        return;
+    };
+    const me = document.getElementById("rankm");
+    me.value = 1;
+    const ne = document.getElementById("rankn");
+    const we = document.getElementById("rankw");
+    const dim = Math.pow(2, N - 2) - 1;
+
+    if (N > 3) {
+        var i = 0;
+        ra = setInterval(() => {
+            runszamitas("k3", true);
+            var n = N - 1 - Math.ceil(Math.log2(i + 1));
+            var w = num2xy(i);
+            if (n > 1 && w.charAt(1) != "x") {
+                i++;
+            } else {
+                $(ne).val(n).trigger('change');
+                we.value = w;
+                wIKDeriv(true, regsor);
+                i++;
+            };
+            if (i > dim) {
+                clearInterval(ra);
+                runszamitas("k3", false);
+                var ntb = "";
+                for (let v of notInBase)
+                    ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
+                ntb = ntb.slice(0, -7);
+                $("#notinbase").html(ntb).addClass("shown");
+                $(ne).val(1).trigger('change');
+                $(me).val(2).trigger('change');
+                $(we).val("").trigger('change');
+                setTimeout(() => { $('#rankout').addClass('villbgdark'); }, 200);
+                setTimeout(() => {
+                    $('#rankout').removeClass('villbgdark');
+                    rankHiba(N, false);
+                }, 800);
+            }
+        }, t);
+    } else
+        return;
+};
+
 function baseRegNnm(N, n, m) {
     var out = [];
     const also = N - n * m - 2;
@@ -4980,6 +5043,37 @@ function allBase2w() {
         }, t);
     else
         return;
+};
+
+function rankGrowth() {
+    const rankn1 = document.getElementById("rankn1").checked;
+    const rg = _.groupBy(rankgrowth);
+    const nv = Object.keys(rg);
+    const db = Object.values(rg).map(y => y.length);
+    const rank = _.sum(db);
+    const l = nv.length;
+    var txt = '<table class="table-hideable" style="margin-left:15px;background-color: white;"><tr><td>n</td>';
+    if (rankn1) {
+        for (var i = l - 1; i > -1; i--) {
+            txt += '<td>' + nv[i] + '</td>';
+        }
+        txt += '<td>&sum;</td></tr><tr><td>&rho;</td>';
+        for (var i = l - 1; i > -1; i--) {
+            txt += '<td>' + db[i] + '</td>';
+        }
+    } else {
+        for (var i = 0; i < l; i++) {
+            txt += '<td>' + nv[i] + '</td>';
+        }
+        txt += '<td>&sum;</td></tr><tr><td>&rho;</td>';
+        for (var i = 0; i < l; i++) {
+            txt += '<td>' + db[i] + '</td>';
+        }
+    };
+    txt += '<td>' + rank + '</td></tr></table>';
+    const txtold = $("#notinbase").html();
+    $("#notinbase").html(txt + "<br/>" + txtold);
+    return txt;
 };
 
 function baseReg() {
@@ -5436,8 +5530,12 @@ function allBase2wD() {
 };
 
 function makeBaseHD() {
+    rankgrowth = [];
     setDerIK(1);
     const nodraw = document.getElementById("nodraw").checked;
+    const rankn1 = document.getElementById("rankn1").checked;
+    const btn = document.getElementById("rankgrbtn");
+    btn.style.display = "none";
     if (quasid) {
         if (nodraw)
             c_makeBaseH()
@@ -5450,9 +5548,17 @@ function makeBaseHD() {
             else {
                 _makeBaseHGYORS();
             }
-        } else
-            makeBaseH();
-    }
+        } else {
+            btn.style.display = "inline-block";
+            if (rankn1) {
+                btn.innerHTML = "&rho;&nbsp;&#x2B02;";
+                makeBaseHn1();
+            } else {
+                btn.innerHTML = "&rho;&nbsp;&#x2B00;";
+                makeBaseH();
+            }
+        };
+    };
 };
 
 function makeBaseIrregD() {
@@ -6151,6 +6257,33 @@ function trM() {
         console.log('value:', value, 'row:', index[0], 'colindex:', index[1])
     }, true)
 };
+
+// Elemzéshez
+
+function nNMatrix(N, n) {
+    setDerIK(n);
+    const h = N - 1 - n;
+    const R = range(Math.pow(2, h - 1), Math.pow(2, h) - 1);
+    var out = [];
+    for (let i of R) {
+        var v = derivHn(Num2xy(i, h), n, false, false);
+        v = v.map(y => [y[0], xy2num(y[1])]);
+        out.push(v);
+    };
+    return out;
+};
+
+function Nnsor(i, N, n) {
+    setDerIK(n);
+    const h = N - 1 - n;
+    console.log(Num2xy(Math.pow(2, h - 1) + i, h))
+    var v = derivHn(Num2xy(Math.pow(2, h - 1) + i, h), n, false, false);
+    console.log(v)
+    v = v.map(y => [y[0], xy2num(y[1])]);
+    return v;
+};
+
+
 
 // pentagonal transformation of two series
 
