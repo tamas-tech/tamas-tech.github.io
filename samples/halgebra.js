@@ -6464,6 +6464,32 @@ function pentNalatt(n) {
 
 function pentEuler(n) {
     const N = pentNalatt(n);
+    const onlytbl = document.getElementById("onlyPtbl").checked;
+    var tbl = '<table class="table-hideable" style="margin-left:15px;background-color:#bbb;;margin-bottom:5px;"><tr><td>P<sub>k</sub></td><td style="border-color:transparent;background-color:#f7f7f7;">P<sub>1</sub></td>';
+    for (var i = 2; i <= n + 2; i++) {
+        if (isPentagonal0(i) || isPentagonal1(i)) {
+            const ii = pentNalatt(i + 1);
+            tbl += '<td style="border-color:transparent;background-color:#f7f7f7;">P<sub>' + ii + '</sub></td>';
+        } else
+            tbl += '<td style="border-color:transparent;"></td>';
+    };
+    tbl += '</tr></table><table class="table-hideable" style="margin-left:15px;background-color:#bbb;;margin-top:0;"><tr><td>k</td>';
+    for (var i = 1; i <= n + 2; i++) {
+        if (isPentagonal0(i) || isPentagonal1(i))
+            tbl += '<td style="background-color:#eee;">' + i + '</td>';
+        else
+            tbl += '<td>' + i + '</td>';
+    };
+    tbl += '</tr><tr><td>&delta;(k)</td>';
+    for (var i = 1; i <= n + 2; i++) {
+        if (isPentagonal0(i) || isPentagonal1(i))
+            tbl += '<td style="background-color:#f9f9f9;">' + deltaP(i) + '</td>';
+        else
+            tbl += '<td>0</td>';
+    };
+    tbl += '</tr></table>';
+    if (onlytbl)
+        return [0, "", "", "", tbl];
     var out = 0;
     var txt0 = "";
     var txt1 = "";
@@ -6481,7 +6507,8 @@ function pentEuler(n) {
         txt1 += eloj + "2<sup>" + n + "−" + g + "</sup>";
         txt2 += eloj + "2<sup>" + (n - g) + "</sup>";
     };
-    return [out, txt0, txt1, txt2];
+
+    return [out, txt0, txt1, txt2, tbl];
 };
 
 function deltaP(n) {
@@ -6494,20 +6521,25 @@ function deltaP(n) {
 function derLIR(n) {
     const pE = pentEuler(n - 2);
     const dP = deltaP(n - 1);
-    var eloj = "";
-    if (dP == -1)
-        eloj = " − ";
-    else if (dP == 1)
-        eloj = " + ";
-    var dPtxt = " + 0";
-    if (dP != 0)
-        dPtxt = eloj + Math.abs(dP);
+    const formulais = !document.getElementById("onlyPtbl").checked;
+    var txt = pE[4];
     const ert = pE[0] - 1 + dP;
-    var txt = "A &zeta;[&part;<sub>n</sub>(w)] = 0 derivációs relációból megkapható N = " + n + " súlyú többszörös zetaértékek közötti lineárisan független lineáris relációk száma: <div style='outline:2px solid red; padding:3px 5px;margin-bottom:4px; width:fit-content;text-align:center;display:inline-block;'><b>PE</b>(N − 2) + <b>&delta;</b>(N − 1) − 1</div> = <b>PE</b>(" + (n - 2) + ") + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
-    txt += pE[1] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
-    txt += pE[2] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
-    txt += pE[3] + dPtxt + " − 1";
-    document.getElementById("dimout").innerHTML = txt + " = " + Fraction(ert).toFraction();
+    if (formulais) {
+        var eloj = "";
+        if (dP == -1)
+            eloj = " − ";
+        else if (dP == 1)
+            eloj = " + ";
+        var dPtxt = " + 0";
+        if (dP != 0)
+            dPtxt = eloj + Math.abs(dP);
+        txt += "A &zeta;[&part;<sub>n</sub>(w)] = 0 derivációs relációból megkapható N = " + n + " súlyú többszörös zetaértékek közötti lineárisan független lineáris relációk száma: <div style='outline:2px solid red; padding:3px 5px;margin-bottom:4px; width:fit-content;text-align:center;display:inline-block;'><b>PE</b>(N − 2) + <b>&delta;</b>(N − 1) − 1</div> = <b>PE</b>(" + (n - 2) + ") + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
+        txt += pE[1] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
+        txt += pE[2] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
+        txt += pE[3] + dPtxt + " − 1";
+        document.getElementById("dimout").innerHTML = txt + " = " + Fraction(ert).toFraction();
+    } else
+        document.getElementById("dimout").innerHTML = txt;
     return ert;
 };
 
