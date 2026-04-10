@@ -694,7 +694,9 @@
             </div>
             <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                 <label for="epsilon">&epsilon; = (10<sup>-m</sup>)</label>
-                <input type="number" id="epsilon" value="5" min="1" step="1" name="epsilon" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
+                <input type="number" id="epsilon" value="5" min="1" step="1" name="epsilon" style="width:55px;margin-right: 15px;" oninput="if(ra){clearInterval(ra);};">
+               <label for="rankn1">&part;<sub>n</sub>&rightarrow;&part;<sub>1</sub></label>
+                <input type="checkbox" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;" id="rankn1" name="rankn1" style="width:55px;margin-right: 5px;" oninput="if(ra){clearInterval(ra);};">
             </div>
             <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                 <label for="derivkorlat">Deriválási korlát: m<sub>max</sub> = </label>
@@ -748,6 +750,7 @@
                     <input class="inpvec" oninput="wIKDeriv0();" style="font-size:22px;font-family:times;letter-spacing: 0.05em;padding-bottom:5px;width:265px;" type="text" id="rankw" value="yxy">
                     <button class="restore-button showpre1" onclick="makeBaseIrregD();" style="margin-right:10px;width:70px;">w<sub>non-adm</sub></button>
                     <button class="restore-button showpre1" onclick="baseReg();" style="margin-right:10px;width:50px;">w<sub>adm</sub></button>
+                     <button id="rankgrbtn" class="restore-button showpre1" onclick="rankGrowth();" style="margin-right:10px;width:50px;display:none;">&rho;&nbsp;&#x2B00;</button>
                 </div>
             </div>
         </div>
