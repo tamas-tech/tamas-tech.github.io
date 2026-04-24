@@ -6823,25 +6823,6 @@ function part(num1) {
     return result;
 }
 
-function formazCy(data) {
-    var str = "";
-    var c = 1;
-    _.forEach(data, function(key, value) {
-        c *= Math.pow(value, key) * factorial(key * 1);
-        str += "x<sub>" + value + "</sub><sup>" + key + "</sup>*"
-    });
-    str = "1/" + c + "*" + str;
-    str = str.slice(0, -1);
-    return str;
-}
-
-function cycleIndex(n) {
-    var parts = part(n);
-    parts = parts.map(y => _.countBy(y));
-    parts = parts.map(y => formazCy(y)).join(" + ");
-    document.getElementById("shoutLe").innerHTML = parts;
-};
-
 // Pz implementacioja 
 
 function twofracAdd(a, b) {
