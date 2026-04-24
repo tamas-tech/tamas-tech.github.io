@@ -6560,3 +6560,295 @@ function doubshuffrel(str1, str2) {
     const out = polyreg10(pr);
     return out;
 };
+
+
+
+/** AI AI AI
+ * Sigma(n) kiszámítása partíciókból (Euler-féle ötszögszám-alapú összefüggés)
+ */
+function calculateSigmaFromPartitions(n) {
+    if (n === 0) return 0;
+
+    // 1. Partíciók kiszámítása p(n)-ig (dinamikus programozással)
+    let p = new Array(n + 1).fill(0);
+    p[0] = 1;
+    for (let i = 1; i <= n; i++) {
+        for (let j = i; j <= n; j++) {
+            p[j] += p[j - i];
+        }
+    }
+
+    // 2. Sigma(n) kiszámítása az általad leírt képlettel
+    // Formula: sigma(n) = | sum (-1)^k * g_k * p(n - g_k) |
+    // ahol g_k az általánosított ötszögszámok
+    let sigmaN = 0;
+    let k = 1;
+
+    while (true) {
+        // Általánosított ötszögszámok generálása: k=1, -1, 2, -2...
+        let gkValues = [
+            (k * (3 * k - 1)) / 2, // k  pozitív ága
+            (-k * (3 * (-k) - 1)) / 2 // k  negatív ága
+        ];
+
+        let finished = true;
+        for (let gk of gkValues) {
+            if (n - gk >= 0) {
+                // Az előjel k-tól függ: k=1,2 -> negatív, k=3,4 -> pozitív...
+                // (Mivel a végén abszolút értéket veszünk, az induló irány mindegy)
+                let sign = (Math.ceil(Math.abs(k)) % 2 === 1) ? -1 : 1;
+
+                sigmaN += sign * gk * p[n - gk];
+                finished = false;
+            }
+        }
+
+        if (finished) break;
+        k++;
+    }
+
+    return Math.abs(sigmaN);
+}
+
+// Ellenőrzés
+//const testValues = [5, 9, 12];
+//testValues.forEach(n => {
+//    console.log(`n = ${n} => sigma(${n}) = ${calculateSigmaFromPartitions(n)}`);
+//}); /// AI AI AI
+
+// pantagonal
+
+function setOutputFontPent(v) {
+    var elem = document.getElementById("pentout");
+    elem.style.fontSize = v + 'px';
+};
+
+function pentjelent() {
+    const fn1 = $("#setpenttbl td.F1.active");
+    const fn2 = $("#setpenttbl td.F2.active");
+    const n = $("#setpenttbl #pentN").val() * 1;
+    var eloj1 = $("#setpenttbl #pente1").text();
+    var eloj2 = $("#setpenttbl #pente2").text();
+    var txt = "<b>" + fn1.text().trim() + "</b><sub>" + n + "</sub>";
+    if (eloj1 == "▬") {
+        txt = "-" + txt;
+        if (fn2.length != 0)
+            txt = "(" + txt + ")";
+    };
+    if (fn2.length != 0) {
+        if (eloj2 == "▬") {
+            txt += "&nbsp;&#x25e6;&nbsp;(-<b>" + fn2.text().trim() + ")";
+        } else {
+            txt += "&nbsp;&#x25e6;&nbsp;<b>" + fn2.text().trim();
+        }
+    }
+    document.getElementById("pentkijelzo").innerHTML = txt;
+};
+
+function pentSign(e) {
+    var sign = e.innerText;
+    if (sign == "✚") {
+        e.innerText = "▬";
+        e.style.backgroundColor = "#f2b9b9";
+    } else {
+        e.innerText = "✚";
+        e.style.backgroundColor = "";
+    }
+    setTimeout(() => {
+        pentjelent();
+    }, 100)
+};
+
+function setF12(e, type) {
+    const el = $(e);
+    if (el.hasClass('active') && type == "F2")
+        el.removeClass('active');
+    else {
+        $('#setpenttbl td.' + type + '.active').removeClass('active');
+        el.addClass('active');
+    }
+    setTimeout(() => {
+        pentjelent();
+    }, 100)
+};
+
+function ZFibFab2Latex(txt) {
+    const elem = document.querySelector("#pentout");
+    elem.innerText = "\\[" + txt + "\\]";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+}
+
+function formazCy(data) {
+    var str = "";
+    var c = 1;
+    _.forEach(data, function(key, value) {
+        c *= Math.pow(value, key) * factorial(key * 1);
+        str += "x_" + value + "^" + key + "*"
+    });
+    str = "1/" + c + str;
+    str = str.slice(0, -1);
+    return str;
+}
+
+function Zyc(n) {
+    var parts = part(n);
+    parts = parts.map(y => _.countBy(y));
+    parts = parts.map(y => formazCy(y)).join(" + ");
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push('x_' + i);
+    nerdamer.setFunction("Zyc_" + n, vars, parts);
+};
+
+function formFab(data, n) {
+    var str = "";
+    var c = 1;
+    var sf = 0;
+    _.forEach(data, function(key, value) {
+        c *= factorial(key * 1);
+        sf += key * 1;
+        str += "x_" + value + "^" + key + "*"
+    });
+    var t = n * Math.pow(-1, sf) * factorial(sf) / sf;
+    str = t + "/" + c + "*" + str;
+    str = str.slice(0, -1);
+    return str;
+}
+
+function Fab(n) {
+    var parts = part(n);
+    parts = parts.map(y => _.countBy(y));
+    parts = parts.map(y => formFab(y, n)).join(" + ");
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push('x_' + i);
+    nerdamer.setFunction("Fab_" + n, vars, parts);
+};
+
+function formFib(data) {
+    var str = "";
+    var c = 1;
+    var sf = 0;
+    _.forEach(data, function(key, value) {
+        c *= factorial(key * 1);
+        sf += key * 1;
+        str += "x_" + value + "^" + key + "*"
+    });
+    var t = Math.pow(-1, sf) * factorial(sf);
+    str = t + "/" + c + "*" + str;
+    str = str.slice(0, -1);
+    return str;
+}
+
+function Fib(n) {
+    var parts = part(n);
+    parts = parts.map(y => _.countBy(y));
+    parts = parts.map(y => formFib(y)).join(" + ");
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push('x_' + i);
+    nerdamer.setFunction("Fib_" + n, vars, parts);
+};
+
+function getsetZycFabFib(fn, n, get) {
+    var neg = false;
+    if (fn.startsWith("-")) {
+        fn = fn.slice(1);
+        neg = true;
+    };
+    var vars = "(";
+    for (i = 1; i <= n; i++)
+        vars += 'x_' + i + ',';
+    vars = vars.slice(0, -1) + ")";
+    const str = fn + "_" + n + vars;
+    if (n == 1 || nerdamer(str).variables().length == 0) {
+        if (fn == "Zyc")
+            Zyc(n);
+        else if (fn == "Fab")
+            Fab(n);
+        else if (fn == "Fib")
+            Fib(n);
+    } else
+        console.log("van");
+    if (get) {
+        if (neg)
+            return nerdamer("-" + str);
+        else
+            return nerdamer(str);
+    };
+};
+
+function printZycFabFib(fn, n) {
+    var vars = "(";
+    for (i = 1; i <= n; i++)
+        vars += 'x_' + i + ',';
+    vars = vars.slice(0, -1) + ")";
+    const str = "\\boldsymbol{" + fn + "}_" + n + vars + " = ";
+    console.log(str)
+    const obj = getsetZycFabFib(fn, n, true);
+    ZFibFab2Latex(str + obj.latex().replaceAll("\\cdot", "\\,"));
+};
+
+function compZFF(fn1, fn2, n) {
+    getsetZycFabFib(fn1, n, false);
+    for (var k = 1; k <= n; k++)
+        getsetZycFabFib(fn2, k, false);
+    var comp = fn1 + "_" + n + "(";
+    var compL = fn1 + "_" + n + "(";
+    var F1 = fn1 + "_" + n + "(";
+    var txt2 = "";
+    for (var j = 1; j <= n; j++) {
+        F1 += "u_" + j + ",";
+        var F2 = fn2.replace("-", "") + "_" + j + "(";
+        comp += fn2 + "_" + j + "(";
+        compL += fn2 + "_" + j + ",";
+        for (var i = 1; i <= j; i++) {
+            comp += "x_" + i + ",";
+            F2 += "x_" + i + ",";
+        }
+        comp = comp.slice(0, -1) + "),"
+        F2 = F2.slice(0, -1) + ")";
+        txt2 += F2 + " = " + nerdamer(F2).latex().replaceAll("\\cdot", "\\,") + " \\\\";
+    };
+    F1 = F1.slice(0, -1) + ")";
+    comp = comp.slice(0, -1) + ")";
+    compL = compL.slice(0, -1) + ")";
+    var txt = "\\begin{gather*}";
+    txt += F1 + " = " + nerdamer(F1).latex().replaceAll("\\cdot", "\\,") + " \\\\ \\\\";
+    txt += txt2 + " \\\\  \\hline\\\\ ";
+    txt += comp + " = \\\\ \\\\=";
+    txt += nerdamer(compL).latex().replaceAll("\\cdot", "\\,") + " = \\\\ \\\\=";
+    txt += nerdamer(comp).latex().replaceAll("\\cdot", "\\,") + " = \\\\ \\\\=";
+    txt += "\\bbox[5px, border: 2px solid red]{" + nerdamer("expand(" + comp + ")").latex().replaceAll("\\cdot", "\\,") + "}";
+    //txt += nerdamer("simplify(" + comp + ")").latex().replaceAll("\\cdot", "\\,");
+    txt = txt.replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
+    txt += "\\end{gather*}";
+    ZFibFab2Latex(txt);
+}
+
+function drawPent() {
+    const fn1 = $("#setpenttbl td.F1.active");
+    const fn2 = $("#setpenttbl td.F2.active");
+    const n = $("#setpenttbl #pentN").val() * 1;
+    var eloj1 = $("#setpenttbl #pente1").text();
+    var eloj2 = $("#setpenttbl #pente2").text();
+    if (eloj1 == "▬")
+        eloj1 = "-";
+    else
+        eloj1 = "";
+    if (fn2.length < 1) {
+        printZycFabFib(eloj1 + fn1.text().trim(), n);
+        setTimeout(() => {
+            document.getElementById('pentout').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        }, 50 * n);
+    } else {
+        if (eloj2 == "▬")
+            eloj2 = "-";
+        else
+            eloj2 = "";
+        compZFF(eloj1 + fn1.text().trim(), eloj2 + fn2.text().trim(), n);
+        setTimeout(() => {
+            document.getElementById('pentout').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        }, 100 * n);
+    };
+};
