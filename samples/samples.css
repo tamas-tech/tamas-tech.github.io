@@ -3448,6 +3448,23 @@ background-color: #eaeaea;
     background-color: #54c66b;
 }
 
+#setpenttbl td {
+    min-width: 40px;
+    height: 28px;
+}
+
+#setpenttbl td.F1.active,
+#setpenttbl td.F2.active {
+    background-color: #e6e6e6;
+    font-weight: 800;
+    font-size: 120%;
+    color: black;
+}
+
+#setpenttbl td.F1:not(active) {
+    color: #717171;
+}
+
 
 
 
