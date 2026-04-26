@@ -3448,11 +3448,6 @@ background-color: #eaeaea;
     background-color: #54c66b;
 }
 
-#setpenttbl td {
-    min-width: 40px;
-    height: 28px;
-}
-
 #setpenttbl td.F1.active,
 #setpenttbl td.F2.active {
     background-color: #e6e6e6;
@@ -3465,8 +3460,53 @@ background-color: #eaeaea;
     color: #717171;
 }
 
+select#spd {
+    font-family: Cambria Math;
+    font-size: 18px;
+    border: 1px solid #cecece;
+    background-color: inherit;
+    text-align: center;
+    min-width: 132px;
+    height: 26px;
+}
+
+#setpenttbl #pentr.dumb {
+    pointer-events: none;
+    opacity: 0.3
+}
+
+.spinner {
+    display: inline-block;
+    border: 8px solid #94c0e8;
+    border-radius: 50%;
+    border-top: 8px solid #3498db;
+    width: 20px;
+    height: 20px;
+    -webkit-animation: spin 2s linear infinite;
+    /* Safari */
+    animation: spin 2s linear infinite;
+}
 
 
+/* Safari */
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 
 
