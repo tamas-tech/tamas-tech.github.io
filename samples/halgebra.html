@@ -1005,9 +1005,16 @@
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <table id="setpenttbl" class="table-hideable">
                     <tr>
-                        <td id="pentkijelzo" colspan="5"><b>Zyc</b><sub>3</sub></td>
-                        <td style="min-width:10px;background-color:#f0f0f0;"></td>
-                        <td colspan="4">Itt lesz egy gomb</td>
+                        <td id="pentkijelzo" style="font-size:120%;" colspan="5"><b>Zyc</b><sub>3</sub></td>
+                        <td style="min-width:12px;background-color:#f0f0f0;"></td>
+                        <td colspan="5" onclick="tglSPD();" style="min-width:188px;"><span style="display:inline-block;vertical-align: middle;border: 1px solid #a6a6a6;padding: 2px 5px;background-color: #ddd;border-radius: 4px;">Zyc&nbsp;&nbsp;&leftrightarrows;&nbsp;&nbsp;&sigma;</span>
+                            <span id="pentchecks" style="visibility:hidden;">
+                                <label for="pentsor" style="vertical-align: middle;margin-left:10px;">sor</label>
+                                <input type="checkbox" onclick="" name="pentsor" id="pentsor" style="height: 20px; width: 20px; vertical-align:middle;">
+                                <label for="pentr" style="vertical-align: middle;">Reszl.</label>
+                                <input type="checkbox" onclick="" name="pentr" id="pentr" style="height: 20px; width: 20px; vertical-align:middle;">
+                            </span>
+                        </td>
                     </tr>
                     <tr>
                         <td id="pente1" onclick="pentSign(this);">
@@ -1023,9 +1030,9 @@
                             Fib
                         </td>
                         <td>
-                            <input type="number" id="pentN" onchange="pentjelent();" value="3" min="1" step="1" style="width:50px;font-size: 15px;">
+                            <input type="number" id="pentN" onchange="pentjelent();" value="3" min="1" step="1" style="width:50px;font-size: 15px;margin:0 3px;">
                         </td>
-                        <td style="min-width:10px;">&#x25e6;</td>
+                        <td id="pentmuv" style="min-width:12px;background-color:#f0f0f0;">&#x25e6;</td>
                         <td id="pente2" onclick="pentSign(this);">
                             ✚
                         </td>
@@ -1038,12 +1045,19 @@
                         <td class="F2" onclick="setF12(this,'F2')">
                             Fib
                         </td>
+                        <td id="spdtok" style="display:none;">
+                            <select id="spd" onchange="pentjelent();">
+                                <option selected="" value="s" >&sigma;</option>
+                                <option value="p">p</option>
+                                <option value="d">&delta;&#x2085;</option>
+                            </select>
+                        </td>
                     </tr>
                 </table>
             </div>
             <div class="nobr" style="margin-left:2px;padding:3px;">
-                <button onclick="drawPent();" class="showpre1">OK</button>
-                <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#pentout');" title="Clear output">Clear</button>
+                <button onclick="document.getElementById('pentout').scrollIntoView({ inline: 'start' });setTimeout(()=>{idClear('#pentout');},5);setTimeout(()=>{drawPent();},10);" class="showpre1">OK</button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="document.getElementById('pentsorcopy').style.display='none';idClear('#pentout');" title="Clear output">Clear</button>
                 <button id="tglpentopts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl( 'pentsetting');">⚙</button>
             </div>
         </div>
@@ -1055,7 +1069,8 @@
         </div>
         <div id="pentcontainer" style="max-width:100vw">
             <p id="figypent" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
-            <p id="pentout" style="width:fit-content;min-width:calc(100vw - 60px);outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
+            <p id="pentout" style="width:fit-content;min-width:calc(100vw - 60px);outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px 7px 7px 7px;font-size:21px;min-height:20px;"></p>
+            <button class="showpre1" id="pentsorcopy" style="width:96px;margin-left:8px;margin-top:10px;display:none;" onclick="copy2OEIS();">Copy</button>
         </div>
     </div>
     <div id="penthelpcontainer" style="max-width:100vw;position:relative;top:-20px;">
