@@ -3048,7 +3048,8 @@ span.kepletvalaszto.selected {
     font-family: monospace;
 }
 
-table#animtbl {
+table#animtbl,
+table#penttbl {
     font-family: Katex_Math;
     font-size: 1.1em;
     margin-top: 10px;
@@ -3056,15 +3057,18 @@ table#animtbl {
     outline: 1px solid #c8c8c8;
 }
 
-table#animtbl tr td {
+table#animtbl tr td,
+table#penttbl tr td {
     padding: 2px 5px;
 }
 
-table#animtbl tr td.selected {
+table#animtbl tr td.selected,
+table#penttbl tr td.selected {
     background-color: #fffad1;
 }
 
-table#animtbl .animkeplet {
+table#animtbl .animkeplet,
+table#penttbl .animkeplet {
     cursor: pointer;
     display: inline-block;
     margin-inline: 5px 0;
