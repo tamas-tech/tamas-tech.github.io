@@ -314,6 +314,10 @@ function settblw(v) {
     $('#regtbl tr:first-child td').css('min-width', v + 'em');
 };
 
+function setpenttblw(v) {
+    $('#setpenttbl  td:not(.fixw)').css({ 'min-width': (40 * v) + 'px', 'height': (28 * v) + 'px' });
+};
+
 // algebra of Q(x,y) = h
 var regw = "w1";
 var regvalt = "alap";
@@ -6275,7 +6279,7 @@ function nNMatrix(N, n) {
 function Nnsor(i, N, n) {
     setDerIK(n);
     const h = N - 1 - n;
-    console.log(Num2xy(Math.pow(2, h - 1) + i, h))
+    //console.log(Num2xy(Math.pow(2, h - 1) + i, h))
     var v = derivHn(Num2xy(Math.pow(2, h - 1) + i, h), n, false, false);
     //console.log(v)
     v = v.map(y => [y[0], xy2num(y[1])]);
@@ -6615,6 +6619,8 @@ function sigma_val(n) {
 function p_val(n) {
     return sigma_p(n)["p"];
 };
+
+var a_sor = function() {};
 // Ellenőrzés
 //const testValues = [5, 9, 12];
 //testValues.forEach(n => {
@@ -6623,6 +6629,9 @@ function p_val(n) {
 
 // pentagonal
 
+var pentov = false;
+var pentsorout = "";
+var kepletes = true;
 const sigmavalues = [1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127, 84, 144, 68, 126, 96, 144];
 const partvalues = [1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, 4565, 5604, 6842, 8349, 10143, 12310, 14883, 17977, 21637, 26015, 31185, 37338, 44583, 53174, 63261, 75175, 89134, 105558, 124754, 147273, 173525]
 
@@ -6641,11 +6650,30 @@ $(document).ready(function() {
 });
 
 function copy2OEIS() {
-    var txt = _.last(document.getElementById("pentout").innerText.split("=")).slice(1, -5);
+    var txt = "";
+    const deno = document.getElementById("denoms").checked;
+    const vagolap = document.getElementById("vagolap");
+    var c = document.getElementById("szorzo").value;
+    try {
+        c = nerdamer.convertFromLaTeX(c).evaluate();
+    } catch (error) {
+        document.getElementById("vagolap").innerHTML = error;
+    }
+    var vec = pentsorout.slice(6, -11).split(',').map(y => nerdamer.convertFromLaTeX(y));
+    //vec = vec.map(y => y.multiply(c))
+    if (deno) {
+        const denoms = vec.map(y => y.denominator().multiply(c).toString());
+        txt = denoms.toString();
+    } else {
+        const numers = vec.map(y => y.numerator().multiply(c).toString());
+        txt = numers.toString();
+    }
+    txt = txt.replaceAll(",", ", ");
+    vagolap.innerHTML = "clipboard &rightarrow; " + txt;
     navigator.clipboard.writeText(txt);
-    $('#pentout').addClass('villbgdark');
+    $('#vagolap').addClass('villbgdark');
     setTimeout(() => {
-        $('#pentout').removeClass('villbgdark');
+        $('#vagolap').removeClass('villbgdark');
     }, 300);
 };
 
@@ -6654,36 +6682,81 @@ function setOutputFontPent(v) {
     elem.style.fontSize = v + 'px';
 };
 
-function pentjelent() {
+function tglUsera() {
+    if ($("#setpenttbl #spd").val() == "user") {
+        $("#setpenttbl #usersora").css('display', 'table-cell');
+        $("#setpenttbl #tglspd").attr('colspan', '2');
+        $("#setpenttbl #ovspdtok").attr('colspan', '1');
+    } else {
+        $("#setpenttbl #usersora").css('display', 'none');
+        if ($("#setpenttbl #ovspd").val() != "user")
+            $("#setpenttbl #tglspd").attr('colspan', '4');
+    }
+};
+
+function tglUserb() {
+    if ($("#setpenttbl #ovspd").val() == "user") {
+        $("#setpenttbl #usersorb").css('display', 'table-cell');
+        $("#setpenttbl #tglspd").attr('colspan', '2');
+        $("#setpenttbl #spdtok").attr('colspan', '1');
+    } else {
+        $("#setpenttbl #usersorb").css('display', 'none');
+        if ($("#setpenttbl #spd").val() != "user")
+            $("#setpenttbl #tglspd").attr('colspan', '4');
+    }
+};
+
+function pentjelent(ov) {
     const spdmode = document.querySelector("#setpenttbl td#spdtok").style.display != "none";
-    const fn1 = $("#setpenttbl td.F1.active");
-    const fn2 = $("#setpenttbl td.F2.active");
-    const n = $("#setpenttbl #pentN").val() * 1;
-    var eloj1 = $("#setpenttbl #pente1").text();
-    var eloj2 = $("#setpenttbl #pente2").text();
-    var txt = "<b>" + fn1.text().trim() + "</b><sub>" + n + "</sub>";
-    if (eloj1 == "▬") {
-        txt = "-" + txt;
-        if (fn2.length != 0)
-            txt = "(" + txt + ")";
-    };
-    if (!spdmode) {
-        if (fn2.length != 0) {
+    if (!ov) {
+        const fn1 = $("#setpenttbl td.F1:not(.ov).active");
+        const fn2 = $("#setpenttbl td.F2.active");
+        const n = $("#setpenttbl #pentN").val() * 1;
+        var eloj1 = $("#setpenttbl #pente1").text();
+        var eloj2 = $("#setpenttbl #pente2").text();
+        var txt = "<b>" + fn1.text().trim() + "</b><sub>" + n + "</sub>";
+        if (eloj1 == "▬") {
+            txt = "-" + txt;
+            if (fn2.length != 0)
+                txt = "(" + txt + ")";
+        };
+        if (!spdmode) {
+            if (fn2.length != 0) {
+                if (eloj2 == "▬") {
+                    txt += "&nbsp;&#x25e6;&nbsp;(-<b>" + fn2.text().trim() + ")";
+                } else {
+                    txt += "&nbsp;&#x25e6;&nbsp;<b>" + fn2.text().trim();
+                }
+            }
+        } else {
+            var txt2 = $("#setpenttbl #spd option:selected").text();
             if (eloj2 == "▬") {
-                txt += "&nbsp;&#x25e6;&nbsp;(-<b>" + fn2.text().trim() + ")";
+                txt += "&nbsp;&#x25b7;&nbsp;(-<b>" + txt2.trim() + ")";
             } else {
-                txt += "&nbsp;&#x25e6;&nbsp;<b>" + fn2.text().trim();
+                txt += "&nbsp;&#x25b7;&nbsp;<b>" + txt2;
             }
         }
+        document.getElementById("pentkijelzo").innerHTML = txt;
     } else {
-        var txt2 = $("#setpenttbl #spd option:selected").text();
-        if (eloj2 == "▬") {
-            txt += "&nbsp;&#x25b7;&nbsp;(-<b>" + txt2.trim() + ")";
+        if (!spdmode) {
+            const fn1 = $("#setpenttbl td.F1.ov.active");
+            const n = $("#setpenttbl #pentN").val() * 1;
+            var eloj1 = $("#setpenttbl #ovpente1").text();
+            var txt = "<b>" + fn1.text().trim() + "</b><sub>" + n + "</sub>";
+            if (eloj1 == "▬") {
+                txt = "-" + txt;
+            }
         } else {
-            txt += "&nbsp;&#x25b7;&nbsp;<b>" + txt2;
-        }
+            var eloj2 = $("#setpenttbl #ovpente2").text();
+            var txt2 = $("#setpenttbl tr#ovsor #ovspd option:selected").text();
+            if (eloj2 == "▬") {
+                txt = "-<b>" + txt2.trim();
+            } else {
+                txt = txt2;
+            }
+        };
+        document.getElementById("penter").innerHTML = txt;
     }
-    document.getElementById("pentkijelzo").innerHTML = txt;
 };
 
 function tglSPD() {
@@ -6692,41 +6765,70 @@ function tglSPD() {
     if (elem.style.display != "none") {
         elem.style.display = "none";
         melem.innerHTML = "&#x25e6;";
-        $('#setpenttbl td.F2').css('display', '');
+        $('#setpenttbl td.F2:not(.ov)').css('display', '');
+        $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'visible');
+        $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'hidden');
         $('#pentchecks').css('visibility', 'hidden');
+        $("#setpenttbl #usersora,#setpenttbl #usersorb").css('display', 'none');
+        $("#setpenttbl #tglspd").attr('colspan', '4');
+        $("#setpenttbl #ovspdtok").attr('colspan', '3');
     } else {
         elem.style.display = "";
         melem.innerHTML = "&#x25b7;";
-        $('#setpenttbl td.F2').css('display', 'none');
+        $('#setpenttbl td.F2:not(.ov)').css('display', 'none');
+        $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'hidden');
+        $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'visible');
         $('#pentchecks').css('visibility', 'visible');
+        tglUsera();
+        tglUserb();
     }
-    pentjelent();
+    pentjelent(false);
+    if (document.getElementById("ovsor").style.display != "none")
+        pentjelent(true);
 }
 
-function pentSign(e) {
+function tglOv(e) {
+    const elem = document.getElementById("ovsor");
+    if (elem.style.display != "none") {
+        elem.style.display = "none";
+        e.style.color = "#a4a4a4";
+        document.getElementById("penter").innerHTML = "";
+        pentov = false;
+    } else {
+        elem.style.display = "";
+        e.style.color = "white";
+        pentjelent(true);
+        pentov = true;
+    };
+};
+
+function pentSign(e, ov) {
     var sign = e.innerText;
     if (sign == "✚") {
         e.innerText = "▬";
-        e.style.backgroundColor = "#ffe0e0";
+        e.style.color = "red";
     } else {
         e.innerText = "✚";
-        e.style.backgroundColor = "";
+        e.style.color = "";
     }
     setTimeout(() => {
-        pentjelent();
-    }, 100)
+        pentjelent(ov);
+    }, 100);
 };
 
-function setF12(e, type) {
+function setF12(e, type, ov) {
     const el = $(e);
     if (el.hasClass('active') && type == "F2")
         el.removeClass('active');
-    else {
-        $('#setpenttbl td.' + type + '.active').removeClass('active');
+    else if (ov) {
+        $('#setpenttbl td.' + type + '.ov.active').removeClass('active');
+        el.addClass('active');
+    } else {
+        $('#setpenttbl td.' + type + ':not(.ov).active').removeClass('active');
         el.addClass('active');
     }
     setTimeout(() => {
-        pentjelent();
+        pentjelent(ov);
     }, 100)
 };
 
@@ -6822,8 +6924,8 @@ function Fib(n) {
 };
 
 function getsetZycFabFib(fn, n, get) {
-    nerdamer.flush();
-    nerdamer.clearVars();
+    /*  nerdamer.flush();
+     nerdamer.clearVars(); */
     var neg = false;
     if (fn.startsWith("-")) {
         fn = fn.slice(1);
@@ -6861,6 +6963,27 @@ function printZycFabFib(fn, n) {
         const obj = getsetZycFabFib(fn, n, true);
         ZFibFab2Latex(str + obj.latex().replaceAll("\\cdot", "\\,"));
     }, 10);
+};
+
+function compov(n) {
+    var elojb = $("#setpenttbl #ovpente1").text();
+    if (elojb == "▬")
+        elojb = "-";
+    else
+        elojb = "";
+    var fn = $("#setpenttbl .F1.ov.active").text().trim();
+    var vars = "(";
+    for (i = 1; i <= n; i++)
+        vars += 'x_{' + i + '},';
+    vars = vars.slice(0, -1) + ")";
+    var txt = "\\\\\\ " + elojb + "\\bbox[5px, border: 2px solid blue]{\\boldsymbol{" + fn + "}_{" + n + "}" + vars + " = ";
+    if (fn == "Pr") {
+        txt += elojb + "x_{" + n + "}}";
+    } else {
+        var obj = getsetZycFabFib(elojb + fn, n, true);
+        txt += obj.latex().replaceAll("\\cdot", "\\,") + "}";
+    }
+    return txt;
 };
 
 function compZFF(fn1, fn2, n) {
@@ -6904,22 +7027,22 @@ function compZFF(fn1, fn2, n) {
         txt += nerdamer(comp).latex().replaceAll("\\cdot", "\\,") + " = \\\\ \\\\=";
         txt += "\\bbox[5px, border: 2px solid red]{" + nerdamer("expand(" + comp + ")").latex().replaceAll("\\cdot", "\\,") + "}";
         //txt += nerdamer("simplify(" + comp + ")").latex().replaceAll("\\cdot", "\\,");
+        if (pentov)
+            txt += compov(n);
         txt = txt.replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
         txt += "\\end{gather*}";
         ZFibFab2Latex(txt);
     }, 10);
 };
 
-function nerdKimenet(x) {
-    // x = Fraction(x).toFraction();
+/* function nerdKimenet(x) {
     x = nerdamer(x).toString();
     x = nerdamer(x).toString();
     if (/( *\/ *)/.test(x)) {
-        //const s = nerdamer(x).toString();
         x = "\\frac{" + x.replace(/( *\/ *)/, "}{") + "}";
     }
     return x;
-};
+}; */
 
 function nerdKimenet(x) {
     if (/( *\/ *)/.test(x)) {
@@ -6934,7 +7057,188 @@ function nerdKimenet(x) {
             }
         }
     }
+    /* if (/( *\/ *)/.test(x)) {
+        x = nerdamer.convertToLaTeX(x).toString();
+    } */
     return x;
+};
+
+function getsora(n) {
+    var a_txt = $("#usersora input").val();
+    const vars = _.uniq(a_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
+    if (vars.length > 1) {
+        alert("Vátozó hiba:\nA kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt\n\n\t\t" + a_txt + "\n\nkifejezés " + vars.length + " válozót is tartalmaz: " + vars + ".");
+        return false;
+    } else if (vars.length == 0 && a_txt.length != 1) {
+        try {
+            const ism = a_txt.endsWith(',...');
+            if (ism)
+                a_txt = a_txt.slice(0, -4);
+            nerdamer.setVar('a_sorv', 'vector(' + a_txt + ')');
+            const L = nerdamer('a_sorv').symbol.elements.length;
+            if (L < n || ism) {
+                if (ism) {
+                    const N = Math.ceil(n / L);
+                    a_txt += ",";
+                    var aa_txt = a_txt.repeat(N);
+                } else if (_.last(a_txt) != "0") {
+                    const N = Math.ceil(n / L);
+                    a_txt += ','
+                    var aa_txt = a_txt.repeat(N);
+                } else {
+                    var aa_txt = a_txt + ",0".repeat(n - L);
+                }
+                if (aa_txt.endsWith(','))
+                    aa_txt = aa_txt.slice(0, -1)
+                nerdamer.setVar('a_sorv', 'vector(' + aa_txt + ')');
+            }
+            a_sor = function(j) { return nerdamer('vecget(a_sorv,' + (j - 1) + ')').evaluate().toString() };
+            nerdamer.setFunction('a_sor', ['j'], 'vecget(a_sorv,j-1)');
+            kepletes = false;
+            return true;
+        } catch (error) {
+            document.getElementById("pentout").innerHTML = error
+            return false;
+        }
+    } else {
+        try {
+            var fn = nerdamer(a_txt);
+            a_sor = fn.buildFunction();
+            nerdamer.setFunction('a_sor', vars, a_txt);
+            kepletes = true;
+            return true;
+        } catch (error) {
+            document.getElementById("pentout").innerHTML = error
+            return false;
+        }
+    }
+};
+
+function getsorb(n) {
+    var b_txt = $("#usersorb input").val();
+    const vars = _.uniq(b_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
+    if (vars.length > 1) {
+        alert("Vátozó hiba:\nA kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt\n\n\t\t" + b_txt + "\n\nkifejezés " + vars.length + " válozót is tartalmaz: " + vars + ".");
+        return false;
+    } else if (vars.length == 0 && b_txt.length != 1) {
+        try {
+            const ism = b_txt.endsWith(',...');
+            if (ism)
+                b_txt = b_txt.slice(0, -4);
+            nerdamer.setVar('b_sorv', 'vector(' + b_txt + ')');
+            const L = nerdamer('b_sorv').symbol.elements.length;
+            if (L < n || ism) {
+                if (ism) {
+                    const N = Math.ceil(n / L);
+                    b_txt += ','
+                    var bb_txt = b_txt.repeat(N);
+                } else if (_.last(b_txt) != "0") {
+                    const N = Math.ceil(n / L);
+                    b_txt += ','
+                    var bb_txt = b_txt.repeat(N);
+                } else {
+                    var bb_txt = b_txt + ",0".repeat(n - L);
+                }
+                if (bb_txt.endsWith(','))
+                    bb_txt = bb_txt.slice(0, -1)
+                nerdamer.setVar('b_sorv', 'vector(' + bb_txt + ')');
+            }
+            b_sor = function(j) { return nerdamer('vecget(b_sorv,' + (j - 1) + ')').evaluate().toString() };
+            nerdamer.setFunction('b_sor', ['j'], 'vecget(b_sorv,j-1)');
+            // kepletes = false;
+            return true;
+        } catch (error) {
+            document.getElementById("pentout").innerHTML = error
+            return false;
+        }
+    } else {
+        try {
+            var fn = nerdamer(b_txt);
+            b_sor = fn.buildFunction();
+            nerdamer.setFunction('b_sor', vars, b_txt);
+            // kepletes = true;
+            return true;
+        } catch (error) {
+            document.getElementById("pentout").innerHTML = error
+            return false;
+        }
+    }
+};
+
+function pentovfn(elojel, n) {
+    var elojb = $("#setpenttbl #ovpente2").text();
+    if (elojb == "▬")
+        elojb = "-";
+    else
+        elojb = "";
+    var ertekfb = sigma_val;
+    var sorb = $("#setpenttbl #ovspd option:selected").text();
+    if (sorb == "p") {
+        ertekfb = p_val;
+    } else if (sorb == "δ₅") {
+        ertekfb = deltaP
+    } else if (sorb == "b₁,...") {
+        if (getsorb(n)) {
+            ertekfb = b_sor;
+            sorb = "b"
+        } else
+            return;
+    };
+    var Fb = elojb + ertekfb(n);
+    var txt = "";
+    if (elojel == "")
+        txt = "\\\\" + elojb + sorb + "(" + n + ") = " + nerdKimenet(nerdamer(Fb).toString());
+    if (elojel == "-")
+        txt = "\\\\" + sorb + "(" + n + ") = " + nerdKimenet(nerdamer("-" + Fb).toString());
+    return txt;
+};
+
+function pentovfnsor(elojel, n) {
+    var elojb = $("#setpenttbl #ovpente2").text();
+    if (elojb == "▬")
+        elojb = "-";
+    else
+        elojb = "";
+    var ertekfb = sigma_val;
+    var sorb = $("#setpenttbl #ovspd option:selected").text();
+    if (sorb == "p") {
+        ertekfb = p_val;
+    } else if (sorb == "δ₅") {
+        ertekfb = deltaP
+    } else if (sorb == "b₁,...") {
+        if (getsorb(n)) {
+            ertekfb = b_sor;
+            sorb = "b"
+        } else
+            return;
+    };
+
+    var txt = "\\\\" + elojb + "\\left(";
+    if (n <= 5) {
+        for (var j = 1; j <= n; j++) {
+            txt += sorb + "(" + j + "),"
+        };
+    } else {
+        for (var j = 1; j <= 3; j++) {
+            txt += sorb + "(" + j + "),"
+        };
+        txt += "...," + sorb + "(" + n + "),";
+    };
+    txt = txt.slice(0, -1) + "\\right) = \\left(";
+    if (elojel == "") {
+        for (var j = 1; j <= n; j++) {
+            var Fb = elojb + ertekfb(j);
+            txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
+        }
+    }
+    if (elojel == "-") {
+        for (var j = 1; j <= n; j++) {
+            var Fb = elojb + ertekfb(j);
+            txt += nerdKimenet(nerdamer("-" + Fb).toString()) + ",";
+        }
+    }
+    txt = txt.slice(0, -1) + "\\right)";
+    return txt;
 };
 
 function hatasZFFr(fn, sor, n) {
@@ -6959,34 +7263,63 @@ function hatasZFFr(fn, sor, n) {
             ertekfn = p_val;
         } else if (sor == "δ₅") {
             ertekfn = deltaP
-        }
+        } else if (sor == "a₁,...") {
+            if (getsora(n)) {
+                ertekfn = a_sor;
+                sor = "a";
+            } else
+                return;
+        };
         var txt = "";
 
         var F2 = fn + "_" + n + "(";
         var F3 = fn + "_" + n + "(";
 
         for (var i = 1; i <= n; i++) {
-            F2 += "sin(" + ertekfn(i) + "),";
+            F2 += "sin(" + i + "),";
             F3 += eloj2 + ertekfn(i) + ",";
             comp += eloj2 + sor + "(" + i + "),";
         }
         F2 = F2.slice(0, -1) + ")";
         F3 = F3.slice(0, -1) + ")";
+        var F4 = F3;
+        if (sor == "a") {
+            F4 = fn + "_" + n + "(";
+            if (kepletes) {
+                for (var i = 1; i <= n; i++)
+                    F4 += nerdamer('a_sor(sin(' + i + '))').toString() + ',';
+            } else {
+                for (var i = 1; i <= n; i++)
+                    F4 += 'sin(' + nerdamer('vecget(a_sorv,' + (i - 1) + ')').evaluate().toString() + '),';
+            }
+            F4 = F4.slice(0, -1) + ")";
+        } else {
+            F4 = fn + "_" + n + "(";
+            for (var i = 1; i <= n; i++) {
+                F4 += 'sin(' + ertekfn(i) + '),';
+            }
+            F4 = F4.slice(0, -1) + ")";
+        };
         comp = comp.slice(0, -1) + ")";
         if (eloj1 == "-" && eloj2 == "") {
             const negalap = nerdamer("-" + F2).latex();
-            txt += "-" + comp + "= " + negalap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, sor + "($1)") + " = " + negalap.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "=" + nerdamer("-" + F3).toTeX('Fraction');
+            const negalap2 = nerdamer("-" + F4).latex();
+            txt += "-" + comp + "= " + negalap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, sor + "($1)") + " = " + negalap2.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "=" + nerdamer("-" + F3).toTeX('Fraction');
         } else if (eloj1 == "-" && eloj2 == "-") {
             const negalap = nerdamer("-" + F2).latex();
-            txt += "-" + comp + " = " + negalap.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-" + sor + "($1))") + " = " + negalap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-$1)") + "=" + nerdamer("-" + F3).toTeX('Fraction');
+            const negalap2 = nerdamer("-" + F4).latex();
+            txt += "-" + comp + " = " + negalap.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-" + sor + "($1))") + " = " + negalap2.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-$1)") + "=" + nerdamer("-" + F3).toTeX('Fraction');
         } else if (eloj1 == "" && eloj2 == "-") {
             const alap = nerdamer(F2).latex();
-            txt += comp + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-" + sor + "($1))") + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-$1)") + "=" + nerdamer(F3).toTeX('Fraction');
+            const alap2 = nerdamer(F4).latex();
+            txt += comp + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-" + sor + "($1))") + " = " + alap2.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-$1)") + "=" + nerdamer(F3).toTeX('Fraction');
         } else if (eloj1 == "" && eloj2 == "") {
             const alap = nerdamer(F2).latex();
-            txt += comp + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, sor + "($1)") + " = " + alap.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "=" + nerdamer(F3).toTeX('Fraction');
+            const alap2 = nerdamer(F4).latex();
+            txt += comp + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, sor + "($1)") + " = " + alap2.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "=" + nerdamer(F3).toTeX('Fraction');
         }
-
+        if (pentov)
+            txt += pentovfn(eloj1, n);
         txt = txt.replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
         ZFibFab2Latex(txt);
     }, 10);
@@ -7013,11 +7346,14 @@ function hatasZFF(fn, sor, n) {
             ertekfn = p_val;
         } else if (sor == "δ₅") {
             ertekfn = deltaP
-        }
+        } else if (sor == "a₁,...") {
+            if (getsora(n))
+                ertekfn = a_sor;
+            else
+                return;
+        };
         var txt = "";
-
         var F3 = fn + "_" + n + "(";
-
         for (var i = 1; i <= n; i++) {
             F3 += eloj2 + ertekfn(i) + ",";
             //comp += eloj2 + ertekfn(i) + ",";
@@ -7033,6 +7369,8 @@ function hatasZFF(fn, sor, n) {
             txt += comp + "=" + nerdKimenet(nerdamer(F3).toString());
         else if (eloj1 == "" && eloj2 == "")
             txt += comp + "=" + nerdKimenet(nerdamer(F3).toString());
+        if (pentov)
+            txt += pentovfn(eloj1, n);
         txt = txt.replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
         ZFibFab2Latex(txt);
     }, 10);
@@ -7061,7 +7399,12 @@ function hatasZFFsor(fn, sor, n) {
             ertekfn = p_val;
         } else if (sor == "δ₅") {
             ertekfn = deltaP
-        }
+        } else if (sor == "a₁,...") {
+            if (getsora(n))
+                ertekfn = a_sor;
+            else
+                return;
+        };
         var txt = "";
         var vec = "\\left(";
         for (var j = 1; j <= n; j++) {
@@ -7085,17 +7428,22 @@ function hatasZFFsor(fn, sor, n) {
         vec += "...\\right)";
         comp += "...)";
         txt = comp + "=" + vec;
-
+        pentsorout = vec;
+        if (pentov)
+            txt += pentovfnsor(eloj1, n);
         ZFibFab2Latex(txt);
     }, 10)
 };
 
 function drawPent() {
-    document.getElementById("pentsorcopy").style.display = "none";
+    nerdamer.flush();
+    nerdamer.clearVars();
+    document.getElementById("pentsorcopytok").style.display = "none";
+    document.getElementById("vagolap").innerHTML = "";
     const spdmode = document.querySelector("#setpenttbl td#spdtok").style.display != "none";
     const sorba = document.getElementById("pentsor").checked;
     const reszletes = document.getElementById("pentr").checked;
-    const fn1 = $("#setpenttbl td.F1.active");
+    const fn1 = $("#setpenttbl td.F1:not(.ov).active");
     const fn2 = $("#setpenttbl td.F2.active");
     const n = $("#setpenttbl #pentN").val() * 1;
     var eloj1 = $("#setpenttbl #pente1").text();
@@ -7113,7 +7461,7 @@ function drawPent() {
             eloj2 = "";
         if (sorba) {
             hatasZFFsor(eloj1 + fn1.text().trim(), eloj2 + sor, n);
-            $("#pentsorcopy").css("display", "block");
+            $("#pentsorcopytok").css("display", "block");
         } else if (reszletes) {
             hatasZFFr(eloj1 + fn1.text().trim(), eloj2 + sor, n);
             t = 50;
