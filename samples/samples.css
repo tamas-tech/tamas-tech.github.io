@@ -3448,9 +3448,21 @@ background-color: #eaeaea;
     background-color: #54c66b;
 }
 
-#setpenttbl td.F1.active,
+#setpenttbl td {
+    min-width: 40px;
+    height: 28px;
+}
+
+#setpenttbl td.F1:not(.ov).active,
 #setpenttbl td.F2.active {
     background-color: #e6e6e6;
+    font-weight: 800;
+    font-size: 120%;
+    color: black;
+}
+
+#setpenttbl td.F1.ov.active {
+    background-color: #e8e1a5;
     font-weight: 800;
     font-size: 120%;
     color: black;
@@ -3460,7 +3472,8 @@ background-color: #eaeaea;
     color: #717171;
 }
 
-select#spd {
+select#spd,
+select#ovspd {
     font-family: Cambria Math;
     font-size: 18px;
     border: 1px solid #cecece;
