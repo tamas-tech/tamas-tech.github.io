@@ -3055,6 +3055,7 @@ table#penttbl {
     margin-top: 10px;
     margin-bottom: 20px;
     outline: 1px solid #c8c8c8;
+    white-space: nowrap;
 }
 
 table#animtbl tr td,
