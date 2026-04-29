@@ -733,7 +733,7 @@
         </div>
         <div id="rankcontainer" style="max-width:100vw">
             <p id="figyrank" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
-            <p id="rankout" style="width:fit-content;min-width:calc(100vw - 60px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
+            <p id="rankout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
             <p id="kutatokijelzo"></p>
         </div>
         <div class="stickblock">
@@ -936,7 +936,7 @@
         </div>
         <div id="dimcontainer" style="max-width:100vw">
             <p id="figydim" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
-            <p id="dimout" style="width:fit-content;min-width:calc(100vw - 60px);outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
+            <p id="dimout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
         </div>
     </div>
     <div id="dimhelpcontainer" style="max-width:100vw;position:relative;top:-20px;">
@@ -976,7 +976,7 @@
         </div>
         <div id="reccontainer" style="max-width:100vw">
             <p id="figyrecc" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
-            <p id="reccout" style="width:fit-content;min-width:calc(100vw - 60px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
+            <p id="reccout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
         </div>
     </div>
     <div id="recchelpcontainer" style="max-width:100vw;position:relative;top:-20px;">
@@ -995,9 +995,40 @@
         <div class="stickblock">
             <button class="showpre1" style="width:90px;margin-left:10px" onclick="tgldimtbl('penttbl');">Table</button>
             <table id="penttbl" style="display:none;">
-                <tr>
-                    <td>Még nincs implementálva</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td class="" style="border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setAnimKeplet(this)">
+                            <span class="animlabel">(1.a)</span><span class="animkeplet"></span>
+                        </td>
+                        <td style="border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setAnimKeplet(this)" class="selected">
+                            <span class="animlabel">(2.a)</span><span class="animkeplet"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom:1px solid #555;border-right:1px solid #555;" onclick="setAnimKeplet(this)" class="">
+                            <span class="animlabel">(1.b)</span><span class="animkeplet"></span>
+                        </td>
+                        <td style="border-bottom:1px solid #555;border-left:1px solid #555;" onclick="setAnimKeplet(this)" class="">
+                            <span class="animlabel">(2.b)</span><span class="animkeplet"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-top:1px solid #555;border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setAnimKeplet(this)" class="">
+                            <span class="animlabel">(3.a)</span><span class="animkeplet"></span>
+                        </td>
+                        <td style="border-top:1px solid #555;border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setAnimKeplet(this)" class="">
+                            <span class="animlabel">(4.a)</span><span class="animkeplet"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-right:1px solid #555;" onclick="setAnimKeplet(this)" class="">
+                            <span class="animlabel">(3.b)</span><span class="animkeplet"></span>
+                        </td>
+                        <td style="border-left:1px solid #555;" onclick="setAnimKeplet(this)" class="">
+                            <span class="animlabel">(4.b)</span><span class="animkeplet"></span>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             <p class="keplet" id="keplet_k6" style="margin-bottom:0;">\[\begin{gather*}\boldsymbol{Fib}_{n}(x_{1},x_{2},\ldots x_{n})=\sum_{1^{b_{1}}2^{b_{2}}\cdots n^{b_{n}}\vdash n}\left(\sum b_{i}\right)!\;\frac{x_{1}^{b_{1}}x_{2}^{b_{2}}\cdots x_{n}^{b_{n}}}{b_{1}!\,b_{2}!\cdots b_{n}!} \\ \\ \boldsymbol{Fab}_{n}(x_{1},x_{2},\ldots
                 x_{n})=n\sum_{1^{b_{1}}2^{b_{2}}\cdots n^{b_{n}}\vdash n}(-1)^{\sum b_{i}}\left(\sum b_{i}-1\right)!\;\frac{x_{1}^{b_{1}}x_{2}^{b_{2}}\cdots x_{n}^{b_{n}}}{b_{1}!\,b_{2}!\cdots b_{n}!} \\ \\ \boldsymbol{Zyc}_{n}(x_{1},x_{2},\ldots x_{n})=\sum_{1^{b_{1}}2^{b_{2}}\cdots
