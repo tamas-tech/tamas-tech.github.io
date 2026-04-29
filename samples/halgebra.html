@@ -994,38 +994,54 @@
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">6.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('pentcontainer',this.value);setkijelzoW('penthelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <button class="showpre1" style="width:90px;margin-left:10px" onclick="tgldimtbl('penttbl');">Table</button>
-            <table id="penttbl" style="display:none;">
+            <table id="penttbl" style="margin-left:5px;display:none;font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">
                 <tbody>
                     <tr>
-                        <td class="" style="border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setAnimKeplet(this)">
-                            <span class="animlabel">(1.a)</span><span class="animkeplet"></span>
+                        <td class="" style="border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setPentKeplet(this)">
+                            <span class="animlabel">(1.a)</span><span class="animkeplet"> Zyc&nbsp;&#x25e6;&nbsp;(-Fab)&nbsp;=&nbsp;Pr</span>
                         </td>
-                        <td style="border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setAnimKeplet(this)" class="selected">
-                            <span class="animlabel">(2.a)</span><span class="animkeplet"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="border-bottom:1px solid #555;border-right:1px solid #555;" onclick="setAnimKeplet(this)" class="">
-                            <span class="animlabel">(1.b)</span><span class="animkeplet"></span>
-                        </td>
-                        <td style="border-bottom:1px solid #555;border-left:1px solid #555;" onclick="setAnimKeplet(this)" class="">
-                            <span class="animlabel">(2.b)</span><span class="animkeplet"></span>
+                        <td style="border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setPentKeplet(this)" class="selected">
+                            <span class="animlabel">(1.b)</span><span class="animkeplet"> Zyc &#x25b7;&nbsp;&sigma;&nbsp;=&nbsp;p</span>
                         </td>
                     </tr>
                     <tr>
-                        <td style="border-top:1px solid #555;border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setAnimKeplet(this)" class="">
-                            <span class="animlabel">(3.a)</span><span class="animkeplet"></span>
+                        <td style="border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(2.a)</span><span class="animkeplet"> (-Fab)&nbsp;&#x25e6;&nbsp;Zyc&nbsp;=&nbsp;Pr</span>
                         </td>
-                        <td style="border-top:1px solid #555;border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setAnimKeplet(this)" class="">
-                            <span class="animlabel">(4.a)</span><span class="animkeplet"></span>
+                        <td style="border-bottom: 1px solid #555;border-left:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(2.b)</span><span class="animkeplet"> Zyc &#x25b7;&nbsp;(-&sigma;)&nbsp;=&nbsp;-&delta;&#x2085;</span>
                         </td>
                     </tr>
                     <tr>
-                        <td style="border-right:1px solid #555;" onclick="setAnimKeplet(this)" class="">
-                            <span class="animlabel">(3.b)</span><span class="animkeplet"></span>
+                        <td style="border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(3.a)</span><span class="animkeplet"> Fab&nbsp;&#x25e6;&nbsp;Zyc&nbsp;=&nbsp;-Pr</span>
                         </td>
-                        <td style="border-left:1px solid #555;" onclick="setAnimKeplet(this)" class="">
-                            <span class="animlabel">(4.b)</span><span class="animkeplet"></span>
+                        <td style="border-top: 1px solid #555;border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(3.b)</span><span class="animkeplet"> Fab&nbsp;&#x25b7;&nbsp;p&nbsp;=&nbsp;-&sigma;</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom:1px solid #555;border-right:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(4.a)</span><span class="animkeplet"> Zyc&nbsp;&#x25e6;&nbsp;Fab&nbsp;=&nbsp;Fib</span>
+                        </td>
+                        <td style="border-bottom:1px solid #555;border-left:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(4.b)</span><span class="animkeplet"> Fab&nbsp;&#x25b7;&nbsp;(-&delta;&#x2085;)&nbsp;=&nbsp;&sigma;</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-top: 1px solid #555;border-bottom:1px solid #bbb;border-right:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(5.a)</span><span class="animkeplet"> (-Fab)&nbsp;&#x25e6;&nbsp;Fib&nbsp;=&nbsp;Fab</span>
+                        </td>
+                        <td style="border-top: 1px solid #555;border-bottom:1px solid #bbb;border-left:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(5.b)</span><span class="animkeplet"> Fib&nbsp;&#x25b7;&nbsp;p&nbsp;=&nbsp;(-&delta;&#x2085;)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-right:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(6.a)</span><span class="animkeplet"> Fib&nbsp;&#x25e6;&nbsp;Fib&nbsp;=&nbsp;Pr</span>
+                        </td>
+                        <td style="border-left:1px solid #555;" onclick="setPentKeplet(this)" class="">
+                            <span class="animlabel">(6.b)</span><span class="animkeplet"> Fib&nbsp;&#x25b7;&nbsp;(-&delta;&#x2085;)&nbsp;=&nbsp;p</span>
                         </td>
                     </tr>
                 </tbody>
