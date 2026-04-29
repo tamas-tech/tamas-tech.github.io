@@ -4164,7 +4164,7 @@ function tgldimtbl(id) {
     var elem = document.getElementById(id);
     var open = elem.style.display;
     if (open == "none") {
-        elem.style.display = "block";;
+        elem.style.display = "table";
     } else
         elem.style.display = "none";
 };
@@ -6976,7 +6976,7 @@ function compov(n) {
     for (i = 1; i <= n; i++)
         vars += 'x_{' + i + '},';
     vars = vars.slice(0, -1) + ")";
-    var txt = "\\\\\\ " + elojb + "\\bbox[5px, border: 2px solid blue]{\\boldsymbol{" + fn + "}_{" + n + "}" + vars + " = ";
+    var txt = "\\\\\\ \\bbox[5px, border: 2px solid blue]{\\boldsymbol{" + elojb + fn + "}_{" + n + "}" + vars + " = ";
     if (fn == "Pr") {
         txt += elojb + "x_{" + n + "}}";
     } else {
@@ -7165,7 +7165,7 @@ function getsorb(n) {
     }
 };
 
-function pentovfn(elojel, n) {
+function pentovfn(n) {
     var elojb = $("#setpenttbl #ovpente2").text();
     if (elojb == "▬")
         elojb = "-";
@@ -7186,14 +7186,11 @@ function pentovfn(elojel, n) {
     };
     var Fb = elojb + ertekfb(n);
     var txt = "";
-    if (elojel == "")
-        txt = "\\\\" + elojb + sorb + "(" + n + ") = " + nerdKimenet(nerdamer(Fb).toString());
-    if (elojel == "-")
-        txt = "\\\\" + sorb + "(" + n + ") = " + nerdKimenet(nerdamer("-" + Fb).toString());
+    txt = "\\\\" + elojb + sorb + "(" + n + ") = " + nerdKimenet(nerdamer(Fb).toString());
     return txt;
 };
 
-function pentovfnsor(elojel, n) {
+function pentovfnsor(n) {
     var elojb = $("#setpenttbl #ovpente2").text();
     if (elojb == "▬")
         elojb = "-";
@@ -7225,17 +7222,9 @@ function pentovfnsor(elojel, n) {
         txt += "...," + sorb + "(" + n + "),";
     };
     txt = txt.slice(0, -1) + "\\right) = \\left(";
-    if (elojel == "") {
-        for (var j = 1; j <= n; j++) {
-            var Fb = elojb + ertekfb(j);
-            txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
-        }
-    }
-    if (elojel == "-") {
-        for (var j = 1; j <= n; j++) {
-            var Fb = elojb + ertekfb(j);
-            txt += nerdKimenet(nerdamer("-" + Fb).toString()) + ",";
-        }
+    for (var j = 1; j <= n; j++) {
+        var Fb = elojb + ertekfb(j);
+        txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
     }
     txt = txt.slice(0, -1) + "\\right)";
     return txt;
@@ -7319,7 +7308,7 @@ function hatasZFFr(fn, sor, n) {
             txt += comp + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, sor + "($1)") + " = " + alap2.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "=" + nerdamer(F3).toTeX('Fraction');
         }
         if (pentov)
-            txt += pentovfn(eloj1, n);
+            txt += pentovfn(n);
         txt = txt.replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
         ZFibFab2Latex(txt);
     }, 10);
@@ -7370,7 +7359,7 @@ function hatasZFF(fn, sor, n) {
         else if (eloj1 == "" && eloj2 == "")
             txt += comp + "=" + nerdKimenet(nerdamer(F3).toString());
         if (pentov)
-            txt += pentovfn(eloj1, n);
+            txt += pentovfn(n);
         txt = txt.replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
         ZFibFab2Latex(txt);
     }, 10);
@@ -7430,7 +7419,7 @@ function hatasZFFsor(fn, sor, n) {
         txt = comp + "=" + vec;
         pentsorout = vec;
         if (pentov)
-            txt += pentovfnsor(eloj1, n);
+            txt += pentovfnsor(n);
         ZFibFab2Latex(txt);
     }, 10)
 };
@@ -7488,4 +7477,9 @@ function drawPent() {
             }, 100 * n);
         };
     }
+};
+
+function setPentKeplet(elem) {
+    $('#penttbl td.selected').removeClass('selected');
+    $(elem).addClass("selected");
 };
