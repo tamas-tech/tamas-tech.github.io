@@ -3484,7 +3484,7 @@ select#ovspd {
     border: 1px solid #cecece;
     background-color: inherit;
     text-align: center;
-    min-width: 132px;
+    min-width: 160px;
     height: 26px;
 }
 
@@ -3505,6 +3505,18 @@ select#ovspd {
     animation: spin 2s linear infinite;
 }
 
+#setpenttbl #pentmuv {
+    font-size: 20px;
+    font-weight: 600;
+    min-width: 35px;
+    background-color: #e3e3e3;
+}
+
+#setpenttbl #pentmuv.valto {
+    outline: 2px solid #a29fff;
+    outline-offset: -2px;
+    border-radius: 5px
+}
 
 /* Safari */
 
