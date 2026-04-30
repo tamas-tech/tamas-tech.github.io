@@ -6620,6 +6620,13 @@ function p_val(n) {
     return sigma_p(n)["p"];
 };
 
+function egy_n(i) {
+    if (i == n)
+        return n;
+    else
+        return 0;
+};
+
 var a_sor = function() {};
 // Ellenőrzés
 //const testValues = [5, 9, 12];
@@ -6632,6 +6639,7 @@ var a_sor = function() {};
 var pentov = false;
 var pentsorout = "";
 var kepletes = true;
+var ovmode = false;
 const sigmavalues = [1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127, 84, 144, 68, 126, 96, 144];
 const partvalues = [1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, 4565, 5604, 6842, 8349, 10143, 12310, 14883, 17977, 21637, 26015, 31185, 37338, 44583, 53174, 63261, 75175, 89134, 105558, 124754, 147273, 173525]
 
@@ -6690,7 +6698,7 @@ function tglUsera() {
     } else {
         $("#setpenttbl #usersora").css('display', 'none');
         if ($("#setpenttbl #ovspd").val() != "user")
-            $("#setpenttbl #tglspd").attr('colspan', '4');
+            $("#setpenttbl #tglspd").attr('colspan', '6');
     }
 };
 
@@ -6702,7 +6710,7 @@ function tglUserb() {
     } else {
         $("#setpenttbl #usersorb").css('display', 'none');
         if ($("#setpenttbl #spd").val() != "user")
-            $("#setpenttbl #tglspd").attr('colspan', '4');
+            $("#setpenttbl #tglspd").attr('colspan', '6');
     }
 };
 
@@ -6713,21 +6721,37 @@ function pentjelent(ov) {
         const fn2 = $("#setpenttbl td.F2.active");
         const n = $("#setpenttbl #pentN").val() * 1;
         var eloj1 = $("#setpenttbl #pente1").text();
+        var eloj1x = $("#setpenttbl #pente1x").text();
         var eloj2 = $("#setpenttbl #pente2").text();
+        var eloj2x = $("#setpenttbl #pente2x").text();
         var txt = "<b>" + fn1.text().trim() + "</b><sub>" + n + "</sub>";
         if (eloj1 == "▬") {
             txt = "-" + txt;
+            if (fn2.length != 0 && eloj1x != "▬")
+                txt = "(" + txt + ")";
+        };
+        if (eloj1x == "▬") {
+            txt += "-";
             if (fn2.length != 0)
                 txt = "(" + txt + ")";
         };
+        if (eloj2x == "▬") {
+            eloj2x = "-";
+        } else
+            eloj2x = "";
+
         if (!spdmode) {
             if (fn2.length != 0) {
                 if (eloj2 == "▬") {
-                    txt += "&nbsp;&#x25e6;&nbsp;(-<b>" + fn2.text().trim() + ")";
+                    txt += "&nbsp;&#x25e6;&nbsp;(-<b>" + fn2.text().trim() + eloj2x + ")";
                 } else {
-                    txt += "&nbsp;&#x25e6;&nbsp;<b>" + fn2.text().trim();
+                    txt += "&nbsp;&#x25e6;&nbsp;<b>" + fn2.text().trim() + eloj2x;
                 }
-            }
+                $("#pentmuv").addClass("valto");
+            } else {
+                $("#pentmuv").html("&#x25e6").removeClass("valto");
+                ovmode = false;
+            };
         } else {
             var txt2 = $("#setpenttbl #spd option:selected").text();
             if (eloj2 == "▬") {
@@ -6740,12 +6764,16 @@ function pentjelent(ov) {
     } else {
         if (!spdmode) {
             const fn1 = $("#setpenttbl td.F1.ov.active");
-            const n = $("#setpenttbl #pentN").val() * 1;
-            var eloj1 = $("#setpenttbl #ovpente1").text();
+            const n = $("#setpenttbl #pentN").val() * 1
+            var oveloj1 = "",
+                ovelojx = "";
+            if ($("#setpenttbl #ovpente1").text() == "▬")
+                oveloj1 = "-";
+            if ($("#setpenttbl #ovpente1x").text() == "▬")
+                ovelojx = "-";
             var txt = "<b>" + fn1.text().trim() + "</b><sub>" + n + "</sub>";
-            if (eloj1 == "▬") {
-                txt = "-" + txt;
-            }
+            txt = oveloj1 + txt + ovelojx;
+
         } else {
             var eloj2 = $("#setpenttbl #ovpente2").text();
             var txt2 = $("#setpenttbl tr#ovsor #ovspd option:selected").text();
@@ -6765,23 +6793,25 @@ function tglSPD() {
     if (elem.style.display != "none") {
         elem.style.display = "none";
         melem.innerHTML = "&#x25e6;";
-        $('#setpenttbl td.F2:not(.ov)').css('display', '');
-        $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'visible');
+        $('#setpenttbl td.F2:not(.ov),#setpenttbl #pente2x').css('display', '');
+        $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td#ovpente1x,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'visible');
         $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'hidden');
         $('#pentchecks').css('visibility', 'hidden');
         $("#setpenttbl #usersora,#setpenttbl #usersorb").css('display', 'none');
-        $("#setpenttbl #tglspd").attr('colspan', '4');
-        $("#setpenttbl #ovspdtok").attr('colspan', '3');
+        $("#setpenttbl #tglspd").attr('colspan', '6');
+        $("#setpenttbl #ovspdtok").attr('colspan', '5');
     } else {
         elem.style.display = "";
         melem.innerHTML = "&#x25b7;";
-        $('#setpenttbl td.F2:not(.ov)').css('display', 'none');
-        $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'hidden');
+        $('#setpenttbl td.F2:not(.ov),#setpenttbl #pente2x').css('display', 'none');
+        $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td#ovpente1x,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'hidden');
         $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'visible');
         $('#pentchecks').css('visibility', 'visible');
         tglUsera();
         tglUserb();
-    }
+    };
+    ovmode = false;
+    $(melem).removeClass("valto");
     pentjelent(false);
     if (document.getElementById("ovsor").style.display != "none")
         pentjelent(true);
@@ -6799,6 +6829,26 @@ function tglOv(e) {
         e.style.color = "white";
         pentjelent(true);
         pentov = true;
+    };
+};
+
+function tglovmode(e) {
+    if ($("#setpenttbl td.F2.active").length < 1)
+        return;
+    else {
+        const spd = document.getElementById("spdtok").style.display;
+        if (ovmode) {
+            if (spd == "none")
+                e.innerHTML = "&#x25e6;";
+            else
+            //e.innerHTML = "&#x25b7;";
+                return;
+        } else {
+            if (pentov)
+                document.getElementById("tglOv").click();
+            e.innerHTML = "? = "
+        }
+        ovmode = !ovmode;
     };
 };
 
@@ -6898,6 +6948,31 @@ function Fab(n) {
     nerdamer.setFunction("Fab_" + n, vars, parts);
 };
 
+function formLuc(data, n) {
+    var str = "";
+    var c = 1;
+    var sf = 0;
+    _.forEach(data, function(key, value) {
+        c *= factorial(key * 1);
+        sf += key * 1;
+        str += "x_" + value + "^" + key + "*"
+    });
+    var t = n * factorial(sf) / sf;
+    str = t + "/" + c + "*" + str;
+    str = str.slice(0, -1);
+    return str;
+}
+
+function Luc(n) {
+    var parts = part(n);
+    parts = parts.map(y => _.countBy(y));
+    parts = parts.map(y => formLuc(y, n)).join(" + ");
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push('x_' + i);
+    nerdamer.setFunction("Luc_" + n, vars, parts);
+};
+
 function formFib(data) {
     var str = "";
     var c = 1;
@@ -6926,14 +7001,19 @@ function Fib(n) {
 function getsetZycFabFib(fn, n, get) {
     /*  nerdamer.flush();
      nerdamer.clearVars(); */
-    var neg = false;
+    var neg = false,
+        xneg = '';
     if (fn.startsWith("-")) {
         fn = fn.slice(1);
         neg = true;
     };
+    if (fn.endsWith("-")) {
+        fn = fn.slice(0, -1);
+        xneg = '-';
+    };
     var vars = "(";
     for (i = 1; i <= n; i++)
-        vars += 'x_' + i + ',';
+        vars += xneg + 'x_' + i + ',';
     vars = vars.slice(0, -1) + ")";
     const str = fn + "_" + n + vars;
     //if (n == 1 || nerdamer(str).variables().length == 0) {
@@ -6941,6 +7021,8 @@ function getsetZycFabFib(fn, n, get) {
         Zyc(n);
     else if (fn == "Fab")
         Fab(n);
+    else if (fn == "Luc")
+        Luc(n);
     else if (fn == "Fib")
         Fib(n);
     // }
@@ -6953,15 +7035,57 @@ function getsetZycFabFib(fn, n, get) {
 };
 
 function printZycFabFib(fn, n) {
+    var fntxt = fn,
+        vegjel = "";
+    if (fn.endsWith("-")) {
+        fntxt = fn.slice(0, -1);
+        vegjel = "-";
+    }
     addLoader(n);
     setTimeout(() => {
         var vars = "(";
         for (i = 1; i <= n; i++)
-            vars += 'x_{' + i + '},';
+            vars += vegjel + 'x_{' + i + '},';
         vars = vars.slice(0, -1) + ")";
-        const str = "\\boldsymbol{" + fn + "}_{" + n + "}" + vars + " = ";
+        const str = "\\boldsymbol{" + fntxt + "}_{" + n + "}" + vars + " = ";
         const obj = getsetZycFabFib(fn, n, true);
         ZFibFab2Latex(str + obj.latex().replaceAll("\\cdot", "\\,"));
+    }, 10);
+};
+
+function ovZFF(fn1, fn2, n) {
+    var fntxt1 = fn1,
+        vegjel1 = "";
+    if (fn1.endsWith("-")) {
+        fntxt1 = fn1.slice(0, -1);
+        vegjel1 = "-";
+    };
+    var fntxt2 = fn2,
+        vegjel2 = "";
+    if (fn2.endsWith("-")) {
+        fntxt2 = fn2.slice(0, -1);
+        vegjel2 = "-";
+    }
+    addLoader(n);
+    setTimeout(() => {
+        var vars1 = "(";
+        for (i = 1; i <= n; i++)
+            vars1 += vegjel1 + 'x_{' + i + '},';
+        vars1 = vars1.slice(0, -1) + ")";
+        var str1 = "\\boldsymbol{" + fntxt1 + "}_{" + n + "}" + vars1 + " = ";
+        const obj1 = getsetZycFabFib(fn1, n, true);
+        str1 += obj1.latex();
+
+        var vars2 = "(";
+        for (i = 1; i <= n; i++)
+            vars2 += vegjel2 + 'x_{' + i + '},';
+        vars2 = vars2.slice(0, -1) + ")";
+        var str2 = "\\boldsymbol{" + fntxt2 + "}_{" + n + "}" + vars2 + " = ";
+        const obj2 = getsetZycFabFib(fn2, n, true);
+        str2 += obj2.latex();
+
+        const str = str1 + "\\\\" + str2;
+        ZFibFab2Latex(str.replaceAll("\\cdot", "\\,"));
     }, 10);
 };
 
@@ -6992,22 +7116,34 @@ function compZFF(fn1, fn2, n) {
         getsetZycFabFib(fn1, n, false);
         for (var k = 1; k <= n; k++)
             getsetZycFabFib(fn2, k, false);
+        //////                                                 vegelojel
+        var xeloj = "";
+        if (fn1.endsWith("-")) {
+            fn1 = fn1.slice(0, -1);
+            xeloj = "-";
+        };
+        var xeloj2 = "";
+        if (fn2.endsWith("-")) {
+            fn2 = fn2.slice(0, -1);
+            xeloj2 = "-";
+        };
+        /////
         var fej = nerdamer(fn1 + "_" + n).latex() + "(";
         var comp = fn1 + "_" + n + "(";
         var compL = fn1 + "_" + n + "(";
         var F1 = fn1 + "_" + n + "(";
         var txt2 = "";
         for (var j = 1; j <= n; j++) {
-            F1 += "u_" + j + ",";
-            fej += "x_{" + j + "},";
+            F1 += xeloj + "u_" + j + ",";
+            fej += xeloj + "u_{" + j + "},";
             var F2 = fn2.replace("-", "") + "_" + j + "(";
             var fej2 = nerdamer(fn2.replace("-", "") + "_" + j).latex() + "(";
-            comp += fn2 + "_" + j + "(";
-            compL += fn2 + "_" + j + ",";
+            comp += xeloj + fn2 + "_" + j + "(";
+            compL += xeloj + fn2 + "_" + j + ",";
             for (var i = 1; i <= j; i++) {
-                comp += "x_" + i + ",";
-                F2 += "x_" + i + ",";
-                fej2 += "x_{" + i + "},";
+                comp += xeloj2 + "x_" + i + ",";
+                F2 += xeloj2 + "x_" + i + ",";
+                fej2 += xeloj2 + "x_{" + i + "},";
             }
 
             comp = comp.slice(0, -1) + "),"
@@ -7019,6 +7155,7 @@ function compZFF(fn1, fn2, n) {
         fej = fej.slice(0, -1) + ")";
         comp = comp.slice(0, -1) + ")";
         compL = compL.slice(0, -1) + ")";
+
         var txt = "\\begin{gather*}";
         txt += fej + " = " + nerdamer(F1).latex().replaceAll("\\cdot", "\\,") + " \\\\ \\\\";
         txt += txt2 + " \\\\  \\hline\\\\ ";
@@ -7029,7 +7166,7 @@ function compZFF(fn1, fn2, n) {
         //txt += nerdamer("simplify(" + comp + ")").latex().replaceAll("\\cdot", "\\,");
         if (pentov)
             txt += compov(n);
-        txt = txt.replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
+        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
         txt += "\\end{gather*}";
         ZFibFab2Latex(txt);
     }, 10);
@@ -7076,17 +7213,14 @@ function getsora(n) {
                 a_txt = a_txt.slice(0, -4);
             nerdamer.setVar('a_sorv', 'vector(' + a_txt + ')');
             const L = nerdamer('a_sorv').symbol.elements.length;
-            if (L < n || ism) {
-                if (ism) {
+            if (L < n) {
+                if (!ism) {
                     const N = Math.ceil(n / L);
                     a_txt += ",";
                     var aa_txt = a_txt.repeat(N);
-                } else if (_.last(a_txt) != "0") {
-                    const N = Math.ceil(n / L);
-                    a_txt += ','
-                    var aa_txt = a_txt.repeat(N);
                 } else {
-                    var aa_txt = a_txt + ",0".repeat(n - L);
+                    const last = _.last(a_txt);
+                    var aa_txt = a_txt + ("," + last).repeat(n - L);
                 }
                 if (aa_txt.endsWith(','))
                     aa_txt = aa_txt.slice(0, -1)
@@ -7127,17 +7261,14 @@ function getsorb(n) {
                 b_txt = b_txt.slice(0, -4);
             nerdamer.setVar('b_sorv', 'vector(' + b_txt + ')');
             const L = nerdamer('b_sorv').symbol.elements.length;
-            if (L < n || ism) {
-                if (ism) {
+            if (L < n) {
+                if (!ism) {
                     const N = Math.ceil(n / L);
-                    b_txt += ','
-                    var bb_txt = b_txt.repeat(N);
-                } else if (_.last(b_txt) != "0") {
-                    const N = Math.ceil(n / L);
-                    b_txt += ','
+                    b_txt += ",";
                     var bb_txt = b_txt.repeat(N);
                 } else {
-                    var bb_txt = b_txt + ",0".repeat(n - L);
+                    const last = _.last(b_txt);
+                    var bb_txt = b_txt + ("," + last).repeat(n - L);
                 }
                 if (bb_txt.endsWith(','))
                     bb_txt = bb_txt.slice(0, -1)
@@ -7235,7 +7366,7 @@ function hatasZFFr(fn, sor, n) {
     setTimeout(() => {
         var eloj1 = "";
         if (fn.startsWith("-")) {
-            fn = fn.replace("-", "");
+            fn = fn.slice(1);
             eloj1 = "-"
         }
         var eloj2 = "";
@@ -7244,7 +7375,11 @@ function hatasZFFr(fn, sor, n) {
             eloj2 = "-"
         }
         getsetZycFabFib(fn, n, false);
-
+        var xeloj = "";
+        if (fn.endsWith("-")) {
+            fn = fn.slice(0, -1);
+            xeloj = "-";
+        };
         //var comp = fn + "_" + n + "(";
         var comp = nerdamer(fn + "_" + n).latex() + "(";
         var ertekfn = sigma_val;
@@ -7265,9 +7400,9 @@ function hatasZFFr(fn, sor, n) {
         var F3 = fn + "_" + n + "(";
 
         for (var i = 1; i <= n; i++) {
-            F2 += "sin(" + i + "),";
-            F3 += eloj2 + ertekfn(i) + ",";
-            comp += eloj2 + sor + "(" + i + "),";
+            F2 += "sin(" + xeloj + i + "),";
+            F3 += xeloj + eloj2 + ertekfn(i) + ",";
+            comp += xeloj + eloj2 + sor + "(" + i + "),";
         }
         F2 = F2.slice(0, -1) + ")";
         F3 = F3.slice(0, -1) + ")";
@@ -7285,7 +7420,7 @@ function hatasZFFr(fn, sor, n) {
         } else {
             F4 = fn + "_" + n + "(";
             for (var i = 1; i <= n; i++) {
-                F4 += 'sin(' + ertekfn(i) + '),';
+                F4 += 'sin(' + xeloj + ertekfn(i) + '),';
             }
             F4 = F4.slice(0, -1) + ")";
         };
@@ -7309,7 +7444,7 @@ function hatasZFFr(fn, sor, n) {
         }
         if (pentov)
             txt += pentovfn(n);
-        txt = txt.replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
+        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
         ZFibFab2Latex(txt);
     }, 10);
 };
@@ -7319,7 +7454,7 @@ function hatasZFF(fn, sor, n) {
     setTimeout(() => {
         var eloj1 = "";
         if (fn.startsWith("-")) {
-            fn = fn.replace("-", "");
+            fn = fn.slice(1);
             eloj1 = "-"
         }
         var eloj2 = "";
@@ -7327,7 +7462,14 @@ function hatasZFF(fn, sor, n) {
             sor = sor.replace("-", "");
             eloj2 = "-"
         }
+
         getsetZycFabFib(fn, n, false);
+
+        var xeloj = "";
+        if (fn.endsWith("-")) {
+            fn = fn.slice(0, -1);
+            xeloj = "-";
+        };
 
         var comp = nerdamer(fn + "_" + n).latex() + "(";
         var ertekfn = sigma_val;
@@ -7344,9 +7486,9 @@ function hatasZFF(fn, sor, n) {
         var txt = "";
         var F3 = fn + "_" + n + "(";
         for (var i = 1; i <= n; i++) {
-            F3 += eloj2 + ertekfn(i) + ",";
+            F3 += xeloj + eloj2 + ertekfn(i) + ",";
             //comp += eloj2 + ertekfn(i) + ",";
-            comp += nerdamer(eloj2 + ertekfn(i).toString()).toString() + ",";
+            comp += nerdamer(xeloj + eloj2 + ertekfn(i).toString()).toString() + ",";
         }
         F3 = F3.slice(0, -1) + ")";
         comp = comp.slice(0, -1) + ")";
@@ -7360,7 +7502,7 @@ function hatasZFF(fn, sor, n) {
             txt += comp + "=" + nerdKimenet(nerdamer(F3).toString());
         if (pentov)
             txt += pentovfn(n);
-        txt = txt.replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
+        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
         ZFibFab2Latex(txt);
     }, 10);
 };
@@ -7371,7 +7513,7 @@ function hatasZFFsor(fn, sor, n) {
         var comp = "\\text{" + fn + "}\\;\\unicode{x25B7}\\;";
         var eloj1 = "";
         if (fn.startsWith("-")) {
-            fn = fn.replace("-", "");
+            fn = fn.slice(1);
             eloj1 = "-";
         }
 
@@ -7382,7 +7524,13 @@ function hatasZFFsor(fn, sor, n) {
             comp += "(-" + sor + ") = ";
         } else
             comp += sor + " = ";
-        comp += "\\text{" + fn + "}\\;\\unicode{x25B7}\\;(";
+
+        var xeloj = "";
+        if (fn.endsWith("-")) {
+            fn = fn.slice(0, -1);
+            xeloj = "-";
+        };
+        comp += eloj1 + "\\text{" + fn + "}\\;\\unicode{x25B7}\\;(";
         var ertekfn = sigma_val;
         if (sor == "p") {
             ertekfn = p_val;
@@ -7397,12 +7545,12 @@ function hatasZFFsor(fn, sor, n) {
         var txt = "";
         var vec = "\\left(";
         for (var j = 1; j <= n; j++) {
-            comp += nerdamer(eloj2 + ertekfn(j).toString()).toString() + ",";
+            comp += nerdamer(xeloj + eloj2 + ertekfn(j).toString()).toString() + ",";
             //comp += eloj2 + ertekfn(j) + ",";
             getsetZycFabFib(fn, j, false);
             var F3 = fn + "_" + j + "(";
             for (var i = 1; i <= j; i++) {
-                F3 += eloj2 + ertekfn(i) + ",";
+                F3 += xeloj + eloj2 + ertekfn(i) + ",";
             }
             F3 = F3.slice(0, -1) + ")";
             if (eloj1 == "-" && eloj2 == "")
@@ -7437,44 +7585,67 @@ function drawPent() {
     const n = $("#setpenttbl #pentN").val() * 1;
     var eloj1 = $("#setpenttbl #pente1").text();
     var eloj2 = $("#setpenttbl #pente2").text();
+    var eloj1x = $("#setpenttbl #pente1x").text();
+    var eloj2x = $("#setpenttbl #pente2x").text();
     if (eloj1 == "▬")
         eloj1 = "-";
     else
         eloj1 = "";
+    if (eloj1x == "▬")
+        eloj1x = "-";
+    else
+        eloj1x = "";
     if (spdmode) {
         const sor = $("#setpenttbl #spd option:selected").text();
-        var t = 10;
+        var t = 20;
         if (eloj2 == "▬")
             eloj2 = "-";
         else
             eloj2 = "";
         if (sorba) {
-            hatasZFFsor(eloj1 + fn1.text().trim(), eloj2 + sor, n);
+            hatasZFFsor(eloj1 + fn1.text().trim() + eloj1x, eloj2 + sor, n);
             $("#pentsorcopytok").css("display", "block");
         } else if (reszletes) {
-            hatasZFFr(eloj1 + fn1.text().trim(), eloj2 + sor, n);
+            hatasZFFr(eloj1 + fn1.text().trim() + eloj1x, eloj2 + sor, n);
             t = 50;
         } else {
-            hatasZFF(eloj1 + fn1.text().trim(), eloj2 + sor, n);
+            hatasZFF(eloj1 + fn1.text().trim() + eloj1x, eloj2 + sor, n);
         }
         setTimeout(() => {
             document.getElementById('pentout').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
         }, t * n);
     } else {
-        if (fn2.length < 1) {
-            printZycFabFib(eloj1 + fn1.text().trim(), n);
-            setTimeout(() => {
-                document.getElementById('pentout').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-            }, 50 * n);
-        } else {
+
+        if (ovmode) {
             if (eloj2 == "▬")
                 eloj2 = "-";
             else
                 eloj2 = "";
-            compZFF(eloj1 + fn1.text().trim(), eloj2 + fn2.text().trim(), n);
-            setTimeout(() => {
-                document.getElementById('pentout').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-            }, 100 * n);
+            if (eloj2x == "▬")
+                eloj2x = "-";
+            else
+                eloj2x = "";
+            ovZFF(eloj1 + fn1.text().trim() + eloj1x, eloj2 + fn2.text().trim() + eloj2x, n);
+        } else {
+            if (fn2.length < 1) {
+                printZycFabFib(eloj1 + fn1.text().trim() + eloj1x, n);
+                setTimeout(() => {
+                    document.getElementById('pentout').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                }, 50 * n);
+            } else {
+                if (eloj2 == "▬")
+                    eloj2 = "-";
+                else
+                    eloj2 = "";
+                if (eloj2x == "▬")
+                    eloj2x = "-";
+                else
+                    eloj2x = "";
+                compZFF(eloj1 + fn1.text().trim() + eloj1x, eloj2 + fn2.text().trim() + eloj2x, n);
+                setTimeout(() => {
+                    document.getElementById('pentout').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                }, 100 * n);
+            };
         };
     }
 };
