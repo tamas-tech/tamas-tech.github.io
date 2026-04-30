@@ -990,7 +990,7 @@
         </div>
     </div>
 
-    <div class="keret of odd" id="k6" style="margin-bottom:15px;">
+   <div class="keret of odd" id="k6" style="margin-bottom:15px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">6.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('pentcontainer',this.value);setkijelzoW('penthelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <button class="showpre1" style="width:90px;margin-left:10px" onclick="tgldimtbl('penttbl');">Table</button>
@@ -1053,13 +1053,13 @@
         </div>
         <div class="stickblock">
             <div id="tbltok" class="nobr" style="margin-left:2px;padding:3px;">
-                <table id="setpenttbl" class="table-hideable">
+                <table id="setpenttbl" class="table-hideable" style="box-shadow: 0 0 10px 5px #9a9aac">
                     <tr>
-                        <td id="pentkijelzo" style="font-size:120%;background-color:#072e51;color:white;" colspan="3"><b>Zyc</b><sub>3</sub></td>
-                        <td id="tglOv" onclick="tglOv(this);" style="font-size:120%;background-color:#072e51;color:#a4a4a4">=</td>
-                        <td id="penter" style="font-size:120%;background-color:#072e51;color:white;"></td>
-                        <td class="fixw" style="min-width:12px;background-color:#f0f0f0;"></td>
-                        <td id="tglspd" colspan="4" style="min-width:188px;"><span onclick="tglSPD();" style="display:inline-block;vertical-align: middle;border: 1px solid #a6a6a6;padding: 3px 5px;background-color: #ddd;border-radius: 4px;">Zyc&nbsp;&nbsp;&leftrightarrows;&nbsp;&nbsp;&sigma;</span>
+                        <td id="pentkijelzo" style="font-size:120%;background-color:#072e51;border-color:#072e51;color:white;" colspan="4"><b>Zyc</b><sub>3</sub></td>
+                        <td id="tglOv" onclick="tglOv(this);" style="font-size:120%;background-color:#10406a;border-color:#072e51;color:#a4a4a4">=</td>
+                        <td id="penter" colspan="2" style="font-size:120%;background-color:#072e51;border-color:#072e51;color:white;"></td>
+                        <td class="fixw" style="min-width:30px;background-color:#f0f0f0;"></td>
+                        <td id="tglspd" colspan="6" style="min-width:188px;"><span onclick="tglSPD();" style="float:left;display:block;border: 1px solid #a6a6a6;padding: 3px 5px;background-color: #ddd;border-radius: 4px;">Zyc&nbsp;&nbsp;&leftrightarrows;&nbsp;&nbsp;&sigma;</span>
                             <span id="pentchecks" style="visibility:hidden;">
                                 <label for="pentsor" style="vertical-align: middle;margin-left:10px;">sor</label>
                                 <input type="checkbox" onclick="" name="pentsor" id="pentsor" style="height: 20px; width: 20px; vertical-align:middle;">
@@ -1080,12 +1080,18 @@
                             Fab
                         </td>
                         <td class="F1" onclick="setF12(this,'F1',false)">
+                            Luc
+                        </td>
+                        <td class="F1" onclick="setF12(this,'F1',false)">
                             Fib
                         </td>
                         <td>
                             <input type="number" id="pentN" onchange="pentjelent();" value="3" min="1" step="1" style="width:50px;font-size: 15px;margin:0 3px;">
                         </td>
-                        <td id="pentmuv" class="fixw" style="min-width:12px;background-color:#f0f0f0;">&#x25e6;</td>
+                        <td id="pente1x" onclick="pentSign(this,false);">
+                            ✚
+                        </td>
+                        <td id="pentmuv" class="fixw" onclick="tglovmode(this);">&#x25e6;</td>
                         <td id="pente2" onclick="pentSign(this,false);">
                             ✚
                         </td>
@@ -1096,7 +1102,13 @@
                             Fab
                         </td>
                         <td class="F2" onclick="setF12(this,'F2',false)">
+                            Luc
+                        </td>
+                        <td class="F2" onclick="setF12(this,'F2',false)">
                             Fib
+                        </td>
+                        <td id="pente2x" onclick="pentSign(this,false);">
+                            ✚
                         </td>
                         <td id="spdtok" style="display:none;">
                             <select id="spd" onchange="tglUsera();pentjelent(false);">
@@ -1119,16 +1131,22 @@
                             Fab
                         </td>
                         <td class="F1 ov" onclick="setF12(this,'F1',true)">
+                            Luc
+                        </td>
+                        <td class="F1 ov" onclick="setF12(this,'F1',true)">
                             Fib
                         </td>
                         <td class="F1 ov" onclick="setF12(this,'F1',true)">
                             Pr
                         </td>
+                        <td id="ovpente1x" onclick="pentSign(this,true);">
+                            ✚
+                        </td>
                         <td id="ovpentmuv" class="fixw" style="background-color:#f0f0f0;;min-width:12px;"></td>
                         <td id="ovpente2" onclick="pentSign(this,true);" style="visibility:hidden;">
                             ✚
                         </td>
-                        <td id="ovspdtok" colspan="3" style="visibility:hidden;">
+                        <td id="ovspdtok" colspan="6" style="visibility:hidden;">
                             <select id="ovspd" onchange="tglUserb();pentjelent(true);">
                                 <option selected="" value="s" >&sigma;</option>
                                 <option value="p">p</option>
