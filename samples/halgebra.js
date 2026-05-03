@@ -6640,6 +6640,7 @@ var pentov = false;
 var pentsorout = "";
 var kepletes = true;
 var ovmode = false;
+var convmode = false;
 const sigmavalues = [1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127, 84, 144, 68, 126, 96, 144];
 const partvalues = [1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, 4565, 5604, 6842, 8349, 10143, 12310, 14883, 17977, 21637, 26015, 31185, 37338, 44583, 53174, 63261, 75175, 89134, 105558, 124754, 147273, 173525]
 
@@ -6692,11 +6693,11 @@ function setOutputFontPent(v) {
 
 function tglUsera() {
     if ($("#setpenttbl #spd").val() == "user") {
-        $("#setpenttbl #usersora").css('display', 'table-cell');
+        $("#setpenttbl #usersora,#setpenttbl #helptok").css('display', 'table-cell');
         $("#setpenttbl #tglspd").attr('colspan', '2');
         $("#setpenttbl #ovspdtok").attr('colspan', '1');
     } else {
-        $("#setpenttbl #usersora").css('display', 'none');
+        $("#setpenttbl #usersora,#setpenttbl #helptok").css('display', 'none');
         if ($("#setpenttbl #ovspd").val() != "user")
             $("#setpenttbl #tglspd").attr('colspan', '6');
     }
@@ -6704,11 +6705,11 @@ function tglUsera() {
 
 function tglUserb() {
     if ($("#setpenttbl #ovspd").val() == "user") {
-        $("#setpenttbl #usersorb").css('display', 'table-cell');
+        $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'table-cell');
         $("#setpenttbl #tglspd").attr('colspan', '2');
         $("#setpenttbl #spdtok").attr('colspan', '1');
     } else {
-        $("#setpenttbl #usersorb").css('display', 'none');
+        $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'none');
         if ($("#setpenttbl #spd").val() != "user")
             $("#setpenttbl #tglspd").attr('colspan', '6');
     }
@@ -6753,13 +6754,26 @@ function pentjelent(ov) {
                 ovmode = false;
             };
         } else {
-            var txt2 = $("#setpenttbl #spd option:selected").text();
-            if (eloj2 == "▬") {
-                txt += "&nbsp;&#x25b7;&nbsp;(-<b>" + txt2.trim() + ")";
+            if (convmode) {
+                var txt1 = $("#setpenttbl  #spd option:selected").text();
+                var eloj3 = $("#setpenttbl #ovpente2").text();
+                var txt3 = $("#setpenttbl tr#ovsor #ovspd option:selected").text();
+                if (eloj2 == "▬") {
+                    txt1 = "-" + txt1;
+                }
+                if (eloj3 == "▬") {
+                    txt3 = "(-" + txt3 + ")";
+                }
+                txt = txt1 + "&lowast;" + txt3;
             } else {
-                txt += "&nbsp;&#x25b7;&nbsp;<b>" + txt2;
-            }
-        }
+                var txt2 = $("#setpenttbl #spd option:selected").text();
+                if (eloj2 == "▬") {
+                    txt += "&nbsp;&#x25b7;&nbsp;(-<b>" + txt2.trim() + ")";
+                } else {
+                    txt += "&nbsp;&#x25b7;&nbsp;<b>" + txt2;
+                }
+            };
+        };
         document.getElementById("pentkijelzo").innerHTML = txt;
     } else {
         if (!spdmode) {
@@ -6775,12 +6789,28 @@ function pentjelent(ov) {
             txt = oveloj1 + txt + ovelojx;
 
         } else {
-            var eloj2 = $("#setpenttbl #ovpente2").text();
-            var txt2 = $("#setpenttbl tr#ovsor #ovspd option:selected").text();
-            if (eloj2 == "▬") {
-                txt = "-<b>" + txt2.trim();
+            if (convmode) {
+                var eloj2 = $("#setpenttbl #pente2").text();
+                var txt1 = $("#setpenttbl  #spd option:selected").text();
+                var eloj3 = $("#setpenttbl #ovpente2").text();
+                var txt3 = $("#setpenttbl tr#ovsor #ovspd option:selected").text();
+                if (eloj2 == "▬") {
+                    txt1 = "-" + txt1;
+                }
+                if (eloj3 == "▬") {
+                    txt3 = "(-" + txt3 + ")";
+                }
+                var txtc = txt1 + "&lowast;" + txt3;
+                document.getElementById("pentkijelzo").innerHTML = txtc;
+                txt = "..."
             } else {
-                txt = txt2;
+                var eloj2 = $("#setpenttbl #ovpente2").text();
+                var txt2 = $("#setpenttbl tr#ovsor #ovspd option:selected").text();
+                if (eloj2 == "▬") {
+                    txt = "-<b>" + txt2.trim() + "</b>";
+                } else {
+                    txt = txt2;
+                }
             }
         };
         document.getElementById("penter").innerHTML = txt;
@@ -6793,20 +6823,23 @@ function tglSPD() {
     if (elem.style.display != "none") {
         elem.style.display = "none";
         melem.innerHTML = "&#x25e6;";
-        $('#setpenttbl td.F2:not(.ov),#setpenttbl #pente2x').css('display', '');
+        $('#setpenttbl td.F2:not(.ov),#setpenttbl #pente2x,#setpenttbl #tglconv').css('display', '');
+        $('#setpenttbl #helptok').css('display', 'none');
         $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td#ovpente1x,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'visible');
         $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'hidden');
         $('#pentchecks').css('visibility', 'hidden');
         $("#setpenttbl #usersora,#setpenttbl #usersorb").css('display', 'none');
         $("#setpenttbl #tglspd").attr('colspan', '6');
-        $("#setpenttbl #ovspdtok").attr('colspan', '5');
+        $("#setpenttbl #ovspdtok").attr('colspan', '5'); // itt 5 volt
     } else {
         elem.style.display = "";
         melem.innerHTML = "&#x25b7;";
-        $('#setpenttbl td.F2:not(.ov),#setpenttbl #pente2x').css('display', 'none');
+        $('#setpenttbl td.F2:not(.ov),#setpenttbl #pente2x,#setpenttbl #tglconv,#setpenttbl #helptok').css('display', 'none');
+        $('#setpenttbl #helptok').css('display', 'table-cell');
         $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td#ovpente1x,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'hidden');
         $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'visible');
         $('#pentchecks').css('visibility', 'visible');
+        $("#setpenttbl #ovspdtok").attr('colspan', '1');
         tglUsera();
         tglUserb();
     };
@@ -6818,13 +6851,19 @@ function tglSPD() {
 }
 
 function tglOv(e) {
+    if (convmode)
+        return;
     const elem = document.getElementById("ovsor");
     if (elem.style.display != "none") {
+        ////if (document.getElementById("spdtok").style.display == "none")
+        $("#setpenttbl #ovspdtok").attr('colspan', '5');
         elem.style.display = "none";
         e.style.color = "#a4a4a4";
         document.getElementById("penter").innerHTML = "";
         pentov = false;
     } else {
+        if (document.getElementById("spdtok").style.display != "none")
+            $("#setpenttbl #ovspdtok").attr('colspan', '1');
         elem.style.display = "";
         e.style.color = "white";
         pentjelent(true);
@@ -6850,6 +6889,49 @@ function tglovmode(e) {
         }
         ovmode = !ovmode;
     };
+};
+
+function tglconv() {
+    const ovsor = document.getElementById("ovsor");
+    const elem = document.getElementById("spdtok");
+    const melem = document.getElementById("pentmuv");
+    if (elem.style.display != "none") {
+        elem.style.display = "none";
+        melem.innerHTML = "&#x25e6;";
+        $('#setpenttbl td.F2:not(.ov),#setpenttbl #pente2x').css('display', '');
+        $('#setpenttbl td#pente1,#setpenttbl td#pente1x,#setpenttbl td.F1').css('visibility', 'visible');
+        $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td#ovpente1x,#setpenttbl tr#ovsor td.F1.ov,#setpenttbl #tglspdbtn').css('visibility', 'visible');
+        $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'hidden');
+        $("#setpenttbl #usersora,#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'none');
+        $("#setpenttbl #tglspd").attr('colspan', '6');
+        $("#setpenttbl #ovspdtok").attr('colspan', '5');
+        $("#setpenttbl tr#ovsor td.F1.ov.pentM").html('Pr');
+        ovsor.style.display = "none";
+    } else {
+        elem.style.display = "";
+        melem.innerHTML = "&lowast;";
+        $('#setpenttbl td.F2:not(.ov),#setpenttbl #pente2x').css('display', 'none');
+        $('#setpenttbl td#pente1,#setpenttbl td#pente1x,#setpenttbl td.F1').css('visibility', 'hidden');
+        $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td#ovpente1x,#setpenttbl tr#ovsor td.F1.ov,#setpenttbl #tglspdbtn').css('visibility', 'hidden');
+        $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'visible');
+        ovsor.style.display = "";
+        $("#setpenttbl tr#ovsor td.F1.ov.pentM").css('visibility', 'visible').html('<input type="number" id="pentM" onchange="pentjelent();" value="3" min="1" step="1" style="width:50px;font-size: 15px;margin:0 3px;">');
+        document.getElementById("penter").innerHTML = "";
+        $("#setpenttbl #ovspdtok").attr('colspan', '1');
+        pentov = false;
+        tglUsera();
+        tglUserb();
+    };
+    ovmode = false;
+    convmode = !convmode
+    $(melem).removeClass("valto");
+    pentjelent(false);
+    if (document.getElementById("ovsor").style.display != "none")
+        pentjelent(true);
+};
+
+function tglPentHelp() {
+    $("#sugosor").toggleClass("shown");
 };
 
 function pentSign(e, ov) {
@@ -7572,6 +7654,134 @@ function hatasZFFsor(fn, sor, n) {
     }, 10)
 };
 
+// a function to calculate the convolution of two vectors
+
+function conv(vec1, vec2) {
+    var disp = 0; // displacement given after each vector multiplication by element of another vector
+    var convVec = [];
+    // for first multiplication
+    for (j = 0; j < vec2.length; j++) {
+        convVec.push(vec1[0] * vec2[j]);
+    }
+    disp = disp + 1;
+    for (i = 1; i < vec1.length; i++) {
+        for (j = 0; j < vec2.length; j++) {
+            if ((disp + j) !== convVec.length) {
+                convVec[disp + j] = convVec[disp + j] + (vec1[i] * vec2[j])
+            } else {
+                convVec.push(vec1[i] * vec2[j]);
+            }
+        }
+        disp = disp + 1;
+    }
+    return convVec;
+};
+
+function displayConv() {
+    var sora = $("#setpenttbl #spd option:selected").text();
+    var sorb = $("#setpenttbl #ovspd option:selected").text();
+    var eloja = $("#setpenttbl #pente2").text();
+    var elojb = $("#setpenttbl #ovpente2").text();
+    if (eloja == "▬")
+        eloja = "-";
+    else
+        eloja = "";
+    if (elojb == "▬")
+        elojb = "-";
+    else
+        elojb = "";
+    const na = document.getElementById("pentN").value * 1;
+    const nb = document.getElementById("pentM").value * 1;
+
+    var ertekfa = sigma_val;
+    if (sora == "p") {
+        ertekfa = p_val;
+    } else if (sora == "δ₅") {
+        ertekfa = deltaP
+    } else if (sora == "a₁,...") {
+        if (getsora(na)) {
+            ertekfa = a_sor;
+            sora = "a"
+        } else
+            return;
+    };
+
+    var atxt = eloja + "\\left(";
+    if (na <= 5) {
+        for (var j = 1; j <= na; j++) {
+            atxt += sora + "(" + j + "),"
+        };
+    } else {
+        for (var j = 1; j <= 3; j++) {
+            atxt += sora + "(" + j + "),"
+        };
+        atxt += "...," + sora + "(" + na + "),";
+    };
+    atxt = "\\vec{a} = " + atxt.slice(0, -1) + "\\right) = \\left(";
+    var av = [];
+    for (var j = 1; j <= na; j++) {
+        var aj = ertekfa(j);
+        var Fa = eloja + aj;
+        av.push(aj);
+        atxt += nerdKimenet(nerdamer(Fa).toString()) + ",";
+    }
+
+    atxt = atxt.slice(0, -1) + "\\right)";
+
+    var ertekfb = sigma_val;
+    if (sorb == "p") {
+        ertekfb = p_val;
+    } else if (sorb == "δ₅") {
+        ertekfb = deltaP
+    } else if (sorb == "b₁,...") {
+        if (getsorb(nb)) {
+            ertekfb = b_sor;
+            sorb = "b"
+        } else
+            return;
+    };
+
+    var btxt = "\\\\ \\vec{b} = " + elojb + "\\left(";
+    var bv = [];
+    if (nb <= 5) {
+        for (var j = 1; j <= nb; j++) {
+            btxt += sorb + "(" + j + "),"
+        };
+    } else {
+        for (var j = 1; j <= 3; j++) {
+            btxt += sorb + "(" + j + "),"
+        };
+        btxt += "...," + sorb + "(" + nb + "),";
+    };
+    btxt = btxt.slice(0, -1) + "\\right) = \\left(";
+    for (var j = 1; j <= nb; j++) {
+        var bj = ertekfb(j);
+        var Fb = elojb + bj;
+        bv.push(bj);
+        btxt += nerdKimenet(nerdamer(Fb).toString()) + ",";
+    }
+    btxt = btxt.slice(0, -1) + "\\right)";
+    var convtxt = conv(av, bv);
+    convtxt = "\\\\ \\vec{a}\\ast\\vec{b} = (" + convtxt + ")";
+    const avf = [...av].reverse();
+    var mtxt = "\\\\[6mm] \\text{Toeplitz-mátrixszal kifejezve:} \\\\[4mm] \\begin{pmatrix}";
+    for (var k = 1; k <= na + nb - 1; k++) {
+        for (var j = 1; j <= k - na; j++)
+            mtxt += " 0 &";
+        mtxt += avf.slice(-k, Math.max(na + nb - k, 1)).join(" & ") + " &";
+        for (var j = 1; j <= nb - k; j++)
+            mtxt += " 0 &";
+        mtxt = mtxt.slice(0, -1) + "\\\\ ";
+    }
+    mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
+    for (var j = 0; j < nb; j++)
+        mtxt += bv[j] + " \\\\ "
+    mtxt += "\\end{pmatrix}";
+
+    const txt = atxt + btxt + convtxt + mtxt;
+    ZFibFab2Latex(txt);
+}
+
 function drawPent() {
     nerdamer.flush();
     nerdamer.clearVars();
@@ -7595,7 +7805,9 @@ function drawPent() {
         eloj1x = "-";
     else
         eloj1x = "";
-    if (spdmode) {
+    if (convmode) {
+        displayConv();
+    } else if (spdmode) {
         const sor = $("#setpenttbl #spd option:selected").text();
         var t = 20;
         if (eloj2 == "▬")
@@ -7615,7 +7827,6 @@ function drawPent() {
             document.getElementById('pentout').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
         }, t * n);
     } else {
-
         if (ovmode) {
             if (eloj2 == "▬")
                 eloj2 = "-";
