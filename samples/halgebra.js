@@ -6668,7 +6668,11 @@ function copy2OEIS() {
     } catch (error) {
         document.getElementById("vagolap").innerHTML = error;
     }
-    var vec = pentsorout.slice(6, -11).split(',').map(y => nerdamer.convertFromLaTeX(y));
+
+    if (convmode)
+        var vec = pentsorout.split(',').map(y => nerdamer.convertFromLaTeX(y));
+    else
+        var vec = pentsorout.slice(6, -11).split(',').map(y => nerdamer.convertFromLaTeX(y));
     //vec = vec.map(y => y.multiply(c))
     if (deno) {
         const denoms = vec.map(y => y.denominator().multiply(c).toString());
@@ -7722,7 +7726,7 @@ function displayConv() {
     for (var j = 1; j <= na; j++) {
         var aj = ertekfa(j);
         var Fa = eloja + aj;
-        av.push(aj);
+        av.push(Fa);
         atxt += nerdKimenet(nerdamer(Fa).toString()) + ",";
     }
 
@@ -7757,11 +7761,12 @@ function displayConv() {
     for (var j = 1; j <= nb; j++) {
         var bj = ertekfb(j);
         var Fb = elojb + bj;
-        bv.push(bj);
+        bv.push(Fb);
         btxt += nerdKimenet(nerdamer(Fb).toString()) + ",";
     }
     btxt = btxt.slice(0, -1) + "\\right)";
     var convtxt = conv(av, bv);
+    pentsorout = convtxt.toString();
     convtxt = "\\\\ \\vec{a}\\ast\\vec{b} = (" + convtxt + ")";
     const avf = [...av].reverse();
     var mtxt = "\\\\[6mm] \\text{Toeplitz-mátrixszal kifejezve:} \\\\[4mm] \\begin{pmatrix}";
@@ -7807,6 +7812,7 @@ function drawPent() {
         eloj1x = "";
     if (convmode) {
         displayConv();
+        $("#pentsorcopytok").css("display", "block");
     } else if (spdmode) {
         const sor = $("#setpenttbl #spd option:selected").text();
         var t = 20;
