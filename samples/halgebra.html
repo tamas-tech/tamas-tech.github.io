@@ -1054,12 +1054,16 @@
         <div class="stickblock">
             <div id="tbltok" class="nobr" style="margin-left:2px;padding:3px;">
                 <table id="setpenttbl" class="table-hideable" style="box-shadow: 0 0 10px 5px #9a9aac">
+                    <tr id="sugosor">
+                        <td colspan="15">Sugo </td>
+                    </tr>
                     <tr>
                         <td id="pentkijelzo" style="font-size:120%;background-color:#072e51;border-color:#072e51;color:white;" colspan="4"><b>Zyc</b><sub>3</sub></td>
                         <td id="tglOv" onclick="tglOv(this);" style="font-size:120%;background-color:#10406a;border-color:#072e51;color:#a4a4a4">=</td>
                         <td id="penter" colspan="2" style="font-size:120%;background-color:#072e51;border-color:#072e51;color:white;"></td>
                         <td class="fixw" style="min-width:30px;background-color:#f0f0f0;"></td>
-                        <td id="tglspd" colspan="6" style="min-width:188px;"><span onclick="tglSPD();" style="float:left;display:block;border: 1px solid #a6a6a6;padding: 3px 5px;background-color: #ddd;border-radius: 4px;">Zyc&nbsp;&nbsp;&leftrightarrows;&nbsp;&nbsp;&sigma;</span>
+                        <td id="tglspd" colspan="6" style="min-width:275px;"><span id="tglspdbtn" onclick="tglSPD();" style="margin-left: 3px;float:left;display:block;border: 1px solid #a6a6a6;padding: 3px 5px;background-color: #ddd;border-radius: 4px;">Zyc&nbsp;&nbsp;&leftrightarrows;&nbsp;&nbsp;&sigma;</span>
+                            <span id="tglconv" onclick="tglconv();" style="font-family: Katex_Math;margin-right: 3px;float:right;display:block;border: 1px solid #a6a6a6;padding: 3px 5px;background-color: #ddd;border-radius: 4px;"><b>a</b>&nbsp;&lowast;&nbsp;<b>b</b></span>
                             <span id="pentchecks" style="visibility:hidden;">
                                 <label for="pentsor" style="vertical-align: middle;margin-left:10px;">sor</label>
                                 <input type="checkbox" onclick="" name="pentsor" id="pentsor" style="height: 20px; width: 20px; vertical-align:middle;">
@@ -1067,7 +1071,7 @@
                                 <input type="checkbox" onclick="" name="pentr" id="pentr" style="height: 20px; width: 20px; vertical-align:middle;">
                             </span>
                         </td>
-                        <td class="fixw" style="display:none"></td>
+                        <td id="helptok" class="fixw" style="display:none;text-align:center;"><span id="tglpenthelp" onclick="tglPentHelp();" style="width: 50px;display:inline-block;border: 1px solid #a6a6a6;padding:3px 5px;background-color: #ddd;border-radius: 4px;">Help</span></td>
                     </tr>
                     <tr>
                         <td id="pente1" onclick="pentSign(this,false);">
@@ -1118,7 +1122,7 @@
                                 <option value="user">a&#x2081;,...</option>
                             </select>
                         </td>
-                        <td id="usersora" class="fixw" style="display:none"><input style="font-size:15px;" type="text"></td>
+                        <td id="usersora" class="fixw" style="display:none"><input style="font-size:15px;" type="text" value="1"></td>
                     </tr>
                     <tr id="ovsor" style="border-top:2px solid #848484;display:none;background-color:#f6ffb3">
                         <td id="ovpente1" onclick="pentSign(this,true);">
@@ -1136,7 +1140,7 @@
                         <td class="F1 ov" onclick="setF12(this,'F1',true)">
                             Fib
                         </td>
-                        <td class="F1 ov" onclick="setF12(this,'F1',true)">
+                        <td class="F1 ov pentM" onclick="setF12(this,'F1',true)">
                             Pr
                         </td>
                         <td id="ovpente1x" onclick="pentSign(this,true);">
@@ -1154,7 +1158,7 @@
                                 <option value="user">b&#x2081;,...</option>
                             </select>
                         </td>
-                        <td id="usersorb" class="fixw" style="display:none"><input style="font-size:15px;" type="text"></td>
+                        <td id="usersorb" class="fixw" style="display:none"><input style="font-size:15px;" type="text" value="1"></td>
                     </tr>
                 </table>
             </div>
