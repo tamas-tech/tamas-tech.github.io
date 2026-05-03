@@ -3518,6 +3518,16 @@ select#ovspd {
     border-radius: 5px
 }
 
+#setpenttbl #sugosor {
+    display: none;
+    background-color: #f3fdb0;
+}
+
+#setpenttbl #sugosor.shown {
+    display: table-row;
+}
+
+
 /* Safari */
 
 @-webkit-keyframes spin {
