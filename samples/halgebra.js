@@ -6520,6 +6520,13 @@ function deltaP(n) {
     return out;
 };
 
+function kdeltaP(n) {
+    var out = 0;
+    if (isPentagonal0(n) || isPentagonal1(n))
+        out = n * Math.pow(-1, Math.floor((Math.sqrt(24 * n + 1) + 1) / 6) + 1);
+    return out;
+};
+
 function derLIR(n) {
     const pE = pentEuler(n - 2);
     const dP = deltaP(n - 1);
@@ -6624,6 +6631,10 @@ function p_val(n) {
         return 1;
     else
         return sigma_p(n)["p"];
+};
+
+function p0_val(n) {
+    return p_val(n - 1);
 };
 
 function egy_n(i) {
@@ -7510,8 +7521,12 @@ function hatasZFFr(fn, sor, n) {
         var ertekfn = sigma_val;
         if (sor == "p") {
             ertekfn = p_val;
+        } else if (sor == "p₀") {
+            ertekfn = p0_val;
         } else if (sor == "δ₅") {
             ertekfn = deltaP
+        } else if (sor == "k·δ₅(k)") {
+            ertekfn = kdeltaP
         } else if (sor == "a₁,...") {
             if (getsora(n)) {
                 ertekfn = a_sor;
@@ -7600,8 +7615,12 @@ function hatasZFF(fn, sor, n) {
         var ertekfn = sigma_val;
         if (sor == "p") {
             ertekfn = p_val;
+        } else if (sor == "p₀") {
+            ertekfn = p0_val;
         } else if (sor == "δ₅") {
             ertekfn = deltaP
+        } else if (sor == "k·δ₅(k)") {
+            ertekfn = kdeltaP
         } else if (sor == "a₁,...") {
             if (getsora(n))
                 ertekfn = a_sor;
@@ -7659,8 +7678,12 @@ function hatasZFFsor(fn, sor, n) {
         var ertekfn = sigma_val;
         if (sor == "p") {
             ertekfn = p_val;
+        } else if (sor == "p₀") {
+            ertekfn = p0_val;
         } else if (sor == "δ₅") {
             ertekfn = deltaP
+        } else if (sor == "k·δ₅(k)") {
+            ertekfn = kdeltaP
         } else if (sor == "a₁,...") {
             if (getsora(n))
                 ertekfn = a_sor;
@@ -7757,12 +7780,15 @@ function displayConv() {
         elojb = "";
     const na = document.getElementById("pentN").value * 1;
     const nb = document.getElementById("pentM").value * 1;
-
     var ertekfa = sigma_val;
     if (sora == "p") {
         ertekfa = p_val;
+    } else if (sora == "p₀") {
+        ertekfa = p0_val;
     } else if (sora == "δ₅") {
         ertekfa = deltaP
+    } else if (sora == "k·δ₅(k)") {
+        ertekfa = kdeltaP
     } else if (sora == "a₁,...") {
         if (getsora(na)) {
             ertekfa = a_sor;
@@ -7796,8 +7822,12 @@ function displayConv() {
     var ertekfb = sigma_val;
     if (sorb == "p") {
         ertekfb = p_val;
+    } else if (sorb == "p₀") {
+        ertekfb = p0_val;
     } else if (sorb == "δ₅") {
         ertekfb = deltaP
+    } else if (sorb == "k·δ₅(k)") {
+        ertekfb = kdeltaP
     } else if (sorb == "b₁,...") {
         if (getsorb(nb)) {
             ertekfb = b_sor;
