@@ -7442,8 +7442,12 @@ function pentovfn(n) {
     var sorb = $("#setpenttbl #ovspd option:selected").text();
     if (sorb == "p") {
         ertekfb = p_val;
+    } else if (sorb == "p₀") {
+        ertekfb = p0_val;
     } else if (sorb == "δ₅") {
         ertekfb = deltaP
+    } else if (sorb == "k·δ₅(k)") {
+        ertekfb = kdeltaP
     } else if (sorb == "b₁,...") {
         if (getsorb(n)) {
             ertekfb = b_sor;
@@ -7467,6 +7471,10 @@ function pentovfnsor(n) {
     var sorb = $("#setpenttbl #ovspd option:selected").text();
     if (sorb == "p") {
         ertekfb = p_val;
+    } else if (sorb == "p₀") {
+        ertekfb = p0_val;
+    } else if (sorb == "k·δ₅(k)") {
+        ertekfb = kdeltaP
     } else if (sorb == "δ₅") {
         ertekfb = deltaP
     } else if (sorb == "b₁,...") {
@@ -7798,16 +7806,29 @@ function displayConv() {
     };
 
     var atxt = eloja + "\\left(";
-    if (na <= 5) {
-        for (var j = 1; j <= na; j++) {
-            atxt += sora + "(" + j + "),"
+    if (sora == "k·δ₅(k)") {
+        if (na <= 5) {
+            for (var j = 1; j <= na; j++) {
+                atxt += j + "\\,δ₅(" + j + "),"
+            };
+        } else {
+            for (var j = 1; j <= 3; j++) {
+                atxt += j + "\\,δ₅(" + j + "),"
+            };
+            atxt += "...," + na + "\\,δ₅(" + na + "),"
         };
     } else {
-        for (var j = 1; j <= 3; j++) {
-            atxt += sora + "(" + j + "),"
+        if (na <= 5) {
+            for (var j = 1; j <= na; j++) {
+                atxt += sora + "(" + j + "),"
+            };
+        } else {
+            for (var j = 1; j <= 3; j++) {
+                atxt += sora + "(" + j + "),"
+            };
+            atxt += "...," + sora + "(" + na + "),";
         };
-        atxt += "...," + sora + "(" + na + "),";
-    };
+    }
     atxt = "\\vec{a} = " + atxt.slice(0, -1) + "\\right) = \\left(";
     var av = [];
     for (var j = 1; j <= na; j++) {
@@ -7838,16 +7859,29 @@ function displayConv() {
 
     var btxt = "\\\\ \\vec{b} = " + elojb + "\\left(";
     var bv = [];
-    if (nb <= 5) {
-        for (var j = 1; j <= nb; j++) {
-            btxt += sorb + "(" + j + "),"
+    if (sorb == "k·δ₅(k)") {
+        if (nb <= 5) {
+            for (var j = 1; j <= nb; j++) {
+                btxt += j + "\\,δ₅(" + j + "),"
+            };
+        } else {
+            for (var j = 1; j <= 3; j++) {
+                btxt += j + "\\,δ₅(" + j + "),"
+            };
+            btxt += "...," + nb + "\\,δ₅(" + nb + "),"
         };
     } else {
-        for (var j = 1; j <= 3; j++) {
-            btxt += sorb + "(" + j + "),"
+        if (nb <= 5) {
+            for (var j = 1; j <= nb; j++) {
+                btxt += sorb + "(" + j + "),"
+            };
+        } else {
+            for (var j = 1; j <= 3; j++) {
+                btxt += sorb + "(" + j + "),"
+            };
+            btxt += "...," + sorb + "(" + nb + "),";
         };
-        btxt += "...," + sorb + "(" + nb + "),";
-    };
+    }
     btxt = btxt.slice(0, -1) + "\\right) = \\left(";
     for (var j = 1; j <= nb; j++) {
         var bj = ertekfb(j);
@@ -7860,11 +7894,11 @@ function displayConv() {
     var sorok = Math.min(na, nb)
     if (!rovidconv)
         sorok = na + nb - 1;
-    var convtxt = conv(av, bv);
+    var convv = conv(av, bv);
     if (rovidconv)
-        convtxt = convtxt.slice(0, sorok);
-    pentsorout = convtxt.toString();
-    convtxt = "\\\\ \\vec{a}\\ast\\vec{b} = \\left(" + convtxt + "\\right) = \\vec{c}";
+        convv = convv.slice(0, sorok);
+    pentsorout = convv.toString();
+    const convtxt = "\\\\ \\vec{a}\\ast\\vec{b} = \\left(" + convv + "\\right) = \\vec{c}";
     const avf = [...av].reverse();
     var mtxt = "\\\\[6mm] \\text{Toeplitz-mátrixszal kifejezve:} \\\\[4mm] \\begin{pmatrix}";
 
@@ -7878,10 +7912,13 @@ function displayConv() {
     };
 
     mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
-    for (var j = 0; j < nb; j++)
+    for (var j = 0; j < Math.min(nb, sorok); j++)
         mtxt += bv[j] + " \\\\ "
-    mtxt += "\\end{pmatrix}";
+    mtxt += "\\end{pmatrix} = \\begin{pmatrix}";
 
+    for (var j = 0; j < Math.min(nb, sorok); j++)
+        mtxt += convv[j] + " \\\\ "
+    mtxt += "\\end{pmatrix}";
     const txt = atxt + btxt + convtxt + mtxt;
     ZFibFab2Latex(txt);
 }
