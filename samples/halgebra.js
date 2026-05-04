@@ -6613,11 +6613,17 @@ function sigma_p(n) {
 }
 
 function sigma_val(n) {
-    return sigma_p(n)["sigma"];
+    if (n == 0)
+        return n;
+    else
+        return sigma_p(n)["sigma"];
 };
 
 function p_val(n) {
-    return sigma_p(n)["p"];
+    if (n == 0)
+        return 1;
+    else
+        return sigma_p(n)["p"];
 };
 
 function egy_n(i) {
@@ -6641,8 +6647,33 @@ var pentsorout = "";
 var kepletes = true;
 var ovmode = false;
 var convmode = false;
+
 const sigmavalues = [1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127, 84, 144, 68, 126, 96, 144];
 const partvalues = [1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, 4565, 5604, 6842, 8349, 10143, 12310, 14883, 17977, 21637, 26015, 31185, 37338, 44583, 53174, 63261, 75175, 89134, 105558, 124754, 147273, 173525]
+
+//     sum(k*(1-sign((n/k)-floor(n/k))),k,1,n)
+//nerdamer.setVar('sigmavalues', 'vector(' + sigmavalues.toString() + ')');
+//nerdamer.setFunction('sigma', ['n'], 'sum(k*(1-sign((n/k)-floor(n/k))),k,1,n)');
+/* function nerdSet() {
+    nerdamer.setVar('s_sorv', 'vector(' + sigmavalues + ')');
+    nerdamer.setFunction('sigma', ['j'], 'vecget(s_sorv,j - 1)');
+}; */
+
+/* (function() {
+    var core = nerdamer.getCore(), //grab the core
+        _ = core.PARSER; //make a shortcut for the PARSER
+    function f(j) {
+        nerdamer.setVar('s_sorv', 'vector(' + sigmavalues + ')');
+        nerdamer.setFunction('f', ['j'], 'vecget(s_sorv,' + (j - 1) + ')');
+    }
+    nerdamer.register({
+        name: 'sigma',
+        visible: true,
+        numargs: 1,
+        build: function() { return f; }
+    });
+})(); */
+
 
 $(document).ready(function() {
     $('#pentsor').on('click', function(event) {
@@ -6831,7 +6862,8 @@ function tglSPD() {
         $('#setpenttbl #helptok').css('display', 'none');
         $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td#ovpente1x,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'visible');
         $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'hidden');
-        $('#pentchecks').css('visibility', 'hidden');
+        //$('#pentchecks').css('visibility', 'hidden');
+        $('#pentchecks').css('display', 'none');
         $("#setpenttbl #usersora,#setpenttbl #usersorb").css('display', 'none');
         $("#setpenttbl #tglspd").attr('colspan', '6');
         $("#setpenttbl #ovspdtok").attr('colspan', '5'); // itt 5 volt
@@ -6842,7 +6874,8 @@ function tglSPD() {
         $('#setpenttbl #helptok').css('display', 'table-cell');
         $('#setpenttbl tr#ovsor td#ovpente1,#setpenttbl tr#ovsor td#ovpente1x,#setpenttbl tr#ovsor td.F1.ov').css('visibility', 'hidden');
         $('#setpenttbl tr#ovsor td#ovpente2,#setpenttbl tr#ovsor td#ovspdtok').css('visibility', 'visible');
-        $('#pentchecks').css('visibility', 'visible');
+        //$('#pentchecks').css('visibility', 'visible');
+        $('#pentchecks').css('display', 'inline-block');
         $("#setpenttbl #ovspdtok").attr('colspan', '1');
         tglUsera();
         tglUserb();
@@ -6910,6 +6943,7 @@ function tglconv() {
         $("#setpenttbl #tglspd").attr('colspan', '6');
         $("#setpenttbl #ovspdtok").attr('colspan', '5');
         $("#setpenttbl tr#ovsor td.F1.ov.pentM").html('Pr');
+        $('#convchecks').css('display', 'none');
         ovsor.style.display = "none";
     } else {
         elem.style.display = "";
@@ -6922,6 +6956,7 @@ function tglconv() {
         $("#setpenttbl tr#ovsor td.F1.ov.pentM").css('visibility', 'visible').html('<input type="number" id="pentM" onchange="pentjelent();" value="3" min="1" step="1" style="width:50px;font-size: 15px;margin:0 3px;">');
         document.getElementById("penter").innerHTML = "";
         $("#setpenttbl #ovspdtok").attr('colspan', '1');
+        $('#convchecks').css('display', 'inline-block');
         pentov = false;
         tglUsera();
         tglUserb();
@@ -7322,12 +7357,16 @@ function getsora(n) {
         }
     } else {
         try {
-            var fn = nerdamer(a_txt);
+            //console.log(a_txt)
+            var fn = nerdamer(a_txt.trim());
+            //console.log(fn)
             a_sor = fn.buildFunction();
+            //console.log(a_sor)
             nerdamer.setFunction('a_sor', vars, a_txt);
             kepletes = true;
             return true;
         } catch (error) {
+            console.log(error)
             document.getElementById("pentout").innerHTML = error
             return false;
         }
@@ -7660,7 +7699,7 @@ function hatasZFFsor(fn, sor, n) {
 
 // a function to calculate the convolution of two vectors
 
-function conv(vec1, vec2) {
+function convalap(vec1, vec2) {
     var disp = 0; // displacement given after each vector multiplication by element of another vector
     var convVec = [];
     // for first multiplication
@@ -7681,7 +7720,29 @@ function conv(vec1, vec2) {
     return convVec;
 };
 
+function conv(vec1, vec2) {
+    var disp = 0; // displacement given after each vector multiplication by element of another vector
+    var convVec = [];
+    // for first multiplication
+    for (j = 0; j < vec2.length; j++) {
+        convVec.push(Fraction(vec1[0]).mul(Fraction(vec2[j])));
+    }
+    disp = disp + 1;
+    for (i = 1; i < vec1.length; i++) {
+        for (j = 0; j < vec2.length; j++) {
+            if ((disp + j) !== convVec.length) {
+                convVec[disp + j] = convVec[disp + j].add(Fraction((vec1[i])).mul(Fraction(vec2[j])));
+            } else {
+                convVec.push(Fraction(vec1[i]).mul(Fraction(vec2[j])));
+            }
+        }
+        disp = disp + 1;
+    }
+    return convVec.map(y => y.toLatex());
+};
+
 function displayConv() {
+    const rovidconv = document.getElementById("rovconv").checked;
     var sora = $("#setpenttbl #spd option:selected").text();
     var sorb = $("#setpenttbl #ovspd option:selected").text();
     var eloja = $("#setpenttbl #pente2").text();
@@ -7765,19 +7826,27 @@ function displayConv() {
         btxt += nerdKimenet(nerdamer(Fb).toString()) + ",";
     }
     btxt = btxt.slice(0, -1) + "\\right)";
+
+    var sorok = Math.min(na, nb)
+    if (!rovidconv)
+        sorok = na + nb - 1;
     var convtxt = conv(av, bv);
+    if (rovidconv)
+        convtxt = convtxt.slice(0, sorok);
     pentsorout = convtxt.toString();
-    convtxt = "\\\\ \\vec{a}\\ast\\vec{b} = (" + convtxt + ")";
+    convtxt = "\\\\ \\vec{a}\\ast\\vec{b} = \\left(" + convtxt + "\\right) = \\vec{c}";
     const avf = [...av].reverse();
     var mtxt = "\\\\[6mm] \\text{Toeplitz-mátrixszal kifejezve:} \\\\[4mm] \\begin{pmatrix}";
-    for (var k = 1; k <= na + nb - 1; k++) {
+
+    for (var k = 1; k <= sorok; k++) {
         for (var j = 1; j <= k - na; j++)
             mtxt += " 0 &";
         mtxt += avf.slice(-k, Math.max(na + nb - k, 1)).join(" & ") + " &";
         for (var j = 1; j <= nb - k; j++)
             mtxt += " 0 &";
         mtxt = mtxt.slice(0, -1) + "\\\\ ";
-    }
+    };
+
     mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
     for (var j = 0; j < nb; j++)
         mtxt += bv[j] + " \\\\ "
