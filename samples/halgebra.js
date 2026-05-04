@@ -7762,7 +7762,7 @@ function conv(vec1, vec2) {
     for (i = 1; i < vec1.length; i++) {
         for (j = 0; j < vec2.length; j++) {
             if ((disp + j) !== convVec.length) {
-                convVec[disp + j] = convVec[disp + j].add(Fraction((vec1[i])).mul(Fraction(vec2[j])));
+                convVec[disp + j] = Fraction(convVec[disp + j]).add(Fraction((vec1[i])).mul(Fraction(vec2[j])));
             } else {
                 convVec.push(Fraction(vec1[i]).mul(Fraction(vec2[j])));
             }
