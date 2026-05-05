@@ -4199,7 +4199,7 @@ function runszamitas(id, run) {
         $('#rankhiba').removeClass('shown');
     } else {
         elem.style.filter = "none";
-        $('#ranktarto')[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        $('#ranktarto')[0].scrollIntoView({ behavior: 'smooth', block: 'centern' });
     }
 };
 
@@ -6658,6 +6658,7 @@ var pentsorout = "";
 var kepletes = true;
 var ovmode = false;
 var convmode = false;
+var nagynevezo = 10;
 
 const sigmavalues = [1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127, 84, 144, 68, 126, 96, 144];
 const partvalues = [1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, 4565, 5604, 6842, 8349, 10143, 12310, 14883, 17977, 21637, 26015, 31185, 37338, 44583, 53174, 63261, 75175, 89134, 105558, 124754, 147273, 173525]
@@ -7290,21 +7291,21 @@ function compZFF(fn1, fn2, n) {
 }; */
 
 function nerdKimenet(x) {
+    console.log(x)
     if (/( *\/ *)/.test(x)) {
         var xx = x.split("/");
         var xxx = nerdamer(xx[0] / xx[1]).toString();
-        if (isNaN(xxx))
-            x = Fraction(x).simplify().toLatex();
-        else {
-            x = Fraction(x).simplify().toLatex();
-            if (/( *\/ *)/.test(x)) {
-                x = nerdamer(x).toTeX("Fraction")
-            }
-        }
+        //if (isNaN(xxx))
+        //    x = Fraction(x).simplify(n).toLatex();
+        //else {
+        //x = Fraction(x).simplify(n).toLatex();
+        if (xx[1].length > 10) {
+            const n = parseFloat("1e-" + (xx[1].length + 4));
+            x = Fraction(x).simplify(n).toLatex();
+        } else if (/( *\/ *)/.test(xxx))
+            x = nerdamer(x).toTeX("Fraction");
     }
-    /* if (/( *\/ *)/.test(x)) {
-        x = nerdamer.convertToLaTeX(x).toString();
-    } */
+    console.log(x)
     return x;
 };
 
@@ -7335,7 +7336,7 @@ function getsora(n) {
                 nerdamer.setVar('a_sorv', 'vector(' + aa_txt + ')');
             }
             a_sor = function(j) { return nerdamer('vecget(a_sorv,' + (j - 1) + ')').evaluate().toString() };
-            nerdamer.setFunction('a_sor', ['j'], 'vecget(a_sorv,j-1)');
+            nerdamer.setFunction('a_sor', ['j'], 'evaluate(vecget(a_sorv,j-1))');
             kepletes = false;
             return true;
         } catch (error) {
@@ -7344,11 +7345,8 @@ function getsora(n) {
         }
     } else {
         try {
-            //console.log(a_txt)
             var fn = nerdamer(a_txt.trim());
-            //console.log(fn)
             a_sor = fn.buildFunction();
-            //console.log(a_sor)
             nerdamer.setFunction('a_sor', vars, a_txt);
             kepletes = true;
             return true;
@@ -7500,7 +7498,6 @@ function hatasZFFr(fn, sor, n) {
             fn = fn.slice(0, -1);
             xeloj = "-";
         };
-        //var comp = fn + "_" + n + "(";
         var comp = nerdamer(fn + "_" + n).latex() + "(";
         var ertekfn = sigma_val;
         if (sor == "p") {
@@ -7678,7 +7675,6 @@ function hatasZFFsor(fn, sor, n) {
         var vec = "\\left(";
         for (var j = 1; j <= n; j++) {
             comp += nerdamer(xeloj + eloj2 + ertekfn(j).toString()).toString() + ",";
-            //comp += eloj2 + ertekfn(j) + ",";
             getsetZycFabFib(fn, j, false);
             var F3 = fn + "_" + j + "(";
             for (var i = 1; i <= j; i++) {
@@ -7811,7 +7807,7 @@ function displayConv() {
         var aj = ertekfa(j);
         var Fa = eloja + aj;
         av.push(Fa);
-        atxt += nerdKimenet(nerdamer(Fa).toString()) + ",";
+        atxt += nerdKimenet(nerdamer(Fa).evaluate().toString()) + ",";
     }
 
     atxt = atxt.slice(0, -1) + "\\right)";
@@ -7877,25 +7873,40 @@ function displayConv() {
     const convtxt = "\\\\ \\bbox[5px, border: 2px solid red]{\\vec{a}\\ast\\vec{b} = \\left(" + convv + "\\right) = \\vec{c}\\hspace{" + (sorok * 0.2 + 1) + "mm}}";
     const avf = [...av].reverse();
     var mtxt = "\\\\[6mm] \\text{Toeplitz-mátrixszal kifejezve:} \\\\[4mm] \\begin{pmatrix}";
-
+    var nerdmat = "matrix(";
     for (var k = 1; k <= sorok; k++) {
-        for (var j = 1; j <= k - na; j++)
+        nerdmat += "[";
+        for (var j = 1; j <= k - na; j++) {
             mtxt += " 0 &";
+            nerdmat += "0,"
+        }
         mtxt += avf.slice(-k, Math.max(na + nb - k, 1)).join(" & ") + " &";
-        for (var j = 1; j <= nb - k; j++)
+        nerdmat += avf.slice(-k, Math.max(na + nb - k, 1)).join(",") + ",";
+        for (var j = 1; j <= nb - k; j++) {
             mtxt += " 0 &";
+            nerdmat += "0,";
+        }
         mtxt = mtxt.slice(0, -1) + "\\\\ ";
+        nerdmat = nerdmat.slice(0, -1) + "],";
     };
-
+    nerdmat = nerdmat.slice(0, -1) + ")";
+    nerdmat = nerdamer('invert(' + nerdmat + ')').latex().replaceAll("vmatrix", "pmatrix");
+    var nerdb = "\\\\[15mm] \\text{Az egyenletet invertálva:}\\\\[4mm]  \\begin{pmatrix}";
     mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
-    for (var j = 0; j < Math.min(nb, sorok); j++)
-        mtxt += bv[j] + " \\\\ "
+    for (var j = 0; j < Math.min(nb, sorok); j++) {
+        mtxt += bv[j] + " \\\\ ";
+        nerdb += bv[j] + " \\\\ ";
+    }
     mtxt += "\\end{pmatrix} = \\begin{pmatrix}";
-
-    for (var j = 0; j < Math.min(nb, sorok); j++)
-        mtxt += convv[j] + " \\\\ "
+    nerdb += "\\end{pmatrix} = ";
+    nerdmat += " \\cdot \\begin{pmatrix}"
+    for (var j = 0; j < Math.min(nb, sorok); j++) {
+        mtxt += convv[j] + " \\\\ ";
+        nerdmat += convv[j] + " \\\\ ";
+    }
     mtxt += "\\end{pmatrix}";
-    const txt = atxt + btxt + convtxt + mtxt;
+    nerdmat += "\\end{pmatrix}";
+    const txt = atxt + btxt + convtxt + mtxt + nerdb + nerdmat;
     ZFibFab2Latex(txt);
 }
 
