@@ -6662,30 +6662,6 @@ var convmode = false;
 const sigmavalues = [1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127, 84, 144, 68, 126, 96, 144];
 const partvalues = [1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, 4565, 5604, 6842, 8349, 10143, 12310, 14883, 17977, 21637, 26015, 31185, 37338, 44583, 53174, 63261, 75175, 89134, 105558, 124754, 147273, 173525]
 
-//     sum(k*(1-sign((n/k)-floor(n/k))),k,1,n)
-//nerdamer.setVar('sigmavalues', 'vector(' + sigmavalues.toString() + ')');
-//nerdamer.setFunction('sigma', ['n'], 'sum(k*(1-sign((n/k)-floor(n/k))),k,1,n)');
-/* function nerdSet() {
-    nerdamer.setVar('s_sorv', 'vector(' + sigmavalues + ')');
-    nerdamer.setFunction('sigma', ['j'], 'vecget(s_sorv,j - 1)');
-}; */
-
-/* (function() {
-    var core = nerdamer.getCore(), //grab the core
-        _ = core.PARSER; //make a shortcut for the PARSER
-    function f(j) {
-        nerdamer.setVar('s_sorv', 'vector(' + sigmavalues + ')');
-        nerdamer.setFunction('f', ['j'], 'vecget(s_sorv,' + (j - 1) + ')');
-    }
-    nerdamer.register({
-        name: 'sigma',
-        visible: true,
-        numargs: 1,
-        build: function() { return f; }
-    });
-})(); */
-
-
 $(document).ready(function() {
     $('#pentsor').on('click', function(event) {
         event.stopPropagation();
