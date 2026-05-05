@@ -3527,6 +3527,11 @@ select#ovspd {
     display: table-row;
 }
 
+#setpenttbl #sugosor code {
+    font-size: 18px;
+    color: #1400ff;
+    font-weight: 800;
+}
 
 /* Safari */
 
