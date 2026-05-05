@@ -6617,7 +6617,7 @@ function sigma_p(n) {
     }
 
     return { "sigma": Math.abs(sigmaN), "p": p[n] };
-}
+};
 
 function sigma_val(n) {
     if (n == 0)
@@ -7898,7 +7898,7 @@ function displayConv() {
     if (rovidconv)
         convv = convv.slice(0, sorok);
     pentsorout = convv.toString();
-    const convtxt = "\\\\ \\vec{a}\\ast\\vec{b} = \\left(" + convv + "\\right) = \\vec{c}";
+    const convtxt = "\\\\ \\bbox[5px, border: 2px solid red]{\\vec{a}\\ast\\vec{b} = \\left(" + convv + "\\right) = \\vec{c}\\hspace{" + (sorok * 0.2 + 1) + "mm}}";
     const avf = [...av].reverse();
     var mtxt = "\\\\[6mm] \\text{Toeplitz-mátrixszal kifejezve:} \\\\[4mm] \\begin{pmatrix}";
 
