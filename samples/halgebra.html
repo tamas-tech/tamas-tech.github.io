@@ -1188,14 +1188,14 @@
                         </td>
                         <td id="usersorb" class="fixw" style="display:none"><input id="pentbinput" size="20" style="font-size:15px;height: 80%;" type="text" value="1"></td>
                     </tr>
-                    <tr style="border-top: 5px solid #a2a2a2;">
-                        <td>
-                            <input type="checkbox" id="cinput" style="height: 20px; width: 20px; vertical-align:middle;margin-right:10px;">
+                    <tr style="background-color:#808080;height: 42px;">
+                        <td id="nerdtgl" style="display:table-cell;">
+                            <button style="vertical-align: middle;padding: 5px 5px 9px 5px;margin:0;" class="sbtglbtn" onclick="tglNerdSettings();">⚙</button>
                         </td>
                         <td>
-                            <button style="vertical-align: middle;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="tglNerdSettings();">⚙</button>
+                            <input type="checkbox" id="cinput" onchange="nerdTgl(this.checked);" style="height: 20px; width: 20px; vertical-align:middle;margin-right:10px;">
                         </td>
-                        <td colspan="13" id="usersorc" class="fixw">
+                        <td colspan="13" id="usersorc" class="fixw" style="display:none;">
                             <textarea id="pentcinput" spellcheck="false" style="min-width:99%;min-height:20px;font-family:Consolas,Courier New;font-size:18px;height: 80%;" type="text" value="1"></textarea>
                         </td>
                     </tr>
@@ -1207,9 +1207,10 @@
                             <select id="nerdnumb" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
                                 <option value="fraction">Tört</option>
                                 <option value="decimal">Tizedes</option>
+                                <option value="formal">Formális</option>
                             </select>
                             <label for="nerdtizedesek" style="vertical-align: middle;margin-left:10px;">Pontosság</label>
-                            <input type="number" id="nerdtizedesek" onchange="" value="10" min="1" max="16" style="width:44px;font-size: 15px;margin:0 3px;height:22px;">
+                            <input type="number" id="nerdtizedesek" onchange="" value="10" min="1" max="100" style="width:44px;font-size: 15px;margin:0 3px;height:22px;">
                         </td>
                     </tr>
                 </table>
