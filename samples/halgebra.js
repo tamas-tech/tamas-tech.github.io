@@ -32,6 +32,10 @@ var colorvar = 0;
 
 const shouth2zetabtn = "<table width='100%' id='detTable' style='cursor:pointer;background-color:transparent;width: fit-content;'><tr class='parent'><td style='padding:0 50px 0 10px;border: 1px solid #999;border-radius: 10px;display: inline-block;' onclick='toggleTableRow_det(this)'>...<span id='ddcimke' style='margin-left:20px;'></span></td></tr><tr class='child' style='display: none;'><td><div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;width: 100%;'><button id='shouth2zetabtn'  onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div class='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:10px;'><label for='tdern' style='vertical-align:middle;margin-right:3px;'>t(sec)</label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div class='setregtok' style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%;padding-bottom: 3px;'><button id='shouthregbtn' onclick='shouthReg();'>reg( )</button><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button><button id='kimutatasbtn' onclick='shouthKimutatas();'>&#x25A4;</button></div></td></tr></table>"
 
+const availableTags = ['abs', 'acos', 'asin', 'atan', 'asinh', 'acosh', 'atanh', 'cos', 'sin', 'tan', 'sinh', 'cosh', 'tanh', 'sqrt', 'log10', 'log2', 'log', 'ln', 'exp',
+    'abs(x)', 'acos(x)', 'asin(x)', 'atan(x)', 'asinh(x)', 'acosh(x)', 'atanh(x)', 'cos(x)', 'sin(x)', 'tan(x)', 'sinh(x)', 'cosh(x)', 'tanh(x)', 'sqrt(x)', 'log10(x)', 'log2(x)', 'log(x)', 'ln(x)', 'exp(x)'
+];
+
 var zetareg = false;
 var reghely = "stuffle";
 
@@ -6645,6 +6649,8 @@ function egy_n(i) {
 };
 
 var a_sor = function() {};
+var b_sor = function() {};
+var c_sor = function() {};
 // Ellenőrzés
 //const testValues = [5, 9, 12];
 //testValues.forEach(n => {
@@ -6675,10 +6681,19 @@ $(document).ready(function() {
         if (this.checked)
             $('#pentsor')[0].checked = false;
     });
+
+    $('#nerdnumb').on('input', function() {
+        nerd_numb = $(this).prop('value');
+    });
+
+    $('#nerdtizedesek').on('input', function() {
+        nerd_tizedesek = $(this).prop('value');
+    });
 });
 
 function copy2OEIS() {
     var txt = "";
+    const cinput = document.getElementById("cinput").checked;
     const deno = document.getElementById("denoms").checked;
     const vagolap = document.getElementById("vagolap");
     var c = document.getElementById("szorzo").value;
@@ -6688,7 +6703,7 @@ function copy2OEIS() {
         document.getElementById("vagolap").innerHTML = error;
     }
 
-    if (convmode)
+    if (convmode || cinput)
         var vec = pentsorout.split(',').map(y => nerdamer.convertFromLaTeX(y));
     else
         var vec = pentsorout.slice(6, -11).split(',').map(y => nerdamer.convertFromLaTeX(y));
@@ -6959,6 +6974,10 @@ function tglconv() {
 
 function tglPentHelp() {
     $("#sugosor").toggleClass("shown");
+};
+
+function tglNerdSettings() {
+    $("#nerdsettings").toggleClass("shown");
 };
 
 function pentSign(e, ov) {
@@ -7291,7 +7310,6 @@ function compZFF(fn1, fn2, n) {
 }; */
 
 function nerdKimenet(x) {
-    console.log(x)
     if (/( *\/ *)/.test(x)) {
         var xx = x.split("/");
         var xxx = nerdamer(xx[0] / xx[1]).toString();
@@ -7305,7 +7323,6 @@ function nerdKimenet(x) {
         } else if (/( *\/ *)/.test(xxx))
             x = nerdamer(x).toTeX("Fraction");
     }
-    console.log(x)
     return x;
 };
 
@@ -7351,7 +7368,6 @@ function getsora(n) {
             kepletes = true;
             return true;
         } catch (error) {
-            console.log(error)
             document.getElementById("pentout").innerHTML = error
             return false;
         }
@@ -7398,6 +7414,54 @@ function getsorb(n) {
             b_sor = fn.buildFunction();
             nerdamer.setFunction('b_sor', vars, b_txt);
             // kepletes = true;
+            return true;
+        } catch (error) {
+            document.getElementById("pentout").innerHTML = error
+            return false;
+        }
+    }
+};
+
+function getsorc(n) {
+    var c_txt = $("#usersorc textarea").val();
+    const vars = _.uniq(c_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
+    if (vars.length > 1) {
+        alert("Vátozó hiba:\nA kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt\n\n\t\t" + a_txt + "\n\nkifejezés " + vars.length + " válozót is tartalmaz: " + vars + ".");
+        return false;
+    } else if (vars.length == 0 && c_txt.length != 1) {
+        try {
+            const ism = c_txt.endsWith(',...');
+            if (ism)
+                c_txt = c_txt.slice(0, -4);
+            nerdamer.setVar('c_sorv', 'vector(' + c_txt + ')');
+            const L = nerdamer('c_sorv').symbol.elements.length;
+            if (L < n) {
+                if (!ism) {
+                    const N = Math.ceil(n / L);
+                    c_txt += ",";
+                    var cc_txt = c_txt.repeat(N);
+                } else {
+                    const last = _.last(c_txt);
+                    var cc_txt = c_txt + ("," + last).repeat(n - L);
+                }
+                if (cc_txt.endsWith(','))
+                    cc_txt = cc_txt.slice(0, -1)
+                nerdamer.setVar('c_sorv', 'vector(' + cc_txt + ')');
+            }
+            c_sor = function(j) { return nerdamer('vecget(c_sorv,' + (j - 1) + ')').evaluate().toString() };
+            nerdamer.setFunction('c_sor', ['j'], 'evaluate(vecget(c_sorv,j-1))');
+            kepletes = false;
+            return true;
+        } catch (error) {
+            document.getElementById("pentout").innerHTML = error
+            return false;
+        }
+    } else {
+        try {
+            var fn = nerdamer(c_txt.trim());
+            c_sor = fn.buildFunction();
+            nerdamer.setFunction('c_sor', vars, c_txt);
+            kepletes = true;
             return true;
         } catch (error) {
             document.getElementById("pentout").innerHTML = error
@@ -7882,7 +7946,7 @@ function displayConv() {
         }
         mtxt += avf.slice(-k, Math.max(na + nb - k, 1)).join(" & ") + " &";
         nerdmat += avf.slice(-k, Math.max(na + nb - k, 1)).join(",") + ",";
-        for (var j = 1; j <= nb - k; j++) {
+        for (var j = 1; j <= sorok - k; j++) { // sorok helyett nb volt
             mtxt += " 0 &";
             nerdmat += "0,";
         }
@@ -7910,11 +7974,67 @@ function displayConv() {
     ZFibFab2Latex(txt);
 }
 
+function hatasC(n) {
+    var ertekfc = "";
+
+    if (getsorc(n)) {
+        ertekfc = c_sor;
+    } else
+        return;
+
+    var txt = "\\left(";
+    for (var j = 1; j <= n; j++) {
+        var Fb = ertekfc(j);
+        //txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
+        txt += nerdFormat(Fb) + ",";
+    }
+    pentsorout = txt.slice(6, -1);
+    txt = txt.slice(0, -1) + "\\right)";
+    ZFibFab2Latex(txt);
+};
+
+function nerdFormat(txt) {
+    var out = "";
+    if (nerd_numb == "decimal")
+        try {
+            out = decForm(nerdamer(txt, {}, 'numer').evaluate().toTeX('decimals'));
+        } catch {
+            out = nerdamer(txt).evaluate().toTeX(nerd_numb);
+        }
+    else {
+        try {
+            out = nerdKimenet(nerdamer(txt).evaluate().toString());
+        } catch {
+            out = nerdamer(txt).evaluate().toTeX(nerd_numb);
+        }
+    }
+    return out;
+}
+
+function decForm(str) {
+    var v = str.match(/(\d+\.)(\d*)(?=\D)*/g);
+    var w = [];
+    if (v && v.length > 0) {
+        var l = v.length;
+        for (var i = 0; i < l; i++) {
+            w[i] = nerdamer(v[i], {}, 'numer').text('decimals', nerd_tizedesek * 1 + 1);
+        }
+        for (var j = 0; j < l; j++) {
+            str = str.replace(v[j], w[j])
+        }
+    }
+    if (str.endsWith("0"))
+        while (str.endsWith("0"))
+            str = str.slice(0, -1)
+    return str
+}
+
 function drawPent() {
     nerdamer.flush();
     nerdamer.clearVars();
     document.getElementById("pentsorcopytok").style.display = "none";
     document.getElementById("vagolap").innerHTML = "";
+    const cinput = document.getElementById("cinput").checked;
     const spdmode = document.querySelector("#setpenttbl td#spdtok").style.display != "none";
     const sorba = document.getElementById("pentsor").checked;
     const reszletes = document.getElementById("pentr").checked;
@@ -7933,7 +8053,19 @@ function drawPent() {
         eloj1x = "-";
     else
         eloj1x = "";
-    if (convmode) {
+    if (cinput) {
+        const nerdkod = document.getElementById("nerdkod").checked;
+        if (nerdkod) {
+            var c_txt = $("#usersorc textarea").val();
+            var out = ""
+            out = nerdFormat(c_txt);
+            //ZFibFab2Latex(nerdamer(c_txt).latex());
+            ZFibFab2Latex(out);
+        } else {
+            hatasC(n);
+            $("#pentsorcopytok").css("display", "block");
+        }
+    } else if (convmode) {
         displayConv();
         $("#pentsorcopytok").css("display", "block");
     } else if (spdmode) {
@@ -7987,7 +8119,7 @@ function drawPent() {
                 }, 100 * n);
             };
         };
-    }
+    };
 };
 
 function setPentKeplet(elem) {
