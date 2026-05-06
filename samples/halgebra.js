@@ -32,9 +32,6 @@ var colorvar = 0;
 
 const shouth2zetabtn = "<table width='100%' id='detTable' style='cursor:pointer;background-color:transparent;width: fit-content;'><tr class='parent'><td style='padding:0 50px 0 10px;border: 1px solid #999;border-radius: 10px;display: inline-block;' onclick='toggleTableRow_det(this)'>...<span id='ddcimke' style='margin-left:20px;'></span></td></tr><tr class='child' style='display: none;'><td><div style='border-top: 1px solid #c4c4c4;padding:3px 0 5px 0;width: 100%;'><button id='shouth2zetabtn'  onclick='shouth2zeta();'> &rightarrow;&nbsp;&zeta;(...)</button><div class='setregtok'><label for='onlyPari'>Pari</label><input type='checkbox' name='onlyPari' id='onlyPari' style='height:20px;width:20px;vertical-align:middle;margin-right:10px;'><label for='tdern' style='vertical-align:middle;margin-right:3px;'>t(sec)</label><input type='number' id='tdern' value='4' min='0' step='0.1' name='tdern' style='width:50px;margin-right:10px;vertical-align: middle;'></div></div><div class='setregtok' style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%;padding-bottom: 3px;'><button id='shouthregbtn' onclick='shouthReg();'>reg( )</button><label>reg<sup>10</sup><sub><span class='shstlabel'>⧢</span></sub></label><label class='switch' style='bottom:2px;margin:0 6px 0 4px;'><input id='zetaregsht' type='checkbox'><span class='slider round'></span></label><label style='margin-right:20px;'>reg<sup>10</sup><sub><span class='shstlabel'>∗</span></sub></label></div><div style='border-top: 1px solid #c4c4c4;padding-top: 3px;width: 100%'><button id='shouth2vecbtn' onclick='shouth2vec();'> &rightarrow;&nbsp;(3,2...)</button><button id='kimutatasbtn' onclick='shouthKimutatas();'>&#x25A4;</button></div></td></tr></table>"
 
-const availableTags = ['abs', 'acos', 'asin', 'atan', 'asinh', 'acosh', 'atanh', 'cos', 'sin', 'tan', 'sinh', 'cosh', 'tanh', 'sqrt', 'log10', 'log2', 'log', 'ln', 'exp',
-    'abs(x)', 'acos(x)', 'asin(x)', 'atan(x)', 'asinh(x)', 'acosh(x)', 'atanh(x)', 'cos(x)', 'sin(x)', 'tan(x)', 'sinh(x)', 'cosh(x)', 'tanh(x)', 'sqrt(x)', 'log10(x)', 'log2(x)', 'log(x)', 'ln(x)', 'exp(x)'
-];
 
 var zetareg = false;
 var reghely = "stuffle";
@@ -6980,6 +6977,13 @@ function tglNerdSettings() {
     $("#nerdsettings").toggleClass("shown");
 };
 
+function nerdTgl(b) {
+    if (b)
+        $('#usersorc').css('display', 'table-cell')
+    else
+        $('#usersorc').css('display', 'none');
+};
+
 function pentSign(e, ov) {
     var sign = e.innerText;
     if (sign == "✚") {
@@ -7300,15 +7304,6 @@ function compZFF(fn1, fn2, n) {
     }, 10);
 };
 
-/* function nerdKimenet(x) {
-    x = nerdamer(x).toString();
-    x = nerdamer(x).toString();
-    if (/( *\/ *)/.test(x)) {
-        x = "\\frac{" + x.replace(/( *\/ *)/, "}{") + "}";
-    }
-    return x;
-}; */
-
 function nerdKimenet(x) {
     if (/( *\/ *)/.test(x)) {
         var xx = x.split("/");
@@ -7318,11 +7313,11 @@ function nerdKimenet(x) {
         //else {
         //x = Fraction(x).simplify(n).toLatex();
         if (xx[1].length > 10) {
-            const n = parseFloat("1e-" + (xx[1].length + 4));
+            const n = parseFloat("1e-" + document.getElementById("bigdenom").value);
             x = Fraction(x).simplify(n).toLatex();
         } else if (/( *\/ *)/.test(xxx))
             x = nerdamer(x).toTeX("Fraction");
-    }
+    };
     return x;
 };
 
@@ -7354,6 +7349,8 @@ function getsora(n) {
             }
             a_sor = function(j) { return nerdamer('vecget(a_sorv,' + (j - 1) + ')').evaluate().toString() };
             nerdamer.setFunction('a_sor', ['j'], 'evaluate(vecget(a_sorv,j-1))');
+            //a_sor = function(j) { return nerdamer('vecget(a_sorv,' + (j - 1) + ')').toString() };
+            //nerdamer.setFunction('a_sor', ['j'], 'vecget(a_sorv,j-1)');
             kepletes = false;
             return true;
         } catch (error) {
@@ -7448,8 +7445,10 @@ function getsorc(n) {
                     cc_txt = cc_txt.slice(0, -1)
                 nerdamer.setVar('c_sorv', 'vector(' + cc_txt + ')');
             }
-            c_sor = function(j) { return nerdamer('vecget(c_sorv,' + (j - 1) + ')').evaluate().toString() };
-            nerdamer.setFunction('c_sor', ['j'], 'evaluate(vecget(c_sorv,j-1))');
+            //c_sor = function(j) { return nerdamer('vecget(c_sorv,' + (j - 1) + ')').evaluate().toString() };
+            //nerdamer.setFunction('c_sor', ['j'], 'evaluate(vecget(c_sorv,j-1))');
+            c_sor = function(j) { return nerdamer('vecget(c_sorv,' + (j - 1) + ')').toString() };
+            nerdamer.setFunction('c_sor', ['j'], 'vecget(c_sorv,j-1)');
             kepletes = false;
             return true;
         } catch (error) {
@@ -7495,7 +7494,8 @@ function pentovfn(n) {
     };
     var Fb = elojb + ertekfb(n);
     var txt = "";
-    txt = "\\\\" + elojb + sorb + "(" + n + ") = " + nerdKimenet(nerdamer(Fb).toString());
+    //txt = "\\\\" + elojb + sorb + "(" + n + ") = " + nerdKimenet(nerdamer(Fb).toString());
+    txt = "\\\\" + elojb + sorb + "(" + n + ") = " + nerdFormat(Fb);
     return txt;
 };
 
@@ -7537,7 +7537,8 @@ function pentovfnsor(n) {
     txt = txt.slice(0, -1) + "\\right) = \\left(";
     for (var j = 1; j <= n; j++) {
         var Fb = elojb + ertekfb(j);
-        txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
+        //txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
+        txt += nerdFormat(Fb) + ",";
     }
     txt = txt.slice(0, -1) + "\\right)";
     return txt;
@@ -7610,22 +7611,23 @@ function hatasZFFr(fn, sor, n) {
             F4 = F4.slice(0, -1) + ")";
         };
         comp = comp.slice(0, -1) + ")";
+        //  eredetileg nerdamer(F3).toTeX('Fraction')  volt mind a négy helyen
         if (eloj1 == "-" && eloj2 == "") {
             const negalap = nerdamer("-" + F2).latex();
             const negalap2 = nerdamer("-" + F4).latex();
-            txt += "-" + comp + "= " + negalap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, sor + "($1)") + " = " + negalap2.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "=" + nerdamer("-" + F3).toTeX('Fraction');
+            txt += "-" + comp + "= " + negalap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, sor + "($1)") + " = " + negalap2.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "=" + nerdFormat("-" + F3) // nerdKimenet(nerdamer("-" + F3).toString()); // nerdamer("-" + F3).toTeX('Fraction');
         } else if (eloj1 == "-" && eloj2 == "-") {
             const negalap = nerdamer("-" + F2).latex();
             const negalap2 = nerdamer("-" + F4).latex();
-            txt += "-" + comp + " = " + negalap.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-" + sor + "($1))") + " = " + negalap2.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-$1)") + "=" + nerdamer("-" + F3).toTeX('Fraction');
+            txt += "-" + comp + " = " + negalap.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-" + sor + "($1))") + " = " + negalap2.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-$1)") + "=" + nerdFormat("-" + F3) //nerdKimenet(nerdamer("-" + F3).toString()); // nerdamer("-" + F3).toTeX('Fraction');
         } else if (eloj1 == "" && eloj2 == "-") {
             const alap = nerdamer(F2).latex();
             const alap2 = nerdamer(F4).latex();
-            txt += comp + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-" + sor + "($1))") + " = " + alap2.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-$1)") + "=" + nerdamer(F3).toTeX('Fraction');
+            txt += comp + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-" + sor + "($1))") + " = " + alap2.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "(-$1)") + "=" + nerdFormat(F3); // nerdKimenet(nerdamer(F3).toString()); //nerdamer(F3).toTeX('Fraction');
         } else if (eloj1 == "" && eloj2 == "") {
             const alap = nerdamer(F2).latex();
             const alap2 = nerdamer(F4).latex();
-            txt += comp + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, sor + "($1)") + " = " + alap2.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "=" + nerdamer(F3).toTeX('Fraction');
+            txt += comp + " = " + alap.replaceAll("\\cdot", "\\,").replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, sor + "($1)") + " = " + alap2.replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "=" + nerdFormat(F3); //nerdKimenet(nerdamer(F3).toString());
         }
         if (pentov)
             txt += pentovfn(n);
@@ -7676,19 +7678,19 @@ function hatasZFF(fn, sor, n) {
         var F3 = fn + "_" + n + "(";
         for (var i = 1; i <= n; i++) {
             F3 += xeloj + eloj2 + ertekfn(i) + ",";
-            //comp += eloj2 + ertekfn(i) + ",";
-            comp += nerdamer(xeloj + eloj2 + ertekfn(i).toString()).toString() + ",";
+            //comp += nerdKimenet(nerdamer(xeloj + eloj2 + ertekfn(i).toString()).toString()) + ",";
+            comp += nerdFormat(xeloj + eloj2 + ertekfn(i)) + ",";
         }
         F3 = F3.slice(0, -1) + ")";
         comp = comp.slice(0, -1) + ")";
         if (eloj1 == "-" && eloj2 == "")
-            txt += "-" + comp + "= " + nerdKimenet(nerdamer("-" + F3).toString());
+            txt += "-" + comp + "= " + nerdFormat("-" + F3) //nerdKimenet(nerdamer("-" + F3).toString());
         else if (eloj1 == "-" && eloj2 == "-")
-            txt += "-" + comp + "=" + nerdKimenet(nerdamer("-" + F3).toString());
+            txt += "-" + comp + "=" + nerdFormat("-" + F3) //nerdKimenet(nerdamer("-" + F3).toString());
         else if (eloj1 == "" && eloj2 == "-")
-            txt += comp + "=" + nerdKimenet(nerdamer(F3).toString());
+            txt += comp + "=" + nerdFormat(F3) //nerdKimenet(nerdamer(F3).toString());
         else if (eloj1 == "" && eloj2 == "")
-            txt += comp + "=" + nerdKimenet(nerdamer(F3).toString());
+            txt += comp + "=" + nerdFormat(F3) //nerdKimenet(nerdamer(F3).toString());
         if (pentov)
             txt += pentovfn(n);
         txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
@@ -7738,7 +7740,8 @@ function hatasZFFsor(fn, sor, n) {
         var txt = "";
         var vec = "\\left(";
         for (var j = 1; j <= n; j++) {
-            comp += nerdamer(xeloj + eloj2 + ertekfn(j).toString()).toString() + ",";
+            //comp += nerdKimenet(nerdamer(xeloj + eloj2 + ertekfn(j).toString()).toString()) + ",";
+            comp += nerdFormat(xeloj + eloj2 + ertekfn(j)) + ",";
             getsetZycFabFib(fn, j, false);
             var F3 = fn + "_" + j + "(";
             for (var i = 1; i <= j; i++) {
@@ -7746,13 +7749,13 @@ function hatasZFFsor(fn, sor, n) {
             }
             F3 = F3.slice(0, -1) + ")";
             if (eloj1 == "-" && eloj2 == "")
-                vec += nerdKimenet(nerdamer("-" + F3).toString()) + ",";
+                vec += nerdFormat("-" + F3) + ","; //vec += nerdKimenet(nerdamer("-" + F3).toString()) + ",";
             else if (eloj1 == "-" && eloj2 == "-")
-                vec += nerdKimenet(nerdamer("-" + F3).toString()) + ",";
+                vec += nerdFormat("-" + F3) + ","; //vec += nerdKimenet(nerdamer("-" + F3).toString()) + ",";
             else if (eloj1 == "" && eloj2 == "-")
-                vec += nerdKimenet(nerdamer(F3).toString()) + ",";
+                vec += nerdFormat(F3) + ","; //vec += nerdKimenet(nerdamer(F3).toString()) + ",";
             else if (eloj1 == "" && eloj2 == "")
-                vec += nerdKimenet(nerdamer(F3).toString()) + ",";
+                vec += nerdFormat(F3) + ","; //vec += nerdKimenet(nerdamer(F3).toString()) + ",";
         }
         vec += "...\\right)";
         comp += "...)";
@@ -7985,8 +7988,10 @@ function hatasC(n) {
     var txt = "\\left(";
     for (var j = 1; j <= n; j++) {
         var Fb = ertekfc(j);
+        txt += Fraction(Fb).toLatex() + ",";
         //txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
-        txt += nerdFormat(Fb) + ",";
+        //txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
+        //txt += nerdFormat(Fb) + ",";
     }
     pentsorout = txt.slice(6, -1);
     txt = txt.slice(0, -1) + "\\right)";
@@ -7995,7 +8000,13 @@ function hatasC(n) {
 
 function nerdFormat(txt) {
     var out = "";
-    if (nerd_numb == "decimal")
+    if (nerd_numb == "formal") {
+        try {
+            out = nerdamer(txt).latex();
+        } catch {
+            out = nerdamer(txt).evaluate().latex();
+        }
+    } else if (nerd_numb == "decimal")
         try {
             out = decForm(nerdamer(txt, {}, 'numer').evaluate().toTeX('decimals'));
         } catch {
@@ -8003,7 +8014,8 @@ function nerdFormat(txt) {
         }
     else {
         try {
-            out = nerdKimenet(nerdamer(txt).evaluate().toString());
+            out = nerdKimenet(nerdamer(txt).toString());
+            //out = nerdamer(txt).toTeX(nerd_numb);
         } catch {
             out = nerdamer(txt).evaluate().toTeX(nerd_numb);
         }
@@ -8059,7 +8071,6 @@ function drawPent() {
             var c_txt = $("#usersorc textarea").val();
             var out = ""
             out = nerdFormat(c_txt);
-            //ZFibFab2Latex(nerdamer(c_txt).latex());
             ZFibFab2Latex(out);
         } else {
             hatasC(n);
