@@ -24,6 +24,7 @@
     <script src="halgebra.js"></script>
     <script src="../tools/sugorun.js"></script>
     <script id="fnpsugos" type="text/javascript" src="../sugo/dummy.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script>
     <script>
         var sT = 1;
         var sugolepes = 0;
@@ -1193,7 +1194,7 @@
                             <button style="vertical-align: middle;padding: 5px 5px 9px 5px;margin:0;" class="sbtglbtn" onclick="tglNerdSettings();">⚙</button>
                         </td>
                         <td>
-                            <input type="checkbox" id="cinput" onchange="nerdTgl(this.checked);" style="height: 20px; width: 20px; vertical-align:middle;margin-right:10px;">
+                            <input type="checkbox" id="cinput" onchange="nerdTgl(this.checked);" style="height: 30px; width: 30px; vertical-align:middle;">
                         </td>
                         <td colspan="13" id="usersorc" class="fixw" style="display:none;">
                             <textarea id="pentcinput" spellcheck="false" style="min-width:99%;min-height:20px;font-family:Consolas,Courier New;font-size:18px;height: 80%;" type="text" value="1"></textarea>
@@ -1203,21 +1204,27 @@
                         <td colspan="15" style="text-align:left;">
                             <label for="nerdkod" style="vertical-align: middle;margin-left:10px;">Nerdamer kód</label>
                             <input type="checkbox" onclick="" name="nerdkod" id="nerdkod" style="height: 20px; width: 20px; vertical-align:middle;">
-                            <label for="nerdnumb" style="vertical-align: middle;margin-left:10px;">Számformátum</label>
+                            <label for="nerdnumb" style="vertical-align: middle;margin-left:10px;">Szám</label>
                             <select id="nerdnumb" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
                                 <option value="fraction">Tört</option>
                                 <option value="decimal">Tizedes</option>
                                 <option value="formal">Formális</option>
                             </select>
-                            <label for="nerdtizedesek" style="vertical-align: middle;margin-left:10px;">Pontosság</label>
+                            <label for="nerdtizedesek" style="vertical-align: middle;margin-left:10px;">Tizedesjegy</label>
                             <input type="number" id="nerdtizedesek" onchange="" value="10" min="1" max="100" style="width:44px;font-size: 15px;margin:0 3px;height:22px;">
+                            <label for="pentplot" style="vertical-align: middle;margin-left:10px;">Plot</label>
+                            <input type="checkbox" onclick="pentplot=this.checked" name="pentplot" id="pentplot" style="height: 20px; width: 20px; vertical-align:middle;margin-right:10px;">
+                            <select id="plotst" style="min-width:fit-content;border-color: #959595;font-size:14px;">
+                                <option value="scatter">Pontsor</option>
+                                <option value="polyline">Vonal</option>
+                            </select>
                         </td>
                     </tr>
                 </table>
             </div>
             <div class="nobr" style="margin-left:2px;padding:3px;">
                 <button onclick="document.getElementById('pentout').scrollIntoView({ inline: 'start' });setTimeout(()=>{idClear('#pentout');},5);setTimeout(()=>{drawPent();},10);" class="showpre1">OK</button>
-                <button class="showpre1" style="width:76px;margin-left:3px" onclick="document.getElementById('pentout').scrollIntoView({ inline: 'start' });document.getElementById('pentsorcopytok').style.display='none'; document.getElementById('vagolap').innerHTML = '';idClear('#pentout');"
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="document.getElementById('pentout').scrollIntoView({ inline: 'start' });document.getElementById('pentsorcopytok').style.display='none'; document.getElementById('vagolap').innerHTML = '';document.getElementById('plotZ').innerHTML='';idClear('#pentout');"
                     title="Clear output">Clear</button>
                 <button id="tglpentopts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl( 'pentsetting');">⚙</button>
             </div>
@@ -1238,6 +1245,9 @@
             <p id="figypent" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
             <p id="pentout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px 7px 7px 7px;font-size:21px;min-height:20px;"></p>
         </div>
+        <section id="fnpz" style="display:none;max-width:calc(100vw - 30px);">
+            <div id="plotZ" style="text-align:center;"></div>
+        </section>
         <div id="pentsorcopytok" style="display:none;position:sticky;left:0;">
             <button class="showpre1" id="pentsorcopy" style="width:96px;margin-left:8px;margin-top:10px;" onclick="copy2OEIS();">Copy</button>
             <label for="denoms" style="vertical-align: middle;margin-left:10px;">Nevezők</label>
