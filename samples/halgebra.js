@@ -7832,7 +7832,7 @@ function conv(vec1, vec2) {
                 convVec[disp + j] = nerdamer(convVec[disp + j]).add(nerdamer((vec1[i])).multiply(nerdamer(vec2[j])));
             } else {
                 //convVec.push(Fraction(vec1[i]).mul(Fraction(vec2[j])));
-                convVec.push(nerdamer(vec1[0]).multiply(nerdamer(vec2[j])));
+                convVec.push(nerdamer(vec1[i]).multiply(nerdamer(vec2[j])));
             }
         }
         disp = disp + 1;
