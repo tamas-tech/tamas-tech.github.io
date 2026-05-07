@@ -7821,20 +7821,24 @@ function conv(vec1, vec2) {
     var convVec = [];
     // for first multiplication
     for (j = 0; j < vec2.length; j++) {
-        convVec.push(Fraction(vec1[0]).mul(Fraction(vec2[j])));
+        //convVec.push(Fraction(vec1[0]).mul(Fraction(vec2[j])));
+        convVec.push(nerdamer(vec1[0]).multiply(nerdamer(vec2[j])));
     }
     disp = disp + 1;
     for (i = 1; i < vec1.length; i++) {
         for (j = 0; j < vec2.length; j++) {
             if ((disp + j) !== convVec.length) {
-                convVec[disp + j] = Fraction(convVec[disp + j]).add(Fraction((vec1[i])).mul(Fraction(vec2[j])));
+                //convVec[disp + j] = Fraction(convVec[disp + j]).add(Fraction((vec1[i])).mul(Fraction(vec2[j])));
+                convVec[disp + j] = nerdamer(convVec[disp + j]).add(nerdamer((vec1[i])).multiply(nerdamer(vec2[j])));
             } else {
-                convVec.push(Fraction(vec1[i]).mul(Fraction(vec2[j])));
+                //convVec.push(Fraction(vec1[i]).mul(Fraction(vec2[j])));
+                convVec.push(nerdamer(vec1[0]).multiply(nerdamer(vec2[j])));
             }
         }
         disp = disp + 1;
     }
-    return convVec.map(y => y.toLatex());
+    //return convVec.map(y => y.toLatex());
+    return convVec.map(y => nerdFormat(y));
 };
 
 function displayConv() {
@@ -7899,10 +7903,11 @@ function displayConv() {
     for (var j = 1; j <= na; j++) {
         var aj = ertekfa(j);
         var Fa = eloja + aj;
-        av.push(Fa);
-        atxt += nerdKimenet(nerdamer(Fa).evaluate().toString()) + ",";
+        av.push(nerdamer(Fa));
+        //atxt += nerdKimenet(nerdamer(Fa).evaluate().toString()) + ",";
+        atxt += nerdFormat(nerdamer(Fa)) + ",";
     }
-
+    //console.log("av->>", av)
     atxt = atxt.slice(0, -1) + "\\right)";
 
     var ertekfb = sigma_val;
@@ -7952,19 +7957,22 @@ function displayConv() {
         var bj = ertekfb(j);
         var Fb = elojb + bj;
         bv.push(Fb);
-        btxt += nerdKimenet(nerdamer(Fb).toString()) + ",";
-    }
+        //btxt += nerdKimenet(nerdamer(Fb).toString()) + ",";
+        btxt += nerdFormat(nerdamer(Fb)) + ",";
+    };
     btxt = btxt.slice(0, -1) + "\\right)";
 
     var sorok = Math.min(na, nb)
     if (!rovidconv)
         sorok = na + nb - 1;
     var convv = conv(av, bv);
+    //console.log("conv->>", convv)
     if (rovidconv)
         convv = convv.slice(0, sorok);
     pentsorout = convv.toString();
     const convtxt = "\\\\ \\bbox[5px, border: 2px solid red]{\\vec{a}\\ast\\vec{b} = \\left(" + convv + "\\right) = \\vec{c}\\hspace{" + (sorok * 0.2 + 1) + "mm}}";
     const avf = [...av].reverse();
+    //console.log("avf->>", avf)
     var mtxt = "\\\\[6mm] \\text{Toeplitz-mátrixszal kifejezve:} \\\\[4mm] \\begin{pmatrix}";
     var nerdmat = "matrix(";
     for (var k = 1; k <= sorok; k++) {
@@ -7973,9 +7981,12 @@ function displayConv() {
             mtxt += " 0 &";
             nerdmat += "0,"
         }
-        mtxt += avf.slice(-k, Math.max(na + nb - k, 1)).join(" & ") + " &";
+        mtxt += avf.slice(-k, Math.max(na + nb - k, 1)).map(y => nerdFormat(y)).join(" & ") + " &";
         nerdmat += avf.slice(-k, Math.max(na + nb - k, 1)).join(",") + ",";
-        for (var j = 1; j <= sorok - k; j++) { // sorok helyett nb volt
+        var felso = nb;
+        if (rovidconv)
+            felso = sorok;
+        for (var j = 1; j <= felso - k; j++) { // sorok helyett nb volt
             mtxt += " 0 &";
             nerdmat += "0,";
         }
@@ -7983,23 +7994,39 @@ function displayConv() {
         nerdmat = nerdmat.slice(0, -1) + "],";
     };
     nerdmat = nerdmat.slice(0, -1) + ")";
-    nerdmat = nerdamer('invert(' + nerdmat + ')').latex().replaceAll("vmatrix", "pmatrix");
-    var nerdb = "\\\\[15mm] \\text{Az egyenletet invertálva:}\\\\[4mm]  \\begin{pmatrix}";
-    mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
-    for (var j = 0; j < Math.min(nb, sorok); j++) {
-        mtxt += bv[j] + " \\\\ ";
-        nerdb += bv[j] + " \\\\ ";
+    if (rovidconv) {
+        nerdmat = nerdamer('invert(' + nerdmat + ')').latex().replaceAll("vmatrix", "pmatrix");
+        var nerdb = "\\\\[15mm] \\text{Az egyenletet invertálva:}\\\\[4mm]  \\begin{pmatrix}";
+        mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
+        for (var j = 0; j < Math.min(nb, sorok); j++) {
+            mtxt += bv[j] + " \\\\ ";
+            nerdb += bv[j] + " \\\\ ";
+        }
+        mtxt += "\\end{pmatrix} = \\begin{pmatrix}";
+        nerdb += "\\end{pmatrix} = ";
+        nerdmat += " \\cdot \\begin{pmatrix}"
+        for (var j = 0; j < Math.min(nb, sorok); j++) {
+            mtxt += convv[j] + " \\\\ ";
+            nerdmat += convv[j] + " \\\\ ";
+        };
+        mtxt += "\\end{pmatrix}";
+        nerdmat += "\\end{pmatrix}";
+    } else {
+        mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
+        for (var j = 0; j < Math.min(nb, sorok); j++) {
+            mtxt += bv[j] + " \\\\ ";
+        }
+        mtxt += "\\end{pmatrix} = \\begin{pmatrix}";
+        for (var j = 0; j < nb + na - 1; j++) {
+            mtxt += convv[j] + " \\\\ ";
+        };
+        mtxt += "\\end{pmatrix}";
     }
-    mtxt += "\\end{pmatrix} = \\begin{pmatrix}";
-    nerdb += "\\end{pmatrix} = ";
-    nerdmat += " \\cdot \\begin{pmatrix}"
-    for (var j = 0; j < Math.min(nb, sorok); j++) {
-        mtxt += convv[j] + " \\\\ ";
-        nerdmat += convv[j] + " \\\\ ";
-    }
-    mtxt += "\\end{pmatrix}";
-    nerdmat += "\\end{pmatrix}";
-    const txt = atxt + btxt + convtxt + mtxt + nerdb + nerdmat;
+
+    var txt = atxt + btxt + convtxt + mtxt;
+    if (rovidconv)
+        txt += nerdb + nerdmat;
+    //console.log(mtxt)
     ZFibFab2Latex(txt);
 }
 
