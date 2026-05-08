@@ -1058,24 +1058,6 @@
         <div class="stickblock">
             <div id="tbltok" class="nobr" style="margin-left:2px;padding:3px;">
                 <table id="setpenttbl" class="table-hideable" style="box-shadow: 0 0 10px 5px #9a9aac">
-                    <tr id="sugosor">
-                        <td colspan="15" style="text-align:left;border-bottom: 3px solid #b5b5b5;">
-                            <h3 style="text-align:center;">Aritmetikai függvények</h3>
-                            / Általunk implementált <code>Nerdamer</code> kiterjesztések /
-                            <ul>
-                                <li><b>pent</b>(n): Ha n egy általánosított előjeles pentagonális szám, akkor &pm;1, egyébként 0.</li>
-                                <li><b>tau</b>(n): n osztóinak a száma.</li>
-                                <li><b>sigma</b>(n): n osztóinak az összege.</li>
-                                <li><b>part</b>(n): n partícióinak a száma.</li>
-                                <li><b>phi</b>(n): Euler-féle &phi;(n) totient függvény. Az n-nél nem nagyobb, n-hez relatív prímek száma</li>
-                                <li><b>Zyc_n</b>(x_1,x_2,...,x_n): A Z<sub>n</sub>( x_1,...,x_n) ciklusszámláló polinom.</li>
-                                <li><b>Fab_n</b>(x_1,x_2,...,x_n): A Fab<sub>n</sub>( x_1,...,x_n) Faber-polinom.</li>
-                                <li><b>Fib_n</b>(x_1,x_2,...,x_n): A Fib<sub>n</sub>( x_1,...,x_n) általánosított Fibonacci-polinom.</li>
-                                <li><b>Luc_n</b>(x_1,x_2,...,x_n): A Luc<sub>n</sub>( x_1,...,x_n) általánosított Lucas-polinom.</li>
-                            </ul>
-                            <h3 style="text-align:center;">Beépített <code>Nerdamer</code> függvények</h3>
-                        </td>
-                    </tr>
                     <tr>
                         <td id="pentkijelzo" style="font-size:120%;background-color:#072e51;border-color:#072e51;color:white;" colspan="4"><b>Zyc</b><sub>3</sub></td>
                         <td id="tglOv" onclick="tglOv(this);" style="font-size:120%;background-color:#10406a;border-color:#072e51;color:#a4a4a4">=</td>
@@ -1094,7 +1076,7 @@
                                 <input type="checkbox"  name="rovconv" checked id="rovconv" style="height: 20px; width: 20px; vertical-align:middle;margin-right:10px;">
                             </span>
                         </td>
-                        <td id="helptok" class="fixw" style="display:none;text-align:left;"><span id="tglpenthelp" onclick="tglPentHelp();" style="width: 50px;display:inline-block;border: 1px solid #a6a6a6;padding:3px 5px;background-color: #ddd;border-radius: 4px;margin-left:6px;margin-right:10px;text-align:center;">Help</span>
+                        <td id="helptok" class="fixw" style="display:none;text-align:left;"><span id="tglpenthelp" onclick="tglPentHelp();" style="width: 28px;height:28px;display:inline-block;border: 1px solid #a6a6a6;background-color: #fff785;font-size: 24px;margin-left:6px;margin-right:10px;vertical-align:middle;border-radius:50%;text-align:center;">?</span>
                             <input oninput="$('#pentainput,#pentbinput').attr('size',this.value);" type="range" min="20" max="100" value="20" step="1" style="display:inline-block;width:90px;vertical-align: middle;" title="set input width">
                         </td>
                     </tr>
@@ -1190,17 +1172,20 @@
                         <td id="usersorb" class="fixw" style="display:none"><input id="pentbinput" size="20" style="font-size:15px;height: 80%;" type="text" value="1"></td>
                     </tr>
                     <tr style="background-color:#808080;height: 42px;">
+                        <td>
+                            <span id="tglpenthelp" onclick="tglPentHelp();" style="width: 28px;height:28px;display:inline-block;border: 1px solid #a6a6a6;background-color: #fff785;font-size: 24px;border-radius:50%;text-align:center;">?</span>
+                        </td>
                         <td id="nerdtgl" style="display:table-cell;">
                             <button style="vertical-align: middle;padding: 5px 5px 9px 5px;margin:0;" class="sbtglbtn" onclick="tglNerdSettings();">⚙</button>
                         </td>
                         <td>
                             <input type="checkbox" id="cinput" onchange="nerdTgl(this.checked);" style="height: 30px; width: 30px; vertical-align:middle;">
                         </td>
-                        <td colspan="13" id="usersorc" class="fixw" style="display:none;">
+                        <td colspan="12" id="usersorc" class="fixw" style="display:none;">
                             <textarea id="pentcinput" spellcheck="false" style="min-width:99%;min-height:20px;font-family:Consolas,Courier New;font-size:18px;height: 80%;" type="text" value="1"></textarea>
                         </td>
                     </tr>
-                    <tr id="nerdsettings" class="" style="font-size:16px;border-top:2px solid #848484;background-color:#c0dfd9;">
+                    <tr id="nerdsettings" class="" style="font-size:16px;border-top:2px solid #848484;background-color:#d8d8d8;">
                         <td colspan="15" style="text-align:left;">
                             <label for="nerdkod" style="vertical-align: middle;margin-left:10px;">Nerdamer kód</label>
                             <input type="checkbox" onclick="" name="nerdkod" id="nerdkod" style="height: 20px; width: 20px; vertical-align:middle;">
@@ -1218,6 +1203,63 @@
                                 <option value="scatter">Pontsor</option>
                                 <option value="polyline">Vonal</option>
                             </select>
+                        </td>
+                    </tr>
+                    <tr id="sugosor">
+                        <td colspan="15" style="background-color: #262626;text-align:left;border-bottom: 3px solid #b5b5b5;word-wrap:break-word;white-space: normal;">
+                            <div style="  background-color: #f6ffb4;max-height:200px;max-width:670px;overflow-y:auto;font-family: Arial;padding:0 10px;cursor:text;">
+                                <h3 style="text-align:center;">Számsorok bevitele</h3>
+                                <b>A számsor mindig  a "Fib" és "+" cellák közötti beviteli mezőben megadott <i>n</i> értékével megegyező hosszú lesz.</b> A számsorok megadása történhet héhány, vagy az összes elem felsorolásával, illetve (egyetlen, de
+                                tetszőleges) vátozót tartalmazó formula bevitelével. A két mődszer vegyíthető is.
+                                <h4 style="margin: 10px 0 -10px 0;">Néhány elem felsorolásával</h4>
+                                <ul>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: 1,4,3,4,2 &rightarrow; sor: 1,4,3,4,2</span> (Ha bevitt elemek száma megegyezik <i>n</i> értékével a bevitt sort kapjuk)
+                                    </li>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 2, input: 1,4,3,4,2 &rightarrow; sor: 1,4</span> (Ha bevitt elemek száma nagyobb <i>n</i> értékénél csak az első <i>n</i> elemet kapjuk)
+                                    </li>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 7, input: 1,4 &rightarrow; sor: 1,4,1,4,1,4,1</span> (Ha bevitt elemek száma kisebb <i>n</i> értékénél a megadott elemek ciklikus ismétlődésével kapunk egy <i>n</i>                                        hoszúságú sort.)
+                                    </li>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 8, input: 1/3,-2,... &rightarrow; sor: 1/3,-2,-2,-2,-2,-2,-2,-2</span> (Ha bevitt elemek száma kisebb <i>n</i> értékénél éa azt a <b style="font-size:120%;letter-spacing: 0.161em;background-color: #ffff69;">,...</b>                                        karakterekkel zárjuk le, akkor a megadott elemek ciklikus ismétlődésa helyet az utolsó elem ismétlésével kapunk egy <i>n</i> hoszúságú sort.)
+                                    </li>
+                                </ul>
+                                <h4 style="margin: 10px 0 5px 0;">Képlettel</h4>
+                                Minden képletben legfeljebb csak egy, de tetszőlegesen megválasztható karakter szerepelhet, melynek a hossza is egy. Például u, t, k, W,... A program ezt az egy hosszú karaktert veszi a formula változójának. Egy nulla változós konstans is formula: 1,
+                                2/3, sqrt(5), pi, exp(3),....
+                                <ul>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: k^2 &rightarrow; sor: 1,4,9,16,25</span>
+                                    </li>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: 4 &rightarrow; sor: 4,4,4,4,4</span> (konstans formula)<br><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: exp(5) &rightarrow; sor:e<sup>5</sup>,e<sup>5</sup>,e<sup>5</sup>,e<sup>5</sup>,e<sup>5</sup></span>                                        (konstans formula)
+                                    </li>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 7, input: part(k+2) &rightarrow; sor: 3,5,7,11,15,22</span> (függvényt is tartalmazhat egy formula)
+                                    </li>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 4, input: (1/(4*n*sqrt(3))*exp(pi*sqrt(2*n/3)))/part(n) &rightarrow; sor: 287382756/153134377,...</span> (Szinte tetszőleges egyváltozós formula bevihető.)
+                                    </li>
+                                </ul>
+                                <h4 style="margin: 10px 0 5px 0;">A két megadás vegyítése: 1,5,6,...k^2+3/k</h4>
+                                Megadhatunk néhány kezdőelemt: 1,5,6, majd ezt három ponttal, és az azt követő egyváltozós: k^2+3/k furmulával zárjuk le. Ekkor Az 1,5,6 sor nem az utolsó 6-os elemmel, hanem a k^2+3/k (k=3,4,5,...<i>n</i>) formulával számított
+                                elemekkel folytatódik.
+                                <ul>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 7, input: 1,5,6,...k^2+3/k &rightarrow; sor: 1,5,6,67/4,128/5,73/2,346/7</span>
+                                    </li>
+                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 6, input: 0,0,...part(W)+sigma(W) &rightarrow; sor: 0,0,7,12,13,23</span>
+                                    </li>
+                                </ul>
+                                <h3 style="text-align:center;">Aritmetikai függvények</h3>
+                                / Általunk implementált <code>Nerdamer</code> kiterjesztések /
+                                <ul>
+                                    <li><b>pent</b>(n): Ha n egy általánosított előjeles pentagonális szám, akkor &pm;1, egyébként 0.</li>
+                                    <li><b>tau</b>(n): n osztóinak a száma.</li>
+                                    <li><b>sigma</b>(n): n osztóinak az összege.</li>
+                                    <li><b>part</b>(n): n partícióinak a száma.</li>
+                                    <li><b>phi</b>(n): Euler-féle &phi;(n) totient függvény. Az n-nél nem nagyobb, n-hez relatív prímek száma</li>
+                                    <i>Az alábbi négy polinomban n egy rögzített szám. Például:</i> Fab_6(k,5,k-4,k/9,k^2,-3*k)
+                                    <li><b>Zyc_n</b>(x_1,x_2,...,x_n): A Z<sub>n</sub>( x_1,...,x_n) ciklusszámláló polinom.</li>
+                                    <li><b>Fab_n</b>(x_1,x_2,...,x_n): A Fab<sub>n</sub>( x_1,...,x_n) Faber-polinom.</li>
+                                    <li><b>Fib_n</b>(x_1,x_2,...,x_n): A Fib<sub>n</sub>( x_1,...,x_n) általánosított Fibonacci-polinom.</li>
+                                    <li><b>Luc_n</b>(x_1,x_2,...,x_n): A Luc<sub>n</sub>( x_1,...,x_n) általánosított Lucas-polinom.</li>
+                                </ul>
+                                <h3 style="text-align:center;">Beépített <code>Nerdamer</code> függvények</h3>
+                            </div>
                         </td>
                     </tr>
                 </table>
