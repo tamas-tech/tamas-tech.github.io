@@ -7325,10 +7325,11 @@ function nerdKimenet(x) {
 };
 
 function getsora(n) {
+    const elem = document.getElementById("pentout");
     var a_txt = $("#usersora input").val();
     const vars = _.uniq(a_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
     if (vars.length > 1) {
-        alert("Vátozó hiba:\nA kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt\n\n\t\t" + a_txt + "\n\nkifejezés " + vars.length + " válozót is tartalmaz: " + vars + ".");
+        elem.innerHTML = "Vátozó hiba:<br/>A kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + a_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>";
         return false;
     } else if (vars.length == 0 && a_txt.length != 1) {
         try {
@@ -7343,11 +7344,12 @@ function getsora(n) {
                     a_txt += ",";
                     var aa_txt = a_txt.repeat(N);
                 } else {
-                    const last = _.last(a_txt);
+                    const last = _.last(a_txt.split(","));
                     var aa_txt = a_txt + ("," + last).repeat(n - L);
                 }
                 if (aa_txt.endsWith(','))
                     aa_txt = aa_txt.slice(0, -1)
+                console.log(aa_txt)
                 nerdamer.setVar('a_sorv', 'vector(' + aa_txt + ')');
             }
             a_sor = function(j) { return nerdamer('vecget(a_sorv,' + (j - 1) + ')').evaluate().toString() };
@@ -7357,28 +7359,54 @@ function getsora(n) {
             kepletes = false;
             return true;
         } catch (error) {
-            document.getElementById("pentout").innerHTML = error
+            elem.innerHTML = error
             return false;
         }
     } else {
-        try {
-            var fn = nerdamer(a_txt.trim());
-            a_sor = fn.buildFunction();
-            nerdamer.setFunction('a_sor', vars, a_txt);
-            kepletes = true;
-            return true;
-        } catch (error) {
-            document.getElementById("pentout").innerHTML = error
-            return false;
+        a_txt = a_txt.trim();
+        var p = a_txt.indexOf("...");
+        if (p > -1) {
+            try {
+                var form = a_txt.slice(p + 3);
+                var aa_txt = a_txt.slice(0, p - 1);
+                const h = aa_txt.split(",").length;
+                var x = vars[0]
+                aa_txt += ",";
+                form = form.replaceAll(x, "(" + x + "+" + h + ")");
+                nerdamer.setFunction("pwa", vars, form)
+                for (j = 1; j <= n - h; j++)
+                    aa_txt += nerdamer("pwa(" + j + ")").toString() + ",";
+                aa_txt = aa_txt.slice(0, -1)
+                nerdamer.setVar('a_sorv', 'vector(' + aa_txt + ')');
+                a_sor = function(j) { return nerdamer('vecget(a_sorv,' + (j - 1) + ')').evaluate().toString() };
+                nerdamer.setFunction('a_sor', ['j'], 'evaluate(vecget(a_sorv,j-1))');
+                kepletes = false;
+                return true;
+            } catch (error) {
+                elem.innerHTML = error
+                return false;
+            }
+        } else {
+            try {
+                var fn = nerdamer(a_txt.trim());
+                a_sor = fn.buildFunction();
+                nerdamer.setFunction('a_sor', vars, a_txt);
+                kepletes = true;
+                return true;
+            } catch (error) {
+                elem.innerHTML = error
+                return false;
+            }
         }
     }
 };
 
 function getsorb(n) {
+    const elem = document.getElementById("pentout");
     var b_txt = $("#usersorb input").val();
     const vars = _.uniq(b_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
     if (vars.length > 1) {
-        alert("Vátozó hiba:\nA kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt\n\n\t\t" + b_txt + "\n\nkifejezés " + vars.length + " válozót is tartalmaz: " + vars + ".");
+        elem.innerHTML = "Vátozó hiba:<br/>A kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + b_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>";
         return false;
     } else if (vars.length == 0 && b_txt.length != 1) {
         try {
@@ -7393,7 +7421,7 @@ function getsorb(n) {
                     b_txt += ",";
                     var bb_txt = b_txt.repeat(N);
                 } else {
-                    const last = _.last(b_txt);
+                    const last = _.last(b_txt.split(","));
                     var bb_txt = b_txt + ("," + last).repeat(n - L);
                 }
                 if (bb_txt.endsWith(','))
@@ -7405,28 +7433,54 @@ function getsorb(n) {
             // kepletes = false;
             return true;
         } catch (error) {
-            document.getElementById("pentout").innerHTML = error
+            elem.innerHTML = error
             return false;
         }
     } else {
-        try {
-            var fn = nerdamer(b_txt);
-            b_sor = fn.buildFunction();
-            nerdamer.setFunction('b_sor', vars, b_txt);
-            // kepletes = true;
-            return true;
-        } catch (error) {
-            document.getElementById("pentout").innerHTML = error
-            return false;
+        b_txt = b_txt.trim();
+        var p = b_txt.indexOf("...");
+        if (p > -1) {
+            try {
+                var form = b_txt.slice(p + 3);
+                var bb_txt = b_txt.slice(0, p - 1);
+                const h = bb_txt.split(",").length;
+                var x = vars[0]
+                bb_txt += ",";
+                form = form.replaceAll(x, "(" + x + "+" + h + ")");
+                nerdamer.setFunction("pwb", vars, form)
+                for (j = 1; j <= n - h; j++)
+                    bb_txt += nerdamer("pwb(" + j + ")").toString() + ",";
+                bb_txt = bb_txt.slice(0, -1)
+                nerdamer.setVar('b_sorv', 'vector(' + bb_txt + ')');
+                b_sor = function(j) { return nerdamer('vecget(b_sorv,' + (j - 1) + ')').evaluate().toString() };
+                nerdamer.setFunction('b_sor', ['j'], 'evaluate(vecget(b_sorv,j-1))');
+                kepletes = false;
+                return true;
+            } catch (error) {
+                elem.innerHTML = error
+                return false;
+            }
+        } else {
+            try {
+                var fn = nerdamer(b_txt);
+                b_sor = fn.buildFunction();
+                nerdamer.setFunction('b_sor', vars, b_txt);
+                // kepletes = true;
+                return true;
+            } catch (error) {
+                elem.innerHTML = error
+                return false;
+            }
         }
     }
 };
 
 function getsorc(n) {
+    const elem = document.getElementById("pentout");
     var c_txt = $("#usersorc textarea").val();
     const vars = _.uniq(c_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
     if (vars.length > 1) {
-        alert("Vátozó hiba:\nA kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt\n\n\t\t" + a_txt + "\n\nkifejezés " + vars.length + " válozót is tartalmaz: " + vars + ".");
+        elem.innerHTML = "Vátozó hiba:<br/>A kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + c_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>";
         return false;
     } else if (vars.length == 0 && c_txt.length != 1) {
         try {
@@ -7441,7 +7495,7 @@ function getsorc(n) {
                     c_txt += ",";
                     var cc_txt = c_txt.repeat(N);
                 } else {
-                    const last = _.last(c_txt);
+                    const last = _.last(c_txt.split(","));
                     var cc_txt = c_txt + ("," + last).repeat(n - L);
                 }
                 if (cc_txt.endsWith(','))
@@ -7455,21 +7509,46 @@ function getsorc(n) {
             kepletes = false;
             return true;
         } catch (error) {
-            document.getElementById("pentout").innerHTML = error
+            elem.innerHTML = error
             return false;
         }
     } else {
-        try {
-            var fn = nerdamer(c_txt.trim());
-            c_sor = fn.buildFunction();
-            nerdamer.setFunction('c_sor', vars, c_txt);
-            kepletes = true;
-            return true;
-        } catch (error) {
-            document.getElementById("pentout").innerHTML = error
-            return false;
-        }
-    }
+        c_txt = c_txt.trim();
+        var p = c_txt.indexOf("...");
+        if (p > -1) {
+            try {
+                var form = c_txt.slice(p + 3);
+                var cc_txt = c_txt.slice(0, p - 1);
+                const h = cc_txt.split(",").length;
+                var x = vars[0]
+                cc_txt += ",";
+                form = form.replaceAll(x, "(" + x + "+" + h + ")");
+                nerdamer.setFunction("pwc", vars, form)
+                for (j = 1; j <= n - h; j++)
+                    cc_txt += nerdamer("pwc(" + j + ")").toString() + ",";
+                cc_txt = cc_txt.slice(0, -1)
+                nerdamer.setVar('c_sorv', 'vector(' + cc_txt + ')');
+                c_sor = function(j) { return nerdamer('vecget(c_sorv,' + (j - 1) + ')').evaluate().toString() };
+                nerdamer.setFunction('c_sor', ['j'], 'evaluate(vecget(c_sorv,j-1))');
+                kepletes = false;
+                return true;
+            } catch (error) {
+                elem.innerHTML = error
+                return false;
+            }
+        } else {
+            try {
+                var fn = nerdamer(c_txt.trim());
+                c_sor = fn.buildFunction();
+                nerdamer.setFunction('c_sor', vars, c_txt);
+                kepletes = true;
+                return true;
+            } catch (error) {
+                elem.innerHTML = error
+                return false;
+            };
+        };
+    };
 };
 
 function pentovfn(n) {
@@ -7982,7 +8061,7 @@ function displayConv() {
             nerdmat += "0,"
         }
         mtxt += avf.slice(-k, Math.max(na + nb - k, 1)).map(y => nerdFormat(y)).join(" & ") + " &";
-        nerdmat += avf.slice(-k, Math.max(na + nb - k, 1)).join(",") + ",";
+        nerdmat += avf.slice(-k, Math.max(na + nb - k, 1)).map(y => y.toDecimal()).join(",") + ",";
         var felso = nb;
         if (rovidconv)
             felso = sorok;
@@ -7998,37 +8077,30 @@ function displayConv() {
         nerdmat = nerdamer('invert(' + nerdmat + ')').latex().replaceAll("vmatrix", "pmatrix");
         var nerdb = "\\\\[15mm] \\text{Az egyenletet invertálva:}\\\\[4mm]  \\begin{pmatrix}";
         mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
-        for (var j = 0; j < Math.min(nb, sorok); j++) {
-            mtxt += bv[j] + " \\\\ ";
-            nerdb += bv[j] + " \\\\ ";
-        }
-        mtxt += "\\end{pmatrix} = \\begin{pmatrix}";
-        nerdb += "\\end{pmatrix} = ";
-        nerdmat += " \\cdot \\begin{pmatrix}"
-        for (var j = 0; j < Math.min(nb, sorok); j++) {
-            mtxt += convv[j] + " \\\\ ";
-            nerdmat += convv[j] + " \\\\ ";
-        };
-        mtxt += "\\end{pmatrix}";
-        nerdmat += "\\end{pmatrix}";
     } else {
+        nerdmat = JSON.parse("[" + nerdmat.slice(7, -1) + "]");
+        nerdmat = "matrix(" + JSON.stringify(math.pinv(nerdmat)).slice(1, -1) + ")";
+        nerdmat = nerdamer(nerdmat).latex().replaceAll("vmatrix", "pmatrix");
+        var nerdb = "\\\\[15mm] \\text{Az egyenletet invertálva (Moore-Penrose általánosított inverz):}\\\\[4mm]  \\begin{pmatrix}";
         mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
-        for (var j = 0; j < Math.min(nb, sorok); j++) {
-            mtxt += bv[j] + " \\\\ ";
-        }
-        mtxt += "\\end{pmatrix} = \\begin{pmatrix}";
-        for (var j = 0; j < nb + na - 1; j++) {
-            mtxt += convv[j] + " \\\\ ";
-        };
-        mtxt += "\\end{pmatrix}";
-    }
+    };
 
-    var txt = atxt + btxt + convtxt + mtxt;
-    if (rovidconv)
-        txt += nerdb + nerdmat;
-    //console.log(mtxt)
+    for (var j = 0; j < Math.min(nb, sorok); j++) {
+        mtxt += bv[j] + " \\\\ ";
+        nerdb += bv[j] + " \\\\ ";
+    }
+    mtxt += "\\end{pmatrix} = \\begin{pmatrix}";
+    nerdb += "\\end{pmatrix} = ";
+    nerdmat += " \\cdot \\begin{pmatrix}"
+    for (var j = 0; j < sorok; j++) {
+        mtxt += convv[j] + " \\\\ ";
+        nerdmat += convv[j] + " \\\\ ";
+    };
+    mtxt += "\\end{pmatrix}";
+    nerdmat += "\\end{pmatrix}";
+    var txt = atxt + btxt + convtxt + mtxt + nerdb + nerdmat;
     ZFibFab2Latex(txt);
-}
+};
 
 function hatasC(n) {
     if (pentplot)
@@ -8067,7 +8139,6 @@ function nerdFormat(txt) {
     } else if (nerd_numb == "decimal")
         try {
             //out = decForm(nerdamer(txt).evaluate().toTeX('decimals'));
-            console.log(txt)
             out = decForm(nerdamer(txt).text('decimals', nerd_tizedesek * 1 + 1));
         } catch {
             out = nerdamer(txt).evaluate().toTeX(nerd_numb);
@@ -8286,4 +8357,19 @@ function drawPent() {
 function setPentKeplet(elem) {
     $('#penttbl td.selected').removeClass('selected');
     $(elem).addClass("selected");
+};
+
+function peldaSet(e) {
+    const txt = e.innerText;
+    const n = _.last(txt.match(/n = (\d*)/));
+    const inp = txt.split(", input: ")[1].split(" → ")[0];
+    const ch = document.getElementById("cinput");
+    const cinp = document.getElementById("pentcinput");
+    const N = document.getElementById("pentN");
+    if (!ch.checked)
+        ch.click();
+    $(N).val(n).trigger('change');
+    $(cinp).focus().val(inp).trigger('change');
+    $(e).addClass('villbgdark');
+    setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
 };
