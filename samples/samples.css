@@ -3537,6 +3537,18 @@ select#plotst{
     font-weight: 800;
 }
 
+#setpenttbl #sugosor .pentcimke {
+    border: 1px solid #6f6f6f;
+    padding: 5px;
+    background-color: #fff88a;
+    font-family: Katex_Typewriter;
+    font-size: 18px;
+    letter-spacing: -0.083em;
+    margin: 2px 10px 2px 0;
+    display: inline-block;
+    cursor: pointer;
+}
+
 /* Safari */
 
 @-webkit-keyframes spin {
