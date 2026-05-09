@@ -81,38 +81,20 @@
     });
 })();
 
-//$seq\\left(2\\cdot u+\\frac{3}{u+9},4,9\\right)$
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER,
+        Symbol = core.Symbol;
 
-/* function Szamtani(a, d, n, m) {
-    var v = nerdamer.getCore().PARSER.functions.szamtani[0](a, d, m, n)
-    return v;
-} */
-/* (function() {
-          var core = nerdamer.getCore();
-          nerdamer.register({
-              name: 'D',
-              visible: true,
-              numargs: 2,
-              build: function() {
-                  return core.Solve.solve;
-              }
-          })
-      })();
-      (function() {
-          var core = nerdamer.getCore();
-          var _ = core.PARSER;
-
-          function f(a, b) {
-              return core.Algebra.Simplify.ratSimp(D(a.clone(), b.clone()));
-          }
-          //register the function with nerdamer
-          nerdamer.register({
-              name: 'DD',
-              numargs: 2,
-              visible: true,
-              build: function() {
-                  return f;
-              }
-          });
-      })();
-      */
+    function f(w) {
+        return nerdamer('Tr(x)').evaluate({ x: w });
+    }
+    nerdamer.register({
+        name: 'TR',
+        visible: true,
+        numargs: 1,
+        build: function() {
+            return f;
+        }
+    });
+})();
