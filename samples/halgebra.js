@@ -6663,8 +6663,10 @@ var ovmode = false;
 var convmode = false;
 var nagynevezo = 10;
 var pentplot = false;
+var dblplot = false;
 var pentpoints = [];
 var pentpoints2 = [];
+var pentpoints3 = [];
 
 const sigmavalues = [1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127, 84, 144, 68, 126, 96, 144];
 const partvalues = [1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, 4565, 5604, 6842, 8349, 10143, 12310, 14883, 17977, 21637, 26015, 31185, 37338, 44583, 53174, 63261, 75175, 89134, 105558, 124754, 147273, 173525]
@@ -7349,7 +7351,6 @@ function getsora(n) {
                 }
                 if (aa_txt.endsWith(','))
                     aa_txt = aa_txt.slice(0, -1)
-                console.log(aa_txt)
                 nerdamer.setVar('a_sorv', 'vector(' + aa_txt + ')');
             }
             a_sor = function(j) { return nerdamer('vecget(a_sorv,' + (j - 1) + ')').evaluate().toString() };
@@ -7805,22 +7806,26 @@ function hatasZFF(fn, sor, n) {
 function hatasZFFsor(fn, sor, n) {
     const tr = document.getElementById("trset").checked;
     var trKeplet = "";
+    var trStr = "";
     var TR1 = "";
     var TR2 = "";
     if (tr) {
         getsortr();
         trKeplet = nerdamer('Tr(w)').latex();
-        trStr = nerdamer('Tr(w)').toString();
+        trStr = ' ; Tr:w →' + nerdamer('Tr(w)').toString().replaceAll("*", "·");
         TR1 = "\\boldsymbol{T}\\left[";
         TR2 = "\\right]"
     };
     addLoader(n);
     if (pentplot) {
         pentpoints = [];
-        pentpoints = [];
+        pentpoints2 = [];
     };
     setTimeout(() => {
-        var comp = TR1 + "\\text{" + fn + "}\\;\\unicode{x25B7}\\;";
+        var trsor = "";
+        if (tr)
+            trsor = "\\text{Transzformáció:  } w\\longrightarrow\\boldsymbol{T}(w) = " + trKeplet + " \\\\[6mm]";
+        var comp = trsor + TR1 + "\\text{" + fn + "}\\;\\unicode{x25B7}\\;";
         var eloj1 = "";
         if (fn.startsWith("-")) {
             fn = fn.slice(1);
@@ -7857,52 +7862,84 @@ function hatasZFFsor(fn, sor, n) {
                 return;
         };
         var txt = "";
-        var vec = "\\left(";
+        var vec = TR1 + "\\left(";
+        var vectr = "";
+        if (tr)
+            vectr += "\\\\[2mm]\\Downarrow \\\\  {\\scriptsize{\\boldsymbol{T}: w\\longrightarrow " + trKeplet + "}}\\\\ \\Downarrow \\\\[2mm]\\left(";
+        // I.
         for (var j = 1; j <= n; j++) {
             //comp += nerdKimenet(nerdamer(xeloj + eloj2 + ertekfn(j).toString()).toString()) + ",";
             var x = nerdFormat(xeloj + eloj2 + ertekfn(j));
             comp += x + ",";
-            //if (pentplot)
-            //    pentpoints2.push([j, 1 * nerdamer(x).text('decimals', nerd_tizedesek * 1 + 1)]);
             getsetZycFabFib(fn, j, false);
             var F3 = fn + "_" + j + "(";
             for (var i = 1; i <= j; i++) {
                 F3 += xeloj + eloj2 + ertekfn(i) + ",";
             }
             F3 = F3.slice(0, -1) + ")";
-            if (tr)
-            //F3 = trStr.replaceAll("w", "(" + F3 + ")");
-                F3 = "TR(" + F3 + ")";
             if (eloj1 == "-" && eloj2 == "") {
-                if (pentplot)
+                if (pentplot && dblplot && !tr)
                     pentpoints.push([j, 1 * nerdamer("-" + F3).text('decimals', nerd_tizedesek * 1 + 1)]);
                 vec += nerdFormat("-" + F3) + ","; //vec += nerdKimenet(nerdamer("-" + F3).toString()) + ",";
             } else if (eloj1 == "-" && eloj2 == "-") {
-                if (pentplot)
+                if (pentplot && dblplot && !tr)
                     pentpoints.push([j, 1 * nerdamer("-" + F3).text('decimals', nerd_tizedesek * 1 + 1)]);
                 vec += nerdFormat("-" + F3) + ","; //vec += nerdKimenet(nerdamer("-" + F3).toString()) + ",";
             } else if (eloj1 == "" && eloj2 == "-") {
-                if (pentplot)
+                if (pentplot && dblplot && !tr)
                     pentpoints.push([j, 1 * nerdamer(F3).text('decimals', nerd_tizedesek * 1 + 1)]);
                 vec += nerdFormat(F3) + ","; //vec += nerdKimenet(nerdamer(F3).toString()) + ",";
             } else if (eloj1 == "" && eloj2 == "") {
-                if (pentplot)
+                if (pentplot && dblplot && !tr)
                     pentpoints.push([j, 1 * nerdamer(F3).text('decimals', nerd_tizedesek * 1 + 1)]);
                 vec += nerdFormat(F3) + ","; //vec += nerdKimenet(nerdamer(F3).toString()) + ",";
-            }
+            };
+            if (tr) {
+                F3 = "Tr(" + F3 + ")";
+                //console.log(F3, "->> ", j, 1 * nerdamer(F3).evaluate().text('decimals', nerd_tizedesek * 1 + 1))
+
+                if (eloj1 == "-" && eloj2 == "") {
+                    if (pentplot)
+                        pentpoints3.push([j, 1 * nerdamer("-" + F3).evaluate().text('decimals', nerd_tizedesek * 1 + 1)]);
+                    vectr += nerdFormat(nerdamer("-" + F3).evaluate()) + ","; //vec += nerdKimenet(nerdamer("-" + F3).toString()) + ",";
+                } else if (eloj1 == "-" && eloj2 == "-") {
+                    if (pentplot)
+                        pentpoints3.push([j, 1 * nerdamer("-" + F3).evaluate().text('decimals', nerd_tizedesek * 1 + 1)]);
+                    vectr += nerdFormat(nerdamer("-" + F3).evaluate()) + ","; //vec += nerdKimenet(nerdamer("-" + F3).toString()) + ",";
+                } else if (eloj1 == "" && eloj2 == "-") {
+                    if (pentplot)
+                        pentpoints3.push([j, 1 * nerdamer(F3).evaluate().text('decimals', nerd_tizedesek * 1 + 1)]);
+                    vectr += nerdFormat(nerdamer(F3).evaluate()) + ","; //vec += nerdKimenet(nerdamer(F3).toString()) + ",";
+                } else if (eloj1 == "" && eloj2 == "") {
+                    if (pentplot)
+                        pentpoints3.push([j, 1 * nerdamer(F3).evaluate().text('decimals', nerd_tizedesek * 1 + 1)]);
+                    vectr += nerdFormat(nerdamer(F3).evaluate()) + ","; //vec += nerdKimenet(nerdamer(F3).toString()) + ",";
+                }
+            };
+            //console.log("pentpoints3->> ", pentpoints3);
         }
-        vec += "...\\right)";
+        vec += "...\\right)" + TR2;
+        //console.log("vec ->>", vec)
+        if (tr)
+            vectr += "...\\right)";
+        //console.log("vectr ->>", vectr)
+        vec += vectr
         comp += "...)" + TR2;
+        //console.log("comp ->>", comp)
         txt = comp + "=" + vec;
-        pentsorout = vec;
+        //console.log("txt ->>", txt)
+        if (tr)
+            pentsorout = "\\left(" + _.last(vectr.split("("));
+        else
+            pentsorout = vec;
         if (pentov)
             txt += pentovfnsor(n);
         ZFibFab2Latex(txt);
         if (pentplot)
-            if (pentov)
-                pentPlot2(n, eloj1 + fn + xeloj + " ▷ " + eloj2 + sor + " (n = " + n + ")");
+            if (pentov && dblplot)
+                pentPlot2(n, eloj1 + fn + xeloj + " ▷ " + eloj2 + sor + " (n = " + n + ")" + trStr);
             else
-                pentPlot(n, eloj1 + fn + xeloj + " ▷ " + eloj2 + sor + " (n = " + n + ")");
+                pentPlot2(n, eloj1 + fn + xeloj + " ▷ " + eloj2 + sor + " (n = " + n + ")" + trStr);
     }, 10)
 };
 
@@ -8136,9 +8173,20 @@ function displayConv() {
     ZFibFab2Latex(txt);
 };
 
-function hatasC(n) {
-    if (pentplot)
+function hatasC(n, c_txt) {
+    const tr = document.getElementById("trset").checked;
+    var trKeplet = "";
+    var trStr = "";
+    if (tr) {
+        getsortr();
+        trKeplet = nerdamer('Tr(w)').latex();
+        trStr = ' ; Tr:w →' + nerdamer('Tr(w)').toString().replaceAll("*", "·");
+    };
+    if (pentplot) {
         pentpoints = [];
+        pentpoints2 = [];
+        pentpoints3 = [];
+    }
     var ertekfc = "";
 
     if (getsorc(n)) {
@@ -8147,6 +8195,12 @@ function hatasC(n) {
         return;
 
     var txt = "\\left(";
+    var txtr0 = "",
+        txtr = "";
+    if (tr) {
+        txtr0 += "\\\\[2mm]\\Downarrow \\\\  {\\scriptsize{\\boldsymbol{T}: w\\longrightarrow " + trKeplet + "}}\\\\ \\Downarrow \\\\[2mm]";
+        txtr += "\\left(";
+    }
     for (var j = 1; j <= n; j++) {
         var Fb = ertekfc(j);
         txt += nerdFormat(Fb) + ",";
@@ -8155,11 +8209,28 @@ function hatasC(n) {
         //txt += Fraction(Fb).toLatex() + ",";
         //txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
         //txt += nerdKimenet(nerdamer(Fb).toString()) + ",";
+        if (tr) {
+            Fb = "Tr(" + Fb + ")";
+            //console.log(Fb, "->> ", j, 1 * nerdamer(Fb).evaluate().text('decimals', nerd_tizedesek * 1 + 1))
+
+            if (pentplot)
+                pentpoints3.push([j, 1 * nerdamer(Fb).evaluate().text('decimals', nerd_tizedesek * 1 + 1)]);
+            txtr += nerdFormat(nerdamer(Fb).evaluate()) + ",";
+        }
     }
-    pentsorout = txt.slice(6, -1);
+    if (tr)
+        pentsorout = txtr.slice(6, -1);
+    else
+        pentsorout = txt.slice(6, -1);
     txt = txt.slice(0, -1) + "\\right)";
+    if (tr)
+        txtr = txtr.slice(0, -1) + "\\right)";
     txt = "\\bbox[#c4fff1,5pt,border: 2px solid #1d7597]{" + txt + "}"
+    if (tr)
+        txt += txtr0 + "\\bbox[#ffd7c4,5pt,border: 2px solid #971d1d]{" + txtr + "}";
     ZFibFab2Latex(txt);
+    if (pentplot)
+        pentPlot3(n, c_txt + trStr);
 };
 
 function nerdFormat(txt) {
@@ -8293,6 +8364,59 @@ function pentPlot2(n, cim) {
     ttl.style.fontSize = "16px";
     ttl.style.fontFamily = "Katex_Main";
 };
+
+function pentPlot3(n, cim) {
+    document.getElementById('plotZ').innerHTML = '';
+    const elemfn = document.querySelector("#fnpz");
+    const plottype = $("#setpenttbl #plotst option:selected").val();
+    elemfn.style.display = "block";
+    const points = [...pentpoints];
+    var points2 = [...pentpoints2];
+    var points3 = [...pentpoints3]
+    const yns = [...points, ...points2, ...points3].map(y => y[1]);
+    var felso = _.max(yns);
+    var also = _.min(yns);
+    var dy = (felso - also) * 0.05;
+    if (dy < 0.01)
+        dy = 0.1;
+    felso += dy;
+    also -= dy;
+    const ddy = dy * 0.25;
+    points2 = [...points2].map(y => [y[0], y[1] - ddy]);
+    points3 = [...points3].map(y => [y[0], y[1] + ddy]);
+    functionPlot({
+        target: '#plotZ',
+        title: cim,
+        grid: true,
+        yAxis: {
+            domain: [also, felso]
+        },
+        xAxis: {
+            domain: [-1, n + 1]
+        },
+        data: [{
+            points: points,
+            fnType: 'points',
+            graphType: plottype,
+            color: 'red',
+        }, {
+            points: points2,
+            fnType: 'points',
+            graphType: plottype,
+            color: 'blue',
+        }, {
+            points: points3,
+            fnType: 'points',
+            graphType: plottype,
+            color: 'green',
+        }]
+    });
+    const ttl = document.querySelector('svg.function-plot text.title')
+    ttl.setAttribute('x', 200);
+    ttl.style.fontSize = "16px";
+    ttl.style.fontFamily = "Katex_Main";
+};
+
 //(1/(4*n*sqrt(3))*exp(pi*sqrt(2*n/3)))/part(n)
 function drawPent() {
     nerdamer.flush();
@@ -8326,17 +8450,15 @@ function drawPent() {
             out = nerdFormat(c_txt);
             ZFibFab2Latex(out);
         } else {
-            hatasC(n);
+            hatasC(n, c_txt);
             $("#pentsorcopytok").css("display", "block");
-            if (pentplot)
-                pentPlot(n, c_txt);
         }
     } else if (convmode) {
         displayConv();
         $("#pentsorcopytok").css("display", "block");
     } else if (spdmode) {
         const sor = $("#setpenttbl #spd option:selected").text();
-        var t = 20;
+        var t = 100;
         if (eloj2 == "▬")
             eloj2 = "-";
         else
