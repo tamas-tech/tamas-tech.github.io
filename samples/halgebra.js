@@ -7937,9 +7937,9 @@ function hatasZFFsor(fn, sor, n) {
         ZFibFab2Latex(txt);
         if (pentplot)
             if (pentov && dblplot)
-                pentPlot2(n, eloj1 + fn + xeloj + " ▷ " + eloj2 + sor + " (n = " + n + ")" + trStr);
+                pentPlot3(n, eloj1 + fn + xeloj + " ▷ " + eloj2 + sor + " (n = " + n + ")" + trStr);
             else
-                pentPlot2(n, eloj1 + fn + xeloj + " ▷ " + eloj2 + sor + " (n = " + n + ")" + trStr);
+                pentPlot3(n, eloj1 + fn + xeloj + " ▷ " + eloj2 + sor + " (n = " + n + ")" + trStr);
     }, 10)
 };
 
