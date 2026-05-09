@@ -7551,6 +7551,26 @@ function getsorc(n) {
     };
 };
 
+function getsortr() {
+    const elem = document.getElementById("pentout");
+    var t_txt = document.getElementById("trinput").value;
+    const vars = _.uniq(t_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
+    if (vars.length > 1) {
+        elem.innerHTML = "Vátozó hiba:<br/>A megadott transzformációs kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + t_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>";
+        return false;
+    } else {
+        t_txt = t_txt.trim();
+        try {
+            var fn = nerdamer(t_txt.trim());
+            tr_sor = fn.buildFunction();
+            nerdamer.setFunction('Tr', vars, t_txt);
+        } catch (error) {
+            elem.innerHTML = error
+            return false;
+        };
+    };
+};
+
 function pentovfn(n) {
     var elojb = $("#setpenttbl #ovpente2").text();
     if (elojb == "▬")
@@ -7783,13 +7803,24 @@ function hatasZFF(fn, sor, n) {
 };
 
 function hatasZFFsor(fn, sor, n) {
+    const tr = document.getElementById("trset").checked;
+    var trKeplet = "";
+    var TR1 = "";
+    var TR2 = "";
+    if (tr) {
+        getsortr();
+        trKeplet = nerdamer('Tr(w)').latex();
+        trStr = nerdamer('Tr(w)').toString();
+        TR1 = "\\boldsymbol{T}\\left[";
+        TR2 = "\\right]"
+    };
     addLoader(n);
     if (pentplot) {
         pentpoints = [];
         pentpoints = [];
     };
     setTimeout(() => {
-        var comp = "\\text{" + fn + "}\\;\\unicode{x25B7}\\;";
+        var comp = TR1 + "\\text{" + fn + "}\\;\\unicode{x25B7}\\;";
         var eloj1 = "";
         if (fn.startsWith("-")) {
             fn = fn.slice(1);
@@ -7800,16 +7831,16 @@ function hatasZFFsor(fn, sor, n) {
         if (sor.startsWith("-")) {
             sor = sor.replace("-", "");
             eloj2 = "-"
-            comp += "(-" + sor + ") = ";
+            comp += "(-" + sor + ")" + TR2 + " = ";
         } else
-            comp += sor + " = ";
+            comp += sor + TR2 + " = ";
 
         var xeloj = "";
         if (fn.endsWith("-")) {
             fn = fn.slice(0, -1);
             xeloj = "-";
         };
-        comp += eloj1 + "\\text{" + fn + "}\\;\\unicode{x25B7}\\;(";
+        comp += TR1 + eloj1 + "\\text{" + fn + "}\\;\\unicode{x25B7}\\;(";
         var ertekfn = sigma_val;
         if (sor == "p") {
             ertekfn = p_val;
@@ -7839,6 +7870,9 @@ function hatasZFFsor(fn, sor, n) {
                 F3 += xeloj + eloj2 + ertekfn(i) + ",";
             }
             F3 = F3.slice(0, -1) + ")";
+            if (tr)
+            //F3 = trStr.replaceAll("w", "(" + F3 + ")");
+                F3 = "TR(" + F3 + ")";
             if (eloj1 == "-" && eloj2 == "") {
                 if (pentplot)
                     pentpoints.push([j, 1 * nerdamer("-" + F3).text('decimals', nerd_tizedesek * 1 + 1)]);
@@ -7858,7 +7892,7 @@ function hatasZFFsor(fn, sor, n) {
             }
         }
         vec += "...\\right)";
-        comp += "...)";
+        comp += "...)" + TR2;
         txt = comp + "=" + vec;
         pentsorout = vec;
         if (pentov)
