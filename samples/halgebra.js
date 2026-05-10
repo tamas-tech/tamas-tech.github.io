@@ -6755,6 +6755,21 @@ function tglUserb() {
     }
 };
 
+function tglpentdet(e) {
+    var elem = document.getElementById("keplet_k6");
+    if (e.innerHTML === "Determinant") {
+        e.innerHTML = "Formula";
+        var txt = '\\begin{gather*}\\boldsymbol{Fib}_{n}=(-1)^{n}\\begin{vmatrix}x_{1} & \\boldsymbol{1} & 0 & 0 & \\ldots & 0 \\\\ x_{2} & x_{1} & \\boldsymbol{1} & 0 & \\ldots & 0 \\\\ x_{3} & x_{2} & x_{1} & \\boldsymbol{1} & \\ldots & 0\\\\ \\vdots  & \\vdots & \\vdots & \\vdots & \\ddots & \\vdots \\\\ x_{n-1} & x_{n-2} & x_{n-3} & x_{n-4} & \\ldots & \\boldsymbol{1} \\\\ x_{n} & x_{n-1} & x_{n-2} & x_{n-3} & \\ldots & x_{1}\\end{vmatrix} \\hspace{5mm}  \\boldsymbol{Fab}_{n}=(-1)^{n}\\begin{vmatrix}\\boldsymbol{1}\\,x_{1} & \\boldsymbol{1} & 0 & 0 &\\ldots & 0\\\\ \\boldsymbol{2}\\,x_{2} & x_{1} & \\boldsymbol{1} & 0 &\\ldots & 0\\\\ \\boldsymbol{3}\\,x_{3} & x_{2} & x_{1} & \\boldsymbol{1} & \\ldots & 0\\\\ \\vdots & \\vdots & \\vdots & \\vdots & \\ddots & \\vdots  \\\\ (\\boldsymbol{n-1})\\,\\,x_{n-1} & x_{n-2} & x_{n-3} & x_{n-4}& \\ldots & \\boldsymbol{1}\\\\ \\boldsymbol{n}\\,\\,x_{n} & x_{n-1} & x_{n-2} & x_{n-3}& \\ldots & x_{1}\\end{vmatrix}\\\\[5mm] \\boldsymbol{Luc}_{n}=\\begin{vmatrix}\\boldsymbol{1}\\,x_{1}& \\boldsymbol{-1} & 0 & 0 &\\ldots & 0\\\\ \\boldsymbol{2}\\,x_{2}& x_{1} & \\boldsymbol{-1} & 0 &\\ldots & 0\\\\ \\boldsymbol{3}\\,x_{3}& x_{2} & x_{1} & \\boldsymbol{-1} & \\ldots & 0\\\\ \\vdots  & \\vdots & \\vdots & \\vdots & \\ddots & \\vdots  \\\\ (\\boldsymbol{n-1})\\,\\,x_{n-1} & x_{n-2} & x_{n-3} & x_{n-4}& \\ldots & \\boldsymbol{-1}\\\\ \\boldsymbol{n}\\,\\,x_{n} & x_{n-1} & x_{n-2} & x_{n-3}& \\ldots & x_{1}\\end{vmatrix} \\hspace{5mm} \\boldsymbol{Zyc}_{n}=\\frac{1}{n!}\\begin{vmatrix}x_{1}& \\boldsymbol{-1} & 0 & 0 &\\ldots & 0\\\\x_{2}& x_{1} & \\boldsymbol{-2} & 0 &\\ldots & 0\\\\x_{3}& x_{2} & x_{1} & \\boldsymbol{-3} & \\ldots & 0\\\\ \\vdots  & \\vdots & \\vdots & \\vdots & \\ddots & \\vdots  \\\\ x_{n-1} & x_{n-2} & x_{n-3} & x_{n-4}& \\ldots & \\boldsymbol{-n+1}\\\\ x_{n} & x_{n-1} & x_{n-2} & x_{n-3}& \\ldots & x_{1}\\end{vmatrix}\\end{gather*}';
+        elem.innerText = "\\[" + txt + "\\]";
+
+    } else {
+        e.innerHTML = "Determinant";
+        var txt = '\\begin{gather*}\\boldsymbol{Fib}_{n}(x_{1},x_{2},\\ldots x_{n})=\\sum_{1^{b_{1}}2^{b_{2}}\\cdots n^{b_{n}}\\vdash n}\\left(\\sum b_{i}\\right)!\\;\\frac{x_{1}^{b_{1}}x_{2}^{b_{2}}\\cdots x_{n}^{b_{n}}}{b_{1}!\\,b_{2}!\\cdots b_{n}!} \\\\ \\\\ \\boldsymbol{Fab}_{n}(x_{1},x_{2},\\ldots x_{n})=n\\sum_{1^{b_{1}}2^{b_{2}}\\cdots n^{b_{n}}\\vdash n}(-1)^{\\sum b_{i}}\\left(\\sum b_{i}-1\\right)!\\;\\frac{x_{1}^{b_{1}}x_{2}^{b_{2}}\\cdots x_{n}^{b_{n}}}{b_{1}!\\,b_{2}!\\cdots b_{n}!}\\\\ \\\\ \\boldsymbol{Luc}_{n}(x_{1},x_{2},\\ldots x_{n})=n\\sum_{1^{b_{1}}2^{b_{2}}\\cdots n^{b_{n}}\\vdash n} \\left(\\sum b_{i}-1\\right)!\\;\\frac{x_{1}^{b_{1}}x_{2}^{b_{2}}\\cdots x_{n}^{b_{n}}}{b_{1}!\\,b_{2}!\\cdots b_{n}!} \\\\ \\\\ \\boldsymbol{Zyc}_{n}(x_{1},x_{2},\\ldots x_{n})=\\sum_{1^{b_{1}}2^{b_{2}}\\cdots n^{b_{n}}\\vdash n}\\frac{1}{1^{b_{1}}2^{b_{2}}\\cdots n^{b_{n}}}\\frac{x_{1}^{b_{1}}x_{2}^{b_{2}}\\cdots x_{n}^{b_{n}}}{b_{1}!\\,b_{2}!\\cdots b_{n}!}\\end{gather*}'
+        elem.innerText = "\\[" + txt + "\\]";
+    }
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+};
+
 function pentjelent(ov) {
     const spdmode = document.querySelector("#setpenttbl td#spdtok").style.display != "none";
     if (!ov) {
