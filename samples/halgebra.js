@@ -7480,6 +7480,12 @@ function getsorc(n) {
     const elem = document.getElementById("pentout");
     var c_txt = $("#usersorc textarea").val();
     const vars = _.uniq(c_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
+    const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+)/g));
+    if (ppolys.length > 0)
+        for (let v of ppolys) {
+            var L = v.split("_");
+            getsetZycFabFib(L[0], parseInt(L[1]), false);
+        };
     if (vars.length > 1) {
         elem.innerHTML = "Vátozó hiba:<br/>A kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + c_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>";
         return false;
@@ -8203,7 +8209,8 @@ function hatasC(n, c_txt) {
     }
     for (var j = 1; j <= n; j++) {
         var Fb = ertekfc(j);
-        txt += nerdFormat(Fb) + ",";
+        //txt += nerdFormat(Fb) + ",";
+        txt += nerdFormat(nerdamer(Fb).evaluate()) + ",";
         if (pentplot)
             pentpoints.push([j, 1 * nerdamer(Fb).text('decimals', nerd_tizedesek * 1 + 1)]);
         //txt += Fraction(Fb).toLatex() + ",";
@@ -8447,7 +8454,7 @@ function drawPent() {
         const nerdkod = document.getElementById("nerdkod").checked;
         if (nerdkod) {
             var out = ""
-            out = nerdFormat(c_txt);
+            out = nerdFormat(nerdamer(c_txt).evaluate());
             ZFibFab2Latex(out);
         } else {
             hatasC(n, c_txt);
