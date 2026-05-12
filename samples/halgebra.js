@@ -6743,18 +6743,6 @@ function tglUsera() {
     }
 };
 
-function tglUserb() {
-    if ($("#setpenttbl #ovspd").val() == "user") {
-        $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'table-cell');
-        $("#setpenttbl #tglspd").attr('colspan', '2');
-        $("#setpenttbl #spdtok").attr('colspan', '1');
-    } else {
-        $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'none');
-        if ($("#setpenttbl #spd").val() != "user")
-            $("#setpenttbl #tglspd").attr('colspan', '6');
-    }
-};
-
 function tglpentdet(e) {
     var elem = document.getElementById("keplet_k6");
     if (e.innerHTML === "Determinant") {
@@ -6770,12 +6758,25 @@ function tglpentdet(e) {
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
+function tglUserb() {
+    if ($("#setpenttbl #ovspd").val() == "user") {
+        $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'table-cell');
+        $("#setpenttbl #tglspd").attr('colspan', '2');
+        $("#setpenttbl #spdtok").attr('colspan', '1');
+    } else {
+        $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'none');
+        if ($("#setpenttbl #spd").val() != "user")
+            $("#setpenttbl #tglspd").attr('colspan', '6');
+    }
+};
+
 function pentjelent(ov) {
     const spdmode = document.querySelector("#setpenttbl td#spdtok").style.display != "none";
+    const n = $("#setpenttbl #pentN").val() * 1;
+    nerdamer.setConstant('N', n);
     if (!ov) {
         const fn1 = $("#setpenttbl td.F1:not(.ov).active");
         const fn2 = $("#setpenttbl td.F2.active");
-        const n = $("#setpenttbl #pentN").val() * 1;
         var eloj1 = $("#setpenttbl #pente1").text();
         var eloj1x = $("#setpenttbl #pente1x").text();
         var eloj2 = $("#setpenttbl #pente2").text();
@@ -6833,7 +6834,6 @@ function pentjelent(ov) {
     } else {
         if (!spdmode) {
             const fn1 = $("#setpenttbl td.F1.ov.active");
-            const n = $("#setpenttbl #pentN").val() * 1
             var oveloj1 = "",
                 ovelojx = "";
             if ($("#setpenttbl #ovpente1").text() == "▬")
@@ -7344,7 +7344,7 @@ function nerdKimenet(x) {
 function getsora(n) {
     const elem = document.getElementById("pentout");
     var a_txt = $("#usersora input").val();
-    const vars = _.uniq(a_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
+    const vars = _.uniq(a_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g)).filter(y => y != "N");
     if (vars.length > 1) {
         elem.innerHTML = "Vátozó hiba:<br/>A kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + a_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>";
         return false;
@@ -7420,7 +7420,7 @@ function getsora(n) {
 function getsorb(n) {
     const elem = document.getElementById("pentout");
     var b_txt = $("#usersorb input").val();
-    const vars = _.uniq(b_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
+    const vars = _.uniq(b_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g)).filter(y => y != "N");
     if (vars.length > 1) {
         elem.innerHTML = "Vátozó hiba:<br/>A kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + b_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>";
         return false;
@@ -7494,7 +7494,7 @@ function getsorb(n) {
 function getsorc(n) {
     const elem = document.getElementById("pentout");
     var c_txt = $("#usersorc textarea").val();
-    const vars = _.uniq(c_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
+    const vars = _.uniq(c_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g)).filter(y => y != "N");
     const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+)/g));
     if (ppolys.length > 0)
         for (let v of ppolys) {
@@ -7576,7 +7576,7 @@ function getsorc(n) {
 function getsortr() {
     const elem = document.getElementById("pentout");
     var t_txt = document.getElementById("trinput").value;
-    const vars = _.uniq(t_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g));
+    const vars = _.uniq(t_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g)).filter(y => y != "N");
     if (vars.length > 1) {
         elem.innerHTML = "Vátozó hiba:<br/>A megadott transzformációs kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + t_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>";
         return false;
@@ -8172,6 +8172,7 @@ function displayConv() {
     } else {
         nerdmat = JSON.parse("[" + nerdmat.slice(7, -1) + "]");
         nerdmat = "matrix(" + JSON.stringify(math.pinv(nerdmat)).slice(1, -1) + ")";
+        console.log(nerdamer(nerdmat).latex())
         nerdmat = nerdamer(nerdmat).latex().replaceAll("vmatrix", "pmatrix");
         var nerdb = "\\\\[15mm] \\text{Az egyenletet invertálva (Moore-Penrose általánosított inverz):}\\\\[4mm]  \\begin{pmatrix}";
         mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
