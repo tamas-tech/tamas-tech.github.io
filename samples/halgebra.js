@@ -6302,7 +6302,36 @@ function resizeInput(e) {
     e.style.width = e.value.length + "ch";
 };
 
-function reccTable() {
+function setNM(e) {
+    const kell = document.getElementById("NeM").checked;
+    if (!kell)
+        return;
+    else {
+        if (e.id == "reccN")
+            document.getElementById("reccM").value = e.value;
+        else
+            document.getElementById("reccN").value = e.value;
+    };
+};
+
+function setNMe(b) {
+    if (!b)
+        return;
+    else {
+        const Ne = document.getElementById("reccN");
+        const Me = document.getElementById("reccM");
+        const NM = Math.max(Ne.value * 1, Me.value * 1);
+        const nm = Math.min(Ne.value * 1, Me.value * 1);
+        console.log(nm, NM)
+        if (nm < NM) {
+            $(Ne).val(NM).trigger("change");
+            $(Me).val(NM).trigger("change");
+            reccTable();
+        };
+    };
+};
+
+function reccTable(fill) {
     const elem = document.getElementById("reccout");
     const tbl = document.getElementById("recctbl");
     const N = document.getElementById("reccN").value * 1 + 1;
@@ -6312,8 +6341,9 @@ function reccTable() {
         var b = _.dropRightWhile(Object.values($("#recctbl th.hide-column input")).map(y => y.value * 1), y => isNaN(y));
     } else {
         var a = Array(N - 1).fill(0);
-        a = [1, ...a];
-        var b = range(0, M - 1).map(y => Math.pow(2, y));
+        a = [0, ...a];
+        //var b = [1, ...range(0, M - 2).map(y => Math.pow(2, y))];
+        var b = Array(M).fill(0);;
     }
     if (N > a.length) {
         var ap = Array(N - a.length).fill(0);
@@ -6326,7 +6356,7 @@ function reccTable() {
 
     var txt = "";
 
-    txt += '<div style="margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="recctbl" class="table-hideable"><thead><tr class="fej"><th ><input type="text" value="' + a[0] + '" class="recca" onchange="tblRec();" oninput="resizeInput(this);"></input></th>';
+    txt += '<div style="margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><div id="recchiba"></div><table id="recctbl" class="table-hideable"><thead><tr class="fej"><th ><input type="text" value="' + a[0] + '" class="recca" onchange="tblRec();" oninput="resizeInput(this);"></input></th>';
     for (var j = 0; j < M; j++)
         txt += '<th class="hide-column hide-col" onchange="tblRec();"><input type="text" value="' + b[j] + '" class="reccb" onchange="tblRec();" oninput="resizeInput(this);"></input></sub></th>';
     txt += '</tr></thead><tbody>';
@@ -6341,7 +6371,125 @@ function reccTable() {
         txt += '<td>0</td>';
     txt += '</tr></tbody></table></div>';
     elem.innerHTML = txt;
+    $("#reccsorcopytok").css("display", "block");
+    if (fill)
+        reccTblFill();
+    else
+        tblRec();
+};
+
+function getreccfn(n) {
+    var a_txt = $("#reccsora input").val();
+    const figy = document.getElementById("recchiba");
+    const vars = _.uniq(a_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g)).filter(y => y != "N");
+    var setfigy = function(txt, displ) {
+        if (figy != undefined) {
+            figy.innerHTML = txt;
+            figy.style.display = displ;
+        }
+    };
+    setfigy("", "none");
+    if (vars.length > 1) {
+        setfigy("Vátozó hiba:<br/>A kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + a_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>", "block");
+        return false;
+    } else if (vars.length == 0 && a_txt.length != 1) {
+        try {
+            const ism = a_txt.endsWith(',...');
+            if (ism)
+                a_txt = a_txt.slice(0, -4);
+            nerdamer.setVar('recc_sorv', 'vector(' + a_txt + ')');
+            const L = nerdamer('recc_sorv').symbol.elements.length;
+            if (L < n) {
+                if (!ism) {
+                    const N = Math.ceil(n / L);
+                    a_txt += ",";
+                    var aa_txt = a_txt.repeat(N);
+                } else {
+                    const last = _.last(a_txt.split(","));
+                    var aa_txt = a_txt + ("," + last).repeat(n - L);
+                }
+                if (aa_txt.endsWith(','))
+                    aa_txt = aa_txt.slice(0, -1)
+                nerdamer.setVar('recc_sorv', 'vector(' + aa_txt + ')');
+            }
+            a_sor = function(j) { return nerdamer('vecget(recc_sorv,' + (j - 1) + ')').evaluate().toString() };
+            nerdamer.setFunction('recc_sor', ['j'], 'evaluate(vecget(recc_sorv,j-1))');
+            kepletes = false;
+            return true;
+        } catch (error) {
+            setfigy(error, "block");
+            return false;
+        }
+    } else {
+        a_txt = a_txt.trim();
+        var p = a_txt.indexOf("...");
+        if (p > -1) {
+            try {
+                var form = a_txt.slice(p + 3);
+                var aa_txt = a_txt.slice(0, p - 1);
+                const h = aa_txt.split(",").length;
+                var x = vars[0]
+                aa_txt += ",";
+                form = form.replaceAll(x, "(" + x + "+" + h + ")");
+                nerdamer.setFunction("pwrecc", vars, form)
+                for (j = 1; j <= n - h; j++)
+                    aa_txt += nerdamer("pwrecc(" + j + ")").toString() + ",";
+                aa_txt = aa_txt.slice(0, -1)
+                nerdamer.setVar('recc_sorv', 'vector(' + aa_txt + ')');
+                a_sor = function(j) { return nerdamer('vecget(recc_sorv,' + (j - 1) + ')').evaluate().toString() };
+                nerdamer.setFunction('recc_sor', ['j'], 'evaluate(vecget(recc_sorv,j-1))');
+                kepletes = false;
+                return true;
+            } catch (error) {
+                setfigy(error, "block");
+                return false;
+            }
+        } else {
+            try {
+                var fn = nerdamer(a_txt.trim());
+                a_sor = fn.buildFunction();
+                nerdamer.setFunction('recc_sor', vars, a_txt);
+                kepletes = true;
+                return true;
+            } catch (error) {
+                setfigy(error, "block");
+                return false;
+            }
+        }
+    }
+};
+
+function reccTblFill() {
+    const M = document.getElementById("reccM").value * 1;
+    var sel = $("#reccselect option:selected").text();
+    var fn = egy_n;
+    if (sel == "σ")
+        fn = sigma_val;
+    else if (sel == "p")
+        fn = p_val;
+    else if (sel == "p₀")
+        fn = p0_val;
+    else if (sel == "δ₅")
+        fn = deltaP
+    else if (sel == "k·δ₅(k)")
+        fn = kdeltaP
+    else if (sel == "a₁,...") {
+        if (getreccfn(M)) {
+            fn = a_sor;
+        } else
+            return;
+    };
+    for (var j = 0; j < M; j++)
+        $("#recctbl .reccb:nth(" + j + ")").val(fn(j + 1))
     tblRec();
+};
+
+function tglRecca() {
+    if ($("#reccselect").val() == "user") {
+        $("#reccsora").css('display', 'inline-block');
+    } else {
+        $("#reccsora").css('display', 'none');
+    };
 };
 
 function pent_recc(n, m) {
@@ -6375,7 +6523,8 @@ function tblRec() {
     const M = document.getElementById("reccM").value * 1;
     const a = Object.values($("#recctbl th:not(.hide-column) input")).map(y => y.value * 1);
     const b = Object.values($("#recctbl th.hide-column input")).map(y => y.value * 1);
-    //ar s = Array(M).fill(0);
+    //const b = Object.values($("#recctbl th.hide-column input")).map(y => nerdamer.convertFromLaTeX(y.value * 1));
+    //console.log(b)
     for (var j = 1; j < M + 1; j++) {
         var sj = b[j - 1];
         for (var i = 1; i < N; i++) {
@@ -6387,6 +6536,56 @@ function tblRec() {
         $("#recctbl tr#recctr td:nth(" + (j - 1) + ")").html(sj);
     };
     $('#recctbl tr input').trigger("input");
+};
+
+function reccSync() {
+    var txt = "";
+    const vagolap = document.getElementById("reccainput");
+    var vec = [];
+    $("#recctbl th .reccb").each(
+        function() {
+            vec.push(this.value);
+        });
+    vec = vec.map(y => nerdamer.convertFromLaTeX(y));
+    txt = vec.toString();
+    vagolap.value = txt;
+    navigator.clipboard.writeText(txt);
+    $('#vagolap').addClass('villbgdark');
+    setTimeout(() => {
+        $('#vagolap').removeClass('villbgdark');
+    }, 300);
+};
+
+function copy2OEISrecc() {
+    var txt = "";
+    const deno = document.getElementById("reccdenoms").checked;
+    const vagolap = document.getElementById("reccvagolap");
+    var c = document.getElementById("reccszorzo").value;
+    try {
+        c = nerdamer.convertFromLaTeX(c).evaluate();
+    } catch (error) {
+        document.getElementById("reccvagolap").innerHTML = error;
+    }
+    var vec = [];
+    $("#recctr td").each(
+        function() {
+            vec.push(this.innerText)
+        });
+    vec = vec.map(y => nerdamer.convertFromLaTeX(y));
+    if (deno) {
+        const denoms = vec.map(y => y.denominator().multiply(c).toString());
+        txt = denoms.toString();
+    } else {
+        const numers = vec.map(y => y.numerator().multiply(c).toString());
+        txt = numers.toString();
+    }
+    txt = txt.replaceAll(",", ", ");
+    vagolap.innerHTML = "clipboard &rightarrow; " + txt;
+    navigator.clipboard.writeText(txt);
+    $('#vagolap').addClass('villbgdark');
+    setTimeout(() => {
+        $('#vagolap').removeClass('villbgdark');
+    }, 300);
 };
 
 // pentagonal relation
@@ -6571,7 +6770,14 @@ function doubshuffrel(str1, str2) {
     return out;
 };
 
-
+function recOfDLIR(n) {
+    var out = 0;
+    if (n == 2)
+        out = 0;
+    else
+        out = 2 * recOfDLIR(n - 1) + 1 + deltaP(n - 1) - deltaP(n - 2);
+    return out;
+};
 
 /** AI AI AI
  * Sigma(n) kiszámítása partíciókból (Euler-féle ötszögszám-alapú összefüggés)
@@ -6639,15 +6845,86 @@ function p0_val(n) {
 };
 
 function egy_n(i) {
-    if (i == n)
-        return n;
+    if (i == 1)
+        return 1;
     else
         return 0;
 };
 
+function sigmaM_val(n, m) {
+    if (n <= 0 || m <= 0) return 0;
+
+    let sum = 0;
+    const limit = Math.floor(Math.sqrt(n));
+
+    for (let d = 1; d <= limit; d++) {
+        if (n % d === 0) {
+            // d egy osztó
+            if (d <= m) {
+                sum += d;
+            }
+
+            // Az osztópár kiszámítása (n / d)
+            let companion = n / d;
+            if (companion !== d && companion <= m) {
+                sum += companion;
+            }
+        }
+    }
+    return sum;
+};
+
+function pM_val(n, m) {
+    if (n < 0 || m <= 0) return 0;
+
+    // DP tábla inicializálása (n + 1 méretű)
+    let dp = new Array(n + 1).fill(0);
+    dp[0] = 1; // 0-t egyféleképpen lehet felbontani
+
+    // Iteráció a lehetséges maximális részeken (1-től m-ig)
+    for (let i = 1; i <= m; i++) {
+        for (let j = i; j <= n; j++) {
+            dp[j] += dp[j - i];
+        }
+    }
+
+    return dp[n];
+};
+
+function mahonian(n, m) {
+    if (m < 0 || m > (n * (n - 1)) / 2) return 0;
+    if (n === 0 && m === 0) return 1;
+    if (n === 0) return 0;
+
+    // Csak a legutóbbi n állapotot kell tárolnunk, m méretben
+    let dp = new Array(m + 1).fill(0);
+    dp[0] = 1; // Alapeset: M(1, 0) = 1
+
+    // i az elemek száma 2-től n-ig
+    for (let i = 2; i <= n; i++) {
+        let nextDp = new Array(m + 1).fill(0);
+        let windowSum = 0;
+
+        // Csúszóablakos összegzés az O(n * m) időhöz
+        for (let j = 0; j <= m; j++) {
+            windowSum += dp[j];
+            if (j >= i) {
+                windowSum -= dp[j - i];
+            }
+            nextDp[j] = windowSum;
+        }
+        dp = nextDp;
+    }
+
+    return dp[m];
+}
+
+
+
 var a_sor = function() {};
 var b_sor = function() {};
 var c_sor = function() {};
+var recc_sor = function() {};
 // Ellenőrzés
 //const testValues = [5, 9, 12];
 //testValues.forEach(n => {
@@ -6691,6 +6968,9 @@ $(document).ready(function() {
     $('#nerdtizedesek').on('input', function() {
         nerd_tizedesek = $(this).prop('value');
     });
+    $('#reccsora button').on('click', function(event) {
+        event.stopPropagation();
+    });
 });
 
 function copy2OEIS() {
@@ -6710,6 +6990,7 @@ function copy2OEIS() {
     else
         var vec = pentsorout.slice(6, -11).split(',').map(y => nerdamer.convertFromLaTeX(y));
     //vec = vec.map(y => y.multiply(c))
+    console.log(pentsorout.slice(6, -11).split(','), vec)
     if (deno) {
         const denoms = vec.map(y => y.denominator().multiply(c).toString());
         txt = denoms.toString();
