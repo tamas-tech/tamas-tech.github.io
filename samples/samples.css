@@ -3403,6 +3403,15 @@ background-color: #eaeaea;
     display: inline-block;
 }
 
+#reccout #recchiba {
+    display: none;
+    font-size: 16px;
+    padding: 3px 5px;
+    border: 1px solid red;
+    background-color: #ffd4d4;
+    margin-left: 6px;
+}
+
 #recctbl th {
     max-width: 100%!important;
 }
@@ -3412,7 +3421,9 @@ background-color: #eaeaea;
     margin: 0;
     border: none;
     appearance: none;
-    min-width: 30px;
+    /*min-width: 30px;*/
+    min-width: calc(100% - 4px);
+    min-height: calc(100% - 4px);
     line-height: 22px;
     text-align: center;
     font-size: 18px;
@@ -3480,7 +3491,8 @@ background-color: #eaeaea;
 select#spd,
 select#ovspd,
 select#nerdnumb,
-select#plotst{
+select#plotst,
+select#reccselect{
     font-family: Cambria Math;
     font-size: 18px;
     border: 1px solid #cecece;
@@ -3488,6 +3500,11 @@ select#plotst{
     text-align: center;
     min-width: 160px;
     height: 26px;
+}
+
+select#reccselect {
+    min-width: 50px;
+    margin-right: 10px;
 }
 
 #setpenttbl #pentr.dumb {
