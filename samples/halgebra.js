@@ -6378,6 +6378,17 @@ function reccTable(fill) {
         tblRec();
 };
 
+function setReccnmval(val) {
+    reccpval = val;
+};
+
+function setReccnm(chk) {
+    if (chk)
+        reccp = 2;
+    else
+        reccp = 1;
+};
+
 function getreccfn(n) {
     var a_txt = $("#reccsora input").val();
     const figy = document.getElementById("recchiba");
@@ -6465,15 +6476,30 @@ function reccTblFill() {
     var fn = egy_n;
     if (sel == "σ")
         fn = sigma_val;
-    else if (sel == "p")
+    if (sel == "σₘ") {
+        if (reccp == 1)
+            fn = sigmaMmr;
+        else
+            fn = sigmaMnr;
+    } else if (sel == "p")
         fn = p_val;
-    else if (sel == "p₀")
+    else if (sel == "pₘ") {
+        if (reccp == 1)
+            fn = pMmr;
+        else
+            fn = pMnr;
+    } else if (sel == "p₀")
         fn = p0_val;
     else if (sel == "δ₅")
         fn = deltaP
     else if (sel == "k·δ₅(k)")
         fn = kdeltaP
-    else if (sel == "a₁,...") {
+    else if (sel == "iₘ") {
+        if (reccp == 1)
+            fn = mahmr;
+        else
+            fn = mahnr;
+    } else if (sel == "a₁,...") {
         if (getreccfn(M)) {
             fn = a_sor;
         } else
@@ -6485,10 +6511,16 @@ function reccTblFill() {
 };
 
 function tglRecca() {
-    if ($("#reccselect").val() == "user") {
+    const sel = $("#reccselect").val();
+    if (sel == "user") {
         $("#reccsora").css('display', 'inline-block');
+        $("#reccparam").css('display', 'none');
     } else {
         $("#reccsora").css('display', 'none');
+        if (["pm", "M", "sm"].includes(sel))
+            $("#reccparam").css('display', 'inline-block');
+        else
+            $("#reccparam").css('display', 'none');
     };
 };
 
@@ -6874,6 +6906,30 @@ function sigmaM_val(n, m) {
     return sum;
 };
 
+function sigmaMna(n) {
+    return sigmaM_val(n, ppaval)
+};
+
+function sigmaMnb(n) {
+    return sigmaM_val(n, ppbval)
+};
+
+function sigmaMnr(n) {
+    return sigmaM_val(n, reccpval)
+};
+
+function sigmaMma(m) {
+    return sigmaM_val(ppaval, m)
+};
+
+function sigmaMmb(m) {
+    return sigmaM_val(ppbval, m)
+};
+
+function sigmaMmr(m) {
+    return sigmaM_val(reccpval, m)
+};
+
 function pM_val(n, m) {
     if (n < 0 || m <= 0) return 0;
 
@@ -6889,6 +6945,30 @@ function pM_val(n, m) {
     }
 
     return dp[n];
+};
+
+function pMna(n) {
+    return pM_val(n, ppaval)
+};
+
+function pMnb(n) {
+    return pM_val(n, ppbval)
+};
+
+function pMnr(n) {
+    return pM_val(n, reccpval)
+};
+
+function pMma(m) {
+    return pM_val(ppaval, m)
+};
+
+function pMmr(m) {
+    return pM_val(reccpval, m)
+};
+
+function pMmb(m) {
+    return pM_val(ppbval, m)
 };
 
 function mahonian(n, m) {
@@ -6917,9 +6997,31 @@ function mahonian(n, m) {
     }
 
     return dp[m];
-}
+};
 
+function mahna(n) {
+    return mahonian(n, ppaval)
+};
 
+function mahnb(n) {
+    return mahonian(n, ppbval)
+};
+
+function mahnr(n) {
+    return mahonian(n, reccpval)
+};
+
+function mahma(m) {
+    return mahonian(ppaval, m)
+};
+
+function mahmb(m) {
+    return mahonian(ppbval, m)
+};
+
+function mahmr(m) {
+    return mahonian(reccpval, m)
+};
 
 var a_sor = function() {};
 var b_sor = function() {};
@@ -6933,6 +7035,12 @@ var recc_sor = function() {};
 
 // pentagonal
 
+var ppa = 2;
+var ppb = 2;
+var ppaval = 1;
+var ppbval = 1;
+var reccp = 2;
+var reccpval = 1;
 var pentov = false;
 var pentsorout = "";
 var kepletes = true;
@@ -7007,16 +7115,47 @@ function copy2OEIS() {
     }, 300);
 };
 
+function setPentnm(chk, id) {
+    if (id == 'a') {
+        if (chk)
+            ppa = 2;
+        else
+            ppa = 1;
+    } else if (id == 'b') {
+        if (chk)
+            ppb = 2;
+        else
+            ppb = 1;
+    };
+};
+
+function setPentnmval(val, id) {
+    if (id == 'a') {
+        ppaval = val;
+    } else if (id == 'b') {
+        ppbval = val;
+    };
+};
+
 function setOutputFontPent(v) {
     var elem = document.getElementById("pentout");
     elem.style.fontSize = v + 'px';
 };
 
 function tglUsera() {
-    if ($("#setpenttbl #spd").val() == "user") {
+    const sel = $("#setpenttbl #spd").val();
+    if (sel == "user") {
         $("#setpenttbl #usersora,#setpenttbl #helptok").css('display', 'table-cell');
         $("#setpenttbl #tglspd").attr('colspan', '2');
         $("#setpenttbl #ovspdtok").attr('colspan', '1');
+        $("#setpenttbl #usersora #pentainput").addClass("shown");
+        $("#setpenttbl #usersora #pentparam_a").removeClass("shown");
+    } else if (["pm", "M", "sm"].includes(sel)) {
+        $("#setpenttbl #usersora,#setpenttbl #helptok").css('display', 'table-cell');
+        $("#setpenttbl #tglspd").attr('colspan', '2');
+        $("#setpenttbl #ovspdtok").attr('colspan', '1');
+        $("#setpenttbl #usersora #pentainput").removeClass("shown");
+        $("#setpenttbl #usersora #pentparam_a").addClass("shown");
     } else {
         $("#setpenttbl #usersora,#setpenttbl #helptok").css('display', 'none');
         if ($("#setpenttbl #ovspd").val() != "user")
@@ -7044,6 +7183,27 @@ function tglUserb() {
         $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'table-cell');
         $("#setpenttbl #tglspd").attr('colspan', '2');
         $("#setpenttbl #spdtok").attr('colspan', '1');
+    } else {
+        $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'none');
+        if ($("#setpenttbl #spd").val() != "user")
+            $("#setpenttbl #tglspd").attr('colspan', '6');
+    }
+};
+
+function tglUserb() {
+    const sel = $("#setpenttbl #ovspd").val();
+    if (sel == "user") {
+        $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'table-cell');
+        $("#setpenttbl #tglspd").attr('colspan', '2');
+        $("#setpenttbl #spdtok").attr('colspan', '1');
+        $("#setpenttbl #usersorb #pentbinput").addClass("shown");
+        $("#setpenttbl #usersorb #pentparam_b").removeClass("shown");
+    } else if (["pm", "M", "sm"].includes(sel)) {
+        $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'table-cell');
+        $("#setpenttbl #tglspd").attr('colspan', '2');
+        $("#setpenttbl #spdtok").attr('colspan', '1');
+        $("#setpenttbl #usersorb #pentbinput").removeClass("shown");
+        $("#setpenttbl #usersorb #pentparam_b").addClass("shown");
     } else {
         $("#setpenttbl #usersorb,#setpenttbl #helptok").css('display', 'none');
         if ($("#setpenttbl #spd").val() != "user")
@@ -7882,14 +8042,29 @@ function pentovfn(n) {
         elojb = "";
     var ertekfb = sigma_val;
     var sorb = $("#setpenttbl #ovspd option:selected").text();
-    if (sorb == "p") {
+    if (sorb == "σₘ") {
+        if (ppb == 1)
+            ertekfb = sigmaMmb;
+        else
+            ertekfb = sigmaMnb;
+    } else if (sorb == "p") {
         ertekfb = p_val;
+    } else if (sorb == "pₘ") {
+        if (ppb == 1)
+            ertekfb = pMmb;
+        else
+            ertekfb = pMnb;
     } else if (sorb == "p₀") {
         ertekfb = p0_val;
     } else if (sorb == "δ₅") {
         ertekfb = deltaP
     } else if (sorb == "k·δ₅(k)") {
         ertekfb = kdeltaP
+    } else if (sorb == "iₘ") {
+        if (ppa == 1)
+            ertekfb = mahmb;
+        else
+            ertekfb = mahnb;
     } else if (sorb == "b₁,...") {
         if (getsorb(n)) {
             ertekfb = b_sor;
@@ -7912,14 +8087,29 @@ function pentovfnsor(n) {
         elojb = "";
     var ertekfb = sigma_val;
     var sorb = $("#setpenttbl #ovspd option:selected").text();
-    if (sorb == "p") {
+    if (sorb == "σₘ") {
+        if (ppb == 1)
+            ertekfb = sigmaMmb;
+        else
+            ertekfb = sigmaMnb;
+    } else if (sorb == "p") {
         ertekfb = p_val;
+    } else if (sorb == "pₘ") {
+        if (ppb == 1)
+            ertekfb = pMmb;
+        else
+            ertekfb = pMnb;
     } else if (sorb == "p₀") {
         ertekfb = p0_val;
     } else if (sorb == "k·δ₅(k)") {
         ertekfb = kdeltaP
     } else if (sorb == "δ₅") {
         ertekfb = deltaP
+    } else if (sorb == "iₘ") {
+        if (ppa == 1)
+            ertekfb = mahmb;
+        else
+            ertekfb = mahnb;
     } else if (sorb == "b₁,...") {
         if (getsorb(n)) {
             ertekfb = b_sor;
@@ -8067,14 +8257,29 @@ function hatasZFF(fn, sor, n) {
 
         var comp = nerdamer(fn + "_" + n).latex() + "(";
         var ertekfn = sigma_val;
-        if (sor == "p") {
+        if (sor == "σₘ") {
+            if (ppa == 1)
+                ertekfn = sigmaMma;
+            else
+                ertekfn = sigmaMna;
+        } else if (sor == "p") {
             ertekfn = p_val;
+        } else if (sor == "pₘ") {
+            if (ppa == 1)
+                ertekfn = pMma;
+            else
+                ertekfn = pMna;
         } else if (sor == "p₀") {
             ertekfn = p0_val;
         } else if (sor == "δ₅") {
             ertekfn = deltaP
         } else if (sor == "k·δ₅(k)") {
             ertekfn = kdeltaP
+        } else if (sor == "iₘ") {
+            if (ppa == 1)
+                ertekfn = mahma;
+            else
+                ertekfn = mahna;
         } else if (sor == "a₁,...") {
             if (getsora(n))
                 ertekfn = a_sor;
@@ -8149,14 +8354,29 @@ function hatasZFFsor(fn, sor, n) {
         };
         comp += TR1 + eloj1 + "\\text{" + fn + "}\\;\\unicode{x25B7}\\;(";
         var ertekfn = sigma_val;
-        if (sor == "p") {
+        if (sor == "σₘ") {
+            if (ppa == 1)
+                ertekfn = sigmaMma;
+            else
+                ertekfn = sigmaMna;
+        } else if (sor == "p") {
             ertekfn = p_val;
+        } else if (sor == "pₘ") {
+            if (ppa == 1)
+                ertekfn = pMma;
+            else
+                ertekfn = pMna;
         } else if (sor == "p₀") {
             ertekfn = p0_val;
         } else if (sor == "δ₅") {
             ertekfn = deltaP
         } else if (sor == "k·δ₅(k)") {
             ertekfn = kdeltaP
+        } else if (sor == "iₘ") {
+            if (ppa == 1)
+                ertekfn = mahma;
+            else
+                ertekfn = mahna;
         } else if (sor == "a₁,...") {
             if (getsora(n))
                 ertekfn = a_sor;
