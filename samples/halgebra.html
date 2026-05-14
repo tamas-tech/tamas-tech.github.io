@@ -954,7 +954,7 @@
         </div>
     </div>
 
-    <div class="keret of even" id="k5" style="margin-bottom:15px;">
+   <div class="keret of even" id="k5" style="margin-bottom:15px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">5.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('reccontainer',this.value);setkijelzoW('recchelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <p class="keplet" id="keplet_k4" style="margin-bottom:0;"></p>
@@ -968,13 +968,23 @@
                 <select id="reccselect" onchange="tglRecca();">
                     <option selected="" value="" >1&#x2099;</option>
                     <option  value="sigma_val" >&sigma;</option>
+                    <option  value="sm" >&sigma;&#x2098;</option>
                     <option value="p_val">p</option>
+                    <option  value="pm" >p&#x2098;</option>
                     <option value="p0_val">p&#x2080;</option>
                     <option value="deltaP">&delta;&#x2085;</option>
+                    <option  value="M" >i&#x2098;</option>
                     <option value="kdeltaP">k&centerdot;&delta;&#x2085;(k)</option>
                     <option value="user">a&#x2081;,...</option>
                 </select>
                 <span id="reccsora" style="display:none"><input id="reccainput" size="20" style="font-size:15px;height: 80%;margin-right:5px; ;" type="text" value="1"><button onclick="reccSync();" style="float: right;">&UpArrowDownArrow;</button></span>
+                <span id="reccparam" style="display:none">
+                    <span style="margin-left:10px;font-size:14px;">n</span>
+                <label class="switch" style="bottom: 2px;"><input type="checkbox" checked="" onchange="setReccnm(this.checked);"><span class="slider round"></span></label>
+                <span style="font-size:14px;margin-right: 20px;">m</span>
+                <input type="number" onchange="setReccnmval(this.value*1);" value="1" min="1" step="1" style="width:50px;font-size: 15px;margin:0 3px;">
+                </span>
+
             </div>
             <div>
                 <button onclick="reccTable(true);" class="showpre1">OK</button>
@@ -1019,7 +1029,7 @@
         </div>
     </div>
 
-    <div class="keret of odd" id="k6" style="margin-bottom:15px;">
+   <div class="keret of odd" id="k6" style="margin-bottom:15px;">
         <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">6.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('pentcontainer',this.value);setkijelzoW('penthelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <button class="showpre1" style="width:90px;margin-left:10px" onclick="tgldimtbl('penttbl');">Table</button>
@@ -1103,8 +1113,8 @@
                                 <input type="checkbox"  name="rovconv" checked id="rovconv" style="height: 20px; width: 20px; vertical-align:middle;margin-right:10px;">
                             </span>
                         </td>
-                        <td id="helptok" class="fixw" style="display:none;text-align:left;"><span id="tglpenthelp" onclick="tglPentHelp();" style="width: 28px;height:28px;display:inline-block;border: 1px solid #a6a6a6;background-color: #fff785;font-size: 24px;margin-left:6px;margin-right:10px;vertical-align:middle;border-radius:50%;text-align:center;">?</span>
-                            <input oninput="$('#pentainput,#pentbinput').attr('size',this.value);" type="range" min="20" max="100" value="20" step="1" style="display:inline-block;width:90px;vertical-align: middle;" title="set input width">
+                        <td id="helptok" class="fixw" style="display:none;text-align:left;"><span id="tglpenthelp" onclick="tglPentHelp();" style="width:24px;height:24px;display:inline-block;border: 1px solid #a6a6a6;background-color: #fff785;font-size:20px;margin-left:6px;margin-right:10px;vertical-align:middle;border-radius:50%;text-align:center;">?</span>
+                            <input class="shown" oninput="$('#pentainput,#pentbinput').attr('size',this.value);" type="range" min="20" max="100" value="20" step="1" style="display:inline-block;width:90px;vertical-align: middle;" title="set input width">
                         </td>
                     </tr>
                     <tr>
@@ -1156,12 +1166,20 @@
                                 <option  value="pm" >p&#x2098;</option>
                                 <option value="p0">p&#x2080;</option>
                                 <option value="d">&delta;&#x2085;</option>
-                                <option  value="M" >M&#x2099;, &#x2098;</option>
+                                <option  value="M" >i&#x2098;</option>
                                 <option value="kd">k&centerdot;&delta;&#x2085;(k)</option>
                                 <option value="user">a&#x2081;,...</option>
                             </select>
                         </td>
-                        <td id="usersora" class="fixw" style="display:none"><input id="pentainput" size="20" style="font-size:15px;height: 80%;" type="text" value="1"></td>
+                        <td id="usersora" class="fixw" style="display:none">
+                            <input id="pentainput" class="shown" size="20" style="font-size:15px;height: 80%;" type="text" value="1">
+                            <span id="pentparam_a" class="">
+                            <span style="margin-left:10px;font-size:14px;">n</span>
+                            <label class="switch" style="bottom: 2px;"><input type="checkbox" checked="" onchange="setPentnm(this.checked,'a');"><span class="slider round"></span></label>
+                            <span style="font-size:14px;margin-right: 20px;">m</span>
+                            <input type="number" onchange="setPentnmval(this.value*1,'a');" value="1" min="1" step="1" style="width:50px;font-size: 15px;margin:0 3px;">
+                            </span>
+                        </td>
                     </tr>
                     <tr id="ovsor" style="border-top:2px solid #cacaca;display:none;background-color:#f6ffb3">
                         <td id="ovpente1" onclick="pentSign(this,true);">
@@ -1197,12 +1215,19 @@
                                 <option  value="pm" >p&#x2098;</option>
                                 <option value="p0">p&#x2080;</option>
                                 <option value="d">&delta;&#x2085;</option>
-                                <option  value="M" >M&#x2099;, &#x2098;</option>
+                                <option  value="M" >i&#x2098;</option>
                                 <option value="kd">k&centerdot;&delta;&#x2085;(k)</option>
                                 <option value="user">b&#x2081;,...</option>
                             </select>
                         </td>
-                        <td id="usersorb" class="fixw" style="display:none"><input id="pentbinput" size="20" style="font-size:15px;height: 80%;" type="text" value="1"></td>
+                        <td id="usersorb" class="fixw" style="display:none"><input id="pentbinput" size="20" style="font-size:15px;height: 80%;" type="text" value="1">
+                            <span id="pentparam_b" class="">
+                                <span style="margin-left:10px;font-size:14px;">n</span>
+                            <label class="switch" style="bottom: 2px;"><input type="checkbox" checked="" onchange="setPentnm(this.checked,'b');"><span class="slider round"></span></label>
+                            <span style="font-size:14px;margin-right: 20px;">m</span>
+                            <input type="number" onchange="setPentnmval(this.value*1,'b');" value="1" min="1" step="1" style="width:50px;font-size: 15px;margin:0 3px;">
+                            </span>
+                        </td>
                     </tr>
                     <tr style="height: 42px;border-bottom: 4px solid #999;">
                         <td>
@@ -1221,7 +1246,7 @@
                             <button style="vertical-align: middle;padding: 5px 5px 9px 5px;margin:0;" class="sbtglbtn" onclick="tglNerdSettings();">⚙</button>
                         </td>
                         <td>
-                            <input type="checkbox" id="cinput" onchange="nerdTgl(this.checked);" style="height: 30px; width: 30px; vertical-align:middle;">
+                            <input type="checkbox" id="cinput" onchange="nerdTgl(this.checked);" style="height:30px; width: 30px; vertical-align:middle;">
                         </td>
                         <td colspan="12" id="usersorc" class="fixw" style="display:none;">
                             <textarea id="pentcinput" spellcheck="false" style="min-width:98%;min-height:20px;font-family:Consolas,Courier New;font-size:18px;height: 80%;" type="text" value="1"></textarea>
