@@ -3586,7 +3586,19 @@ select#reccselect {
     }
 }
 
+#pentainput,
+#pentbinput,
+#pentparam_a,
+#pentparam_b {
+    display: none;
+}
 
+#pentainput.shown,
+#pentbinput.shown,
+#pentparam_a.shown,
+#pentparam_b.shown {
+    display: inline-block;
+}
 
 
 
