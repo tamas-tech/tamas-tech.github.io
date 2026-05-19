@@ -1393,8 +1393,7 @@
             </div>
             <div>
                 <button onclick="polygpoly();" class="showpre1">OK</button>
-                <button class="showpre1" style="width:76px;margin-left:3px" onclick="document.getElementById('plotpolyg').innerHTML='';idClear('#polygout');document.getElementById('reccsorcopytok').style.display='none'; document.getElementById('vagolap').innerHTML = '';"
-                    title="Clear output">Clear</button>
+                <button class="showpre1" style="width:76px;margin-left:3px" onclick="document.getElementById('plotpolyg').innerHTML='';idClear('#polygout');idClear('#polygoutstat');" title="Clear output">Clear</button>
                 <button id="tglropts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl( 'polygsetting');">⚙</button>
             </div>
         </div>
@@ -1407,6 +1406,7 @@
         <div id="polygcontainer" style="max-width:100vw">
             <p id="figyrecc" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
             <p id="polygout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
+            <p id="polygoutstat" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
         </div>
         <section id="fnpolyg" style="display:none;max-width:calc(100vw - 30px);">
             <div id="plotpolyg" style="text-align:center;"></div>
