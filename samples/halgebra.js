@@ -9055,6 +9055,11 @@ function peldaSet(e) {
 
 ///   #k7  polygonal polynomials
 
+function setOutputFontPolyg(v) {
+    var elem = document.getElementById("polygout");
+    elem.style.fontSize = v + 'px';
+};
+
 function polygPlot(n, cim) {
     document.getElementById('plotpolyg').innerHTML = '';
     const elemfn = document.querySelector("#fnpolyg");
@@ -9122,7 +9127,7 @@ function polygpoly() {
         else
             for (var k = 0; k <= N; k++)
                 pentpoints.push([k, nerdamer('vecget(' + cpoly + ',' + k + ')').toString() * 1]);
-        const cim = "P_" + n+"(x)";
+        const cim = "P_" + n + "(x)";
         const mj = elem.appendChild(document.createElement("div"));
         mj.innerText = txt;
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, mj]);
