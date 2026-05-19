@@ -7475,9 +7475,9 @@ function setF12(e, type, ov) {
     }, 100)
 };
 
-function addLoader(n) {
+function addLoader(n, id) {
     if (n > 8) {
-        const elem = document.getElementById("pentout");
+        const elem = document.getElementById(id);
         elem.innerHtml = "";
         //const loader = elem.appendChild(document.createElement("div"));
         //loader.classList.add("loader");
@@ -7634,7 +7634,7 @@ function printZycFabFib(fn, n) {
         fntxt = fn.slice(0, -1);
         vegjel = "-";
     }
-    addLoader(n);
+    addLoader(n, "pentout");
     setTimeout(() => {
         var vars = "(";
         for (i = 1; i <= n; i++)
@@ -7659,7 +7659,7 @@ function ovZFF(fn1, fn2, n) {
         fntxt2 = fn2.slice(0, -1);
         vegjel2 = "-";
     }
-    addLoader(n);
+    addLoader(n, "pentout");
     setTimeout(() => {
         var vars1 = "(";
         for (i = 1; i <= n; i++)
@@ -7704,7 +7704,7 @@ function compov(n) {
 };
 
 function compZFF(fn1, fn2, n) {
-    addLoader(n);
+    addLoader(n, "pentout");
     setTimeout(() => {
         getsetZycFabFib(fn1, n, false);
         for (var k = 1; k <= n; k++)
@@ -8142,7 +8142,7 @@ function pentovfnsor(n) {
 };
 
 function hatasZFFr(fn, sor, n) {
-    addLoader(n);
+    addLoader(n, "pentout");
     setTimeout(() => {
         var eloj1 = "";
         if (fn.startsWith("-")) {
@@ -8234,7 +8234,7 @@ function hatasZFFr(fn, sor, n) {
 };
 
 function hatasZFF(fn, sor, n) {
-    addLoader(n);
+    addLoader(n, "pentout");
     setTimeout(() => {
         var eloj1 = "";
         if (fn.startsWith("-")) {
@@ -8323,7 +8323,7 @@ function hatasZFFsor(fn, sor, n) {
         TR1 = "\\boldsymbol{T}\\left[";
         TR2 = "\\right]"
     };
-    addLoader(n);
+    addLoader(n, "pentout");
     if (pentplot) {
         pentpoints = [];
         pentpoints2 = [];
@@ -8673,7 +8673,6 @@ function displayConv() {
     } else {
         nerdmat = JSON.parse("[" + nerdmat.slice(7, -1) + "]");
         nerdmat = "matrix(" + JSON.stringify(math.pinv(nerdmat)).slice(1, -1) + ")";
-        console.log(nerdamer(nerdmat).latex())
         nerdmat = nerdamer(nerdmat).latex().replaceAll("vmatrix", "pmatrix");
         var nerdb = "\\\\[15mm] \\text{Az egyenletet invertálva (Moore-Penrose általánosított inverz):}\\\\[4mm]  \\begin{pmatrix}";
         mtxt += "\\end{pmatrix}\\cdot \\begin{pmatrix}";
@@ -9053,3 +9052,145 @@ function peldaSet(e) {
     $(e).addClass('villbgdark');
     setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
 };
+
+///   #k7  polygonal polynomials
+
+function polygPlot(n, cim) {
+    document.getElementById('plotpolyg').innerHTML = '';
+    const elemfn = document.querySelector("#fnpolyg");
+    const plottype = $("#setpenttbl #plotst option:selected").val();
+    elemfn.style.display = "block";
+    const points = [...pentpoints];
+    const yns = points.map(y => y[1]);
+    var felso = _.max(yns);
+    var also = _.min(yns);
+    felso += 1;
+    also -= 1;
+    functionPlot({
+        target: '#plotpolyg',
+        title: cim,
+        grid: true,
+        yAxis: {
+            domain: [also, felso]
+        },
+        xAxis: {
+            domain: [-1, binomial(n + 1, 2) + 1]
+        },
+        data: [{
+            points: points,
+            fnType: 'points',
+            graphType: plottype,
+            color: 'black',
+        }]
+    });
+    const ttl = document.querySelector('svg.function-plot text.title')
+    ttl.setAttribute('x', 200);
+    ttl.style.fontSize = "16px";
+    ttl.style.fontFamily = "Katex_Main";
+};
+
+function polygpoly() {
+    nerdamer.flush();
+    nerdamer.clearVars();
+    const n = document.getElementById("polygn").value * 1;
+    const abs = document.getElementById("polygabs").checked;
+    const elem = document.querySelector("#polygout");
+    elem.innerHTML = "";
+    pentpoints = [];
+    addLoader(n, "polygout");
+    setTimeout(() => {
+        var poly = nerdamer('expand(product(1-x^k,k,1,' + n + '))');
+        var cpoly = nerdamer.coeffs(poly, 'x');
+        var jsc = JSON.parse(cpoly.toString());
+        var txt = "\\[\\boldsymbol{P}_{" + n + "}(x) = \\prod_{k = 1}^{" + n + "}(1-x^{k}) = " + poly.latex() + "\\]  A polygonális polinom együtthatóinak vektora: \\(" + cpoly.latex() + "\\)";
+
+        if (abs)
+            jsc = jsc.map(y => Math.abs(y));
+        const maxim = _.max(jsc);
+        const maxe = jsc.findIndex(y => y == maxim);
+        const maxu = jsc.findLastIndex(y => y == maxim);
+        const minim = _.min(jsc);
+        const mine = jsc.findIndex(y => y == minim);
+        const minu = jsc.findLastIndex(y => y == minim);
+        const atlag = decForm(_.mean(jsc).toString());
+        const szoras = decForm(nerdamer.smpstdev(cpoly).text("decimal"));
+        txt += "\\begin{array}{l|l} \\text{Maximum} & " + maxim + "\\\\ \\text{Első maximum helye} & " + maxe + "\\\\ \\text{Utolsó maximum helye} & " + maxu + "\\\\ \\hline  \\text{Minimum}  & " + minim + "\\\\ \\text{Első minimum helye} & " + mine + "\\\\ \\text{Utolsó minimum helye} & " + minu + "\\\\ \\hline \\text{Átlag} & " + atlag + "\\\\ \\hline \\text{Szórás} & " + szoras + "\\end{array}"
+        const N = binomial(n + 1, 2);
+        if (abs)
+            for (var k = 0; k <= N; k++)
+                pentpoints.push([k, Math.abs(nerdamer('vecget(' + cpoly + ',' + k + ')').toString() * 1)]);
+        else
+            for (var k = 0; k <= N; k++)
+                pentpoints.push([k, nerdamer('vecget(' + cpoly + ',' + k + ')').toString() * 1]);
+        const cim = "P_" + n;
+        const mj = elem.appendChild(document.createElement("div"));
+        mj.innerText = txt;
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, mj]);
+        if (document.querySelector(".loader") != undefined)
+            setTimeout(() => { elem.removeChild(document.querySelector(".loader")); }, 0);
+        polygPlot(n, cim);
+    }, 10);
+};
+
+$(document).on('click', '#plotpolyg svg.function-plot', function() {
+    $('#plotpolyg svg.function-plot g.canvas g.content g.graph circle').attr("r", "3").css("opacity", "0.5");
+});
+
+
+/*
+ MASTER THEOREM
+*/
+
+
+//Is there a common name of the theorem sum_{1*r_1+2*r_2+3-r_3+...+n*r_n = n}(pruduct_{j=1..n}(binomial{A_j+r_j-1}{r_j}))=Z_{n}(sum_{i|1}i*A_i,sum_{i|2}i*A_i,sum_{i|3}i*A_i,...,sum_{i|n}i*A_n) , where z_{n} is the zycleindex polynomial of the symmetric group of ordre n S_{n}
+
+/**
+ * Computes the n-th term of the identity.
+ * @param {number} n - The target order n.
+ * @param {number[]} A - 1-indexed array of coefficients [0, A_1, A_2, ..., A_n]
+ * @returns {number} The evaluated result of the identity.
+ */
+function evaluateCycleIndexSubstitution(n, A) {
+    // 1. Calculate the substituted variables: x_k = sum_{i | k} (i * A_i)
+    // We use a 1-indexed array for convenience: x[k] corresponds to x_k
+    const x = new Array(n + 1).fill(0);
+
+    for (let k = 1; k <= n; k++) {
+        let divisorSum = 0;
+        for (let i = 1; i <= k; i++) {
+            if (k % i === 0) {
+                // If A[i] is undefined or missing, treat it as 0
+                const ai = A[i] || 0;
+                divisorSum += i * ai;
+            }
+        }
+        x[k] = divisorSum;
+    }
+
+    // 2. Use the recurrence relation for the Cycle Index of Symmetric Groups:
+    // Z_0 = 1
+    // Z_m = (1 / m) * sum_{k=1}^m (x_k * Z_{m-k})
+    const Z = new Array(n + 1).fill(0);
+    Z[0] = 1; // Base case
+
+    for (let m = 1; m <= n; m++) {
+        let currentSum = 0;
+        for (let k = 1; k <= m; k++) {
+            currentSum += x[k] * Z[m - k];
+        }
+        Z[m] = currentSum / m;
+    }
+
+    return Z[n];
+}
+
+// === EXAMPLE USAGE ===
+
+// Let's set A_i = 1 for all i. 
+// (For A_i = 1, the identity generates the total number of integer partitions of n!)
+//const n = 5;
+//const A = [0, -1, -1, -1, -1, -1]; // 1-indexed: A[1]=1, A[2]=1, etc.
+
+//const result = evaluateCycleIndexSubstitution(n, A);
+//console.log(`Result for n = ${n}:`, result);
+// Output: 7 (Since there are exactly 7 integer partitions of 5)
