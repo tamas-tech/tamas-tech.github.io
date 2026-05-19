@@ -9056,8 +9056,10 @@ function peldaSet(e) {
 ///   #k7  polygonal polynomials
 
 function setOutputFontPolyg(v) {
-    var elem = document.getElementById("polygout");
+    const elem = document.getElementById("polygout");
+    const elemstat = document.getElementById("polygoutstat");
     elem.style.fontSize = v + 'px';
+    elemstat.style.fontSize = v + 'px';
 };
 
 function polygPlot(n, cim) {
@@ -9100,7 +9102,9 @@ function polygpoly() {
     const n = document.getElementById("polygn").value * 1;
     const abs = document.getElementById("polygabs").checked;
     const elem = document.querySelector("#polygout");
+    const elemst = document.querySelector("#polygoutstat");
     elem.innerHTML = "";
+    elemst.innerHTML = "";
     pentpoints = [];
     addLoader(n, "polygout");
     setTimeout(() => {
@@ -9119,7 +9123,7 @@ function polygpoly() {
         const minu = jsc.findLastIndex(y => y == minim);
         const atlag = decForm(_.mean(jsc).toString());
         const szoras = decForm(nerdamer.smpstdev(cpoly).text("decimal"));
-        txt += "\\begin{array}{l|l} \\text{Maximum} & " + maxim + "\\\\ \\text{Első maximum helye} & " + maxe + "\\\\ \\text{Utolsó maximum helye} & " + maxu + "\\\\ \\hline  \\text{Minimum}  & " + minim + "\\\\ \\text{Első minimum helye} & " + mine + "\\\\ \\text{Utolsó minimum helye} & " + minu + "\\\\ \\hline \\text{Átlag} & " + atlag + "\\\\ \\hline \\text{Szórás} & " + szoras + "\\end{array}"
+        const txtstat = "\\begin{array}{l|l} \\text{Maximum} & " + maxim + "\\\\ \\text{Első maximum helye} & " + maxe + "\\\\ \\text{Utolsó maximum helye} & " + maxu + "\\\\ \\hline  \\text{Minimum}  & " + minim + "\\\\ \\text{Első minimum helye} & " + mine + "\\\\ \\text{Utolsó minimum helye} & " + minu + "\\\\ \\hline \\text{Átlag} & " + atlag + "\\\\ \\hline \\text{Szórás} & " + szoras + "\\end{array}"
         const N = binomial(n + 1, 2);
         if (abs)
             for (var k = 0; k <= N; k++)
@@ -9131,6 +9135,8 @@ function polygpoly() {
         const mj = elem.appendChild(document.createElement("div"));
         mj.innerText = txt;
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, mj]);
+        elemst.innerText = txtstat;
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elemst]);
         if (document.querySelector(".loader") != undefined)
             setTimeout(() => { elem.removeChild(document.querySelector(".loader")); }, 0);
         polygPlot(n, cim);
