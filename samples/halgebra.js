@@ -9122,7 +9122,7 @@ function polygpoly() {
         else
             for (var k = 0; k <= N; k++)
                 pentpoints.push([k, nerdamer('vecget(' + cpoly + ',' + k + ')').toString() * 1]);
-        const cim = "P_" + n;
+        const cim = "P_" + n+"(x)";
         const mj = elem.appendChild(document.createElement("div"));
         mj.innerText = txt;
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, mj]);
