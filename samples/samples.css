@@ -3492,7 +3492,8 @@ select#spd,
 select#ovspd,
 select#nerdnumb,
 select#plotst,
-select#reccselect{
+select#reccselect,
+select#mthselect {
     font-family: Cambria Math;
     font-size: 18px;
     border: 1px solid #cecece;
@@ -3502,7 +3503,8 @@ select#reccselect{
     height: 26px;
 }
 
-select#reccselect {
+select#reccselect,
+select#mthselect {
     min-width: 50px;
     margin-right: 10px;
 }
