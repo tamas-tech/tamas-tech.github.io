@@ -7618,6 +7618,10 @@ function getsetZycFabFib(fn, n, get) {
         Luc(n);
     else if (fn == "Fib")
         Fib(n);
+    else if (fn == "Sti")
+        Sti(n);
+    else if (fn == "Har")
+        Har(n);
     // }
     if (get) {
         if (neg)
@@ -7936,7 +7940,7 @@ function getsorc(n) {
     const elem = document.getElementById("pentout");
     var c_txt = $("#usersorc textarea").val();
     const vars = _.uniq(c_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g)).filter(y => y != "N");
-    const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+)/g));
+    const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+)/g));
     if (ppolys.length > 0)
         for (let v of ppolys) {
             var L = v.split("_");
@@ -8969,6 +8973,12 @@ function drawPent() {
         const c_txt = $("#usersorc textarea").val();
         const nerdkod = document.getElementById("nerdkod").checked;
         if (nerdkod) {
+            const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+)/g));
+            if (ppolys.length > 0)
+                for (let v of ppolys) {
+                    var L = v.split("_");
+                    getsetZycFabFib(L[0], parseInt(L[1]), false);
+                };
             var out = ""
             out = nerdFormat(nerdamer(c_txt).evaluate());
             ZFibFab2Latex(out);
@@ -9111,7 +9121,7 @@ function polygpoly() {
         var poly = nerdamer('expand(product(1-x^k,k,1,' + n + '))');
         var cpoly = nerdamer.coeffs(poly, 'x');
         var jsc = JSON.parse(cpoly.toString());
-        var txt = "\\[\\boldsymbol{P}_{" + n + "}(x) = \\prod_{k = 1}^{" + n + "}(1-x^{k}) = " + poly.latex() + "\\]  A polygonális polinom együtthatóinak vektora: \\(" + cpoly.latex() + "\\)";
+        var txt = "\\[\\boldsymbol{P}_{" + n + "}(x) = \\prod_{k = 1}^{" + n + "}(1-x^{k}) = " + poly.latex() + "\\]  \\(" + cpoly.latex() + "\\)";
 
         if (abs)
             jsc = jsc.map(y => Math.abs(y));
@@ -9152,7 +9162,165 @@ $(document).on('click', '#plotpolyg svg.function-plot', function() {
  MASTER THEOREM
 */
 
+var mthp = 2;
+var mthpval = 1;
 
+function setOutputFontMth(v) {
+    const elem = document.getElementById("mthout");
+    const elem2 = document.getElementById("mthout2");
+    elem.style.fontSize = v + 'px';
+    elem2.style.fontSize = v + 'px';
+};
+
+function tglMtha() {
+    const sel = $("#mthselect").val();
+    if (sel == "user") {
+        $("#mthsora").css('display', 'inline-block');
+        $("#mthparam").css('display', 'none');
+    } else {
+        $("#mthsora").css('display', 'none');
+        if (["pm", "M", "sm"].includes(sel))
+            $("#mthparam").css('display', 'inline-block');
+        else
+            $("#mthparam").css('display', 'none');
+    };
+};
+
+function setMthnmval(val) {
+    reccpval = val;
+};
+
+function setMthnm(chk) {
+    if (chk)
+        reccp = 2;
+    else
+        reccp = 1;
+};
+
+function getmthfn(n) {
+    var a_txt = $("#mthsora input").val();
+    const figy = document.getElementById("figymth");
+    const vars = _.uniq(a_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g)).filter(y => y != "N");
+    var setfigy = function(txt, displ) {
+        if (figy != undefined) {
+            figy.innerHTML = txt;
+            figy.style.display = displ;
+        }
+    };
+    setfigy("", "none");
+    if (vars.length > 1) {
+        setfigy("Vátozó hiba:<br/>A kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + a_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>", "block");
+        return false;
+    } else if (vars.length == 0 && a_txt.length != 1) {
+        try {
+            const ism = a_txt.endsWith(',...');
+            if (ism)
+                a_txt = a_txt.slice(0, -4);
+            nerdamer.setVar('mth_sorv', 'vector(' + a_txt + ')');
+            const L = nerdamer('mth_sorv').symbol.elements.length;
+            //console.log(nerdamer('mth_sorv').toString(), L, n)
+            if (L < n) {
+                if (!ism) {
+                    const N = Math.ceil(n / L);
+                    a_txt += ",";
+                    var aa_txt = a_txt.repeat(N);
+                } else {
+                    const last = _.last(a_txt.split(","));
+                    var aa_txt = a_txt + ("," + last).repeat(n - L);
+                }
+                if (aa_txt.endsWith(','))
+                    aa_txt = aa_txt.slice(0, -1)
+                    //console.log(aa_txt)
+                nerdamer.setVar('mth_sorv', 'vector(' + aa_txt + ')');
+            }
+            //console.log(nerdamer.getVar('mth_sorv').toString())
+            a_sor = function(j) { return nerdamer('vecget(mth_sorv,' + (j - 1) + ')').evaluate().toString() };
+            nerdamer.setFunction('mth_sor', ['j'], 'evaluate(vecget(mth_sorv,j-1))');
+            kepletes = false;
+            return true;
+        } catch (error) {
+            setfigy(error, "block");
+            return false;
+        }
+    } else {
+        a_txt = a_txt.trim();
+        var p = a_txt.indexOf("...");
+        if (p > -1) {
+            try {
+                var form = a_txt.slice(p + 3);
+                var aa_txt = a_txt.slice(0, p - 1);
+                const h = aa_txt.split(",").length;
+                var x = vars[0]
+                aa_txt += ",";
+                form = form.replaceAll(x, "(" + x + "+" + h + ")");
+                nerdamer.setFunction("pwmth", vars, form)
+                for (j = 1; j <= n - h; j++)
+                    aa_txt += nerdamer("pwmth(" + j + ")").toString() + ",";
+                aa_txt = aa_txt.slice(0, -1)
+                nerdamer.setVar('mth_sorv', 'vector(' + aa_txt + ')');
+                a_sor = function(j) { return nerdamer('vecget(mth_sorv,' + (j - 1) + ')').evaluate().toString() };
+                nerdamer.setFunction('mth_sor', ['j'], 'evaluate(vecget(mth_sorv,j-1))');
+                kepletes = false;
+                return true;
+            } catch (error) {
+                setfigy(error, "block");
+                return false;
+            }
+        } else {
+            try {
+                var fn = nerdamer(a_txt.trim());
+                a_sor = fn.buildFunction();
+                nerdamer.setFunction('mth_sor', vars, a_txt);
+                kepletes = true;
+                return true;
+            } catch (error) {
+                setfigy(error, "block");
+                return false;
+            }
+        }
+    }
+};
+
+function makeMthvec(n) {
+    var sel = $("#mthselect option:selected").text();
+    var fn = egy_n;
+    if (sel == "σ")
+        fn = sigma_val;
+    if (sel == "σₘ") {
+        if (mthp == 1)
+            fn = sigmaMmr;
+        else
+            fn = sigmaMnr;
+    } else if (sel == "p")
+        fn = p_val;
+    else if (sel == "pₘ") {
+        if (mthp == 1)
+            fn = pMmr;
+        else
+            fn = pMnr;
+    } else if (sel == "p₀")
+        fn = p0_val;
+    else if (sel == "δ₅")
+        fn = deltaP
+    else if (sel == "k·δ₅(k)")
+        fn = kdeltaP
+    else if (sel == "iₘ") {
+        if (mthp == 1)
+            fn = mahmr;
+        else
+            fn = mahnr;
+    } else if (sel == "a₁,...") {
+        if (getmthfn(n + 1)) {
+            fn = a_sor;
+        } else
+            return;
+    };
+    var vec = [];
+    for (var j = 1; j < n + 1; j++)
+        vec.push(fn(j))
+        //console.log(vec)
+    return vec
+};
 //Is there a common name of the theorem sum_{1*r_1+2*r_2+3-r_3+...+n*r_n = n}(pruduct_{j=1..n}(binomial{A_j+r_j-1}{r_j}))=Z_{n}(sum_{i|1}i*A_i,sum_{i|2}i*A_i,sum_{i|3}i*A_i,...,sum_{i|n}i*A_n) , where z_{n} is the zycleindex polynomial of the symmetric group of ordre n S_{n}
 
 /**
@@ -9176,8 +9344,7 @@ function evaluateCycleIndexSubstitution(n, A) {
             }
         }
         x[k] = divisorSum;
-    }
-
+    };
     // 2. Use the recurrence relation for the Cycle Index of Symmetric Groups:
     // Z_0 = 1
     // Z_m = (1 / m) * sum_{k=1}^m (x_k * Z_{m-k})
@@ -9190,9 +9357,118 @@ function evaluateCycleIndexSubstitution(n, A) {
             currentSum += x[k] * Z[m - k];
         }
         Z[m] = currentSum / m;
-    }
+    };
+    return [x, Z];
+};
 
-    return Z[n];
+function formSti(data) {
+    var str = "";
+    var c = 1;
+    _.forEach(data, function(key, value) {
+        c *= factorial(key * 1);
+        str += "product(x_" + value + "+i,i,0," + (key - 1) + ")*"
+    });
+    str = 1 + "/" + c + "*" + str;
+    str = str.slice(0, -1);
+    return str;
+}
+
+function Sti(n) {
+    var parts = part(n);
+    parts = parts.map(y => _.countBy(y));
+    parts = parts.map(y => formSti(y)).join(" + ");
+    parts = nerdamer(parts).expand().toString();
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push('x_' + i);
+    nerdamer.setFunction("Sti_" + n, vars, parts);
+    return "Sti_" + n + "\\left(" + vars + "\\right) = " + parts;
+};
+
+function Har(n) {
+    let divisorSum = "";
+    for (let k = 1; k <= n; k++) {
+        if (n % k === 0) {
+            divisorSum += k + "*x_" + k + "+";
+        }
+    };
+    divisorSum = divisorSum.slice(0, -1);
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push('x_' + i);
+    nerdamer.setFunction("Har_" + n, vars, divisorSum);
+    //return "Har_" + n + divisorSum;
+};
+
+function masterTh() {
+    const n = document.getElementById("mthn").value * 1;
+    const A = [0, ...makeMthvec(n)];
+    //console.log(A)
+    const out = evaluateCycleIndexSubstitution(n, A);
+    const elem1 = document.querySelector("#mthout");
+    const elem2 = document.querySelector("#mthout2");
+    const psia = "\\left(" + out[0].slice(1) + "\\right)";
+    const bo = "\\left(" + out[1].slice(1) + "\\right)";
+    txt2 += "\\end{gather*}\\]"
+    var txt1 = "\\[\\begin{gather*}\\boldsymbol{Har}\\;\\unicode{x25B7}\\left(";
+    var txt10 = "\\boldsymbol{Har}\\;\\unicode{x25B7}\\left(";
+    var txt11 = "\\left(";
+    var txt12 = "\\left(\\boldsymbol{Zyc}\\circ\\boldsymbol{Har}\\right)\\unicode{x25B7}\\;\\boldsymbol{A} = \\text{Zyc}\\;\\unicode{x25B7}\\;" + psia + " = " + bo + "  \\end{gather*}\\]";
+    if (n <= 5) {
+        for (var j = 1; j <= n; j++) {
+            txt1 += "A_{" + j + "},";
+            txt10 += A[j] + ",";
+            txt11 += "\\sum_{i|" + j + "}i\\;\\cdot A_{i},";
+        };
+        txt1 = txt1.slice(0, -1);
+        txt10 = txt10.slice(0, -1);
+        txt11 = txt11.slice(0, -1);
+
+    } else {
+        for (var j = 1; j <= 5; j++) {
+            txt1 += "A_{" + j + "},";
+            txt10 += A[j] + ",";
+            txt11 += "\\sum_{i|" + j + "}i\\,\\cdot A_{i},";
+        }
+        txt1 += "\\ldots ,A_{" + n + "}";
+        txt10 += "\\ldots ," + A[n];
+        txt11 += "\\ldots,\\sum_{i|" + n + "}i\\,\\cdot A_{i}";
+    }
+    txt1 += "\\right) = ";
+    txt10 += "\\right) = \\\\\[2mm] = ";
+    txt11 += "\\right) = " + psia + ", \\\\[2mm]";
+    txt1 += txt10 + txt11 + txt12;
+
+    var txt2 = "\\[\\begin{gather*}";
+    for (var j = 1; j <= n; j++) {
+        Sti(j);
+        var vars = "";
+        var txtvars = "";
+        var sinvars = "";
+        for (i = 1; i <= j; i++) {
+            vars += 'x_' + i + ',';
+            txtvars += 'x_{' + i + '},';
+            sinvars += 'sin(' + A[i] + '),';
+        }
+        vars = vars.slice(0, -1);
+        txtvars = txtvars.slice(0, -1);
+        sinvars = sinvars.slice(0, -1);
+
+        txt2 += "\\boldsymbol{Sti}_{" + j + "}\\left(" + txtvars + "\\right) =" + nerdamer('Sti_' + j + '(' + vars + ')').latex() + " \\\\[2mm] \\boldsymbol{Sti}_{" + j + "}\\;\\unicode{x25B7}" + "\\left(" + A.slice(1, j - n) + "\\right)" + " = " + nerdamer('Sti_' + j + '(' + sinvars + ')').latex().replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "= \\bbox[5px, border: 2px solid red]{" + out[1][j] + "} \\\\[5mm] \\hline";
+    }
+    txt2 = txt2.slice(0, -14);
+    txt2 += "\\end{gather*}\\]";
+
+    elem1.innerHTML = txt1;
+    elem2.innerHTML = txt2;
+    /*  MathJax.Hub.Config({
+         displayAlign: "left",
+         displayIndent: "2em"
+     }); */
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem1]);
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem2]);
+    if (document.querySelector(".loader") != undefined)
+        setTimeout(() => { elem.removeChild(document.querySelector(".loader")); }, 0);
 }
 
 // === EXAMPLE USAGE ===
