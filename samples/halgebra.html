@@ -735,7 +735,7 @@
                 <input class="dumb" type="checkbox" name="sparsemode" id="sparsemode" onchange="sparsemode=this.checked;" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
             </div>
         </div>
-        <div id="rankcontainer" style="max-width:100vw">
+        <div id="rankcontainer" class="flickable" style="max-width:100vw">
             <p id="figyrank" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
             <p id="rankout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
             <p id="kutatokijelzo"></p>
@@ -760,7 +760,7 @@
             </div>
         </div>
         <div id='notinbase' ondblclick="this.classList.remove( 'shown')"></div>
-        <div id="wnmkijelzotarto" class="nobr">
+        <div id="wnmkijelzotarto" class="flickable" class="nobr">
             <span id="wnmkijelzo"></span>
         </div>
     </div>
@@ -1000,12 +1000,18 @@
                 <label style="display:inline-block;vertical-align:middle;font-size:120%;">&#x27DB;</label>
                 <input oninput="$('#reccainput').attr('size',this.value);" type="range" min="20" max="120" value="20" step="1" style="display:inline-block;width:90px;vertical-align: middle;" title="set input width">
             </div>
+             <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label for="reccnumshow" style="vertical-align: middle;">Sorvezető</label>
+                <input type="checkbox" name="reccnumshow" id="reccnumshow" onchange="reccNumShow();" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+                <label for="reccnumfixc" style="vertical-align: middle;">Fixálás kattintással</label>
+                <input type="checkbox" name="reccnumfixc" id="reccnumfixc" onchange="reccNumfixc();" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
+            </div>
             <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                 <label for="NeM" style="vertical-align: middle;">N = M</label>
                 <input type="checkbox" name="NeM" id="NeM" onchange="setNMe(this.checked);" style="height: 20px; width: 20px; vertical-align:middle; margin-right: 10px;">
             </div>
         </div>
-        <div id="reccontainer" style="max-width:100vw">
+        <div id="reccontainer" class="flickable" style="max-width:100vw">
             <p id="figyrecc" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
             <p id="reccout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
         </div>
@@ -1352,7 +1358,7 @@
                 <input type="number" id="bigdenom" value="10" min="1" step="1" name="bigdenom" style="width:55px;margin-right: 5px;" oninput="nagynevezo =this.value*1;"> (8-11 közötti érték optimális)
             </div>
         </div>
-        <div id="pentcontainer" style="max-width:100vw">
+        <div id="pentcontainer" class="flickable" style="max-width:100vw">
             <p id="figypent" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
             <p id="pentout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px 7px 7px 7px;font-size:21px;min-height:20px;"></p>
         </div>
@@ -1403,7 +1409,7 @@
                 <input oninput="setOutputFontPolyg(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfontR" />
             </div>
         </div>
-        <div id="polygcontainer" style="max-width:100vw">
+        <div id="polygcontainer" class="flickable" style="max-width:100vw">
             <p id="figyrecc" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
             <p id="polygout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
             <p id="polygoutstat" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #d0c0c0;outline-offset: -2px;background-color: #f7e4da;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
@@ -1469,7 +1475,7 @@
                 <input oninput="setOutputFontMth(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfontR" />
             </div>
         </div>
-        <div id="mthcontainer" style="max-width:100vw">
+        <div id="mthcontainer" class="flickable" style="max-width:100vw">
             <p id="figymth" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
             <p id="mthout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
             <p id="mthout2" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:7px;font-size:21px;min-height:20px;"></p>
