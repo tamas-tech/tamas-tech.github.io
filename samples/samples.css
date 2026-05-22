@@ -3464,6 +3464,47 @@ background-color: #eaeaea;
     background-color: #54c66b;
 }
 
+#recctbl td.vertnum,
+#recctbl td.hornum {
+    display: none;
+    position: static;
+    color: #f00;
+    outline: none;
+    font-size: 55%;
+    vertical-align: bottom;
+}
+
+#recctbl td.hornum {
+    vertical-align: top;
+    color: #00f;
+}
+
+#recctbl td.vertnum span.vnum {
+    position: relative;
+    display: inline-block;
+    left: -14px;
+    background-color: #ffa6a650;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+    padding: 3px;
+}
+
+#recctbl td.hornum span.hnum {
+    position: relative;
+    display: inline-block;
+    top: -14px;
+    background-color: #a6acff52;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+    padding: 3px;
+}
+
 #setpenttbl td {
     min-width: 40px;
     height: 28px;
