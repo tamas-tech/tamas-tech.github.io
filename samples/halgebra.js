@@ -6331,11 +6331,53 @@ function setNMe(b) {
     };
 };
 
+function reccNumShow() {
+    const b = document.getElementById("reccnumshow").checked;
+    if (b) {
+        $('#recctbl td.vertnum,#recctbl td.hornum').css('display', 'table-cell');
+    } else {
+        $('#recctbl td').off('click');
+        $('#recctbl td.vertnum,#recctbl td.hornum').css('display', 'none');
+    };
+    reccNumfixc();
+};
+
+function reccNumfixc() {
+    const b0 = document.getElementById("reccnumshow").checked;
+    const b = document.getElementById("reccnumfixc").checked;
+    if (b0 & b) {
+        $('#recctbl td').on('click', function(e) {
+            e.stopPropagation();
+            const pos = $(this).offset();
+            const L = pos.left
+            const T = pos.top;
+            $('#recctbl td.vertnum,#recctbl td.hornum').css('display', 'table-cell');
+            $('#recctbl td.vertnum').each(function() {
+                var T = $(this).offset().top;
+                $(this).offset({ top: T, left: L });
+            });
+            $('#recctbl td.hornum').each(function() {
+                var L = $(this).offset().left;
+                $(this).offset({ top: T, left: L });
+            });
+        });
+    } else {
+        $('#recctbl td').off('click');
+        $('#recctbl td.vertnum,#recctbl td.hornum').css('position', 'static');
+    }
+};
+
+function setReccVertZ() {
+    $('#recctbl tr td.hornum').css('z-index', 2);
+    $('#recctbl tr td.vertnum').css('z-index', 3);
+};
+
 function reccTable(fill) {
     const elem = document.getElementById("reccout");
     const tbl = document.getElementById("recctbl");
     const N = document.getElementById("reccN").value * 1 + 1;
     const M = document.getElementById("reccM").value * 1;
+
     if (tbl != undefined) {
         var a = _.dropRightWhile(Object.values($("#recctbl th:not(.hide-column) input")).map(y => y.value * 1), y => isNaN(y));
         var b = _.dropRightWhile(Object.values($("#recctbl th.hide-column input")).map(y => y.value * 1), y => isNaN(y));
@@ -6356,19 +6398,26 @@ function reccTable(fill) {
 
     var txt = "";
 
-    txt += '<div style="margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><div id="recchiba"></div><table id="recctbl" class="table-hideable"><thead><tr class="fej"><th ><input type="text" value="' + a[0] + '" class="recca" onchange="tblRec();" oninput="resizeInput(this);"></input></th>';
+
+    txt += '<div id="reccdoboz" style="margin-bottom:10px;border:1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><div id="recchiba"></div>';
+    txt += '<table id="recctbl" class="table-hideable"><thead><tr class="fej"><th ><input type="text" value="' + a[0] + '" class="recca" onchange="tblRec();" oninput="resizeInput(this);"></input></th>';
     for (var j = 0; j < M; j++)
         txt += '<th class="hide-column hide-col" onchange="tblRec();"><input type="text" value="' + b[j] + '" class="reccb" onchange="tblRec();" oninput="resizeInput(this);"></input></sub></th>';
+    txt += '<td class="vertnum" style="z-index:2;"><span class="vnum">0</span></td>'
     txt += '</tr></thead><tbody>';
     for (var i = 1; i < N; i++) {
         txt += '<tr class="fej vert" onclick="hlThisRow(this);"><th><input type="text" value="' + a[i] + '" class="recca" onchange="tblRec();" oninput="resizeInput(this);"></input></th>';
         for (var k = 1; k < M + 1; k++)
             txt += '<td></td>';
+        txt += '<td class="vertnum" style=";z-index:2;"><span class="vnum">' + i + '</span></td>';
         txt += '</tr>'
     }
     txt += '<tr id="recctr"><th>&sum;</th>'
     for (var k = 1; k < M + 1; k++)
         txt += '<td>0</td>';
+    txt += '<tr><td class="hornum"><span class="hnum">0</span></td>'
+    for (var k = 1; k < M + 1; k++)
+        txt += '<td class="hornum"><span class="hnum">' + k + '</span></td>';
     txt += '</tr></tbody></table></div>';
     elem.innerHTML = txt;
     $("#reccsorcopytok").css("display", "block");
@@ -6376,6 +6425,8 @@ function reccTable(fill) {
         reccTblFill();
     else
         tblRec();
+    reccNumShow();
+    reccNumfixc();
 };
 
 function setReccnmval(val) {
@@ -7056,7 +7107,86 @@ var pentpoints3 = [];
 const sigmavalues = [1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127, 84, 144, 68, 126, 96, 144];
 const partvalues = [1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, 4565, 5604, 6842, 8349, 10143, 12310, 14883, 17977, 21637, 26015, 31185, 37338, 44583, 53174, 63261, 75175, 89134, 105558, 124754, 147273, 173525]
 
+function makeFlickable(slider) {
+    //const slider = document.querySelector('.flickable');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let velocity = 0;
+    let lastX;
+    let lastTime;
+    let momentumID;
+
+    slider.addEventListener('dragstart', (e) => {
+        e.preventDefault();
+        return;
+    });
+
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.classList.add('active');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+
+        // Reset velocity tracking
+        lastX = e.pageX;
+        lastTime = Date.now();
+        velocity = 0;
+
+        // Cancel any ongoing momentum animation
+        cancelAnimationFrame(momentumID);
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.classList.remove('active');
+    });
+
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.classList.remove('active');
+
+        // Start momentum scroll
+        if (Math.abs(velocity) > 0.5) {
+            momentumScroll();
+        }
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.9; // Adjust scroll speed multiplier here
+        slider.scrollLeft = scrollLeft - walk;
+
+        // Calculate velocity (pixels per millisecond)
+        const now = Date.now();
+        const timeDelta = now - lastTime;
+        const pixelDelta = x - lastX;
+
+        velocity = pixelDelta / timeDelta;
+
+        lastX = x;
+        lastTime = now;
+    });
+
+    // Physics for the flick/inertia
+    function momentumScroll() {
+        const friction = 0.99; // Higher = longer glide, Lower = stops faster
+
+        slider.scrollLeft -= velocity;
+        velocity *= friction;
+
+        // Stop animation if velocity drops below a visible threshold
+        if (Math.abs(velocity) > 0.1) {
+            momentumID = requestAnimationFrame(momentumScroll);
+        }
+    }
+};
+
 $(document).ready(function() {
+    $('.flickable').each(function() { makeFlickable(this) });
     $('#pentsor').on('click', function(event) {
         event.stopPropagation();
         if (this.checked)
@@ -9072,10 +9202,18 @@ function setOutputFontPolyg(v) {
     elemstat.style.fontSize = v + 'px';
 };
 
+function setPolygPlotw() {
+    const n = document.getElementById("polygn").value * 1;
+    const cim = "P_" + n + "(x)";
+    polygPlot(n, cim);
+};
+
 function polygPlot(n, cim) {
     document.getElementById('plotpolyg').innerHTML = '';
     const elemfn = document.querySelector("#fnpolyg");
     const plottype = $("#setpenttbl #plotst option:selected").val();
+    const w = document.getElementById('setpolygplotw').value * 1;
+    const h = w * 0.64;
     elemfn.style.display = "block";
     const points = [...pentpoints];
     const yns = points.map(y => y[1]);
@@ -9093,6 +9231,8 @@ function polygPlot(n, cim) {
         xAxis: {
             domain: [-1, binomial(n + 1, 2) + 1]
         },
+        width: w,
+        height: h,
         data: [{
             points: points,
             fnType: 'points',
@@ -9471,6 +9611,9 @@ function masterTh() {
         setTimeout(() => { elem.removeChild(document.querySelector(".loader")); }, 0);
 }
 
+// PELDAK
+//expand(Zyc_4(Har_1(x_1),Har_2(x_1,x_2),Har_3(x_1,x_2,x_3),Har_4(x_1,x_2,x_3,x_4))) -Sti_4(x_1,x_2,x_3,x_4)
+
 // === EXAMPLE USAGE ===
 
 // Let's set A_i = 1 for all i. 
@@ -9480,4 +9623,5 @@ function masterTh() {
 
 //const result = evaluateCycleIndexSubstitution(n, A);
 //console.log(`Result for n = ${n}:`, result);
+// Output: 7 (Since there are exactly 7 integer partitions of 5)
 // Output: 7 (Since there are exactly 7 integer partitions of 5)
