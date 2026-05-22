@@ -3643,6 +3643,13 @@ select#mthselect {
     display: inline-block;
 }
 
+.flickable {
+    overflow-x: auto;
+    cursor: grab;
+    user-select: none;
+    scrollbar-width: thin;
+}
+
 
 
 
