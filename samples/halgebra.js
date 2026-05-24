@@ -4200,7 +4200,7 @@ function runszamitas(id, run) {
         $('#rankhiba').removeClass('shown');
     } else {
         elem.style.filter = "none";
-        $('#ranktarto')[0].scrollIntoView({ behavior: 'smooth', block: 'centern' });
+        $('#ranktarto')[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 };
 
@@ -4649,7 +4649,7 @@ function wIKDeriv0() {
         baseReg();
 };
 
-function wIKDeriv(ranking, norajz) {
+function wIKDeriv(ranking, norajz, linfugg) {
     var tbl = document.getElementById("ranktbl");
     if (tbl == null) {
         drawTable();
@@ -4696,7 +4696,12 @@ function wIKDeriv(ranking, norajz) {
         } else if (ranking && matRank == rankprev) {
             rankgrowth.pop();
             rmat.pop();
-            notInBase.push([n, m, w, xy2num(w), matRank]);
+            if (linfugg) {
+                var vs = math.multiply(math.pinv(math.transpose(rmat).map(y => y.map(z => Fraction(z).toFraction() * 1))), v.map(z => Fraction(z).toFraction() * 1)).map(y => Fraction(y).toFraction());
+                notInBase.push([n, m, w, xy2num(w), matRank, vs]);
+            } else
+                notInBase.push([n, m, w, xy2num(w), matRank, vs]);
+
             return;
         } else if (!norajz) {
             const row = tbl.insertRow();
@@ -4738,14 +4743,14 @@ function addBaseb() {
     if (quasid)
         cwIKDeriv(false, nodraw);
     else
-        wIKDeriv(false, nodraw);
+        wIKDeriv(false, nodraw, false);
 };
 
 function addBase() {
     if (quasid)
         cwIKDeriv(false, false);
     else
-        wIKDeriv(false, false);
+        wIKDeriv(false, false, false);
 };
 
 function rankRemoveOLD() {
@@ -4865,6 +4870,8 @@ function makeBaseH() {
     me.value = 1;
     const ne = document.getElementById("rankn");
     const we = document.getElementById("rankw");
+    const linfugg = document.getElementById("linfugg").checked;
+    var ntb = "";
     if (N > 3) {
         var i = Math.pow(2, N - 2) - 1;
         ra = setInterval(() => {
@@ -4876,17 +4883,21 @@ function makeBaseH() {
             } else {
                 $(ne).val(n).trigger('change');
                 we.value = w;
-                wIKDeriv(true, regsor);
+                wIKDeriv(true, regsor, linfugg);
                 i--;
             };
             if (i == 1) {
                 clearInterval(ra);
                 runszamitas("k3", false);
-                var ntb = "";
-                for (let v of notInBase)
-                    ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
-                ntb = ntb.slice(0, -7);
-                $("#notinbase").html(ntb).addClass("shown");
+                //var ntb = "";
+                if (linfugg) {
+                    for (let v of notInBase)
+                        ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ")&nbsp;" + ": (" + v[5].toString() + ")<hr/>";
+                } else {
+                    for (let v of notInBase)
+                        ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
+                    ntb = ntb.slice(0, -7);
+                }
                 $(ne).val(1).trigger('change');
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
@@ -4894,6 +4905,7 @@ function makeBaseH() {
                 setTimeout(() => {
                     $('#rankout').removeClass('villbgdark');
                     rankHiba(N, false);
+                    $("#notinbase").html(ntb).addClass("shown");
                 }, 800);
             }
         }, t);
@@ -4915,8 +4927,9 @@ function makeBaseHn1() {
     me.value = 1;
     const ne = document.getElementById("rankn");
     const we = document.getElementById("rankw");
+    const linfugg = document.getElementById("linfugg").checked;
     const dim = Math.pow(2, N - 2) - 1;
-
+    var ntb = "";
     if (N > 3) {
         var i = 0;
         ra = setInterval(() => {
@@ -4928,17 +4941,22 @@ function makeBaseHn1() {
             } else {
                 $(ne).val(n).trigger('change');
                 we.value = w;
-                wIKDeriv(true, regsor);
+                wIKDeriv(true, regsor, linfugg);
                 i++;
             };
             if (i > dim) {
                 clearInterval(ra);
                 runszamitas("k3", false);
-                var ntb = "";
-                for (let v of notInBase)
-                    ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
-                ntb = ntb.slice(0, -7);
-                $("#notinbase").html(ntb).addClass("shown");
+                //var ntb = "";
+                if (linfugg) {
+                    for (let v of notInBase)
+                        ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ")&nbsp;" + ": (" + v[5].toString() + ")<hr/>";
+                } else {
+                    for (let v of notInBase)
+                        ntb += "&part;<sub style='vertical-align:-0.5em;'>" + v[0] + "</sub><sup style='margin-left:-0.4em'>" + v[1] + "</sup>(" + v[2] + ")  &rightarrow;" + v[3] + " (" + v[4] + ");&nbsp;";
+                    //ntb = ntb.slice(0, -7);
+                };
+                //$("#notinbase").html(ntb).addClass("shown");
                 $(ne).val(1).trigger('change');
                 $(me).val(2).trigger('change');
                 $(we).val("").trigger('change');
@@ -4946,6 +4964,7 @@ function makeBaseHn1() {
                 setTimeout(() => {
                     $('#rankout').removeClass('villbgdark');
                     rankHiba(N, false);
+                    $("#notinbase").html(ntb).addClass("shown");
                 }, 800);
             }
         }, t);
@@ -5032,7 +5051,7 @@ function allBase2w() {
             runszamitas("k3", true);
             var el = $("#notinbase .irbe:nth(" + i + ")");
             el.trigger("click");
-            wIKDeriv(true, false);
+            wIKDeriv(true, false, false);
             i++;
             $("#irregszamlalo").html(db - i);
             if (i == db) {
