@@ -1328,7 +1328,7 @@ function regHighlight(elem) {
             $('#ranktbl.table-hideable tbody tr.active').removeClass('active');
             $('#ranktbl.table-hideable tbody tr td.hl').removeClass('hl');
             $('#ranktbl.table-hideable tbody tr th[data-reg=' + dat + ']').parent('tr').addClass('active');
-            const cel = $('#ranktbl.table-hideable tbody tr.active td:nth(' + indx + ')');
+            const cel = $('#ranktbl.table-hideable tbody tr.active td:nth(' + (indx + 2) + ')');
             cel.addClass('hl');
             if (cel[0] != undefined)
                 cel[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -4254,6 +4254,19 @@ function getMatrixRankEREDETI(matrix) {
     return rank;
 };
 
+function swapArrayElements(array, index1, index2) {
+    if (
+        index1 < 0 || index2 < 0 ||
+        index1 >= array.length || index2 >= array.length
+    ) {
+        console.error('Invalid index passed to swapArrayElements()');
+        return array;
+    }
+    [array[index1], array[index2]] = [array[index2], array[index1]];
+
+    return array;
+};
+
 function getMatrixRank(matrix) {
     if (!matrix || matrix.length === 0) return 0;
 
@@ -4601,7 +4614,7 @@ function wnmReg(vL0) {
     return vL;
 };
 
-$(document).on('click', '#ranktbl tbody tr.active td', function() {
+$(document).on('click', '#ranktbl tbody tr.active td:not(.fn-sorszam):not(.fn-clear)', function() {
     $('#wnmkijelzo span.hreg.hl,#ranktbl.table-hideable tbody tr.active td.hl').removeClass('hl');
     const indx = this.cellIndex + 1;
     $(this).addClass('hl')
@@ -4612,6 +4625,32 @@ $(document).on('click', '#ranktbl tbody tr.active td', function() {
     cel.addClass('hl');
     if (cel[0] != undefined)
         cel[0].scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'center' });
+});
+
+$(document).on('click', '#ranktbl tbody  td.fn-clear', function() {
+    const indx = this.parentElement.rowIndex - 1;
+    var dat = this.previousSibling.previousSibling.getAttribute("data-reg");
+    console.log(indx);
+
+    this.parentElement.remove();
+    for (var i = indx - 1; i < 10; i++)
+        $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1).css("background-color", "green");
+
+    inBase = inBase.filter(y => y != dat);
+    dat = dat.split("-")
+    dat[2] = '"' + dat[2] + '"';
+    notInBase.push("[" + dat.toString() + "]");
+    notInBase = _.uniq(notInBase);
+
+    rmat[indx - 1] = undefined;
+    rmat = rmat.filter(y => y != undefined);
+    matRank = getMatrixRank(rmat);
+    document.getElementById("rankofmat").innerHTML = matRank;
+    setTimeout(() => { $('#ranktarto').addClass('villbgdark'); }, 200);
+    setTimeout(() => {
+        $('#ranktarto').removeClass('villbgdark');
+    }, 600);
+
 });
 
 function wIKDeriv0() {
@@ -4701,10 +4740,10 @@ function wIKDeriv(ranking, norajz, linfugg) {
                 notInBase.push([n, m, w, xy2num(w), matRank, vs]);
             } else
                 notInBase.push([n, m, w, xy2num(w), matRank, vs]);
-
             return;
         } else if (!norajz) {
             const row = tbl.insertRow();
+            notInBase = notInBase.filter(y => y != '[' + n + ',' + m + ',"' + w + '"]');
             if (irreg) {
                 row.classList.add('irreg');
                 txtr = "reg<sub>⧢</sub>[&part;<sub style='vertical-align:-0.5em;'>" + n + "</sub><sup style='margin-left:-0.4em'>" + m + "</sup>(" + w + ")] = ";
@@ -4715,8 +4754,9 @@ function wIKDeriv(ranking, norajz, linfugg) {
                 };
             };
             txtr += "</p>";
+
             const cell0 = row.appendChild(document.createElement("th"));
-            cell0.innerHTML = "&part;<sub style='vertical-align:-0.5em;'>" + n + "</sub><sup style='margin-left:-0.4em'>" + m + "</sup>(" + w + ") (" + matRank + ")";
+            cell0.innerHTML = "&part;<sub style='vertical-align:-0.5em;'>" + n + "</sub><sup style='margin-left:-0.4em'>" + m + "</sup>(" + w + ")"; // (" + matRank + ")";
             cell0.setAttribute('data-reg', n + '-' + m + '-' + w);
             cell0.onclick = function() {
                 tdhlRemove();
@@ -4724,9 +4764,18 @@ function wIKDeriv(ranking, norajz, linfugg) {
                 setNMW(this);
                 //$(this).closest('tr').toggleClass('hidden');
             };
-            for (var i = 1; i <= dim; i++) {
+
+            const cells = row.insertCell(1);
+            cells.innerHTML = matRank;
+            cells.classList.add("fn-sorszam")
+
+            const cellt = row.insertCell(2);
+            cellt.innerHTML = "<span>&times</span>";
+            cellt.classList.add("fn-clear")
+
+            for (var i = 3; i <= dim + 2; i++) {
                 var cell = row.insertCell(i);
-                cell.innerHTML = v[i - 1];
+                cell.innerHTML = v[i - 3];
                 document.getElementById("rankofmat").innerHTML = matRank;
             };
         }
@@ -4763,9 +4812,17 @@ function rankRemoveOLD() {
 
 function rankRemove() {
     rmat.pop();
+    inBase.pop();
     const tbl = document.getElementById("ranktbl");
-    if (tbl != null)
+    if (tbl != null) {
+        var dat = tbl.rows[tbl.rows.length - 1].firstChild.getAttribute('data-reg');
+        dat = dat.split("-")
+        dat[2] = '"' + dat[2] + '"';
         tbl.deleteRow(-1);
+        notInBase.push("[" + dat.toString() + "]");
+        notInBase = _.uniq(notInBase);
+    }
+
     matRank = getMatrixRank(rmat);
     document.getElementById("rankofmat").innerHTML = matRank;
 };
@@ -4843,10 +4900,10 @@ function drawTable() {
         shrcls = " shrink";
     var txt = "";
     if (!nodraw) {
-        txt += '<div style="max-height:40vh;overflow-y:auto;width:fit-content;margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th>';
+        txt += '<div style="max-height:40vh;overflow-y:auto;width:fit-content;margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th><th style="background-color:#8cffff; outline: 2px solid #999e9f;outline-offset: -4px;">&rho;</th><th>D</th>';
         for (var j = 0; j < m; j++)
             txt += '<th class="hide-column hide-col">' + (j + 1) + '</th>';
-        txt += '</tr></thead><tbody><tr class="fej vert"><td>w</td>';
+        txt += '</tr></thead><tbody><tr class="fej vert"><td>w</td><td style="background-color:#8cffff; outline: 2px solid #999e9f;outline-offset: -4px;">rank</td><td>Delete</td>';
         for (var k = 0; k < m; k++)
             txt += '<td>' + num2xy(k + m) + '</td>';
         txt += '</tr></tbody></table></div>';
@@ -4854,7 +4911,42 @@ function drawTable() {
     txt += "<div id='ranktarto'>&varrho; = <span id='rankofmat'>0</span></div><button  id='startrunbtn' class='sbtglbtn' onclick='startRUN();'>RUN</button><button id='kutatostop' style='vertical-align: middle;margin-left:10px;width:fit-content;height:42px;background-color:#ca1414;color:white;border: 2px solid #9b4444;' class='sbtglbtn' onclick='stopra();'>STOP</button><div id='rankhiba'></div>";
     elem.innerHTML = txt;
     $("#rankn").trigger("change");
+    $(function() {
+        var innen = 0;
+        var ide = 0;
+        $('#ranktbl tbody').sortable({
+            handle: '.fn-sorszam',
+            items: '> tr',
+            axis: "y",
+            cursor: "move",
+            containment: "parent",
+            placeholder: "ui-state-highlight",
+            opacity: 1,
+            start: function(event, ui) {
+                innen = ui.item[0].rowIndex - 1;
+                console.log("innen", innen)
+                ui.item.css({ 'background-color': '#aeffff43' });
+            },
+            stop: function(event, ui) {
+                ide = ui.item[0].rowIndex - 1;
+                ui.item.children("td.fn-sorszam").html(ide);
+                for (var i = ide; i < matRank; i++)
+                    $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1);
+                //ui.item.css({ 'display': '', 'overflow': '' });
+                ui.item.css({ 'background-color': '' });
+                swapArrayElements(rmat, innen - 1, ide - 1);
+                matRank = getMatrixRank(rmat);
+                document.getElementById("rankofmat").innerHTML = matRank;
+                setTimeout(() => { $('#ranktarto').addClass('villbgdark'); }, 200);
+                setTimeout(() => {
+                    $('#ranktarto').removeClass('villbgdark');
+                }, 600);
+            },
+        });
+    }).disableSelection();
+
     return txt;
+
 };
 
 function makeBaseH() {
@@ -4912,7 +5004,6 @@ function makeBaseH() {
     } else
         return;
 };
-
 
 function makeBaseHn1() {
     $("#notinbase").html('').removeClass("shown");
@@ -5100,6 +5191,8 @@ function rankGrowth() {
 };
 
 function baseReg() {
+    inBase = [];
+    notInBase = _.uniq(notInBase);
     $('#ranktbl tbody tr th').each(function() { inBase.push(this.getAttribute('data-reg')) });
     inBase = _.uniq(inBase);
     const N = document.getElementById("rankN").value * 1;;
@@ -5115,6 +5208,9 @@ function baseReg() {
                 txt += "<span class='regbe volt' onclick='base2w(this);'>" + xy + "</span>";
             else
                 txt += "<span class='regbe' onclick='base2w(this);'>" + xy + "</span>";
+        for (let xy of notInBase.filter(y => typeof y == "string"))
+            txt += "<span class='regbe' onclick='base2w(this);'>" + xy.split("-").slice(0, 3) + "</span>";
+        notInBase = _.uniq(notInBase);
     }
     $("#notinbase").html(txt).addClass("shown");
 };
@@ -6341,7 +6437,7 @@ function setNMe(b) {
         const Me = document.getElementById("reccM");
         const NM = Math.max(Ne.value * 1, Me.value * 1);
         const nm = Math.min(Ne.value * 1, Me.value * 1);
-        console.log(nm, NM)
+        //console.log(nm, NM)
         if (nm < NM) {
             $(Ne).val(NM).trigger("change");
             $(Me).val(NM).trigger("change");
@@ -7247,7 +7343,7 @@ function copy2OEIS() {
     else
         var vec = pentsorout.slice(6, -11).split(',').map(y => nerdamer.convertFromLaTeX(y));
     //vec = vec.map(y => y.multiply(c))
-    console.log(pentsorout.slice(6, -11).split(','), vec)
+    //console.log(pentsorout.slice(6, -11).split(','), vec)
     if (deno) {
         const denoms = vec.map(y => y.denominator().multiply(c).toString());
         txt = denoms.toString();
