@@ -4634,7 +4634,7 @@ $(document).on('click', '#ranktbl tbody  td.fn-clear', function() {
 
     this.parentElement.remove();
     for (var i = indx - 1; i < 10; i++)
-        $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1).css("background-color", "green");
+        $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1);
 
     inBase = inBase.filter(y => y != dat);
     dat = dat.split("-")
