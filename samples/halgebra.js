@@ -4162,6 +4162,13 @@ var sparsemode = false;
 var kutatomode = true;
 var matrixba = false;
 
+function setmath(v) {
+    if (v * 1 <= 100)
+        $('#rankout div:nth(0)').css('max-height', v + 'vh');
+    else
+        $('#rankout div:nth(0)').css('max-height', 'unset');
+};
+
 function tgldimtbl(id) {
     var elem = document.getElementById(id);
     var open = elem.style.display;
@@ -4910,7 +4917,13 @@ function drawTable() {
         shrcls = " shrink";
     var txt = "";
     if (!nodraw) {
-        txt += '<div style="max-height:40vh;overflow-y:auto;width:fit-content;margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th><th style="background-color:#8cffff; outline: 2px solid #999e9f;outline-offset: -4px;">&rho;</th><th>D</th>';
+        var hh = document.getElementById("setmath").value * 1;
+        if (hh > 100)
+            hh = 'unset';
+        else
+            hh += "vh";
+        console.log(hh)
+        txt += '<div style="max-height:' + hh + ';overflow-y:auto;width:fit-content;margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th><th style="background-color:#8cffff; outline: 2px solid #999e9f;outline-offset: -4px;">&rho;</th><th>D</th>';
         for (var j = 0; j < m; j++)
             txt += '<th class="hide-column hide-col">' + (j + 1) + '</th>';
         txt += '</tr></thead><tbody><tr class="fej vert"><td>w</td><td style="background-color:#8cffff; outline: 2px solid #999e9f;outline-offset: -4px;">rank</td><td>Delete</td>';
@@ -4939,14 +4952,25 @@ function drawTable() {
             stop: function(event, ui) {
                 ide = ui.item[0].rowIndex - 1;
                 ui.item.children("td.fn-sorszam").html(ide);
-                for (var i = ide - 1; i < matRank; i++)
-                    $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1).css({ 'background-color': '#457f88' })
-                setTimeout(() => {
-                    ui.item.children("td.fn-sorszam").animate({ 'background-color': '#8cffff' }, 400);
-                    for (var i = ide; i < matRank; i++)
-                        $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1).animate({ 'background-color': '#8cffff' }, 400)
-                    ui.item.animate({ 'background-color': 'transparent' }, 400);
-                }, 300)
+                if (innen >= ide) {
+                    for (var i = ide - 1; i < matRank; i++)
+                        $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1).css({ 'background-color': '#457f88' })
+                    setTimeout(() => {
+                        ui.item.children("td.fn-sorszam").animate({ 'background-color': '#8cffff' }, 400);
+                        for (var i = ide; i < matRank; i++)
+                            $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1).animate({ 'background-color': '#8cffff' }, 400)
+                        ui.item.animate({ 'background-color': 'transparent' }, 400);
+                    }, 300)
+                } else {
+                    for (var i = innen - 1; i < ide; i++)
+                        $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').css({ 'background-color': '#457f88' })
+                    setTimeout(() => {
+                        ui.item.children("td.fn-sorszam").animate({ 'background-color': '#8cffff' }, 400);
+                        for (var i = innen - 1; i < ide; i++)
+                            $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1).animate({ 'background-color': '#8cffff' }, 400)
+                        ui.item.animate({ 'background-color': 'transparent' }, 400);
+                    }, 300)
+                }
                 swapArrayElements(rmat, innen - 1, ide - 1);
                 matRank = getMatrixRank(rmat);
                 document.getElementById("rankofmat").innerHTML = matRank;
