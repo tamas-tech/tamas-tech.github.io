@@ -4160,6 +4160,7 @@ var rankgrowth = [];
 const _cmaxt = { "1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 2, "10": 2, "11": 3, "12": 4, "13": 5, "14": 6, "15": 7 };
 var sparsemode = false;
 var kutatomode = true;
+var matrixba = false;
 
 function tgldimtbl(id) {
     var elem = document.getElementById(id);
@@ -4630,11 +4631,20 @@ $(document).on('click', '#ranktbl tbody tr.active td:not(.fn-sorszam):not(.fn-cl
 $(document).on('click', '#ranktbl tbody  td.fn-clear', function() {
     const indx = this.parentElement.rowIndex - 1;
     var dat = this.previousSibling.previousSibling.getAttribute("data-reg");
-    console.log(indx);
 
-    this.parentElement.remove();
-    for (var i = indx - 1; i < 10; i++)
-        $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1);
+    /*  this.parentElement.remove();
+     for (var i = indx - 1; i < 10; i++)
+         $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1); */
+
+    $target = $(this).parent();
+    $target.animate({ opacity: 0.2 }, 200);
+    for (var i = indx; i < 10; i++)
+        $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i).css({ 'background-color': '#457f88' });
+    setTimeout(() => {
+        $target.hide(200, function() { $target.remove(); });
+        for (var i = indx - 1; i < 10; i++)
+            $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').animate({ 'background-color': '#8cffff' }, 300);
+    }, 200);
 
     inBase = inBase.filter(y => y != dat);
     dat = dat.split("-")
@@ -4924,16 +4934,19 @@ function drawTable() {
             opacity: 1,
             start: function(event, ui) {
                 innen = ui.item[0].rowIndex - 1;
-                console.log("innen", innen)
                 ui.item.css({ 'background-color': '#aeffff43' });
             },
             stop: function(event, ui) {
                 ide = ui.item[0].rowIndex - 1;
                 ui.item.children("td.fn-sorszam").html(ide);
-                for (var i = ide; i < matRank; i++)
-                    $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1);
-                //ui.item.css({ 'display': '', 'overflow': '' });
-                ui.item.css({ 'background-color': '' });
+                for (var i = ide - 1; i < matRank; i++)
+                    $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1).css({ 'background-color': '#457f88' })
+                setTimeout(() => {
+                    ui.item.children("td.fn-sorszam").animate({ 'background-color': '#8cffff' }, 400);
+                    for (var i = ide; i < matRank; i++)
+                        $('#ranktbl tbody tr td.fn-sorszam:nth(' + i + ')').html(i + 1).animate({ 'background-color': '#8cffff' }, 400)
+                    ui.item.animate({ 'background-color': 'transparent' }, 400);
+                }, 300)
                 swapArrayElements(rmat, innen - 1, ide - 1);
                 matRank = getMatrixRank(rmat);
                 document.getElementById("rankofmat").innerHTML = matRank;
@@ -5130,6 +5143,8 @@ function base2w(e) {
         $("#rankw").val(nmxy[2]).trigger("change");
     } else
         $("#rankw").val(xy).trigger("change");
+    if (matrixba)
+        $('#rankplus').trigger("click");
 };
 
 function allBase2w() {
@@ -5231,7 +5246,6 @@ function baseIreg() {
                 txt += "<span class='irbe volt' onclick='base2w(this);'>" + xy + "</span>";
             else
                 txt += "<span class='irbe' onclick='base2w(this);'>" + xy + "</span>";
-
         }
     }
     $("#notinbase").html(txt).addClass("shown");
@@ -5260,7 +5274,6 @@ function allBaseIrreg() {
                 txt += "<span class='irbe volt' onclick='base2w(this);'>" + xy + "</span>";
             else
                 txt += "<span class='irbe' onclick='base2w(this);'>" + xy + "</span>";
-
         }
     }
     txt = '<div style="position: sticky;top: 0;background-color:#cececea3;padding: 3px;"><button class="restore-button showpre1" onclick="allBase2wD();" style="margin-right:10px;width:50px;">All</button> Maradt: <span id="irregszamlalo">' + L + '</span> / ' + L + '</div>' + txt;
