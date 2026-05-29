@@ -1289,58 +1289,83 @@
                     </tr>
                     <tr id="sugosor">
                         <td colspan="15" style="background-color: #262626;text-align:left;border-bottom: 3px solid #b5b5b5;word-wrap:break-word;white-space: normal;">
-                            <div style="  background-color: #f6ffb4;max-height:200px;max-width:670px;overflow-y:auto;font-family: Arial;padding:0 10px;cursor:text;">
+                            <div id="accordion" style="background-color: #f6ffb4;max-height:200px;max-width:670px;overflow-y:auto;font-family: Arial;padding:5px;overflow-y:scroll;cursor:text;">
                                 <h3 style="text-align:center;">Számsorok bevitele</h3>
-                                <b>A számsor mindig  a "Fib" és "+" cellák közötti beviteli mezőben megadott <i>n</i> értékével megegyező hosszú lesz.</b> A számsorok megadása történhet héhány, vagy az összes elem felsorolásával, illetve (egyetlen, de
-                                tetszőleges) vátozót tartalmazó formula bevitelével. A két mődszer vegyíthető is.
-                                <h4 style="margin: 10px 0 -10px 0;">Néhány elem felsorolásával</h4>
-                                <ul>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: 1,4,3,4,2 &rightarrow; sor: 1,4,3,4,2</span> (Ha bevitt elemek száma megegyezik <i>n</i> értékével a bevitt sort kapjuk)
-                                    </li>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 2, input: 1,4,3,4,2 &rightarrow; sor: 1,4</span> (Ha bevitt elemek száma nagyobb <i>n</i> értékénél csak az első <i>n</i> elemet kapjuk)
-                                    </li>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 7, input: 1,4 &rightarrow; sor: 1,4,1,4,1,4,1</span> (Ha bevitt elemek száma kisebb <i>n</i> értékénél a megadott elemek ciklikus ismétlődésével kapunk egy <i>n</i>                                        hoszúságú sort.)
-                                    </li>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 8, input: 1/3,-2,... &rightarrow; sor: 1/3,-2,-2,-2,-2,-2,-2,-2</span> (Ha bevitt elemek száma kisebb <i>n</i> értékénél éa azt a <b style="font-size:120%;letter-spacing: 0.161em;background-color: #ffff69;">,...</b>                                        karakterekkel zárjuk le, akkor a megadott elemek ciklikus ismétlődésa helyet az utolsó elem ismétlésével kapunk egy <i>n</i> hoszúságú sort.)
-                                    </li>
-                                </ul>
-                                <h4 style="margin: 10px 0 5px 0;">Képlettel</h4>
-                                Minden képletben legfeljebb csak egy, de tetszőlegesen megválasztható karakter szerepelhet, melynek a hossza is egy. Például u, t, k, W,... A program ezt az egy hosszú karaktert veszi a formula változójának. Egy nulla változós konstans is formula: 1,
-                                2/3, sqrt(5), pi, exp(3),....
-                                <ul>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: k^2 &rightarrow; sor: 1,4,9,16,25</span>
-                                    </li>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: 4 &rightarrow; sor: 4,4,4,4,4</span> (konstans formula)<br><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: exp(5) &rightarrow; sor:e<sup>5</sup>,e<sup>5</sup>,e<sup>5</sup>,e<sup>5</sup>,e<sup>5</sup></span>                                        (konstans formula)
-                                    </li>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 7, input: part(k+2) &rightarrow; sor: 3,5,7,11,15,22</span> (függvényt is tartalmazhat egy formula)
-                                    </li>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 4, input: (1/(4*n*sqrt(3))*exp(pi*sqrt(2*n/3)))/part(n) &rightarrow; sor: 287382756/153134377,...</span> (Szinte tetszőleges egyváltozós formula bevihető.)
-                                    </li>
-                                </ul>
-                                <h4 style="margin: 10px 0 5px 0;">A két megadás vegyítése: 1,5,6,...k^2+3/k</h4>
-                                Megadhatunk néhány kezdőelemt: 1,5,6, majd ezt három ponttal, és az azt követő egyváltozós: k^2+3/k furmulával zárjuk le. Ekkor Az 1,5,6 sor nem az utolsó 6-os elemmel, hanem a k^2+3/k (k=3,4,5,...<i>n</i>) formulával számított
-                                elemekkel folytatódik.
-                                <ul>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 7, input: 1,5,6,...k^2+3/k &rightarrow; sor: 1,5,6,67/4,128/5,73/2,346/7</span>
-                                    </li>
-                                    <li><span class="pentcimke" onclick="peldaSet(this);">n = 6, input: 0,0,...part(W)+sigma(W) &rightarrow; sor: 0,0,7,12,13,23</span>
-                                    </li>
-                                </ul>
+                                <div>
+                                    <b>A számsor mindig  a "Fib" és "+" cellák közötti beviteli mezőben megadott <i>n</i> értékével megegyező hosszú lesz.</b> A számsorok megadása történhet héhány, vagy az összes elem felsorolásával, illetve (egyetlen,
+                                    de tetszőleges) vátozót tartalmazó formula bevitelével. A két mődszer vegyíthető is.
+                                    <h4 style="margin: 10px 0 -10px 0;">Néhány elem felsorolásával</h4>
+                                    <ul>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: 1,4,3,4,2 &rightarrow; sor: 1,4,3,4,2</span> (Ha bevitt elemek száma megegyezik <i>n</i> értékével a bevitt sort kapjuk)
+                                        </li>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 2, input: 1,4,3,4,2 &rightarrow; sor: 1,4</span> (Ha bevitt elemek száma nagyobb <i>n</i> értékénél csak az első <i>n</i> elemet kapjuk)
+                                        </li>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 7, input: 1,4 &rightarrow; sor: 1,4,1,4,1,4,1</span> (Ha bevitt elemek száma kisebb <i>n</i> értékénél a megadott elemek ciklikus ismétlődésével kapunk egy <i>n</i>                                            hoszúságú sort.)
+                                        </li>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 8, input: 1/3,-2,... &rightarrow; sor: 1/3,-2,-2,-2,-2,-2,-2,-2</span> (Ha bevitt elemek száma kisebb <i>n</i> értékénél éa azt a <b style="font-size:120%;letter-spacing: 0.161em;background-color: #ffff69;">,...</b>                                            karakterekkel zárjuk le, akkor a megadott elemek ciklikus ismétlődésa helyet az utolsó elem ismétlésével kapunk egy <i>n</i> hoszúságú sort.)
+                                        </li>
+                                    </ul>
+                                    <h4 style="margin: 10px 0 5px 0;">Képlettel</h4>
+                                    Minden képletben legfeljebb csak egy, de tetszőlegesen megválasztható karakter szerepelhet, melynek a hossza is egy. Például u, t, k, W,... A program ezt az egy hosszú karaktert veszi a formula változójának. Egy nulla változós konstans is formula: 1,
+                                    2/3, sqrt(5), pi, exp(3),....
+                                    <ul>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: k^2 &rightarrow; sor: 1,4,9,16,25</span>
+                                        </li>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: 4 &rightarrow; sor: 4,4,4,4,4</span> (konstans formula)<br><span class="pentcimke" onclick="peldaSet(this);">n = 5, input: exp(5) &rightarrow; sor:e<sup>5</sup>,e<sup>5</sup>,e<sup>5</sup>,e<sup>5</sup>,e<sup>5</sup></span>                                            (konstans formula)
+                                        </li>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 7, input: part(k+2) &rightarrow; sor: 3,5,7,11,15,22</span> (függvényt is tartalmazhat egy formula)
+                                        </li>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 4, input: (1/(4*n*sqrt(3))*exp(pi*sqrt(2*n/3)))/part(n) &rightarrow; sor: 287382756/153134377,...</span> (Szinte tetszőleges egyváltozós formula bevihető.)
+                                        </li>
+                                    </ul>
+                                    <h4 style="margin: 10px 0 5px 0;">A két megadás vegyítése: 1,5,6,...k^2+3/k</h4>
+                                    Megadhatunk néhány kezdőelemt: 1,5,6, majd ezt három ponttal, és az azt követő egyváltozós: k^2+3/k furmulával zárjuk le. Ekkor Az 1,5,6 sor nem az utolsó 6-os elemmel, hanem a k^2+3/k (k=3,4,5,...<i>n</i>) formulával
+                                    számított elemekkel folytatódik.
+                                    <ul>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 7, input: 1,5,6,...k^2+3/k &rightarrow; sor: 1,5,6,67/4,128/5,73/2,346/7</span>
+                                        </li>
+                                        <li><span class="pentcimke" onclick="peldaSet(this);">n = 6, input: 0,0,...part(W)+sigma(W) &rightarrow; sor: 0,0,7,12,13,23</span>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <h3 style="text-align:center;">Aritmetikai függvények</h3>
-                                / Általunk implementált <code>Nerdamer</code> kiterjesztések /
-                                <ul>
-                                    <li><b>pent</b>(n): Ha n egy általánosított előjeles pentagonális szám, akkor &pm;1, egyébként 0.</li>
-                                    <li><b>tau</b>(n): n osztóinak a száma.</li>
-                                    <li><b>sigma</b>(n): n osztóinak az összege.</li>
-                                    <li><b>part</b>(n): n partícióinak a száma.</li>
-                                    <li><b>phi</b>(n): Euler-féle &phi;(n) totient függvény. Az n-nél nem nagyobb, n-hez relatív prímek száma</li>
-                                    <i>Az alábbi négy polinomban n egy rögzített szám. Például:</i> Fab_6(k,5,k-4,k/9,k^2,-3*k)
-                                    <li><b>Zyc_n</b>(x_1,x_2,...,x_n): A Z<sub>n</sub>( x_1,...,x_n) ciklusszámláló polinom.</li>
-                                    <li><b>Fab_n</b>(x_1,x_2,...,x_n): A Fab<sub>n</sub>( x_1,...,x_n) Faber-polinom.</li>
-                                    <li><b>Fib_n</b>(x_1,x_2,...,x_n): A Fib<sub>n</sub>( x_1,...,x_n) általánosított Fibonacci-polinom.</li>
-                                    <li><b>Luc_n</b>(x_1,x_2,...,x_n): A Luc<sub>n</sub>( x_1,...,x_n) általánosított Lucas-polinom.</li>
-                                </ul>
-                                <h3 style="text-align:center;">Beépített <code>Nerdamer</code> függvények</h3>
+                                <div>
+                                    / Általunk implementált <code>Nerdamer</code> kiterjesztések /
+                                    <ul>
+                                        <li><b>pent</b>(n): Ha n egy általánosított előjeles pentagonális szám, akkor &pm;1, egyébként 0.</li>
+                                        <li><b>tau</b>(n): n osztóinak a száma.</li>
+                                        <li><b>sigma</b>(n): n osztóinak az összege.</li>
+                                        <li><b>sigmaM</b>(n,m): n-nek az m-nél nem nagyobb osztóinak az összege.</li>
+                                        <li><b>part</b>(n): n partícióinak a száma.</li>
+                                        <li><b>partM</b>(n,m): n-nek a legfeljebb m tagú partícióinak a száma.</li>
+                                        <li><b>phi</b>(n): Euler-féle &phi;(n) totient függvény. Az n-nél nem nagyobb, n-hez relatív prímek száma</li>
+                                        <li><b>mahonian</b>(n,m): az [1,2,...n] halmaz m inverzióval rendelkaző permutációinak a száma .</li>
+                                        <li><b>binomial</b>(n,m): az [1,2,...n] halmaz m elemű részhalmazainak a száma .</li>
+                                        <i>Az alábbi hat polinomban n egy rögzített szám. Például:</i> Fab_6(k,5,k-4,k/9,k^2,-3*k)
+                                        <li><b>Zyc_n</b>(x_1,x_2,...,x_n): A Z<sub>n</sub>( x_1,...,x_n) ciklusszámláló polinom. (lsd. 6. kártya)</li>
+                                        <li><b>Fab_n</b>(x_1,x_2,...,x_n): A Fab<sub>n</sub>( x_1,...,x_n) Faber-polinom. (lsd. 6. kártya)</li>
+                                        <li><b>Fib_n</b>(x_1,x_2,...,x_n): A Fib<sub>n</sub>( x_1,...,x_n) általánosított Fibonacci-polinom. (lsd. 6. kártya)</li>
+                                        <li><b>Luc_n</b>(x_1,x_2,...,x_n): A Luc<sub>n</sub>( x_1,...,x_n) általánosított Lucas-polinom. (lsd. 6. kártya)</li>
+                                        <li><b>Sti_n</b>(x_1,x_2,...,x_n): A Sti<sub>n</sub>( x_1,...,x_n) általánosított Stirling-polinom. (lsd. 8. kártya)</li>
+                                        <li><b>Har_n</b>(x_1,x_2,...,x_n): A Har<sub>n</sub>( x_1,...,x_n) harmonikus polinom. (lsd. 8. kártya)</li>
+                                    </ul>
+                                </div>
+                                <h3 style="text-align:center;">Azonosságok</h3>
+                                <ol>
+                                    <li>
+                                        <b>A pentagonális számok a mahoni számok és binomiális együtthatók szorzatösszege</b>
+                                        <span>\[ \delta_{5}(n)=(-1)^{n+1}\,\sum_{k=0}^{n}\,i(n,k)\binom{n}{k}\]</span> <i style="font-size:80%;">Az alábbi példákban a "Nerdamer kód" jelölőnégyzetet ki kell pipálni. (Egy sárga mezőre kattintva ezt a program automatikusan megteszi.)</i>
+                                        <br/>Nézzük a képletet részleteiben, n = 12 értékkel.
+                                        <br/>A binomiális számok sora:<br/>
+                                        <span class="pentcimke" onclick="peldaSetNerd(this);">seq(binomial(12,k),0,12)</span>
+                                        <br/>A mahoni számok sora:<br/>
+                                        <span class="pentcimke" onclick="peldaSetNerd(this);">seq(mahonian(12,k),0,12)</span>
+                                        <br/>A képletben szerepló előjeles szorzatok:<br/>
+                                        <span class="pentcimke" onclick="peldaSetNerd(this);">seq((-1)^k*mahonian(12,k)*binomial(12,k),0,12)</span>
+                                        <br/>Végül, maga az összeg és a pentagonális szám értéke:<br/>
+                                        <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='50px');">(-1)^(12+1)*sum((-1)^k*mahonian(12,k)*binomial(12,k),k,0,12)=pent(12)</span>
+                                    </li>
+                                </ol>
                             </div>
                         </td>
                     </tr>
