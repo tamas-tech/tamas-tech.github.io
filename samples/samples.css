@@ -3629,6 +3629,10 @@ select#mthselect {
     cursor: pointer;
 }
 
+#setpenttbl #sugosor td div#accordion ol li {
+    list-style: decimal
+}
+
 /* Safari */
 
 @-webkit-keyframes spin {
