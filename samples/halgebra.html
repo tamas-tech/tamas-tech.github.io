@@ -1540,6 +1540,19 @@
         updLstore();
         setTimeout(() => {
             $('#w1coeff').trigger('change');
+            $(function() {
+                $("#accordion").accordion({
+                    header: "> h3",
+                    collapsible: true,
+                    heightStyle: "content",
+                    active: "none",
+                    animate: {
+                        easing: 'swing',
+                        duration: 400,
+                        down: true
+                    },
+                })
+            });
         }, 1000);
     </script>
 </body>
