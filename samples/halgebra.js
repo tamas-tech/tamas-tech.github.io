@@ -4922,7 +4922,6 @@ function drawTable() {
             hh = 'unset';
         else
             hh += "vh";
-        console.log(hh)
         txt += '<div style="max-height:' + hh + ';overflow-y:auto;width:fit-content;margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th><th style="background-color:#8cffff; outline: 2px solid #999e9f;outline-offset: -4px;">&rho;</th><th>D</th>';
         for (var j = 0; j < m; j++)
             txt += '<th class="hide-column hide-col">' + (j + 1) + '</th>';
@@ -5064,7 +5063,7 @@ function makeBaseHn1() {
             runszamitas("k3", true);
             var n = N - 1 - Math.ceil(Math.log2(i + 1));
             var w = num2xy(i);
-            if (n > 1 && w.charAt(1) != "x") {
+            if (i > 1 && n > 1 && w.charAt(1) != "x") {
                 i++;
             } else {
                 $(ne).val(n).trigger('change');
@@ -9335,12 +9334,25 @@ function peldaSet(e) {
     const n = _.last(txt.match(/n = (\d*)/));
     const inp = txt.split(", input: ")[1].split(" → ")[0];
     const ch = document.getElementById("cinput");
-    const cinp = document.getElementById("pentcinput");
     const N = document.getElementById("pentN");
     if (!ch.checked)
         ch.click();
     $(N).val(n).trigger('change');
     $(cinp).focus().val(inp).trigger('change');
+    $(e).addClass('villbgdark');
+    setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
+};
+
+function peldaSetNerd(e) {
+    const txt = e.innerText;
+    const ch = document.getElementById("cinput");
+    const chn = document.getElementById("nerdkod");
+    const cinp = document.getElementById("pentcinput");
+    if (!ch.checked)
+        ch.click();
+    if (!chn.checked)
+        chn.click();
+    $(cinp).focus().val(txt).trigger('change');
     $(e).addClass('villbgdark');
     setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
 };
