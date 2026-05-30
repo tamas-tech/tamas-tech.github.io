@@ -9434,15 +9434,17 @@ function getDataNerd(file) {
             return response.text();
         })
         .then((text) => {
-            /*const ch = document.getElementById("cinput");
+            imp.value = text;
+            setTimeout(() => {
+            const ch = document.getElementById("cinput");
             const chn = document.getElementById("nerdkod");
             if (!ch.checked)
                 ch.click();
             if (!chn.checked)
                 chn.click();
-            $(e).addClass('villbgdark');
-            setTimeout(() => { $(e).removeClass('villbgdark') }, 300);*/
-            imp.value = text;
+            $(imp).addClass('villbgdark');
+            }, 300);
+            setTimeout(() => { $(imp).removeClass('villbgdark') }, 600);
         })
         .catch((error) => {
             imp.value == `Error: ${error.message}`;
