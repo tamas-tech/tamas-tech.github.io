@@ -9434,14 +9434,14 @@ function getDataNerd(file) {
             return response.text();
         })
         .then((text) => {
-            const ch = document.getElementById("cinput");
+            /*const ch = document.getElementById("cinput");
             const chn = document.getElementById("nerdkod");
             if (!ch.checked)
                 ch.click();
             if (!chn.checked)
                 chn.click();
             $(e).addClass('villbgdark');
-            setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
+            setTimeout(() => { $(e).removeClass('villbgdark') }, 300);*/
             imp.value = text;
         })
         .catch((error) => {
