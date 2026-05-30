@@ -7360,6 +7360,23 @@ $(document).ready(function() {
     $('#reccsora button').on('click', function(event) {
         event.stopPropagation();
     });
+    document.getElementById('fileNerd')
+        .addEventListener('input', function() {
+            const ch = document.getElementById("cinput");
+            const chn = document.getElementById("nerdkod");
+            const cinp = document.getElementById("pentcinput");
+            if (!ch.checked)
+                ch.click();
+            if (!chn.checked)
+                chn.click();
+            var fr = new FileReader();
+            fr.onload = (evt) => {
+                var txt = evt.target.result;
+                console.log(txt)
+                cinp.value = txt;
+            };
+            fr.readAsText(this.files[0]);
+        });
 });
 
 function copy2OEIS() {
@@ -9387,6 +9404,56 @@ function peldaSetNerd(e) {
     setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
 };
 
+function downloadNerd() {
+    var str = normalizeLineEndings(document.getElementById("pentcinput").value);
+    const aletolt = document.createElement("a");
+    aletolt.href = URL.createObjectURL(new Blob([str], {
+        type: "text/plain"
+    }));
+    aletolt.setAttribute("download", "nerdamer_.txt");
+    document.body.appendChild(aletolt);
+    aletolt.addEventListener('click', (e) => {
+        setTimeout(() => URL.revokeObjectURL(aletolt.href), 30 * 1000);
+    });
+    console.log(aletolt)
+    aletolt.click();
+    document.body.removeChild(aletolt);
+};
+
+function getDataNerd(file) {
+    const imp = document.getElementById("pentcinput");
+    const nerdRequest = new Request(file);
+
+    window
+        .fetch(nerdRequest)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then((text) => {
+            const ch = document.getElementById("cinput");
+            const chn = document.getElementById("nerdkod");
+            if (!ch.checked)
+                ch.click();
+            if (!chn.checked)
+                chn.click();
+            $(e).addClass('villbgdark');
+            setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
+            imp.value = text;
+        })
+        .catch((error) => {
+            imp.value == `Error: ${error.message}`;
+        });
+};
+
+function loadNerd(e) {
+    const linkData = e.getAttribute("data-page");
+    getDataNerd("../docs/nerds/" + linkData);
+};
+
+
 ///   #k7  polygonal polynomials
 
 function setOutputFontPolyg(v) {
@@ -9819,25 +9886,3 @@ function masterTh() {
 //console.log(`Result for n = ${n}:`, result);
 // Output: 7 (Since there are exactly 7 integer partitions of 5)
 // Output: 7 (Since there are exactly 7 integer partitions of 5)
-
-function fromGithub(file) {
-    const myImage = document.getElementById("pentcinput");
-
-    const myRequest = new Request(file);
-
-    window
-        .fetch(myRequest)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            return response.text();
-        })
-         .then((text) => {
-            myImage.value =  text;
-          })
-          .catch((error) => {
-            myImage.value == `Error: ${error.message}`;
-          });
-}
