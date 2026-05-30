@@ -9819,3 +9819,22 @@ function masterTh() {
 //console.log(`Result for n = ${n}:`, result);
 // Output: 7 (Since there are exactly 7 integer partitions of 5)
 // Output: 7 (Since there are exactly 7 integer partitions of 5)
+
+function fromGithub() {
+    const myImage = document.getElementById("pentcinput");
+
+    const myRequest = new Request("/nerds/nerdamer1.txt");
+
+    window
+        .fetch(myRequest)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            return response.text();
+        })
+        .then((response) => {
+            myImage.value = URL.createObjectURL(response);
+        });
+}
