@@ -9243,6 +9243,51 @@ function pentPlot3(n, cim) {
 };
 
 //(1/(4*n*sqrt(3))*exp(pi*sqrt(2*n/3)))/part(n)
+
+function nerdszamitas(c_txt) {
+    const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+)/g));
+    if (ppolys.length > 0)
+        for (let v of ppolys) {
+            var L = v.split("_");
+            getsetZycFabFib(L[0], parseInt(L[1]), false);
+        };
+    var out = "";
+    const tobbsoros = /[\n\r\f]/.test(c_txt);
+    const tex = c_txt.match(/\$.*?\$/g);
+    const vantex = tex != null && tex.length > 0;
+    if (tobbsoros) {
+        c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
+        c_txt = "[" + c_txt.replace(/[\n\r\f]/g, ",kwrtz,").replace(/(,kwrtz\,)+/g, ",kwrtz,") + "]";
+    }
+    //console.log("c_txt tobbsorosbol", c_txt);
+    if (vantex) {
+        let i = 0;
+        for (let w of tex) {
+            c_txt = c_txt.replace(w, 'ztrwk' + i + ',');
+            i++
+        }
+    };
+    //console.log("c_txt vantexbol", c_txt);
+    if (c_txt.endsWith(","))
+        c_txt = c_txt.slice(0, -1);
+    c_txt = c_txt.replaceAll(",,", ",").replaceAll(",]", "]");
+    //console.log("c_txt nerbe", c_txt);
+    out = nerdFormat(nerdamer(c_txt).evaluate());
+    //console.log("nyers out", out);
+    if (tobbsoros)
+        out = out.slice(1, -1).replaceAll(/, *kwrtz(\,)*/g, " \\\\ ");
+    //console.log("out tobbsorosbol", out);
+    if (vantex) {
+        out = out.replace(/(ztrwk\d+)(\,)(?!kwrtz)/g, "$1");
+        for (var j = 0; j < tex.length; j++) {
+            var pat = new RegExp('ztrwk' + j);
+            out = out.replace(pat, tex[j].slice(1, -1));
+        };
+    };
+    //console.log("out vantexbol", out);
+    ZFibFab2Latex(out);
+}
+
 function drawPent() {
     nerdamer.flush();
     nerdamer.clearVars();
@@ -9271,44 +9316,7 @@ function drawPent() {
         var c_txt = $("#usersorc textarea").val();
         const nerdkod = document.getElementById("nerdkod").checked;
         if (nerdkod) {
-            const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+)/g));
-            if (ppolys.length > 0)
-                for (let v of ppolys) {
-                    var L = v.split("_");
-                    getsetZycFabFib(L[0], parseInt(L[1]), false);
-                };
-            var out = "";
-            const tobbsoros = /[\n\r\f]/.test(c_txt);
-            //const tex = c_txt.match(/TEX\(\(.*?\)\)/g);
-            const tex = c_txt.match(/\$.*?\$/g);
-            const vantex = tex != null && tex.length > 0;
-            if (tobbsoros) {
-                c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
-                c_txt = "[" + c_txt.replace(/[\n\r\f]/g, ",kwrtz,").replace(/(,kwrtz\,)+/g, ",kwrtz,") + "]";
-            }
-            if (vantex) {
-                let i = 0;
-                for (let w of tex) {
-                    c_txt = c_txt.replace(w, 'kwrtz__' + i + ',');
-                    i++
-                }
-            };
-            if (c_txt.endsWith(","))
-                c_txt = c_txt.slice(0, -1);
-            c_txt = c_txt.replaceAll(",,", ",").replaceAll(",]", "]");
-            //console.log(c_txt);
-            out = nerdFormat(nerdamer(c_txt).evaluate());
-            if (tobbsoros)
-                out = out.slice(1, -1).replaceAll(/,kwrtz(\,)*/g, " \\\\ ");
-            if (vantex) {
-                out = out.replace(/(kwrtz__\d+)(\,)(?!kwrtz)/g, "$1");
-                for (var j = 0; j < tex.length; j++) {
-                    var pat = new RegExp('kwrtz__' + j);
-                    out = out.replace(pat, tex[j].slice(1, -1));
-                };
-            };
-            //console.log(out);
-            ZFibFab2Latex(out);
+            nerdszamitas(c_txt);
         } else {
             hatasC(n, c_txt);
             $("#pentsorcopytok").css("display", "block");
@@ -9370,6 +9378,11 @@ function drawPent() {
     };
 };
 
+function nerdCalc() {
+    var c_txt = $("#usersorc textarea").val();
+    nerdszamitas(c_txt);
+};
+
 function setPentKeplet(elem) {
     $('#penttbl td.selected').removeClass('selected');
     $(elem).addClass("selected");
@@ -9380,8 +9393,9 @@ function peldaSet(e) {
     const n = _.last(txt.match(/n = (\d*)/));
     const inp = txt.split(", input: ")[1].split(" → ")[0];
     const ch = document.getElementById("cinput");
+    const cinp = document.getElementById("pentcinput");
     const N = document.getElementById("pentN");
-    if (!ch.checked)
+    if (ch && !ch.checked)
         ch.click();
     $(N).val(n).trigger('change');
     $(cinp).focus().val(inp).trigger('change');
@@ -9395,9 +9409,9 @@ function peldaSetNerd(e) {
     const ch = document.getElementById("cinput");
     const chn = document.getElementById("nerdkod");
     const cinp = document.getElementById("pentcinput");
-    if (!ch.checked)
+    if (ch && !ch.checked)
         ch.click();
-    if (!chn.checked)
+    if (chn && !chn.checked)
         chn.click();
     $(cinp).focus().val(txt).trigger('change');
     $(e).addClass('villbgdark');
@@ -9430,21 +9444,18 @@ function getDataNerd(file) {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            
             return response.text();
         })
         .then((text) => {
-            imp.value = text;
-            setTimeout(() => {
             const ch = document.getElementById("cinput");
             const chn = document.getElementById("nerdkod");
             if (!ch.checked)
                 ch.click();
             if (!chn.checked)
                 chn.click();
-            $(imp).addClass('villbgdark');
-            }, 300);
-            setTimeout(() => { $(imp).removeClass('villbgdark') }, 600);
+            $(e).addClass('villbgdark');
+            setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
+            imp.value = text;
         })
         .catch((error) => {
             imp.value == `Error: ${error.message}`;
@@ -9452,9 +9463,7 @@ function getDataNerd(file) {
 };
 
 function loadNerd(e) {
-    console.log(e)
     const linkData = e.getAttribute("data-page");
-    console.log("../docs/nerds/" + linkData);
     getDataNerd("../docs/nerds/" + linkData);
 };
 
