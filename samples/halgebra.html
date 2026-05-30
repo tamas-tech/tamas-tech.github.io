@@ -1375,6 +1375,21 @@
                                         </span>
                                     </li>
                                 </ol>
+                                 <h3 style="text-align:center;">Fájl feltöltése/letöltése</h3>
+                                <div>
+                                    <label><b>Feltöltés:</b></label>
+                                    <input type="file" id="fileNerd">
+                                    <label onclick="downloadNerd();">
+                                        <b>Letöltés:</b>
+                                        <span id="dwnbtn" style='display: inline-block;width: 60px;padding: 2px;border: 1px solid #aaa;text-align: center;border-radius: 5px;background-color: #e9e9ed;'>&#x21E9;</span>
+                                    </label>
+                                    <h3>Példák betöltése</h3>
+                                    <ul>
+                                        <li><a onclick="loadNerd(this);" data-page="nerdamer1.txt">Page 1</a></li>
+                                        <li><a onclick="loadNerd(this);" data-page="nerdamer2.txt">Page 2</a></li>
+                                        <li><a onclick="loadNerd(this);" data-page="nerdamer_2.txt">Page 3</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </td>
                     </tr>
