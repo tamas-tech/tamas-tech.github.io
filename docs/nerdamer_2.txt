@@ -1,0 +1,4 @@
+$\text{A binomiális számok sora: }\binom{12}{0},\binom{12}{1},\ldots,\binom{12}{12}\longrightarrow$ seq(binomial(12,k),0,12)
+$\text{A mahoni számok sora: }i(12,0),i(12,1),\ldots,i(12,12)\longrightarrow$ seq(mahonian(12,k),0,12)
+$\text{A képletben szereplő váltakozó előjeles szorzatok: }i(12,0)\binom{12}{0},-i(12,1)\binom{12}{1},\ldots,i(12,12)\binom{12}{12}\longrightarrow$ seq((-1)^k*mahonian(12,k)*binomial(12,k),0,12)
+$\text{Végül, maga az előjeles szorzatok összeg és a pentagonális szám értéke: }(-1)^{12+1}\sum_{k=0}^{12}i(12,k)\binom{12}{k} = $ (-1)^(12+1)*sum((-1)^k*mahonian(12,k)*binomial(12,k),k,0,12)=pent(12)$\delta_{5}(12)$
