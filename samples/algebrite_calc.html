@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebrite Calculator</title>
+    <script src="../tools/Algebrite/dist/algebrite.bundle-for-browser-min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        #eredmeny {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #007bff;
+            min-height: 1.2em;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Algebrite CAS</h2>
+        <p>Írj be egy kifejezést (pl. <code>expand((x+y)^2)</code> vagy <code>d(x^2,x)</code>):</p>
+
+        <input type="text" id="kifejezes" placeholder="Pl. expand((x+y)^2)" value="expand((x+y)^2)">
+        <button onclick="szamolas()">Kiszámítás</button>
+
+        <div id="eredmeny">Az eredmény itt fog megjelenni...</div>
+    </div>
+
+    <script>
+        function szamolas() {
+            // A beviteli mező értékének lekérése
+            const input = "printlatex(" + document.getElementById('kifejezes').value + ")";
+            const display = document.getElementById('eredmeny');
+
+            try {
+                // Az Algebrite futtatása
+                // A run() függvény stringet ad vissza
+                const res = Algebrite.run(input);
+
+                // Eredmény megjelenítése
+                display.innerHTML = "<strong>Eredmény:</strong> " + res;
+            } catch (error) {
+                display.innerHTML = "<span style='color:red;'>Hiba: " + error.message + "</span>";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
