@@ -9430,6 +9430,7 @@ function getDataNerd(file) {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
+            
             return response.text();
         })
         .then((text) => {
@@ -9449,7 +9450,9 @@ function getDataNerd(file) {
 };
 
 function loadNerd(e) {
+    console.log(e)
     const linkData = e.getAttribute("data-page");
+    console.log("../docs/nerds/" + linkData);
     getDataNerd("../docs/nerds/" + linkData);
 };
 
