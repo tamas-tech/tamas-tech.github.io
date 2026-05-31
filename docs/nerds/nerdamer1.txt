@@ -1,4 +1,7 @@
-﻿$\text{A binomiális számok sora: }\binom{12}{0},\binom{12}{1},\ldots,\binom{12}{12}\longrightarrow$ seq(binomial(12,k),0,12)
-$\text{A mahoni számok sora: }i(12,0),i(12,1),\ldots,i(12,12)\longrightarrow$ seq(mahonian(12,k),0,12)
-$\text{A képletben szereplő váltakozó előjeles szorzatok: }i(12,0)\binom{12}{0},-i(12,1)\binom{12}{1},\ldots,i(12,12)\binom{12}{12}\longrightarrow$ seq((-1)^k*mahonian(12,k)*binomial(12,k),0,12)
-$\text{Végül, maga az előjeles szorzatok összeg és a pentagonális szám értéke: }(-1)^{12+1}\sum_{k=0}^{12}i(12,k)\binom{12}{k} = $ (-1)^(12+1)*sum((-1)^k*mahonian(12,k)*binomial(12,k),k,0,12)=pent(12)$\delta_{5}(12)$
+﻿§N=12;M=matrix([2,3],[4,5]);O=6§
+$M^{-1} = $ invert(M)*O
+$\bbox[5px, border: 2px solid red]{\delta_{5}(N)=(-1)^{N+1}\,\sum_{k=0}^{N}\,i(N,k)\binom{N}{k}}\\[12mm]$
+$\text{A binomiális számok sora: }\binom{N}{0},\binom{N}{1},\ldots,\binom{N}{N}\longrightarrow$ seq(binomial(N,k),0,N)
+$\text{A mahoni számok sora: }i(N,0),i(N,1),\ldots,i(N,N)\longrightarrow$ seq(mahonian(N,k),0,N)
+$\text{A képletben szereplő váltakozó előjeles szorzatok: }i(12,0)\binom{N}{0},-i(N,1)\binom{N}{1},\ldots,i(N,N)\binom{N}{N}\longrightarrow$ seq((-1)^k*mahonian(N,k)*binomial(N,k),0,N)
+$\text{Végül, maga az előjeles szorzatok összeg és a pentagonális szám értéke: }(-1)^{12+1}\sum_{k=0}^{N}i(12,k)\binom{N}{k} = $ (-1)^(N+1)*sum((-1)^k*mahonian(N,k)*binomial(N,k),k,0,N) $\equiv$ pent(N) $=\delta_{5}(N)$
