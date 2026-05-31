@@ -68,7 +68,6 @@
             var v1 = nerdamer(expr, s).evaluate();
             vec.set(j - m, v1);
         }
-        console.log(vec)
         return vec;
     }
     nerdamer.register({
