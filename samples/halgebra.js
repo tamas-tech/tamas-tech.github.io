@@ -9244,6 +9244,18 @@ function pentPlot3(n, cim) {
 
 //(1/(4*n*sqrt(3))*exp(pi*sqrt(2*n/3)))/part(n)
 
+function evaluateNerdAll(vec) {
+    var txt = "[";
+    for (let v of vec) {
+        txt += nerdFormat(nerdamer(v.toString()).evaluateM()) + ",";
+    }
+    if (txt.endsWith(","))
+        txt = txt.slice(0, -1);
+    txt += "]";
+    txt = txt.replaceAll("vmatrix", "pmatrix");
+    return txt;
+};
+
 function nerdszamitas(c_txt) {
     nerdamer.clearVars();
     const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+)/g));
@@ -9260,7 +9272,7 @@ function nerdszamitas(c_txt) {
         for (let v of Vars) {
             c_txt = c_txt.replace(v, '');
         };
-        Vars = _.flatten(Vars.map(y => y.replace(/ *§ */g, "").split(",").map(z => z.trim())));
+        Vars = _.flatten(Vars.map(y => y.replace(/ *§ */g, "").split(";").map(z => z.trim())));
         for (let v of Vars) {
             Vtex += v + ",";
             var dek = v.split("=")
@@ -9270,15 +9282,14 @@ function nerdszamitas(c_txt) {
             Vtex = Vtex.slice(0, -1);
         Vtex += "}\\\\[8mm]";
     };
-
+    //console.log(Vars);
     const tobbsoros = /[\n\r\f]/.test(c_txt);
     const tex = c_txt.match(/\$.*?\$/g);
     const vantex = tex != null && tex.length > 0;
     if (tobbsoros) {
         c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
         c_txt = "[" + c_txt.replace(/[\n\r\f]/g, ",kwrtz,").replace(/(,kwrtz\,)+/g, ",kwrtz,") + "]";
-    }
-
+    };
     //console.log("c_txt tobbsorosbol", c_txt);
     if (vantex) {
         let i = 0;
@@ -9293,7 +9304,8 @@ function nerdszamitas(c_txt) {
     c_txt = c_txt.replaceAll(",,", ",").replaceAll(/(\,)*kwrtz(\,)*\]/g, "]").replaceAll(",]", "]");
     c_txt = c_txt.replaceAll(",,", ",").replaceAll(/\[(\,)*kwrtz(\,)*/g, "[").replaceAll("[,", "[");
     //console.log("c_txt nerbe", c_txt);
-    out = nerdFormat(nerdamer(c_txt).evaluate());
+    //out = nerdFormat(nerdamer(c_txt).evaluateM());
+    out = evaluateNerdAll(nerdamer(c_txt).symbol.elements);
     //console.log("nyers out", out);
     if (tobbsoros)
         out = out.slice(1, -1).replaceAll(/, *kwrtz(\,)*/g, " \\\\ ");
@@ -9305,6 +9317,13 @@ function nerdszamitas(c_txt) {
             out = out.replace(pat, tex[j].slice(1, -1));
         };
     };
+    if (/matrix\(/.test(out)) {
+        var mats = out.match(/matrix\(.*?\)/)
+        for (var j = 0; j < mats.length; j++) {
+            console.log(nerdamer(mats[j]).latex())
+            out = out.replace(mats[j], nerdamer(mats[j]).latex().replaceAll("vmatrix", "pmatrix"));
+        };
+    }
     out = Vtex + out;
     //console.log("out vantexbol", out);
     ZFibFab2Latex(out);
