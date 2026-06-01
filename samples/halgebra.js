@@ -9498,13 +9498,14 @@ function getDataNerd(file) {
         .then((text) => {
             const ch = document.getElementById("cinput");
             const chn = document.getElementById("nerdkod");
+             const tok = document.getElementById("tbltok");
             if (ch && !ch.checked)
                 ch.click();
             if (chn && !chn.checked)
                 chn.click();
             imp.value = text;
-            $(imp).addClass('villbgdark');
-            setTimeout(() => { $(imp).removeClass('villbgdark') }, 900);
+            $(tok).addClass('villbgdark');
+            setTimeout(() => { $(tok).removeClass('villbgdark') }, 900);
         })
         .catch((error) => {
             imp.value == `Error: ${error.message}`;
