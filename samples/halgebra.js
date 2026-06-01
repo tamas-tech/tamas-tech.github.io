@@ -9480,6 +9480,7 @@ function downloadNerd() {
 
 function getDataNerd(file) {
     const imp = document.getElementById("pentcinput");
+     const tok = document.getElementById("tbltok");
     const nerdRequest = new Request(file);
 
     window
@@ -9498,8 +9499,8 @@ function getDataNerd(file) {
             if (chn && !chn.checked)
                 chn.click();
             imp.value = text;
-            $(imp).addClass('villbgdark');
-            setTimeout(() => { $(imp).removeClass('villbgdark') }, 300);
+            $(tok).addClass('villbgdark');
+            setTimeout(() => { $(tok).removeClass('villbgdark') }, 300);
         })
         .catch((error) => {
             imp.value == `Error: ${error.message}`;
