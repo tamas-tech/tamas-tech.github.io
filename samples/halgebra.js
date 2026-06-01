@@ -9495,8 +9495,8 @@ function getDataNerd(file) {
                 ch.click();
             if (!chn.checked)
                 chn.click();
-            $(e).addClass('villbgdark');
-            setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
+            //$(e).addClass('villbgdark');
+            //setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
             imp.value = text;
         })
         .catch((error) => {
