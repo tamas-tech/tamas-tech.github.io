@@ -9267,7 +9267,7 @@ function nerdszamitas(c_txt) {
             getsetZycFabFib(L[0], parseInt(L[1]), false);
         };
     var out = "";
-    if (!/\[.*\]/.test(c_txt) || !c_txt.starsWith("[") || !c_txt.endsWith("]"))
+    //if (!/\[.*\]/.test(c_txt))
         c_txt = "[" + c_txt + "]";
     var Vars = c_txt.match(/\§.*?\§[\n\r\f]*/g);
     var Vtex = "";
