@@ -9305,7 +9305,7 @@ function nerdszamitas(c_txt) {
             i++
         }
     };
-    c//onsole.log("c_txt vantexbol", c_txt);
+    //console.log("c_txt vantexbol", c_txt);
 
     if (c_txt.endsWith(","))
         c_txt = c_txt.slice(0, -1);
