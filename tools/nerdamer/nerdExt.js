@@ -62,8 +62,6 @@
             s = {},
             j;
         for (j = m; j < n + 1; j++) {
-            /*  nerdamer.setVar('v', j);
-             s[valt] = nerdamer.getVar('v'); */
             s[valt] = j;
             var v1 = nerdamer(expr, s).evaluate();
             vec.set(j - m, v1);
@@ -92,6 +90,43 @@
         name: 'TR',
         visible: true,
         numargs: 1,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(a, pos) {
+        if (pos == null)
+            pos = "L";
+        var mat = _.functions.matrix[0]();
+        const e = a.elements;
+        const L = e.length;
+        for (var i = 0; i < L; i++) {
+            for (var j = 0; j < L; j++) {
+                if (pos == "L") {
+                    if (i >= j)
+                        mat.set(i, j, e[i - j].toString() * 1);
+                    else
+                        mat.set(i, j, 0);
+                } else {
+                    if (i <= j)
+                        mat.set(i, j, e[j - i].toString() * 1);
+                    else
+                        mat.set(i, j, 0);
+                }
+            }
+        }
+        return mat;
+    }
+    nerdamer.register({
+        name: 'matToeplitz',
+        visible: true,
+        numargs: [1, 2],
         build: function() {
             return f;
         }
