@@ -9506,6 +9506,8 @@ function getDataNerd(file) {
 
 function loadNerd(e) {
     const linkData = e.getAttribute("data-page");
+    $('#setpenttbl.table-hideable tbody tr#sugosor.shown td div#accordion ul li a.selected').removeClass('selected');
+    $(e).addClass("selected");
     getDataNerd("../docs/nerds/" + linkData);
 };
 
