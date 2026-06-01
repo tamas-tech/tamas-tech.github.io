@@ -9491,13 +9491,13 @@ function getDataNerd(file) {
         .then((text) => {
             const ch = document.getElementById("cinput");
             const chn = document.getElementById("nerdkod");
-            if (!ch.checked)
+            if (ch && !ch.checked)
                 ch.click();
-            if (!chn.checked)
+            if (chn && !chn.checked)
                 chn.click();
-            //$(e).addClass('villbgdark');
-            //setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
             imp.value = text;
+            $(imp).addClass('villbgdark');
+            setTimeout(() => { $(imp).removeClass('villbgdark') }, 300);
         })
         .catch((error) => {
             imp.value == `Error: ${error.message}`;
