@@ -9265,6 +9265,8 @@ function nerdszamitas(c_txt) {
             getsetZycFabFib(L[0], parseInt(L[1]), false);
         };
     var out = "";
+    if (/\[.*\]/.test(c_txt))
+        c_txt = "[" + c_txt + "]";
     var Vars = c_txt.match(/\§.*?\§[\n\r\f]*/g);
     var Vtex = "";
     if (Vars) {
@@ -9274,22 +9276,22 @@ function nerdszamitas(c_txt) {
         };
         Vars = _.flatten(Vars.map(y => y.replace(/ *§ */g, "").split(";").map(z => z.trim())));
         for (let v of Vars) {
-            Vtex += v + ",";
             var dek = v.split("=")
             nerdamer.setVar(dek[0], dek[1]);
+            Vtex += dek[0] + " = " + nerdamer(dek[1]).evaluateM().latex() + ";\\;";
         };
-        if (Vtex.endsWith(","))
-            Vtex = Vtex.slice(0, -1);
+        if (Vtex.endsWith(";\\;"))
+            Vtex = Vtex.slice(0, -3);
         Vtex += "}\\\\[8mm]";
+        Vtex = Vtex.replaceAll("vmatrix", "pmatrix");
     };
     //console.log(Vars);
-    const tobbsoros = /[\n\r\f]/.test(c_txt);
     const tex = c_txt.match(/\$.*?\$/g);
     const vantex = tex != null && tex.length > 0;
-    if (tobbsoros) {
-        c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
-        c_txt = "[" + c_txt.replace(/[\n\r\f]/g, ",kwrtz,").replace(/(,kwrtz\,)+/g, ",kwrtz,") + "]";
-    };
+
+    c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
+    c_txt = c_txt.replace(/[\n\r\f]/g, ",kwrtz,").replace(/(,kwrtz\,)+/g, ",kwrtz,");
+
     //console.log("c_txt tobbsorosbol", c_txt);
     if (vantex) {
         let i = 0;
@@ -9304,12 +9306,10 @@ function nerdszamitas(c_txt) {
     c_txt = c_txt.replaceAll(",,", ",").replaceAll(/(\,)*kwrtz(\,)*\]/g, "]").replaceAll(",]", "]");
     c_txt = c_txt.replaceAll(",,", ",").replaceAll(/\[(\,)*kwrtz(\,)*/g, "[").replaceAll("[,", "[");
     //console.log("c_txt nerbe", c_txt);
-    //out = nerdFormat(nerdamer(c_txt).evaluateM());
+
     out = evaluateNerdAll(nerdamer(c_txt).symbol.elements);
-    //console.log("nyers out", out);
-    if (tobbsoros)
-        out = out.slice(1, -1).replaceAll(/, *kwrtz(\,)*/g, " \\\\ ");
-    //console.log("out tobbsorosbol", out);
+    out = out.slice(1, -1).replaceAll(/, *kwrtz(\,)*/g, " \\\\ ");
+    //console.log("out nyers", out);
     if (vantex) {
         out = out.replace(/(ztrwk\d+)(\,)(?!kwrtz)/g, "$1");
         for (var j = 0; j < tex.length; j++) {
@@ -9317,17 +9317,18 @@ function nerdszamitas(c_txt) {
             out = out.replace(pat, tex[j].slice(1, -1));
         };
     };
+    //console.log("out vantexbol", out);
     if (/matrix\(/.test(out)) {
-        var mats = out.match(/matrix\(.*?\)/)
+        var mats = out.match(/matrix\(.*?\)/g)
         for (var j = 0; j < mats.length; j++) {
             console.log(nerdamer(mats[j]).latex())
             out = out.replace(mats[j], nerdamer(mats[j]).latex().replaceAll("vmatrix", "pmatrix"));
         };
     }
     out = Vtex + out;
-    //console.log("out vantexbol", out);
+    //console.log("out matrixbol", out);
     ZFibFab2Latex(out);
-}
+};
 
 function drawPent() {
     nerdamer.flush();
