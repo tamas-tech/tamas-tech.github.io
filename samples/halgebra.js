@@ -9257,6 +9257,8 @@ function evaluateNerdAll(vec) {
 };
 
 function nerdszamitas(c_txt) {
+     if (c_txt == "")
+        c_txt = "$\\text{A bemenet üres.}$"
     nerdamer.clearVars();
     const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+)/g));
     if (ppolys.length > 0)
