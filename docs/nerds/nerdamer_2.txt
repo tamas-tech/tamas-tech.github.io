@@ -1,4 +1,5 @@
-$\text{A binomiális számok sora: }\binom{12}{0},\binom{12}{1},\ldots,\binom{12}{12}\longrightarrow$ seq(binomial(12,k),0,12)
-$\text{A mahoni számok sora: }i(12,0),i(12,1),\ldots,i(12,12)\longrightarrow$ seq(mahonian(12,k),0,12)
-$\text{A képletben szereplő váltakozó előjeles szorzatok: }i(12,0)\binom{12}{0},-i(12,1)\binom{12}{1},\ldots,i(12,12)\binom{12}{12}\longrightarrow$ seq((-1)^k*mahonian(12,k)*binomial(12,k),0,12)
-$\text{Végül, maga az előjeles szorzatok összeg és a pentagonális szám értéke: }(-1)^{12+1}\sum_{k=0}^{12}i(12,k)\binom{12}{k} = $ (-1)^(12+1)*sum((-1)^k*mahonian(12,k)*binomial(12,k),k,0,12)=pent(12)$\delta_{5}(12)$
+§N=12;M=matrix([2,3],[4,5]);O=6§
+M $^{-1} = $ invert(M)
+$\begin{eqnarray} A = \left(\begin{array}{cccc} a_{ 11 } & a_{ 12 } & \ldots & a_{ 1n } \\ a_{ 21 } & a_{ 22 } & \ldots & a_{ 2n } \\ \vdots & \vdots & \ddots & \vdots \\a_{ m1 } & a_{ m2 } & \ldots & a_{ mn }\end{array}\right)\end{eqnarray}$
+$\require{AMScd} \begin{CD} A @>{f}>> B\\ @V{gg}VV {\large\circlearrowleft} @VV{hh}V\\ C @>>{k}> D \end{CD}$
+$\begin{eqnarray}\zeta (s) = \prod_{ p:\mathrm{ prime } }\frac{ 1 }{ 1-p^{-s} }\end{eqnarray}$
