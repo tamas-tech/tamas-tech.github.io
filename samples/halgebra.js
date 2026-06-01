@@ -9247,7 +9247,10 @@ function pentPlot3(n, cim) {
 function evaluateNerdAll(vec) {
     var txt = "[";
     for (let v of vec) {
-        txt += nerdFormat(nerdamer(v.toString()).evaluateM()) + ",";
+        if (/matrix\(\[.*?\]\)/.test(v.toString()))
+            txt += nerdamer(v.toString()).evaluateM();
+        else
+            txt += nerdFormat(nerdamer(v.toString()).evaluateM()) + ",";
     }
     if (txt.endsWith(","))
         txt = txt.slice(0, -1);
@@ -9257,7 +9260,7 @@ function evaluateNerdAll(vec) {
 };
 
 function nerdszamitas(c_txt) {
-     if (c_txt == "")
+    if (c_txt == "")
         c_txt = "$\\text{A bemenet üres.}$"
     nerdamer.clearVars();
     const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+)/g));
@@ -9267,8 +9270,8 @@ function nerdszamitas(c_txt) {
             getsetZycFabFib(L[0], parseInt(L[1]), false);
         };
     var out = "";
-    //if (!/\[.*\]/.test(c_txt))
-        c_txt = "[" + c_txt + "]";
+    //if (/\[.*\]/.test(c_txt))
+    c_txt = "[" + c_txt + "]";
     var Vars = c_txt.match(/\§.*?\§[\n\r\f]*/g);
     var Vtex = "";
     if (Vars) {
@@ -9302,15 +9305,17 @@ function nerdszamitas(c_txt) {
             i++
         }
     };
-    //console.log("c_txt vantexbol", c_txt);
+    c//onsole.log("c_txt vantexbol", c_txt);
+
     if (c_txt.endsWith(","))
         c_txt = c_txt.slice(0, -1);
     c_txt = c_txt.replaceAll(",,", ",").replaceAll(/(\,)*kwrtz(\,)*\]/g, "]").replaceAll(",]", "]");
     c_txt = c_txt.replaceAll(",,", ",").replaceAll(/\[(\,)*kwrtz(\,)*/g, "[").replaceAll("[,", "[");
     //console.log("c_txt nerbe", c_txt);
 
+    //console.log(nerdamer(c_txt).symbol.elements)
     out = evaluateNerdAll(nerdamer(c_txt).symbol.elements);
-    out = out.slice(1, -1).replaceAll(/, *kwrtz(\,)*/g, " \\\\ ");
+    out = out.slice(1, -1).replaceAll(/,* *kwrtz(\,)*/g, " \\\\ ");
     //console.log("out nyers", out);
     if (vantex) {
         out = out.replace(/(ztrwk\d+)(\,)(?!kwrtz)/g, "$1");
@@ -9480,7 +9485,6 @@ function downloadNerd() {
 
 function getDataNerd(file) {
     const imp = document.getElementById("pentcinput");
-     const tok = document.getElementById("tbltok");
     const nerdRequest = new Request(file);
 
     window
@@ -9499,8 +9503,8 @@ function getDataNerd(file) {
             if (chn && !chn.checked)
                 chn.click();
             imp.value = text;
-            $(tok).addClass('villbgdark');
-            setTimeout(() => { $(tok).removeClass('villbgdark') }, 300);
+            $(imp).addClass('villbgdark');
+            setTimeout(() => { $(imp).removeClass('villbgdark') }, 900);
         })
         .catch((error) => {
             imp.value == `Error: ${error.message}`;
