@@ -9259,7 +9259,7 @@ function evaluateNerdAll(vec) {
     return txt;
 };
 
-function nerdszamitas(c_txt) {
+unction nerdszamitas(c_txt) {
     if (c_txt == "")
         c_txt = "$\\text{A bemenet üres.}$"
     nerdamer.clearVars();
@@ -9272,14 +9272,14 @@ function nerdszamitas(c_txt) {
     var out = "";
     //if (/\[.*\]/.test(c_txt))
     c_txt = "[" + c_txt + "]";
-    var Vars = c_txt.match(/\§.*?\§[\n\r\f]*/g);
+    var Vars = c_txt.match(/\§\§.*?\§\§[\n\r\f]*/g);
     var Vtex = "";
     if (Vars) {
         Vtex = "\\text{A formula paraméterei: }\\bbox[5px, border: 2px solid blue]{";
         for (let v of Vars) {
             c_txt = c_txt.replace(v, '');
         };
-        Vars = _.flatten(Vars.map(y => y.replace(/ *§ */g, "").split(";").map(z => z.trim())));
+        Vars = _.flatten(Vars.map(y => y.replace(/ *\§\§ */g, "").split(";").map(z => z.trim())));
         for (let v of Vars) {
             var dek = v.split("=")
             nerdamer.setVar(dek[0].trim(), dek[1].trim());
@@ -9291,12 +9291,12 @@ function nerdszamitas(c_txt) {
         Vtex = Vtex.replaceAll("vmatrix", "pmatrix");
     };
     //console.log(Vars);
-    var sVars = c_txt.match(/\@.*?\@[\n\r\f]*/g);
+    var sVars = c_txt.match(/\§{1}.*?\§{1}[\n\r\f]*/g);
     if (sVars) {
         for (let v of sVars) {
             c_txt = c_txt.replace(v, '');
         };
-        sVars = _.flatten(sVars.map(y => y.replace(/ *\@ */g, "").split(";").map(z => z.trim())));
+        sVars = _.flatten(sVars.map(y => y.replace(/ *\§ */g, "").split(";").map(z => z.trim())));
         console.log(sVars);
         for (let v of sVars) {
             var dek = v.split("=")
