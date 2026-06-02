@@ -1,4 +1,4 @@
-﻿§N=12;M=matrix([2,3],[4,5]);O=6§
+﻿§§N=12;M=matrix([2,3],[4,5]);O=6§§
 $M^{-1} = $ invert(M)*O
 $\bbox[5px, border: 2px solid red]{\delta_{5}(N)=(-1)^{N+1}\,\sum_{k=0}^{N}\,i(N,k)\binom{N}{k}}\\[12mm]$
 $\text{A binomiális számok sora: }\binom{N}{0},\binom{N}{1},\ldots,\binom{N}{N}\longrightarrow$ seq(binomial(N,k),0,N)
