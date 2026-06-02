@@ -9259,7 +9259,7 @@ function evaluateNerdAll(vec) {
     return txt;
 };
 
-unction nerdszamitas(c_txt) {
+function nerdszamitas(c_txt) {
     if (c_txt == "")
         c_txt = "$\\text{A bemenet üres.}$"
     nerdamer.clearVars();
