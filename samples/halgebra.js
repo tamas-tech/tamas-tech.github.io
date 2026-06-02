@@ -9282,7 +9282,7 @@ function nerdszamitas(c_txt) {
         Vars = _.flatten(Vars.map(y => y.replace(/ *§ */g, "").split(";").map(z => z.trim())));
         for (let v of Vars) {
             var dek = v.split("=")
-            nerdamer.setVar(dek[0], dek[1]);
+            nerdamer.setVar(dek[0].trim(), dek[1].trim());
             Vtex += dek[0] + " = " + nerdamer(dek[1]).evaluateM().latex() + ";\\;";
         };
         if (Vtex.endsWith(";\\;"))
@@ -9291,6 +9291,20 @@ function nerdszamitas(c_txt) {
         Vtex = Vtex.replaceAll("vmatrix", "pmatrix");
     };
     //console.log(Vars);
+    var sVars = c_txt.match(/\@.*?\@[\n\r\f]*/g);
+    if (sVars) {
+        for (let v of sVars) {
+            c_txt = c_txt.replace(v, '');
+        };
+        sVars = _.flatten(sVars.map(y => y.replace(/ *\@ */g, "").split(";").map(z => z.trim())));
+        console.log(sVars);
+        for (let v of sVars) {
+            var dek = v.split("=")
+            console.log(dek)
+            nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
+        };
+    };
+    //console.log(sVars);
     const tex = c_txt.match(/\$.*?\$/g);
     const vantex = tex != null && tex.length > 0;
 
@@ -9498,7 +9512,7 @@ function getDataNerd(file) {
         .then((text) => {
             const ch = document.getElementById("cinput");
             const chn = document.getElementById("nerdkod");
-             const tok = document.getElementById("tbltok");
+            const tok = document.getElementById("tbltok");
             if (ch && !ch.checked)
                 ch.click();
             if (chn && !chn.checked)
