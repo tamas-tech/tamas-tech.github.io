@@ -80,6 +80,31 @@
 
 (function() {
     var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(expr, valt, m, n) {
+        var vec = _.functions.vector[0](),
+            s = {},
+            j;
+        for (j = m; j < n + 1; j++) {
+            s[valt] = j;
+            var v1 = nerdamer(expr, s).evaluate();
+            vec.set(j - m, v1);
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'seqvar',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
         _ = core.PARSER,
         Symbol = core.Symbol;
 
@@ -127,6 +152,62 @@
         name: 'matToeplitz',
         visible: true,
         numargs: [1, 2],
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(a, b) {
+        var c = _.functions.vector[0]();
+        const ae = a.elements;
+        const be = b.elements;
+        const na = ae.length;
+        const nb = be.length;
+        if (na != nb)
+            c.set(0, "convHIBA");
+        else
+            for (var n = 0; n < na; n++) {
+                var cn = 0;
+                for (var i = 0; i <= n; i++)
+                    cn += ae[i] * be[n - i];
+                c.set(n, cn);
+            }
+        return c;
+    }
+    nerdamer.register({
+        name: 'conv',
+        visible: true,
+        numargs: 2,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(a) {
+
+        var vec = _.functions.vector[0]();
+        const e = a.elements;
+        const L = e.length;
+        const V = nerdamer('matgetcol(invert(matToeplitz(' + a + ')), 0)').symbol.elements;
+        for (var i = 0; i < L; i++) {
+            vec.set(i, V[i][0]);
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'convinv',
+        visible: true,
+        numargs: 1,
         build: function() {
             return f;
         }
