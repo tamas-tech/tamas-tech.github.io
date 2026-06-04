@@ -9259,7 +9259,7 @@ function evaluateNerdAll(vec) {
     return txt;
 };
 
-function nerdszamitas(c_txt) {
+function updMathJaxHTML(c_txt) {
     if (c_txt == "")
         c_txt = "$\\text{A bemenet üres.}$"
     nerdamer.clearVars();
@@ -9351,6 +9351,119 @@ function nerdszamitas(c_txt) {
     ZFibFab2Latex(out);
 };
 
+
+function updMathJax(c_txt) {
+    c_txt = prelatexjs(c_txt, true);
+    const elem = document.querySelector("#pentout");
+    elem.innerHTML = c_txt;
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+};
+
+// >>> LatexJS
+
+function prelatexjs(c_txt, mathjax) {
+    if (c_txt == "")
+        c_txt = "A bemenet üres."
+    nerdamer.clearVars();
+    const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+)/g));
+    if (ppolys.length > 0)
+        for (let v of ppolys) {
+            var L = v.split("_");
+            getsetZycFabFib(L[0], parseInt(L[1]), false);
+        };
+    if (mathjax)
+        c_txt = c_txt.replace(/^#.*[\n\r\f]+/mg, '');
+    //c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
+
+    var Vars = c_txt.match(/\§\§.*?\§\§[\n\r\f]*/g);
+    var Vtex = "";
+    if (Vars) {
+        if (mathjax)
+            Vtex = "A formula paraméterei:$$\\bbox[5px, border: 2px solid blue]{";
+        for (let v of Vars) {
+            c_txt = c_txt.replace(v, '');
+        };
+        Vars = _.flatten(Vars.map(y => y.replace(/ *\§\§ */g, "").split(";").map(z => z.trim())));
+        for (let v of Vars) {
+            var dek = v.split("=")
+            nerdamer.setVar(dek[0].trim(), dek[1].trim());
+            Vtex += dek[0] + " = " + nerdamer(dek[1]).evaluateM().latex() + ";\\;";
+        };
+        if (Vtex.endsWith(";\\;"))
+            Vtex = Vtex.slice(0, -3);
+        if (mathjax)
+            Vtex += "}$$";
+        Vtex = Vtex.replaceAll("vmatrix", "pmatrix");
+    };
+    //console.log(Vars);
+    var sVars = c_txt.match(/\§{1}.*?\§{1}[\n\r\f]*/g);
+    if (sVars) {
+        for (let v of sVars) {
+            c_txt = c_txt.replace(v, '');
+        };
+        sVars = _.flatten(sVars.map(y => y.replace(/ *\§ */g, "").split(";").map(z => z.trim())));
+        //console.log(sVars);
+        for (let v of sVars) {
+            var dek = v.split("=")
+                //console.log(dek)
+            nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
+        };
+    };
+    //console.log(sVars);
+    const nerd = c_txt.match(/\<\<.*?\>\>/g);
+    //console.log(nerd)
+    if (nerd) {
+        for (let exp of nerd) {
+            var exp0 = exp.slice(2, -2);
+            var e = nerdamer(exp0);
+            var ltx = e.evaluateM().latex();
+            //console.log(ltx);
+            if (typeof e.symbol.elements === "object" && ltx.startsWith("[") && ltx.endsWith("]"))
+                ltx = ltx.replaceAll("[", "\\left(").replaceAll("]", "\\right)")
+            c_txt = c_txt.replaceAll(exp, ltx);
+        }
+    }
+    if (mathjax) {
+        c_txt = Vtex + c_txt;
+        c_txt = c_txt.replace(/[\n\r\f]/g, "")
+    };
+    c_txt = c_txt.replaceAll("vmatrix", "pmatrix");
+    return c_txt;
+};
+
+function updLatexJS(c_txt) {
+    c_txt = prelatexjs(c_txt, false);
+    setTimeout(() => {
+        var generator = new latexjs.HtmlGenerator({
+            hyphenate: false,
+        });
+
+        generator = latexjs.parse(c_txt, {
+            generator: generator
+        })
+
+        document.head.appendChild(generator.stylesAndScripts(""))
+        var sheet = document.getElementById('pentout');
+        sheet.replaceChildren();
+        sheet.appendChild(generator.domFragment())
+    }, 0);
+};
+
+// LatexJS <<<<
+function nerdCalc() {
+    var c_txt = $("#usersorc textarea").val();
+    const processor = c_txt.match(/^>>> *(mathjax|latexjs)+ *[\n\r\f]+/m);
+    var latexjs = document.getElementById("mathjs_mathjax").checked;
+    if (processor && processor.length > 0) {
+        latexjs = processor[1] == "latexjs";
+        c_txt = c_txt.replaceAll(processor[0], "");
+    }
+    if (latexjs)
+        updLatexJS(c_txt);
+    else
+        updMathJax(c_txt);
+};
+
 function drawPent() {
     nerdamer.flush();
     nerdamer.clearVars();
@@ -9379,7 +9492,7 @@ function drawPent() {
         var c_txt = $("#usersorc textarea").val();
         const nerdkod = document.getElementById("nerdkod").checked;
         if (nerdkod) {
-            nerdszamitas(c_txt);
+            updMathJax(c_txt);
         } else {
             hatasC(n, c_txt);
             $("#pentsorcopytok").css("display", "block");
@@ -9441,10 +9554,7 @@ function drawPent() {
     };
 };
 
-function nerdCalc() {
-    var c_txt = $("#usersorc textarea").val();
-    nerdszamitas(c_txt);
-};
+
 
 function setPentKeplet(elem) {
     $('#penttbl td.selected').removeClass('selected');
@@ -9478,7 +9588,9 @@ function peldaSetNerd(e) {
         chn.click();
     $(cinp).focus().val(txt).trigger('change');
     $(e).addClass('villbgdark');
-    setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
+    setTimeout(() => {
+        $(e).removeClass('villbgdark');
+    }, 300);
 };
 
 function downloadNerd() {
