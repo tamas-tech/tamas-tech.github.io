@@ -9355,6 +9355,7 @@ function updMathJaxHTML(c_txt) {
 function updMathJax(c_txt) {
     c_txt = prelatexjs(c_txt, true);
     const elem = document.querySelector("#pentout");
+    elem.style.whiteSpace = "nowrap";
     elem.innerHTML = c_txt;
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
@@ -9444,6 +9445,7 @@ function updLatexJS(c_txt) {
 
         document.head.appendChild(generator.stylesAndScripts(""))
         var sheet = document.getElementById('pentout');
+        sheet.style.whiteSpace = "";
         sheet.replaceChildren();
         sheet.appendChild(generator.domFragment())
     }, 0);
