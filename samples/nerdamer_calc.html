@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="../tools/jquery-ui.min.css">
     <link rel="stylesheet" href="samples.css">
+    <link rel="stylesheet" href="../tools/latexjs/package/dist/css/base.css">
+    <link rel="stylesheet" href="../tools/latexjs/package/dist/css/katex.css">
 
     <script src="../tools/fraction.min.js"></script>
     <script src="../tools/YourCombinations.js"></script>
@@ -23,7 +25,8 @@
     <script src="multipolylog.js"></script>
     <script src="compposet.js"></script>
     <script src="halgebra.js"></script>
-    <script id="fnpsugos" type="text/javascript" src="../sugo/dummy.js"></script>
+    <script src="../tools/latexjs/package/dist/latex.js"></script>
+    <script src="../tools/latexjs/package/dist/js/base.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script>
 
     
@@ -47,22 +50,27 @@
                 zoom: "Double-Click",
             },
 
-            displayAlign: 'left',
-            displayIndent: '0.3em',
+            tex2jax: {
+                inlineMath: [
+                    ['$', '$'],
+                    ["\\(", "\\)"]
+                ],
+                processEscapes: true
+            }
 
         });
     </script>
 </head>
 <body>
     <div id="floatkijelzo"></div>
-    <div class="keret of odd" id="k6" style="margin-bottom:15px;">
-        <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">6.</big></b></b><input class="kijelzoset" oninput="setkijelzoW('pentcontainer',this.value);setkijelzoW('penthelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
+    <div class="keret of odd" id="k1" style="margin-bottom:15px;">
+        <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">Nerdamer</big></b></b><input class="kijelzoset" oninput="setkijelzoW('pentcontainer',this.value);setkijelzoW('penthelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
         <div class="stickblock">
             <div id="tbltok" class="nobr" style="margin-left:2px;padding:3px;">
                 <table id="setpenttbl" class="table-hideable" style="box-shadow: 0 0 10px 5px #9a9aac">
                     <tr style="background-color:#606060;height: 42px;">
                         <td colspan="3" id="usersorc" style="border:none;">
-                            <textarea id="pentcinput" oninput="autoGrow(this);" cols="60" class="form-control" spellcheck="false" style="scrollbar-width: none;min-width:calc(100vw - 100px);min-height:20px;font-family:Consolas,Courier New;font-size:1.1em;height:80%;border:none;padding:10px;line-height: 1.5;"
+                            <textarea id="pentcinput" cols="60" class="form-control" spellcheck="false" style="scrollbar-width: none;min-width:calc(100vw - 100px);min-height:20px;font-family:Consolas,Courier New;font-size:1em;height:80%;border:none;padding:10px;line-height: 1.3;"
                                 type="text" value="1"></textarea>
                         </td>
                     </tr>
@@ -118,24 +126,26 @@
                                 <ol>
                                     <li>
                                         <b>A pentagonális számok a mahoni számok és binomiális együtthatók szorzatösszege</b>
-                                        <span>\[ \delta_{5}(n)=(-1)^{n+1}\,\sum_{k=0}^{n}\,i(n,k)\binom{n}{k}\]</span> <i style="font-size:80%;">Az alábbi példákban a "Nerdamer kód" jelölőnégyzetet ki kell pipálni. (Egy sárga mezőre kattintva ezt a program automatikusan megteszi.)</i>
+                                        <span>\[ \delta_{5}(n)=(-1)^{n+1}\,\sum_{k=0}^{n}\,i(n,k)\binom{n}{k}\]</span> <i style="font-size:80%;"></i>
                                         <br/>Nézzük a képletet részleteiben, n = 12 értékkel.
                                         <br/>A binomiális számok sora:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this);">seq(binomial(12,k),0,12)</span>
+                                        <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq(binomial(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
                                         <br/>A mahoni számok sora:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this);">seq(mahonian(12,k),0,12)</span>
+                                        <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq(mahonian(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
                                         <br/>A képletben szerepló előjeles szorzatok:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this);">seq((-1)^k*mahonian(12,k)*binomial(12,k),0,12)</span>
+                                        <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq((-1)^k*mahonian(12,k)*binomial(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
                                         <br/>Végül, maga az összeg és a pentagonális szám értéke:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='50px');">(-1)^(12+1)*sum((-1)^k*mahonian(12,k)*binomial(12,k),k,0,12)=pent(12)</span>
+                                        <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='50px');"><code>§s = (-1)^(12+1)*sum((-1)^k*mahonian(12,k)*binomial(12,k),k,0,12);p=pent(12)§<br/>$$&lt;&lt;s>>=&lt;&lt;p>>$$</code></span>
                                         <br/>Mind egyben, egy LaTeX képleteket is tartalmazó többsoros példában, amelyben az N paraméter értéke allítható:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='340px');">
-                                            §§N=12§§<br/>
-                                            $\bbox[5px, border: 2px solid red]{\delta_{5}(N)=(-1)^{N+1}\,\sum_{k=0}^{N}\,i(N,k)\binom{N}{k}}\\[12mm]$<br/>
-                                            $\text{A binomiális számok sora: }\binom{N}{0},\binom{N}{1},\ldots,\binom{N}{N}\longrightarrow$ seq(binomial(N,k),0,N)<br/>
-                                            $\text{A mahoni számok sora: }i(N,0),i(N,1),\ldots,i(N,N)\longrightarrow$ seq(mahonian(N,k),0,N)<br/>
-                                            $\text{A képletben szereplő váltakozó előjeles szorzatok: }i(12,0)\binom{N}{0},-i(N,1)\binom{N}{1},\ldots,i(N,N)\binom{N}{N}\longrightarrow$ seq((-1)^k*mahonian(N,k)*binomial(N,k),0,N)<br/>
-                                            $\text{Végül, maga az előjeles szorzatok összeg és a pentagonális szám értéke: }(-1)^{12+1}\sum_{k=0}^{N}i(12,k)\binom{N}{k} = $ (-1)^(N+1)*sum((-1)^k*mahonian(N,k)*binomial(N,k),k,0,N) $\equiv$ pent(N) $=\delta_{5}(N)$<br/>
+                                        <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='340px');"><pre><code>
+§§N=12§§<br/>§b = seq(binomial(N,k),0,N); m= seq(mahonian(N,k),0,N)§
+§e = seq((-1)^k*mahonian(N,k)*binomial(N,k),0,N);er = (-1)^(N+1)*sum((-1)^k*mahonian(N,k)*binomial(N,k),k,0,N);p=pent(N)§
+&lt;div>A binomiális számok sora: $\binom{<<\N>>}{0},\binom{<<\N>>}{1},\ldots,\binom{<<\N>>}{<<\N>>}\longrightarrow<<\b>>$&lt;/div>
+&lt;div>A mahonian számok sora: $i(<<\N>>,0),i(<<\N>>,1),\ldots,i(<<\N>>,<<\N>>)\longrightarrow<<\m>>$&lt;/div>
+&lt;div>A képletben szereplő váltakozó előjeles szorzatok:&lt;div>
+&lt;div>$i(<<\N>>,0)\binom{<<\N>>}{0},-i(<<\N>>,1)\binom{<<\N>>}{1},\ldots,i(<<\N>>,<<\N>>)\binom{<<\N>>}{<<\N>>}\longrightarrow<<\e>>$&lt;/div>
+&lt;div>Végül, maga az előjeles szorzatok összeg és a pentagonális szám értéke: 
+$$(-1)^{<<\N>>+1}\sum_{k=0}^{<<\N>>}i(<<\N>>,k)\binom{<<\N>>}{k} = <<\er>>\equiv<<\p>>=\delta_{5}(<<\N>>)$$&lt;/div></code></pre>
                                         </span>
                                     </li>
                                 </ol>
@@ -160,31 +170,45 @@
                 </table>
             </div>
             <div class="nobr" style="margin-left:2px;padding:3px;position:sticky;left:10px;">
-                <button onclick="idClear('#pentout');nerdCalc()" class="showpre1">OK</button>
+                <button onclick="idClear('#pentout');nerdCalc();" class="showpre1">OK</button>
                 <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#pentout');" title="Clear output">Clear</button>
                 <button id="tglpentopts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl( 'pentsetting');">⚙</button>
             </div>
         </div>
         <div id="pentsetting" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
-            <div id="dersetting" style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                 <label for="setoutputfontR">&#128474;</label>
-                <input oninput="setOutputFontPent(this.value);" type="range" min="12" max="24" value="21" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfontR" />
+                <input oninput="setOutputFontPent(this.value);" type="range" min="12" max="24" value="18" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfontR" />
                 <label style="display:inline-block;vertical-align:middle;font-size:120%;" for="setpenttblw">&#x27DB;</label>
-                <input id="setpenttblw" oninput="document.getElementById('pentcinput').style.fontSize=this.value+'em';" type="range" min="0.8" max="1.5" value="1.1" step="0.05" style="display:inline-block;width:110px;vertical-align: middle;" title="set output's fontsize"
-                    name="setpenttblw" />
+                <input id="setpenttblw" oninput="document.getElementById('pentcinput').style.fontSize=this.value+'em';" type="range" min="0.8" max="1.5" value="1" step="0.05" style="display:inline-block;width:110px;vertical-align: middle;" name="setpenttblw" />
+            </div>
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label style="margin-right:1px;font-size:15px;">MathJax</label>
+                <label class="switch"><input id="mathjs_mathjax" type="checkbox"><span class="slider round"></span></label>
+                <label style="margin-left:1px;font-size:15px;">LaTeX.js</label>
+            </div>
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label style="margin-right:1px;font-size:15px;">Font</label>
+                <select id="nerdnumb" onchange="document.getElementById('pentout').style.fontFamily=this.value" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
+                    <option value="">Auto</option>
+                    <option value="KaTeX_Main">KaTeX_Main</option>
+                    <option value="KaTeX_SansSerif">KaTeX_SansSerif</option>
+                    <option value="KaTeX_Typewriter">KaTeX_Typewriter</option>
+                    <option value="KaTeX_AMS">KaTeX_AMS</option>
+                    <option value="KaTeX_Math">KaTeX_Math</option>
+                    <option value="KaTeX_Fraktur">KaTeX_Fraktur</option>
+                    <option value="Cambria Math">Cambria Math</option>
+                    <option value=" Arial"> Arial</option>
+                    <option value="monospace">monospace</option>
+                </select>
             </div>
         </div>
         <div id="pentcontainer" class="flickable" style="max-width:100vw">
             <p id="figypent" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
-            <p id="pentout" style="width:fit-content;min-width:calc(100vw - 40px);outline: 2px solid #c0c9d0;outline-offset: -2px;background-color: #e7fdf5;margin:5px;padding:2px 5% 7px 7px;font-size:21px;min-height:20px;"></p>
+            <p id="pentout" class="pergamen" style="width:fit-content;min-width: 87%;margin:5px;padding:7px 5% ;font-size:18px;min-height:20px;"></p>
         </div>
     </div>
-
     <script>
-        function autoGrow(element) {
-            element.style.height = "min-content"; // Reset height to recalculate
-            element.style.height = element.scrollHeight + "px";
-        }
         setTimeout(() => {
             $('#w1coeff').trigger('change');
             $(function() {
