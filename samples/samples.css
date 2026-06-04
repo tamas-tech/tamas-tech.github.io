@@ -3684,7 +3684,36 @@ select#mthselect {
     scrollbar-width: thin;
 }
 
+#div.accordion ol li {
+    list-style: decimal
+}
 
+.pergamen {
+    /* Alapszín: klasszikus sárgás pergamen szín */
+    background-color: #f7e59ea6;
+    /* Égetett, sötétebb szélek és a papír textúrája kombinálva */
+    background-image: radial-gradient(circle, transparent 40%, rgba(139, 94, 42, 0.4) 100%), url('https://transparenttextures.com');
+    /* Textúra ismétlődése */
+    background-repeat: repeat;
+    /* Extra mély belső árnyék a vintage, görbült papír hatásért */
+    box-shadow: inset 0 0 50px rgba(92, 58, 21, 0.6), 0 10px 20px rgba(0, 0, 0, 0.15);
+    /* Formázás: padding és lekerekített sarkok a természetesebb kinézethez */
+    padding: 40px;
+    border-radius: 4px;
+    border: 1px solid #d4b285;
+    /* Tipográfia a tökéletes összhatáshoz */
+    color: #3d250d;
+    font-family: 'Georgia', serif;
+    line-height: 1.6;
+}
+
+#pentout h1,
+#pentout h2,
+#pentout h3,
+#pentout h4 {
+    color: #3d250d;
+    font-family: unset;
+}
 
 
 
