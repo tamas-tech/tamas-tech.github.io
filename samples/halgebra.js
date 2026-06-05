@@ -9351,7 +9351,6 @@ function updMathJaxHTML(c_txt) {
     ZFibFab2Latex(out);
 };
 
-
 function updMathJax(c_txt) {
     c_txt = prelatexjs(c_txt, true);
     const elem = document.querySelector("#pentout");
@@ -9413,17 +9412,25 @@ function prelatexjs(c_txt, mathjax) {
     //console.log(sVars);
     const nerd = c_txt.match(/\<\<.*?\>\>/g);
     //console.log(nerd)
+
     if (nerd) {
         for (let exp of nerd) {
             var exp0 = exp.slice(2, -2);
-            var e = nerdamer(exp0);
-            var ltx = e.evaluateM().latex();
+            const e = nerdamer(exp0);
+            try {
+                var ltx = decForm(e.evaluateM().latex(nerd_numb));
+            } catch (error) {
+                console.log(error)
+                var ltx = e.evaluateM().latex(nerd_numb); //EZ VOLT EREDETILEG
+            };
+
             //console.log(ltx);
             if (typeof e.symbol.elements === "object" && ltx.startsWith("[") && ltx.endsWith("]"))
                 ltx = ltx.replaceAll("[", "\\left(").replaceAll("]", "\\right)")
             c_txt = c_txt.replaceAll(exp, ltx);
         }
     }
+
     if (mathjax) {
         c_txt = Vtex + c_txt;
         c_txt = c_txt.replace(/[\n\r\f]/g, "")
