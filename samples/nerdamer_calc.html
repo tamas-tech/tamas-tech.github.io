@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="samples.css">
     <link rel="stylesheet" href="../tools/latexjs/package/dist/css/base.css">
     <link rel="stylesheet" href="../tools/latexjs/package/dist/css/katex.css">
+    <link rel="stylesheet" href="../tools/tribute/tribute.css">
+    <link rel="stylesheet" href="../tools/tribute/tributeext.css">
 
     <script src="../tools/fraction.min.js"></script>
     <script src="../tools/YourCombinations.js"></script>
@@ -27,6 +29,7 @@
     <script src="halgebra.js"></script>
     <script src="../tools/latexjs/package/dist/latex.js"></script>
     <script src="../tools/latexjs/package/dist/js/base.js"></script>
+    <script src="../tools/tribute/tribute.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.25.1/function-plot.min.js"></script>
 
     
@@ -183,6 +186,11 @@ $$(-1)^{<<\N>>+1}\sum_{k=0}^{<<\N>>}i(<<\N>>,k)\binom{<<\N>>}{k} = <<\er>>\equiv
                 <input id="setpenttblw" oninput="document.getElementById('pentcinput').style.fontSize=this.value+'em';" type="range" min="0.8" max="1.5" value="1" step="0.05" style="display:inline-block;width:110px;vertical-align: middle;" name="setpenttblw" />
             </div>
             <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                <label style="font-family:monospace;margin-right:1px;font-size:15px;">word</label>
+                <label class="switch"><input id="setwc" onchange="wordComp=this.checked;setTribute();" type="checkbox"><span class="slider round"></span></label>
+                <label style="font-family:monospace;margin-left:1px;font-size:15px;">..@</label>
+            </div>
+            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                 <label style="margin-right:1px;font-size:15px;">MathJax</label>
                 <label class="switch"><input id="mathjs_mathjax" type="checkbox"><span class="slider round"></span></label>
                 <label style="margin-left:1px;font-size:15px;">LaTeX.js</label>
@@ -226,7 +234,7 @@ $$(-1)^{<<\N>>+1}\sum_{k=0}^{<<\N>>}i(<<\N>>,k)\binom{<<\N>>}{k} = <<\er>>\equiv
             });
         }, 1000);
     </script>
-    </script>
+<script src="../tools/tribute/tributedict.js"></script>
 </body>
 
 </html>
