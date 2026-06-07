@@ -1,1 +1,33 @@
+.tribcmd {
+    margin: 0 3px;
+    color: #c4005c;
+}
 
+.tribnyil {
+    margin: 0 3px 0 7px;
+    /* float: right; */
+    /*color: #c4005c;*/
+}
+
+.tribkeret {
+    margin: 0 3px 0 7px;
+    float: right;
+    color: #c4005c;
+}
+
+.tribtext {
+    margin: 0 3px 0 7px;
+    /*color: #535353;
+    font-size: 95%;
+    font-family: serif;*/
+    font-weight: 400 !important;
+}
+
+
+/* .tribtext.r {
+    float: right;
+}
+
+.tribtext.l {
+    float: left;
+} */
