@@ -1,4 +1,6 @@
-var wordComp = false;
+var MENTION = false;
+var autoCOMP = true;
+var visszatorles = true;
 
 const tribnyil = '<span class="tribnyil">&#x25B6;</span>';
 
@@ -332,15 +334,121 @@ var autoTribute = new Tribute({
 }); */
 ///////////////
 
+
 const autodictC = [
-    { key: "maátrix", value: "matrix([{c},],[,])", tag: "matrix" },
-    { key: "matrix23", value: "matrix([{c},], [,], [,]))", tag: "matrix 3&times;2" },
-    { key: "matrix33", value: "matrix([{c},,], [,,], [,,])", tag: "matrix 3&times;3" },
-    { key: "matrix34", value: "matrix([{c},,,], [,,,], [,,,])", tag: "matrix 3&times;4" },
-    { key: "matrix42", value: "matrix([{c},], [,], [,], [,])", tag: "matrix 4&times;2" },
-    { key: "matrix43", value: "matrix([{c},,], [,,], [,,], [,,])", tag: "matrix 4&times;3" },
-    { key: "matrix44", value: "matrix([{c},,,], [,,,], [,,,], [,,,])", tag: "matrix 4&times;4" },
-    { key: "imatrix egségmátrix", value: "imatrix({c})", tag: "imatrix" },
+    { key: "tags", value: "", tag: "<ul style='background:#ffff9f;'><li>nerd<ul><li>arit</li><li>mat</li><li>vec</li></ul></li><li>forms</li><li>latex</li><li>htnl</li><li>poly</li></ul>" },
+    // Formázás
+    { key: "kiértékelés fformáz", value: "<< {c} >>", tag: "&#x27E8;&#x27E8;  &#x27E9;&#x27E9;" },
+    { key: "inline sorköz math fformáz", value: "$ {c} $", tag: "$ $" },
+    { key: "display math fformáz", value: "$$ {c} $$", tag: "$$ $$" },
+    { key: "def változó fformáz", value: "§ {c} §", tag: "§ §" },
+    { key: "ddef változó fformáz", value: "§§ {c} §§", tag: "§§ §§" },
+    //Nerdamer Constants
+    { key: "piconstáállandó nerd", value: "PI", tag: "&pi;" },
+    { key: "imagconstáállandó nerd", value: "i", tag: "i (Imaginary)" },
+    { key: "eulerconstáállandóeuler nerd", value: "e", tag: "e (Euler)" },
+    { key: "infinityvégtelenconstáállandó nerd", value: "Infinity", tag: "&#x221E;" },
+    // Nerdamer aritmetikai fgvs
+    { key: "sor seq aritmetik nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
+    { key: "sor seqvar aritmetik nerd", value: "seqvar({c},,,)", tag: "seqvar(f(k,.),k,a,b)" },
+    { key: "pentagonális aritmetik nerd", value: "pent({c})", tag: "&delta;<sub>5</sub>(n)" },
+    { key: "osztókösszege sigma aritmetik nerd", value: "sigma({c})", tag: "&sigma;(n)" },
+    { key: "osztókösszegeM sigmaM aritmetik nerd", value: "sigmaM({c},)", tag: "&sigma;<sub>m</sub>(n)" },
+    { key: "osztókszáma tau aritmetik nerd", value: "tau({c})", tag: "&tau;(n)" },
+    { key: "partició part aritmetik nerd", value: "part({c})", tag: "p(n)" },
+    { key: "partició partaM aritmetik nerd", value: "partM({c},)", tag: "p<sub>m</sub>(n)" },
+    { key: "eulertotient tau aritmetik nerd", value: "phi({c})", tag: "&phi;(n)" },
+    { key: "mahonian aritmetik nerd", value: "mahonian({c},)", tag: "mahonian(n,m)" },
+    { key: "binomial aritmetik nerd", value: "binomial({c},)", tag: "binomial(n,m)" },
+    //  Nerdamer többv polinomok
+    { key: "Zycn part többvált polinom nerd", value: "Zyc_{c}(,,)", tag: "Zyc_n(x<sub>1</sub>,..)" },
+    { key: "Fabn part többvált polinom nerd", value: "Fab_{c}(,,)", tag: "Fab_n(x<sub>1</sub>,..)" },
+    { key: "Fibn part többvált polinom nerd", value: "Fib_{c}(,,)", tag: "Fib_n(x<sub>1</sub>,..)" },
+    { key: "Lucn part többvált polinom nerd", value: "Luc_{c}(,,)", tag: "Luc_n(x<sub>1</sub>,..)" },
+    { key: "Stin part többvált polinom nerd", value: "Sti_{c}(,,)", tag: "Sti_n(x<sub>1</sub>,..)" },
+    { key: "Harn part többvált polinom nerd", value: "Har_{c}(,,)", tag: "Har_n(x<sub>1</sub>,..)" },
+    // Nerdamer math functions
+    { key: "gyöksqrt mathfncüggvény nerd", value: "sqrt({c})", tag: "sqrt(x)=√x" },
+    { key: "fibonacci mathfncüggvény nerd", value: "fib({c})", tag: "fib(n)" },
+    { key: "exp mathfncüggvény nerd", value: "exp({c})", tag: "exp(x)=e<sup>x</sup>" },
+    { key: "log mathfncüggvény nerd", value: "log({c})", tag: "log(x)=ln(x)" },
+    { key: "log10 mathfncüggvény nerd", value: "log10({c})", tag: "lg(x)" },
+    { key: "min mathfncüggvény nerd", value: "min({c},,)", tag: "min(x,y,...)" },
+    { key: "max mathfncüggvény nerd", value: "max({c},,)", tag: "max(x,y,...)" },
+    { key: "abs| mathfncüggvény nerd", value: "abs({c})", tag: "abs(x)=|x|" },
+    { key: "floor mathfncüggvény nerd", value: "floor({c})", tag: "floor(x)=⌊x⌋" },
+    { key: "ceil mathfncüggvény nerd", value: "ceil({c})", tag: "ceil(x)=⌈x⌉" },
+    { key: "simplifyegyszerűsít mathfncüggvény nerd", value: "simplify({c})", tag: "simplify(expr)" },
+    { key: "expandkibont mathfncüggvény nerd", value: "expand({c})", tag: "expand(expr)" },
+    { key: "facktoriaális mathfncüggvény nerd", value: "factorial({c})", tag: "factorial(x)=x!" },
+    { key: "duplafacktoriaális mathfncüggvény nerd", value: "dfactorial({c})", tag: "dfactorial(x)=x!!" },
+    { key: "modaradék mathfncüggvény", value: "mod({c},)", tag: "mod(x,y)" },
+
+    // Nerdamer Trigonometric
+    { key: "cos trigon nerd", value: "cos({c})", tag: "cos( )" },
+    { key: "sin trigon nerd", value: "sin({c})", tag: "sin( )" },
+    { key: "tan trigon nerd", value: "tan({c})", tag: "tan( )" },
+    { key: "cot trigon nerd", value: "cot({c})", tag: "cot( )" },
+    { key: "csc trigon nerd", value: "csc({c})", tag: "csc( )" },
+    { key: "sec trigon nerd", value: "sec({c})", tag: "sec( )" },
+    { key: "acos trigon arc nerd", value: "acos({c})", tag: "acos( )" },
+    { key: "arcsin trigon nerd", value: "asin({c})", tag: "asin( )" },
+    { key: "arctan trigon nerd", value: "atan({c})", tag: "atan( )" },
+    // Nerdamer Hyperbolic
+    { key: "cosh hyperbolic nerd", value: "cosh({c})", tag: "cosh( )" },
+    { key: "sinh hyperbolic nerd", value: "sinh({c})", tag: "sinh( )" },
+    { key: "tanh hyperbolic nerd", value: "tanh({c})", tag: "tanh( )" },
+    { key: "coth hyperbolic nerd", value: "coth({c})", tag: "coth( )" },
+    { key: "csch hyperbolic nerd", value: "csch({c})", tag: "csch( )" },
+    { key: "sech hyperbolic nerd", value: "sech({c})", tag: "sech( )" },
+    { key: "arccosh hyperbolic nerd", value: "acosh({c})", tag: "acosh( )" },
+    { key: "arcsinh hyperbolic nerd", value: "asinh({c})", tag: "asinh( )" },
+    { key: "arctanh hyperbolic nerd", value: "atanh({c})", tag: "atanh( )" },
+    // Nerdamer Matrix
+    { key: "nerd maátrix", value: "matrix([{c},],[,])", tag: "matrix" },
+    { key: "nerd maátrix23", value: "matrix([{c},], [,], [,]))", tag: "matrix 3&times;2" },
+    { key: "nerd maátrix33", value: "matrix([{c},,], [,,], [,,])", tag: "matrix 3&times;3" },
+    { key: "nerd maátrix34", value: "matrix([{c},,,], [,,,], [,,,])", tag: "matrix 3&times;4" },
+    { key: "nerd maátrix42", value: "matrix([{c},], [,], [,], [,])", tag: "matrix 4&times;2" },
+    { key: "nerd maátrix43", value: "matrix([{c},,], [,,], [,,], [,,])", tag: "matrix 4&times;3" },
+    { key: "nerd maátrix44", value: "matrix([{c},,,], [,,,], [,,,], [,,,])", tag: "matrix 4&times;4" },
+    { key: "imaátrix egségmátrix nerd", value: "imatrix({c})", tag: "imatrix" },
+    { key: "maátrix determinantáns nerd", value: "determinant({c})", tag: "determináns" },
+    { key: "maátrix invertz nerd", value: "invert({c})", tag: "inverz" },
+    { key: "transposeált maátrix nerd", value: "transpose({c})", tag: "transzponált" },
+    { key: "sizeméretdim maátrix nerd", value: "size({c})", tag: "méret" },
+    { key: "maátrix getrowsorlekér nerd ", value: "matgetrow({c},)", tag: "matgetrow(<b>A</b>,i)" },
+    { key: "maátrix getcoloszloplekér nerd", value: "matgetcol({c},)", tag: "matgetcol(<b>A</b>,i)" },
+    { key: "maátrix setrowsormegad nerd", value: "matsetrow({c},)", tag: "matsetrow(<b>A</b>,i)" },
+    { key: "maátrix setcoloszlopmegad nerd", value: "matsetcol({c},)", tag: "matsetcol(<b>A</b>,i)" },
+    { key: "maátrix getlekér nerd", value: "matget({c},,)", tag: "matget(<b>A</b>,i,j)" },
+    { key: "maátrixsetmatmegad nerd", value: "matset({c},,)", tag: "matset(<b>A</b>,i,j)" },
+    { key: "maátrix Toeplitz nerd ", value: " matToeplitz([{c},,])", tag: " matToeplitz(<b>v</b>)" },
+    // Nerdamer Vector
+    { key: "vecktor nerd", value: "vector({c},,)", tag: "vector(,,)" },
+    { key: "skalárisdotszorzat vecktor nerd", value: "dot({c},)", tag: "<b>a</b>&centerdot;<b>b</b> (skaláris)" },
+    { key: "keresztszorzatcross vecktor nerd", value: "cross({c},)", tag: "<b>a</b>&times;<b>b</b> (vektoriális)" },
+    { key: "vecktor getlekér nerd", value: "vecget({c},)", tag: "vecget(<b>v</b>,i)" },
+    { key: "vecktor setmatmegad nerd", value: "vecset({c},)", tag: "vecset(<b>v</b>,i)" },
+    // Nerdamer Calculus
+    { key: "sumősszeg calculusanalízis nerd", value: "sum(f{c},k,a,b)", tag: "&sum;<sub>k=a..b</sub>f(..,k)" },
+    { key: "prodszorzat calculusanalízis nerd", value: "prod(f{c},k,a,b)", tag: "&prod;<sub>k=a..b</sub>f(..,k)" },
+    { key: "limithatárérték calculusanalízis nerd", value: "limit(f{c},x,a)", tag: "lim<sub>x&rightarrow;a</sub>f(x)" },
+    { key: "diffderivált calculusanalízis nerd", value: "diff(f{c},x,n)", tag: "&part;<sup style='vertical-align:0.7em;'>(n)</sup><sub style='margin-left:-1.1em;margin-right:0.7em;'>x</sub>f(x,..)" },
+    { key: "integrálhatlan calculusanalízis nerd", value: "int(f{c},x)", tag: "&int;f(x)dx" },
+    { key: "határozottdefintegr calculusanalízis nerd", value: "defint(f{c},a,b,x)", tag: "&int;<sup style='margin-left:0.1em;vertical-align:0.7em;'>b</sup><sub style='margin-left:-0.6em;margin-right:0.3em;'>a</sub>f(x)dx" },
+    { key: "laplacetrcalculusanalízis nerd", value: "laplace(f{c},s,t)", tag: "&#x2112;[f,s,t]" },
+    { key: "inverzlaplacetr calculusanalízis nerd", value: "ilt(f{c},s,t)", tag: "&#x2112;<sup>-1</sup>[f,s,t]" },
+    // Nerdamer Algebra
+    { key: "divideosztó poliynom nerd", value: "divide({c},)", tag: "divide(f,g)" },
+    { key: "factor poliynom nerd", value: "factor({c})", tag: "factor(f)" },
+    { key: "partfrac poliynom nerd", value: "partfrac({c},)", tag: "partfrac(f,x)" },
+    { key: "legkisebbköztöbblcm poliynom nerd", value: "lcm({c},)", tag: "lcm(f,g)" },
+    { key: "legnagyobbközosztogcd poliynom nerd", value: "gcd({c},)", tag: "gcd(f,g)" },
+    { key: "rootsgyökök poliynom ", value: "roots({c})", tag: "roots(f)" },
+    { key: "coeffsegyütthatók poliyno nerd", value: "coeffs({c},)", tag: "coeffs(f,x)" },
+    { key: "degfokszám poliynom nerd", value: "deg({c})", tag: "deg(f)" },
+    { key: "sqcompteljesnégyzet poliynom nerd", value: "sqcomp({c},)", tag: "sqcomp(f,x)" },
 ];
 
 var autoTributeC = new Tribute({ collection: [] });
@@ -361,6 +469,8 @@ function createAutoTribute() {
 }
 
 textar.addEventListener('tribute-replaced', function(e) {
+    if (visszatorles)
+        elotteTorol(e);
     const input = e.target;
     const text = input.value;
     // Find where our cursor marker landed
@@ -375,7 +485,7 @@ textar.addEventListener('tribute-replaced', function(e) {
             input.setSelectionRange(markerIndex, markerIndex);
             input.focus();
         }, 0);
-    } else if (!wordComp && collToShow > -1) {
+    } else if (MENTION && collToShow > -1) {
         console.log("collToShow", collToShow)
             // input.selectionStart = input.selectionEnd = input.selectionStart - 1;
         setTimeout(() => {
@@ -388,184 +498,43 @@ function setTribute() {
     autoTributeC.detach(textar);
     mathTribute.detach(textar);
     //autoTribute.detach(textar);
-    if (!wordComp) {
-        createMathTribute();
-        //console.log(mathTribute)
-        /*  mathTribute = new Tribute({
-             collection: [{
-                 trigger: ' @',
-                 keepLetters: true,
-                 values: base_tribute,
-                 lookup: "for",
-                 replaceTextSuffix: '',
-                 menuContainer: tribcontainer,
-                 menuItemTemplate: function(item) {
-                     return item.original.tag;
-                 },
-                 selectTemplate: function(item) {
-                     collToShow = item.original.indx;
-                     return "";
-                 }
-             }, {
-                 trigger: 'f@',
-                 keepLetters: true,
-                 lookup: "value",
-                 menuContainer: tribcontainer,
-                 values: form,
-                 menuItemTemplate: function(item) {
-                     return item.original.tag;
-                 },
-                 selectTemplate: function(item) {
-                     collToShow = -1;
-                     return item.original.value;
-                 }
-             }, {
-                 trigger: 'n@',
-                 keepLetters: true,
-                 values: nerd,
-                 lookup: "for",
-                 menuContainer: tribcontainer,
-                 replaceTextSuffix: '',
-                 menuItemTemplate: function(item) {
-                     return item.original.tag;
-                 },
-                 selectTemplate: function(item) {
-                     collToShow = item.original.indx;
-                     return "";
-                 }
-             }, {
-                 trigger: 'm@',
-                 keepLetters: true,
-                 lookup: "value",
-                 values: nerd_m,
-                 menuContainer: tribcontainer,
-                 menuItemTemplate: function(item) {
-                     return item.original.tag;
-                 },
-                 selectTemplate: function(item) {
-                     collToShow = -1;
-                     return item.original.value;
-                 }
-             }, {
-                 trigger: 'v@',
-                 keepLetters: true,
-                 lookup: "value",
-                 values: nerd_v,
-                 menuContainer: tribcontainer,
-                 menuItemTemplate: function(item) {
-                     return item.original.tag;
-                 },
-                 selectTemplate: function(item) {
-                     collToShow = -1;
-                     return item.original.value;
-                 }
-             }, {
-                 trigger: 'a@',
-                 keepLetters: true,
-                 lookup: "value",
-                 values: nerd_a,
-                 menuContainer: tribcontainer,
-                 menuItemTemplate: function(item) {
-                     return item.original.tag;
-                 },
-                 selectTemplate: function(item) {
-                     collToShow = -1;
-                     return item.original.value;
-                 }
-
-             }, {
-                 trigger: 'x@',
-                 keepLetters: true,
-                 lookup: "value",
-                 values: nmMat,
-                 menuContainer: tribcontainer,
-                 menuItemTemplate: function(item) {
-                     return item.original.tag;
-                 },
-                 selectTemplate: function(item) {
-                     collToShow = -1;
-                     return item.original.value;
-                 }
-             }, {
-                 trigger: 'l@',
-                 keepLetters: true,
-                 lookup: "value",
-                 values: latex,
-                 menuContainer: tribcontainer,
-                 menuItemTemplate: function(item) {
-                     return item.original.tag;
-                 },
-                 selectTemplate: function(item) {
-                     collToShow = -1;
-                     return item.original.value;
-                 }
-             }, {
-                 trigger: 'h@',
-                 keepLetters: true,
-                 replaceTextSuffix: null,
-                 lookup: "value",
-                 values: html,
-                 menuContainer: tribcontainer,
-                 menuItemTemplate: function(item) {
-                     return item.original.tag;
-                 },
-                 selectTemplate: function(item) {
-                     collToShow = -1;
-                     return item.original.value;
-                 }
-             }]
-         }); */
-        mathTribute.attach(textar);
-        //autoTribute.attach(textar);
-    } else {
-        //console.log(autoTributeC)
-        createAutoTribute();
-        /* autoTributeC = new Tribute({
-            autocompleteMode: true,
-            noMatchTemplate: '',
-            keepLetters: true,
-            lookup: "key",
-            requireLeadingSpace: false,
-            menuContainer: tribcontainer,
-            values: autodictC,
-            menuItemTemplate: function(item) {
-                return item.original.tag;
-            }
-        }); */
-        autoTributeC.attach(textar);
-    }
+    if (autoCOMP)
+        if (MENTION) {
+            createMathTribute();
+            mathTribute.attach(textar);
+        } else {
+            createAutoTribute();
+            autoTributeC.attach(textar);
+        }
 };
 
 setTribute()
 
 
-/* function elotteTorol(e) { //EZT már nem is használjuk//
+function elotteTorol(e) { //EZT már nem is használjuk//
     var textarea = e.target;
     var currentCaret = textarea.selectionStart;
     var fullText = textarea.value;
 
     // Find where the inserted text starts
     // We subtract the text length and the trigger length to find the start point
-    console.log(e.detail.item.original.value)
-    var insertedTextLength = e.detail.item.original.value.length * 1 + 1; // +1 for the trigger character
-    console.log(insertedTextLength)
+    // console.log(e.detail.item.original.value)
+    var insertedTextLength = e.detail.item.original.value.length * 1;
+    //console.log(insertedTextLength)
     var triggerStartPos = currentCaret - insertedTextLength;
 
     // Target index of the single character BEFORE the trigger
     var charToDeletePos = triggerStartPos - 1;
     var characterAtPos = fullText.charAt(charToDeletePos);
-    console.log("The character at deletePos is:", characterAtPos);
+    //console.log("The character at deletePos is:", characterAtPos);
 
-    if (charToDeletePos >= 0 && characterAtPos === charToDelete) {
+    if (charToDeletePos >= 0 && characterAtPos === " ") {
         // Reconstruct the text excluding that one character
         textarea.value = fullText.slice(0, charToDeletePos) + fullText.slice(triggerStartPos);
 
         // Explicitly reposition the caret back to its correct offset (-1 character)
         textarea.selectionStart = textarea.selectionEnd = currentCaret - 1;
-    } else if (collToShow > -1) {
-        mathTribute.showMenuForCollection(textar, collToShow);
     } else {
-        console.log("collToShow", collToshow)
         textarea.selectionStart = textarea.selectionEnd = currentCaret - 1;
     }
-}; */
+};
