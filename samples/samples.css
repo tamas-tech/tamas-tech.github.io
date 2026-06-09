@@ -3715,6 +3715,28 @@ select#mthselect {
     font-family: unset;
 }
 
+div#speccharstok {
+    display: none;
+    padding: 0 0 4px 0;
+    position: sticky!important;
+    left: 0;
+    background-color: #e3e3e3;
+    width: 100%;
+}
+
+div#speccharstok.shown {
+    display: block;
+}
+
+#speccharstok table tr td {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background-color: #fbfbfb;
+    border-radius: 5px;
+    border: 1px solid #9f9f9f;
+}
+
 
 
 
