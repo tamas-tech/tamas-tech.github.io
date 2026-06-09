@@ -4949,6 +4949,7 @@ function drawTable() {
                 ui.item.css({ 'background-color': '#aeffff43' });
             },
             stop: function(event, ui) {
+                ui.item.off("remove")
                 ide = ui.item[0].rowIndex - 1;
                 ui.item.children("td.fn-sorszam").html(ide);
                 if (innen >= ide) {
@@ -7736,11 +7737,48 @@ function tglNerdSettings() {
     $("#nerdsettings").toggleClass("shown");
 };
 
+function tglSpecChars() {
+    $("#speccharstok").toggleClass("shown");
+};
+
+function setSpecClick(b) {
+    const elems = $('#speccharstok table tr td');
+    if (b) {
+        elems.off('click');
+        elems.on('dblclick', function() {
+            beTextbe(this.innerText)
+        });
+    } else {
+        elems.off('dblclick');
+        elems.on('click', function() {
+            beTextbe(this.innerText)
+        });
+    }
+};
+
 function nerdTgl(b) {
     if (b)
         $('#usersorc').css('display', 'table-cell')
     else
         $('#usersorc').css('display', 'none');
+};
+
+function beTextbe(text) {
+    var textarea = document.getElementById("pentcinput");
+    var scrollPos = textarea.scrollTop;
+    var caretPos = textarea.selectionStart;
+
+    var front = textarea.value.substring(0, caretPos);
+    var back = textarea.value.substring(
+        textarea.selectionEnd,
+        textarea.value.length
+    );
+    textarea.value = front + text + back;
+    caretPos = caretPos + text.length;
+    textarea.selectionStart = caretPos;
+    textarea.selectionEnd = caretPos;
+    textarea.focus();
+    textarea.scrollTop = scrollPos;
 };
 
 function pentSign(e, ov) {
@@ -9097,11 +9135,11 @@ function decForm(str) {
         for (var j = 0; j < l; j++) {
             str = str.replace(v[j], w[j])
         }
-    }
-    if (str.endsWith("0"))
+    };
+    /* if (str.endsWith("0"))
         while (str.endsWith("0"))
-            str = str.slice(0, -1)
-    return str
+            str = str.slice(0, -1) */
+    return str;
 };
 
 $(document).on('click', '#plotZ svg.function-plot', function() {
@@ -9297,10 +9335,9 @@ function updMathJaxHTML(c_txt) {
             c_txt = c_txt.replace(v, '');
         };
         sVars = _.flatten(sVars.map(y => y.replace(/ *\§ */g, "").split(";").map(z => z.trim())));
-        console.log(sVars);
         for (let v of sVars) {
             var dek = v.split("=")
-            console.log(dek)
+                //console.log(dek)
             nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
         };
     };
@@ -9342,7 +9379,6 @@ function updMathJaxHTML(c_txt) {
     if (/matrix\(/.test(out)) {
         var mats = out.match(/matrix\(.*?\)/g)
         for (var j = 0; j < mats.length; j++) {
-            console.log(nerdamer(mats[j]).latex())
             out = out.replace(mats[j], nerdamer(mats[j]).latex().replaceAll("vmatrix", "pmatrix"));
         };
     }
@@ -9405,8 +9441,8 @@ function prelatexjs(c_txt, mathjax) {
         //console.log(sVars);
         for (let v of sVars) {
             var dek = v.split("=")
-                //console.log(dek)
-            nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
+            if (dek.length > 1)
+                nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
         };
     };
     //console.log(sVars);
