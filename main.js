@@ -456,7 +456,7 @@ $(document).ready(function() {
                searchCmds.push($(this).attr('data-btn'))
            }); 
 
-        $("#searchcmd").autocomplette({
+        $("#searchcmd").autocomplete({
             source: searchCmds
         });*/
     });
@@ -493,9 +493,9 @@ function afterResize() {
             'max-width': btnw - 16,
             'width': btnw - 16
         });
-        $("#searchcmd").autocomplete({
+        /*$("#searchcmd").autocomplete({
             source: searchCmds
-        });
+        });*/
         setTimeout(() => {
             $('#searchok').css('width', '');
              $('#searchshow').css('width', '');
