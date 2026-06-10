@@ -454,11 +454,11 @@ $(document).ready(function() {
     $(function() {
         /* $('.kbdbtn:not(.fnbtn)').each(function() {
                searchCmds.push($(this).attr('data-btn'))
-           }); */
+           }); 
 
         $("#searchcmd").autocomplette({
             source: searchCmds
-        });
+        });*/
     });
 });
 
