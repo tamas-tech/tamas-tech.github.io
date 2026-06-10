@@ -456,7 +456,7 @@ $(document).ready(function() {
                searchCmds.push($(this).attr('data-btn'))
            }); */
 
-        $("#searchcmd").autocomplete({
+        $("#searchcmd").autocomplette({
             source: searchCmds
         });
     });
