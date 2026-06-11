@@ -356,7 +356,8 @@ const autodictC = [
     { key: "osztókösszegeM sigmaM aritmetik nerd", value: "sigmaM({c},)", tag: "&sigma;<sub>m</sub>(n)" },
     { key: "osztókszáma tau aritmetik nerd", value: "tau({c})", tag: "&tau;(n)" },
     { key: "partició part aritmetik nerd", value: "part({c})", tag: "p(n)" },
-    { key: "partició partaM aritmetik nerd", value: "partM({c},)", tag: "p<sub>m</sub>(n)" },
+    { key: "partició partM aritmetik nerd", value: "partM({c},)", tag: "p<sub>m</sub>(n)" },
+    { key: "pell aritmetik nerd", value: "pell({c})", tag: "pell(n)" },
     { key: "eulertotient tau aritmetik nerd", value: "phi({c})", tag: "&phi;(n)" },
     { key: "mahonian aritmetik nerd", value: "mahonian({c},)", tag: "mahonian(n,m)" },
     { key: "binomial aritmetik nerd", value: "binomial({c},)", tag: "binomial(n,m)" },
@@ -427,6 +428,8 @@ const autodictC = [
     // Nerdamer Vector
     { key: "vecktor nerd", value: "vector({c},,)", tag: "vector(,,)" },
     { key: "skalárisdotszorzat vecktor nerd", value: "dot({c},)", tag: "<b>a</b>&centerdot;<b>b</b> (skaláris)" },
+    { key: "kconvuluctionszorzat  vecktor nerd", value: "conv({c},)", tag: "<b>a</b>*<b>b</b> (konv.)" },
+    { key: "kconvuluctioninversze  vecktor nerd", value: "convinv({c})", tag: "<b>a</b><sup> -&lowast;</sup> (konv. inverz)" },
     { key: "keresztszorzatcross vecktor nerd", value: "cross({c},)", tag: "<b>a</b>&times;<b>b</b> (vektoriális)" },
     { key: "vecktor getlekér nerd", value: "vecget({c},)", tag: "vecget(<b>v</b>,i)" },
     { key: "vecktor setmatmegad nerd", value: "vecset({c},)", tag: "vecset(<b>v</b>,i)" },
