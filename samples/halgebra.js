@@ -10110,18 +10110,24 @@ function masterTh() {
     if (document.querySelector(".loader") != undefined)
         setTimeout(() => { elem.removeChild(document.querySelector(".loader")); }, 0);
 }
+/**
+ * Kiszámolja az n-edik Pell-számot.
+ * @param {number} n - Az elem indexe (0-tól indítva).
+ * @returns {number} Az n-edik Pell-szám.
+ */
+function pell(n) {
+    if (n === 0) return 0;
+    if (n === 1) return 1;
 
-// PELDAK
-//expand(Zyc_4(Har_1(x_1),Har_2(x_1,x_2),Har_3(x_1,x_2,x_3),Har_4(x_1,x_2,x_3,x_4))) -Sti_4(x_1,x_2,x_3,x_4)
+    let p0 = 0; // P(n-2)
+    let p1 = 1; // P(n-1)
+    let current = 0; // P(n)
 
-// === EXAMPLE USAGE ===
+    for (let i = 2; i <= n; i++) {
+        current = 2 * p1 + p0;
+        p0 = p1;
+        p1 = current;
+    }
 
-// Let's set A_i = 1 for all i. 
-// (For A_i = 1, the identity generates the total number of integer partitions of n!)
-//const n = 5;
-//const A = [0, -1, -1, -1, -1, -1]; // 1-indexed: A[1]=1, A[2]=1, etc.
-
-//const result = evaluateCycleIndexSubstitution(n, A);
-//console.log(`Result for n = ${n}:`, result);
-// Output: 7 (Since there are exactly 7 integer partitions of 5)
-// Output: 7 (Since there are exactly 7 integer partitions of 5)
+    return current;
+};
