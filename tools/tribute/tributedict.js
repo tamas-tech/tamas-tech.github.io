@@ -351,6 +351,9 @@ const autodictC = [
     // Nerdamer aritmetikai fgvs
     { key: "sor seq aritmetik nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
     { key: "sor seqvar aritmetik nerd", value: "seqvar({c},,,)", tag: "seqvar(f(k,.),k,a,b)" },
+    { key: "sor Fseq aritmetik nerd", value: "Fseq({c},,)", tag: "Fseq(F,f,n)" },
+    { key: "sor hatas_n aritmetik nerd", value: "hatas_n({c},,)", tag: "hatas_n(F,f,n)" },
+    { key: "sor hatas aritmetik nerd", value: "hatas({c},,)", tag: "hatas(F,f,n)" },
     { key: "pentagonális aritmetik nerd", value: "pent({c})", tag: "&delta;<sub>5</sub>(n)" },
     { key: "osztókösszege sigma aritmetik nerd", value: "sigma({c})", tag: "&sigma;(n)" },
     { key: "osztókösszegeM sigmaM aritmetik nerd", value: "sigmaM({c},)", tag: "&sigma;<sub>m</sub>(n)" },
