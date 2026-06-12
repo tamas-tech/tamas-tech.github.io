@@ -1,0 +1,4 @@
+§n=12§
+§F=Fib§
+§a=-fib(k)§
+A(z) <b><<F>></b> polinom hatása az $a(k)$ = $<<a>>$ soron (az első <<n>> elem) :$$<<hatas(F,a,n)>>$$
