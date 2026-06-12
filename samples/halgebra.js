@@ -10047,9 +10047,9 @@ function masterTh() {
     const out = evaluateCycleIndexSubstitution(n, A);
     const elem1 = document.querySelector("#mthout");
     const elem2 = document.querySelector("#mthout2");
+    const reszl = document.querySelector("#mthreszl").checked;
     const psia = "\\left(" + out[0].slice(1) + "\\right)";
     const bo = "\\left(" + out[1].slice(1) + "\\right)";
-    txt2 += "\\end{gather*}\\]"
     var txt1 = "\\[\\begin{gather*}\\boldsymbol{Har}\\;\\unicode{x25B7}\\left(";
     var txt10 = "\\boldsymbol{Har}\\;\\unicode{x25B7}\\left(";
     var txt11 = "\\left(";
@@ -10078,38 +10078,37 @@ function masterTh() {
     txt10 += "\\right) = \\\\\[2mm] = ";
     txt11 += "\\right) = " + psia + ", \\\\[2mm]";
     txt1 += txt10 + txt11 + txt12;
+    var txt2 = "A részletes jelentéshez pipálja ki a 'Részletes' jelölőnégyzetet";
+    if (reszl) {
+        txt2 = "\\[\\begin{gather*}";
+        for (var j = 1; j <= n; j++) {
+            Sti(j);
+            var vars = "";
+            var txtvars = "";
+            var sinvars = "";
+            for (i = 1; i <= j; i++) {
+                vars += 'x_' + i + ',';
+                txtvars += 'x_{' + i + '},';
+                sinvars += 'sin(' + A[i] + '),';
+            }
+            vars = vars.slice(0, -1);
+            txtvars = txtvars.slice(0, -1);
+            sinvars = sinvars.slice(0, -1);
 
-    var txt2 = "\\[\\begin{gather*}";
-    for (var j = 1; j <= n; j++) {
-        Sti(j);
-        var vars = "";
-        var txtvars = "";
-        var sinvars = "";
-        for (i = 1; i <= j; i++) {
-            vars += 'x_' + i + ',';
-            txtvars += 'x_{' + i + '},';
-            sinvars += 'sin(' + A[i] + '),';
+            txt2 += "\\boldsymbol{Sti}_{" + j + "}\\left(" + txtvars + "\\right) =" + nerdamer('Sti_' + j + '(' + vars + ')').latex() + " \\\\[2mm] \\boldsymbol{Sti}_{" + j + "}\\;\\unicode{x25B7}" + "\\left(" + A.slice(1, j - n) + "\\right)" + " = " + nerdamer('Sti_' + j + '(' + sinvars + ')').latex().replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "= \\bbox[5px, border: 2px solid red]{" + out[1][j] + "} \\\\[5mm] \\hline";
         }
-        vars = vars.slice(0, -1);
-        txtvars = txtvars.slice(0, -1);
-        sinvars = sinvars.slice(0, -1);
-
-        txt2 += "\\boldsymbol{Sti}_{" + j + "}\\left(" + txtvars + "\\right) =" + nerdamer('Sti_' + j + '(' + vars + ')').latex() + " \\\\[2mm] \\boldsymbol{Sti}_{" + j + "}\\;\\unicode{x25B7}" + "\\left(" + A.slice(1, j - n) + "\\right)" + " = " + nerdamer('Sti_' + j + '(' + sinvars + ')').latex().replace(/\\mathrm\{sin\}\\left\((\d*)\\right\)/g, "$1") + "= \\bbox[5px, border: 2px solid red]{" + out[1][j] + "} \\\\[5mm] \\hline";
-    }
-    txt2 = txt2.slice(0, -14);
-    txt2 += "\\end{gather*}\\]";
+        txt2 = txt2.slice(0, -14);
+        txt2 += "\\end{gather*}\\]";
+    };
 
     elem1.innerHTML = txt1;
     elem2.innerHTML = txt2;
-    /*  MathJax.Hub.Config({
-         displayAlign: "left",
-         displayIndent: "2em"
-     }); */
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem1]);
-    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem2]);
+    if (reszl)
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem2]);
     if (document.querySelector(".loader") != undefined)
-        setTimeout(() => { elem.removeChild(document.querySelector(".loader")); }, 0);
-}
+        setTimeout(() => { elem1.removeChild(document.querySelector(".loader")); }, 0);
+};
 /**
  * Kiszámolja az n-edik Pell-számot.
  * @param {number} n - Az elem indexe (0-tól indítva).
