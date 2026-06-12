@@ -103,6 +103,66 @@
     });
 })();
 
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(F, expr, n) {
+        var vec = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().toString().slice(1, -1);
+        return nerdamer(F + '(' + vec + ')');
+    }
+    nerdamer.register({
+        name: 'Fseq',
+        visible: true,
+        numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(F, expr, n) {
+        prelatexjs('§' + F + '_' + n + '§', true);
+        return nerdamer('Fseq(' + F + '_' + n + ',' + expr + ',' + n + ')');
+    }
+    nerdamer.register({
+        name: 'hatas_n',
+        visible: true,
+        numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(F, expr, n) {
+        var vec = _.functions.vector[0](),
+            j;
+        for (j = 1; j <= n; j++) {
+            var v1 = nerdamer('hatas_n(' + F + ',' + expr + ',' + j + ')');
+            vec.set(j - 1, v1);
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'hatas',
+        visible: true,
+        numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
 (function() {
     var core = nerdamer.getCore(),
         _ = core.PARSER,
