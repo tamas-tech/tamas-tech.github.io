@@ -165,6 +165,41 @@
 
 (function() {
     var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(fn1, fn2, n) {
+        fn1 = fn1.toString();
+        fn2 = fn2.toString();
+        n = n.toString() * 1;
+        prelatexjs('§' + fn1 + '_' + n + '§', true);
+        for (var k = 1; k <= n; k++)
+            prelatexjs('§' + fn2 + '_' + k + '§', true);
+
+        var com = fn1 + "_" + n + "(";
+        for (var j = 1; j <= n; j++) {
+            com += fn2 + "_" + j + "(";
+            for (var i = 1; i <= j; i++) {
+                com += "x_" + i + ",";
+            }
+            com = com.slice(0, -1) + "),"
+        };
+        com = com.slice(0, -1) + ")";
+
+        var txt = nerdamer("expand(" + com + ")");
+        return txt;
+    }
+    nerdamer.register({
+        name: 'comp',
+        visible: true,
+        numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
         _ = core.PARSER,
         Symbol = core.Symbol;
 
@@ -273,3 +308,22 @@
         }
     });
 })();
+
+/*  KACATOK
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(name, valt, expr) {
+        //console.log(name.value, valt.elements.map(y => y.value), expr.value)
+        nerdamer.setFunction(name.value, valt.elements.map(y => y.value), expr.value);
+    }
+    nerdamer.register({
+        name: 'fgvvv',
+        visible: true,
+        numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})(); */
