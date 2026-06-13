@@ -365,12 +365,14 @@ const autodictC = [
     { key: "mahonian aritmetik nerd", value: "mahonian({c},)", tag: "mahonian(n,m)" },
     { key: "binomial aritmetik nerd", value: "binomial({c},)", tag: "binomial(n,m)" },
     //  Nerdamer többv polinomok
+    { key: "függvény part többvált polinom nerd", value: "fgv({c},,)", tag: "fgv(F,[x_1,..],képlet)" },
     { key: "Zycn part többvált polinom nerd", value: "Zyc_{c}(,,)", tag: "Zyc_n(x<sub>1</sub>,..)" },
     { key: "Fabn part többvált polinom nerd", value: "Fab_{c}(,,)", tag: "Fab_n(x<sub>1</sub>,..)" },
     { key: "Fibn part többvált polinom nerd", value: "Fib_{c}(,,)", tag: "Fib_n(x<sub>1</sub>,..)" },
     { key: "Lucn part többvált polinom nerd", value: "Luc_{c}(,,)", tag: "Luc_n(x<sub>1</sub>,..)" },
     { key: "Stin part többvált polinom nerd", value: "Sti_{c}(,,)", tag: "Sti_n(x<sub>1</sub>,..)" },
     { key: "Harn part többvált polinom nerd", value: "Har_{c}(,,)", tag: "Har_n(x<sub>1</sub>,..)" },
+    { key: "compösszetéosition part többvált polinom nerd", value: "comp({c},,)", tag: "comp(F,G,n)" },
     // Nerdamer math functions
     { key: "gyöksqrt mathfncüggvény nerd", value: "sqrt({c})", tag: "sqrt(x)=√x" },
     { key: "fibonacci mathfncüggvény nerd", value: "fib({c})", tag: "fib(n)" },
