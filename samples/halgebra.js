@@ -1,3 +1,5 @@
+//const nerdamer = require("../tools/nerdamer/nerdamer.core");
+
 function HideColumnIndex0() {
     var $el = $(this);
     var $cell = $el.closest('th,td');
@@ -8044,6 +8046,7 @@ function compov(n) {
 };
 
 function compZFF(fn1, fn2, n) {
+    console.log(fn1, fn2, n)
     addLoader(n, "pentout");
     setTimeout(() => {
         getsetZycFabFib(fn1, n, false);
@@ -9407,7 +9410,7 @@ function prelatexjs(c_txt, mathjax) {
             var L = v.split("_");
             getsetZycFabFib(L[0], parseInt(L[1]), false);
         };
-      if (mathjax) {
+    if (mathjax) {
         c_txt = c_txt.replace(/^#.*[\n\r\f]+/mg, '');
         c_txt = c_txt.replace(/^.*▶/mg, '');
     }
@@ -9445,6 +9448,13 @@ function prelatexjs(c_txt, mathjax) {
             var dek = v.split("=")
             if (dek.length > 1)
                 nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
+            else if (dek[0].startsWith("fgv(")) {
+                var tt = dek[0].slice(4, -1).trim();
+                var name = tt.split(",[")[0].toString();
+                var expr = tt.split("],")[1].toString();
+                var valt = JSON.parse(tt.match(/\[.*\]/)[0].replace(/(\w)/g, "\"$1\""));
+                nerdamer.setFunction(name, valt, expr);
+            };
         };
     };
     //console.log(sVars);
@@ -9505,6 +9515,7 @@ function nerdCalc() {
         latexjs = processor[1] == "latexjs";
         c_txt = c_txt.replaceAll(processor[0], "");
     }
+    $("#usersorc textarea").val(c_txt);
     if (latexjs)
         updLatexJS(c_txt);
     else
@@ -9600,8 +9611,6 @@ function drawPent() {
         };
     };
 };
-
-
 
 function setPentKeplet(elem) {
     $('#penttbl td.selected').removeClass('selected');
@@ -10109,6 +10118,33 @@ function masterTh() {
     if (document.querySelector(".loader") != undefined)
         setTimeout(() => { elem1.removeChild(document.querySelector(".loader")); }, 0);
 };
+
+// PELDAK
+//expand(Zyc_4(Har_1(x_1),Har_2(x_1,x_2),Har_3(x_1,x_2,x_3),Har_4(x_1,x_2,x_3,x_4))) -Sti_4(x_1,x_2,x_3,x_4)
+
+// === EXAMPLE USAGE ===
+
+// Let's set A_i = 1 for all i. 
+// (For A_i = 1, the identity generates the total number of integer partitions of n!)
+//const n = 5;
+//const A = [0, -1, -1, -1, -1, -1]; // 1-indexed: A[1]=1, A[2]=1, etc.
+
+//const result = evaluateCycleIndexSubstitution(n, A);
+//console.log(`Result for n = ${n}:`, result);
+// Output: 7 (Since there are exactly 7 integer partitions of 5)
+// Output: 7 (Since there are exactly 7 integer partitions of 5)
+
+/* function tglDrag() {
+    var isDisabled = $("#speccharstok").draggable("option", "disabled");
+    if (isDisabled) {
+        $("#speccharstok").draggable("enable").addClass("move");
+        $("#specdrag").html("&#x2B0D;");
+    } else {
+        $("#speccharstok").draggable("disable").removeClass("move");
+        $("#specdrag").html("&#x2693;");
+    }
+} */
+
 /**
  * Kiszámolja az n-edik Pell-számot.
  * @param {number} n - Az elem indexe (0-tól indítva).
