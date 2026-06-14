@@ -8046,7 +8046,6 @@ function compov(n) {
 };
 
 function compZFF(fn1, fn2, n) {
-    console.log(fn1, fn2, n)
     addLoader(n, "pentout");
     setTimeout(() => {
         getsetZycFabFib(fn1, n, false);
@@ -9448,13 +9447,20 @@ function prelatexjs(c_txt, mathjax) {
             var dek = v.split("=")
             if (dek.length > 1)
                 nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
-            else if (dek[0].startsWith("fgv(")) {
+            else if (dek[0].startsWith("Fgv(")) {
                 var tt = dek[0].slice(4, -1).trim();
                 var name = tt.split(",[")[0].toString();
                 var expr = tt.split("],")[1].toString();
-                var valt = JSON.parse(tt.match(/\[.*\]/)[0].replace(/(\w)/g, "\"$1\""));
+                var valt = JSON.parse(tt.match(/\[.*\]/)[0].replace(/(\w_?\d*)/g, "\"$1\""));
                 nerdamer.setFunction(name, valt, expr);
-            };
+            } else if (dek[0].startsWith("fgv(")) {
+                var tt = dek[0].slice(4, -1).trim();
+                var zz = tt.split(":");
+                var name = zz[0].toString();
+                var expr = zz[1].toString();
+                var valt = nerdamer(expr).variables();
+                nerdamer.setFunction(name, valt, expr);
+            }
         };
     };
     //console.log(sVars);
