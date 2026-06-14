@@ -373,7 +373,7 @@ const autodictC = [
     { key: "mahonian aritmetik nerd", value: "mahonian({c},)", tag: "mahonian(n,m)" },
     { key: "binomial aritmetik nerd", value: "binomial({c},)", tag: "binomial(n,m)" },
     //  Nerdamer többv polinomok
-    { key: "függvény part többvált polinom nerd", value: "fgv({c}:)", tag: "Fgv(F:képlet)" },
+    { key: "függvény part többvált polinom nerd", value: "fgv({c}:)", tag: "fgv(F:képlet)" },
     { key: "Függvény part többvált polinom nerd", value: "Fgv({c},[],)", tag: "Fgv(F,[x_1,..],képlet)" },
     { key: "Zycn part többvált polinom nerd", value: "Zyc_{c}(,,)", tag: "Zyc_n(x<sub>1</sub>,..)" },
     { key: "Fabn part többvált polinom nerd", value: "Fab_{c}(,,)", tag: "Fab_n(x<sub>1</sub>,..)" },
