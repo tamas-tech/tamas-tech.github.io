@@ -336,7 +336,7 @@ var autoTribute = new Tribute({
 
 
 const autodictC = [
-    { key: "tags", value: "", tag: "<ul style='background:#ffff9f;'><li>nerd<ul><li>arit</li><li>mat</li><li>vec</li></ul></li><li>forms</li><li>latex</li><li>htnl</li><li>poly</li></ul>" },
+    //{ key: "tags", value: "", tag: "<ul style='background:#ffff9f;'><li>nerd<ul><li>arit</li><li>mat</li><li>vec</li></ul></li><li>forms</li><li>latex</li><li>htnl</li><li>poly</li></ul>" },
     // Formázás
     { key: "kiértékelés fformáz", value: "<< {c} >>", tag: "&#x27E8;&#x27E8;  &#x27E9;&#x27E9;" },
     { key: "inline sorköz math fformáz", value: "$ {c} $", tag: "$ $" },
@@ -348,12 +348,20 @@ const autodictC = [
     { key: "imagconstáállandó nerd", value: "i", tag: "i (Imaginary)" },
     { key: "eulerconstáállandóeuler nerd", value: "e", tag: "e (Euler)" },
     { key: "infinityvégtelenconstáállandó nerd", value: "Infinity", tag: "&#x221E;" },
+    // Nerdamer hatasok
+    { key: "behely Fseq  nerd", value: "Fseq({c},,)", tag: "Fseq(F,a,n)" },
+    { key: "hatas1_n nerd", value: "hatas1_n({c},,)", tag: "hatas1_n(F1,a,n)" },
+    { key: "hatas1  nerd", value: "hatas1({c},,)", tag: "hatas1(F1,a,n)" },
+    { key: "hatas2_n  nerd", value: "hatas2_n({c},,,)", tag: "hatas2_n(F1,F2,a,n)" },
+    { key: "hatas2  nerd", value: "hatas2({c},,,)", tag: "hatas2(F1,F2,a,n)" },
+    { key: "hatas3_n  nerd", value: "hatas3_n({c},,,,)", tag: "hatas3_n(F1,..,a,n)" },
+    { key: "hatas3  nerd", value: "hatas3({c},,,,)", tag: "hatas3(F1,..,a,n)" },
+    { key: "hatas4_n  nerd", value: "hatas4_n({c},,,,,)", tag: "hatas4_n(F1,..,a,n)" },
+    { key: "hatas4  nerd", value: "hatas4({c},,,,,)", tag: "hatas4(F1,..,a,n)" },
+
     // Nerdamer aritmetikai fgvs
     { key: "sor seq aritmetik nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
     { key: "sor seqvar aritmetik nerd", value: "seqvar({c},,,)", tag: "seqvar(f(k,.),k,a,b)" },
-    { key: "sor Fseq aritmetik nerd", value: "Fseq({c},,)", tag: "Fseq(F,f,n)" },
-    { key: "sor hatas_n aritmetik nerd", value: "hatas_n({c},,)", tag: "hatas_n(F,f,n)" },
-    { key: "sor hatas aritmetik nerd", value: "hatas({c},,)", tag: "hatas(F,f,n)" },
     { key: "pentagonális aritmetik nerd", value: "pent({c})", tag: "&delta;<sub>5</sub>(n)" },
     { key: "osztókösszege sigma aritmetik nerd", value: "sigma({c})", tag: "&sigma;(n)" },
     { key: "osztókösszegeM sigmaM aritmetik nerd", value: "sigmaM({c},)", tag: "&sigma;<sub>m</sub>(n)" },
@@ -365,14 +373,17 @@ const autodictC = [
     { key: "mahonian aritmetik nerd", value: "mahonian({c},)", tag: "mahonian(n,m)" },
     { key: "binomial aritmetik nerd", value: "binomial({c},)", tag: "binomial(n,m)" },
     //  Nerdamer többv polinomok
-    { key: "függvény part többvált polinom nerd", value: "fgv({c},,)", tag: "fgv(F,[x_1,..],képlet)" },
+    { key: "függvény part többvált polinom nerd", value: "fgv({c}:)", tag: "Fgv(F:képlet)" },
+    { key: "Függvény part többvált polinom nerd", value: "Fgv({c},[],)", tag: "Fgv(F,[x_1,..],képlet)" },
     { key: "Zycn part többvált polinom nerd", value: "Zyc_{c}(,,)", tag: "Zyc_n(x<sub>1</sub>,..)" },
     { key: "Fabn part többvált polinom nerd", value: "Fab_{c}(,,)", tag: "Fab_n(x<sub>1</sub>,..)" },
     { key: "Fibn part többvált polinom nerd", value: "Fib_{c}(,,)", tag: "Fib_n(x<sub>1</sub>,..)" },
     { key: "Lucn part többvált polinom nerd", value: "Luc_{c}(,,)", tag: "Luc_n(x<sub>1</sub>,..)" },
     { key: "Stin part többvált polinom nerd", value: "Sti_{c}(,,)", tag: "Sti_n(x<sub>1</sub>,..)" },
     { key: "Harn part többvált polinom nerd", value: "Har_{c}(,,)", tag: "Har_n(x<sub>1</sub>,..)" },
-    { key: "compösszetéosition part többvált polinom nerd", value: "comp({c},,)", tag: "comp(F,G,n)" },
+    { key: "comp2összetéosition2 part többvált polinom nerd", value: "comp2({c},,)", tag: "comp2(F1,F2,n)" },
+    { key: "comp3összetéosition3 part többvált polinom nerd", value: "comp3({c},,,)", tag: "comp3(F1,F2,F3,n)" },
+    { key: "comp4összetéosition4 part többvált polinom nerd", value: "comp4({c},,,,)", tag: "comp4(F1,..,F4,n)" },
     // Nerdamer math functions
     { key: "gyöksqrt mathfncüggvény nerd", value: "sqrt({c})", tag: "sqrt(x)=√x" },
     { key: "fibonacci mathfncüggvény nerd", value: "fib({c})", tag: "fib(n)" },
