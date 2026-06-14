@@ -9390,10 +9390,20 @@ function updMathJaxHTML(c_txt) {
 };
 
 function updMathJax(c_txt) {
-    c_txt = prelatexjs(c_txt, true);
+    try {
+        c_txt = prelatexjs(c_txt, true);
+    } catch (error) {
+        c_txt = error;
+        pentsorout = "";
+    }
     const elem = document.querySelector("#pentout");
+    const copyel = document.getElementById("pentsorcopytok");
     elem.style.whiteSpace = "nowrap";
     elem.innerHTML = c_txt;
+    if (pentsorout == "")
+        copyel.style.display = "none";
+    else
+        copyel.style.display = "block";
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
 };
 
@@ -9410,7 +9420,7 @@ function prelatexjs(c_txt, mathjax) {
             getsetZycFabFib(L[0], parseInt(L[1]), false);
         };
     if (mathjax) {
-        c_txt = c_txt.replace(/^#.*[\n\r\f]+/mg, '');
+        c_txt = c_txt.replace(/^\#.*[\n\r\f]+/mg, '');
         c_txt = c_txt.replace(/^.*▶/mg, '');
     }
     //c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
@@ -9470,6 +9480,7 @@ function prelatexjs(c_txt, mathjax) {
     if (nerd) {
         for (let exp of nerd) {
             var exp0 = exp.slice(2, -2);
+            //console.log(exp0)
             const e = nerdamer(exp0);
             try {
                 var ltx = decForm(e.evaluateM().latex(nerd_numb));
@@ -9514,6 +9525,7 @@ function updLatexJS(c_txt) {
 
 // LatexJS <<<<
 function nerdCalc() {
+    pentsorout = "";
     var c_txt = $("#usersorc textarea").val();
     const processor = c_txt.match(/^>>> *(mathjax|latexjs)+ *[\n\r\f]+/m);
     var latexjs = document.getElementById("mathjs_mathjax").checked;
@@ -9707,6 +9719,35 @@ function loadNerd(e) {
     getDataNerd("../docs/nerds/" + linkData);
 };
 
+function copy2OEISnerd() {
+    var txt = "";
+    const deno = document.getElementById("denoms").checked;
+    const vagolap = document.getElementById("vagolap");
+    var c = document.getElementById("szorzo").value;
+    try {
+        c = nerdamer.convertFromLaTeX(c).evaluate();
+    } catch (error) {
+        document.getElementById("vagolap").innerHTML = error;
+    }
+
+    if (pentsorout == "")
+        document.getElementById("vagolap").innerHTML = "Nincs megjeleníthető sor";
+    var vec = pentsorout.slice(1, -1).split(',').map(y => nerdamer.convertFromLaTeX(y));
+    if (deno) {
+        const denoms = vec.map(y => y.denominator().multiply(c).toString());
+        txt = denoms.toString();
+    } else {
+        const numers = vec.map(y => y.numerator().multiply(c).toString());
+        txt = numers.toString();
+    }
+    txt = txt.replaceAll(",", ", ");
+    vagolap.innerHTML = "clipboard &rightarrow; " + txt;
+    navigator.clipboard.writeText(txt);
+    $('#vagolap').addClass('villbgdark');
+    setTimeout(() => {
+        $('#vagolap').removeClass('villbgdark');
+    }, 300);
+};
 
 ///   #k7  polygonal polynomials
 
