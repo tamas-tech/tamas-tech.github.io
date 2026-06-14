@@ -105,12 +105,20 @@
 
 
 (function() {
-    var core = nerdamer.getCore(),
-        _ = core.PARSER;
-
     function f(F, expr, n) {
+        var nerdben = true;
+        try {
+            nerdamer.setFunction('TEMP', F.variables(), F.symbol.value)
+                //console.log(n, F.variables())
+        } catch {
+            nerdben = false;
+        }
         var vec = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().toString().slice(1, -1);
-        return nerdamer(F + '(' + vec + ')');
+        if (nerdben)
+            return nerdamer('TEMP(' + vec + ')');
+        else {
+            return nerdamer(F + '(' + vec + ')');
+        }
     }
     nerdamer.register({
         name: 'Fseq',
@@ -122,16 +130,31 @@
     });
 })();
 
-(function() {
-    var core = nerdamer.getCore(),
-        _ = core.PARSER;
+const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
 
+/// 1
+
+(function() {
     function f(F, expr, n) {
-        prelatexjs('§' + F + '_' + n + '§', true);
-        return nerdamer('Fseq(' + F + '_' + n + ',' + expr + ',' + n + ')');
-    }
+        if (PartPolys.includes(F.toString())) {
+            prelatexjs('§' + F + '_' + n + '§', true);
+            return nerdamer('Fseq(' + F + '_' + n + ',' + expr + ',' + n + ')');
+        } else {
+            var nerdben = true;
+            try {
+                nerdamer.setFunction('TEMP', F.variables(), F.symbol.value)
+            } catch {
+                nerdben = false;
+            }
+            if (nerdben)
+                return nerdamer('Fseq(TEMP,' + expr + ',' + n + ')');
+            else {
+                return nerdamer('Fseq(' + F + ',' + expr + ',' + n + ')');
+            }
+        }
+    };
     nerdamer.register({
-        name: 'hatas_n',
+        name: 'hatas1_n',
         visible: true,
         numargs: 3,
         build: function() {
@@ -148,13 +171,13 @@
         var vec = _.functions.vector[0](),
             j;
         for (j = 1; j <= n; j++) {
-            var v1 = nerdamer('hatas_n(' + F + ',' + expr + ',' + j + ')');
+            var v1 = nerdamer('hatas1_n(' + F + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
         }
         return vec;
     }
     nerdamer.register({
-        name: 'hatas',
+        name: 'hatas1',
         visible: true,
         numargs: 3,
         build: function() {
@@ -163,10 +186,9 @@
     });
 })();
 
-(function() {
-    var core = nerdamer.getCore(),
-        _ = core.PARSER;
+//// 2
 
+(function() {
     function f(fn1, fn2, n) {
         fn1 = fn1.toString();
         fn2 = fn2.toString();
@@ -184,12 +206,12 @@
             com = com.slice(0, -1) + "),"
         };
         com = com.slice(0, -1) + ")";
-
         var txt = nerdamer("expand(" + com + ")");
+        //nerdamer.setFunction(fn1 + fn2 + '_' + n, txt.variables(), txt.symbol.value);
         return txt;
     }
     nerdamer.register({
-        name: 'comp',
+        name: 'comp2',
         visible: true,
         numargs: 3,
         build: function() {
@@ -197,6 +219,276 @@
         }
     });
 })();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(fn1, fn2, expr, n) {
+        fn1 = fn1.toString();
+        fn2 = fn2.toString();
+        n = n.toString() * 1;
+        prelatexjs('§' + fn1 + '_' + n + '§', true);
+        for (var k = 1; k <= n; k++)
+            prelatexjs('§' + fn2 + '_' + k + '§', true);
+
+        var com = fn1 + "_" + n + "(";
+        for (var j = 1; j <= n; j++) {
+            var vec = nerdamer('seq(' + expr + ',1,' + j + ')').evaluate().toString().slice(1, -1);
+            com += fn2 + '_' + j + '(' + vec + '),';
+        };
+        com = com.slice(0, -1) + ")";
+        var txt = nerdamer("expand(" + com + ")");
+        return txt;
+    }
+    nerdamer.register({
+        name: 'hatas2_n',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(F1, F2, expr, n) {
+        var vec = _.functions.vector[0](),
+            j;
+        for (j = 1; j <= n; j++) {
+            var v1 = nerdamer('hatas2_n(' + F1 + ',' + F2 + ',' + expr + ',' + j + ')');
+            vec.set(j - 1, v1);
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'hatas2',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+/// 3
+
+(function() {
+    function f(fn1, fn2, fn3, n) {
+        fn1 = fn1.toString();
+        fn2 = fn2.toString();
+        fn3 = fn3.toString();
+        n = n.toString() * 1;
+        prelatexjs('§' + fn1 + '_' + n + '§', true);
+        for (var k = 1; k <= n; k++) {
+            prelatexjs('§' + fn2 + '_' + k + '§', true);
+            prelatexjs('§' + fn3 + '_' + k + '§', true);
+        }
+
+        var com = fn1 + "_" + n + "(";
+        for (var k = 1; k <= n; k++) {
+            com += fn2 + "_" + k + "(";
+            for (var j = 1; j <= k; j++) {
+                com += fn3 + "_" + j + "(";
+                for (var i = 1; i <= j; i++) {
+                    com += "x_" + i + ",";
+                }
+                com = com.slice(0, -1) + "),"
+            }
+            com = com.slice(0, -1) + "),"
+        };
+        com = com.slice(0, -1) + ")";
+        var txt = nerdamer("expand(" + com + ")");
+        //nerdamer.setFunction(fn1 + fn2 + fn3 + '_' + n, txt.variables(), txt.symbol.value);
+        return txt;
+    }
+    nerdamer.register({
+        name: 'comp3',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(fn1, fn2, fn3, expr, n) {
+        fn1 = fn1.toString();
+        fn2 = fn2.toString();
+        fn3 = fn3.toString();
+        n = n.toString() * 1;
+        prelatexjs('§' + fn1 + '_' + n + '§', true);
+        for (var k = 1; k <= n; k++) {
+            prelatexjs('§' + fn2 + '_' + k + '§', true);
+            prelatexjs('§' + fn3 + '_' + k + '§', true);
+        }
+
+        var com = fn1 + "_" + n + "(";
+        for (var k = 1; k <= n; k++) {
+            com += fn2 + "_" + k + "(";
+            for (var j = 1; j <= k; j++) {
+                var vec = nerdamer('seq(' + expr + ',1,' + j + ')').evaluate().toString().slice(1, -1);
+                com += fn3 + '_' + j + '(' + vec + '),';
+            }
+            com = com.slice(0, -1) + "),"
+        };
+        com = com.slice(0, -1) + ")"
+        var txt = nerdamer("expand(" + com + ")");
+        //nerdamer.setFunction(fn1 + fn2 + '_' + n, txt.variables(), txt.symbol.value);
+        return txt;
+    }
+    nerdamer.register({
+        name: 'hatas3_n',
+        visible: true,
+        numargs: 5,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(F1, F2, F3, expr, n) {
+        var vec = _.functions.vector[0](),
+            j;
+        for (j = 1; j <= n; j++) {
+            var v1 = nerdamer('hatas3_n(' + F1 + ',' + F2 + ',' + F3 + ',' + expr + ',' + j + ')');
+            vec.set(j - 1, v1);
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'hatas3',
+        visible: true,
+        numargs: 5,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+/// 4
+
+(function() {
+    function f(fn1, fn2, fn3, fn4, n) {
+        fn1 = fn1.toString();
+        fn2 = fn2.toString();
+        fn3 = fn3.toString();
+        fn4 = fn4.toString();
+        n = n.toString() * 1;
+        prelatexjs('§' + fn1 + '_' + n + '§', true);
+        for (var k = 1; k <= n; k++) {
+            prelatexjs('§' + fn2 + '_' + k + '§', true);
+            prelatexjs('§' + fn3 + '_' + k + '§', true);
+            prelatexjs('§' + fn4 + '_' + k + '§', true);
+        }
+
+        var com = fn1 + "_" + n + "(";
+        for (var L = 1; L <= n; L++) {
+            com += fn2 + "_" + L + "(";
+            for (var k = 1; k <= L; k++) {
+                com += fn3 + "_" + k + "(";
+                for (var j = 1; j <= k; j++) {
+                    com += fn4 + "_" + j + "(";
+                    for (var i = 1; i <= j; i++) {
+                        com += "x_" + i + ",";
+                    }
+                    com = com.slice(0, -1) + "),"
+                }
+                com = com.slice(0, -1) + "),"
+            };
+            com = com.slice(0, -1) + "),"
+        };
+        com = com.slice(0, -1) + ")";
+        var txt = nerdamer("expand(" + com + ")");
+        //nerdamer.setFunction(fn1 + fn2 + fn3 + fn4 + '_' + n, txt.variables(), txt.symbol.value);
+        return txt;
+    }
+    nerdamer.register({
+        name: 'comp4',
+        visible: true,
+        numargs: 5,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    function f(fn1, fn2, fn3, fn4, expr, n) {
+        fn1 = fn1.toString();
+        fn2 = fn2.toString();
+        fn3 = fn3.toString();
+        fn4 = fn4.toString();
+        n = n.toString() * 1;
+        prelatexjs('§' + fn1 + '_' + n + '§', true);
+        for (var k = 1; k <= n; k++) {
+            prelatexjs('§' + fn2 + '_' + k + '§', true);
+            prelatexjs('§' + fn3 + '_' + k + '§', true);
+            prelatexjs('§' + fn4 + '_' + k + '§', true);
+        }
+
+        var com = fn1 + "_" + n + "(";
+        for (var L = 1; L <= n; L++) {
+            com += fn2 + "_" + L + "(";
+            for (var k = 1; k <= L; k++) {
+                com += fn3 + "_" + k + "(";
+                for (var j = 1; j <= k; j++) {
+                    var vec = nerdamer('seq(' + expr + ',1,' + j + ')').evaluate().toString().slice(1, -1);
+                    com += fn4 + '_' + j + '(' + vec + '),';
+                }
+                com = com.slice(0, -1) + "),"
+            };
+            com = com.slice(0, -1) + "),"
+        };
+        com = com.slice(0, -1) + ")";
+        var txt = nerdamer("expand(" + com + ")");
+        return txt;
+    }
+    nerdamer.register({
+        name: 'hatas4_n',
+        visible: true,
+        numargs: 6,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(F1, F2, F3, F4, expr, n) {
+        var vec = _.functions.vector[0](),
+            j;
+        for (j = 1; j <= n; j++) {
+            var v1 = nerdamer('hatas4_n(' + F1 + ',' + F2 + ',' + F3 + ',' + F4 + ',' + expr + ',' + j + ')');
+            vec.set(j - 1, v1);
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'hatas4',
+        visible: true,
+        numargs: 6,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+////////////////////////////// 
 
 (function() {
     var core = nerdamer.getCore(),
@@ -319,7 +611,7 @@
         nerdamer.setFunction(name.value, valt.elements.map(y => y.value), expr.value);
     }
     nerdamer.register({
-        name: 'fgvvv',
+        name: 'Fgvvv',
         visible: true,
         numargs: 3,
         build: function() {
