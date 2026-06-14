@@ -174,6 +174,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
             var v1 = nerdamer('hatas1_n(' + F + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
         }
+        pentsorout = nerdamer(vec).latex();
         return vec;
     }
     nerdamer.register({
@@ -262,6 +263,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
             var v1 = nerdamer('hatas2_n(' + F1 + ',' + F2 + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
         }
+        pentsorout = nerdamer(vec).latex();
         return vec;
     }
     nerdamer.register({
@@ -365,6 +367,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
             var v1 = nerdamer('hatas3_n(' + F1 + ',' + F2 + ',' + F3 + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
         }
+        pentsorout = nerdamer(vec).latex();
         return vec;
     }
     nerdamer.register({
@@ -476,6 +479,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
             var v1 = nerdamer('hatas4_n(' + F1 + ',' + F2 + ',' + F3 + ',' + F4 + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
         }
+        pentsorout = nerdamer(vec).latex();
         return vec;
     }
     nerdamer.register({
