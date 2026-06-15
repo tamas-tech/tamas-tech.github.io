@@ -9339,7 +9339,6 @@ function updMathJaxHTML(c_txt) {
         sVars = _.flatten(sVars.map(y => y.replace(/ *\§ */g, "").split(";").map(z => z.trim())));
         for (let v of sVars) {
             var dek = v.split("=")
-                //console.log(dek)
             nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
         };
     };
@@ -9455,9 +9454,9 @@ function prelatexjs(c_txt, mathjax) {
         //console.log(sVars);
         for (let v of sVars) {
             var dek = v.split("=")
-            if (dek.length > 1)
+            if (dek.length > 1) {
                 nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
-            else if (dek[0].startsWith("Fgv(")) {
+            } else if (dek[0].startsWith("Fgv(")) {
                 var tt = dek[0].slice(4, -1).trim();
                 var name = tt.split(",[")[0].toString();
                 var expr = tt.split("],")[1].toString();
