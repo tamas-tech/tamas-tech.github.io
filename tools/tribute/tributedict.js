@@ -444,6 +444,7 @@ const autodictC = [
     // Nerdamer Vector
     { key: "vecktor nerd", value: "vector({c},,)", tag: "vector(,,)" },
     { key: "skalárisdotszorzat vecktor nerd", value: "dot({c},)", tag: "<b>a</b>&centerdot;<b>b</b> (skaláris)" },
+    { key: "concatösszefűzés  vecktor nerd", value: "concat({c},)", tag: "<b>a</b>&bullet;<b>b</b> (összefűzés)" },
     { key: "kconvuluctionszorzat  vecktor nerd", value: "conv({c},)", tag: "<b>a</b>*<b>b</b> (konv.)" },
     { key: "kconvuluctioninversze  vecktor nerd", value: "convinv({c})", tag: "<b>a</b><sup> -&lowast;</sup> (konv. inverz)" },
     { key: "keresztszorzatcross vecktor nerd", value: "cross({c},)", tag: "<b>a</b>&times;<b>b</b> (vektoriális)" },
