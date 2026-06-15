@@ -637,21 +637,33 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     });
 })();
 
-/*  KACATOK
 (function() {
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(name, valt, expr) {
-        //console.log(name.value, valt.elements.map(y => y.value), expr.value)
-        nerdamer.setFunction(name.value, valt.elements.map(y => y.value), expr.value);
+    function f(a, b) {
+        var c = _.functions.vector[0]();
+        const ae = a.elements;
+        const be = b.elements;
+        const na = ae.length;
+        const nb = be.length;
+        const n = na + nb;
+        for (var i = 0; i < n; i++) {
+            if (i < na)
+                c.set(i, ae[i]);
+            else
+                c.set(i, be[i - na]);
+        }
+        return c;
     }
     nerdamer.register({
-        name: 'Fgvvv',
+        name: 'concat',
         visible: true,
-        numargs: 3,
+        numargs: 2,
         build: function() {
             return f;
         }
     });
-})(); */
+})();
+
+
