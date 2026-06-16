@@ -1,15 +1,15 @@
 #Stílus
-▷ <style>#pentout {padding: 40px!important;outline:1px dotted #939393;outline-offset:-38px;} #pentout code {color:#bf00bc} #pentout p.kepletp {border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;margin: 20px 0;box-shadow: 0 0 10px 3px #6c0f0f9e;} #pentout span.kiemelt {border-bottom:1px solid red;padding:2px;}</style> 
+▶ <style>#pentout {padding: 40px!important;outline:1px dotted #939393;outline-offset:-38px;} #pentout code {color:#bf00bc} #pentout p.kepletp {border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;margin: 20px 0;box-shadow: 0 0 10px 3px #6c0f0f9e;} #pentout span.kiemelt {border-bottom:1px solid red;padding:2px;}</style> 
 
 #Változók definiálása
-▷ §a=vector(4,3,-2,6,2);na=size(a)§
-▷ §b=vector(3,-5,4,0,1);nb=size(b)§
-▷ §ab=conv(a,b)§
-▷ §Ta= matToeplitz(a)§
-▷ §Tb= matToeplitz(b)§
-▷ §Tab= matToeplitz(ab)§
-▷ §ainv=convinv(a)§
-▷ §Tainv=invert(Ta)§
+▶ §a=vector(4,3,-2,6,2);na=size(a)§
+▶ §b=vector(3,-5,4,0,1);nb=size(b)§
+▶ §ab=conv(a,b)§
+▶ §Ta= matToeplitz(a)§
+▶ §Tb= matToeplitz(b)§
+▶ §Tab= matToeplitz(ab)§
+▶ §ainv=convinv(a)§
+▶ §Tainv=invert(Ta)§
 
 #dokumentum
 ▶ Tetszőleges &nbsp;$\left(a_1,a_2,\ldots,a_n\right)$&nbsp; vektorhoz egyértelműen hozzárendelhetünk egy &nbsp;$\boldsymbol{T}(\boldsymbol{a})$&nbsp; Toeplitz-féle $n\times n$ méretű alsó háromszögmátrixot:$$\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)\longleftrightarrow\boldsymbol{T}(\boldsymbol{a})=
@@ -24,7 +24,7 @@
   \end{array}
 \right)$$
 Erre a kölcsönösen egyértelmű megfeleltetésre teljesül az alábbi tétel:
-▷ <P class="kepletp"><B style="margin-right:5px;">TÉTEL:</B> A &nbsp;$\boldsymbol{T}$&nbsp; leképezés <em>lineáris</em>, és tetszőleges $\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)$ és $\boldsymbol{b}=\left(b_1,b_2,\ldots,b_n\right)$ vektorokra $$\boldsymbol{T}(\boldsymbol{a}\ast\boldsymbol{b})=\boldsymbol{T}(\boldsymbol{a})\cdot\boldsymbol{T}(\boldsymbol{b})$$ </P>
+▶ <P class="kepletp"><B style="margin-right:5px;">TÉTEL:</B> A &nbsp;$\boldsymbol{T}$&nbsp; leképezés <em>lineáris</em>, és tetszőleges $\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)$ és $\boldsymbol{b}=\left(b_1,b_2,\ldots,b_n\right)$ vektorokra $$\boldsymbol{T}(\boldsymbol{a}\ast\boldsymbol{b})=\boldsymbol{T}(\boldsymbol{a})\cdot\boldsymbol{T}(\boldsymbol{b})$$ </P>
 ▶ <b>A tétel mélyebb jelentése</b>: Az n-dimenziós vektorok lineáris tere a $\ast$ konvolúció szorzattal egy algebrát alkot. Jelölje ezt az algebtát $\mathscr{R}= \left(\mathbb{R}^{n},\ast\right)$.
 ▶ Nyilvánvaló, hogy a Toeplitz-féle $n\times n$ méretű alsó háromszögmátrixok is lineáris teret alkotnak, hiszen két ilyen mátrix összege, és egy mátrix
 ▶ skalárszorosa is Toeplitz-féle $n\times n$ méretű alsó háromszögmátrix lesz. Kevésbé ismert, de könnyen belátható, hogy két Toeplitz-féle $n\times n$ méretű
