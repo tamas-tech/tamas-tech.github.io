@@ -25,14 +25,14 @@
 \right)$$
 Erre a kölcsönösen egyértelmű megfeleltetésre teljesül az alábbi tétel:
 ▶ <P class="kepletp"><B style="margin-right:5px;">TÉTEL:</B> A &nbsp;$\boldsymbol{T}$&nbsp; leképezés <em>lineáris</em>, és tetszőleges $\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)$ és $\boldsymbol{b}=\left(b_1,b_2,\ldots,b_n\right)$ vektorokra $$\boldsymbol{T}(\boldsymbol{a}\ast\boldsymbol{b})=\boldsymbol{T}(\boldsymbol{a})\cdot\boldsymbol{T}(\boldsymbol{b})$$ </P>
-▶ <b>A tétel mélyebb jelentése</b>: Az n-dimenziós vektorok lineáris tere a $\ast$ konvolúció szorzattal egy algebrát alkot. Jelölje ezt az algebtát $\mathscr{R}= \left(\mathbb{R}^{n},\ast\right)$.
-▶ Nyilvánvaló, hogy a Toeplitz-féle $n\times n$ méretű alsó háromszögmátrixok is lineáris teret alkotnak, hiszen két ilyen mátrix összege, és egy mátrix
-▶ skalárszorosa is Toeplitz-féle $n\times n$ méretű alsó háromszögmátrix lesz. Kevésbé ismert, de könnyen belátható, hogy két Toeplitz-féle $n\times n$ méretű
-▶ alsó háromszögmátrix szorzata is Toeplitz-féle $n\times n$ méretű alsó háromszögmátrix. Azt sem nehéz átgondolni, hogy a Toeplitz-féle $n\times n$ méretű<br/>
-▶ alsó háromszögmátrixok lineáris tere a mátrixszorzással algebrát alkot. Ezt az algebtát pedig jelölje $\mathscr{T}= \left(\mathbb{T}_{n\times n},\cdot\right)$
-▶ A fenti tétel ekkor azt állítja, hogy <span class="kiemelt">a megadott &nbsp;$\boldsymbol{T}$&nbsp; <em>lineáris</em> megfeleltetés egy izomorfia az $\mathscr{R}= \left(\mathbb{R}^{n},\ast\right)$ és a $\mathscr{T}= \left(\mathbb{T}_{n\times n},\cdot\right)$ algebrák között.</span>
+▶ <b>A tétel mélyebb jelentése</b>: Az n-dimenziós vektorok lineáris tere a $\ast$ konvolúció szorzattal egy algebrát alkot. Jelölje ezt az algebtát $\mathscr{R}= \left(\mathbb{R}^{n},\ast\right)$.◉
+▶ Nyilvánvaló, hogy a Toeplitz-féle $n\times n$ méretű alsó háromszögmátrixok is lineáris teret alkotnak, hiszen két ilyen mátrix összege, és egy mátrix◉
+▶ skalárszorosa is Toeplitz-féle $n\times n$ méretű alsó háromszögmátrix lesz. Kevésbé ismert, de könnyen belátható, hogy két Toeplitz-féle $n\times n$ méretű◉
+▶ alsó háromszögmátrix szorzata is Toeplitz-féle $n\times n$ méretű alsó háromszögmátrix. Azt sem nehéz átgondolni, hogy a Toeplitz-féle $n\times n$ méretű◉
+▶ alsó háromszögmátrixok lineáris tere a mátrixszorzással algebrát alkot. Ezt az algebtát pedig jelölje $\mathscr{T}= \left(\mathbb{T}_{n\times n},\cdot\right)$◉
+▶ A fenti tétel ekkor azt állítja, hogy <span class="kiemelt">a megadott &nbsp;$\boldsymbol{T}$&nbsp; <em>lineáris</em> megfeleltetés egy izomorfia az $\mathscr{R}= \left(\mathbb{R}^{n},\ast\right)$ és a $\mathscr{T}= \left(\mathbb{T}_{n\times n},\cdot\right)$ algebrák között.</span>◉
 ▶ Így az is igaz, hogy tetszőleges  $\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)$ vektor $\boldsymbol{a}^{-\ast}$ konvólúcióinverzére$$\boldsymbol{T}(\boldsymbol{a}^{-\ast})=\left(\boldsymbol{T}(\boldsymbol{a})\right)^{-1}$$
 ▶ <b>Példa</b>: Tekintsük az $\boldsymbol{a}=<<a>>$ és $\boldsymbol{b}=<<b>>$  <<na>>-dimenziós vektorokat. Ekkor $$\boldsymbol{T}(\boldsymbol{a})=<<Ta>>\text{ ; }\boldsymbol{T}(\boldsymbol{b})=<<Tb>>$$
 ▶ A két mátrix szorzatára az alábbit kapjuk:$$\boldsymbol{T}(\boldsymbol{a})\cdot\boldsymbol{T}(\boldsymbol{b})=<<Ta>>\cdot<<Tb>>=<<Tab>>$$
-▶ A tétel szerint ez a mátrix megegyezik a $\boldsymbol{T}\left(\boldsymbol{a}\ast\boldsymbol{b}\right)$ mátrixszal, ezért az első oszlopból a $\boldsymbol{a}\ast\boldsymbol{b}=<<ab>>$ eredmény is kiolvasható.
-▶ Az $\boldsymbol{a}^{-\ast}$ konvolúcióinverz pedig a $$\left(\boldsymbol{T}(\boldsymbol{a})\right)^{-1}=<<Tainv>>$$ mátrix első oszlopából olvasható ki. És valóban $\boldsymbol{a}^{-\ast}=<<ainv>>$.                            
+▶ A tétel szerint ez a mátrix megegyezik a $\boldsymbol{T}\left(\boldsymbol{a}\ast\boldsymbol{b}\right)$ mátrixszal, ezért az első oszlopból a $\boldsymbol{a}\ast\boldsymbol{b}=<<ab>>$ eredmény is kiolvasható.◉
+▶ Az $\boldsymbol{a}^{-\ast}$ konvolúcióinverz pedig a $$\left(\boldsymbol{T}(\boldsymbol{a})\right)^{-1}=<<Tainv>>$$ mátrix első oszlopából olvasható ki. És valóban $\boldsymbol{a}^{-\ast}=<<ainv>>$.◉                            
