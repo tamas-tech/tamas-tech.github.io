@@ -2,8 +2,8 @@
 ▶ <style>#pentout {padding: 40px!important;outline:1px dotted #939393;outline-offset:-38px;} #pentout code {color:#bf00bc} #pentout p.kepletp {border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;margin: 20px 0;box-shadow: 0 0 10px 3px #6c0f0f9e;} #pentout span.kiemelt {border-bottom:1px solid red;padding:2px;}</style> 
 
 #Változók definiálása
-▶ §a=vector(4);na=size(a)§
-▶ §b=vector(3);nb=size(b)§
+▶ §a=vector(4,3,-2,6,2);na=size(a)§
+▶ §b=vector(3,-5,4,0,1);nb=size(b)§
 ▶ §ab=conv(a,b)§
 ▶ §Ta= matToeplitz(a)§
 ▶ §Tb= matToeplitz(b)§
@@ -35,4 +35,4 @@ Erre a kölcsönösen egyértelmű megfeleltetésre teljesül az alábbi tétel:
 ▶ <b>Példa</b>: Tekintsük az $\boldsymbol{a}=<<a>>$ és $\boldsymbol{b}=<<b>>$  <<na>>-dimenziós vektorokat. Ekkor $$\boldsymbol{T}(\boldsymbol{a})=<<Ta>>\text{ ; }\boldsymbol{T}(\boldsymbol{b})=<<Tb>>$$
 ▶ A két mátrix szorzatára az alábbit kapjuk:$$\boldsymbol{T}(\boldsymbol{a})\cdot\boldsymbol{T}(\boldsymbol{b})=<<Ta>>\cdot<<Tb>>=<<Tab>>$$
 ▶ A tétel szerint ez a mátrix megegyezik a $\boldsymbol{T}\left(\boldsymbol{a}\ast\boldsymbol{b}\right)$ mátrixszal, ezért az első oszlopból a $\boldsymbol{a}\ast\boldsymbol{b}=<<ab>>$ eredmény is kiolvasható.<br/>
-▶ Az $\boldsymbol{a}^{-\ast}$ konvolúcióinverz pedig a $$\left(\boldsymbol{T}(\boldsymbol{a})\right)^{-1}=<<Tainv>>$$ mátrix első oszlopából olvasható ki. És valóban $\boldsymbol{a}^{-\ast}=<<ainv>>$.
+▶ Az $\boldsymbol{a}^{-\ast}$ konvolúcióinverz pedig a $$\left(\boldsymbol{T}(\boldsymbol{a})\right)^{-1}=<<Tainv>>$$ mátrix első oszlopából olvasható ki. És valóban $\boldsymbol{a}^{-\ast}=<<ainv>>$.                            
