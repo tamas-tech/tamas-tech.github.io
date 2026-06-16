@@ -3720,7 +3720,7 @@ div#speccharstok {
     padding: 0 0 4px 0;
     position: sticky!important;
     left: 0;
-    background-color: #e3e3e3;
+    background-color: #8e8e8e;
     width: 100%;
 }
 
@@ -3729,12 +3729,13 @@ div#speccharstok.shown {
 }
 
 #speccharstok table tr td {
-    width: 40px;
+     width: 40px;
     height: 40px;
     cursor: pointer;
-    background-color: #fbfbfb;
+    background-color: #606060;
     border-radius: 5px;
-    border: 1px solid #9f9f9f;
+    border: 1px solid #bfbfbfcc;
+    color: #fffffff0;
 }
 
 
