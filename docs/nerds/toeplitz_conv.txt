@@ -33,6 +33,6 @@ Erre a kölcsönösen egyértelmű megfeleltetésre teljesül az alábbi tétel:
 ▶ A fenti tétel ekkor azt állítja, hogy <span class="kiemelt">a megadott &nbsp;$\boldsymbol{T}$&nbsp; <em>lineáris</em> megfeleltetés egy izomorfia az $\mathscr{R}= \left(\mathbb{R}^{n},\ast\right)$ és a $\mathscr{T}= \left(\mathbb{T}_{n\times n},\cdot\right)$ algebrák között.</span><br/> 
 ▶ Így az is igaz, hogy tetszőleges  $\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)$ vektor $\boldsymbol{a}^{-\ast}$ konvólúcióinverzére$$\boldsymbol{T}(\boldsymbol{a}^{-\ast})=\left(\boldsymbol{T}(\boldsymbol{a})\right)^{-1}$$<br/>
 ▶ <b>Példa</b>: Tekintsük az $\boldsymbol{a}=<<a>>$ és $\boldsymbol{b}=<<b>>$  <<na>>-dimenziós vektorokat. Ekkor $$\boldsymbol{T}(\boldsymbol{a})=<<Ta>>\text{ ; }\boldsymbol{T}(\boldsymbol{b})=<<Tb>>$$
-▶ A két mátrix szorzatára az alábbit kapjuk:$$\boldsymbol{T}(\boldsymbol{b})\cdot\boldsymbol{T}(\boldsymbol{b})=<<Ta>>\cdot<<Tb>>=<<Tab>>$$
+▶ A két mátrix szorzatára az alábbit kapjuk:$$\boldsymbol{T}(\boldsymbol{a})\cdot\boldsymbol{T}(\boldsymbol{b})=<<Ta>>\cdot<<Tb>>=<<Tab>>$$
 ▶ A tétel szerint ez a mátrix megegyezik a $\boldsymbol{T}\left(\boldsymbol{a}\ast\boldsymbol{b}\right)$ mátrixszal, ezért az első oszlopból a $\boldsymbol{a}\ast\boldsymbol{b}=<<ab>>$ eredmény is kiolvasható.<br/>
 ▶ Az $\boldsymbol{a}^{-\ast}$ konvolúcióinverz pedig a $$\left(\boldsymbol{T}(\boldsymbol{a})\right)^{-1}=<<Tainv>>$$ mátrix első oszlopából olvasható ki. És valóban $\boldsymbol{a}^{-\ast}=<<ainv>>$.
