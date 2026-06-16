@@ -1,4 +1,41 @@
 #Stílus
+▶ <style>#pentout {padding: 40px!important;outline:1px dotted #939393;outline-offset:-38px;} #pentout code {color:#bf00bc} #pentout p.kepletp {border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;margin: 20px 0;box-shadow: 0 0 10px 3px #6c0f0f9e;} #pentout span.kiemelt {border-bottom:1px solid red;padding:2px;}</style> 
+
+#Változók definiálása
+▶ §a=vector(4);na=size(a)§
+▶ §b=vector(3);nb=size(b)§
+▶ §ab=conv(a,b)§
+▶ §Ta= matToeplitz(a)§
+▶ §Tb= matToeplitz(b)§
+▶ §Tab= matToeplitz(ab)§
+▶ §ainv=convinv(a)§
+▶ §Tainv=invert(Ta)§
+
+#dokumentum
+▶ Tetszőleges &nbsp;$\left(a_1,a_2,\ldots,a_n\right)$&nbsp; vektorhoz egyértelműen hozzárendelhetünk egy &nbsp;$\boldsymbol{T}(\boldsymbol{a})$&nbsp; Toeplitz-féle $n\times n$ méretű alsó háromszögmátrixot:$$\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)\longleftrightarrow\boldsymbol{T}(\boldsymbol{a})=
+  \left(
+  \begin{array}{cccc}
+    a_{1}  & 0       & 0      &\ldots  & 0      & 0      \\
+    a_{2}  & a_{1}   &0       & \ldots & 0      & 0      \\
+    a_{3}  & a_{2}   & a_{1}  & \ldots & 0      & 0      \\
+    \vdots & \vdots  & \vdots &\ddots  & \vdots & \vdots \\
+    a_{n-1}& a_{n-2} &a_{n-3} & \ldots &  a_{1} & 0      \\
+    a_{n}  & a_{n-1} &a_{n-2} & \ldots & a_{2}  & a_{1}
+  \end{array}
+\right)$$
+Erre a kölcsönösen egyértelmű megfeleltetésre teljesül az alábbi tétel:
+▶ <P class="kepletp"><B style="margin-right:5px;">TÉTEL:</B> A &nbsp;$\boldsymbol{T}$&nbsp; leképezés <em>lineáris</em>, és tetszőleges $\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)$ és $\boldsymbol{b}=\left(b_1,b_2,\ldots,b_n\right)$ vektorokra $$\boldsymbol{T}(\boldsymbol{a}\ast\boldsymbol{b})=\boldsymbol{T}(\boldsymbol{a})\cdot\boldsymbol{T}(\boldsymbol{b})$$ </P>
+▶ <b>A tétel mélyebb jelentése</b>: Az n-dimenziós vektorok lineáris tere a $\ast$ konvolúció szorzattal egy algebrát alkot. Jelölje ezt az algebtát $\mathscr{R}= \left(\mathbb{R}^{n},\ast\right)$.<br/>
+▶ Nyilvánvaló, hogy a Toeplitz-féle $n\times n$ méretű alsó háromszögmátrixok is lineáris teret alkotnak, hiszen két ilyen mátrix összege, és egy mátrix <br/>
+▶ skalárszorosa is Toeplitz-féle $n\times n$ méretű alsó háromszögmátrix lesz. Kevésbé ismert, de könnyen belátható, hogy két Toeplitz-féle $n\times n$ méretű<br/> 
+▶ alsó háromszögmátrix szorzata is Toeplitz-féle $n\times n$ méretű alsó háromszögmátrix. Azt sem nehéz átgondolni, hogy a Toeplitz-féle $n\times n$ méretű<br/>
+▶ alsó háromszögmátrixok lineáris tere a mátrixszorzással algebrát alkot. Ezt az algebtát pedig jelölje $\mathscr{T}= \left(\mathbb{T}_{n\times n},\cdot\right)$<br/>
+▶ A fenti tétel ekkor azt állítja, hogy <span class="kiemelt">a megadott &nbsp;$\boldsymbol{T}$&nbsp; <em>lineáris</em> megfeleltetés egy izomorfia az $\mathscr{R}= \left(\mathbb{R}^{n},\ast\right)$ és a $\mathscr{T}= \left(\mathbb{T}_{n\times n},\cdot\right)$ algebrák között.</span><br/> 
+▶ Így az is igaz, hogy tetszőleges  $\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)$ vektor $\boldsymbol{a}^{-\ast}$ konvólúcióinverzére$$\boldsymbol{T}(\boldsymbol{a}^{-\ast})=\left(\boldsymbol{T}(\boldsymbol{a})\right)^{-1}$$<br/>
+▶ <b>Példa</b>: Tekintsük az $\boldsymbol{a}=<<a>>$ és $\boldsymbol{b}=<<b>>$  <<na>>-dimenziós vektorokat. Ekkor $$\boldsymbol{T}(\boldsymbol{a})=<<Ta>>\text{ ; }\boldsymbol{T}(\boldsymbol{b})=<<Tb>>$$
+▶ A két mátrix szorzatára az alábbit kapjuk:$$\boldsymbol{T}(\boldsymbol{a})\cdot\boldsymbol{T}(\boldsymbol{b})=<<Ta>>\cdot<<Tb>>=<<Tab>>$$
+▶ A tétel szerint ez a mátrix megegyezik a $\boldsymbol{T}\left(\boldsymbol{a}\ast\boldsymbol{b}\right)$ mátrixszal, ezért az első oszlopból a $\boldsymbol{a}\ast\boldsymbol{b}=<<ab>>$ eredmény is kiolvasható.<br/>
+▶ Az $\boldsymbol{a}^{-\ast}$ konvolúcióinverz pedig a $$\left(\boldsymbol{T}(\boldsymbol{a})\right)^{-1}=<<Tainv>>$$ mátrix első oszlopából olvasható ki. És valóban $\boldsymbol{a}^{-\ast}=<<ainv>>$.                            #Stílus
 ▶ <style>#pentout code {color:#bf00bc} #pentout p.kepletp {border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;margin: 20px 0;box-shadow: 0 0 10px 3px #6c0f0f9e;} #pentout span.kiemelt {border-bottom:1px solid red;padding:2px;}</style> 
 
 #Változók definiálása
