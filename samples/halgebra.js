@@ -9420,9 +9420,11 @@ function prelatexjs(c_txt, mathjax) {
         };
     if (mathjax) {
         c_txt = c_txt.replace(/^\#.*[\n\r\f]+/mg, '');
-        c_txt = c_txt.replace(/^.*▶/mg, '');
+        c_txt = c_txt.replace(/^.*▶ */mg, '<br/>');
+        c_txt = c_txt.replace(/^.*▷ */mg, '');
+       // c_txt = c_txt.replace(/^.*▶/mg, ''); Ez volt
     }
-    //c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
+   
 
     var Vars = c_txt.match(/\§\§.*?\§\§[\n\r\f]*/g);
     var Vtex = "";
