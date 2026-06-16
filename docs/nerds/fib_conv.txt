@@ -1,4 +1,34 @@
 #Stílus
+▷ <style>#pentout code {color:#bf00bc} #pentout p.kepletp {border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;margin: 20px 0;box-shadow: 0 0 10px 3px #6c0f0f9e;}</style> 
+
+#Változók definiálása
+a,na ▷  §a=vector(4,5,-3,4,6);na=size(a)§
+af   ▷ §Fgv(af,[n],vecget(a,n-1))§
+aa   ▷ §aa=seq(af(k+1)/af(1),1,na-1)§
+d    ▷ §d=convinv(a)§
+h    ▷ §h=hatas1(Fib,af(k+1)/af(1),na-1)§ 
+
+#dokumentum
+1. ▶ <H2>A konvolúcióinverz és a Fib partíció-polinom kapcsolata </H2>
+2. ▶ <P class="kepletp"><B style="margin-right:5px;">TÉTEL:</B> Tetszőleges $\boldsymbol{a}=\left(a_1,a_2,\ldots,a_n\right)$ vektor $\boldsymbol{a}^{-\ast}$ konvolúcióinverze megkapható az $$\boldsymbol{a}^{-\ast}=\left(a_1,a_2,\ldots,a_n\right)^{-\ast}=\frac{1}{a_1}\left(1,\boldsymbol{Fib}\triangleright\left(\frac{a_2}{a_1},\frac{a_3}{a_1},\ldots,\frac{a_n}{a_1}\right)\right)$$ fornulával.</P>
+3. ▶ Legyen $\boldsymbol{a}=<<a>>$. Az $\boldsymbol{a}$ vektor (rövid) konvolúcióinverzét megkaphatjuk a <code>convinv(a)</code> paranccsal. A kimenet pedig az alábbi:  $$\boldsymbol{a}^{-\ast}=<<d>>$$
+4. ▶ A <b>Fib</b> partíció-polinom sorozat hatása az $\left(\frac{a_2}{a_1},\frac{a_3}{a_1},\ldots,\frac{a_n}{a_1}\right)$ vektoron:  $$\boldsymbol{Fib}\triangleright <<aa>>=<<h>>$$ Így $$\frac{1}{a_1}\left(1,\boldsymbol{Fib}\triangleright\left(\frac{a_2}{a_1},\frac{a_3}{a_1},\ldots,\frac{a_n}{a_1}\right)\right) = \frac{1}{<<af(1)>>}\left(1,<<h>>\right)=<<d>>$$
+
+#Változók definiálása
+a2      ▷ §a2=vector(3,5,4,6,2,3,1,4);na2=size(a2)§
+a2f     ▷ §Fgv(a2f,[n],vecget(a2,n-1))§
+ha2     ▷ §ha2=hatas1(Fib,a2f(k),na2)§
+hashift ▷ §ha2shift=concat(vector(1),ha2)§
+ba      ▷ §b2=convinv(ha2shift)§
+
+#dokumentum(folyt.)
+5. ▶ A tétel egyszerűbb alakot ölt az $a_{1}=1$ speciális esetben, melynek egy a gyakorlatban jól használható ekvivalens alakja az alábbi:
+6. ▶ <P class="kepletp"><B style="margin-right:5px;">TÉTEL:</B> Tetszőleges $\boldsymbol{a}$ és $\boldsymbol{b}$ vektororokra $$\boldsymbol{b}=\boldsymbol{Fib}\triangleright\boldsymbol{a}\Longleftrightarrow((1)\bullet\boldsymbol{b})^{-\ast}=(1)\bullet\boldsymbol{a}$$ </P>
+7. ▶ Legyen $\boldsymbol{a}=<<a2>>$. Ekkor  $\boldsymbol{b}=\boldsymbol{Fib}\triangleright\boldsymbol{a}=\boldsymbol{Fib}\triangleright<<a2>>=<<ha2>>$.
+8. ▶ És valóban, $((1)\bullet\boldsymbol{b})^{-\ast}=<<ha2shift>>^{\text{ }-\ast}=<<b2>>=(1)\bullet\boldsymbol{a}$                                                                                                               
+
+-------- régebbi változat -------------
+#Stílus
 ▶ <style>#pentout code {color:#bf00bc} #pentout p.kepletp {border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;margin: 20px 0;box-shadow: 0 0 10px 3px #6c0f0f9e;}</style> 
 
 #Változók definiálása
