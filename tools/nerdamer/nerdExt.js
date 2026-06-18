@@ -59,11 +59,12 @@
     function f(expr, m, n) {
         var vec = _.functions.vector[0](),
             valt = nerdamer(expr).variables()[0],
-            s = {},
+            //s = {},
             j;
         for (j = m; j < n + 1; j++) {
-            s[valt] = j;
-            var v1 = nerdamer(expr, s).evaluate();
+            //s[valt] = j;
+            //var v1 = nerdamer(expr, s).evaluate();
+            var v1 = expr.sub(valt, j);
             vec.set(j - m, v1);
         }
         return vec;
@@ -77,6 +78,7 @@
         }
     });
 })();
+
 
 (function() {
     var core = nerdamer.getCore(),
@@ -94,7 +96,7 @@
         return vec;
     }
     nerdamer.register({
-        name: 'seqvar',
+        name: 'seqvarREGI',
         visible: true,
         numargs: 4,
         build: function() {
@@ -103,6 +105,73 @@
     });
 })();
 
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(expr, valt, m, n, kibont) {
+        var vec = _.functions.vector[0](),
+            j;
+        var pat = new RegExp('(\\w*_' + valt + ')', 'g');
+        if (pat.test(expr.toString())) {
+            var indx = expr.toString().match(pat);
+            for (j = m; j < n + 1; j++) {
+                var exprj = expr;
+                for (let v of indx)
+                    exprj = exprj.sub(v, v.slice(0, -1) + j)
+                    //console.log("seqvar:", 1)
+                var v1 = exprj.sub(valt, j) //.evaluate();
+                if (kibont)
+                    v1 = nerdamer('expand(' + v1 + ')').symbol;
+                vec.set(j - m, v1);
+            }
+        } else {
+            for (j = m; j < n + 1; j++) {
+                try {
+                    var v1 = expr.sub(valt, j);
+                    //console.log("seqvar", 2)
+                    if (kibont)
+                        v1 = nerdamer('expand(' + v1 + ')').symbol;
+                } catch {
+                    var v1 = nerdamer(expr.toString().replaceAll(valt, j)).evaluate();
+                }
+                //console.log("seqvar v1", v1)
+                vec.set(j - m, v1);
+            }
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'seqvar',
+        visible: true,
+        numargs: [4, 5],
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    function f(expr, vec) {
+        var valt = nerdamer(expr).variables()[0],
+            v = vec.elements,
+            n = v.length,
+            j;
+        for (j = 0; j < n; j++) {
+            var v1 = expr.sub(valt, v[j]);
+            vec.set(j, v1);
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'map',
+        visible: true,
+        numargs: 2,
+        build: function() {
+            return f;
+        }
+    });
+})();
 
 (function() {
     function f(F, expr, n) {
@@ -126,6 +195,27 @@
         name: 'Fseq',
         visible: true,
         numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    function f(F, vec) {
+        const spec = PartPolys.includes(F.toString());
+        vec = vec.toString().slice(1, -1);
+        if (spec) {
+            getsetZycFabFib(F.toString(), n, true);
+            return nerdamer(F + '_' + n + '(' + vec + ')');
+        } else {
+            return nerdamer(F + '(' + vec + ')');
+        }
+    }
+    nerdamer.register({
+        name: 'Fvec',
+        visible: true,
+        numargs: 2,
         build: function() {
             return f;
         }
@@ -666,4 +756,21 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     });
 })();
 
+/*  KACATOK
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
 
+    function f(name, valt, expr) {
+        //console.log(name.value, valt.elements.map(y => y.value), expr.value)
+        nerdamer.setFunction(name.value, valt.elements.map(y => y.value), expr.value);
+    }
+    nerdamer.register({
+        name: 'Fgvvv',
+        visible: true,
+        numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})(); */
