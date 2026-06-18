@@ -1,0 +1,47 @@
+#Stílus
+▶ <style>#pentout code {color:#bf00bc} #pentout div.code {font-family:monospace;border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;box-shadow: 0 0 10px 3px #6c0f0f9e;}</style>
+
+#Változók deklarálása
+▶ §a=vector(-2,3,-5,0,2);n=size(a)§
+▶ §Fgv(F,[x],x+2*x^2)§
+▶ §fgv(f:x+2*x^2)§
+
+▶ <H3 style="font-family:monospace;">map(expr,vec); &nbsp; map(Fgv(x),vec); &nbsp; map(fgv(x),vec); &nbsp; Fgv(vec); &nbsp; fgv(vec)</H3>
+▶ <div class="code">$\boldsymbol{a}=<<a>>$; Fgv(F,[x],x+2*x^2); fgv(f:x+2*x^2)</div>◉
+▶ <code>1. map(expr,vec): map(x+2*x^2,a)</code>$\longrightarrow<<map(x+2*x^2,a)>>$◉
+▶ <code>2. Fgv(vec): F(a)</code>$\longrightarrow<<F(a)>>$◉
+▶ <code>3. fgv(vec): f(a)</code>$\longrightarrow<<f(a)>>$◉
+▶ <code>4. map(Fgv(x),vec): map(F(u),a)</code>$\longrightarrow<<map(F(u),a)>>$◉
+▶ <code>5. map(fgv(x),vec): map(f(y),a)</code>$\longrightarrow<<map(f(y),a)>>$◉  
+
+▶ §Fgv(G,[x],abs(x))§
+▶ §fgv(g:abs(x))§◉
+
+▶Beépített nerdamer függvénnyel◉
+
+▶ <div class="code">Fgv(G,[x],abs(x)); fgv(g:abs(x))</div>◉
+▶ <code>6. map(expr,vec): map(abs(x),a)</code>$\longrightarrow<<map(abs(x),a)>>$◉
+▶ <code>7. Fgv(vec): G(a)</code> nem működik.◉
+# Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<G(a)>>$◉
+▶ <code>8. fgv(vec): g(a)</code> nem működik.◉
+# Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<g(a)>>$◉
+▶ <code>9. map(Fgv(x),vec): map(G(u),a)</code>$\longrightarrow<<map(G(u),a)>>$◉
+▶ <code>10. map(fgv(x),vec): map(g(y),a)</code>$\longrightarrow<<map(g(y),a)>>$◉  
+
+▶ <H4>Szimbólikus vektorokkal</H4>
+▶ §b=seqvar(t_k+2/k,k,1,4)§
+▶ <div class="code">$\boldsymbol{b}=<<b>>$</div>◉
+▶ <code>11. map(expr,vec): map(x+2*x^2,b)</code>$\longrightarrow<<map(x+2*x^2,b)>>$◉
+▶ <code>13. fgv(vec): f(b)</code>$\longrightarrow<<f(b)>>$◉
+▶ <code>14. map(Fgv(x),vec): map(F(u),b)</code>$\longrightarrow<<map(F(u),b)>>$◉
+▶ <code>15. map(fgv(x),vec): map(f(y),b)</code>$\longrightarrow<<map(f(y),b)>>$◉◉
+
+▶Beépített nerdamer függvénnyel◉◉
+
+▶ <code>16. map(expr,vec): map(abs(x),b)</code>$\longrightarrow<<map(abs(x),b)>>$◉
+▶ <code>17. Fgv(vec): G(b)</code> nem működik.◉
+# Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<G(b)>>$◉
+▶ <code>18. fgv(vec): g(b)</code> nem működik.◉
+# Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<g(b)>>$◉
+▶ <code>19. map(Fgv(x),vec): map(G(u),b)</code>$\longrightarrow<<map(G(u),b)>>$◉
+▶ <code>20. map(fgv(x),vec): map(g(y),b)</code>$\longrightarrow<<map(g(y),b)>>$◉   
