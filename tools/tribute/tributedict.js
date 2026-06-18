@@ -360,8 +360,6 @@ const autodictC = [
     { key: "hatas4  nerd", value: "hatas4({c},,,,,)", tag: "hatas4(F1,..,a,n)" },
 
     // Nerdamer aritmetikai fgvs
-    { key: "sor seq aritmetik nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
-    { key: "sor seqvar aritmetik nerd", value: "seqvar({c},,,)", tag: "seqvar(f(k,.),k,a,b)" },
     { key: "pentagonális aritmetik nerd", value: "pent({c})", tag: "&delta;<sub>5</sub>(n)" },
     { key: "osztókösszege sigma aritmetik nerd", value: "sigma({c})", tag: "&sigma;(n)" },
     { key: "osztókösszegeM sigmaM aritmetik nerd", value: "sigmaM({c},)", tag: "&sigma;<sub>m</sub>(n)" },
@@ -443,6 +441,10 @@ const autodictC = [
     { key: "maátrix Toeplitz nerd ", value: " matToeplitz([{c},,])", tag: " matToeplitz(<b>v</b>)" },
     // Nerdamer Vector
     { key: "vecktor nerd", value: "vector({c},,)", tag: "vector(,,)" },
+    { key: "seq vecktork nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
+    { key: "Fvec vecktork nerd", value: "Fvec({c},)", tag: "Fvec(F,vec)" },
+    { key: "seqvar vecktor nerd", value: "seqvar({c},,,0/1)", tag: "seqvar(f(k,.),k,a,b,[exp])" },
+    { key: "map vecktork nerd", value: "map({c},)", tag: "map(f,vec)" },
     { key: "skalárisdotszorzat vecktor nerd", value: "dot({c},)", tag: "<b>a</b>&centerdot;<b>b</b> (skaláris)" },
     { key: "concatösszefűzés  vecktor nerd", value: "concat({c},)", tag: "<b>a</b>&bullet;<b>b</b> (összefűzés)" },
     { key: "kconvuluctionszorzat  vecktor nerd", value: "conv({c},)", tag: "<b>a</b>*<b>b</b> (konv.)" },
