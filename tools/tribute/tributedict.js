@@ -344,7 +344,7 @@ const autodictC = [
     { key: "def változó fformáz", value: "§ {c} §", tag: "§ §" },
     { key: "ddef változó fformáz", value: "§§ {c} §§", tag: "§§ §§" },
     //Nerdamer Constants
-    { key: "piconstáállandó nerd", value: "PI", tag: "&pi;" },
+    { key: "piconstáállandó nerd", value: "pi", tag: "&pi;" },
     { key: "imagconstáállandó nerd", value: "i", tag: "i (Imaginary)" },
     { key: "eulerconstáállandóeuler nerd", value: "e", tag: "e (Euler)" },
     { key: "infinityvégtelenconstáállandó nerd", value: "Infinity", tag: "&#x221E;" },
