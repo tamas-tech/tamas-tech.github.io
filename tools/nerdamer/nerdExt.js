@@ -59,12 +59,12 @@
     function f(expr, m, n) {
         var vec = _.functions.vector[0](),
             valt = nerdamer(expr).variables()[0],
-            //s = {},
+            s = {},
             j;
         for (j = m; j < n + 1; j++) {
-            //s[valt] = j;
-            //var v1 = nerdamer(expr, s).evaluate();
-            var v1 = expr.sub(valt, j);
+            s[valt] = j;
+            var v1 = nerdamer(expr, s).evaluate();
+            //var v1 = expr.sub(valt, j);
             vec.set(j - m, v1);
         }
         return vec;
