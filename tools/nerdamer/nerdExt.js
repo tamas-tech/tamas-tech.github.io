@@ -152,21 +152,68 @@
 })();
 
 (function() {
-    function f(expr, vec) {
-        var valt = nerdamer(expr).variables()[0],
-            v = vec.elements,
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(expr, vec, kibont) {
+        if (_.functions[expr]) {
+            var fn = _.functions[expr]['2'];
+            var valt = fn.params[0],
+                expr = nerdamer(fn.body).symbol;
+
+        } else
+            var valt = nerdamer(expr).variables()[0];
+        var v = vec.elements,
             n = v.length,
             j;
         for (j = 0; j < n; j++) {
             var v1 = expr.sub(valt, v[j]);
+            if (kibont)
+                v1 = nerdamer('expand(' + v1 + ')').symbol;
             vec.set(j, v1);
         }
+
         return vec;
     }
     nerdamer.register({
         name: 'map',
         visible: true,
-        numargs: 2,
+        numargs: [2, 3],
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(expr, k, vec, kibont) {
+        if (_.functions[expr]) {
+            var fn = _.functions[expr]['2'];
+            var valt = fn.params[k - 1],
+                expr = nerdamer(fn.body).symbol;
+
+        } else
+            var valt = nerdamer(expr).variables()[k - 1];
+
+        var v = vec.elements,
+            n = v.length,
+            j;
+        for (j = 0; j < n; j++) {
+            var v1 = expr.sub(valt, v[j]);
+            if (kibont)
+                v1 = nerdamer('expand(' + v1 + ')').symbol;
+            vec.set(j, v1);
+        }
+
+        return vec;
+    }
+    nerdamer.register({
+        name: 'map_n',
+        visible: true,
+        numargs: [3, 4],
         build: function() {
             return f;
         }
@@ -183,7 +230,7 @@
         } catch {
             nerdben = false;
         }
-        console.log("nerdben:", nerdben)
+        //console.log("nerdben:", nerdben)
         var vec = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().toString().slice(1, -1);
         if (nerdben)
             return nerdamer('TEMP(' + vec + ')');
