@@ -46,7 +46,7 @@ Elméleti ismereteink szerint <code>comp4(Zyc,-Fab,Fib,Fib,4)</code> kimente $x_
 Associated Mersenne numbers.</span> $$<<hatas1(Fab,fib(k),12)>>$$   
 ▶( A Copy gombbal mindig a legutolsó kiszámított sor másolható be. )
 
-▶ <h3>Összetett hatás: hatas2(F,G,a(k),n); hatas3(F,G,H,a(k),n), hatas(F,G,H,K,a(k),n)</h3>
+▶ <h3>Összetett hatás: hatas2(F,G,a(k),n); hatas3(F,G,H,a(k),n), hatas4(F,G,H,K,a(k),n)</h3>
 ▶ <code>hatas2(F,G,a(k),n)</code> az F és G  partíció polinomsor összetételének az a(k) soron vett hatását adja meg 1-től n-ig.◉◉
 ▶ <code>hatas2_n(F,G,a(k),n)</code> pedig az F és G partíció polinomsor összetételének az a(k) soron vett hatásának n-edik elemét adja meg.◉◉
 Hasonlóan értelmezett <code>hatas3(F,G,H,a(k),n)</code> és <code>hatas3_n(F,G,H,a(k),n)</code>,illetve <code>hatas4(F,G,H,K,a(k),n)</code>◉◉ és <code>hatas4_n(F,G,H,K,a(k),n)</code> is.◉◉
