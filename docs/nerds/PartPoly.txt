@@ -1,0 +1,57 @@
+#Stílus
+<style>#pentout code {
+  color: #820000;
+  background-color: #e8c7e429;
+  padding: 4px 5px;
+  border: 1px solid #bd7b7b;
+}</style>
+#Dokumentum
+▶<h2>A Fib, Fab, Luc, Zyc, Sti, Har partíció-polinomok összetétele </h2>
+<h3>Két partíció polinomsor összetétele: comp2(F,G,n)</h3> 
+▶Ha a $\boldsymbol{Fib}$ és $\boldsymbol{Fab}$ polinomsorok $\boldsymbol{Fib}\circ\boldsymbol{Fab}$ összetételével kapott polinomsor 5-dik 
+▶$$Fib_5(Fab_1(x_1),Fab_2(x_1,x_2),Fab_3(x_1,x_2,x_3),Fab_4(x_1,x_2,x_3,x_4),Fab_5(x_1,x_2,x_3,x_4,x_5))$$
+▶tagjának kibontott és összevont alakját szeretnénk megkapni, akkor ezt megtehetjük a megfelelő összetett függvények bevitelével:◉ ▶<code>expand(Fib_5(Fab_1(x_1),Fab_2(x_1,x_2),Fab_3(x_1,x_2,x_3),Fab_4(x_1,x_2,x_3,x_4),Fab_5(x_1,x_2,x_3,x_4,x_5)))</code>◉
+▶Ezen fáradtságosan begépelhető függvényösszetétel kimenete pedig:
+$$<<expand(Fib_5(Fab_1(x_1),Fab_2(x_1,x_2),Fab_3(x_1,x_2,x_3),Fab_4(x_1,x_2,x_3,x_4),Fab_5(x_1,x_2,x_3,x_4,x_5)))>>$$
+Ettől kímél meg bennünket a <code>comp2(Fib,Fab,5)</code> parancs, melyben egyszerűen beírjuk a két partíció polinonsor nevét (az összetétel sorrendjében),◉
+▶majd harmadik paraméterként megadjuk, hogy az összetett polinomsor hanyadik (kibontott és összevont) tagját szeretnénk megkapni.$$<<comp2(Fib,Fab,5)>>$$
+▶A partíció polinomsorok előjelet is kaphatnak. Így a a $\boldsymbol{Fib}$ és -$\boldsymbol{Fab}$ polinomsorok $\boldsymbol{Fib}\circ\left(-\boldsymbol{Fab}\right)$ összetételével kapott polinomsor 4-dik 
+▶$$Fib_4(-Fab_1(x_1),-Fab_2(x_1,x_2),-Fab_3(x_1,x_2,x_3),-Fab_4(x_1,x_2,x_3,x_4))$$ 
+▶tagját egyszerűen megkaphatjuk a  <code>comp2(Fib,-Fab,5)</code> parancs begépelésével, melynek kimenete:
+▶$$<<comp2(Fib,-Fab,4)>>$$ 
+▶Persze ugyanezt az eredményt most is megkaphatjuk a sokkal több munkával járó◉ 
+▶<code>expand(Fib_4(-Fab_1(x_1),-Fab_2(x_1,x_2),-Fab_3(x_1,x_2,x_3),-Fab_4(x_1,x_2,x_3,x_4)))</code>◉
+▶összetétel begépelésével, melynek kimente szintén: 
+▶$$<<expand(Fib_4(-Fab_1(x_1),-Fab_2(x_1,x_2),-Fab_3(x_1,x_2,x_3),-Fab_4(x_1,x_2,x_3,x_4)))>>$$
+▶<h4>Azonosságok ellenőrzése</h4>
+▶Vegyük A $\boldsymbol{Sti}=\boldsymbol{Zyc}\circ\boldsymbol{Har}$ jólismert azonosságot.◉
+▶<code>$$&lt;&lt;Sti_1(x_1)&gt;&gt;=&lt;&lt;comp2(Zyc,Har,1)&gt;&gt;$$</code>&nbsp;&check;$$<<Sti_1(x_1)>>=<<comp2(Zyc,Har,1)>>$$
+▶<code>$$&lt;&lt;Sti_2(x_1,x_2)&gt;&gt;=&lt;&lt;comp2(Zyc,Har,2)&gt;&gt;$$</code>&nbsp;&check;$$<<Sti_2(x_1,x_2)>>=<<comp2(Zyc,Har,2)>>$$
+▶<code>$$&lt;&lt;Sti_3(x_1,x_2,x_3)&gt;&gt;=&lt;&lt;comp2(Zyc,Har,2)&gt;&gt;$$</code>&nbsp;&check;$$<<Sti_3(x_1,x_2,x_3)>>=<<comp2(Zyc,Har,3)>>$$
+▶<code>$$&lt;&lt;Sti_4(x_1,x_2,x_3,x_4)&gt;&gt;=&lt;&lt;comp2(Zyc,Har,2)&gt;&gt;$$</code>&nbsp;&check;$$<<Sti_4(x_1,x_2,x_3,x_4)>>=<<comp2(Zyc,Har,4)>>$$
+ <h3>Három vagy négy partíció polinomsor összetétele: comp3(F,G,H,n) és comp4(F,G,H,K,n)</h3> 
+A fentiek ismeretében nem nehéz elképzelni, hogy mennyi gépeléstől ment meg minket a <code>comp4(Zyc,Fib,-Luc,Sti,4)</code> parancs, melynek kimenete:$$<<comp4(Zyc,Fib,-Luc,Sti,4)>>$$
+Elméleti ismereteink szerint <code>comp4(Zyc,-Fab,Fib,Fib,4)</code> kimente $x_4$ kell legyen.◉◉ És valóban <code>$&lt;&lt;comp4(Zyc,-Fab,Fib,Fib,4)$&gt;&gt;</code> $\longrightarrow <<comp4(Zyc,-Fab,Fib,Fib,4)>>$
+▶<h2>A Fib, Fab, Luc, Zyc, Sti, Har polinomsorok hatása sorokon </h2>
+▶<h3>Egyszerű hatás: hatas1(F,a(k),n)</h3>
+▶<code>hatas1(F,a(k),n)</code> az F partíció polinomsor a(k) soron vett hatását adja meg 1-től n-ig.◉◉
+▶<code>hatas1_n(F,a(k),n)</code> pedig az F partíció polinomsor a(k) soron vett hatásának n-edik elemét adja meg.◉◉
+▶I. $\boldsymbol{Zyc}\triangleright\sigma=p\hspace{5mm}$   <code>$$&lt;&lt;hatas1(Zyc,sigma(k),12)&gt;&gt;=&lt;&lt;seq(part(k),1,12)&gt;&gt$$</code>$$<<hatas1(Zyc,sigma(k),12)>>=<<seq(part(k),1,12)>>$$
+▶<code>$$&lt;&lt;hatas1_n(Zyc,sigma(k),7)&gt;&gt;=&lt;&lt;part(7)&gt;&gt$$</code>$$<<hatas1_n(Zyc,sigma(k),7)>>=<<part(7)>>$$
+▶II. $\boldsymbol{Zyc}\triangleright\left(-\sigma\right)=-\delta_{5}\hspace{5mm}$   <code>$$&lt;&lt;hatas1(Zyc,-sigma(k),12)&gt;&gt;=&lt;&lt;seq(-pent(k),1,12)&gt;&gt$$</code>$$<<hatas1(Zyc,-sigma(k),12)>>=<<seq(-pent(k),1,12)>>$$
+▶<code>$$&lt;&lt;hatas1_n(Zyc,-sigma(k),12)&gt;&gt;=&lt;&lt;-pent(12)&gt;&gt$$</code>$$<<hatas1_n(Zyc,-sigma(k),12)>>=<<-pent(12)>>$$
+▶III. $\boldsymbol{Fib}\triangleright\left(-fib\right)=pell\hspace{5mm}$ <code>$$&lt;&lt;hatas1(Fib,-fib(k),12)&gt;&gt;=&lt;&lt;seq(pell(k),1,12)&gt;&gt$$</code>$$<<hatas1(Fib,-fib(k),12)>>=<<seq(pell(k),1,12)>>$$
+▶<code>$$&lt;&lt;hatas1_n(Fib,-fib(k),10)&gt;&gt;=&lt;&lt;pell(10)&gt;&gt$$</code>$$<<hatas1_n(Fib,-fib(k),10)>>=<<pell(10)>>$$
+▶IV. $\boldsymbol{Sti}\triangleright\left(fib\right)=?\hspace{5mm}$ <code>$$&lt;&lt;hatas1(Fab,fib(k),12)&gt;&gt;$$</code><span style="font-family:monospace"> --> OEIS  A001350
+Associated Mersenne numbers.</span> $$<<hatas1(Fab,fib(k),12)>>$$   
+▶( A Copy gombbal mindig a legutolsó kiszámított sor másolható be. )
+
+▶ <h3>Összetett hatás: hatas2(F,G,a(k),n); hatas3(F,G,H,a(k),n), hatas(F,G,H,K,a(k),n)</h3>
+▶ <code>hatas2(F,G,a(k),n)</code> az F és G  partíció polinomsor összetételének az a(k) soron vett hatását adja meg 1-től n-ig.◉◉
+▶ <code>hatas2_n(F,G,a(k),n)</code> pedig az F és G partíció polinomsor összetételének az a(k) soron vett hatásának n-edik elemét adja meg.◉◉
+Hasonlóan értelmezett <code>hatas3(F,G,H,a(k),n)</code> és <code>hatas3_n(F,G,H,a(k),n)</code>,illetve <code>hatas4(F,G,H,K,a(k),n)</code>◉◉ és <code>hatas4_n(F,G,H,K,a(k),n)</code> is.◉◉
+▶ $\left(\boldsymbol{Luc}\circ\left(\boldsymbol{-Fib}\right)\right)\triangleright\sigma\hspace{5mm}$   <code>$$&lt;&lt;hatas2(Luc,-Fib,sigma(k),10)&gt;&gt;</code>$$<<hatas2(Luc,-Fib,sigma(k),10)>>$$
+▶<code>$$&lt;&lt;hatas2_n(Luc,-Fib,sigma(k),5)&gt;&gt;$$</code>$$<<hatas2_n(Luc,-Fib,sigma(k),5)>>$$
+
+
+                                                                            
