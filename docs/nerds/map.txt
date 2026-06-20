@@ -1,47 +1,99 @@
 #Stílus
-▶ <style>#pentout code {color:#bf00bc} #pentout div.code {font-family:monospace;border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;box-shadow: 0 0 10px 3px #6c0f0f9e;}</style>
+▶<style>#pentout code:not(.pale) {color:#bf00bc} code.pale {color:black} #pentout div.code {font-family:monospace;border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;box-shadow: 0 0 10px 3px #6c0f0f9e;} p {text-indent:unset}</style>
 
 #Változók deklarálása
-▶ §a=vector(-2,3,-5,0,2);n=size(a)§
-▶ §Fgv(F,[x],x+2*x^2)§
-▶ §fgv(f:x+2*x^2)§
+▶§a=vector(-2,3,-5,0,2);n=size(a)§
+▶§Fgv(F,[x],x+2*x^2)§
+▶§fgv(f:x+2*x^2)§
+▶§fgv(ff:sin(x))§
 
-▶ <H3 style="font-family:monospace;">map(expr,vec); &nbsp; map(Fgv(x),vec); &nbsp; map(fgv(x),vec); &nbsp; Fgv(vec); &nbsp; fgv(vec)</H3>
-▶ <div class="code">$\boldsymbol{a}=<<a>>$; Fgv(F,[x],x+2*x^2); fgv(f:x+2*x^2)</div>◉
-▶ <code>1. map(expr,vec): map(x+2*x^2,a)</code>$\longrightarrow<<map(x+2*x^2,a)>>$◉
-▶ <code>2. Fgv(vec): F(a)</code>$\longrightarrow<<F(a)>>$◉
-▶ <code>3. fgv(vec): f(a)</code>$\longrightarrow<<f(a)>>$◉
-▶ <code>4. map(Fgv(x),vec): map(F(u),a)</code>$\longrightarrow<<map(F(u),a)>>$◉
-▶ <code>5. map(fgv(x),vec): map(f(y),a)</code>$\longrightarrow<<map(f(y),a)>>$◉  
-
-▶ §Fgv(G,[x],abs(x))§
-▶ §fgv(g:abs(x))§◉
-
-▶Beépített nerdamer függvénnyel◉
-
-▶ <div class="code">Fgv(G,[x],abs(x)); fgv(g:abs(x))</div>◉
-▶ <code>6. map(expr,vec): map(abs(x),a)</code>$\longrightarrow<<map(abs(x),a)>>$◉
-▶ <code>7. Fgv(vec): G(a)</code> nem működik.◉
-# Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<G(a)>>$◉
-▶ <code>8. fgv(vec): g(a)</code> nem működik.◉
-# Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<g(a)>>$◉
-▶ <code>9. map(Fgv(x),vec): map(G(u),a)</code>$\longrightarrow<<map(G(u),a)>>$◉
-▶ <code>10. map(fgv(x),vec): map(g(y),a)</code>$\longrightarrow<<map(g(y),a)>>$◉  
-
-▶ <H4>Szimbólikus vektorokkal</H4>
-▶ §b=seqvar(t_k+2/k,k,1,4)§
-▶ <div class="code">$\boldsymbol{b}=<<b>>$</div>◉
-▶ <code>11. map(expr,vec): map(x+2*x^2,b)</code>$\longrightarrow<<map(x+2*x^2,b)>>$◉
-▶ <code>13. fgv(vec): f(b)</code>$\longrightarrow<<f(b)>>$◉
-▶ <code>14. map(Fgv(x),vec): map(F(u),b)</code>$\longrightarrow<<map(F(u),b)>>$◉
-▶ <code>15. map(fgv(x),vec): map(f(y),b)</code>$\longrightarrow<<map(f(y),b)>>$◉◉
-
+▶<H3 style="font-family:monospace;">map(expr,vec); &nbsp;map(Fgv(x),vec); map(Fgv,vec); &nbsp;map(fgv(x),vec); &nbsp;map(fgv,vec); &nbsp;Fgv(vec); &nbsp;fgv(vec)</H3>
+A map(f,<b>v</b>) parancs a <b>v</b> vektor minden komponensére veszi annak f meletti képét, azaz
+▶<div style="text-align:center;margin:10px;"><code style="color:#8a0088;background-color: #ff93fd2e;padding: 5px 10px;border: 1px solid #fb83ff;">map(f,(v_1,v_2,...,v_n)) = (f(v_1),f(v_2),...,f(v_n))</code></div>
+▶Ha $f$ egy általunk deklarált függvény, <b>amely nem tartalmaz beépített nerdamer függvényt</b> (sin, abs, floor,...), akkor a map(f(x),<b>v</b>) parancsban◉
+▶$f$ argumentuma el is hagyható, azaz map(f,<b>v</b>), sőt akár a még egyszerűbb f(<b>v</b>) is írható. Tehát sin(<b>v</b>), és map(sin,<b>v</b>) nem írható, csak map(sin(x),<b>v</b>).◉
+▶Viszont az <span style="font-family:monospace;">&sect;Fgv(f,[x],x^2-3*x/(x+1))&sect;</span> dekralációval megadott $f$ függvénnyel map(f,<b>v</b>) és f(<b>v</b>) is elfogadott.◉
+▶Minden egyváltozós $f(x)$ függvény felfogható egy az $\left(F_n(x_1,x_2,\ldots,x_n):=f(x_n),\;n\in \mathbb{N}\right)$ definícióval megadott <b>polinomsorozatként</b>.◉
+▶Ha az $f(x)$ függvényre így tekintünk, akkor map(f,<b>v</b>) nem más mint az $f\triangleright\boldsymbol{b}$ hatás.◉
+▶A map parancsnak van egy harmadik opcionális paramétere is. Ez ugyanúgy működik, mint a seqvar függvény utolsó opcionális paramétere,◉
+és úgyanúgy a szimbólikus kimeneteket kibontsára szolgál: map(f,<b>v</b>,'kibont'). 'kibont' bármi lehet: 0, 1, 'a', 'hello',...◉
+#-------------------
+<h2>Példák</h2>
+▶<div class="code">$\boldsymbol{a}=<<a>>$; Fgv(F,[x],x+2*x^2); fgv(f:x+2*x^2)</div>◉
+▶<code>1. map(expr,vec): map(x+2*x^2,a)</code>$\longrightarrow<<map(x+2*x^2,a)>>$◉
+▶<code>2. Fgv(vec): F(a)</code>$\longrightarrow<<F(a)>>$◉
+▶<code>3. fgv(vec): f(a)</code>$\longrightarrow<<f(a)>>$◉
+▶<code>4. map(Fgv(x),vec): map(F(u),a)</code>$\longrightarrow<<map(F(u),a)>>$◉
+▶<code>4'. map(Fgv,vec): map(F,a)</code>$\longrightarrow<<map(F,a)>>$◉
+▶<code>5. map(fgv(x),vec): map(f(y),a)</code>$\longrightarrow<<map(f(y),a)>>$◉
+▶<code>5'. map(fgv,vec): map(f,a)</code>$\longrightarrow<<map(f,a)>>$◉◉
+▶§Fgv(G,[x],abs(x))§
+▶§fgv(g:abs(x))§
 ▶Beépített nerdamer függvénnyel◉◉
-
-▶ <code>16. map(expr,vec): map(abs(x),b)</code>$\longrightarrow<<map(abs(x),b)>>$◉
-▶ <code>17. Fgv(vec): G(b)</code> nem működik.◉
+▶<div class="code">Fgv(G,[x],abs(x)); fgv(g:abs(x))</div>◉
+▶<code>6. map(expr,vec): map(abs(x),a)</code>$\longrightarrow<<map(abs(x),a)>>$◉
+▶<code>7. Fgv(vec): G(a)</code> nem működik.◉
+# Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<G(a)>>$◉
+▶<code>8. fgv(vec): g(a)</code> nem működik.◉
+# Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<g(a)>>$◉
+▶<code>9. map(Fgv(x),vec): map(G(u),a)</code>$\longrightarrow<<map(G(u),a)>>$◉
+▶<code>9'. map(Fgv,vec): map(G,a)</code>$\longrightarrow<<map(G,a)>>$◉
+▶<code>10. map(fgv(x),vec): map(g(y),a)</code>$\longrightarrow<<map(g(y),a)>>$◉
+▶<code>10'. map(fgv,vec): map(g,a)</code>$\longrightarrow<<map(g,a)>>$◉    
+▶ <H4>Szimbólikus vektorokkal</H4>
+▶§b=seqvar(t_k+2+k^2,k,1,3)§
+▶<div class="code">$\boldsymbol{b}=<<b>>$</div>◉
+▶<code>11. map(expr,vec): map(x+2*x^2,b)</code>$\longrightarrow<<map(x+2*x^2,b)>>$◉
+▶<code>13. fgv(vec): f(b)</code>$\longrightarrow<<f(b)>>$◉
+▶<code>14. map(Fgv(x),vec): map(F(u),b)</code>$\longrightarrow<<map(F(u),b)>>$◉
+▶<code>14'. map(Fgv,vec): map(F,b)</code>$\longrightarrow<<map(F,b)>>$◉
+▶<code>15. map(fgv(x),vec): map(f(y),b)</code>$\longrightarrow<<map(f(y),b)>>$◉
+▶<code>15'. map(fgv,vec): map(f,b)</code>$\longrightarrow<<map(f,b)>>$◉
+▶<code>15''. map(fgv,vec,1): map(f,b)</code>$\longrightarrow<<map(f,b,1)>>$◉◉
+▶Beépített nerdamer függvénnyel◉◉
+▶<code>16. map(expr,vec): map(abs(x),b)</code>$\longrightarrow<<map(abs(x),b)>>$◉
+▶<code>17. Fgv(vec): G(b)</code> nem működik.◉
 # Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<G(b)>>$◉
-▶ <code>18. fgv(vec): g(b)</code> nem működik.◉
+▶<code>18. fgv(vec): g(b)</code> nem működik.◉
 # Ha a sor elejéről törli a # karaktert hibajelzést kap: $<<g(b)>>$◉
-▶ <code>19. map(Fgv(x),vec): map(G(u),b)</code>$\longrightarrow<<map(G(u),b)>>$◉
-▶ <code>20. map(fgv(x),vec): map(g(y),b)</code>$\longrightarrow<<map(g(y),b)>>$◉   
+▶<code>19. map(Fgv(x),vec): map(G(u),b)</code>$\longrightarrow<<map(G(u),b)>>$◉
+▶<code>19'. map(Fgv,vec): map(G,b)</code>$\longrightarrow<<map(G,b)>>$◉
+▶<code>20. map(fgv(x),vec): map(g(y),b)</code>$\longrightarrow<<map(g(y),b)>>$◉
+▶<code>20'. map(fgv,vec): map(g,b)</code>$\longrightarrow<<map(g,b)>>$◉
+<h3> <code class="pale">seqvar(...)</code> nem más, mint speciális vektorral (intervallumokkal) vett <code class="pale">map(...)</code></h3>
+§A=3;B=7§
+§AB=seq(k,A,B)§
+§w=vector(-2,3,0,1,6,-11,5);nw=size(w)§
+§w1=vector(x,u,t,z);nw1=size(w1)§
+§fgv(f:x^2-2*x)§
+▶Ha összevetjük a <code class="pale">seqvar(f(k),k,a,b)=((fa),f(a+1),f(a+2),...,f(b))</code> és <code class="pale">map(f(k),(a,a+1,a+2,...,b))=(f(a),f(a+1),f(a+2),...,f(b))</code>◉ 
+▶definíciókat, akkor kijelenthetjük, hogy <code class="pale" style="border-bottom:2px solid red;">seqvar(f(k),k,a,b)=map(f(k),(a,a+1,a+2,...,b))</code>. Ez azt is jelenti, hogy <code class="pale">seqvar</code> egy speciális vektorokkal◉
+▶(intervallumokkal) vett <code class="pale">map</code> függvény. Nézzünk erre egy konkrét példát!  Deklaráljuk az $f(x)=x^2-2x$ függvényt, és az $A=3$ alsó, illetve  $B=7$ felső◉
+határokat, valamint az [A,B] zárt intervallumnak megfelelő $\boldsymbol{AB}$ vektort:◉
+▶<code class="pale">&sect;A=3;B=7&sect;</code><span style="margin-left:100px;"></span>Kimenete:&nbsp;<code>$A=&lt;&lt;A&gt;&gt;;B=&lt;&lt;B&gt;$</code>&nbsp;$\longrightarrow A=<<A>>;B=<<B>>$◉ 
+▶<code class="pale">&sect;AB=seq(k,A,B)&sect;</code><span style="margin-left:40px;"></span>Kimenete:&nbsp;<code>$AB=&lt;&lt;AB&gt;&gt;$</code>&nbsp;$\longrightarrow AB=<<AB>>$◉
+▶<code class="pale">&sect;fgv(f:x^2-2*x)&sect;</code><span style="margin-left:30px;"></span>Kimenete:&nbsp;<code>$f(4)=&lt;&lt;f(4)&gt;&gt;$</code>&nbsp;$\longrightarrow f(4)=<<f(4)>>$◉
+▶És a fentieknek megfelelően, valóban <code>$$&lt;&lt;seqvar(f(k),k,A,B)&gt;&gt;=&lt;&lt;map(f,AB)&gt;&gt;=&lt;&lt;f(AB)&gt;&gt;$$</code>&nbsp;$$<<seqvar(f(k),k,A,B)>>=<<map(f,AB)>>=<<f(AB)>>$$
+▶Ez azt jelenti, hogy a <code class="pale">seqvar(f,x,a,b)</code> parancs mindig kiváltható intervallumokra alkalmazott <code class="pale">map(f,seq(x,a,b))=f(seq(x,a,b))</code> paranccsal. Felmerül◉
+▶a kérdés, hogy ez fordítva megtehető-e . A válasz pedig: közvetlenül nem, de egy segédfüggvénnyel igen. Ez a segédfüggvény önmagában is fontos, ezért részle-◉
+▶tesen is tárgyaljuk, és ami nem más, mint a <em>vektoroknak megfelelő függvény</em>. Ha ugyanis megadunk egy $(w_1,w_2,...,w_n)$ vektort, akkor valójában egy $w(n)$  $$\begin{eqnarray}w:\left[1,2,\ldots,n\right] & \rightarrow &\mathbb{R} \\ n & \rightarrow & w_n\end{eqnarray}$$
+függvényt adunk meg. Szerencsére ezt a függvényt deklarálni is tudjuk, de figyelembe kell venni, hogy a nerdamerben (mint a legtöbb programozási nyelvben)◉
+▶a vektorok indexelése 0-ról indul. Tudjuk, hogy egy <b>w</b> vektor k-adik komponensét nerdamerben a <code class="pale">vecget(<b>w</b>,k-1)</code> paranccsal kérhetjük le. (A k helyetti k-1 az ◉
+▶említett 0-ról induló indexelés miatt van.). Így azon f_w függvény, amely a k=1,2,...,n számokhoz rendre a w vektor k-adik komponensét rendeli az alábbi sorral◉
+deklarálható: <code>&sect;fgv(f_w:vecget(w,k-1))&sect;</code>. Ha pedig f egy tetszőleges függvény, akkor $f(w_k)$ megkapható a k számból az  f_w és f függvények összerételével:◉
+k &rightarrow; f(f_w(k)). Vagyis, <code>map(f,(w_1,w_2,...,w_n) = (f(w_1),f(w_2),...,f(w_n)) = seqvar(f(f_w(k)),k,1,n)</code>. Erre is nézzünk egy konkrét példát:◉◉
+§fgv(f_w:vecget(w,k-1))§
+§fgv(f_w1:vecget(w1,k-1))§ 
+▶<code class="pale">&num; w, nw, f_w és f deklarációja</code>◉
+▶<code class="pale">&sect;w=vector(-2,3,0,1,6,-11,5);nw=size(w)&sect;</code>◉
+▶<code class="pale">&sect;fgv(f_w:vecget(w,k-1))&sect;</code>◉
+▶<code class="pale">&sect;fgv(f:x^2-2*x)&sect;</code>◉◉
+▶A lekért kimenetek pedig:◉
+▶<code>$f\boldsymbol{w}=&lt;&lt;w&gt;&gt;, |\boldsymbol{w}|=&lt;&lt;nw&gt;&gt;$</code>&nbsp;$\longrightarrow \boldsymbol{w}=<<w>>, |\boldsymbol{w}|=<<nw>>$◉
+▶<code>$$&lt;&lt;f(w)&gt;&gt;=&lt;&lt;seqvar(f(f_w(k)),k,1,nw)&gt;&gt;$$</code>&nbsp;$\longrightarrow$ $$<<f(w)>>=<<seqvar(f(f_w(k)),k,1,nw)>>$$
+▶<h4>A w1 szimbólikus vektorral</h4>
+▶<code class="pale">&sect;w1=vector(x,u,t,z);nw1=size(w1)&sect;</code>◉
+▶<code class="pale">&sect;fgv(f_w1:vecget(w1,k-1))&sect;</code>◉
+▶<code>$f\boldsymbol{w1}=&lt;&lt;w&gt;&gt;, |\boldsymbol{w1}|=&lt;&lt;nw&gt;&gt;$</code>&nbsp;$\longrightarrow \boldsymbol{w1}=<<w1>>, |\boldsymbol{w1}|=<<nw1>>$◉
+▶<code>$$&lt;&lt;f(w1)&gt;&gt;=&lt;&lt;seqvar(f(f_w1(k)),k,1,nw)&gt;&gt;$$</code>&nbsp;$\longrightarrow$ $$<<f(w1)>>=<<seqvar(f(f_w1(k)),k,1,nw1)>>$$◉
+                                                                                                                                                      
