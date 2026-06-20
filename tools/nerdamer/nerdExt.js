@@ -133,7 +133,8 @@
                     if (kibont)
                         v1 = nerdamer('expand(' + v1 + ')').symbol;
                 } catch {
-                    var v1 = nerdamer(expr.toString().replaceAll(valt, j)).evaluate();
+                    //console.log("seqvar", 3)
+                    var v1 = nerdamer(expr.toString().replaceAll(valt, j)).evaluate().symbol;
                 }
                 //console.log("seqvar v1", v1)
                 vec.set(j - m, v1);
