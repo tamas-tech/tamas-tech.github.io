@@ -1,0 +1,101 @@
+#Stílus
+▶<style>#pentout code:not(.pale) {color:#bf00bc} code.pale {color:black} #pentout div.code {font-family:monospace;border:2px solid brown;background-color:#f2445520;padding:10px;max-width:1000px;box-shadow: 0 0 10px 3px #6c0f0f9e;} p {text-indent:unset}</style>
+
+#Változók deklarálása
+▶§a=vector(-2,3,0,-1);n=size(a)§
+▶§Fgv(F,[x,y,z],x+2*y^2-3*x*y*z)§
+▶§fgv(f:x+2*y^2-3*x*y*z)§
+▶§komp=1§
+
+▶<H3 style="font-family:monospace;">map_n(expr,k,vec); &nbsp;map_n(Fgv(x,y,..),k,vec); map_n(Fgv,k,vec); &nbsp;map_n(fgv(x),k,vec); &nbsp;map_n(fgv,k,vec)</H3>
+A map(f(x_1,x_2,..,,x_r), m, <b>v</b>) parancs a <b>v</b> vektor minden j-edik komponensére veszi az f(x_1,..,x_m=v_1,...,x_r) parciális függvényt, azaz
+▶<div style="margin:10px 0 10px 10%;"><code style="color:#8a0088;background-color: #ff93fd2e;padding: 5px 10px;border: 1px solid #fb83ff;">map(f,(v_1,v_2,...,v_n)) = (f(x_1,...,x_m=v_1,...,x_r),...,f(x_1,...,x_m=v_n,...,x_r))</code></div>
+▶ Vagyis, map_n($f(x_1,x_2,...,x_r),m,(a_1,a_2,...,a_n)$) egy n hosszú vektor, melynek komponensei rendre az $f(x_1,x_2,...,x_r)$ függvénybe történő ◉$x_m=a_1$, $x_m=a_2$,..., $x_m=a_n$ behelyettesítéssel kapot függvények.◉
+▶Például, map_n($f(x_1,x_2,x_3,x_4),2,(a_1,a_2,a_3)$)=($f(x_1,a_1,x_3,x_4),f(x_1,a_2,x_3,x_4),f(x_1,a_3,x_3,x_4)$). Vagy még konkrétabban:◉
+map_n($x_1^2-3\cdot x_2\cdot x_3,2,(5,3,1)$)=$(x_1^2-3\cdot 5\cdot x_3,x_1^2-3\cdot 3\cdot x_3,x_1^2-3\cdot 1\cdot x_3)$=$(x_1^2-15\cdot x_3,x_1^2-9\cdot x_3,x_1^2-3\cdot x_3)$◉
+▶Ha $f$ egy általunk deklarált függvény, akkor a map_n(f(x_1,...,x_r),m,<b>v</b>)  parancsban $f$ argumentuma el is hagyható, azaz map_n(f,m,<b>v</b>) is írható.◉
+▶A map_n parancsnak van egy negyedik opcionális paramétere is. Ez ugyanúgy működik, mint a seqvar függvény utolsó opcionális paramétere,◉
+és úgyanúgy a szimbólikus kimeneteket kibontására szolgál: map_n(f,m,<b>v</b>,'kibont'). 'kibont' bármi lehet: 0, 1, 'a', 'hello',...◉
+#-------------------
+<h2>Példák</h2>
+▶<div class="code">$\boldsymbol{a}=<<a>>$; Fgv(F,[x,y,z],x+2*y^2-3*x*y*z); fgv(f:x+2*y^2-3*x*y*z); komp=<<komp>></div>◉
+▶<code>1. map(expr,vec): map_n(x+2*y^2-3*x*y*z,komp,a)</code>$\longrightarrow<<map_n(x+2*y^2-3*x*y*z,komp,a)>>$◉
+▶<code>2. map_n(Fgv(x,y,...),k,vec): map_n(F(x,y,z),komp,a)</code>$\longrightarrow<<map_n(F(x,y,z),komp,a)>>$◉
+▶<code>2'. map_n(Fgv,k,vec): map(F,komp,a)</code>$\longrightarrow<<map_n(F,komp,a)>>$◉
+▶<code>3. map_n(fgv(x,y,...),k,vec): map_n(f(x,y,z),komp,a)</code>$\longrightarrow<<map_n(f(x,y,z),komp,a)>>$◉
+▶<code>3'. map_n(fgv,k,vec): map_n(f,komp,a)</code>$\longrightarrow<<map_n(f,komp,a)>>$◉◉
+▶§Fgv(G,[x,y,z],abs(x*y)-floor(x*z/(x+y)))§
+▶§fgv(g:abs(x*y)-floor(x*z/(x+y)))§
+▶Beépített nerdamer függvénnyel◉◉
+▶<div class="code">Fgv(G,[x,y,z],abs(x*y)-floor(x*z/(x+y)); fgv(g:abs(x*y)-floor(x*z/(x+y)); komp=<<komp>></div>◉
+▶<code>4. map_n(expr,k,vec): map_n(abs(x*y)-floor(x*z/(x+y)),komp,a)</code>$\longrightarrow<<map_n(abs(x*y)-floor(x*z/(x+y)),komp,a)>>$◉
+▶<code>5. map_n(Fgv(x,y,...),k,vec): map_n(G(x,y,z),komp,a)</code>$\longrightarrow<<map_n(G(x,y,z),komp,a)>>$◉
+▶<code>5'. map_n(Fgv,k,vec): map_n(G,komp,a)</code>$\longrightarrow<<map_n(G,komp,a)>>$◉
+▶<code>6. map_n(fgv(x,y,...),k,vec): map_n(g(x,y,z),komp,a)</code>$\longrightarrow<<map_n(g(x,y,z),komp,a)>>$◉
+▶<code>6'. map_n(fgv,k,vec): map_n(g,komp,a)</code>$\longrightarrow<<map_n(g,komp,a)>>$◉
+▶ <H4>Szimbólikus vektorokkal</H4>
+▶§b=seqvar(t_k+2+k^2,k,1,2)§
+▶<div class="code">$\boldsymbol{b}=<<b>>$</div>◉
+▶<code>7. map_n(expr,k,vec): map_n(x+2*y^2-3*x*y*z,komp,b)</code>$\longrightarrow<<map_n(x+2*y^2-3*x*y*z,komp,b)>>$◉
+▶<code>7'. map_n(expr,k,vec,kibont): map_n(x+2*y^2-3*x*y*z,komp,b,1)</code>$\longrightarrow<<map_n(x+2*y^2-3*x*y*z,komp,b,1)>>$◉
+▶<code>8. map_n(Fgv(x,y,...),k,vec): map_n(F(x,y,z),komp,b)</code>$\longrightarrow<<map_n(F(x,y,z),komp,b)>>$◉
+▶<code>8'. map_n(Fgv(x,y,...),k,vec,kibont): map_n(F(x,y,z),komp,b,true)</code>$\longrightarrow<<map_n(F(x,y,z),komp,b,true)>>$◉
+▶<code>8''. map_n(Fgv,k,vec): map_n(F,komp,b)</code>$\longrightarrow<<map_n(F,komp,b)>>$◉
+▶<code>8'''. map_n(Fgv,k,vec,kibont): map_n(F,komp,b,hello)</code>$\longrightarrow<<map_n(F,komp,b,hello)>>$◉
+▶<code>9. map_n(fgv(x,y,z),k,vec): map_n(f(x,y,z),komp,b)</code>$\longrightarrow<<map_n(f(x,y,z),komp,b)>>$◉
+▶<code>9'. map_n(fgv(x,y,z),k,vec,kibont): map_n(f(x,y,z),komp,b,ooo)</code>$\longrightarrow<<map_n(f(x,y,z),komp,b,ooo)>>$◉
+▶<code>9''. map_n(fgv,k,vec): map_n(f,komp,b)</code>$\longrightarrow<<map_n(f,komp,b)>>$◉
+▶<code>9'''. map_n(fgv,k,vec,kibont): map(f,komp,b,kell)</code>$\longrightarrow<<map_n(f,komp,b,kell)>>$◉◉  
+▶Beépített nerdamer függvénnyel◉◉
+▶<code>10. map_n(expr,k,vec): map_n(abs(x*y)-floor(x*z/(x+y)),komp,b)</code>$\longrightarrow<<map_n(abs(x*y)-floor(x*z/(x+y)),komp,b)>>$◉
+▶<code>11. map_(Fgv(x,y,...),vec): map_n(G(x,y,z),komp,b)</code>$\longrightarrow<<map_n(G(x,y,z),komp,b)>>$◉
+▶<code>11'. map_n(Fgv,k,vec): map_n(G,komp,b)</code>$\longrightarrow<<map_n(G,komp,b)>>$◉
+▶<code>12. map_n(fgv(x,y,...),k,vec): map_n(g(x,y,z),komp,b)</code>$\longrightarrow<<map_n(g(x,y,z),komp,b)>>$◉
+▶<code>12'. map_n(fgv,k,vec): map_n(g,komp,b)</code>$\longrightarrow<<map_n(g,komp,b)>>$◉  
+#=================================
+<h3> <code class="pale">seqvar(...)</code> nem más, mint speciális vektorral (intervallumokkal) vett <code class="pale">map(...)</code></h3>
+▶§A=3;B=7§
+▶§AB=seq(k,A,B)§
+▶§fgv(f1:x^3+2*y^2*z)§
+▶§M=2§
+▶§w=vector(-2,3,0,1,6,-11,5);nw=size(w)§
+▶§w1=vector(x,u,t,z);nw1=size(w1)§
+▶Ha összevetjük a◉ 
+▶<code class="pale">seqvar(f(x_1,...,x_k=m,...x_r),m,a,b)=(f(x_1,...,x_k=a,...,x_r),f(x_1,...,x_k=a+1,...,x_r),...,f(x_1,...,x_m=b,...,x_r))</code>◉
+▶és a◉
+▶<code class="pale">map(f(x_1,...x_r),m,(a,a+1,a+2,...,b))=((f(x_1,...,x_k=a,...,x_r),f(x_1,...,x_k=a+1,...,x_r),...,f(x_1,...,x_m=b,...,x_r))</code>◉ 
+▶definíciókat, akkor kijelenthetjük, hogy <code class="pale" style="border-bottom:2px solid red;">seqvar(f(x_1,..,x_k=m,..,x_r),m,a,b)=map(f(x_1,...x_r)),m,(a,a+1,a+2,...,b))</code>. Ez azt is jelenti,◉
+▶hogy <code class="pale">seqvar</code> egy speciális vektorokkal (intervallumokkal) vett <code class="pale">map_n</code> függvény. Nézzünk erre egy konkrét példát!  Deklaráljuk az $f1(x,y,z)=x^3+2\cdot y^2\cdot z$◉
+▶függvényt, és az $A=3$ alsó, illetve  $B=7$ felső határokat, valamint az [A,B] zárt intervallumnak megfelelő $\boldsymbol{AB}=(3,4,5,6,7)$ vektort. <em>M</em> értékér 2-re állítjuk:◉
+▶<code class="pale">&sect;A=3;B=7&sect;</code><span style="margin-left:100px;"></span>Kimenete:&nbsp;<code>$A=&lt;&lt;A&gt;&gt;;B=&lt;&lt;B&gt;$</code>&nbsp;$\longrightarrow A=<<A>>;B=<<B>>$◉ 
+▶<code class="pale">&sect;AB=seq(k,A,B)&sect;</code><span style="margin-left:40px;"></span>Kimenete:&nbsp;<code>$AB=&lt;&lt;AB&gt;&gt;$</code>&nbsp;$\longrightarrow AB=<<AB>>$◉
+▶<code class="pale">&sect;fgv(f1:x^3+2*y^2*z)&sect;</code><span style="margin-left:30px;"></span>Kimenete:&nbsp;<code>$f1(x,y,z)=&lt;&lt;f1(x,y,z)&gt;&gt;$</code>&nbsp;$\longrightarrow f1(x,y,z)=<<f1(x,y,z)>>$◉
+▶<code class="pale">&sect;m=2&sect;</code><span style="margin-left:30px;"></span>Kimenete:&nbsp;<code>$m=&lt;&lt;m&gt;&gt;$</code>&nbsp;$\longrightarrow m=<<M>>$◉
+▶És a fentieknek megfelelően, valóban <code>$$&lt;&lt;seqvar(f1(x,k,z),k,A,B)&gt;&gt;=&lt;&lt;map(f1,M,AB)&gt;&gt;$$</code>&nbsp;$$<<seqvar(f1(x,k,z),k,A,B)>>=<<map_n(f1,M,AB)>>$$
+▶Ez azt jelenti, hogy a <code class="pale">seqvar(f,x,a,b)</code> parancs mindig kiváltható intervallumokra alkalmazott <code class="pale">map(f,seq(x,a,b))=f(seq(x,a,b))</code> paranccsal. Felmerül◉
+▶a kérdés, hogy ez fordítva megtehető-e . A válasz pedig: közvetlenül nem, de egy segédfüggvénnyel igen. Ez a segédfüggvény önmagában is fontos, ezért részle-◉
+▶tesen is tárgyaljuk, és ami nem más, mint a <em>vektoroknak megfelelő függvény</em>. Ha ugyanis megadunk egy $(w_1,w_2,...,w_n)$ vektort, akkor valójában egy $w(n)$  $$\begin{eqnarray}w:\left[1,2,\ldots,n\right] & \rightarrow &\mathbb{R} \\ n & \rightarrow & w_n\end{eqnarray}$$
+függvényt adunk meg. Szerencsére ezt a függvényt deklarálni is tudjuk, de figyelembe kell venni, hogy a nerdamerben (mint a legtöbb programozási nyelvben)◉
+▶a vektorok indexelése 0-ról indul. Tudjuk, hogy egy <b>w</b> vektor k-adik komponensét nerdamerben a <code class="pale">vecget(<b>w</b>,k-1)</code> paranccsal kérhetjük le. (A k helyetti k-1 az ◉
+▶említett 0-ról induló indexelés miatt van.). Így azon f_w függvény, amely a k=1,2,...,n számokhoz rendre a w vektor k-adik komponensét rendeli az alábbi sorral◉
+▶deklarálható: <code>&sect;fgv(f_w:vecget(w,k-1))&sect;</code>. Ha pedig f egy tetszőleges f(x_1,...,x_r) többváltozós függvény, akkor az $f(w_1,...,w_m=a_k,...,w_r)$ parciális◉
+▶függvény megkapható az k számból az  f_w és f függvények összetételével:k &rightarrow; f(x_1,...,x_m=f_w(k),...x_r).◉
+▶Vagyis,◉
+▶<code>map_n(f,m,(w_1,w_2,...,w_n) = (f(x_1,...,w_1,...,w_r),...,f(x_1,...,w_n,...,w_r)) = seqvar(f(x_1,...,x_m=f_w(k),...,x_r),k,1,n)</code>.◉
+▶Erre is nézzünk egy konkrét példát:◉◉
+▶§fgv(f_w:vecget(w,k-1))§
+▶§fgv(f_w1:vecget(w1,k-1))§ 
+▶<code class="pale">&num; w, nw, f_w és f deklarációja</code>◉
+▶<code class="pale">&sect;w=vector(-2,3,0,1,6,-11,5);nw=size(w)&sect;</code>◉
+▶<code class="pale">&sect;fgv(f_w:vecget(w,k-1))&sect;</code>◉
+▶<code class="pale">&sect;fgv(f:x^2-2*x)&sect;</code>◉◉
+▶A lekért kimenetek pedig:◉
+▶<code>$\boldsymbol{w}=&lt;&lt;w&gt;&gt;, |\boldsymbol{w}|=&lt;&lt;nw&gt;&gt;$</code>&nbsp;$\longrightarrow \boldsymbol{w}=<<w>>, |\boldsymbol{w}|=<<nw>>$◉
+▶<code>$$&lt;&lt;map_n(f1,M,w)&gt;&gt;$$</code>&nbsp;$\longrightarrow$ $$<<map_n(f1,M,w)>>$$
+▶<code>$$&lt;&lt;seqvar(f1(x,f_w(k),z),k,1,nw)&gt;&gt;$$</code>&nbsp;$\longrightarrow$ $$<<seqvar(f1(x,f_w(k),z),k,1,nw)>>$$
+▶<h4>A w1 szimbólikus vektorral</h4>
+▶<code class="pale">&sect;w1=vector(x,u,t,z);nw1=size(w1)&sect;</code>◉
+▶<code class="pale">&sect;fgv(f_w1:vecget(w1,k-1))&sect;</code>◉
+▶<code>$\boldsymbol{w1}=&lt;&lt;w&gt;&gt;, |\boldsymbol{w1}|=&lt;&lt;nw&gt;&gt;$</code>&nbsp;$\longrightarrow \boldsymbol{w1}=<<w1>>, |\boldsymbol{w1}|=<<nw1>>$◉
+▶<code>$$&lt;&lt;map_n(f1,M,w1)&gt;&gt;$$</code>&nbsp;$\longrightarrow$ $$<<map_n(f1,M,w1)>>$$
+▶<code>$$&lt;&lt;seqvar(f1(x,f_w1(k),z),k,1,nw1)&gt;&gt;$$</code>&nbsp;$\longrightarrow$ $$<<seqvar(f1(x,f_w1(k),z),k,1,nw1)>>$$  
