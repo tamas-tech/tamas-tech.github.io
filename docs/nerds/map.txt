@@ -16,7 +16,7 @@ A map(f,<b>v</b>) parancs a <b>v</b> vektor minden komponensére veszi annak f m
 ▶Minden egyváltozós $f(x)$ függvény felfogható egy az $\left(F_n(x_1,x_2,\ldots,x_n):=f(x_n),\;n\in \mathbb{N}\right)$ definícióval megadott <b>polinomsorozatként</b>.◉
 ▶Ha az $f(x)$ függvényre így tekintünk, akkor map(f,<b>v</b>) nem más mint az $f\triangleright\boldsymbol{b}$ hatás.◉
 ▶A map parancsnak van egy harmadik opcionális paramétere is. Ez ugyanúgy működik, mint a seqvar függvény utolsó opcionális paramétere,◉
-és úgyanúgy a szimbólikus kimeneteket kibontsára szolgál: map(f,<b>v</b>,'kibont'). 'kibont' bármi lehet: 0, 1, 'a', 'hello',...◉
+és úgyanúgy a szimbólikus kimeneteket kibontására szolgál: map(f,<b>v</b>,'kibont'). 'kibont' bármi lehet: 0, 1, 'a', 'hello',...◉
 #-------------------
 <h2>Példák</h2>
 ▶<div class="code">$\boldsymbol{a}=<<a>>$; Fgv(F,[x],x+2*x^2); fgv(f:x+2*x^2)</div>◉
@@ -66,7 +66,7 @@ A map(f,<b>v</b>) parancs a <b>v</b> vektor minden komponensére veszi annak f m
 §w=vector(-2,3,0,1,6,-11,5);nw=size(w)§
 §w1=vector(x,u,t,z);nw1=size(w1)§
 §fgv(f:x^2-2*x)§
-▶Ha összevetjük a <code class="pale">seqvar(f(k),k,a,b)=((fa),f(a+1),f(a+2),...,f(b))</code> és <code class="pale">map(f(k),(a,a+1,a+2,...,b))=(f(a),f(a+1),f(a+2),...,f(b))</code>◉ 
+▶Ha összevetjük a <code class="pale">seqvar(f(k),k,a,b)=(f(a),f(a+1),f(a+2),...,f(b))</code> és <code class="pale">map(f(k),(a,a+1,a+2,...,b))=(f(a),f(a+1),f(a+2),...,f(b))</code>◉ 
 ▶definíciókat, akkor kijelenthetjük, hogy <code class="pale" style="border-bottom:2px solid red;">seqvar(f(k),k,a,b)=map(f(k),(a,a+1,a+2,...,b))</code>. Ez azt is jelenti, hogy <code class="pale">seqvar</code> egy speciális vektorokkal◉
 ▶(intervallumokkal) vett <code class="pale">map</code> függvény. Nézzünk erre egy konkrét példát!  Deklaráljuk az $f(x)=x^2-2x$ függvényt, és az $A=3$ alsó, illetve  $B=7$ felső◉
 határokat, valamint az [A,B] zárt intervallumnak megfelelő $\boldsymbol{AB}$ vektort:◉
@@ -80,7 +80,7 @@ határokat, valamint az [A,B] zárt intervallumnak megfelelő $\boldsymbol{AB}$ 
 függvényt adunk meg. Szerencsére ezt a függvényt deklarálni is tudjuk, de figyelembe kell venni, hogy a nerdamerben (mint a legtöbb programozási nyelvben)◉
 ▶a vektorok indexelése 0-ról indul. Tudjuk, hogy egy <b>w</b> vektor k-adik komponensét nerdamerben a <code class="pale">vecget(<b>w</b>,k-1)</code> paranccsal kérhetjük le. (A k helyetti k-1 az ◉
 ▶említett 0-ról induló indexelés miatt van.). Így azon f_w függvény, amely a k=1,2,...,n számokhoz rendre a w vektor k-adik komponensét rendeli az alábbi sorral◉
-deklarálható: <code>&sect;fgv(f_w:vecget(w,k-1))&sect;</code>. Ha pedig f egy tetszőleges függvény, akkor $f(w_k)$ megkapható a k számból az  f_w és f függvények összerételével:◉
+deklarálható: <code>&sect;fgv(f_w:vecget(w,k-1))&sect;</code>. Ha pedig f egy tetszőleges függvény, akkor $f(w_k)$ megkapható a k számból az  f_w és f függvények összetételével:◉
 k &rightarrow; f(f_w(k)). Vagyis, <code>map(f,(w_1,w_2,...,w_n) = (f(w_1),f(w_2),...,f(w_n)) = seqvar(f(f_w(k)),k,1,n)</code>. Erre is nézzünk egy konkrét példát:◉◉
 §fgv(f_w:vecget(w,k-1))§
 §fgv(f_w1:vecget(w1,k-1))§ 
@@ -89,7 +89,7 @@ k &rightarrow; f(f_w(k)). Vagyis, <code>map(f,(w_1,w_2,...,w_n) = (f(w_1),f(w_2)
 ▶<code class="pale">&sect;fgv(f_w:vecget(w,k-1))&sect;</code>◉
 ▶<code class="pale">&sect;fgv(f:x^2-2*x)&sect;</code>◉◉
 ▶A lekért kimenetek pedig:◉
-▶<code>$f\boldsymbol{w}=&lt;&lt;w&gt;&gt;, |\boldsymbol{w}|=&lt;&lt;nw&gt;&gt;$</code>&nbsp;$\longrightarrow \boldsymbol{w}=<<w>>, |\boldsymbol{w}|=<<nw>>$◉
+▶<code>$\boldsymbol{w}=&lt;&lt;w&gt;&gt;, |\boldsymbol{w}|=&lt;&lt;nw&gt;&gt;$</code>&nbsp;$\longrightarrow \boldsymbol{w}=<<w>>, |\boldsymbol{w}|=<<nw>>$◉
 ▶<code>$$&lt;&lt;f(w)&gt;&gt;=&lt;&lt;seqvar(f(f_w(k)),k,1,nw)&gt;&gt;$$</code>&nbsp;$\longrightarrow$ $$<<f(w)>>=<<seqvar(f(f_w(k)),k,1,nw)>>$$
 ▶<h4>A w1 szimbólikus vektorral</h4>
 ▶<code class="pale">&sect;w1=vector(x,u,t,z);nw1=size(w1)&sect;</code>◉
