@@ -816,7 +816,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
         if (n == null) {
             var df = nerdamer('deg(' + fn.body + ',x)') * 1;
             var dg = nerdamer('deg(' + gn.body + ',x)') * 1;
-            n = Math.min(df, dg);
+            n = Math.max(df, dg);
         };
         c = nerdamer('coeffs(expand((' + fn.body + ')*(' + gn.body + ')),x)');
         return nerdamer('sum(vecget(' + c + ',k)*x^k,k,0,' + n + ')').evaluate().symbol;
