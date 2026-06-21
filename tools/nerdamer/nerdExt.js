@@ -804,6 +804,33 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     });
 })();
 
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function F(f, g, n) {
+        var c = _.functions.vector[0]();
+        var fn = _.functions[f]['2'];
+        var gn = _.functions[g]['2'];
+
+        if (n == null) {
+            var df = nerdamer('deg(' + fn.body + ',x)') * 1;
+            var dg = nerdamer('deg(' + gn.body + ',x)') * 1;
+            n = Math.min(df, dg);
+        };
+        c = nerdamer('coeffs(expand((' + fn.body + ')*(' + gn.body + ')),x)');
+        return nerdamer('sum(vecget(' + c + ',k)*x^k,k,0,' + n + ')').evaluate().symbol;
+    }
+    nerdamer.register({
+        name: 'truncprod',
+        visible: true,
+        numargs: [2, 3],
+        build: function() {
+            return F;
+        }
+    });
+})();
+
 /*  KACATOK
 (function() {
     var core = nerdamer.getCore(),
