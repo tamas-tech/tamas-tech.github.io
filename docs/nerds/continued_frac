@@ -1,0 +1,35 @@
+▶<style>p {text-indent:unset}</style>
+
+
+***** ▶§A=1;B=2;C=3;D=4;F=5;G=6§
+
+
+▶<h3>Emeletes tört kiszámításának részletes kiírása állítható A, B, C, D, F, G paraméterekkel </h3>
+2.▶Ha $A=<<A>>$, $B=<<B>>$, $C=<<C>>$, $D=<<D>>$, $F=<<F>>$, $G=<<G>>$, akkor
+▶<div style="outline:2px solid #a20000;padding:15px;margin:10px;background-color: #ffcbcb4f;">
+3.▶$$\frac{A}{B+\frac{C}{D+\frac{F}{G}}}=\frac{<<A>>}{<<B>>+\frac{<<C>>}{<<D>>+\frac{<<F>>}{<<G>>}}}=\frac{<<A>>}{<<B>>+\frac{<<C>>}{<<D+F/G>>}}=\frac{<<A>>}{<<B>>+<<C/(D+F/G)>>}=\frac{<<A>>}{<<B+C/(D+F/G)>>}=<<A/(B+C/(D+F/G))>>$$
+▶</div>
+▶<code style="color:#555;font-size:90%;">A dokumentom ***** &#x25B6;&sect;A=1;B=2;C=1;D=3;F=4;G=5&sect; sorában átírhatók a feladat paraméterei.</code>◉
+▶A $\LaTeX$-ben egy A/B törtet <code>\frac{A}{B}</code> paranccsal vihetünk be.◉ 
+▶Ha ezt egy <code>$$ $$</code> környezetbe tesszük, akkor azt a MatJax szépen kiszedi: <code>$$\frac{A}{B}$$</code> &rightarrow; $$\frac{A}{B}$$
+▶Az A/(B+C/D) emeletes törtet így a <code>$$\frac{A}{B+\frac{C}{D}}$$</code> paranccsal szedethetjük ki &rightarrow; $$\frac{A}{B+\frac{C}{D}}$$ 
+▶Végül, az A/(B+C/(D+G/H)) emeletes törtet a <code>$$\frac{A}{B+\frac{C}{D+\frac{G}{H}}}$$</code> parancs fogja szépen kiszedni &rightarrow; $$\frac{A}{B+\frac{C}{D+\frac{G}{H}}}$$
+▶Ezzel indul a fenti példa. Ezután már csak ezen formulában változtatunk a kiértékelendő részen.◉
+▶Elsőként minden változót kiértékelünk:  <code>$$\frac{&lt;&lt;A&gt;&gt;}{&lt;&lt;B&gt;&gt;+\frac{&lt;&lt;C&gt;&gt;}{&lt;&lt;D&gt;&gt;+\frac{&lt;&lt;G&gt;&gt;}{&lt;&lt;H&gt;&gt;}}}$$</code> &rightarrow; $$\frac{<<A>>}{<<B>>+\frac{<<C>>}{<<D>>+\frac{<<F>>}{<<G>>}}}$$ 
+▶Aztán a D+F/G törtet értékeljük ki: <code>$$\frac{&lt;&lt;A&gt;&gt;}{&lt;&lt;B&gt;&gt;+\frac{&lt;&lt;C&gt;&gt;}{&lt;&lt;D+G/H&gt;&gt;}}$$</code> &rightarrow; $$\frac{<<A>>}{<<B>>+\frac{<<C>>}{<<D+F/G>>}}$$
+▶Ezt követi a C/(D+F/G) kiértékelése: <code>$$\frac{&lt;&lt;A&gt;&gt;}{&lt;&lt;B&gt;&gt;+&lt;&lt;C/(D+G/H)&gt;&gt;}$$</code> &rightarrow; $$\frac{<<A>>}{<<B>>+<<C/(D+F/G)>>}$$ 
+▶A következő lépésben már a B+C/(D+F/G) kifejezést értékeljük ki: <code>$$\frac{&lt;&lt;A&gt;&gt;}{&lt;&lt;B+C/(D+G/H)&gt;&gt;}$$</code> &rightarrow; $$\frac{<<A>>}{<<B+C/(D+F/G)>>}$$ 
+▶Végül a teljes A/(B+C/(D+F/G)) kifejezést kiértékeljük: <code>$$&lt;&lt;A/(B+C/(D+G/H))&gt;&gt;}$$</code> &rightarrow; $$<<A/(B+C/(D+F/G))>>$$
+
+
+▶<h3><code>simplify(...)</code> használata szimbólikus A, B, C, D, F, G paraméterek esetében </h3>
+Ha a beállítható paraméterek némelyike szimbólikus értéket kap (A =a,...), akkor a kiértékelésben érdemes a <code>simplify(...)</code> függvényt használni. Így◉
+▶a fenti <code>$$\frac{&lt;&lt;A&gt;&gt;}{&lt;&lt;B&gt;&gt;+&lt;&lt;C/(D+G/H)&gt;&gt;}$$</code> kértékelés helyett a <code>$$\frac{&lt;&lt;A&gt;&gt;}{&lt;&lt;B&gt;&gt;+&lt;&lt;<span style="color:red;">simplify(</span>C/(D+G/H)<span style="color:red;">)</span>&gt;&gt;}$$</code> kiértékelés javasolt.◉
+Figyeljük meg milyen kimenetet ad a fenti, illetve a lenti pirossal keretetzett kimenet, ha a ***** &#x25B6;-al jelzett sorban az◉
+▶<div style="text-align:center;">&sect;A=A ; B=B ; C=C ; D=D ; F=F ; G=G&sect;</div>
+▶szimbólikus paraméterekre állunk át.◉
+4.▶Ha $A=<<A>>$, $B=<<B>>$, $C=<<C>>$, $D=<<D>>$, $F=<<F>>$, $G=<<G>>$, akkor
+▶<div style="outline:2px solid #a20000;padding:15px;margin:10px;background-color: #ffcbcb4f;">
+5.▶$$\frac{A}{B+\frac{C}{D+\frac{F}{G}}}=\frac{<<A>>}{<<B>>+\frac{<<C>>}{<<D>>+\frac{<<F>>}{<<G>>}}}=\frac{<<A>>}{<<B>>+\frac{<<C>>}{<<simplify(D+F/G)>>}}=\frac{<<A>>}{<<B>>+<<simplify(C/(D+F/G))>>}=\frac{<<A>>}{<<simplify(B+C/(D+F/G))>>}=<<simplify(A/(B+C/(D+F/G)))>>$$
+▶</div>
+                                                                
