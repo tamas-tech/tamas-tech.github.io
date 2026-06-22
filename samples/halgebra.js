@@ -7368,9 +7368,9 @@ $(document).ready(function() {
             const ch = document.getElementById("cinput");
             const chn = document.getElementById("nerdkod");
             const cinp = document.getElementById("pentcinput");
-            if (!ch.checked)
+            if (ch &&!ch.checked)
                 ch.click();
-            if (!chn.checked)
+            if (chn && !chn.checked)
                 chn.click();
             var fr = new FileReader();
             fr.onload = (evt) => {
