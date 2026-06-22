@@ -309,20 +309,23 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(F, expr, n) {
+    function f(F, expr, n, tr) {
         var vec = _.functions.vector[0](),
             j;
         for (j = 1; j <= n; j++) {
             var v1 = nerdamer('hatas1_n(' + F + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
         }
+        if (tr)
+            vec = nerdamer('map(' + tr + ',' + vec + ')').evaluate().symbol;
+
         pentsorout = nerdamer(vec).latex();
         return vec;
     }
     nerdamer.register({
         name: 'hatas1',
         visible: true,
-        numargs: 3,
+        numargs: [3, 4],
         build: function() {
             return f;
         }
@@ -404,20 +407,23 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(F1, F2, expr, n) {
+    function f(F1, F2, expr, n, tr) {
         var vec = _.functions.vector[0](),
             j;
         for (j = 1; j <= n; j++) {
             var v1 = nerdamer('hatas2_n(' + F1 + ',' + F2 + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
         }
+        if (tr)
+            vec = nerdamer('map(' + tr + ',' + vec + ')').evaluate().symbol;
+
         pentsorout = nerdamer(vec).latex();
         return vec;
     }
     nerdamer.register({
         name: 'hatas2',
         visible: true,
-        numargs: 4,
+        numargs: [4, 5],
         build: function() {
             return f;
         }
@@ -518,20 +524,23 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(F1, F2, F3, expr, n) {
+    function f(F1, F2, F3, expr, n, tr) {
         var vec = _.functions.vector[0](),
             j;
         for (j = 1; j <= n; j++) {
             var v1 = nerdamer('hatas3_n(' + F1 + ',' + F2 + ',' + F3 + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
         }
+        if (tr)
+            vec = nerdamer('map(' + tr + ',' + vec + ')').evaluate().symbol;
+
         pentsorout = nerdamer(vec).latex();
         return vec;
     }
     nerdamer.register({
         name: 'hatas3',
         visible: true,
-        numargs: 5,
+        numargs: [5, 6],
         build: function() {
             return f;
         }
@@ -642,20 +651,23 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(F1, F2, F3, F4, expr, n) {
+    function f(F1, F2, F3, F4, expr, n, tr) {
         var vec = _.functions.vector[0](),
             j;
         for (j = 1; j <= n; j++) {
             var v1 = nerdamer('hatas4_n(' + F1 + ',' + F2 + ',' + F3 + ',' + F4 + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
         }
+        if (tr)
+            vec = nerdamer('map(' + tr + ',' + vec + ')').evaluate().symbol;
+
         pentsorout = nerdamer(vec).latex();
         return vec;
     }
     nerdamer.register({
         name: 'hatas4',
         visible: true,
-        numargs: 6,
+        numargs: [6, 7],
         build: function() {
             return f;
         }
@@ -755,7 +767,6 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
         _ = core.PARSER;
 
     function f(a) {
-
         var vec = _.functions.vector[0]();
         const e = a.elements;
         const L = e.length;
@@ -823,6 +834,65 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     }
     nerdamer.register({
         name: 'truncprod',
+        visible: true,
+        numargs: [2, 3],
+        build: function() {
+            return F;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function F(f, g, n) {
+        var c = _.functions.vector[0]();
+        var fc = _.functions.vector[0]();
+        var gc = _.functions.vector[0]();
+        var txtv = _.functions.vector[0]();
+        var fn = _.functions[f]['2'];
+        var gn = _.functions[g]['2'];
+
+        if (n == null) {
+            var df = nerdamer('deg(' + fn.body + ',x)') * 1;
+            var dg = nerdamer('deg(' + gn.body + ',x)') * 1;
+            n = Math.max(df, dg) * 1;
+        };
+        c = nerdamer('coeffs(expand((' + fn.body + ')*(' + gn.body + ')),x)');
+        var cc = c.symbol.elements
+        fc = nerdamer('coeffs(' + fn.body + ',x)').symbol.elements;
+        gc = nerdamer('coeffs(' + gn.body + ',x)').symbol.elements;
+        //console.log(c);
+        var txt = '<table class="trpr-table"><thead><tr><th>S</th><th>M</th>';
+        for (var j = 0; j <= n; j++)
+            txt += '<th>$x^{' + j + '}$</th>';
+        txt += '</tr></thead>';
+
+
+        txt += '<thead><tr><th>S</th><th>M</th>';
+        for (var j = 0; j <= n; j++)
+            txt += '<th>$' + gc[j] + '$</th>';
+        txt += '</tr></thead>';
+        for (var i = 0; i <= n; i++) {
+            txt += '<tr><th>$x^{' + i + '}$</th><th>$' + fc[i] + '$</th>';
+            for (var j = 0; j <= n; j++) {
+                var pr = '';
+                if ((i + j) <= n)
+                    pr = '$' + nerdamer(fc[i] + '*' + gc[j]).evaluate().symbol.latex() + '$';
+
+                txt += '<td>' + pr + '</td>';
+            };
+            txt += '</tr>';
+        }
+
+        txt += '</table>';
+        txtv.set(0, txt)
+        console.log(txt, TXT);
+        return txtv;
+    }
+    nerdamer.register({
+        name: 'drawtruncprod',
         visible: true,
         numargs: [2, 3],
         build: function() {
