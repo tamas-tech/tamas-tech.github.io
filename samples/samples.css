@@ -3620,13 +3620,19 @@ select#mthselect {
 }
 
 #setpenttbl.table-hideable tbody tr#sugosor.shown td div#accordion ul li a {
-    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: currentcolor;
+    padding-bottom: 4px;
+    display: inline-block;
+    text-decoration-color: #0800ff;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
 }
 
 #setpenttbl.table-hideable tbody tr#sugosor.shown td div#accordion ul li a.selected {
     text-decoration: underline;
     text-decoration-color: #f732b3;
-    font-size: 120%;
+    font-size: 110%;
     background-color: bisque;
     padding: 2px;
 }
