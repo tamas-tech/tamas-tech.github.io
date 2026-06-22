@@ -3620,6 +3620,7 @@ select#mthselect {
 }
 
 #setpenttbl.table-hideable tbody tr#sugosor.shown td div#accordion ul li a {
+    cursor: pointer;
     text-decoration: underline;
     text-decoration-color: currentcolor;
     padding-bottom: 4px;
