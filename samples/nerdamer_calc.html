@@ -162,8 +162,8 @@
                                 <h3 style="text-align:center;">Azonosságok</h3>
                                 <ol>
                                     <li>
-                                        <b>A pentagonális számok a mahoni számok és binomiális együtthatók szorzatösszege</b>
-                                        <span>\[ \delta_{5}(n)=(-1)^{n+1}\,\sum_{k=0}^{n}\,i(n,k)\binom{n}{k}\]</span> <i style="font-size:80%;"></i>
+                                        <b>A pentagonális számok a mahoni számok és binomiális együtthatók előjeles szorzatösszege</b>
+                                        <span>\[ \delta_{5}(n)=(-1)^{n+1}\,\sum_{k=0}^{n}\,(-1)^{k}i(n,k)\binom{n}{k}\]</span> <i style="font-size:80%;"></i>
                                         <br/>Nézzük a képletet részleteiben, n = 12 értékkel.
                                         <br/>A binomiális számok sora:<br/>
                                         <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq(binomial(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
@@ -176,13 +176,13 @@
                                         <br/>Mind egyben, egy LaTeX képleteket is tartalmazó többsoros példában, amelyben az N paraméter értéke allítható:<br/>
                                         <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='340px');"><pre><code>
 ▶ §§N=12§§<br/>§b = seq(binomial(N,k),0,N); m= seq(mahonian(N,k),0,N)§
-▶ §e = seq((-1)^k*mahonian(N,k)*binomial(N,k),0,N);er = (-1)^(N+1)*sum((-1)^k*mahonian(N,k)*binomial(N,k),k,0,N);p=pent(N)§
+▶ §v = seq((-1)^k*mahonian(N,k)*binomial(N,k),0,N);er = (-1)^(N+1)*sum((-1)^k*mahonian(N,k)*binomial(N,k),k,0,N);p=pent(N)§
 ▶ &lt;div>A binomiális számok sora: $\binom{<<\N>>}{0},\binom{<<\N>>}{1},\ldots,\binom{<<\N>>}{<<\N>>}\longrightarrow<<\b>>$&lt;/div>
 ▶ &lt;div>A mahonian számok sora: $i(<<\N>>,0),i(<<\N>>,1),\ldots,i(<<\N>>,<<\N>>)\longrightarrow<<\m>>$&lt;/div>
 ▶ &lt;div>A képletben szereplő váltakozó előjeles szorzatok:&lt;div>
-▶ &lt;div>$i(<<\N>>,0)\binom{<<\N>>}{0},-i(<<\N>>,1)\binom{<<\N>>}{1},\ldots,i(<<\N>>,<<\N>>)\binom{<<\N>>}{<<\N>>}\longrightarrow<<\e>>$&lt;/div>
+▶ &lt;div>$i(<<\N>>,0)\binom{<<\N>>}{0},-i(<<\N>>,1)\binom{<<\N>>}{1},\ldots,i(<<\N>>,<<\N>>)\binom{<<\N>>}{<<\N>>}\longrightarrow<<\v>>$&lt;/div>
 ▶ &lt;div>Végül, maga az előjeles szorzatok összeg és a pentagonális szám értéke: 
-▶ $$(-1)^{<<\N>>+1}\sum_{k=0}^{<<\N>>}i(<<\N>>,k)\binom{<<\N>>}{k} = <<\er>>\equiv<<\p>>=\delta_{5}(<<\N>>)$$&lt;/div></code></pre>
+▶ $$(-1)^{<<\N>>+1}\sum_{k=0}^{<<\N>>}(-1)^{k}\,i(<<\N>>,k)\binom{<<\N>>}{k} = <<\er>>\equiv<<\p>>=\delta_{5}(<<\N>>)$$&lt;/div></code></pre>
                                         </span>
                                     </li>
                                 </ol>
