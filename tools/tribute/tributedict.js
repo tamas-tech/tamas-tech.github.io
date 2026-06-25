@@ -384,6 +384,7 @@ const autodictC = [
     { key: "comp4összetéosition4 part többvált polinom nerd", value: "comp4({c},,,,)", tag: "comp4(F1,..,F4,n)" },
     // Nerdamer math functions
     { key: "gyöksqrt mathfncüggvény nerd", value: "sqrt({c})", tag: "sqrt(x)=√x" },
+    { key: "dirichletZ mathfncüggvény nerd", value: "dirichletZ({c},)", tag: "dirichletZ(n_<sub>0</sub>,n)" },
     { key: "fibonacci mathfncüggvény nerd", value: "fib({c})", tag: "fib(n)" },
     { key: "exp mathfncüggvény nerd", value: "exp({c})", tag: "exp(x)=e<sup>x</sup>" },
     { key: "log mathfncüggvény nerd", value: "log({c})", tag: "log(x)=ln(x)" },
@@ -420,7 +421,9 @@ const autodictC = [
     { key: "arcsinh hyperbolic nerd", value: "asinh({c})", tag: "asinh( )" },
     { key: "arctanh hyperbolic nerd", value: "atanh({c})", tag: "atanh( )" },
     // Nerdamer Matrix
-    { key: "nerd maátrix", value: "matrix([{c},],[,])", tag: "matrix" },
+    { key: "maátrix nerd", value: "matrix([{c},],[,])", tag: "matrix" },
+    { key: "maátrixExpr nerd", value: "matExpr({c},,)", tag: "matExpr(n,m,expr|fgv)" },
+    { key: "matMap maátrix nerd", value: "matMat({c},,)", tag: "matMap(expr,mat,[kib])" },
     { key: "nerd maátrix23", value: "matrix([{c},], [,], [,]))", tag: "matrix 3&times;2" },
     { key: "nerd maátrix33", value: "matrix([{c},,], [,,], [,,])", tag: "matrix 3&times;3" },
     { key: "nerd maátrix34", value: "matrix([{c},,,], [,,,], [,,,])", tag: "matrix 3&times;4" },
@@ -441,12 +444,13 @@ const autodictC = [
     { key: "maátrix Toeplitz nerd ", value: " matToeplitz([{c},,])", tag: " matToeplitz(<b>v</b>)" },
     // Nerdamer Vector
     { key: "vecktor nerd", value: "vector({c},,)", tag: "vector(,,)" },
+    { key: "ivecktor nerd", value: "ivector({c},)", tag: "ivector(dim,k)" },
     { key: "seq vecktork nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
     { key: "Fvec vecktork nerd", value: "Fvec({c},)", tag: "Fvec(F,vec)" },
     { key: "seqvar vecktor nerd", value: "seqvar({c},,,?)", tag: "seqvar(f(k,.),k,a,b,[exp])" },
     { key: "map vecktork nerd", value: "map({c},,?)", tag: "map(f,vec,[exp])" },
     { key: "map_n vecktork nerd", value: "map_n({c},,,?)", tag: "map_n(f,k,vec,[exp])" },
-    { key: "skalárisdotszorzat vecktor nerd", value: "dot({c},)", tag: "<b>a</b>&centerdot;<b>b</b> (skaláris)" },
+    { key: "skaldotszorzat vecktor nerd", value: "dot({c},)", tag: "<b>a</b>&centerdot;<b>b</b> (skaláris)" },
     { key: "concatösszefűzés  vecktor nerd", value: "concat({c},)", tag: "<b>a</b>&bullet;<b>b</b> (összefűzés)" },
     { key: "kconvuluctionszorzat  vecktor nerd", value: "conv({c},)", tag: "<b>a</b>*<b>b</b> (konv.)" },
     { key: "kconvuluctioninversze  vecktor nerd", value: "convinv({c})", tag: "<b>a</b><sup> -&lowast;</sup> (konv. inverz)" },
@@ -456,6 +460,7 @@ const autodictC = [
     // Nerdamer Calculus
     { key: "sumősszeg calculusanalízis nerd", value: "sum(f{c},k,a,b)", tag: "&sum;<sub>k=a..b</sub>f(..,k)" },
     { key: "prodszorzat calculusanalízis nerd", value: "prod(f{c},k,a,b)", tag: "&prod;<sub>k=a..b</sub>f(..,k)" },
+    { key: "truncprodszorzat calculusanalízis nerd", value: "truncprod(f{c},g,[n])", tag: "f&nbsp;&bullet;<sub>n</sub>&nbsp;g" },
     { key: "limithatárérték calculusanalízis nerd", value: "limit(f{c},x,a)", tag: "lim<sub>x&rightarrow;a</sub>f(x)" },
     { key: "diffderivált calculusanalízis nerd", value: "diff(f{c},x,n)", tag: "&part;<sup style='vertical-align:0.7em;'>(n)</sup><sub style='margin-left:-1.1em;margin-right:0.7em;'>x</sub>f(x,..)" },
     { key: "integrálhatlan calculusanalízis nerd", value: "int(f{c},x)", tag: "&int;f(x)dx" },
