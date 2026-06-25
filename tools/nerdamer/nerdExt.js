@@ -79,6 +79,35 @@
     });
 })();
 
+(function() {
+    function f(n, k) {
+        var vec = nerdamer('rect(' + n + '-' + k + ')');
+        return vec;
+    }
+    nerdamer.register({
+        name: 'dirichletZ',
+        visible: true,
+        numargs: 2,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    function f(n, k) {
+        var vec = nerdamer('seqvar(rect(' + k + ' - x), x, 1, ' + n + ')').evaluate().symbol;
+        return vec;
+    }
+    nerdamer.register({
+        name: 'ivector',
+        visible: true,
+        numargs: 2,
+        build: function() {
+            return f;
+        }
+    });
+})();
 
 (function() {
     var core = nerdamer.getCore(),
@@ -255,6 +284,7 @@
         vec = vec.toString().slice(1, -1);
         if (spec) {
             getsetZycFabFib(F.toString(), n, true);
+            console.log(F + '_' + n + '(' + vec + ')');
             return nerdamer(F + '_' + n + '(' + vec + ')');
         } else {
             return nerdamer(F + '(' + vec + ')');
@@ -312,10 +342,19 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     function f(F, expr, n, tr) {
         var vec = _.functions.vector[0](),
             j;
+        if (expr.elements) {
+            if (n)
+                if (tr)
+                    n = undefined;
+                else
+                    tr = n;
+            n = expr.elements.length;
+            expr = nerdamer('vecget(' + expr + ', k - 1)');
+        };
         for (j = 1; j <= n; j++) {
             var v1 = nerdamer('hatas1_n(' + F + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
-        }
+        };
         if (tr)
             vec = nerdamer('map(' + tr + ',' + vec + ')').evaluate().symbol;
 
@@ -325,7 +364,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     nerdamer.register({
         name: 'hatas1',
         visible: true,
-        numargs: [3, 4],
+        numargs: [2, 4],
         build: function() {
             return f;
         }
@@ -410,10 +449,19 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     function f(F1, F2, expr, n, tr) {
         var vec = _.functions.vector[0](),
             j;
+        if (expr.elements) {
+            if (n)
+                if (tr)
+                    n = undefined;
+                else
+                    tr = n;
+            n = expr.elements.length;
+            expr = nerdamer('vecget(' + expr + ', k - 1)');
+        };
         for (j = 1; j <= n; j++) {
             var v1 = nerdamer('hatas2_n(' + F1 + ',' + F2 + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
-        }
+        };
         if (tr)
             vec = nerdamer('map(' + tr + ',' + vec + ')').evaluate().symbol;
 
@@ -423,7 +471,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     nerdamer.register({
         name: 'hatas2',
         visible: true,
-        numargs: [4, 5],
+        numargs: [3, 5],
         build: function() {
             return f;
         }
@@ -527,10 +575,19 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     function f(F1, F2, F3, expr, n, tr) {
         var vec = _.functions.vector[0](),
             j;
+        if (expr.elements) {
+            if (n)
+                if (tr)
+                    n = undefined;
+                else
+                    tr = n;
+            n = expr.elements.length;
+            expr = nerdamer('vecget(' + expr + ', k - 1)');
+        };
         for (j = 1; j <= n; j++) {
             var v1 = nerdamer('hatas3_n(' + F1 + ',' + F2 + ',' + F3 + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
-        }
+        };
         if (tr)
             vec = nerdamer('map(' + tr + ',' + vec + ')').evaluate().symbol;
 
@@ -540,7 +597,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     nerdamer.register({
         name: 'hatas3',
         visible: true,
-        numargs: [5, 6],
+        numargs: [4, 6],
         build: function() {
             return f;
         }
@@ -654,10 +711,19 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     function f(F1, F2, F3, F4, expr, n, tr) {
         var vec = _.functions.vector[0](),
             j;
+        if (expr.elements) {
+            if (n)
+                if (tr)
+                    n = undefined;
+                else
+                    tr = n;
+            n = expr.elements.length;
+            expr = nerdamer('vecget(' + expr + ', k - 1)');
+        };
         for (j = 1; j <= n; j++) {
             var v1 = nerdamer('hatas4_n(' + F1 + ',' + F2 + ',' + F3 + ',' + F4 + ',' + expr + ',' + j + ')');
             vec.set(j - 1, v1);
-        }
+        };
         if (tr)
             vec = nerdamer('map(' + tr + ',' + vec + ')').evaluate().symbol;
 
@@ -667,7 +733,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
     nerdamer.register({
         name: 'hatas4',
         visible: true,
-        numargs: [6, 7],
+        numargs: [5, 7],
         build: function() {
             return f;
         }
@@ -725,6 +791,79 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
         name: 'matToeplitz',
         visible: true,
         numargs: [1, 2],
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(n, m, expr, kibont) {
+        if (_.functions[expr]) {
+            var fn = _.functions[expr]['2'];
+            var valt = fn.params,
+                expr = nerdamer(fn.body).symbol;
+
+        } else
+            var valt = nerdamer(expr).variables();
+        console.log(valt)
+        var mat = _.functions.matrix[0]();
+        for (var i = 0; i < n; i++) {
+            for (var j = 0; j < m; j++) {
+                var t = expr.sub(valt[0], i).sub(valt[1], j);
+                if (kibont)
+                    t = nerdamer('expand(' + t + ')').symbol;
+                mat.set(i, j, t);
+            }
+        }
+        return mat;
+    }
+    nerdamer.register({
+        name: 'matExpr',
+        visible: true,
+        numargs: [3, 4],
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(expr, mat, kibont) {
+        if (_.functions[expr]) {
+            var fn = _.functions[expr]['2'];
+            var valt = fn.params[0],
+                expr = nerdamer(fn.body).symbol;
+
+        } else
+            var valt = nerdamer(expr).variables()[0];
+        var v = mat.elements,
+            n = v.length,
+            m = v[0].length,
+            j;
+
+        for (var i = 0; i < n; i++) {
+            for (var j = 0; j < m; j++) {
+                var t = expr.sub(valt, v[i][j]);
+                if (kibont)
+                    t = nerdamer('expand(' + t + ')').symbol;
+                mat.set(i, j, t);
+            }
+        }
+
+        return mat;
+    }
+    nerdamer.register({
+        name: 'matMap',
+        visible: true,
+        numargs: [2, 3],
         build: function() {
             return f;
         }
