@@ -113,31 +113,6 @@
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(expr, valt, m, n) {
-        var vec = _.functions.vector[0](),
-            s = {},
-            j;
-        for (j = m; j < n + 1; j++) {
-            s[valt] = j;
-            var v1 = nerdamer(expr, s).evaluate();
-            vec.set(j - m, v1);
-        }
-        return vec;
-    }
-    nerdamer.register({
-        name: 'seqvarREGI',
-        visible: true,
-        numargs: 4,
-        build: function() {
-            return f;
-        }
-    });
-})();
-
-(function() {
-    var core = nerdamer.getCore(),
-        _ = core.PARSER;
-
     function f(expr, valt, m, n, kibont) {
         var vec = _.functions.vector[0](),
             j;
@@ -337,10 +312,10 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
 
 (function() {
     var core = nerdamer.getCore(),
-        _ = core.PARSER;
+        __ = core.PARSER;
 
     function f(F, expr, n, tr) {
-        var vec = _.functions.vector[0](),
+        var vec = __.functions.vector[0](),
             j;
         if (expr.elements) {
             if (n)
@@ -350,11 +325,18 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
                     tr = n;
             n = expr.elements.length;
             expr = nerdamer('vecget(' + expr + ', k - 1)');
-        };
-        for (j = 1; j <= n; j++) {
-            var v1 = nerdamer('hatas1_n(' + F + ',' + expr + ',' + j + ')');
-            vec.set(j - 1, v1);
-        };
+        } else if (F.toString().startsWith("Sti")) {
+            var ve = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().toString().slice(1)
+            ve = JSON.parse("[0," + ve);
+            ve = evaluateCycleIndexSubstitution(n, ve)[1].slice(1);
+            for (j = 0; j < n; j++) {
+                vec.set(j, ve[j]);
+            };
+        } else
+            for (j = 1; j <= n; j++) {
+                var v1 = nerdamer('hatas1_n(' + F + ',' + expr + ',' + j + ')');
+                vec.set(j - 1, v1);
+            };
         if (tr)
             vec = nerdamer('map(' + tr + ',' + vec + ')').evaluate().symbol;
 
