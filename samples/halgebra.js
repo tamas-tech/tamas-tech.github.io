@@ -9408,6 +9408,64 @@ function updMathJax(c_txt) {
 
 // >>> LatexJS
 
+function getsorA(a_txt, n) {
+    const vars = _.uniq(a_txt.match(/(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])/g)).filter(y => y != "N");
+    if (vars.length > 1) {
+        console.log("Vátozó hiba:<br/>A kifejezés legfeljebb csak egy válozót tartalmazhat. A bevitt<div style='text-align:center;'><code>" + a_txt + "</code></div>kifejezés " + vars.length + " válozót is tartalmaz: <code style='color:red;'>" + vars + ".</code>");
+    } else if (vars.length == 0 && a_txt.length != 1) {
+        try {
+            const ism = a_txt.endsWith(',...');
+            if (ism)
+                a_txt = a_txt.slice(0, -4);
+            nerdamer.setVar('a_sorv', 'vector(' + a_txt + ')');
+            const L = nerdamer('a_sorv').symbol.elements.length;
+            if (L < n) {
+                if (!ism) {
+                    const N = Math.ceil(n / L);
+                    a_txt += ",";
+                    var aa_txt = a_txt.repeat(N);
+                } else {
+                    const last = _.last(a_txt.split(","));
+                    var aa_txt = a_txt + ("," + last).repeat(n - L);
+                }
+                if (aa_txt.endsWith(','))
+                    aa_txt = aa_txt.slice(0, -1)
+                return 'vector(' + aa_txt + ')';
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    } else {
+        a_txt = a_txt.trim();
+        var p = a_txt.indexOf("...");
+        if (p > -1) {
+            try {
+                var form = a_txt.slice(p + 3);
+                var aa_txt = a_txt.slice(0, p - 1);
+                const h = aa_txt.split(",").length;
+                var x = vars[0]
+                aa_txt += ",";
+                form = form.replaceAll(x, "(" + x + "+" + h + ")");
+                nerdamer.setFunction("pwa", vars, form)
+                for (j = 1; j <= n - h; j++)
+                    aa_txt += nerdamer("pwa(" + j + ")").toString() + ",";
+                aa_txt = aa_txt.slice(0, -1)
+                return 'vector(' + aa_txt + ')'
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            try {
+                var fn = nerdamer(a_txt.trim());
+                a_sor = fn.buildFunction();
+                nerdamer.setFunction('a_sor', vars, a_txt);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+};
+
 function prelatexjs(c_txt, mathjax) {
     if (c_txt == "")
         c_txt = "A bemenet üres."
@@ -9422,9 +9480,8 @@ function prelatexjs(c_txt, mathjax) {
         c_txt = c_txt.replace(/^\#.*[\n\r\f]+/mg, '');
         c_txt = c_txt.replace(/^.*▶ */mg, '');
         c_txt = c_txt.replace(/◉/mg, '<br/>');
-       // c_txt = c_txt.replace(/^.*▶/mg, ''); Ez volt
     }
-   
+    //c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
 
     var Vars = c_txt.match(/\§\§.*?\§\§[\n\r\f]*/g);
     var Vtex = "";
@@ -9457,7 +9514,13 @@ function prelatexjs(c_txt, mathjax) {
         for (let v of sVars) {
             var dek = v.split("=")
             if (dek.length > 1) {
-                nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
+                var d1 = dek[1]
+                if (/\|\|\d+/.test(d1) && d1.startsWith("[") && d1.endsWith("]")) {
+                    d1 = d1.slice(1, -1)
+                    var ddk = d1.split("||")
+                    d1 = getsorA(ddk[0], ddk[1] * 1)
+                };
+                nerdamer.setVar(dek[0].trim(), nerdamer(d1.trim()));
             } else if (dek[0].startsWith("Fgv(")) {
                 var tt = dek[0].slice(4, -1).trim();
                 var name = tt.split(",[")[0].toString();
@@ -9481,7 +9544,15 @@ function prelatexjs(c_txt, mathjax) {
     if (nerd) {
         for (let exp of nerd) {
             var exp0 = exp.slice(2, -2);
-            //console.log(exp0)
+            //console.log("exp0:", exp0)
+            var gyv = exp0.match(/\[(.*)(\|\|)\d+[^\[]\]/g);
+            if (gyv && gyv.length > 0) {
+                for (let bb of gyv) {
+                    const ddk = bb.slice(1, -1).split("||")
+                    var bbv = getsorA(ddk[0], ddk[1] * 1)
+                    exp0 = exp0.replaceAll(bb, bbv)
+                }
+            }
             const e = nerdamer(exp0);
             try {
                 var ltx = decForm(e.evaluateM().latex(nerd_numb));
@@ -9489,11 +9560,10 @@ function prelatexjs(c_txt, mathjax) {
                 console.log(error)
                 var ltx = e.evaluateM().latex(nerd_numb); //EZ VOLT EREDETILEG
             };
-
-            //console.log(ltx);
             if (typeof e.symbol.elements === "object" && ltx.startsWith("[") && ltx.endsWith("]"))
                 ltx = ltx.replaceAll("[", "\\left(").replaceAll("]", "\\right)")
             c_txt = c_txt.replaceAll(exp, ltx);
+
         }
     }
 
