@@ -113,6 +113,31 @@
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
+    function f(expr, valt, m, n) {
+        var vec = _.functions.vector[0](),
+            s = {},
+            j;
+        for (j = m; j < n + 1; j++) {
+            s[valt] = j;
+            var v1 = nerdamer(expr, s).evaluate();
+            vec.set(j - m, v1);
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'seqvarREGI',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
     function f(expr, valt, m, n, kibont) {
         var vec = _.functions.vector[0](),
             j;
@@ -239,9 +264,8 @@
         var vec = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().toString().slice(1, -1);
         if (nerdben)
             return nerdamer('TEMP(' + vec + ')');
-        else {
+        else
             return nerdamer(F + '(' + vec + ')');
-        }
     }
     nerdamer.register({
         name: 'Fseq',
@@ -258,8 +282,8 @@
         const spec = PartPolys.includes(F.toString());
         vec = vec.toString().slice(1, -1);
         if (spec) {
-            getsetZycFabFib(F.toString(), n, true);
-            console.log(F + '_' + n + '(' + vec + ')');
+            getsetZycFabFib(F.toString(), n, false);
+            //console.log(F + '_' + n + '(' + vec + ')');
             return nerdamer(F + '_' + n + '(' + vec + ')');
         } else {
             return nerdamer(F + '(' + vec + ')');
@@ -282,9 +306,8 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
 (function() {
     function f(F, expr, n) {
         if (PartPolys.includes(F.toString())) {
-            //prelatexjs('§' + F + '_' + n + '§', true); EZ VOLT A HIBA
             for (var i = 1; i <= n; i++)
-                getsetZycFabFib(F.toString(), i, true);
+                getsetZycFabFib(F.toString(), i, false);
             return nerdamer('Fseq(' + F + '_' + n + ',' + expr + ',' + n + ')');
         } else {
             var nerdben = true;
@@ -295,9 +318,9 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
             }
             if (nerdben)
                 return nerdamer('Fseq(TEMP,' + expr + ',' + n + ')');
-            else {
+            else
                 return nerdamer('Fseq(' + F + ',' + expr + ',' + n + ')');
-            }
+
         }
     };
     nerdamer.register({
@@ -360,12 +383,9 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
         fn1 = fn1.toString();
         fn2 = fn2.toString();
         n = n.toString() * 1;
-        /* prelatexjs('§' + fn1 + '_' + n + '§', true);
+        getsetZycFabFib(fn1, n, false);
         for (var k = 1; k <= n; k++)
-            prelatexjs('§' + fn2 + '_' + k + '§', true); */
-        getsetZycFabFib(fn1, n, true);
-        for (var k = 1; k <= n; k++)
-            getsetZycFabFib(fn2, k, true);
+            getsetZycFabFib(fn2, k, false);
 
         var com = fn1 + "_" + n + "(";
         for (var j = 1; j <= n; j++) {
@@ -398,12 +418,9 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
         fn1 = fn1.toString();
         fn2 = fn2.toString();
         n = n.toString() * 1;
-        //prelatexjs('§' + fn1 + '_' + n + '§', true);
-        //for (var k = 1; k <= n; k++)
-        //prelatexjs('§' + fn2 + '_' + k + '§', true);
-        getsetZycFabFib(fn1, n, true);
+        getsetZycFabFib(fn1, n, false);
         for (var k = 1; k <= n; k++)
-            getsetZycFabFib(fn2, k, true);
+            getsetZycFabFib(fn2, k, false);
 
         var com = fn1 + "_" + n + "(";
         for (var j = 1; j <= n; j++) {
@@ -468,15 +485,10 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
         fn2 = fn2.toString();
         fn3 = fn3.toString();
         n = n.toString() * 1;
-        /* prelatexjs('§' + fn1 + '_' + n + '§', true);
+        getsetZycFabFib(fn1, n, false);
         for (var k = 1; k <= n; k++) {
-            prelatexjs('§' + fn2 + '_' + k + '§', true);
-            prelatexjs('§' + fn3 + '_' + k + '§', true);
-        } */
-        getsetZycFabFib(fn1, n, true);
-        for (var k = 1; k <= n; k++) {
-            getsetZycFabFib(fn2, k, true);
-            getsetZycFabFib(fn3, k, true);
+            getsetZycFabFib(fn2, k, false);
+            getsetZycFabFib(fn3, k, false);
         };
 
         var com = fn1 + "_" + n + "(";
@@ -515,15 +527,10 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
         fn2 = fn2.toString();
         fn3 = fn3.toString();
         n = n.toString() * 1;
-        /* prelatexjs('§' + fn1 + '_' + n + '§', true);
+        getsetZycFabFib(fn1, n, false);
         for (var k = 1; k <= n; k++) {
-            prelatexjs('§' + fn2 + '_' + k + '§', true);
-            prelatexjs('§' + fn3 + '_' + k + '§', true);
-        } */
-        getsetZycFabFib(fn1, n, true);
-        for (var k = 1; k <= n; k++) {
-            getsetZycFabFib(fn2, k, true);
-            getsetZycFabFib(fn3, k, true);
+            getsetZycFabFib(fn2, k, false);
+            getsetZycFabFib(fn3, k, false);
         }
 
         var com = fn1 + "_" + n + "(";
@@ -595,17 +602,11 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
         fn3 = fn3.toString();
         fn4 = fn4.toString();
         n = n.toString() * 1;
-        /* prelatexjs('§' + fn1 + '_' + n + '§', true);
+        getsetZycFabFib(fn1.toString(), n, false);
         for (var k = 1; k <= n; k++) {
-            prelatexjs('§' + fn2 + '_' + k + '§', true);
-            prelatexjs('§' + fn3 + '_' + k + '§', true);
-            prelatexjs('§' + fn4 + '_' + k + '§', true);
-        } */
-        getsetZycFabFib(fn1.toString(), n, true);
-        for (var k = 1; k <= n; k++) {
-            getsetZycFabFib(fn2, k, true);
-            getsetZycFabFib(fn3, k, true);
-            getsetZycFabFib(fn4, k, true);
+            getsetZycFabFib(fn2, k, false);
+            getsetZycFabFib(fn3, k, false);
+            getsetZycFabFib(fn4, k, false);
         }
 
         var com = fn1 + "_" + n + "(";
@@ -646,17 +647,11 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
         fn3 = fn3.toString();
         fn4 = fn4.toString();
         n = n.toString() * 1;
-        /* prelatexjs('§' + fn1 + '_' + n + '§', true);
+        getsetZycFabFib(fn1, n, false);
         for (var k = 1; k <= n; k++) {
-            prelatexjs('§' + fn2 + '_' + k + '§', true);
-            prelatexjs('§' + fn3 + '_' + k + '§', true);
-            prelatexjs('§' + fn4 + '_' + k + '§', true);
-        } */
-        getsetZycFabFib(fn1, n, true);
-        for (var k = 1; k <= n; k++) {
-            getsetZycFabFib(fn2, k, true);
-            getsetZycFabFib(fn3, k, true);
-            getsetZycFabFib(fn4, k, true);
+            getsetZycFabFib(fn2, k, false);
+            getsetZycFabFib(fn3, k, false);
+            getsetZycFabFib(fn4, k, false);
         }
 
         var com = fn1 + "_" + n + "(";
