@@ -348,7 +348,8 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
                     tr = n;
             n = expr.elements.length;
             expr = nerdamer('vecget(' + expr + ', k - 1)');
-        } else if (F.toString().startsWith("Sti")) {
+        } 
+        if (F.toString().startsWith("Sti")) {
             var ve = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().toString().slice(1)
             ve = JSON.parse("[0," + ve);
             ve = evaluateCycleIndexSubstitution(n, ve)[1].slice(1);
