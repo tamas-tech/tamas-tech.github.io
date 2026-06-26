@@ -486,6 +486,7 @@ $(document).ready(function() {
             source: searchCmds
         });*/
     });
+    setCmTheme('one-dark');
 });
 
 
