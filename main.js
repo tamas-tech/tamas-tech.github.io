@@ -201,25 +201,6 @@ function calcTgl() {
 };
 
 function sampleTglOLD() {
-    //$('#sample-container').toggle(100);
-    $('.btn-open').toggleClass('shown');
-    var btn = $('.sample-open');
-    var txt = btn.html();
-    $('#sample-c').toggleClass('opened', 300);
-    if (txt == "❭") {
-        btn.html('&#x276C;');
-        setTimeout(() => {
-            document.querySelector('button.btn-open').scrollIntoView({
-                behavior: "smooth",
-            });
-        }, 300)
-    } else {
-        btn.html('&#x276D;');
-    }
-    $('#sample-container').toggle(100);
-};
-
-function sampleTgl() {
     $('.btn-open').toggleClass('shown');
     var btn = $('.sample-open');
     var txt = btn.html();
@@ -229,6 +210,51 @@ function sampleTgl() {
         setTimeout(() => {
             $('#sample-container').toggle(1200);
         }, 300);
+        setTimeout(() => {
+            document.querySelector('button.btn-open').scrollIntoView({
+                behavior: "smooth",
+            });
+        }, 1500);
+    } else {
+        btn.html('&#x276D;');
+        $('#sample-container').toggle(100);
+    }
+};
+
+function sampleTgl() {
+    //$('.btn-open').toggleClass('shown');
+    var btn = $('.sample-open');
+    var txt = btn.html();
+    //$('#sample-c').toggleClass('opened', 300);
+    var ww = 0;
+    if (window.innerHeight) {
+        ww = window.innerWidth - 26;
+    } else if (document.body.clientHeight) {
+        ww = document.body.clientWidth - 26;
+    } else if (document.documentElement.clientHeight) {
+        ww = document.documentElement.clientWidth - 26;
+    } else {
+        console.log("Régi böngésző");
+    }
+    if (!$('#sample-c').hasClass('opened')) {
+        $('#sample-c').animate({
+            width: ww
+        }, 700); //300
+        setTimeout(() => { $('.btn-open.first').toggleClass('shown') }, 700);
+    } else {
+        $('#sample-c').animate({
+            backgroundColor: "#aa0000",
+            color: "#fff",
+            width: 44
+        }, 700);
+        setTimeout(() => { $('.btn-open.first').toggleClass('shown') }, 100);
+    }
+    $('#sample-c').toggleClass('opened', 1500);
+    if (txt == "❭") {
+        btn.html('&#x276C;');
+        setTimeout(() => {
+            $('#sample-container').toggle(1200);
+        }, 700); //300
         setTimeout(() => {
             document.querySelector('button.btn-open').scrollIntoView({
                 behavior: "smooth",
