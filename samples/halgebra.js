@@ -7969,6 +7969,8 @@ function getsetZycFabFib(fn, n, get) {
         Sti(n);
     else if (fn == "Har")
         Har(n);
+    else if (fn == "Witt")
+        Witt(n);
     // }
     if (get) {
         if (neg)
@@ -8110,7 +8112,7 @@ function compZFF(fn1, fn2, n) {
         //txt += nerdamer("simplify(" + comp + ")").latex().replaceAll("\\cdot", "\\,");
         if (pentov)
             txt += compov(n);
-        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}").replaceAll("Pr", "\\boldsymbol{Pr}");
+        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}").replaceAll("Pr", "\\boldsymbol{Pr}").replaceAll("Witt", "\\boldsymbol{Witt}");
         txt += "\\end{gather*}";
         ZFibFab2Latex(txt);
     }, 10);
@@ -8580,7 +8582,7 @@ function hatasZFFr(fn, sor, n) {
         }
         if (pentov)
             txt += pentovfn(n);
-        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}").replaceAll("Pr", "\\boldsymbol{Pr}");
+        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}").replaceAll("Pr", "\\boldsymbol{Pr}").replaceAll("Witt", "\\boldsymbol{Witt}");
         ZFibFab2Latex(txt);
     }, 10);
 };
@@ -8657,7 +8659,7 @@ function hatasZFF(fn, sor, n) {
             txt += comp + "=" + nerdFormat(F3) //nerdKimenet(nerdamer(F3).toString());
         if (pentov)
             txt += pentovfn(n);
-        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}").replaceAll("Pr", "\\boldsymbol{Pr}");
+        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}").replaceAll("Pr", "\\boldsymbol{Pr}").replaceAll("Witt", "\\boldsymbol{Witt}");
         ZFibFab2Latex(txt);
     }, 10);
 };
@@ -10174,7 +10176,20 @@ function Har(n) {
     for (i = 1; i <= n; i++)
         vars.push('x_' + i);
     nerdamer.setFunction("Har_" + n, vars, divisorSum);
-    //return "Har_" + n + divisorSum;
+};
+
+function Witt(n) {
+    let divisorSum = "";
+    for (let d = 1; d <= n; d++) {
+        if (n % d === 0) {
+            divisorSum += "1/" + n + "mobius(" + n + "/" + d + ")*x_" + d + "+";
+        }
+    };
+    divisorSum = divisorSum.slice(0, -1);
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push('x_' + i);
+    nerdamer.setFunction("Witt_" + n, vars, divisorSum);
 };
 
 function masterTh() {
@@ -10310,4 +10325,21 @@ function pell(n) {
     }
 
     return current;
+};
+
+function mobius(n) {
+    if (n === 1) return 1;
+    let p = 0;
+    let tempN = n;
+
+    for (let i = 2; i * i <= tempN; i++) {
+        if (tempN % i === 0) {
+            p++;
+            tempN /= i;
+            if (tempN % i === 0) return 0;
+        }
+    }
+    if (tempN > 1) p++;
+
+    return (p % 2 === 0) ? 1 : -1;
 };
