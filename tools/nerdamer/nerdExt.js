@@ -252,20 +252,20 @@
 
 (function() {
     function f(F, expr, n) {
-        //console.log(F, expr, n)
         var nerdben = true;
         try {
-            nerdamer.setFunction('TEMP', F.variables(), F.symbol.value)
-                //console.log(n, F.variables())
+            nerdamer.setFunction('TEMP', F.variables(), F.symbol.value);
+            //console.log(n, F.variables())
         } catch {
             nerdben = false;
-        }
-        //console.log("nerdben:", nerdben)
+        };
+        // console.log("nerdben:", nerdben)
         var vec = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().toString().slice(1, -1);
         if (nerdben)
-            return nerdamer('TEMP(' + vec + ')');
-        else
-            return nerdamer(F + '(' + vec + ')');
+            return nerdamer('TEMP(' + vec + ')').evaluate().symbol;
+        else {
+            return nerdamer(F + '(' + vec + ')').evaluate().symbol;
+        }
     }
     nerdamer.register({
         name: 'Fseq',
@@ -342,6 +342,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         var vec = __.functions.vector[0](),
             j;
         if (expr.elements) {
+            console.log("EZ")
             if (n)
                 if (tr)
                     n = undefined;
@@ -789,7 +790,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
 
         } else
             var valt = nerdamer(expr).variables();
-        console.log(valt)
+        //console.log(valt)
         var mat = _.functions.matrix[0]();
         for (var i = 0; i < n; i++) {
             for (var j = 0; j < m; j++) {
