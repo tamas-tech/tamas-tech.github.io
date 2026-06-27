@@ -299,7 +299,7 @@
     });
 })();
 
-const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har"];
+const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Pr"];
 
 /// 1
 
