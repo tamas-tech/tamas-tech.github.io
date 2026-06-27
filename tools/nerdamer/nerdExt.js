@@ -349,7 +349,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Pr"];
                     tr = n;
             n = expr.elements.length;
             expr = nerdamer('vecget(' + expr + ', k - 1)');
-        } 
+        }
         if (F.toString().startsWith("Sti")) {
             var ve = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().toString().slice(1)
             ve = JSON.parse("[0," + ve);
@@ -795,7 +795,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Pr"];
             for (var j = 0; j < m; j++) {
                 var t = expr.sub(valt[0], i).sub(valt[1], j);
                 if (kibont)
-                    t = nerdamer('expand(' + t + ')').symbol;
+                    t = nerdamer('expand(' + t + ')').evaluate().symbol; //t = nerdamer('expand(' + t + ')').symbol;  volt
                 mat.set(i, j, t);
             }
         }
@@ -832,7 +832,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Pr"];
             for (var j = 0; j < m; j++) {
                 var t = expr.sub(valt, v[i][j]);
                 if (kibont)
-                    t = nerdamer('expand(' + t + ')').symbol;
+                    t = nerdamer('expand(' + t + ')').evaluate().symbol; //t = nerdamer('expand(' + t + ')').symbol;  volt
                 mat.set(i, j, t);
             }
         }
