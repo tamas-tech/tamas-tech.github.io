@@ -9533,15 +9533,15 @@ function prelatexjs(c_txt, mathjax) {
                 nerdamer.setVar(dek[0].trim(), nerdamer(d1.trim()));
             } else if (dek[0].startsWith("Fgv(")) {
                 var tt = dek[0].slice(4, -1).trim();
-                var name = tt.split(",[")[0].toString();
-                var expr = tt.split("],")[1].toString();
+                var name = tt.split(/\, *\[/)[0].toString().trim();
+                var expr = tt.split(/\] *\,/)[1].toString().trim();
                 var valt = JSON.parse(tt.match(/\[.*\]/)[0].replace(/(\w_?\d*)/g, "\"$1\""));
                 nerdamer.setFunction(name, valt, expr);
             } else if (dek[0].startsWith("fgv(")) {
                 var tt = dek[0].slice(4, -1).trim();
                 var zz = tt.split(":");
-                var name = zz[0].toString();
-                var expr = zz[1].toString();
+                var name = zz[0].toString().trim();
+                var expr = zz[1].toString().trim();
                 var valt = nerdamer(expr).variables();
                 nerdamer.setFunction(name, valt, expr);
             }
