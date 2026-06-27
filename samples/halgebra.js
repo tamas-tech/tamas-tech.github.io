@@ -7368,7 +7368,7 @@ $(document).ready(function() {
             const ch = document.getElementById("cinput");
             const chn = document.getElementById("nerdkod");
             const cinp = document.getElementById("pentcinput");
-            if (ch &&!ch.checked)
+            if (ch && !ch.checked)
                 ch.click();
             if (chn && !chn.checked)
                 chn.click();
@@ -7929,6 +7929,13 @@ function Fib(n) {
     nerdamer.setFunction("Fib_" + n, vars, parts);
 };
 
+function Pr(n) {
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push('x_' + i);
+    nerdamer.setFunction("Pr_" + n, vars, "x_" + n);
+};
+
 function getsetZycFabFib(fn, n, get) {
     /*  nerdamer.flush();
      nerdamer.clearVars(); */
@@ -7950,6 +7957,8 @@ function getsetZycFabFib(fn, n, get) {
     //if (n == 1 || nerdamer(str).variables().length == 0) {
     if (fn == "Zyc")
         Zyc(n);
+    else if (fn == "Pr")
+        Pr(n);
     else if (fn == "Fab")
         Fab(n);
     else if (fn == "Luc")
@@ -8101,7 +8110,7 @@ function compZFF(fn1, fn2, n) {
         //txt += nerdamer("simplify(" + comp + ")").latex().replaceAll("\\cdot", "\\,");
         if (pentov)
             txt += compov(n);
-        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
+        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}").replaceAll("Pr", "\\boldsymbol{Pr}");
         txt += "\\end{gather*}";
         ZFibFab2Latex(txt);
     }, 10);
@@ -8162,6 +8171,7 @@ function getsora(n) {
             return false;
         }
     } else {
+        console.log(vars)
         a_txt = a_txt.trim();
         var p = a_txt.indexOf("...");
         if (p > -1) {
@@ -8570,7 +8580,7 @@ function hatasZFFr(fn, sor, n) {
         }
         if (pentov)
             txt += pentovfn(n);
-        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
+        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}").replaceAll("Pr", "\\boldsymbol{Pr}");
         ZFibFab2Latex(txt);
     }, 10);
 };
@@ -8647,7 +8657,7 @@ function hatasZFF(fn, sor, n) {
             txt += comp + "=" + nerdFormat(F3) //nerdKimenet(nerdamer(F3).toString());
         if (pentov)
             txt += pentovfn(n);
-        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}");
+        txt = txt.replaceAll("Luc", "\\boldsymbol{Luc}").replaceAll("Fab", "\\boldsymbol{Fab}").replaceAll("Fib", "\\boldsymbol{Fib}").replaceAll("Zyc", "\\boldsymbol{Zyc}").replaceAll("Pr", "\\boldsymbol{Pr}");
         ZFibFab2Latex(txt);
     }, 10);
 };
@@ -9470,7 +9480,7 @@ function prelatexjs(c_txt, mathjax) {
     if (c_txt == "")
         c_txt = "A bemenet üres."
     nerdamer.clearVars();
-    const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+)/g));
+    const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+|Pr_\d+)/g));
     if (ppolys.length > 0)
         for (let v of ppolys) {
             var L = v.split("_");
@@ -10233,6 +10243,23 @@ function masterTh() {
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem1]);
     if (reszl)
         MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem2]);
+    if (document.querySelector(".loader") != undefined)
+        setTimeout(() => { elem1.removeChild(document.querySelector(".loader")); }, 0);
+};
+
+
+function masterThRovid() {
+    const n = document.getElementById("mthn").value * 1;
+    const A = [0, ...makeMthvec(n)];
+    console.log(A)
+    const out = evaluateCycleIndexSubstitution(n, A);
+    const elem1 = document.querySelector("#mthout");
+    const bo = "\\left(" + out[1].slice(1) + "\\right)";
+    var txt12 = "\\[" + bo + " \\]";
+
+
+    elem1.innerHTML = txt12;
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem1]);
     if (document.querySelector(".loader") != undefined)
         setTimeout(() => { elem1.removeChild(document.querySelector(".loader")); }, 0);
 };
