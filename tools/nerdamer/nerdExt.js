@@ -280,6 +280,7 @@
 (function() {
     function f(F, vec) {
         const spec = PartPolys.includes(F.toString());
+        const n = vec.elements.length;
         vec = vec.toString().slice(1, -1);
         if (spec) {
             getsetZycFabFib(F.toString(), n, false);
