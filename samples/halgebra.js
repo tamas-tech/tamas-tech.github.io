@@ -9436,6 +9436,7 @@ function getsorA(a_txt, n) {
                     const N = Math.ceil(n / L);
                     a_txt += ",";
                     var aa_txt = a_txt.repeat(N);
+                    aa_txt = JSON.parse("[" + aa_txt.slice(0, -1) + "]").splice(0, n).toString();
                 } else {
                     const last = _.last(a_txt.split(","));
                     var aa_txt = a_txt + ("," + last).repeat(n - L);
@@ -9482,7 +9483,7 @@ function prelatexjs(c_txt, mathjax) {
     if (c_txt == "")
         c_txt = "A bemenet üres."
     nerdamer.clearVars();
-    const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+|Pr_\d+)/g));
+    const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+|Witt_\d+|Pr_\d+)/g));
     if (ppolys.length > 0)
         for (let v of ppolys) {
             var L = v.split("_");
@@ -9546,6 +9547,13 @@ function prelatexjs(c_txt, mathjax) {
                 var expr = zz[1].toString().trim();
                 var valt = nerdamer(expr).variables();
                 nerdamer.setFunction(name, valt, expr);
+            } else if (dek[0].startsWith("compSor")) {
+                var vv = dek[0].slice(8, -1).split(',');
+                var npp = vv[3] * 1
+                vv = vv.slice(0, -1)
+                    //console.log(...vv, npp)
+                for (var j = 1; j <= npp; j++)
+                    ppcomp(...vv, j)
             }
         };
     };
@@ -9564,7 +9572,7 @@ function prelatexjs(c_txt, mathjax) {
                     var bbv = getsorA(ddk[0], ddk[1] * 1)
                     exp0 = exp0.replaceAll(bb, bbv)
                 }
-            }
+            };
             const e = nerdamer(exp0);
             try {
                 var ltx = decForm(e.evaluateM().latex(nerd_numb));
@@ -9585,6 +9593,27 @@ function prelatexjs(c_txt, mathjax) {
     };
     c_txt = c_txt.replaceAll("vmatrix", "pmatrix");
     return c_txt;
+};
+
+function ppcomp(fn1, fn2, F, n) {
+    //console.log(fn1, fn2, F, n)
+    getsetZycFabFib(fn1, n, false);
+    for (var k = 1; k <= n; k++)
+        getsetZycFabFib(fn2, k, false);
+
+    var com = fn1 + "_" + n + "(";
+    for (var j = 1; j <= n; j++) {
+        com += fn2 + "_" + j + "(";
+        for (var i = 1; i <= j; i++) {
+            com += "x_" + i + ",";
+        }
+        com = com.slice(0, -1) + "),"
+    };
+    com = com.slice(0, -1) + ")";
+    var txt = nerdamer("expand(" + com + ")");
+    if (!PartPolys.includes(F))
+        PartPolys.push(F);
+    nerdamer.setFunction(F.toString() + '_' + n, txt.variables(), txt.toString());
 };
 
 function updLatexJS(c_txt) {
@@ -10182,7 +10211,7 @@ function Witt(n) {
     let divisorSum = "";
     for (let d = 1; d <= n; d++) {
         if (n % d === 0) {
-            divisorSum += "1/" + n + "mobius(" + n + "/" + d + ")*x_" + d + "+";
+            divisorSum += "1/" + n + "*mobius(" + n + "/" + d + ")*x_" + d + "+";
         }
     };
     divisorSum = divisorSum.slice(0, -1);
@@ -10327,7 +10356,7 @@ function pell(n) {
     return current;
 };
 
-function mobius(n) {
+function mobiusjs(n) {
     if (n === 1) return 1;
     let p = 0;
     let tempN = n;
