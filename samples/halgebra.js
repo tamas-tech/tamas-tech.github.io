@@ -10372,3 +10372,31 @@ function mobiusjs(n) {
 
     return (p % 2 === 0) ? 1 : -1;
 };
+
+// Global cache to avoid redundant recursive calculations (Memoization)
+const tauCache = new Map();
+tauCache.set(1, 1); // Base case: tau(1) = 1
+
+
+function rtau(k) {
+    let kBig = k;
+    if (kBig <= 0) throw new Error("Input must be a positive integer.");
+
+    if (tauCache.has(kBig)) {
+        return tauCache.get(kBig);
+    }
+
+    let sum = 0;
+    let limit = kBig - 1;
+
+    for (let j = 1; j <= limit; j++) {
+        let sig = sigma_val(Number(j));
+        let prevTau = rtau(Number(kBig - j));
+        sum += sig * prevTau;
+    }
+
+    let result = (-24 * sum) / limit;
+
+    tauCache.set(kBig, result);
+    return result;
+};
