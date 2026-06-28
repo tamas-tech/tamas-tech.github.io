@@ -188,16 +188,17 @@
     function f(expr, vec, kibont) {
         if (_.functions[expr]) {
             var fn = _.functions[expr]['2'];
-            var valt = fn.params[0],
+            var valt = fn.params.filter(y => y != '__')[0],
                 expr = nerdamer(fn.body).symbol;
 
         } else
-            var valt = nerdamer(expr).variables()[0];
+            var valt = nerdamer(expr).variables().filter(y => y != '__')[0];
+        console.log(valt)
         var v = vec.elements,
             n = v.length,
             j;
         for (j = 0; j < n; j++) {
-            var v1 = expr.sub(valt, v[j]);
+            var v1 = expr.sub(valt, v[j]).sub('__', j + 1);
             if (kibont)
                 v1 = nerdamer('expand(' + v1 + ')').symbol;
             vec.set(j, v1);
@@ -222,17 +223,17 @@
     function f(expr, k, vec, kibont) {
         if (_.functions[expr]) {
             var fn = _.functions[expr]['2'];
-            var valt = fn.params[k - 1],
+            var valt = fn.params.filter(y => y != '__')[k - 1],
                 expr = nerdamer(fn.body).symbol;
 
         } else
-            var valt = nerdamer(expr).variables()[k - 1];
+            var valt = nerdamer(expr).variables().filter(y => y != '__')[k - 1];
 
         var v = vec.elements,
             n = v.length,
             j;
         for (j = 0; j < n; j++) {
-            var v1 = expr.sub(valt, v[j]);
+            var v1 = expr.sub(valt, v[j]).sub('__', j + 1);
             if (kibont)
                 v1 = nerdamer('expand(' + v1 + ')').symbol;
             vec.set(j, v1);
