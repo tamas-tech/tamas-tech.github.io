@@ -367,7 +367,8 @@ const autodictC = [
     { key: "partició part aritmetik nerd", value: "part({c})", tag: "p(n)" },
     { key: "partició partM aritmetik nerd", value: "partM({c},)", tag: "p<sub>m</sub>(n)" },
     { key: "pell aritmetik nerd", value: "pell({c})", tag: "pell(n)" },
-    { key: "eulertotient tau aritmetik nerd", value: "phi({c})", tag: "&phi;(n)" },
+    { key: "eulertotient aritmetik nerd", value: "phi({c})", tag: "&phi;(n)" },
+    { key: "mobius aritmetik nerd", value: "mobius({c})", tag: "&mu;(n)" },
     { key: "mahonian aritmetik nerd", value: "mahonian({c},)", tag: "mahonian(n,m)" },
     { key: "binomial aritmetik nerd", value: "binomial({c},)", tag: "binomial(n,m)" },
     //  Nerdamer többv polinomok
@@ -379,6 +380,7 @@ const autodictC = [
     { key: "Lucn part többvált polinom nerd", value: "Luc_{c}(,,)", tag: "Luc_n(x<sub>1</sub>,..)" },
     { key: "Stin part többvált polinom nerd", value: "Sti_{c}(,,)", tag: "Sti_n(x<sub>1</sub>,..)" },
     { key: "Harn part többvált polinom nerd", value: "Har_{c}(,,)", tag: "Har_n(x<sub>1</sub>,..)" },
+    { key: "Wittn part többvált polinom nerd", value: "Witt_{c}(,,)", tag: "Witt_n(x<sub>1</sub>,..)" },
     { key: "comp2összetéosition2 part többvált polinom nerd", value: "comp2({c},,)", tag: "comp2(F1,F2,n)" },
     { key: "comp3összetéosition3 part többvált polinom nerd", value: "comp3({c},,,)", tag: "comp3(F1,F2,F3,n)" },
     { key: "comp4összetéosition4 part többvált polinom nerd", value: "comp4({c},,,,)", tag: "comp4(F1,..,F4,n)" },
@@ -443,6 +445,9 @@ const autodictC = [
     { key: "maátrixsetmatmegad nerd", value: "matset({c},,)", tag: "matset(<b>A</b>,i,j)" },
     { key: "maátrix Toeplitz nerd ", value: " matToeplitz([{c},,])", tag: " matToeplitz(<b>v</b>)" },
     // Nerdamer Vector
+    { key: "[gyorsvecktor nerd", value: "[,||{c}]", tag: "[a_1, a_2,||n]" },
+    { key: "[gyorsvecktor... nerd", value: "[,,...||{c}]", tag: "[a_1,a_2,... ||n]" },
+    { key: "[gyorsvecktor...f nerd", value: "[,...f(k)||{c}]", tag: "[a_1,a_2,...f(k) ||n]" },
     { key: "vecktor nerd", value: "vector({c},,)", tag: "vector(,,)" },
     { key: "ivecktor nerd", value: "ivector({c},)", tag: "ivector(dim,k)" },
     { key: "seq vecktork nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
