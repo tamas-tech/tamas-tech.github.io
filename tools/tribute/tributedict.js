@@ -364,6 +364,7 @@ const autodictC = [
     { key: "osztókösszege sigma aritmetik nerd", value: "sigma({c})", tag: "&sigma;(n)" },
     { key: "osztókösszegeM sigmaM aritmetik nerd", value: "sigmaM({c},)", tag: "&sigma;<sub>m</sub>(n)" },
     { key: "osztókszáma tau aritmetik nerd", value: "tau({c})", tag: "&tau;(n)" },
+    { key: "Ramanujan rtau aritmetik nerd", value: "rtau({c})", tag: "rtau(n)" },
     { key: "partició part aritmetik nerd", value: "part({c})", tag: "p(n)" },
     { key: "partició partM aritmetik nerd", value: "partM({c},)", tag: "p<sub>m</sub>(n)" },
     { key: "pell aritmetik nerd", value: "pell({c})", tag: "pell(n)" },
