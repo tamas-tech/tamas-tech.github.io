@@ -193,7 +193,6 @@
 
         } else
             var valt = nerdamer(expr).variables().filter(y => y != '__')[0];
-        console.log(valt)
         var v = vec.elements,
             n = v.length,
             j;
