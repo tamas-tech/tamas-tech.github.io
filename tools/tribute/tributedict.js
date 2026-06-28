@@ -384,6 +384,7 @@ const autodictC = [
     { key: "comp2összetéosition2 part többvált polinom nerd", value: "comp2({c},,)", tag: "comp2(F1,F2,n)" },
     { key: "comp3összetéosition3 part többvált polinom nerd", value: "comp3({c},,,)", tag: "comp3(F1,F2,F3,n)" },
     { key: "comp4összetéosition4 part többvált polinom nerd", value: "comp4({c},,,,)", tag: "comp4(F1,..,F4,n)" },
+    { key: "compSorösszetéosition2 part többvált polinom nerd", value: "compSor({c},,,)", tag: "compSor(F1,F2,Név,n)" },
     // Nerdamer math functions
     { key: "gyöksqrt mathfncüggvény nerd", value: "sqrt({c})", tag: "sqrt(x)=√x" },
     { key: "dirichletZ mathfncüggvény nerd", value: "dirichletZ({c},)", tag: "dirichletZ(n_<sub>0</sub>,n)" },
