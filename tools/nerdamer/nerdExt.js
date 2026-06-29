@@ -320,6 +320,9 @@
 })();
 
 (function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
     function f(F, vec) {
         const spec = PartPolys.includes(F.toString());
         const n = vec.elements.length;
@@ -327,6 +330,8 @@
         if (spec) {
             getsetZycFabFib(F.toString(), n, false);
             //console.log(F + '_' + n + '(' + vec + ')');
+            return nerdamer(F + '_' + n + '(' + vec + ')');
+        } else if (_.functions[F.toString() + '_' + n]) {
             return nerdamer(F + '_' + n + '(' + vec + ')');
         } else {
             return nerdamer(F + '(' + vec + ')');
@@ -347,10 +352,15 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
 /// 1
 
 (function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
     function f(F, expr, n) {
         if (PartPolys.includes(F.toString())) {
             for (var i = 1; i <= n; i++)
                 getsetZycFabFib(F.toString(), i, false);
+            return nerdamer('Fseq(' + F + '_' + n + ',' + expr + ',' + n + ')');
+        } else if (_.functions[F.toString() + '_' + n]) {
             return nerdamer('Fseq(' + F + '_' + n + ',' + expr + ',' + n + ')');
         } else {
             var nerdben = true;
@@ -426,9 +436,11 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         fn1 = fn1.toString();
         fn2 = fn2.toString();
         n = n.toString() * 1;
-        getsetZycFabFib(fn1, n, false);
-        for (var k = 1; k <= n; k++)
-            getsetZycFabFib(fn2, k, false);
+        if (PartPolys.includes(fn1))
+            getsetZycFabFib(fn1, n, false);
+        if (PartPolys.includes(fn2))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn2, k, false);
 
         var com = fn1 + "_" + n + "(";
         for (var j = 1; j <= n; j++) {
@@ -461,9 +473,11 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         fn1 = fn1.toString();
         fn2 = fn2.toString();
         n = n.toString() * 1;
-        getsetZycFabFib(fn1, n, false);
-        for (var k = 1; k <= n; k++)
-            getsetZycFabFib(fn2, k, false);
+        if (PartPolys.includes(fn1))
+            getsetZycFabFib(fn1, n, false);
+        if (PartPolys.includes(fn2))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn2, k, false);
 
         var com = fn1 + "_" + n + "(";
         for (var j = 1; j <= n; j++) {
@@ -528,11 +542,15 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         fn2 = fn2.toString();
         fn3 = fn3.toString();
         n = n.toString() * 1;
-        getsetZycFabFib(fn1, n, false);
-        for (var k = 1; k <= n; k++) {
-            getsetZycFabFib(fn2, k, false);
-            getsetZycFabFib(fn3, k, false);
-        };
+        if (PartPolys.includes(fn1))
+            getsetZycFabFib(fn1, n, false);
+        if (PartPolys.includes(fn2))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn2, k, false);
+
+        if (PartPolys.includes(fn3))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn3, k, false);
 
         var com = fn1 + "_" + n + "(";
         for (var k = 1; k <= n; k++) {
@@ -570,11 +588,14 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         fn2 = fn2.toString();
         fn3 = fn3.toString();
         n = n.toString() * 1;
-        getsetZycFabFib(fn1, n, false);
-        for (var k = 1; k <= n; k++) {
-            getsetZycFabFib(fn2, k, false);
-            getsetZycFabFib(fn3, k, false);
-        }
+        if (PartPolys.includes(fn1))
+            getsetZycFabFib(fn1, n, false);
+        if (PartPolys.includes(fn2))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn2, k, false);
+        if (PartPolys.includes(fn3))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn3, k, false);
 
         var com = fn1 + "_" + n + "(";
         for (var k = 1; k <= n; k++) {
@@ -645,12 +666,18 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         fn3 = fn3.toString();
         fn4 = fn4.toString();
         n = n.toString() * 1;
-        getsetZycFabFib(fn1.toString(), n, false);
-        for (var k = 1; k <= n; k++) {
-            getsetZycFabFib(fn2, k, false);
-            getsetZycFabFib(fn3, k, false);
-            getsetZycFabFib(fn4, k, false);
-        }
+        if (PartPolys.includes(fn1))
+            getsetZycFabFib(fn1.toString(), n, false);
+        if (PartPolys.includes(fn2))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn2, k, false);
+        if (PartPolys.includes(fn3))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn3, k, false);
+        if (PartPolys.includes(fn4))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn4, k, false);
+
 
         var com = fn1 + "_" + n + "(";
         for (var L = 1; L <= n; L++) {
@@ -690,12 +717,17 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         fn3 = fn3.toString();
         fn4 = fn4.toString();
         n = n.toString() * 1;
-        getsetZycFabFib(fn1, n, false);
-        for (var k = 1; k <= n; k++) {
-            getsetZycFabFib(fn2, k, false);
-            getsetZycFabFib(fn3, k, false);
-            getsetZycFabFib(fn4, k, false);
-        }
+        if (PartPolys.includes(fn1))
+            getsetZycFabFib(fn1, n, false);
+        if (PartPolys.includes(fn2))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn2, k, false);
+        if (PartPolys.includes(fn3))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn3, k, false);
+        if (PartPolys.includes(fn4))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn4, k, false);
 
         var com = fn1 + "_" + n + "(";
         for (var L = 1; L <= n; L++) {
@@ -1059,22 +1091,3 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         }
     });
 })();
-
-/*  KACATOK
-(function() {
-    var core = nerdamer.getCore(),
-        _ = core.PARSER;
-
-    function f(name, valt, expr) {
-        //console.log(name.value, valt.elements.map(y => y.value), expr.value)
-        nerdamer.setFunction(name.value, valt.elements.map(y => y.value), expr.value);
-    }
-    nerdamer.register({
-        name: 'Fgvvv',
-        visible: true,
-        numargs: 3,
-        build: function() {
-            return f;
-        }
-    });
-})(); */
