@@ -9612,7 +9612,6 @@ function ppcomp(fn1, fn2, F, n) {
         com = com.slice(0, -1) + "),"
     };
     com = com.slice(0, -1) + ")";
-    console.log(xs)
     var txt = nerdamer("expand(" + com + ")");
     if (!PartPolys.includes(F))
         PartPolys.push(F);
