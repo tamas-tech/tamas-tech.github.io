@@ -9596,10 +9596,11 @@ function prelatexjs(c_txt, mathjax) {
 };
 
 function ppcomp(fn1, fn2, F, n) {
-    //console.log(fn1, fn2, F, n)
-    getsetZycFabFib(fn1, n, false);
-    for (var k = 1; k <= n; k++)
-        getsetZycFabFib(fn2, k, false);
+    if (PartPolys.includes(fn1))
+        getsetZycFabFib(fn1, n, false);
+    if (PartPolys.includes(fn2))
+        for (var k = 1; k <= n; k++)
+            getsetZycFabFib(fn2, k, false);
     var xs = [];
     var com = fn1 + "_" + n + "(";
     for (var j = 1; j <= n; j++) {
@@ -9613,8 +9614,6 @@ function ppcomp(fn1, fn2, F, n) {
     };
     com = com.slice(0, -1) + ")";
     var txt = nerdamer("expand(" + com + ")");
-    if (!PartPolys.includes(F))
-        PartPolys.push(F);
     nerdamer.setFunction(F.toString() + '_' + n, xs, txt.toString());
 };
 
