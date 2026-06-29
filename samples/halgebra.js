@@ -9600,20 +9600,23 @@ function ppcomp(fn1, fn2, F, n) {
     getsetZycFabFib(fn1, n, false);
     for (var k = 1; k <= n; k++)
         getsetZycFabFib(fn2, k, false);
-
+    var xs = [];
     var com = fn1 + "_" + n + "(";
     for (var j = 1; j <= n; j++) {
+        xs = [];
         com += fn2 + "_" + j + "(";
         for (var i = 1; i <= j; i++) {
             com += "x_" + i + ",";
+            xs.push("x_" + i);
         }
         com = com.slice(0, -1) + "),"
     };
     com = com.slice(0, -1) + ")";
+    console.log(xs)
     var txt = nerdamer("expand(" + com + ")");
     if (!PartPolys.includes(F))
         PartPolys.push(F);
-    nerdamer.setFunction(F.toString() + '_' + n, txt.variables(), txt.toString());
+    nerdamer.setFunction(F.toString() + '_' + n, xs, txt.toString());
 };
 
 function updLatexJS(c_txt) {
