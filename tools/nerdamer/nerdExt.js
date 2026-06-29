@@ -80,6 +80,48 @@
 })();
 
 (function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(F, n) {
+        var elojel = "";
+        var FP = F.toString();
+        if (FP.startsWith('-')) {
+            FP = FP.slice(1);
+            elojel = "-"
+        }
+
+        if (PartPolys.includes(FP.toString())) {
+            for (var i = 1; i <= n; i++)
+                getsetZycFabFib(FP, i, false);
+        };
+        var mat = _.functions.matrix[0](),
+            valt = "",
+            j;
+        for (j = 1; j < n + 1; j++) {
+            valt += "x_" + j
+            var nev = FP + "_" + j;
+            var v1 = nerdamer(nev + "(" + valt + ")").evaluate().symbol;
+            mat.set(j - 1, 0, nev);
+            mat.set(j - 1, 1, v1);
+            valt += ","
+        };
+        if (elojel == "-")
+            return nerdamer(elojel + mat)
+        else
+            return mat;
+    }
+    nerdamer.register({
+        name: 'seqSor',
+        visible: true,
+        numargs: 2,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
     function f(n, k) {
         var vec = nerdamer('rect(' + n + '-' + k + ')');
         return vec;
@@ -321,7 +363,6 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
                 return nerdamer('Fseq(TEMP,' + expr + ',' + n + ')');
             else
                 return nerdamer('Fseq(' + F + ',' + expr + ',' + n + ')');
-
         }
     };
     nerdamer.register({
@@ -342,7 +383,6 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         var vec = __.functions.vector[0](),
             j;
         if (expr.elements) {
-            console.log("EZ")
             if (n)
                 if (tr)
                     n = undefined;
@@ -352,8 +392,8 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
             expr = nerdamer('vecget(' + expr + ', k - 1)');
         }
         if (F.toString().startsWith("Sti")) {
-            var ve = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().toString().slice(1)
-            ve = JSON.parse("[0," + ve);
+            var ve = nerdamer('seq(' + expr + ',1,' + n + ')').evaluate().symbol.elements;
+            ve.unshift(0);
             ve = evaluateCycleIndexSubstitution(n, ve)[1].slice(1);
             for (j = 0; j < n; j++) {
                 vec.set(j, ve[j]);
