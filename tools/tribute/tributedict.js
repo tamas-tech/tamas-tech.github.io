@@ -467,7 +467,9 @@ const autodictC = [
     { key: "vecktor setmatmegad nerd", value: "vecset({c},)", tag: "vecset(<b>v</b>,i)" },
     // Nerdamer Calculus
     { key: "sumősszeg calculusanalízis nerd", value: "sum(f{c},k,a,b)", tag: "&sum;<sub>k=a..b</sub>f(..,k)" },
-    { key: "prodszorzat calculusanalízis nerd", value: "prod(f{c},k,a,b)", tag: "&prod;<sub>k=a..b</sub>f(..,k)" },
+    { key: "Sumősszeg calculusanalízis nerd", value: "Sum(f{c},k,a,b)", tag: "&sum;<sub>k=a..b</sub>f<sub>k</sub>(..,x)" },
+    { key: "prodszorzat calculusanalízis nerd", value: "product(f{c},k,a,b)", tag: "&prod;<sub>k=a..b</sub>f(..,k)" },
+     { key: "Prodszorzat calculusanalízis nerd", value: "Product(f{c},k,a,b)", tag: "&prod;<sub>k=a..b</sub>f<sub>k</sub>(..,x)" },
     { key: "truncprodszorzat calculusanalízis nerd", value: "truncprod(f{c},g,[n])", tag: "f&nbsp;&bullet;<sub>n</sub>&nbsp;g" },
     { key: "limithatárérték calculusanalízis nerd", value: "limit(f{c},x,a)", tag: "lim<sub>x&rightarrow;a</sub>f(x)" },
     { key: "diffderivált calculusanalízis nerd", value: "diff(f{c},x,n)", tag: "&part;<sup style='vertical-align:0.7em;'>(n)</sup><sub style='margin-left:-1.1em;margin-right:0.7em;'>x</sub>f(x,..)" },
