@@ -10446,7 +10446,8 @@ function PPoly(name, valt, n) {
 };
 
 function makePPolyn(name, x, n, expr, b) {
-    setCfgv(name, n, expr, b);
+    if (expr != 'def')
+        setCfgv(name, n, expr, b);
     nerdamer(PPoly(name, x, n));
 };
 
