@@ -9480,6 +9480,14 @@ function getsorA(a_txt, n) {
     }
 };
 
+function sorra(valt, a, b) {
+    var sor = ""
+    for (var k = a; k <= b; k++)
+        sor += valt + "_" + k + ",";
+    sor = sor.slice(0, -1);
+    return sor;
+};
+
 function prelatexjs(c_txt, mathjax) {
     if (c_txt == "")
         c_txt = "A bemenet üres."
@@ -9494,6 +9502,7 @@ function prelatexjs(c_txt, mathjax) {
         c_txt = c_txt.replace(/^\#.*[\n\r\f]+/mg, '');
         c_txt = c_txt.replace(/^.*▶ */mg, '');
         c_txt = c_txt.replace(/◉/mg, '<br/>');
+        c_txt = c_txt.replaceAll(/(\w+)\_(\d+)\.\.(\d+)/mg, function(m, p1, p2, p3) { return sorra(p1, p2, p3) });
     }
     //c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
 
@@ -9538,7 +9547,8 @@ function prelatexjs(c_txt, mathjax) {
             } else if (dek[0].startsWith("Fgv(")) {
                 var tt = dek[0].slice(4, -1).trim();
                 var name = tt.split(/\, *\[/)[0].toString().trim();
-                var expr = tt.split(/\] *\,/)[1].toString().trim();
+                var expr = nerdamer(tt.split(/\] *\,/)[1].toString().trim()).toString();
+                console.log(expr)
                 var valt = JSON.parse(tt.match(/\[.*\]/)[0].replace(/(\w_?\d*)/g, "\"$1\""));
                 nerdamer.setFunction(name, valt, expr);
             } else if (dek[0].startsWith("fgv(")) {
