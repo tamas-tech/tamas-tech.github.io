@@ -95,11 +95,12 @@
             for (var i = 1; i <= n; i++)
                 getsetZycFabFib(FP, i, false);
         };
+        const pars = _.functions[FP + "_" + n][2].params;
         var mat = _.functions.matrix[0](),
             valt = "",
             j;
         for (j = 1; j < n + 1; j++) {
-            valt += "x_" + j
+            valt += pars[j - 1];
             var nev = FP + "_" + j;
             var v1 = nerdamer(nev + "(" + valt + ")").evaluate().symbol;
             mat.set(j - 1, 0, nev);
