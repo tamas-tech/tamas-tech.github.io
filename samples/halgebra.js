@@ -7914,6 +7914,7 @@ function formFib(data) {
         str += "x_" + value + "^" + key + "*"
     });
     var t = Math.pow(-1, sf) * factorial(sf);
+    //var t = factorial(sf);      EZ a szakirodalmi Fib
     str = t + "/" + c + "*" + str;
     str = str.slice(0, -1);
     return str;
@@ -9551,9 +9552,15 @@ function prelatexjs(c_txt, mathjax) {
                 var vv = dek[0].slice(8, -1).split(',');
                 var npp = vv[3] * 1
                 vv = vv.slice(0, -1)
-                    //console.log(...vv, npp)
                 for (var j = 1; j <= npp; j++)
                     ppcomp(...vv, j)
+            } else if (dek[0].startsWith("makeSor")) {
+                var vv = dek[0].slice(8, -1).split(',');
+                var ww = vv.splice(0, 3)
+                ww.push(vv.slice(0, -1).join(','));
+                ww.push(_.last(vv));
+                //console.log(ww)
+                makePPolys(...ww);
             }
         };
     };
@@ -9596,6 +9603,7 @@ function prelatexjs(c_txt, mathjax) {
 };
 
 function ppcomp(fn1, fn2, F, n) {
+    //console.log(fn1, fn2, F, n)
     if (PartPolys.includes(fn1))
         getsetZycFabFib(fn1, n, false);
     if (PartPolys.includes(fn2))
@@ -9614,6 +9622,8 @@ function ppcomp(fn1, fn2, F, n) {
     };
     com = com.slice(0, -1) + ")";
     var txt = nerdamer("expand(" + com + ")");
+    //if (!PartPolys.includes(F))
+    //    PartPolys.push(F);
     nerdamer.setFunction(F.toString() + '_' + n, xs, txt.toString());
 };
 
@@ -10400,4 +10410,47 @@ function rtau(k) {
 
     tauCache.set(kBig, result);
     return result;
+};
+
+// General Partition Polynomials
+
+function setCfgv(name, n, expr, b) {
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push(b + '_' + i);
+    expr = expr.replaceAll('n', n)
+    var expre = nerdamer(expr).evaluate().toString();
+    nerdamer.setFunction(name + "_C_" + n, vars, expre);
+};
+
+function ppolyC(data, name, valt, n) {
+    var monom = "";
+    var v = Array(n).fill(0);
+    _.forEach(data, function(key, value) {
+        v[value - 1] = key;
+        monom += valt + "_" + value + "^" + key + "*";
+    });
+    monom = monom.slice(0, -1);
+    var monom = name + "_C_" + n + "(" + v.toString() + ")*" + monom;
+    return monom;
+};
+
+function PPoly(name, valt, n) {
+    var vars = [];
+    for (i = 1; i <= n; i++)
+        vars.push(valt + '_' + i);
+    var parts = part(n);
+    parts = parts.map(y => _.countBy(y));
+    parts = parts.map(y => ppolyC(y, name, valt, n)).join(" + ");
+    nerdamer.setFunction(name + "_" + n, vars, parts);
+};
+
+function makePPolyn(name, x, n, expr, b) {
+    setCfgv(name, n, expr, b);
+    nerdamer(PPoly(name, x, n));
+};
+
+function makePPolys(name, x, n, expr, b) {
+    for (var i = 1; i <= n; i++)
+        makePPolyn(name, x, i, expr, b)
 };
