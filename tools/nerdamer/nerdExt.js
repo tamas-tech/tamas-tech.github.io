@@ -57,6 +57,8 @@
         _ = core.PARSER;
 
     function f(expr, m, n) {
+        m = nerdamer(m).evaluate().valueOf();
+        n = nerdamer(n).evaluate().valueOf();
         var vec = _.functions.vector[0](),
             valt = nerdamer(expr).variables()[0],
             s = {},
@@ -84,6 +86,7 @@
         _ = core.PARSER;
 
     function f(F, n) {
+        n = nerdamer(n).evaluate().valueOf();
         var elojel = "";
         var FP = F.toString();
         if (FP.startsWith('-')) {
@@ -182,6 +185,8 @@
         _ = core.PARSER;
 
     function f(expr, valt, m, n, kibont) {
+        m = nerdamer(m).evaluate().valueOf();
+        n = nerdamer(n).evaluate().valueOf();
         var vec = _.functions.vector[0](),
             j;
         var pat = new RegExp('(\\w*_' + valt + ')', 'g');
@@ -391,6 +396,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         __ = core.PARSER;
 
     function f(F, expr, n, tr) {
+        n = nerdamer(n).evaluate().valueOf();
         var vec = __.functions.vector[0](),
             j;
         if (expr.elements) {
@@ -504,6 +510,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         _ = core.PARSER;
 
     function f(F1, F2, expr, n, tr) {
+        n = nerdamer(n).evaluate().valueOf();
         var vec = _.functions.vector[0](),
             j;
         if (expr.elements) {
@@ -627,6 +634,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         _ = core.PARSER;
 
     function f(F1, F2, F3, expr, n, tr) {
+        n = nerdamer(n).evaluate().valueOf();
         var vec = _.functions.vector[0](),
             j;
         if (expr.elements) {
@@ -762,6 +770,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         _ = core.PARSER;
 
     function f(F1, F2, F3, F4, expr, n, tr) {
+        n = nerdamer(n).evaluate().valueOf();
         var vec = _.functions.vector[0](),
             j;
         if (expr.elements) {
@@ -827,12 +836,12 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
             for (var j = 0; j < L; j++) {
                 if (pos == "L") {
                     if (i >= j)
-                        mat.set(i, j, e[i - j].toString() * 1);
+                        mat.set(i, j, e[i - j].toString());
                     else
                         mat.set(i, j, 0);
                 } else {
                     if (i <= j)
-                        mat.set(i, j, e[j - i].toString() * 1);
+                        mat.set(i, j, e[j - i].toString());
                     else
                         mat.set(i, j, 0);
                 }
