@@ -442,8 +442,8 @@ const autodictC = [
     { key: "sizeméretdim maátrix nerd", value: "size({c})", tag: "méret" },
     { key: "maátrix getrowsorlekér nerd ", value: "matgetrow({c},)", tag: "matgetrow(<b>A</b>,i)" },
     { key: "maátrix getcoloszloplekér nerd", value: "matgetcol({c},)", tag: "matgetcol(<b>A</b>,i)" },
-    { key: "maátrix setrowsormegad nerd", value: "matsetrow({c},)", tag: "matsetrow(<b>A</b>,i)" },
-    { key: "maátrix setcoloszlopmegad nerd", value: "matsetcol({c},)", tag: "matsetcol(<b>A</b>,i)" },
+    { key: "maátrix setrowsormegad nerd", value: "matsetrow({c},,)", tag: "matsetrow(<b>A</b>,i,<b>s</b>)" },
+    { key: "maátrix setcoloszlopmegad nerd", value: "matsetcol({c},,)", tag: "matsetcol(<b>A</b>,i,<b>o</b>)" }
     { key: "maátrix getlekér nerd", value: "matget({c},,)", tag: "matget(<b>A</b>,i,j)" },
     { key: "maátrixsetmatmegad nerd", value: "matset({c},,)", tag: "matset(<b>A</b>,i,j)" },
     { key: "maátrix Toeplitz nerd ", value: " matToeplitz([{c},,])", tag: " matToeplitz(<b>v</b>)" },
