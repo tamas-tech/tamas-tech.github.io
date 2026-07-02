@@ -387,6 +387,7 @@ const autodictC = [
     { key: "comp4összetéosition4 part többvált polinom nerd", value: "comp4({c},,,,)", tag: "comp4(F1,..,F4,n)" },
     { key: "compSorösszetéosition2 part többvált polinom nerd", value: "compSor({c},,,)", tag: "compSor(F1,F2,Név,n)" },
     { key: "makeSor part többvált polinom nerd", value: "makeSor({c},,,,)", tag: "makeSor(F,x,n,C,b)" },
+
     // Nerdamer math functions
     { key: "gyöksqrt mathfncüggvény nerd", value: "sqrt({c})", tag: "sqrt(x)=√x" },
     { key: "dirichletZ mathfncüggvény nerd", value: "dirichletZ({c},)", tag: "dirichletZ(n_<sub>0</sub>,n)" },
@@ -443,7 +444,7 @@ const autodictC = [
     { key: "maátrix getrowsorlekér nerd ", value: "matgetrow({c},)", tag: "matgetrow(<b>A</b>,i)" },
     { key: "maátrix getcoloszloplekér nerd", value: "matgetcol({c},)", tag: "matgetcol(<b>A</b>,i)" },
     { key: "maátrix setrowsormegad nerd", value: "matsetrow({c},,)", tag: "matsetrow(<b>A</b>,i,<b>s</b>)" },
-    { key: "maátrix setcoloszlopmegad nerd", value: "matsetcol({c},,)", tag: "matsetcol(<b>A</b>,i,<b>o</b>)" }
+    { key: "maátrix setcoloszlopmegad nerd", value: "matsetcol({c},,)", tag: "matsetcol(<b>A</b>,i,<b>o</b>)" },
     { key: "maátrix getlekér nerd", value: "matget({c},,)", tag: "matget(<b>A</b>,i,j)" },
     { key: "maátrixsetmatmegad nerd", value: "matset({c},,)", tag: "matset(<b>A</b>,i,j)" },
     { key: "maátrix Toeplitz nerd ", value: " matToeplitz([{c},,])", tag: " matToeplitz(<b>v</b>)" },
@@ -469,7 +470,7 @@ const autodictC = [
     { key: "sumősszeg calculusanalízis nerd", value: "sum(f{c},k,a,b)", tag: "&sum;<sub>k=a..b</sub>f(..,k)" },
     { key: "Sumősszeg calculusanalízis nerd", value: "Sum(f{c},k,a,b)", tag: "&sum;<sub>k=a..b</sub>f<sub>k</sub>(..,x)" },
     { key: "prodszorzat calculusanalízis nerd", value: "product(f{c},k,a,b)", tag: "&prod;<sub>k=a..b</sub>f(..,k)" },
-     { key: "Prodszorzat calculusanalízis nerd", value: "Product(f{c},k,a,b)", tag: "&prod;<sub>k=a..b</sub>f<sub>k</sub>(..,x)" },
+    { key: "Prodszorzat calculusanalízis nerd", value: "Product(f{c},k,a,b)", tag: "&prod;<sub>k=a..b</sub>f<sub>k</sub>(..,x)" },
     { key: "truncprodszorzat calculusanalízis nerd", value: "truncprod(f{c},g,[n])", tag: "f&nbsp;&bullet;<sub>n</sub>&nbsp;g" },
     { key: "limithatárérték calculusanalízis nerd", value: "limit(f{c},x,a)", tag: "lim<sub>x&rightarrow;a</sub>f(x)" },
     { key: "diffderivált calculusanalízis nerd", value: "diff(f{c},x,n)", tag: "&part;<sup style='vertical-align:0.7em;'>(n)</sup><sub style='margin-left:-1.1em;margin-right:0.7em;'>x</sub>f(x,..)" },
