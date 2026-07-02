@@ -385,7 +385,8 @@ const autodictC = [
     { key: "comp2összetéosition2 part többvált polinom nerd", value: "comp2({c},,)", tag: "comp2(F1,F2,n)" },
     { key: "comp3összetéosition3 part többvált polinom nerd", value: "comp3({c},,,)", tag: "comp3(F1,F2,F3,n)" },
     { key: "comp4összetéosition4 part többvált polinom nerd", value: "comp4({c},,,,)", tag: "comp4(F1,..,F4,n)" },
-    { key: "compSorösszetéosition2 part többvált polinom nerd", value: "compSor({c},,,)", tag: "compSor(F1,F2,Név,n)" },
+    { key: "seqSor part többvált polinom nerd", value: "seqSor({c},)", tag: "seqSor(F,n)" },
+    { key: "compSorösszetéosition part többvált polinom nerd", value: "compSor({c},,,)", tag: "compSor(F1,F2,Név,n)" },
     { key: "makeSor part többvált polinom nerd", value: "makeSor({c},,,,)", tag: "makeSor(F,x,n,C,b)" },
 
     // Nerdamer math functions
