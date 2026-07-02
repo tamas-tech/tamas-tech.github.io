@@ -865,6 +865,8 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         _ = core.PARSER;
 
     function f(n, m, expr, kibont) {
+        n = nerdamer(n).evaluate().valueOf();
+        m = nerdamer(m).evaluate().valueOf();
         if (_.functions[expr]) {
             var fn = _.functions[expr]['2'];
             var valt = fn.params,
