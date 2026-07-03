@@ -456,6 +456,7 @@ const autodictC = [
     { key: "vecktor nerd", value: "vector({c},,)", tag: "vector(,,)" },
     { key: "ivecktor nerd", value: "ivector({c},)", tag: "ivector(dim,k)" },
     { key: "seq vecktork nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
+    { key: "randseq véletlenvecktork nerd", value: "randseq({c},,)", tag: "randseq(min,max,db)" },
     { key: "Fvec vecktork nerd", value: "Fvec({c},)", tag: "Fvec(F,vec)" },
     { key: "seqvar vecktor nerd", value: "seqvar({c},,,?)", tag: "seqvar(f(k,.),k,a,b,[exp])" },
     { key: "map vecktork nerd", value: "map({c},,?)", tag: "map(f,vec,[exp])" },
