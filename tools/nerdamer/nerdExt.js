@@ -85,6 +85,32 @@
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
+    function f(min, max, L) {
+        min = nerdamer(min).evaluate().valueOf();
+        max = nerdamer(max).evaluate().valueOf();
+        const d = max - min + 1;
+        var vec = _.functions.vector[0](),
+            j;
+        for (j = 0; j < L; j++) {
+            var v1 = Math.floor(Math.random() * d + min);
+            vec.set(j, v1);
+        }
+        return vec;
+    }
+    nerdamer.register({
+        name: 'randseq',
+        visible: true,
+        numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
     function f(F, n) {
         n = nerdamer(n).evaluate().valueOf();
         var elojel = "";
