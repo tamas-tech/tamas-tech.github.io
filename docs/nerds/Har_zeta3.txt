@@ -1,0 +1,45 @@
+# Stílus
+▶ <style>p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} #pentout span.hezag {width:50px;display:inline-block;} #pentout span.magy {font-size:90%;opacity:0.8;color:blue} #pentout a {font-family:monospace;}</style> 
+
+#Állítható paraméter
+§!n=40§
+
+#Számított változók
+§a=seq(2*k-1,1,n)§
+§egy=seq(1,1,n)§
+§z=hatas1(Har,a)§
+§z3=3/(2*n^3)*dot(z,egy)§
+
+
+#Dokumentum
+▶( A nerdamer számításokat érdemes 'tizedes' beállítások mellett elvégeztetni.)
+▶<h1>$\zeta(3)$ közelítése</h1>
+▶Maple-ben kiszámítottuk  $\zeta(3)$ értékét 30 tizedesjegyig: $\zeta(3)\approx 1.20205690315959428539973816151$◉
+▶Megnézzük $\boldsymbol{Har}$ hatását a páratlan számokon: $\boldsymbol{Har}\triangleright (2k-1)\longrightarrow$ <a href="https://oeis.org/search?fmt=json|text&q=id:A278945" target="_blank" rel="noopener noreferrer">OEIS: A278945</a>◉
+▶$$\boldsymbol{Har}\triangleright<<seq(2*k-1,1,15)>>=<<hatas1(Har,seq(2*k-1,1,15))>>$$
+Az <code>OEIS:A278945</code> lapon a <code>FORMULA</code> szakasz utolsó bejegyzése: <code style="color:#0800ff;">Sum_{k=1..n} a(k) ~ (2*zeta(3)/3) * n^3. - Amiram Eldar, Dec 29 2024</code>;◉
+▶Vagyis, ha $a(k)$ jelöli a kapott sor k-adik elemét, akkor $$\sum_{k=1}^{n}a(k)\sim\frac{2 n^{3}}{3}\zeta(3),$$ amit átrendezhetünk $$\frac{3}{2 n^{3}}\sum_{k=1}^{n}a(k)\sim\zeta(3)$$ alakba. A közelítő összeg kiszámítását az alábbi kóddal oldottuk meg:
+<pre style="border: 1px solid #d0c84e;padding: 5px 10px;background-color: #ffff0021;">
+<code>
+&num;Állítható paraméter◉
+&sect;!n=12&sect;<span class="hezag"></span><span class="magy">&lt;-- 'n' néven definiáltuk az egyetlen állítható paramétert. (Akár 100 feletti értékkel is futtatható.)</span>◉
+◉
+&num;Számított változók◉
+&sect;a=seq(2*k-1,1,n)&sect; <span class="hezag"></span><span class="magy">&lt;-- 'a' néven definiáltuk a páratlan számok (1,3,...,2*n-1) vektorát.</span>◉
+&sect;egy=seq(1,1,n)&sect;<span class="hezag"></span><span class="magy">&lt;-- 'egy' néven definiáltuk az n hosszú (1,1,...,1) összegző vektort.</span>◉
+&sect;z=hatas1(Har,a)&sect;<span class="hezag"></span><span class="magy">&lt;-- 'z' néven definiáltuk Har-nak az a-n vett hatásával kapott vektort.</span>◉
+&sect;z3=3/(2*n^3)*dot(z,egy)&sect;<span class="hezag"></span><span class="magy">&lt;-- az 'a'-nak az 'egy'-gyel vett skalárisszorzata(dot),◉ megszorozva még a 3/(2*n^3) törttel megadja a 'z3' néven definíált keresett összeget.</span>◉
+◉
+$$&lt;&lt;z3&gt;&gt;$$<span class="hezag"></span><span class="magy">&lt;-- kiszámíttatjuk, és MathJax-szal kiszedve írattatjuk ki a 'z3' összeget.</span>◉
+</code>
+</pre>
+
+$$<<z>>$$▶
+$$<<egy>>$$▶
+Az $n=<<n>>$ értékkel kapott közelítő összeg:<span class="hezag"></span> $\displaystyle{\frac{3}{2\cdot<<n>>^{3}}\sum_{k=1}^{<<n>>}a(k)=<<z3>>}$◉
+A relatív hiba értéke:<span class="hezag"></span>$$\Delta\approx <<round(100*(z3-1.202056903)/1.202056903,2)>>\%$$
+Persze a fent közölt kód helyett még számtalan más kód is írható. Az alábbi például egyetlen sorból áll:◉
+<pre style="border: 1px solid #d0c84e;padding: 5px 10px;background-color: #ffff0021;">
+<code>$$&lt;&lt;3/(2*n^3)*dot(hatas1(Har,&lbrack;1,...(2*k-1)||n&rbrack;),&lbrack;1,...||n&rbrack;)&gt;&gt;$$</code></pre>
+$$<<3/(2*n^3)*dot(hatas1(Har,[1,...(2*k-1)||n]),[1,...||n])>>$$▶
+Az ilyen megoldások nem javasoltak, mert egyre nehezebb párosítani a zárojeleket, illeve bizonytalanabb, hogy a nerdamer minden változót kiértékel.
