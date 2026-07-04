@@ -1,0 +1,46 @@
+# Stílus
+▶ <style>p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} #pentout span.hezag {width:50px;display:inline-block;} #pentout span.magy {font-size:90%;opacity:0.8;color:blue} #pentout a {font-family:monospace;}</style> 
+
+#Állítható paraméter
+§!n=12§
+
+#Számított változók
+§a=seq(k*phi(k),1,n)§
+§egy=seq(1,1,n)§
+§z=hatas1(Har,a)§
+§p2=60/(n^4)*dot(z,egy)§
+
+
+#Dokumentum
+▶( A nerdamer számításokat érdemes 'tizedes' beállítások mellett elvégeztetni.)
+▶<h1>$\pi^{2}$ közelítése</h1>
+▶Maple-ben kiszámítottuk  $\pi^{2}$ értékét 30 tizedesjegyig: $\pi^{2}\approx 9.86960440108935861883449099988$◉
+▶Megnézzük $\boldsymbol{Har}$ hatását a $k\cdot\varphi(k)$ számokon: $\boldsymbol{Har}\triangleright k\cdot\varphi(k)\longrightarrow$ <a href="https://oeis.org/search?fmt=json|text&q=id:A068963" target="_blank" rel="noopener noreferrer">OEIS: A068963</a>◉
+▶$$\boldsymbol{Har}\triangleright<<seq(k*phi(k),1,15)>>=<<hatas1(Har,seq(k*phi(k),1,15))>>$$
+▶Az <code>OEIS:A068963</code> lapon az első néhány sorból az is kiderül, hogy $$a(n)=\sum_{d|n}\varphi(d^{3})=\sum_{d|n}d\cdot\varphi(d^{2})=\sum_{d|n}d^{2}\cdot\varphi(d)=\sum_{k=1}^{n}\left(\frac{n}{(n,k)}\right)^{2}=\sum_{k=1}^{n}\left(\frac{[n,k]}{k}\right)^{2},$$ ahol $(n,k)$, illetve $[n,k]$ rendre az $n$ és $k$ számok legnagyobb közös osztóját, illetve legkisebb közös többszörösét jelöli.◉
+▶A <code>FORMULA</code> szakasz utolsó bejegyzése:<span class="hezag"></span> <code style="color:#0800ff;">Sum_{k=1..n} a(k) ~ Pi^2 * n^4 / 60. - Vaclav Kotesovec, Aug 20 2021</code>;◉
+▶Vagyis, ha $a(k)$ jelöli a kapott sor k-adik elemét, akkor $$\sum_{k=1}^{n}a(k)\sim\frac{\pi^{2}\cdot n^{4}}{60},$$ amit átrendezhetünk $$\frac{60}{n^{4}}\sum_{k=1}^{n}a(k)\sim\pi^{2}$$ alakba. A közelítő összeg kiszámítását az alábbi kóddal oldottuk meg:
+<pre style="border: 1px solid #d0c84e;padding: 5px 10px;background-color: #ffff0021;">
+<code>
+&num;Állítható paraméter◉
+&sect;!n=12&sect;<span class="hezag"></span><span class="magy">&lt;-- 'n' néven definiáltuk az egyetlen állítható paramétert. (Akár 100 feletti értékkel is futtatható.)</span>◉
+◉
+&num;Számított változók◉
+&sect;a=seq(k*phi(k),1,n)&sect; <span class="hezag"></span><span class="magy">&lt;-- 'a' néven definiáltuk a  (1*phi(1),2*phi(2),...,n*phi(n)) vektort.</span>◉
+&sect;egy=seq(1,1,n)&sect;<span class="hezag"></span><span class="magy">&lt;-- 'egy' néven definiáltuk az n hosszú (1,1,...,1) összegző vektort.</span>◉
+&sect;z=hatas1(Har,a)&sect;<span class="hezag"></span><span class="magy">&lt;-- 'z' néven definiáltuk Har-nak az a-n vett hatásával kapott vektort.</span>◉
+&sect;p2=60/n^*dot(z,egy)&sect;<span class="hezag"></span><span class="magy">&lt;-- az 'a'-nak az 'egy'-gyel vett skalárisszorzata(dot),◉ megszorozva még a 60/n^4 törttel megadja a 'p2' néven definíált keresett összeget.</span>◉
+◉
+$$&lt;&lt;p2&gt;&gt;$$<span class="hezag"></span><span class="magy">&lt;-- kiszámíttatjuk, és MathJax-szal kiszedve írattatjuk ki a 'p2' összeget.</span>◉
+</code>
+</pre>
+
+$$<<z>>$$▶
+$$<<egy>>$$▶
+Az $n=<<n>>$ értékkel a kapott közelítő összeg:<span class="hezag"></span> $\displaystyle{\frac{60}{<<n>>^{4}}\sum_{k=1}^{<<n>>}a(k)=<<p2>>}$◉
+A relatív hiba értéke:<span class="hezag"></span>$$\Delta\approx <<round(100*(p2-9.86960440108936)/9.86960440108936,2)>>\%$$
+Persze a fent közölt kód helyett még számtalan más kód is írható. Az alábbi például egyetlen sorból áll:◉
+<pre style="border: 1px solid #d0c84e;padding: 5px 10px;background-color: #ffff0021;">
+<code>$$&lt;&lt;3/(2*n^3)*dot(hatas1(Har,&lbrack;1,...(2*k-1)||n&rbrack;),&lbrack;1,...||n&rbrack;)&gt;&gt;$$</code></pre>
+$$<<60/n^3*dot(hatas1(Har,[1,...(k*phi(k))||n]),[1,...||n])>>$$▶
+Az ilyen megoldások nem javasoltak, mert egyre nehezebb párosítani a zárojeleket, illeve bizonytalanabb, hogy a nerdamer minden változót kiértékel.
