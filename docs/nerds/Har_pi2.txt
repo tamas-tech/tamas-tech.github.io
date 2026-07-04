@@ -41,6 +41,6 @@ Az $n=<<n>>$ értékkel a kapott közelítő összeg:<span class="hezag"></span>
 A relatív hiba értéke:<span class="hezag"></span>$$\Delta\approx <<round(100*(p2-9.86960440108936)/9.86960440108936,2)>>\%$$
 Persze a fent közölt kód helyett még számtalan más kód is írható. Az alábbi például egyetlen sorból áll:◉
 <pre style="border: 1px solid #d0c84e;padding: 5px 10px;background-color: #ffff0021;">
-<code>$$&lt;&lt;3/(2*n^3)*dot(hatas1(Har,&lbrack;1,...(2*k-1)||n&rbrack;),&lbrack;1,...||n&rbrack;)&gt;&gt;$$</code></pre>
-$$<<60/n^3*dot(hatas1(Har,[1,...(k*phi(k))||n]),[1,...||n])>>$$▶
+<code>$$&lt;&lt;60/n^4*dot(hatas1(Har,&lbrack;1,...(k*phi(k)||n&rbrack;),&lbrack;1,...||n&rbrack;)&gt;&gt;$$</code></pre>
+$$<<60/n^4*dot(hatas1(Har,[1,...(k*phi(k))||n]),[1,...||n])>>$$▶
 Az ilyen megoldások nem javasoltak, mert egyre nehezebb párosítani a zárojeleket, illeve bizonytalanabb, hogy a nerdamer minden változót kiértékel.
