@@ -142,7 +142,7 @@
             return mat;
     }
     nerdamer.register({
-        name: 'seqSor',
+        name: 'showTPS',
         visible: true,
         numargs: 2,
         build: function() {
