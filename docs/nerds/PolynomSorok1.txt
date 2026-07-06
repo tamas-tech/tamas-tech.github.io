@@ -1,7 +1,7 @@
 ▶ <style>p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} #pentout .sp {display:inline-block;width:2em;} #pentout .spd {display:inline-block;width:5em;} #pentout a {font-family:monospace;} #pentout code.kek {color: #0000a8;background-color: #afaffb21;padding: 2px 5px;border: 1px solid #0000ff26;border-radius: 4px;} #pentout div.def {border:1px solid #00000024;padding:5px 10px;margin:10px 0;background-color:#95959524;}</style>
 
 ▶<H2>Trianguláris polinomsorok</H3>
-▶<div class="def"><b>Definíció: </b>Egy $\mathbf{F}:= F_1(x_1),\;F_2(x_1,x_2),\;F_3(x_1,x_2,x_3),\ldots,F_n(x_1,x_2,\ldots,x_n),\ldots$ polinomsort <em><b>trianguláris</b></em> polinomsornak nevezünk.◉
+▶<div class="def"><b>Definíció: </b>Egy $\mathbf{F}:= \left(F_1(x_1),\;F_2(x_1,x_2),\;F_3(x_1,x_2,x_3),\ldots,F_n(x_1,x_2,\ldots,x_n),\ldots\right)$ polinomsort <em><b>trianguláris</b></em> polinomsornak nevezünk.◉
 ▶Az $\mathbf{F}$ trianguláris polinomsor <em><b>lineáris</b></em>, ha  $F_n(x_1,x_2,\ldots,x_n)=A_{n,1}\,x_1+A_{n,2}\,x_2+A_{n,3}\,x_3+\cdots+A_{n,n}\,x_n$ $(n=1,2,3,\ldots)$. A lineáris ◉
 ▶trianguláris polinomsorok az alábbi  mátrixos felírás szerint$$
 \begin{vmatrix}
