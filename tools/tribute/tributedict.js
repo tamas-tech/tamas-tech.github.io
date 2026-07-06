@@ -385,9 +385,9 @@ const autodictC = [
     { key: "comp2összetéosition2 part többvált polinom nerd", value: "comp2({c},,)", tag: "comp2(F1,F2,n)" },
     { key: "comp3összetéosition3 part többvált polinom nerd", value: "comp3({c},,,)", tag: "comp3(F1,F2,F3,n)" },
     { key: "comp4összetéosition4 part többvált polinom nerd", value: "comp4({c},,,,)", tag: "comp4(F1,..,F4,n)" },
-    { key: "seqSor part többvált polinom nerd", value: "seqSor({c},)", tag: "seqSor(F,n)" },
-    { key: "compSorösszetéosition part többvált polinom nerd", value: "compSor({c},,,)", tag: "compSor(F1,F2,Név,n)" },
-    { key: "makeSor part többvált polinom nerd", value: "makeSor({c},,,,)", tag: "makeSor(F,x,n,C,b)" },
+    { key: "shoWTPS part többvált polinom nerd", value: "shoWTPS({c},)", tag: "shoWTPS(F,n)" },
+    { key: "compTPSösszetéosition2 part többvált polinom nerd", value: "compTPS({c},,,)", tag: "compTPS(F1,F2,Név,n)" },
+    { key: "makePPS part többvált polinom nerd", value: "makePPS({c},,,,)", tag: "makePPS(F,x,n,C,b)" },
 
     // Nerdamer math functions
     { key: "gyöksqrt mathfncüggvény nerd", value: "sqrt({c})", tag: "sqrt(x)=√x" },
