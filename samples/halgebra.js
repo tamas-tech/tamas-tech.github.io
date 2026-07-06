@@ -10490,6 +10490,7 @@ function makePPolyn(name, x, n, expr, b) {
 };
 
 function makePPolys(name, x, n, expr, b) {
+    n = nerdamer(n).evaluate().valueOf();
     for (var i = 1; i <= n; i++)
         makePPolyn(name, x, i, expr, b)
 };
