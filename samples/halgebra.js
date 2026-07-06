@@ -10507,7 +10507,7 @@ function makePPTtext(F, n) {
         valt += pars[j - 1];
         var nev = F + "_" + j;
         var v1 = nerdamer(nev + "(" + valt + ")").evaluate().symbol;
-        txt += "§Fgv(" + nev + ",[" + valt + "]," + v1 + ")§\n";
+        txt += nev + " ▶ §Fgv(" + nev + ",[" + valt + "]," + v1 + ")§\n";
         valt += ","
     };
     txt = txt.replaceAll("C", " C");
