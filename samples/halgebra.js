@@ -8174,7 +8174,7 @@ function getsora(n) {
             return false;
         }
     } else {
-        console.log(vars)
+        //console.log(vars)
         a_txt = a_txt.trim();
         var p = a_txt.indexOf("...");
         if (p > -1) {
@@ -9585,13 +9585,13 @@ function prelatexjs(c_txt, mathjax) {
                 var expr = zz[1].toString().trim();
                 var valt = nerdamer(expr).variables();
                 nerdamer.setFunction(name, valt, expr);
-            } else if (dek[0].startsWith("compSor")) {
+            } else if (dek[0].startsWith("compTPS")) {
                 var vv = dek[0].slice(8, -1).split(',');
                 var npp = vv[3] * 1
                 vv = vv.slice(0, -1)
                 for (var j = 1; j <= npp; j++)
                     ppcomp(...vv, j)
-            } else if (dek[0].startsWith("makeSor")) {
+            } else if (dek[0].startsWith("makePPS")) {
                 var vv = dek[0].slice(8, -1).split(',');
                 var ww = vv.splice(0, 3)
                 ww.push(vv.slice(0, -1).join(','));
@@ -9641,9 +9641,10 @@ function prelatexjs(c_txt, mathjax) {
 
 function ppcomp(fn1, fn2, F, n) {
     //console.log(fn1, fn2, F, n)
-    if (PartPolys.includes(fn1))
+
+    if (PartPolys.includes(fn1.replaceAll("-", "")))
         getsetZycFabFib(fn1, n, false);
-    if (PartPolys.includes(fn2))
+    if (PartPolys.includes(fn2.replaceAll("-", "")))
         for (var k = 1; k <= n; k++)
             getsetZycFabFib(fn2, k, false);
     var xs = [];
@@ -10343,7 +10344,7 @@ function masterTh() {
 function masterThRovid() {
     const n = document.getElementById("mthn").value * 1;
     const A = [0, ...makeMthvec(n)];
-    console.log(A)
+    //console.log(A)
     const out = evaluateCycleIndexSubstitution(n, A);
     const elem1 = document.querySelector("#mthout");
     const bo = "\\left(" + out[1].slice(1) + "\\right)";
@@ -10491,4 +10492,35 @@ function makePPolyn(name, x, n, expr, b) {
 function makePPolys(name, x, n, expr, b) {
     for (var i = 1; i <= n; i++)
         makePPolyn(name, x, i, expr, b)
+};
+
+function makePPTtext(F, n) {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    n = nerdamer(n).evaluate().valueOf();
+    const pars = _.functions[F + "_" + n][2].params;
+    var txt = "",
+        valt = "",
+        j;
+    for (j = 1; j < n + 1; j++) {
+        valt += pars[j - 1];
+        var nev = F + "_" + j;
+        var v1 = nerdamer(nev + "(" + valt + ")").evaluate().symbol;
+        txt += "§Fgv(" + nev + ",[" + valt + "]," + v1 + ")§\n";
+        valt += ","
+    };
+    txt = txt.replaceAll("C", " C");
+    txt = "#-----------PPs beillesztés: név:" + F + "  n = " + n + "------------\n" + txt;
+    txt += "#-------------------------------------------------\n"
+    return txt;
+};
+
+function insertPPT() {
+    const name = document.getElementById("pptname").value.trim();
+    const n = document.getElementById("pptdeg").value * 1;
+
+    makePPolys(name, "x", n, "C", "b");
+    var txt = makePPTtext(name, n);
+    beTextbe(txt);
 };
