@@ -1,0 +1,107 @@
+▶ <style>p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} #pentout .sp {display:inline-block;width:2em;} #pentout .spd {display:inline-block;width:5em;} #pentout a {font-family:monospace;} #pentout code.kek {color: #0000a8;background-color: #afaffb21;padding: 2px 5px;border: 1px solid #0000ff26;border-radius: 4px;} #pentout div.def {border:1px solid #00000024;padding:5px 10px;margin:10px 0;background-color:#95959524;}</style>
+
+▶<H2>Trianguláris polinomsorok</H3>
+▶<div class="def"><b>Definíció: </b>Egy $\mathbf{F}:= F_1(x_1),\;F_2(x_1,x_2),\;F_3(x_1,x_2,x_3),\ldots,F_n(x_1,x_2,\ldots,x_n),\ldots$ polinomsort <em><b>trianguláris</b></em> polinomsornak nevezünk.◉
+▶Az $\mathbf{F}$ trianguláris polinomsor <em><b>lineáris</b></em>, ha  $F_n(x_1,x_2,\ldots,x_n)=A_{n,1}\,x_1+A_{n,2}\,x_2+A_{n,3}\,x_3+\cdots+A_{n,n}\,x_n$ $(n=1,2,3,\ldots)$. A lineáris ◉
+▶trianguláris polinomsorok az alábbi  mátrixos felírás szerint$$
+\begin{vmatrix}
+F_1(x_1)\\
+F_2(x_1,x_2)\\
+F_3(x_1,x_2,x_3)\\
+\vdots\\
+F_{n-1}(x_1,x_2,\ldots,x_{n-1})\\
+F_n(x_1,x_2,x_3,\ldots,x_n)\\
+\vdots
+\end{vmatrix}=
+\begin{vmatrix}
+A_{1,1} & 0 &0 &\cdots & 0 & 0 & \ldots\\
+A_{2,1} & A_{2,2} & 0 &\cdots & 0 & 0 & \ldots\\
+A_{3,1} & A_{3,2} & A_{3,3} &\cdots & 0 & 0 & \ldots\\
+\vdots & \vdots & \vdots &\ddots & \vdots & \vdots & \ldots\\
+A_{n-1,1} & A_{n-1,2} & A_{n-1,3} &\cdots & A_{n-1,n-1} & 0 & \ldots\\
+A_{n,1} & A_{n,2} & A_{n,3} &\cdots & A_{n,n-1} & A_{n,n} & \ldots\\
+\vdots & \vdots & \vdots & \ldots & \vdots & \vdots & \ddots
+\end{vmatrix}\cdot
+\begin{vmatrix}x_1\\x_2\\x_3\\\vdots\\x_{n-1}\\x_n\\\vdots\end{vmatrix}
+$$mindig jellemezhetők egy alsó háromszög mátrixszal. Egy $\mathbf{F}$ trianguláris polinomsor <em><b>partíció polinomsor</b></em>, ha tetszőleges $n$-re◉
+▶az $F_n(x_1,x_2,x_3,\ldots,x_n)$ polinom minden monomja $\displaystyle{x_{a_1}^{b_1}x_{a_2}^{b_2}\cdots x_{a_k}^{b_k}}$ alakú, ahol ${a_1}b_1+{a_2}b_2\cdots{a_k}b_k=n$, vagyis ${a_1}^{b_1}{a_2}^{b_2} \ldots {a_k}^{b_k}\vdash n$.◉
+▶$\mathbf{Pr}$ jelöli azt a lineáris polinomsort, amelyre $\mathbf{Pr}_n=Pr_n(x_1,x_2,x_3,\ldots,x_n):=x_n$ $(n=1,2,3,\ldots)$. A $\mathbf{Pr}$ polinomsorra az <em><b>identitás</b></em>, illetve◉
+▶<em><b>projekció</b></em> polinomsor elnevezést felváltva fogjuk használni. A $\mathbf{Pr}$ identitás polinomsorhoz tartozó alsó háromszögmátrix az egységmátrix: $$\begin{vmatrix}
+Pr_1(x_1)=x_1\\
+Pr_2(x_1,x_2)=x_2\\
+Pr_3(x_1,x_2,x_3)=x_3\\
+\vdots\\
+Pr_{n-1}(x_1,x_2,\ldots,x_{n-1})=x_{n-1}\\
+Pr_n(x_1,x_2,x_3,\ldots,x_n)=x_n\\
+\vdots
+\end{vmatrix}=
+\begin{vmatrix}
+1 & 0 &0 &\cdots & 0 & 0 & \ldots\\
+0 & 1 & 0 &\cdots & 0 & 0 & \ldots\\
+0 & 0 & 1 &\cdots & 0 & 0 & \ldots\\
+\vdots & \vdots & \vdots &\ddots & \vdots & \vdots & \ldots\\
+0 & 0 & 0 &\cdots & 1 & 0 & \ldots\\
+0 & 0 & 0 &\cdots & 0 & 1 & \ldots\\
+\vdots & \vdots & \vdots & \ldots & \vdots & \vdots & \ddots
+\end{vmatrix}\cdot
+\begin{vmatrix}x_1\\x_2\\x_3\\\vdots\\x_{n-1}\\x_n\\\vdots\end{vmatrix}$$
+<em><b>Zérus</em></b> trianguláris polinomsornak nevezzük, és $\mathbf{O}$-val jelöljük azt a trianguláris polinomsort, amelyre $\mathbf{O}_n=O_n(x_1,x_2,x_3,\ldots,x_n)=0$,◉
+▶$(n=1,2,3\ldots)$. A zérus polinomsor lineáris, és a megfelelő alsó háromszögmátrixsza a zérus mátrix: $$\begin{vmatrix}
+O_1(x_1)=0\\
+O_2(x_1,x_2)=0\\
+O_3(x_1,x_2,x_3)=0\\
+\vdots\\
+O_{n-1}(x_1,x_2,\ldots,x_{n-1})=0\\
+0_n(x_1,x_2,x_3,\ldots,x_n)=0\\
+\vdots
+\end{vmatrix}=
+\begin{vmatrix}
+0 & 0 &0 &\cdots & 0 & 0 & \ldots\\
+0 & 0 & 0 &\cdots & 0 & 0 & \ldots\\
+0 & 0 & 0 &\cdots & 0 & 0 & \ldots\\
+\vdots & \vdots & \vdots &\ddots & \vdots & \vdots & \ldots\\
+0 & 0 & 0 &\cdots & 0 & 0 & \ldots\\
+0 & 0 & 0 &\cdots & 0 & 0 & \ldots\\
+\vdots & \vdots & \vdots & \ldots & \vdots & \vdots & \ddots
+\end{vmatrix}\cdot
+\begin{vmatrix}x_1\\x_2\\x_3\\\vdots\\x_{n-1}\\x_n\\\vdots\end{vmatrix}$$</div> 
+
+<h3>Trianguláris polinomsorok lineáris tere</h3>
+Az összes trianguláris polinomsorok (<b>T</b>riangular <b>P</b>olynomial <b>S</b>equencies) halmazát $\mathtt{TPS}$  fogja jelölni. Tetszőleges $\mathbf{F} \in \mathtt{TPS}$ polinomsor $$\mathbf{F}=(F_1,F_2,F_3,\ldots)=(F_1(x_1),F_2(x_1,x_2),F_3(x_1,x_2,x_3),\ldots)$$egy olyan végtelen hosszú vektor(sor), melynek $n$-edik komponense egy n-változós polinom. Mivel egy $F_n(x_1,x_2,\ldots,x_n)$ n-változós polinom  $a$-val◉
+▶vett $a\cdot F_n(x_1,x_2,\ldots,x_n)$ skalárszorosa  szintén egy n-változós polinom, ezért tetszőleges $\mathbf{F} \in \mathtt{TPS}$ polinomsorra $$a\cdot\mathbf{F}:=(a\cdot F_1,a\cdot F_2,a\cdot F_3,\ldots)=(a\cdot F_1(x_1),a\cdot F_2(x_1,x_2),a\cdot F_3(x_1,x_2,x_3),\ldots)\in \mathtt{TPS}$$
+▶Másrészt, két $F_n(x_1,x_2,\ldots,x_n)$ és $G_n(x_1,x_2,\ldots,x_n)$ n-változós polinom összege szintén egy n-változós polinom, ezért tetszőleges $\mathbf{F},\mathbf{G} \in \mathtt{TPS}$◉
+▶polinomsorokra$$\mathbf{F}+\mathbf{G}:=(F_1+G_1, F_2+G_2F_3+G_3,\ldots)=(F_1(x_1)+G_1(x_1),F_2(x_1,x_2)+G_2(x_1,x_2),F_3(x_1,x_2,x_3)+G_3(x_1,x_2,x_3),\ldots)\in \mathtt{TPS}$$
+▶Ezek szerint a trianguláris polinomsorok a "$\cdot$" skalárral való szorzás és "+" összeadás műveletével egy vektorteret (lineáris teret) alkotnak, melynek◉
+▶zérus eleme a $\mathbf{O}$ zérus polinomsor. Ezt a  $\mathscr{L}(\mathtt{TPS},+,\cdot)$ lineáris teret ugyanúgy $\mathtt{TPS}$ fogja jelölni. Könnyen átgondolható, hogy a lineáris trianguláris◉
+▶polinomsorok és a partíció polinomsorok is egy alterét alkotják az $\mathtt{TPS}$ lineáris térnek. Ezen két altérre rendre az $\mathtt{LPS}$ illetve $\mathtt{PPS}$ jelölést vezetjük be.
+
+<h3>Trianguláris polinomsorok algebrája a kompozíció-szorzattal</h3>
+Könnyem átgondolható, hogy ha $G_k(x_1,x_2,\ldots,x_k), (k=1,2,\ldots,n)$ mindegyike egy k-változos polinom és $F(x_1,x_2,\ldots,x_n)$ egy n-változós polinom,◉
+▶akkor az $F(G_1(x_1),G_2(x_1,x_2),\ldots,G_n(x_1,x_2,\ldots,x_n))$ összetett polinom is egy n-váltotzós polinom. Így értelmes az alábbi definíció
+▶<div class="def"><b>Definíció: (trianguláris polinomsorok kompozíciója)</b> Az  $\mathbf{F}:= (F_1(x_1),\;F_2(x_1,x_2),\;F_3(x_1,x_2,x_3),\ldots,F_n(x_1,x_2,\ldots,x_n),\ldots)$ trianguláris◉
+▶polinomsor és a $\mathbf{G}:= (G_1(x_1),\;G_2(x_1,x_2),\;G_3(x_1,x_2,x_3),\ldots,G_n(x_1,x_2,\ldots,x_n),\ldots)$ trianguláris polinomsor $\mathbf{K}=\mathbf{F}\circ\mathbf{G}$ kompozícióját a $$K_n(x_1,x_2,\ldots,x_n):=F_n(G_1(x_1),G_2(x_1,x_2),\ldots,G_n(x_1,x_2,\ldots,x_n)$$ összetétellel értelmezzük.</div>
+Nem nehéz átgondolni, hogy tetszőleges $\mathbf{F},\mathbf{G},\mathbf{H} \in \mathtt{TPS}$ triangularis polinomakkal, és tetszőleges $a,b$ számokkal teljesülnek az alábbi azonosságok:
+<ol style="margin:15px;">
+<li>1. $\mathbf{F}\circ\left(\mathbf{G}+\mathbf{H}\right)=\mathbf{F}\circ\mathbf{G}+\mathbf{F}\circ\mathbf{H}$ <span class="sp"></span> (a kompozíció-szorzás balról disztibutív az összeadásra) </li>
+<li>2. $\left(\mathbf{G}+\mathbf{H}\right)\circ\mathbf{F}=\mathbf{G}\circ\mathbf{F}+\mathbf{H}\circ\mathbf{F}$ <span class="sp"></span> (a kompozíció-szorzás jobbról disztibutív az összeadásra) </li>
+<li>3. $\left(a\cdot\mathbf{F}\right)\circ\left(b\cdot\mathbf{G}\right)= \left(a\,b\right)\cdot\left(\mathbf{F}\mathbf{G}\right)$ <span class="sp"></span>(a skalárral való szorzás kompatibilis a kompozíció-szorzással)</li>
+</ol>
+Ez pontosan azt jelenti, hogy a trianguláris polinomsorok a kompozíció-szorzással egy <em><b>algebrát</em></b> alkotnak a számok felett.◉
+
+▶Mivel tetszőleges $\mathbf{F},\mathbf{G},\mathbf{H} \in \mathtt{TPS}$ triangularis polinomakkal még a további
+<ol style="margin:15px;">
+<li>4. $\mathbf{F}\circ\mathbf{Pr}=\mathbf{Pr}\circ\mathbf{F}=\mathbf{F}$ <span class="sp"></span> ($\mathbf{Pr}$ a kompozíció-szorzás egységeleme) </li>
+<li>5.  $\mathbf{F}\circ\mathbf{O}=\mathbf{O}\circ\mathbf{F}=\mathbf{O}$ <span class="sp"></span> ($\mathbf{O}$ a kompozíció-szorzás zéruseleme) </li>
+<li>6. $\mathbf{F}\circ\left(\mathbf{G}\circ\mathbf{H}\right)= \left(\mathbf{F}\circ\mathbf{G}\right)\circ\mathbf{H}$ <span class="sp"></span>(a kompozíció-szorzás associatív)</li>
+</ol>
+azonosságok is teljesülnek, ezért kijelenthetjük, hogy
+▶<div class="def"><b>Tétel:</b> A trianguláris polinomsorok lineáris tere a kompozíció-szorzattal egy asszociatív, egségelemes, zéruselemes algebrát alkot, melyet a továbbiakban◉
+$\mathscr{A}(\mathtt{TPS},\circ)$ fog jelölni.</div>   
+Az elég nyilvánvaló, hogy két lineáris trianguláris polinomsor kompozíciója szintén egy lineáris trianguláris polinomsor, és így a lineáris trianguláris polinomok◉
+▶egy részalgebráját alkotják a $\mathscr{A}(\mathtt{TPS},\circ)$ algebrának, amit $\mathscr{A}(\mathtt{LPS},\circ)$ fog jelölni. Ráadásul a $\mathbf{Pr}$ egység polinomsor is lineáris, ezért az $\mathscr{A}(\mathtt{LPS},\circ)$ részalgebra is◉
+▶egységelemes és asszociatív. Sokkal  komplikáltabb annak az igazolása, hogy két trianguláris partíció polinomsor kompozicíója is egy trianguláris partíció◉
+▶polinomsor, de igaz. Mivel a $\mathbf{Pr}$ egység polinomsor is partíció polinomsor, ezért az $\mathscr{A}(\mathtt{PPS},\circ)$ részalgebra is egységelemes és asszociatív.
+<div class="def"><b>Definíció:</b>Tetszőleges $\mathbf{F}\in \mathtt{TPS}$ triangularis polinomsort <em><b>invertálható</b></em>nak mondunk, ha létezik egy $\mathbf{X}\in \mathtt{TPS}$ triangularis polinomsor, amellyel$$\mathbf{X}\circ\mathbf{F}=\mathbf{F}\circ\mathbf{X}=\mathbf{Pr}$$Ekkor az $\mathbf{X}$ trianguláris polinomsort a $\mathbf{F}$ trianguláris polinomsor egy inverzének nevezzük.</div>
+▶Általános algebrai tétel, hogy bármely algebrában tetszőleges elemnek legfeljebb csak egy inverze létezhet. Egy invertálható $\mathbf{F}\in \mathtt{TPS}$ triangularis polinomsor◉
+▶egyértelműen meghatározott inverzét $\mathbf{F}^{-1}$ fogja jelölni. Azaz, $\mathbf{F}^{-1}$ az az egyetlen trianguláris polinomsor (ha létezik), amelyre$$\mathbf{F}^{-1}\circ\mathbf{F}=\mathbf{F}\circ\mathbf{F}^{-1}=\mathbf{Pr}$$ A lineáris trianguláris polinomsorok és a partíció polinomsorok részalgebrája is zárt az inverzre.
+                       
