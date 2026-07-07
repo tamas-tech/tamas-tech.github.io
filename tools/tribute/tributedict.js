@@ -388,6 +388,7 @@ const autodictC = [
     { key: "showTPS part többvált polinom nerd", value: "showTPS({c},)", tag: "showTPS(F,n,[mat])" },
     { key: "compTPSösszetéosition2 part többvált polinom nerd", value: "compTPS({c},,,)", tag: "compTPS(F1,F2,Név,n)" },
     { key: "makePPS part többvált polinom nerd", value: "makePPS({c},,,,)", tag: "makePPS(F,x,n,C,b)" },
+    { key: "makeLPS part többvált polinom nerd", value: "makeLPS({c},,)", tag: "makeLPS(F,x,mat)" },
 
     // Nerdamer math functions
     { key: "gyöksqrt mathfncüggvény nerd", value: "sqrt({c})", tag: "sqrt(x)=√x" },
