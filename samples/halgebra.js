@@ -9509,7 +9509,7 @@ function prelatexjs(c_txt, mathjax) {
         };
 
     //var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *= *\d+|\w+ *\;? *)*?\§{1}[\n\r\f]*/g);
-    var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *=.*?\;? *)*?\§{1}[\n\r\f]*/g);
+    var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *=.*?\;? *)*?\§{1}[\n\r\f]*/sg);
     if (specVars) {
         for (let v of specVars) {
             c_txt = c_txt.replace(v, '');
@@ -9553,7 +9553,7 @@ function prelatexjs(c_txt, mathjax) {
         Vtex = Vtex.replaceAll("vmatrix", "pmatrix");
     };
     //console.log(Vars);
-    var sVars = c_txt.match(/\§{1}.*?\§{1}[\n\r\f]*/g);
+    var sVars = c_txt.match(/\§{1}.*?\§{1}[\n\r\f]*/sg);
     if (sVars) {
         for (let v of sVars) {
             c_txt = c_txt.replace(v, '');
