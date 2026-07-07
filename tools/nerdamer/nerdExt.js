@@ -111,7 +111,7 @@
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(F, n) {
+    function f(F, n, matrixkell) {
         n = nerdamer(n).evaluate().valueOf();
         var elojel = "";
         var FP = F.toString();
@@ -127,15 +127,46 @@
         const pars = _.functions[FP + "_" + n][2].params;
         var mat = _.functions.matrix[0](),
             valt = "",
+            lin = true,
             j;
         for (j = 1; j < n + 1; j++) {
             valt += pars[j - 1];
             var nev = FP + "_" + j;
             var v1 = nerdamer(nev + "(" + valt + ")").evaluate().symbol;
+            lin &= v1.isLinear(this);
             mat.set(j - 1, 0, nev);
             mat.set(j - 1, 1, v1);
             valt += ","
         };
+
+        if (lin && matrixkell) {
+            valt = "";
+            mat = _.functions.matrix[0]();
+            for (j = 0; j < n; j++) {
+                for (i = 0; i < n; i++) {
+                    mat.set(j, i, 0);
+                }
+            }
+            for (j = 1; j < n + 1; j++) {
+                valt += pars[j - 1];
+                var nev = FP + "_" + j;
+                var fn = _.functions[nev]['2'];
+                var params = fn.params;
+                var v0 = nerdamer(fn.body).evaluate();
+                var v1 = v0.symbol.symbols;
+                if (v1) {
+                    var keys = Object.keys(v1)
+                    for (let key of keys) {
+                        mat.set(j - 1, params.indexOf(key), v1[key].multiplier.toString());
+                    }
+
+                } else {
+                    v1 = v0.symbol
+                    mat.set(j - 1, params.indexOf(v1.value), v1.multiplier.toString());
+                }
+                valt += ","
+            };
+        }
         if (elojel == "-")
             return nerdamer(elojel + mat)
         else
@@ -144,7 +175,7 @@
     nerdamer.register({
         name: 'showTPS',
         visible: true,
-        numargs: 2,
+        numargs: [2, 3],
         build: function() {
             return f;
         }
@@ -916,6 +947,97 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
         name: 'matExpr',
         visible: true,
         numargs: [3, 4],
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(n, expr, kibont) {
+        n = nerdamer(n).evaluate().valueOf();
+        if (_.functions[expr]) {
+            var fn = _.functions[expr]['2'];
+            var valt = fn.params,
+                expr = nerdamer(fn.body).symbol;
+        } else
+            var valt = nerdamer(expr).variables();
+
+        var mat = _.functions.matrix[0]();
+        for (var i = 0; i < n; i++) {
+            for (var j = 0; j < n; j++) {
+                var t = 0;
+                if (i >= j) {
+                    t = expr.sub(valt[0], i).sub(valt[1], j);
+                    if (kibont)
+                        t = nerdamer('expand(' + t + ')').evaluate().symbol; //t = nerdamer('expand(' + t + ')').symbol;  volt
+                }
+                mat.set(i, j, t);
+            }
+        }
+        return mat;
+    }
+    nerdamer.register({
+        name: 'matTri',
+        visible: true,
+        numargs: [2, 3],
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(n, expr, kibont) {
+        if (expr == undefined) {
+            expr = n;
+            n = expr.elements.length;
+            var mat = _.functions.matrix[0]();
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    var t = 0;
+                    if (i == j) {
+                        t = nerdamer.vecget(expr, i);
+                        if (kibont)
+                            t = nerdamer('expand(' + t + ')').evaluate().symbol; //t = nerdamer('expand(' + t + ')').symbol;  volt
+                    }
+                    mat.set(i, j, t);
+                }
+            }
+        } else {
+            n = nerdamer(n).evaluate().valueOf();
+            if (_.functions[expr]) {
+                var fn = _.functions[expr]['2'];
+                var valt = fn.params,
+                    expr = nerdamer(fn.body).symbol;
+            } else
+                var valt = nerdamer(expr).variables();
+
+            var mat = _.functions.matrix[0]();
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < n; j++) {
+                    var t = 0;
+                    if (i == j) {
+                        t = expr.sub(valt[0], i).sub(valt[1], j);
+                        if (kibont)
+                            t = nerdamer('expand(' + t + ')').evaluate().symbol; //t = nerdamer('expand(' + t + ')').symbol;  volt
+                    }
+                    mat.set(i, j, t);
+                }
+            }
+        }
+        return mat;
+    }
+    nerdamer.register({
+        name: 'matDiag',
+        visible: true,
+        numargs: [1, 3],
         build: function() {
             return f;
         }
