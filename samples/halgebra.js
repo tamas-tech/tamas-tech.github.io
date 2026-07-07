@@ -9596,8 +9596,11 @@ function prelatexjs(c_txt, mathjax) {
                 var ww = vv.splice(0, 3)
                 ww.push(vv.slice(0, -1).join(','));
                 ww.push(_.last(vv));
-                //console.log(ww)
                 makePPolys(...ww);
+            } else if (dek[0].startsWith("makeLPS")) {
+                var vv = dek[0].slice(8, -1).split(',');
+                console.log(vv);
+                makeLPS(vv[0], vv[1], nerdamer(vv[2]).symbol);
             }
         };
     };
@@ -10493,6 +10496,23 @@ function makePPolys(name, x, n, expr, b) {
     n = nerdamer(n).evaluate().valueOf();
     for (var i = 1; i <= n; i++)
         makePPolyn(name, x, i, expr, b)
+};
+
+function makeLPS(F, valt, mat) {
+    const sorok = mat.elements;
+    const n = sorok.length;
+    var valts = [];
+    for (var i = 0; i < n; i++) {
+        valts.push(valt + "_" + (i + 1));
+        var sor = sorok[i];
+        var fn = "";
+        for (var j = 0; j <= i; j++) {
+            fn += sor[j] + "*" + valt + "_" + (j + 1) + "+";
+        }
+        fn = fn.slice(0, -1);
+        console.log(F + "_" + (i + 1), valts, fn)
+        nerdamer.setFunction(F + "_" + (i + 1), valts, fn)
+    }
 };
 
 function makePPTtext(F, n) {
