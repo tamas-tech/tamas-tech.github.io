@@ -385,7 +385,7 @@ const autodictC = [
     { key: "comp2összetéosition2 part többvált polinom nerd", value: "comp2({c},,)", tag: "comp2(F1,F2,n)" },
     { key: "comp3összetéosition3 part többvált polinom nerd", value: "comp3({c},,,)", tag: "comp3(F1,F2,F3,n)" },
     { key: "comp4összetéosition4 part többvált polinom nerd", value: "comp4({c},,,,)", tag: "comp4(F1,..,F4,n)" },
-    { key: "showTPS part többvált polinom nerd", value: "showTPS({c},)", tag: "showTPS(F,n)" },
+    { key: "showTPS part többvált polinom nerd", value: "showTPS({c},)", tag: "showTPS(F,n,[mat])" },
     { key: "compTPSösszetéosition2 part többvált polinom nerd", value: "compTPS({c},,,)", tag: "compTPS(F1,F2,Név,n)" },
     { key: "makePPS part többvált polinom nerd", value: "makePPS({c},,,,)", tag: "makePPS(F,x,n,C,b)" },
 
@@ -430,7 +430,10 @@ const autodictC = [
     // Nerdamer Matrix
     { key: "maátrix nerd", value: "matrix([{c},],[,])", tag: "matrix" },
     { key: "maátrixExpr nerd", value: "matExpr({c},,)", tag: "matExpr(n,m,expr|fgv)" },
-    { key: "matMap maátrix nerd", value: "matMat({c},,)", tag: "matMap(expr,mat,[kib])" },
+    { key: "matMap maátrix nerd", value: "matMap({c},,)", tag: "matMap(expr,mat,[kib])" },
+    { key: "matTri maátrix nerd", value: "matTri({c},,)", tag: "matTri(n,expr,[kib])" },
+    { key: "matDiag maátrix nerd", value: "matDiag([{c},,])", tag: "matDiag(vec)" },
+    { key: "matDiag maátrix nerd", value: "matDiag({c},,)", tag: "matDiag(n,expr,[kib])" },
     { key: "nerd maátrix23", value: "matrix([{c},], [,], [,]))", tag: "matrix 3&times;2" },
     { key: "nerd maátrix33", value: "matrix([{c},,], [,,], [,,])", tag: "matrix 3&times;3" },
     { key: "nerd maátrix34", value: "matrix([{c},,,], [,,,], [,,,])", tag: "matrix 3&times;4" },
