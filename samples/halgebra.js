@@ -9355,7 +9355,7 @@ function updMathJaxHTML(c_txt) {
             nerdamer.setVar(dek[0].trim(), nerdamer(dek[1].trim()));
         };
     };
-    //console.log(sVars);
+    console.log(sVars);
     const tex = c_txt.match(/\$.*?\$/g);
     const vantex = tex != null && tex.length > 0;
 
@@ -9483,13 +9483,9 @@ function getsorA(a_txt, n) {
 };
 
 function sorra(valt, a, b) {
-    /*  console.log(nerdamer(a).evaluate().toString(), nerdamer(b).evaluate().toString())
-     a = parseInt(nerdamer(a).toString());
-     b = parseInt(nerdamer(b).toString());
-     console.log(a, b) */
     a = nerdamer(a).evaluate().valueOf();
     b = nerdamer(b).evaluate().valueOf();
-    console.log(valt, a, b)
+    //console.log(valt, a, b)
     var sor = ""
     for (var k = a; k <= b; k++)
         sor += valt + "_" + k + ",";
@@ -9587,7 +9583,8 @@ function prelatexjs(c_txt, mathjax) {
                 nerdamer.setFunction(name, valt, expr);
             } else if (dek[0].startsWith("compTPS")) {
                 var vv = dek[0].slice(8, -1).split(',');
-                var npp = vv[3] * 1
+                var npp = vv[3];
+                npp = nerdamer(npp).evaluate().valueOf() * 1;
                 vv = vv.slice(0, -1)
                 for (var j = 1; j <= npp; j++)
                     ppcomp(...vv, j)
@@ -9596,10 +9593,11 @@ function prelatexjs(c_txt, mathjax) {
                 var ww = vv.splice(0, 3)
                 ww.push(vv.slice(0, -1).join(','));
                 ww.push(_.last(vv));
+                //console.log(ww)
                 makePPolys(...ww);
             } else if (dek[0].startsWith("makeLPS")) {
                 var vv = dek[0].slice(8, -1).split(',');
-                console.log(vv);
+                //console.log(vv);
                 makeLPS(vv[0], vv[1], nerdamer(vv[2]).symbol);
             }
         };
@@ -9638,9 +9636,13 @@ function prelatexjs(c_txt, mathjax) {
         c_txt = Vtex + c_txt;
         c_txt = c_txt.replace(/[\n\r\f]/g, "")
     };
+    //c_txt = c_txt.replaceAll(/(\_)(\')(\d)/mg, function(m, p1, p2, p3) { return p1 + p3 });
+    c_txt = c_txt.replaceAll("'", "");
     c_txt = c_txt.replaceAll("vmatrix", "pmatrix");
     return c_txt;
 };
+
+
 
 function ppcomp(fn1, fn2, F, n) {
     //console.log(fn1, fn2, F, n)
@@ -10539,7 +10541,7 @@ function makePPTtext(F, n) {
 
 function insertPPT() {
     const name = document.getElementById("pptname").value.trim();
-    const n = document.getElementById("pptdeg").value * 1;
+    var n = document.getElementById("pptdeg").value * 1;
 
     makePPolys(name, "x", n, "C", "b");
     var txt = makePPTtext(name, n);
