@@ -1,5 +1,6 @@
 //const nerdamer = require("../tools/nerdamer/nerdamer.core");
 
+
 function HideColumnIndex0() {
     var $el = $(this);
     var $cell = $el.closest('th,td');
