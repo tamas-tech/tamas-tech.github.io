@@ -84,7 +84,7 @@ Nem nehéz átgondolni, hogy tetszőleges $\mathbf{F},\mathbf{G},\mathbf{H} \in 
 <ol style="margin:15px;">
 <li>1. $\mathbf{F}\circ\left(\mathbf{G}+\mathbf{H}\right)=\mathbf{F}\circ\mathbf{G}+\mathbf{F}\circ\mathbf{H}$ <span class="sp"></span> (a kompozíció-szorzás balról disztibutív az összeadásra) </li>
 <li>2. $\left(\mathbf{G}+\mathbf{H}\right)\circ\mathbf{F}=\mathbf{G}\circ\mathbf{F}+\mathbf{H}\circ\mathbf{F}$ <span class="sp"></span> (a kompozíció-szorzás jobbról disztibutív az összeadásra) </li>
-<li>3. $\left(a\cdot\mathbf{F}\right)\circ\left(b\cdot\mathbf{G}\right)= \left(a\,b\right)\cdot\left(\mathbf{F}\mathbf{G}\right)$ <span class="sp"></span>(a skalárral való szorzás kompatibilis a kompozíció-szorzással)</li>
+<li>3. $\left(a\cdot\mathbf{F}\right)\circ\left(b\cdot\mathbf{G}\right)= \left(a\,b\right)\cdot\left(\mathbf{F}\circ\mathbf{G}\right)$ <span class="sp"></span>(a skalárral való szorzás kompatibilis a kompozíció-szorzással)</li>
 </ol>
 Ez pontosan azt jelenti, hogy a trianguláris polinomsorok a kompozíció-szorzással egy <em><b>algebrát</em></b> alkotnak a számok felett.◉
 
