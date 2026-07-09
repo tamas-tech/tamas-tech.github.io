@@ -140,7 +140,7 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 ▶<code class="kek">&lt;&lt;sshowTPS(ST,5)-showTPS(Sti,5)&gt;&gt;</code>
 <<showTPS(ST,5)-showTPS(Sti,5)>>
 <hr/>
-▶Most azt a jól ismert tényt ellenőrizzük, hogy <b>Fab</b> involutorikus, azzaz $\mathbf{Fab}\circ\mathbf{Fab}=\mathbf{Pr}$. A $\mathbf{Fab}\circ\mathbf{Fab}$ összetételt <b>FF</b> névvel deklaráljuk.◉
+▶Most azt a jól ismert tényt ellenőrizzük, hogy <b>Fib</b> involutorikus, azzaz $\mathbf{Fib}\circ\mathbf{Fib}=\mathbf{Pr}$. A $\mathbf{Fib}\circ\mathbf{Fib}$ összetételt <b>FF</b> névvel deklaráljuk.◉
 ▶<code class="kek">
 &sect;compTPS(Fib,Fib,FF,6)&sect;◉
 &lt;&lt;showTPS(FF,6)&gt;&gt;◉
