@@ -1,0 +1,146 @@
+§§  §§▶ <style>p#pentout {text-indent:unset;}  #pentout code.kek {display:inline-block;font-size: 92%;color:#fff0c4;background-color:#393939;padding:2px 5px;margin:5px 0 5px 15px;border-radius:4px;} #pentout h1,h2,h3,h4 {border-top: 1px solid #515151;border-bottom: 1px solid #515151;background-color: #c1b6885e;margin-top: 3em;padding-left: 10px;}</style>
+▶<h3>Egyedi partíció polinomsorok (PPS) deklarálása a <code style="color:#000555;">PPS(F,n)</code> gomb használatával</h3>
+▶Egy <b>F</b> <em>partíció polinomsor</em> olyan speciális trianguláris polinomsor, amelynek minden  $F_n(x_1,x_2,x_3,\ldots,x_n)$ tagja egy olyan n-változós polinom,◉
+▶amelyben minden monom $\displaystyle{x_{a_1}^{b_1}x_{a_2}^{b_2}\cdots x_{a_k}^{b_k}}$ alakú, ahol ${a_1}b_1+{a_2}b_2\cdots{a_k}b_k=n$, vagyis ${a_1}^{b_1}{a_2}^{b_2} \ldots {a_k}^{b_k}\vdash n$. És éppen emiatt nehéz egy egyedi partíció◉ 
+▶polinomsort deklarálni, hiszen minden <em>n</em> értékre sorba kell vennünk az <em>n</em> összes partícióját, amiből <em>n</em> növekedésével egyre több van. Ebben jelent nagy◉
+▶segítséget a 
+<span style="display:inline-block;text-align:center;padding:3px;margin:0 10px;width:290px;border: 1px solid #1e1e1e;background-color:#515151;">
+   <button style="width:80px;font-size:0.8em;margin:0;font-weight: 800;" class="sbtglbtn">PPS(F,n)</button>
+   <label style="vertical-align: middle;color:#f2f2f2;">F</label>
+   <input type="text" readonly value="Tar" style="width:44px;font-size: 15px;margin:0 3px;height:24px;vertical-align:middle;text-align:center;">
+    <label style="vertical-align: middle;color:#f2f2f2;">n</label>
+    <input type="number" readonly value="5" min="1" style="width:44px;font-size: 15px;margin:0 3px;height:24px;vertical-align:middle;text-align:center;">
+</span> 
+tábla. A <code>PPS(F,n)</code> gombra kattintva az <code>F</code> beviteli mezőben megadott néven, egy egyedi partíció◉
+▶polinomsor első, az <code>n</code> beviteli mezőben megadott számú tagjának <em><b>deklaráció-sablonját</b></em> illeszti a szerkesztőbe a kurzor aktuális pozíciójától indítva.◉
+▶Ha a példa szerinti beállítás mellett a <code>PPS(F,n)</code> gombra kattintunk, akkor a szerkesztőbe az alábbi szépen megformázott sablont illeszti a kurzor helyére:◉
+<code class="kek">
+&num;----------- PPS beillesztés: név =Tar,  n = 5 ------------◉
+Tar_1 &#x25b6; &sect;Fgv(Tar_1,[x_1], ⭕*x_1)&sect;◉
+Tar_2 &#x25b6; &sect;Fgv(Tar_2,[x_1,x_2], ⭕*x_1^2+ ⭕*x_2)&sect;◉
+Tar_3 &#x25b6; &sect;Fgv(Tar_3,[x_1,x_2,x_3], ⭕*x_1*x_2+ ⭕*x_1^3+ ⭕*x_3)&sect;◉
+Tar_4 &#x25b6; &sect;Fgv(Tar_4,[x_1,x_2,x_3,x_4], ⭕*x_1*x_3+ ⭕*x_1^2*x_2+ ⭕*x_1^4+ ⭕*x_2^2+ ⭕*x_4)&sect;◉
+Tar_5 &#x25b6; &sect;Fgv(Tar_5,[x_1,x_2,x_3,x_4,x_5], ⭕*x_1*x_2^2+ ⭕*x_1*x_4+ ⭕*x_1^2*x_3+ ⭕*x_1^3*x_2+ ⭕*x_1^5+ ⭕*x_2*x_3+ ⭕*x_5)&sect;◉
+&num;-----------------------------------------------------◉
+</code>◉
+A beillesztett sablon jól áttekinthető formában tartalmazza a partíció polinomsor összes tagját 1-től a megadott n=5 értékig, és a megadandó◉
+▶együtthatók helyét  egy jól észrevehető &#x2B55; karakter jelöli. Nekünk már csak annyi dolgunk van, hogy ezek mindegyikét átírjuk egy számra.◉
+Természetesen 0 együtthatót is adhatun egy monomnak, de ebben az esetben célszerűbb a monomot a 0 együtthatójával együtt törölni. A fenti sablon◉
+▶kitöltésekor mi is ezt tettük, emellett szóközök beszúrásával növeltük az áttekinthetőséget:◉
+<code class="kek">
+&num;----------- PPS beillesztés: név =Tar,  n = 5 ------------◉
+Tar_1 &#x25b6; &sect;Fgv(Tar_1,[x_1],                  x_1                                               )&sect;◉
+Tar_2 &#x25b6; &sect;Fgv(Tar_2,[x_1,x_2],             -x_1^2  +  3*x_2                                   )&sect;◉
+Tar_3 &#x25b6; &sect;Fgv(Tar_3,[x_1,x_2,x_3],          4*x_1*x_2  -  2*x_3                               )&sect;◉
+Tar_4 &#x25b6; &sect;Fgv(Tar_4,[x_1,x_2,x_3,x_4],      x_1*x_3  +  5*x_1^2*x_2  -  3*x_1^4  +  x_4       )&sect;◉
+Tar_5 &#x25b6; &sect;Fgv(Tar_5,[x_1,x_2,x_3,x_4,x_5],  x_1*x_2^2  +  3*x_1*x_4  +  5*x_1^3*x_2  -  3*x_5 )&sect;◉
+&num;-----------------------------------------------------◉
+</code>◉
+
+#---------- PPS beillesztés: név = Tar,  n = 5 -----------
+Tar_1 ▶ §Fgv(Tar_1,[x_1],x_1)§
+Tar_2 ▶ §Fgv(Tar_2,[x_1,x_2],-x_1^2+ 3*x_2)§
+Tar_3 ▶ §Fgv(Tar_3,[x_1,x_2,x_3],4*x_1*x_2- 2*x_3)§
+Tar_4 ▶ §Fgv(Tar_4,[x_1,x_2,x_3,x_4],x_1*x_3+ 5*x_1^2*x_2 -3*x_1^4+ x_4)§
+Tar_5 ▶ §Fgv(Tar_5,[x_1,x_2,x_3,x_4,x_5],x_1*x_2^2+ 3*x_1*x_4+ 5*x_1^3*x_2- 3*x_5)§
+#--------------------------------------------------------
+
+▶A <b>Tar</b> partíció polinomsort a <code>showTPS(F,n)</code> paranccsal meg is jelenítjük.◉
+<code class="kek">&lt;&lt;showTPS(Tar,5)&gt;&gt;</code>
+<<showTPS(Tar,5)>>
+▶Ha a beépített <b>Fib</b> és most megalkotott <b>Tar</b> partíció polinomsorok kompozíció-szorzatát képezzük <b>FibTar</b> néven, és azt meg is jelenítjük, akkor igazolni◉
+látjuk azt a nem nyilvánvaló tényt, hogy patríció polinomsorok kompozíció-szorzata is partíció polinomsor.◉
+<code class="kek">
+&sect;compTPS(Fib,Tar,FibTar,5)&sect;◉
+&sect;ft=showTPS(FibTar,5)&sect;◉
+&lt;&lt;ft&gt;&gt;◉
+</code>
+§compTPS(Fib,Tar,FibTar,5)§
+§ft=showTPS(FibTar,5)§
+<<ft>>
+▶Sőt partíció polinomsorok lineáris kombínációját is megjeleníthetjük. Az alábbi kódrészlet például  a 2&centerdot;<b>Fab</b> - 3&centerdot;<b>Tar</b>+<b>FibTar</b> - 4&centerdot;<b>Luc</b> lineáris kombinációt◉
+▶jeleníti meg:◉
+<code class="kek">&lt;&lt;2*showTPS(Fab,5)-3*showTPS(Tar,5)+showTPS(FibTar,5)-4*showTPS(Luc,5)&gt;&gt;</code>
+<<2*showTPS(Fab,5)-3*showTPS(Tar,5)+showTPS(FibTar,5)-4*showTPS(Luc,5)>>
+
+
+▶<h3>A <code style="color:#000555;">Sum(expr,valt,min,max)</code> és <code style="color:#000555;">Product(expr,valt,min,max)</code> parancsok</h3>
+A <code>Sum(expr,valt,min,max)</code> és <code>Product(expr,valt,min,max)</code> parancsok csak annyiban különböznek  a kisbetűs <code>sum(expr,valt,min,max)</code>,◉
+▶illetve <code>product(expr,valt,min,max)</code> változataiktól, hogy bennük a <em>valt</em> futóváltozó egy indexváltozója is lehet az <em>expr</em> kifejezésnek.◉
+▶Figyeljük meg a <code>sum</code> parancs működését az alábbi példákban.◉
+▶1. Az expr=$k^a$ kifejezésben $k$ a <code>sum</code> parancs futóindexe,  $a$ pedig egy értékkel nem rendelkező válozó.◉
+<code class="kek">&lt;&lt;sum(k^a,k,4,9)&gt;&gt;</code> &longrightarrow; $<<sum(k^a,k,4,9)>>$◉
+▶2. Az expr=$k^'b$ kifejezésben $k$ szintén a <code>sum</code> parancs futóindexe, de $b$ most már egy b=2 értékkel deklarált válozó.◉
+▶Így a kimenet a $4^2+5^2+6^2+7^2+8^4+9^2=<<4^2+5^2+6^2+7^2+8^2+9^2>>$ szám lesz.◉
+§b=2§
+<code class="kek">
+&sect;b=2&sect;◉
+$&lt;&lt;sum(k^b,k,4,9)&gt;&gt;$◉
+</code> &longrightarrow;  $<<sum(k^b,k,4,9)>>$◉
+
+▶3. Az expr=$a_k$ kifejezésben $k$ a <code>sum</code> parancs futóindexe, ami az expr kifejezésben egy <em><b>indexváltozó</b></em>, az $a$ változó indexe. Nerdamerben a beépített◉
+▶ <code>sum(expr,k,min,max)</code> parancs sajnos nem működik k indexváltozóval. A <code>sum(a_k,k,4,9)</code> kódban a <code>sum</code> k futóindexe az expr=$a_k$ egy indexváltozója,◉
+▶így arra teljesen érzéketken. A kimenet pedig $a_k+a_k+a_k+a_k+a_k+a_k = 6\cdot a_k$ lesz.◉
+<code class="kek">
+$&lt;&lt;sum(a_k,k,4,9)&gt;&gt;$◉
+</code> &longrightarrow;  $<<sum(a_k,k,4,9)>>$◉
+◉
+▶ A beépített <code>product(expr,k,min,max)</code> parancs ugyanígy működik:◉
+▶1. Az expr=$k^a$ kifejezésben $k$ a <code>product</code> parancs futóindexe,  $a$ pedig egy értékkel nem rendelkező válozó.◉
+<code class="kek">&lt;&lt;product(k^a,k,4,9)&gt;&gt;</code> &longrightarrow; $<<product(k^a,k,4,9)>>$◉
+▶2. Az expr=$k^'b$ kifejezésben $k$ szintén a <code>product</code> parancs futóindexe, de $b$ most már egy b=2 értékkel deklarált válozó.◉
+▶Így a kimenet a $4^2\cdot 5^2 \cdot 6^2\cdot 7^2\cdot 8^4\cdot 9^2=<<4^2*5^2*6^2*7^2*8^2*9^2>>$ szám lesz.◉
+§b=2§
+<code class="kek">
+&sect;b=2&sect;◉
+$&lt;&lt;product(k^b,k,4,9)&gt;&gt;$◉
+</code> &longrightarrow;  $<<product(k^b,k,4,9)>>$◉
+
+▶3. Az expr=$a_k$ kifejezésben $k$ a <code>product</code> parancs futóindexe, ami az expr kifejezésben egy <em><b>indexváltozó</b></em>, az $a$ változó indexe. Nerdamerben a beépített◉
+▶ <code>product(expr,k,min,max)</code> parancs sajnos nem működik k indexváltozóval. A <code>product(a_k,k,4,9)</code> kódban a <code>product</code> k futóindexe az expr=$a_k$egy◉
+indexváltozója, így arra teljesen érzéketken. A kimenet pedig $a_k\cdot a_k\cdot a_k\cdot a_k\cdot a_k\cdot a_k = a_k^{6}$ lesz.◉
+<code class="kek">
+$&lt;&lt;product(a_k,k,4,9)&gt;&gt;$◉
+</code> &longrightarrow;  $<<product(a_k,k,4,9)>>$◉
+A 3. pontokban tapasztalt hiányosságok miatt bővítettük a nerdamert a <code>Sum(expr,valt,min,max)</code>, illetve <code>Product(expr,valt,min,max)</code> parancsokkal.◉
+Ezekben a <code>valt</code> futóváltozó már az <code>expr</code> kifejezés indexváltozója is lehet, és akkor is  az elvárt helyes kimenetet kapjuk:◉
+<code class="kek">
+$&lt;&lt;Sum(a_k,k,4,9)&gt;&gt;$◉
+</code> &longrightarrow;  $<<Sum(a_k,k,4,9)>>$◉
+◉
+<code class="kek">
+$&lt;&lt;Product(a_k,k,4,9)&gt;&gt;$◉
+</code> &longrightarrow;  $<<Product(a_k,k,4,9)>>$◉
+
+▶<h3>Képletetel megadható partíció polinomsorok (PPS) deklarálása a <code style="color:#000555;">makePPS(F,x,n,C,b)</code> paranccsal</h3>
+<code class="kek">
+&sect;makePPS(Z1,x,5,1/Product(k^b_k*b_k!,k,1,n),b)&sect;◉
+&lt;&lt;showTPS(Z1,5)&gt;&gt;◉
+&lt;&lt;showTPS(Zyc,5)&gt;&gt;◉
+</code>
+§makePPS(Z1,x,5,1/Product(k^b_k*b_k!,k,1,n),b)§
+<div style="font-size:110%;"><<showTPS(Z1,5)>></div> 
+<div style="font-size:110%;"><<showTPS(Zyc,5)>></div> 
+▶ A <b>Z1</b> és <b>Zyc</b> partíció polinomsorok egyezése jól látható a különbségük megjelenítésével:◉
+<code class="kek">&lt;&lt;showTPS(Zyc,5)-showTPS(Z1,5)&gt;&gt;</code>
+<<showTPS(Zyc,5)-showTPS(Z1,5)>>
+----◉
+<code class="kek">
+&sect;m=6&sect;◉
+&sect;makePPS(F1,x,m,(-1)^(Sum(b_k,k,1,n))*Sum(b_k,k,1,n)!/Product(b_k!,k,1,n),b)&sect;◉
+&sect;aa=showTPS(F1,m)&sect;◉
+&sect;bb=showTPS(Fib,m)&sect;◉
+&lt;&lt;aa&gt;&gt;◉
+&lt;&lt;bb&gt;&gt;◉
+</code>
+§m=6§
+§makePPS(F1,x,m,(-1)^(Sum(b_k,k,1,n))*Sum(b_k,k,1,n)!/Product(b_k!,k,1,n),b)§
+§aa=showTPS(F1,m)§
+§bb=showTPS(Fib,m)§
+<<aa>>
+<<bb>> 
+▶ Az <b>F1</b> és <b>Fib</b> partíció polinomsorok egyezését most is  a különbségük megjelenítésével ellenőrizzük:◉
+<code class="kek">&lt;&lt;aa-bb&gt;&gt;</code>
+<<aa-bb>>
+
+                                                                                                                                                                   
