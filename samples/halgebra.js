@@ -10533,9 +10533,9 @@ function makePPTtext(F, n) {
         txt += nev + " ▶ §Fgv(" + nev + ",[" + valt + "]," + v1 + ")§\n";
         valt += ","
     };
-    txt = txt.replaceAll("C", " C");
-    txt = "#-----------PPs beillesztés: név:" + F + "  n = " + n + "------------\n" + txt;
-    txt += "#-------------------------------------------------\n"
+    txt = txt.replaceAll("C", " ⭕"); // &#x2B55 HEAVY LARG CIRCLE   (red)
+    txt = "#---------- PPS beillesztés: név = " + F + ",  n = " + n + " -----------\n" + txt;
+    txt += "#--------------------------------------------------------\n"
     return txt;
 };
 
