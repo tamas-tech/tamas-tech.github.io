@@ -183,6 +183,46 @@
 })();
 
 (function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(Fsor, Csor, Nev, n) {
+        const N = Fsor.elements.length;
+        n = nerdamer(n).evaluate().valueOf();
+        Nev = Nev.toString();
+        Fsor = Fsor.elements;
+        Csor = Csor.elements;
+        const pars = _.functions[Fsor[0].toString() + "_" + n][2].params;
+        var valt = "";
+        for (var i = 1; i <= n; i++) {
+            var lc = "";
+            valt += pars[i - 1];
+            for (var j = 0; j < N; j++) {
+                var nev = Fsor[j].toString() + "_" + i;
+                var c = Csor[j];
+                lc += c + "*" + nev + "(" + valt + ")+"
+            }
+            lc = lc.slice(0, -1).replaceAll("+-", "-");
+            //lc = nerdamer('expand(' + lc + ')').symbol.value;
+            lc = nerdamer('expand(' + lc + ')').toString();
+            var valtvec = pars.slice(0, i)
+                //console.log(Nev + "_" + i, valtvec, lc);
+            nerdamer.setFunction(Nev + "_" + i, valtvec, lc)
+            valt += ","
+        }
+        return null;
+    }
+    nerdamer.register({
+        name: 'lincombTPS',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
     function f(n, k) {
         var vec = nerdamer('rect(' + n + '-' + k + ')');
         return vec;
