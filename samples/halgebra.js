@@ -9600,7 +9600,7 @@ function prelatexjs(c_txt, mathjax) {
                 var vv = dek[0].slice(8, -1).split(',');
                 //console.log(vv);
                 makeLPS(vv[0], vv[1], nerdamer(vv[2]).symbol);
-            } else if (dek[0].startsWith("lincombTPS")) {
+            } else if (dek[0].startsWith("lincombTPS") || dek[0].startsWith("makeTPX")) {
                 nerdamer(dek[0])
             }
         };
