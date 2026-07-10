@@ -186,6 +186,44 @@
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
+    function f(F, c, x, n) {
+        n = nerdamer(n).evaluate().valueOf();
+        x = x.toString();
+        F = F.toString();
+        console.log(F, n, x)
+        if (PartPolys.includes(F)) {
+            for (var i = 1; i <= n; i++)
+                getsetZycFabFib(F, i, false);
+        };
+        const pars = _.functions[F + "_" + n][2].params;
+        var mat = c.toString() + "+",
+            valt = "";
+        for (var j = 1; j < n + 1; j++) {
+            valt += pars[j - 1];
+            var nev = F + "_" + j;
+            var v1 = nerdamer(nev + "(" + valt + ")").evaluate().symbol;
+            mat += "(" + v1 + ")*" + x + "^" + j + "+";
+            valt += ","
+        };
+        mat = mat.slice(0, -1)
+        console.log(F, [x], mat)
+        nerdamer.setFunction(F, [x], mat)
+        return null;
+    }
+    nerdamer.register({
+        name: 'makeTPX',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
     function f(Fsor, Csor, Nev, n) {
         const N = Fsor.elements.length;
         n = nerdamer(n).evaluate().valueOf();
