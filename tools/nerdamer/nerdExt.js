@@ -119,7 +119,6 @@
             FP = FP.slice(1);
             elojel = "-"
         }
-
         if (PartPolys.includes(FP.toString())) {
             for (var i = 1; i <= n; i++)
                 getsetZycFabFib(FP, i, false);
@@ -182,6 +181,7 @@
     });
 })();
 
+
 (function() {
     var core = nerdamer.getCore(),
         _ = core.PARSER;
@@ -190,7 +190,6 @@
         n = nerdamer(n).evaluate().valueOf();
         x = x.toString();
         F = F.toString();
-        console.log(F, n, x)
         if (PartPolys.includes(F)) {
             for (var i = 1; i <= n; i++)
                 getsetZycFabFib(F, i, false);
@@ -206,7 +205,7 @@
             valt += ","
         };
         mat = mat.slice(0, -1)
-        console.log(F, [x], mat)
+            //console.log(F, [x], mat)
         nerdamer.setFunction(F, [x], mat)
         return null;
     }
@@ -220,6 +219,81 @@
     });
 })();
 
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(F, x, expr, N) {
+        N = nerdamer(N).evaluate().valueOf();
+        x = x.toString();
+        F = F.toString();
+
+        var valt = [];
+        for (var j = 1; j < N + 1; j++) {
+            valt.push(x + "_" + j);
+            var nev = F + "_" + j;
+            var exprj = expr.sub('n', j) //.evaluate().symbol();
+            exprj = exprj.toString().replaceAll("sum", "Sum").replaceAll("product", "Product");
+            // console.log(exprj)
+            nerdamer.setFunction(nev, valt, exprj)
+        };
+        return null;
+    }
+    nerdamer.register({
+        name: 'makeTPS',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+/* (function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(fn1, fn2, F, n) {
+        //n = nerdamer(n).evaluate().valueOf();
+        n = nerdamer(n).evaluate().valueOf() * 1;
+        fn1 = fn1.toString();
+        fn2 = fn2.toString();
+        F = F.toString();
+        console.log(fn1, fn2, F, n)
+        if (PartPolys.includes(fn1.replaceAll("-", "")))
+            getsetZycFabFib(fn1, n, false);
+        if (PartPolys.includes(fn2.replaceAll("-", "")))
+            for (var k = 1; k <= n; k++)
+                getsetZycFabFib(fn2, k, false);
+        var xs = [];
+        var com = fn1 + "_" + n + "(";
+        for (var j = 1; j <= n; j++) {
+            xs = [];
+            com += fn2 + "_" + j + "(";
+            for (var i = 1; i <= j; i++) {
+                com += "x_" + i + ",";
+                xs.push("x_" + i);
+            }
+            com = com.slice(0, -1) + "),"
+        };
+        com = com.slice(0, -1) + ")";
+        console.log(com)
+        var txt = nerdamer("expand(" + com + ")");
+        nerdamer.setFunction(F.toString() + '_' + n, xs, txt.toString());
+        return null;
+    };
+    nerdamer.register({
+        name: 'compTPS',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})(); */
+
+
 (function() {
     var core = nerdamer.getCore(),
         _ = core.PARSER;
@@ -230,13 +304,19 @@
         Nev = Nev.toString();
         Fsor = Fsor.elements;
         Csor = Csor.elements;
+        if (PartPolys.includes(Fsor[0].toString()))
+            getsetZycFabFib(Fsor[0].toString(), n, false);
         const pars = _.functions[Fsor[0].toString() + "_" + n][2].params;
         var valt = "";
         for (var i = 1; i <= n; i++) {
             var lc = "";
             valt += pars[i - 1];
             for (var j = 0; j < N; j++) {
-                var nev = Fsor[j].toString() + "_" + i;
+                var nev = Fsor[j].toString();
+                if (PartPolys.includes(nev))
+                    getsetZycFabFib(nev, i, false);
+
+                nev += "_" + i;
                 var c = Csor[j];
                 lc += c + "*" + nev + "(" + valt + ")+"
             }
@@ -252,6 +332,67 @@
     }
     nerdamer.register({
         name: 'lincombTPS',
+        visible: true,
+        numargs: 4,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+
+    function f(F, valt, mat) {
+        F = F.toString();
+        valt = valt.toString();
+        const sorok = mat.elements;
+        const n = sorok.length;
+        var valts = [];
+        for (var i = 0; i < n; i++) {
+            valts.push(valt + "_" + (i + 1));
+            var sor = sorok[i];
+            var fn = "";
+            for (var j = 0; j <= i; j++) {
+                fn += sor[j] + "*" + valt + "_" + (j + 1) + "+";
+            }
+            fn = fn.slice(0, -1);
+            console.log(F + "_" + (i + 1), valts, fn)
+            nerdamer.setFunction(F + "_" + (i + 1), valts, fn)
+        }
+        return null;
+    };
+
+    nerdamer.register({
+        name: 'makeLPS',
+        visible: true,
+        numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+
+    function f(F, c, valt, mat) {
+        //F = F.toString();
+        //valt = valt.toString();
+        const sorok = mat.elements;
+        const n = sorok.length;
+        nerdamer.getCore().PARSER.functions['makeLPS'](F.toString(), valt.toString(), mat);
+        nerdamer.getCore().PARSER.functions['makeLPX'](F, c, valt, n);
+        return null;
+    };
+
+    nerdamer.register({
+        name: 'makeLPX',
         visible: true,
         numargs: 4,
         build: function() {
@@ -346,7 +487,8 @@
                         v1 = nerdamer('expand(' + v1 + ')').symbol;
                 } catch {
                     //console.log("seqvar", 3)
-                    var v1 = nerdamer(expr.toString().replaceAll(valt, j)).evaluate().symbol;
+                    expr = expr.toString().replaceAll("product", "Product").replaceAll("sum", "Sum");
+                    var v1 = nerdamer(expr.replaceAll(valt, j)).evaluate().symbol;
                 }
                 //console.log("seqvar v1", v1)
                 vec.set(j - m, v1);
