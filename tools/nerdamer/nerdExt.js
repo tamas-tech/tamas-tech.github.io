@@ -186,33 +186,33 @@
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(F, c, x, n) {
+    function f(F, F0, n) {
         n = nerdamer(n).evaluate().valueOf();
-        x = x.toString();
+
         F = F.toString();
         if (PartPolys.includes(F)) {
             for (var i = 1; i <= n; i++)
                 getsetZycFabFib(F, i, false);
         };
         const pars = _.functions[F + "_" + n][2].params;
-        var mat = c.toString() + "+",
+        var mat = F0.toString() + "+",
             valt = "";
         for (var j = 1; j < n + 1; j++) {
             valt += pars[j - 1];
             var nev = F + "_" + j;
             var v1 = nerdamer(nev + "(" + valt + ")").evaluate().symbol;
-            mat += "(" + v1 + ")*" + x + "^" + j + "+";
+            mat += "(" + v1 + ")*x" + "^" + j + "+";
             valt += ","
         };
         mat = mat.slice(0, -1)
             //console.log(F, [x], mat)
-        nerdamer.setFunction(F, [x], mat)
+        nerdamer.setFunction(F, ['x'], mat)
         return null;
     }
     nerdamer.register({
         name: 'makeTPX',
         visible: true,
-        numargs: 4,
+        numargs: 3,
         build: function() {
             return f;
         }
@@ -224,16 +224,15 @@
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(F, x, expr, N) {
+    function f(F, expr, N) {
         N = nerdamer(N).evaluate().valueOf();
-        x = x.toString();
         F = F.toString();
 
         var valt = [];
         for (var j = 1; j < N + 1; j++) {
-            valt.push(x + "_" + j);
+            valt.push("x_" + j);
             var nev = F + "_" + j;
-            var exprj = expr.sub('n', j) //.evaluate().symbol();
+            var exprj = expr.sub('n', j);
             exprj = exprj.toString().replaceAll("sum", "Sum").replaceAll("product", "Product");
             // console.log(exprj)
             nerdamer.setFunction(nev, valt, exprj)
@@ -243,7 +242,7 @@
     nerdamer.register({
         name: 'makeTPS',
         visible: true,
-        numargs: 4,
+        numargs: 3,
         build: function() {
             return f;
         }
@@ -345,18 +344,17 @@
         _ = core.PARSER;
 
 
-    function f(F, valt, mat) {
+    function f(F, mat) {
         F = F.toString();
-        valt = valt.toString();
         const sorok = mat.elements;
         const n = sorok.length;
         var valts = [];
         for (var i = 0; i < n; i++) {
-            valts.push(valt + "_" + (i + 1));
+            valts.push("x_" + (i + 1));
             var sor = sorok[i];
             var fn = "";
             for (var j = 0; j <= i; j++) {
-                fn += sor[j] + "*" + valt + "_" + (j + 1) + "+";
+                fn += sor[j] + "*" + "x_" + (j + 1) + "+";
             }
             fn = fn.slice(0, -1);
             console.log(F + "_" + (i + 1), valts, fn)
@@ -368,33 +366,7 @@
     nerdamer.register({
         name: 'makeLPS',
         visible: true,
-        numargs: 3,
-        build: function() {
-            return f;
-        }
-    });
-})();
-
-
-(function() {
-    var core = nerdamer.getCore(),
-        _ = core.PARSER;
-
-
-    function f(F, c, valt, mat) {
-        //F = F.toString();
-        //valt = valt.toString();
-        const sorok = mat.elements;
-        const n = sorok.length;
-        nerdamer.getCore().PARSER.functions['makeLPS'](F.toString(), valt.toString(), mat);
-        nerdamer.getCore().PARSER.functions['makeLPX'](F, c, valt, n);
-        return null;
-    };
-
-    nerdamer.register({
-        name: 'makeLPX',
-        visible: true,
-        numargs: 4,
+        numargs: 2,
         build: function() {
             return f;
         }
