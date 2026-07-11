@@ -1,6 +1,5 @@
 //const nerdamer = require("../tools/nerdamer/nerdamer.core");
 
-
 function HideColumnIndex0() {
     var $el = $(this);
     var $cell = $el.closest('th,td');
@@ -9596,11 +9595,11 @@ function prelatexjs(c_txt, mathjax) {
                 ww.push(_.last(vv));
                 //console.log(ww)
                 makePPolys(...ww);
-            } else if (dek[0].startsWith("makeLPS")) {
-                var vv = dek[0].slice(8, -1).split(',');
+                //} else if (dek[0].startsWith("makeLPS")) {
+                //var vv = dek[0].slice(8, -1).split(',');
                 //console.log(vv);
-                makeLPS(vv[0], vv[1], nerdamer(vv[2]).symbol);
-            } else if (dek[0].startsWith("lincombTPS") || dek[0].startsWith("makeTPX")) {
+                //makeLPS(vv[0], vv[1], nerdamer(vv[2]).symbol);
+            } else if (dek[0].startsWith("makeTPS") || dek[0].startsWith("makeLPS") || dek[0].startsWith("lincombTPS") || dek[0].startsWith("makeTPX")) {
                 nerdamer(dek[0])
             }
         };
@@ -9612,15 +9611,6 @@ function prelatexjs(c_txt, mathjax) {
     if (nerd) {
         for (let exp of nerd) {
             var exp0 = exp.slice(2, -2);
-            //console.log("exp0:", exp0)
-            /* var gyv = exp0.match(/\[(.*)(\|\|)\d+[^\[]\]/g);  //9510-ben c_txt=c_txt.replaceAll(   getsorA()) váltja ki
-            if (gyv && gyv.length > 0) {
-                for (let bb of gyv) {
-                    const ddk = bb.slice(1, -1).split("||")
-                    var bbv = getsorA(ddk[0], ddk[1] * 1)
-                    exp0 = exp0.replaceAll(bb, bbv)
-                }
-            }; */
             const e = nerdamer(exp0);
             try {
                 var ltx = decForm(e.evaluateM().latex(nerd_numb));
@@ -9648,8 +9638,6 @@ function prelatexjs(c_txt, mathjax) {
 
 
 function ppcomp(fn1, fn2, F, n) {
-    //console.log(fn1, fn2, F, n)
-
     if (PartPolys.includes(fn1.replaceAll("-", "")))
         getsetZycFabFib(fn1, n, false);
     if (PartPolys.includes(fn2.replaceAll("-", "")))
@@ -9668,8 +9656,6 @@ function ppcomp(fn1, fn2, F, n) {
     };
     com = com.slice(0, -1) + ")";
     var txt = nerdamer("expand(" + com + ")");
-    //if (!PartPolys.includes(F))
-    //    PartPolys.push(F);
     nerdamer.setFunction(F.toString() + '_' + n, xs, txt.toString());
 };
 
@@ -10503,7 +10489,7 @@ function makePPolys(name, x, n, expr, b) {
         makePPolyn(name, x, i, expr, b)
 };
 
-function makeLPS(F, valt, mat) {
+/* function makeLPS(F, valt, mat) {
     const sorok = mat.elements;
     const n = sorok.length;
     var valts = [];
@@ -10518,7 +10504,7 @@ function makeLPS(F, valt, mat) {
         console.log(F + "_" + (i + 1), valts, fn)
         nerdamer.setFunction(F + "_" + (i + 1), valts, fn)
     }
-};
+}; */
 
 function makePPTtext(F, n) {
     var core = nerdamer.getCore(),
