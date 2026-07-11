@@ -389,6 +389,7 @@ const autodictC = [
     { key: "lincombTPS part többvált polinom nerd", value: "lincombTPS({c},,,)", tag: "lincombTPS(Fsor,Csor,nev,n)" },
     { key: "compTPSösszetéosition2 part többvált polinom nerd", value: "compTPS({c},,,)", tag: "compTPS(F1,F2,Név,n)" },
     { key: "makePPS part többvált polinom nerd", value: "makePPS({c},,,,)", tag: "makePPS(F,x,n,C,b)" },
+    { key: "makeTPS part többvált polinom nerd", value: "makeTPS({c},,,)", tag: "makeTPS(F,F0,T,n)" },
     { key: "makeTPX part többvált polinom nerd", value: "makeTPX({c},,,)", tag: "makeTPX(F,F0,x,n)" },
     { key: "makeLPS part többvált polinom nerd", value: "makeLPS({c},,)", tag: "makeLPS(F,x,mat)" },
 
