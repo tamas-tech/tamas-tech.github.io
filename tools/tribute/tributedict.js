@@ -2,6 +2,9 @@ var MENTION = false;
 var autoCOMP = true;
 var visszatorles = true;
 
+var autoCOMP2 = true;
+var visszatorles2 = true;
+
 const tribnyil = '<span class="tribnyil">&#x25B6;</span>';
 
 function tribcmd(txt) {
@@ -171,6 +174,9 @@ const html = [{
 const textar = document.getElementById("pentcinput");
 const tribcontainer = document.getElementById("usersorc");
 
+const textar2 = document.getElementById("pentcinput2");
+const tribcontainer2 = document.getElementById("usersorc2");
+
 var mathTribute = new Tribute({
     collection: []
 })
@@ -302,38 +308,6 @@ function createMathTribute() {
     });
 };
 
-//////////////
-
-/* const autodict = [
-    { key: "f", tag: tribcmd("f@") + tribnyil + tribtext('(Formázás)', " r"), value: "f", indx: 1 },
-    { key: "n", tag: tribcmd("n@") + tribnyil + tribtext('(Nerdamer)', " r"), value: "n", indx: 2 },
-    { key: "m", tag: tribcmd("m@") + tribnyil + tribtext('(Mátrix)', " r"), value: "m", indx: 3 },
-    { key: "v", tag: tribcmd("v@") + tribnyil + tribtext('(Vektor)', " r"), value: "v", indx: 4 },
-    { key: "a", tag: tribcmd("a@") + tribnyil + tribtext('(Aritmetikai fgv)', " r"), value: "a", indx: 5 },
-    { key: "x", tag: tribcmd("x@") + tribnyil + tribtext('(n&times;m)', " r"), value: "x", indx: 6 },
-    { key: "l", tag: tribcmd("l@") + tribnyil + tribtext('(Latex)', " r"), value: "l", indx: 7 },
-    { key: "h", tag: tribcmd("h@") + tribnyil + tribtext('(HTML)', " r"), value: "h", indx: 8 },
-];
-var autoTribute = new Tribute({
-    autocompleteMode: true,
-    noMatchTemplate: '',
-    keepLetters: true,
-    menuContainer: tribcontainer,
-    requireLeadingSpace: false,
-    values: autodict,
-    selectTemplate: function(item) {
-        collToShow = item.original.indx;
-        if (collToShow > -1) {
-            return "";
-        } else
-            return item.original.value + '@';
-    },
-    menuItemTemplate: function(item) {
-        return item.original.tag;
-    }
-}); */
-///////////////
-
 
 const autodictC = [
     //{ key: "tags", value: "", tag: "<ul style='background:#ffff9f;'><li>nerd<ul><li>arit</li><li>mat</li><li>vec</li></ul></li><li>forms</li><li>latex</li><li>htnl</li><li>poly</li></ul>" },
@@ -385,7 +359,7 @@ const autodictC = [
     { key: "comp2összetéosition2 part többvált polinom nerd", value: "comp2({c},,)", tag: "comp2(F1,F2,n)" },
     { key: "comp3összetéosition3 part többvált polinom nerd", value: "comp3({c},,,)", tag: "comp3(F1,F2,F3,n)" },
     { key: "comp4összetéosition4 part többvált polinom nerd", value: "comp4({c},,,,)", tag: "comp4(F1,..,F4,n)" },
-    { key: "showTPS part többvált polinom nerd", value: "showTPS({c},)", tag: "showTPS(F,n,[mat])" },
+    { key: "shoWTPS part többvált polinom nerd", value: "showTPS({c},)", tag: "showTPS(F,n,[mat])" },
     { key: "lincombTPS part többvált polinom nerd", value: "lincombTPS({c},,,)", tag: "lincombTPS(Fsor,Csor,nev,n)" },
     { key: "compTPSösszetéosition2 part többvált polinom nerd", value: "compTPS({c},,,)", tag: "compTPS(F1,F2,Név,n)" },
     { key: "makePPS part többvált polinom nerd", value: "makePPS({c},,,,)", tag: "makePPS(F,x,n,C,b)" },
@@ -462,12 +436,12 @@ const autodictC = [
     { key: "[gyorsvecktor...f nerd", value: "[,...f(k)||{c}]", tag: "[a_1,a_2,...f(k) ||n]" },
     { key: "vecktor nerd", value: "vector({c},,)", tag: "vector(,,)" },
     { key: "ivecktor nerd", value: "ivector({c},)", tag: "ivector(dim,k)" },
-    { key: "seq vecktork nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
-    { key: "randseq véletlenvecktork nerd", value: "randseq({c},,)", tag: "randseq(min,max,db)" },
-    { key: "Fvec vecktork nerd", value: "Fvec({c},)", tag: "Fvec(F,vec)" },
+    { key: "seq vecktor nerd", value: "seq({c},,)", tag: "seq(f,a,b)" },
+    { key: "randseq véletlenvecktor nerd", value: "randseq({c},,)", tag: "randseq(min,max,db)" },
+    { key: "Fvec vecktor nerd", value: "Fvec({c},)", tag: "Fvec(F,vec)" },
     { key: "seqvar vecktor nerd", value: "seqvar({c},,,?)", tag: "seqvar(f(k,.),k,a,b,[exp])" },
-    { key: "map vecktork nerd", value: "map({c},,?)", tag: "map(f,vec,[exp])" },
-    { key: "map_n vecktork nerd", value: "map_n({c},,,?)", tag: "map_n(f,k,vec,[exp])" },
+    { key: "map vecktor  nerd", value: "map({c},,?)", tag: "map(f,vec,[exp])" },
+    { key: "map_n vecktor nerd", value: "map_n({c},,,?)", tag: "map_n(f,k,vec,[exp])" },
     { key: "skaldotszorzat vecktor nerd", value: "dot({c},)", tag: "<b>a</b>&centerdot;<b>b</b> (skaláris)" },
     { key: "concatösszefűzés  vecktor nerd", value: "concat({c},)", tag: "<b>a</b>&bullet;<b>b</b> (összefűzés)" },
     { key: "kconvuluctionszorzat  vecktor nerd", value: "conv({c},)", tag: "<b>a</b>*<b>b</b> (konv.)" },
@@ -558,8 +532,50 @@ function setTribute() {
 
 setTribute()
 
+//////// tribute text2
+function createAutoTribute2() {
+    autoTributeC = new Tribute({
+        autocompleteMode: true,
+        noMatchTemplate: '',
+        keepLetters: true,
+        lookup: "key",
+        requireLeadingSpace: false,
+        menuContainer: tribcontainer2,
+        values: autodictC,
+        menuItemTemplate: function(item) {
+            return item.original.tag;
+        }
+    });
+}
 
-function elotteTorol(e) { //EZT már nem is használjuk//
+textar2.addEventListener('tribute-replaced', function(e) {
+    if (visszatorles2)
+        elotteTorol(e);
+    const input = e.target;
+    const text = input.value;
+    const marker = '{c}';
+    const markerIndex = text.indexOf(marker);
+    if (markerIndex !== -1) {
+        input.value = text.replace(marker, '');
+        setTimeout(() => {
+            input.setSelectionRange(markerIndex, markerIndex);
+            input.focus();
+        }, 0);
+    }
+});
+
+function setTribute2() {
+    autoTributeC.detach(textar2);
+    if (autoCOMP2) {
+        createAutoTribute2();
+        autoTributeC.attach(textar2);
+    }
+};
+
+setTribute2();
+//////// tribute text2
+
+function elotteTorol(e) {
     var textarea = e.target;
     var currentCaret = textarea.selectionStart;
     var fullText = textarea.value;
