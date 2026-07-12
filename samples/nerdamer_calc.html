@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../tools/tribute/tribute.css">
     <link rel="stylesheet" href="../tools/tribute/tributeext.css">
     <link rel="stylesheet" href="../tools/Easy-Rare-Characters/css/app.css">
+     <link href="../tools/tabbing-system-tabs/css/tabs.css" rel="stylesheet" />
 
     <script src="../tools/fraction.min.js"></script>
     <script src="../tools/YourCombinations.js"></script>
@@ -29,6 +30,7 @@
     <script src="../tools/Easy-Rare-Characters/js/jquery.mousewheel.js"></script>
     <script src="../tools/Easy-Rare-Characters/js/jquery.longpress.js"></script>
     <script src="../tools/Easy-Rare-Characters/js/app.js"></script>
+    <script src="../tools/tabbing-system-tabs/js/tabs.js"></script>
     <script src="multipolylog.js"></script>
     <script src="compposet.js"></script>
     <script src="halgebra.js"></script>
@@ -72,116 +74,128 @@
 <body>
     <div id="floatkijelzo"></div>
     <div class="keret of odd" id="k1" style="margin-bottom:15px;">
-        <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">Nerdamer</big></b></b><input class="kijelzoset" oninput="setkijelzoW('pentcontainer',this.value);setkijelzoW('penthelpcontainer',this.value);" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
-        <div class="stickblock">
-            <div id="tbltok" class="nobr" style="margin-left:2px;padding:3px;">
-                <table id="setpenttbl" class="table-hideable" style="box-shadow: 0 0 10px 5px #9a9aac">
-                    <tr style="background-color:#606060;">
-                        <td colspan="5" id="usersorc" style="border:none;height:fit-content">
-                                <textarea id="pentcinput" cols="60" class="form-control container__textarea long-press" spellcheck="false" style="scrollbar-width: none;min-width:calc(100% - 20px);min-height:200px;font-family:Consolas,Courier New;font-size:1em;height:80%;border:none;padding:10px;line-height: 1.3;"
-                                    type="text" value="1">
+
+
+        <div id="my_tabs" class="styled_tabs">
+            <div class="controls">
+                <a href="#" class="control active" style="width: 25%;"> 1.</a>
+                <a href="#" class="control" style="width: 25%;"> 2. </a>
+            </div>
+
+
+
+            <div class="targets">
+                <div class="target">
+                    <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">Nerdamer</big></b></b><input class="kijelzoset" oninput="setkijelzoW('pentcontainer',this.value);/*setkijelzoW('penthelpcontainer',this.value);*/" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
+                    <div class="stickblock">
+                        <div id="tbltok" class="nobr" style="margin-left:2px;padding:3px;">
+                            <table id="setpenttbl" class="table-hideable" style="box-shadow: 0 0 10px 5px #9a9aac">
+                                <tr style="background-color:#606060;">
+                                    <td colspan="5" id="usersorc" style="border:none;height:fit-content">
+                                        <textarea id="pentcinput" cols="60" class="form-control container__textarea long-press" spellcheck="false" style="scrollbar-width:none;min-width:calc(100% - 20px);min-height:200px;font-family:Consolas,Courier New;font-size:1em;height:80%;border:none;padding:10px;line-height: 1.3;"
+                                            type="text" value="1">
                             </textarea>
-                            <div id="speccharstok" class="flickable" style="max-width:100vw">
-                                <table>
-                                    <tr>
-                                        <td>&#x25b6;</td>
-                                        <td>&#x25c9;</td>
-                                        <td>&lt;</td>
-                                        <td>&gt;</td>
-                                        <td>§</td>
-                                        <td>$</td>
-                                        <td>{</td>
-                                        <td>}</td>
-                                        <td>[</td>
-                                        <td>]</td>
-                                        <td>(</td>
-                                        <td>)</td>
-                                        <td>\</td>
-                                        <td>=</td>
-                                        <td>_</td>
-                                        <td>,</td>
-                                        <td>;</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr style="background-color:#606060;height: 42px;">
-                       <td id="specChtgl" style="width:190px;border:none;">
-                            <button style="width:70px;font-size:0.8em;margin:0 15px 0 0;font-weight: 600;" class="sbtglbtn" onclick="tglSpecChars();">§,$,[,...</button>
-                            <label style="font-size:15px;color:#f2f2f2;">dblclick</label>
-                            <input type="checkbox" onchange="setSpecClick(this.checked);" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
-                        </td>
-                        <td id="nerdreset" style="width:90px;border:none;">
-                            <button style="width:40px;font-size:0.6em;margin:0;" class="sbtglbtn" onclick="$('#pentcinput').val('').focus();">Clear</button>
-                        </td>
-                        <td id="pptinsert" style="width:290px;border: 1px solid #1e1e1e;background-color:#515151;"">
-                            <button style="width:80px;font-size:0.8em;margin:0;font-weight: 800;" class="sbtglbtn" onclick="insertPPT()">PPS(F,n)</button>
-                            <label for="pptname" style="vertical-align: middle;color:#f2f2f2;">F</label>
-                            <input type="text" id="pptname" value="F" style="width:44px;font-size: 15px;margin:0 3px;height:24px;vertical-align:middle;text-align:center;">
-                            <label for="pptdeg" style="vertical-align: middle;color:#f2f2f2;">n</label>
-                            <input type="number" id="pptdeg" value="5" min="1" style="width:44px;font-size: 15px;margin:0 3px;height:24px;vertical-align:middle;text-align:center;">
-                        </td>
-                        <td style="width:90px;border:none;">
-                            <span id="tglpenthelp" onclick="tglPentHelp();" style="width: 28px;height:28px;display:inline-block;background-color: #fff785;font-size: 24px;border-radius:50%;text-align:center;">?</span>
-                        </td>
-                        <td id="nerdtgl" style="width:90px;border:none;">
-                            <button style="vertical-align: middle;padding: 5px 5px 9px 5px;margin:0;" class="sbtglbtn" onclick="tglNerdSettings();">⚙</button>
-                        </td>
-                    </tr>
-                    <tr id="nerdsettings" class="" style="font-size:16px;border-top:2px solid #848484;background-color:#d8d8d8;outline: 5px solid #606060;outline-offset: -5px;">
-                        <td colspan="5" style="text-align:left;padding:10px;">
-                            <label for="nerdnumb" style="vertical-align: middle;margin-left:1px;">Szám</label>
-                            <select id="nerdnumb" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
+                                        <div id="speccharstok" class="flickable" style="max-width:100vw">
+                                            <table>
+                                                <tr>
+                                                    <td>&#x25b6;</td>
+                                                    <td>&#x25c9;</td>
+                                                    <td>&lt;</td>
+                                                    <td>&gt;</td>
+                                                    <td>§</td>
+                                                    <td>$</td>
+                                                    <td>{</td>
+                                                    <td>}</td>
+                                                    <td>[</td>
+                                                    <td>]</td>
+                                                    <td>(</td>
+                                                    <td>)</td>
+                                                    <td>\</td>
+                                                    <td>=</td>
+                                                    <td>_</td>
+                                                    <td>,</td>
+                                                    <td>;</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="background-color:#606060;height: 42px;">
+                                    <td id="specChtgl" style="width:190px;border:none;">
+                                        <button style="width:70px;font-size:0.8em;margin:0 15px 0 0;font-weight: 600;" class="sbtglbtn" onclick="tglSpecChars();">§,$,[,...</button>
+                                        <label style="font-size:15px;color:#f2f2f2;">dblclick</label>
+                                        <input type="checkbox" onchange="setSpecClick(this.checked,false);" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                                    </td>
+                                    <td id="nerdreset" style="width:90px;border:none;">
+                                        <button style="width:40px;font-size:0.6em;margin:0;" class="sbtglbtn" onclick="$('#pentcinput').val('').focus();">Clear</button>
+                                    </td>
+                                    <td id="pptinsert" style="width:290px;border: 1px solid #1e1e1e;background-color:#515151;">
+                                        <button style="width:80px;font-size:0.8em;margin:0;font-weight: 800;" class="sbtglbtn" onclick="insertPPT()">PPS(F,n)</button>
+                                        <label for="pptname" style="vertical-align: middle;color:#f2f2f2;">F</label>
+                                        <input type="text" id="pptname" value="F" style="width:44px;font-size: 15px;margin:0 3px;height:24px;vertical-align:middle;text-align:center;">
+                                        <label for="pptdeg" style="vertical-align: middle;color:#f2f2f2;">n</label>
+                                        <input type="number" id="pptdeg" value="5" min="1" style="width:44px;font-size: 15px;margin:0 3px;height:24px;vertical-align:middle;text-align:center;">
+                                    </td>
+                                    <td style="width:90px;border:none;">
+                                        <span id="tglpenthelp" onclick="tglPentHelp();" style="width: 28px;height:28px;display:inline-block;background-color: #fff785;font-size: 24px;border-radius:50%;text-align:center;">?</span>
+                                    </td>
+                                    <td id="nerdtgl" style="width:90px;border:none;">
+                                        <button style="vertical-align: middle;padding: 5px 5px 9px 5px;margin:0;" class="sbtglbtn" onclick="tglNerdSettings();">⚙</button>
+                                    </td>
+                                </tr>
+                                <tr id="nerdsettings" class="" style="font-size:16px;border-top:2px solid #848484;background-color:#d8d8d8;outline: 5px solid #606060;outline-offset: -5px;">
+                                    <td colspan="5" style="text-align:left;padding:10px;">
+                                        <label for="nerdnumb" style="vertical-align: middle;margin-left:1px;">Szám</label>
+                                        <select id="nerdnumb" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
                                 <option value="fraction">Tört</option>
                                 <option value="decimal">Tizedes</option>
                                 <option value="formal">Formális</option>
                             </select>
-                            <label for="nerdtizedesek" style="vertical-align: middle;">Tizedesjegy</label>
-                            <input type="number" id="nerdtizedesek" onchange="" value="10" min="1" max="100" style="width:44px;font-size: 15px;margin:0 3px;height:22px;">
-                        </td>
-                    </tr>
-                    <tr id="sugosor">
-                        <td colspan="5" style="background-color:#606060;text-align:left;border:none;word-wrap:break-word;white-space: normal;">
-                            <div id="accordion" style="display:block;background-color: #f6ffb4;max-height:200px;overflow-y:auto;font-family: Arial;padding:5px;overflow-y:scroll;cursor:text;">
-                                <h3 style="text-align:center;">Aritmetikai függvények</h3>
-                                <div>
-                                    / Általunk implementált <code>Nerdamer</code> kiterjesztések /
-                                    <ul>
-                                        <li><b>pent</b>(n): Ha n egy általánosított előjeles pentagonális szám, akkor &pm;1, egyébként 0.</li>
-                                        <li><b>tau</b>(n): n osztóinak a száma.</li>
-                                        <li><b>sigma</b>(n): n osztóinak az összege.</li>
-                                        <li><b>sigmaM</b>(n,m): n-nek az m-nél nem nagyobb osztóinak az összege.</li>
-                                        <li><b>part</b>(n): n partícióinak a száma.</li>
-                                        <li><b>partM</b>(n,m): n-nek a legfeljebb m tagú partícióinak a száma.</li>
-                                        <li><b>phi</b>(n): Euler-féle &phi;(n) totient függvény. Az n-nél nem nagyobb, n-hez relatív prímek száma</li>
-                                        <li><b>mahonian</b>(n,m): az [1,2,...n] halmaz m inverzióval rendelkaző permutációinak a száma .</li>
-                                        <li><b>binomial</b>(n,m): az [1,2,...n] halmaz m elemű részhalmazainak a száma .</li>
-                                        <i>Az alábbi hat polinomban n egy rögzített szám. Például:</i> Fab_6(k,5,k-4,k/9,k^2,-3*k)
-                                        <li><b>Zyc_n</b>(x_1,x_2,...,x_n): A Z<sub>n</sub>( x_1,...,x_n) ciklusszámláló polinom. (lsd. 6. kártya)</li>
-                                        <li><b>Fab_n</b>(x_1,x_2,...,x_n): A Fab<sub>n</sub>( x_1,...,x_n) Faber-polinom. (lsd. 6. kártya)</li>
-                                        <li><b>Fib_n</b>(x_1,x_2,...,x_n): A Fib<sub>n</sub>( x_1,...,x_n) általánosított Fibonacci-polinom. (lsd. 6. kártya)</li>
-                                        <li><b>Luc_n</b>(x_1,x_2,...,x_n): A Luc<sub>n</sub>( x_1,...,x_n) általánosított Lucas-polinom. (lsd. 6. kártya)</li>
-                                        <li><b>Sti_n</b>(x_1,x_2,...,x_n): A Sti<sub>n</sub>( x_1,...,x_n) általánosított Stirling-polinom. (lsd. 8. kártya)</li>
-                                        <li><b>Har_n</b>(x_1,x_2,...,x_n): A Har<sub>n</sub>( x_1,...,x_n) harmonikus polinom. (lsd. 8. kártya)</li>
-                                    </ul>
-                                </div>
-                                <h3 style="text-align:center;">Azonosságok</h3>
-                                <ol>
-                                    <li>
-                                        <b>A pentagonális számok a mahoni számok és binomiális együtthatók előjeles szorzatösszege</b>
-                                        <span>\[ \delta_{5}(n)=(-1)^{n+1}\,\sum_{k=0}^{n}\,(-1)^{k}i(n,k)\binom{n}{k}\]</span> <i style="font-size:80%;"></i>
-                                        <br/>Nézzük a képletet részleteiben, n = 12 értékkel.
-                                        <br/>A binomiális számok sora:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq(binomial(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
-                                        <br/>A mahoni számok sora:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq(mahonian(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
-                                        <br/>A képletben szerepló előjeles szorzatok:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq((-1)^k*mahonian(12,k)*binomial(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
-                                        <br/>Végül, maga az összeg és a pentagonális szám értéke:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='50px');"><code>§s = (-1)^(12+1)*sum((-1)^k*mahonian(12,k)*binomial(12,k),k,0,12);p=pent(12)§<br/>$$&lt;&lt;s>>=&lt;&lt;p>>$$</code></span>
-                                        <br/>Mind egyben, egy LaTeX képleteket is tartalmazó többsoros példában, amelyben az N paraméter értéke allítható:<br/>
-                                        <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='340px');"><pre><code>
+                                        <label for="nerdtizedesek" style="vertical-align: middle;">Tizedesjegy</label>
+                                        <input type="number" id="nerdtizedesek" onchange="" value="10" min="1" max="100" style="width:44px;font-size: 15px;margin:0 3px;height:22px;">
+                                    </td>
+                                </tr>
+                                <tr id="sugosor">
+                                    <td colspan="5" style="background-color:#606060;text-align:left;border:none;word-wrap:break-word;white-space: normal;">
+                                        <div id="accordion" style="display:block;background-color: #f6ffb4;max-height:200px;overflow-y:auto;font-family: Arial;padding:5px;overflow-y:scroll;cursor:text;">
+                                            <h3 style="text-align:center;">Aritmetikai függvények</h3>
+                                            <div>
+                                                / Általunk implementált <code>Nerdamer</code> kiterjesztések /
+                                                <ul>
+                                                    <li><b>pent</b>(n): Ha n egy általánosított előjeles pentagonális szám, akkor &pm;1, egyébként 0.</li>
+                                                    <li><b>tau</b>(n): n osztóinak a száma.</li>
+                                                    <li><b>sigma</b>(n): n osztóinak az összege.</li>
+                                                    <li><b>sigmaM</b>(n,m): n-nek az m-nél nem nagyobb osztóinak az összege.</li>
+                                                    <li><b>part</b>(n): n partícióinak a száma.</li>
+                                                    <li><b>partM</b>(n,m): n-nek a legfeljebb m tagú partícióinak a száma.</li>
+                                                    <li><b>phi</b>(n): Euler-féle &phi;(n) totient függvény. Az n-nél nem nagyobb, n-hez relatív prímek száma</li>
+                                                    <li><b>mahonian</b>(n,m): az [1,2,...n] halmaz m inverzióval rendelkaző permutációinak a száma .</li>
+                                                    <li><b>binomial</b>(n,m): az [1,2,...n] halmaz m elemű részhalmazainak a száma .</li>
+                                                    <i>Az alábbi hat polinomban n egy rögzített szám. Például:</i> Fab_6(k,5,k-4,k/9,k^2,-3*k)
+                                                    <li><b>Zyc_n</b>(x_1,x_2,...,x_n): A Z<sub>n</sub>( x_1,...,x_n) ciklusszámláló polinom. (lsd. 6. kártya)</li>
+                                                    <li><b>Fab_n</b>(x_1,x_2,...,x_n): A Fab<sub>n</sub>( x_1,...,x_n) Faber-polinom. (lsd. 6. kártya)</li>
+                                                    <li><b>Fib_n</b>(x_1,x_2,...,x_n): A Fib<sub>n</sub>( x_1,...,x_n) általánosított Fibonacci-polinom. (lsd. 6. kártya)</li>
+                                                    <li><b>Luc_n</b>(x_1,x_2,...,x_n): A Luc<sub>n</sub>( x_1,...,x_n) általánosított Lucas-polinom. (lsd. 6. kártya)</li>
+                                                    <li><b>Sti_n</b>(x_1,x_2,...,x_n): A Sti<sub>n</sub>( x_1,...,x_n) általánosított Stirling-polinom. (lsd. 8. kártya)</li>
+                                                    <li><b>Har_n</b>(x_1,x_2,...,x_n): A Har<sub>n</sub>( x_1,...,x_n) harmonikus polinom. (lsd. 8. kártya)</li>
+                                                </ul>
+                                            </div>
+                                            <h3 style="text-align:center;">Azonosságok</h3>
+                                            <ol>
+                                                <li>
+                                                    <b>A pentagonális számok a mahoni számok és binomiális együtthatók előjeles szorzatösszege</b>
+                                                    <span>\[ \delta_{5}(n)=(-1)^{n+1}\,\sum_{k=0}^{n}\,(-1)^{k}i(n,k)\binom{n}{k}\]</span> <i style="font-size:80%;"></i>
+                                                    <br/>Nézzük a képletet részleteiben, n = 12 értékkel.
+                                                    <br/>A binomiális számok sora:<br/>
+                                                    <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq(binomial(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
+                                                    <br/>A mahoni számok sora:<br/>
+                                                    <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq(mahonian(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
+                                                    <br/>A képletben szerepló előjeles szorzatok:<br/>
+                                                    <span class="pentcimke" onclick="peldaSetNerd(this);"><code>§s = seq((-1)^k*mahonian(12,k)*binomial(12,k),0,12)§<br/>$$&lt;&lt;s>>$$</code></span>
+                                                    <br/>Végül, maga az összeg és a pentagonális szám értéke:<br/>
+                                                    <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='50px');"><code>§s = (-1)^(12+1)*sum((-1)^k*mahonian(12,k)*binomial(12,k),k,0,12);p=pent(12)§<br/>$$&lt;&lt;s>>=&lt;&lt;p>>$$</code></span>
+                                                    <br/>Mind egyben, egy LaTeX képleteket is tartalmazó többsoros példában, amelyben az N paraméter értéke allítható:<br/>
+                                                    <span class="pentcimke" onclick="peldaSetNerd(this,document.getElementById('pentcinput').style.height='340px');"><pre><code>
 ▶ §§N=12§§<br/>§b = seq(binomial(N,k),0,N); m= seq(mahonian(N,k),0,N)§
 ▶ §v = seq((-1)^k*mahonian(N,k)*binomial(N,k),0,N);er = (-1)^(N+1)*sum((-1)^k*mahonian(N,k)*binomial(N,k),k,0,N);p=pent(N)§
 ▶ &lt;div>A binomiális számok sora: $\binom{<<\N>>}{0},\binom{<<\N>>}{1},\ldots,\binom{<<\N>>}{<<\N>>}\longrightarrow<<\b>>$&lt;/div>
@@ -191,72 +205,69 @@
 ▶ &lt;div>Végül, maga az előjeles szorzatok összeg és a pentagonális szám értéke: 
 ▶ $$(-1)^{<<\N>>+1}\sum_{k=0}^{<<\N>>}(-1)^{k}\,i(<<\N>>,k)\binom{<<\N>>}{k} = <<\er>>\equiv<<\p>>=\delta_{5}(<<\N>>)$$&lt;/div></code></pre>
                                         </span>
-                                    </li>
-                                </ol>
-                                <h3 style="text-align:center;">Fájl feltöltése/letöltése</h3>
-                                <div>
-                                    <label><b>Feltöltés:</b></label>
-                                    <input type="file" id="fileNerd">
-                                    <label onclick="downloadNerd();">
+                                                </li>
+                                            </ol>
+                                            <h3 style="text-align:center;">Fájl feltöltése/letöltése</h3>
+                                            <div>
+                                                <label><b>Feltöltés:</b></label>
+                                                <input type="file" id="fileNerd">
+                                                <label onclick="downloadNerd();">
                                         <b>Letöltés:</b>
                                         <span id="dwnbtn" style='display: inline-block;width: 60px;padding: 2px;border: 1px solid #aaa;text-align: center;border-radius: 5px;background-color: #e9e9ed;'>&#x21E9;</span>
                                     </label>
-                                    <h3>Példák betöltése</h3>
-                                    <ul>
-                                        <li><a onclick="loadNerd(this);" data-page="PolynomSorok1.txt">Trianguláris polinomsorok 1. Elmélet</a>&nbsp;&nbsp;(Frissitve: 2026-07-05)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="PolynomSorok2.txt">Trianguláris polinomsorok 2. Deklarálás, Összetétel</a>&nbsp;&nbsp;(Frissitve: 2026-07-09)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="PolynomSorok3.txt">Trianguláris polinomsorok 3. Partíció polinomsorok</a>&nbsp;&nbsp;(Frissitve: 2026-07-09)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="Har_hatas.txt"><b>Har</b> hatása különboző sorokon</a>&nbsp;&nbsp;(Frissitve: 2026-07-05)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="Har_zeta3.txt">&zeta;(3) közelítése</a>&nbsp;&nbsp;(Frissitve: 2026-07-04)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="Har_pi2.txt">&pi;<sup>2</sup> közelítése</a>&nbsp;&nbsp;(Frissitve: 2026-07-04)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="nerdamerPell.txt">A Pell-számok Euler-transzformálja</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="fib_conv.txt">Fib hatása és a konvolúcióinverz</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="toeplitz_conv.txt">Toeplitz-mátrixok algebrája</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="hatas.txt">Partíció polinomok hatása sorokon</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="seqvar.txt">seqvar(expr,valt,min,max)</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="map.txt">map(expr,vec)</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="map_n.txt">map_n(expr,k,vec)</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="Pihelyettpi.txt">PI helyett használjunk mindig pi-t!</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="PartPoly.txt">Partíció polinomsorok összetétele és hatása sorokon</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
-                                        <li><a onclick="loadNerd(this);" data-page="continued_frac.txt">Emeletes tört kiszámítása</a>&nbsp;&nbsp;(Frissitve: 2026-06-22)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="nobr" style="margin-left:2px;padding:3px;position:sticky;left:10px;">
-                <button onclick="idClear('#pentout');nerdCalc();" class="showpre1">OK</button>
-                <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#pentout');" title="Clear output">Clear</button>
-                <button id="tglpentopts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl( 'pentsetting');">⚙</button>
-            </div>
-        </div>
-        <div id="pentsetting" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
-            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
-                <label for="setoutputfontR">&#128474;</label>
-                <input oninput="setOutputFontPent(this.value);" type="range" min="12" max="24" value="18" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfontR" />
-                <label style="display:inline-block;vertical-align:middle;font-size:120%;" for="setpenttblw">&#x27DB;</label>
-                <input id="setpenttblw" oninput="document.getElementById('pentcinput').style.fontSize=this.value+'em';adjustLineNumbs();" type="range" min="0.8" max="1.5" value="1" step="0.05" style="display:inline-block;width:110px;vertical-align: middle;" name="setpenttblw"
-                />
-            </div>
-            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
-                <label style="font-family:monospace;font-size:15px;">autocomp</label>
-                <input type="checkbox" checked onchange="autoCOMP=this.checked;setTribute();" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
-                <label style="font-family:monospace;font-size:15px;">word</label>
-                <label class="switch"><input id="setwc" onchange="MENTION=this.checked;setTribute();" type="checkbox"><span class="slider round"></span></label>
-                <label style="font-family:monospace;margin-right:12px;font-size:15px;">..@</label>
-                <label style="font-family:monospace;font-size:15px;">visszatörlés</label>
-                <input type="checkbox" checked onchange="visszatorles=this.checked;" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
-            </div>
-            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
-                <label style="margin-right:1px;font-size:15px;">MathJax</label>
-                <label class="switch"><input id="mathjs_mathjax" type="checkbox"><span class="slider round"></span></label>
-                <label style="margin-left:1px;font-size:15px;">LaTeX.js</label>
-            </div>
-            <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
-                <label style="margin-right:1px;font-size:15px;">Font</label>
-                <select id="nerdnumb" onchange="document.getElementById('pentout').style.fontFamily=this.value" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
+                                                <h3>Példák betöltése</h3>
+                                                <ul>
+                                                    <li><a onclick="loadNerd(this);" data-page="PolynomSorok1.txt">Trianguláris polinomsorok 1. Elmélet</a>&nbsp;&nbsp;(Frissitve: 2026-07-05)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="PolynomSorok2.txt">Trianguláris polinomsorok 2. Deklarálás, Összetétel</a>&nbsp;&nbsp;(Frissitve: 2026-07-09)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="Har_zeta3.txt">&zeta;(3) közelítése</a>&nbsp;&nbsp;(Frissitve: 2026-07-04)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="Har_pi2.txt">&pi;<sup>2</sup> közelítése</a>&nbsp;&nbsp;(Frissitve: 2026-07-04)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="nerdamerPell.txt">A Pell-számok Euler-transzformálja</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="fib_conv.txt">Fib hatása és a konvolúcióinverz</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="toeplitz_conv.txt">Toeplitz-mátrixok algebrája</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="hatas.txt">Partíció polinomok hatása sorokon</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="seqvar.txt">seqvar(expr,valt,min,max)</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="map.txt">map(expr,vec)</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="map_n.txt">map_n(expr,k,vec)</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="Pihelyettpi.txt">PI helyett használjunk mindig pi-t!</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="PartPoly.txt">Partíció polinomsorok összetétele és hatása sorokon</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="continued_frac.txt">Emeletes tört kiszámítása</a>&nbsp;&nbsp;(Frissitve: 2026-06-22)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="nobr" style="margin-left:2px;padding:3px;position:sticky;left:10px;">
+                            <button onclick="idClear('#pentout');nerdCalc();" class="showpre1">OK</button>
+                            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#pentout');" title="Clear output">Clear</button>
+                            <button id="tglpentopts" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl( 'pentsetting');">⚙</button>
+                        </div>
+                    </div>
+                    <div id="pentsetting" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+                        <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                            <label for="setoutputfontR">&#128474;</label>
+                            <input oninput="setOutputFontPent(this.value);" type="range" min="12" max="24" value="18" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfontR" />
+                            <label style="display:inline-block;vertical-align:middle;font-size:120%;" for="setpenttblw">&#x27DB;</label>
+                            <input id="setpenttblw" oninput="document.getElementById('pentcinput').style.fontSize=this.value+'em';" type="range" min="0.8" max="1.5" value="1" step="0.05" style="display:inline-block;width:110px;vertical-align: middle;" name="setpenttblw" />
+                        </div>
+                        <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                            <label style="font-family:monospace;font-size:15px;">autocomp</label>
+                            <input type="checkbox" checked onchange="autoCOMP=this.checked;setTribute();" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                            <label style="font-family:monospace;font-size:15px;">word</label>
+                            <label class="switch"><input id="setwc" onchange="MENTION=this.checked;setTribute();" type="checkbox"><span class="slider round"></span></label>
+                            <label style="font-family:monospace;margin-right:12px;font-size:15px;">..@</label>
+                            <label style="font-family:monospace;font-size:15px;">visszatörlés</label>
+                            <input type="checkbox" checked onchange="visszatorles=this.checked;" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                        </div>
+                        <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                            <label style="margin-right:1px;font-size:15px;">MathJax</label>
+                            <label class="switch"><input id="mathjs_mathjax" type="checkbox"><span class="slider round"></span></label>
+                            <label style="margin-left:1px;font-size:15px;">LaTeX.js</label>
+                        </div>
+                        <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                            <label style="margin-right:1px;font-size:15px;">Font</label>
+                            <select id="nerdnumb" onchange="document.getElementById('pentout').style.fontFamily=this.value" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
                     <option value="">Auto</option>
                     <option value="KaTeX_Main">KaTeX_Main</option>
                     <option value="KaTeX_SansSerif">KaTeX_SansSerif</option>
@@ -268,43 +279,158 @@
                     <option value=" Arial"> Arial</option>
                     <option value="monospace">monospace</option>
                 </select>
+                        </div>
+                    </div>
+                    <div id="pentcontainer" class="flickable" style="max-width:100vw">
+                        <p id="figypent" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+                        <p id="pentout" class="pergamen" style="width:fit-content;min-width: 87%;margin:5px;padding:7px 5% ;font-size:18px;min-height:20px;"></p>
+                    </div>
+                    <div id="pentsorcopytok" style="display: none; position: sticky; left: 0px;">
+                        <button class="showpre1" id="pentsorcopy" style="width:96px;margin-left:8px;margin-top:10px;" onclick="copy2OEISnerd();">Copy</button>
+                        <label for="denoms" style="vertical-align: middle;margin-left:10px;">Nevezők</label>
+                        <input type="checkbox" name="denoms" id="denoms" style="height:20px; width:20px;vertical-align:middle;">
+                        <label for="szorzo" style="vertical-align: middle;margin-left:10px;margin-right:5px;">Szorzó</label>
+                        <input type="text" name="szorzo" value="1" id="szorzo" style="text-align: center;font-size:15px;width:50px;vertical-align:middle;">
+                        <span id="vagolap" style="display:inline-block;margin:10px 10px 0 10px;padding:3px;border:1px solid #c8c8c8;background-color: #e3fff8;font-size: 18px;"></span>
+                    </div>
+
+                </div>
+
+                <!-- MÁSODIK SZÁMOLŐGÉP MÁSODIK SZÁMOLŐGÉP MÁSODIK SZÁMOLŐGÉP MÁSODIK SZÁMOLŐGÉP-->
+
+                <div class="target" style="background: #0a0f22;padding-bottom:10px;">
+                    <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">Nerdamer</big></b></b><input class="kijelzoset" oninput="setkijelzoW('pentcontainer',this.value);/*setkijelzoW('penthelpcontainer',this.value);*/" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
+                    <div class="stickblock">
+                        <div id="tbltok2" class="nobr" style="margin-left:2px;padding:3px;">
+                            <table id="setpenttbl2" class="table-hideable" style="box-shadow: 0 0 10px 5px #9a9aac">
+                                <tr style="background-color:#606060;">
+                                    <td colspan="5" id="usersorc2" style="border:none;height:fit-content">
+                                        <textarea id="pentcinput2" cols="60" class="form-control container__textarea long-press" spellcheck="false" style="scrollbar-width:none;min-width:calc(100% - 20px);min-height:200px;font-family:Consolas,Courier New;font-size:1em;height:80%;border:none;padding:10px;line-height: 1.3;background-color: #303448;color: white;"
+                                            type="text" value="1">
+                            </textarea>
+                                        <div id="speccharstok2" class="flickable" style="max-width:100vw">
+                                            <table>
+                                                <tr>
+                                                    <td>&#x25b6;</td>
+                                                    <td>&#x25c9;</td>
+                                                    <td>&lt;</td>
+                                                    <td>&gt;</td>
+                                                    <td>§</td>
+                                                    <td>$</td>
+                                                    <td>{</td>
+                                                    <td>}</td>
+                                                    <td>[</td>
+                                                    <td>]</td>
+                                                    <td>(</td>
+                                                    <td>)</td>
+                                                    <td>\</td>
+                                                    <td>=</td>
+                                                    <td>_</td>
+                                                    <td>,</td>
+                                                    <td>;</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="background-color:#606060;height: 42px;">
+                                    <td id="specChtgl2" style="width:40%;border:none;">
+                                        <button style="width:70px;font-size:0.8em;margin:0 15px 0 0;font-weight: 600;" class="sbtglbtn" onclick="tglSpecChars2();">§,$,[,...</button>
+                                        <label style="font-size:15px;color:#f2f2f2;">dblclick</label>
+                                        <input type="checkbox" onchange="setSpecClick(this.checked,true);" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                                    </td>
+                                    <td id="nerdreset2" style="width:20%;border:none;">
+                                        <button style="width:40px;font-size:0.6em;margin:0;" class="sbtglbtn" onclick="$('#pentcinput2').val('').focus();">Clear</button>
+                                    </td>
+                                    <td id="pptinsert2" style="width:290px;border: 1px solid #1e1e1e;background-color:#515151;">
+                                        <button style="width:80px;font-size:0.8em;margin:0;font-weight: 800;" class="sbtglbtn" onclick="insertPPT2()">PPS(F,n)</button>
+                                        <label for="pptname2" style="vertical-align: middle;color:#f2f2f2;">F</label>
+                                        <input type="text" id="pptname2" value="F" style="width:44px;font-size: 15px;margin:0 3px;height:24px;vertical-align:middle;text-align:center;">
+                                        <label for="pptdeg2" style="vertical-align: middle;color:#f2f2f2;">n</label>
+                                        <input type="number" id="pptdeg2" value="5" min="1" style="width:44px;font-size: 15px;margin:0 3px;height:24px;vertical-align:middle;text-align:center;">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="nobr" style="margin-left:2px;padding:3px;position:sticky;left:10px;">
+                            <button onclick="idClear('#pentout2');nerdCalc2();" class="showpre1">OK</button>
+                            <button class="showpre1" style="width:76px;margin-left:3px" onclick="idClear('#pentout2');" title="Clear output">Clear</button>
+                            <button id="tglpentopts2" style="vertical-align: middle;margin-left:10px;padding: 5px 5px 9px 5px;" class="sbtglbtn" onclick="sbTgl( 'pentsetting2');">⚙</button>
+                        </div>
+                    </div>
+                    <div id="pentsetting2" class="nobr" style="display:none;margin-left:5px;margin-bottom: 10px;border: 3px solid #abb6d5;padding: 5px;background-color: #e6e6e6;border-radius: 3px;">
+                        <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                            <label for="setoutputfontR2">&#128474;</label>
+                            <input oninput="setOutputFontPent2(this.value);" type="range" min="12" max="24" value="18" style="display:inline-block;width:110px;vertical-align: middle;margin-left:10px;" title="set output 's fontsize" name="setoutputfontR2" />
+                            <label style="display:inline-block;vertical-align:middle;font-size:120%;" for="setpenttblw2">&#x27DB;</label>
+                            <input id="setpenttblw2" oninput="document.getElementById('pentcinput2').style.fontSize=this.value+'em';" type="range" min="0.8" max="1.5" value="1" step="0.05" style="display:inline-block;width:110px;vertical-align: middle;" name="setpenttblw2" />
+                        </div>
+                        <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                            <label style="font-family:monospace;font-size:15px;">autocomp</label>
+                            <input type="checkbox" checked onchange="autoCOMP2=this.checked;setTribute2();" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                            <label style="font-family:monospace;font-size:15px;">visszatörlés</label>
+                            <input type="checkbox" checked onchange="visszatorles2=this.checked;" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                        </div>
+                        <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                            <label style="margin-right:1px;font-size:15px;">Font</label>
+                            <select id="nerdnumb" onchange="document.getElementById('pentout2').style.fontFamily=this.value" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
+                                <option value="">Auto</option>
+                                <option value="KaTeX_Main">KaTeX_Main</option>
+                                <option value="KaTeX_SansSerif">KaTeX_SansSerif</option>
+                                <option value="KaTeX_Typewriter">KaTeX_Typewriter</option>
+                                <option value="KaTeX_AMS">KaTeX_AMS</option>
+                                <option value="KaTeX_Math">KaTeX_Math</option>
+                                <option value="KaTeX_Fraktur">KaTeX_Fraktur</option>
+                                <option value="Cambria Math">Cambria Math</option>
+                                <option value=" Arial"> Arial</option>
+                                <option value="monospace">monospace</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="pentcontainer2" class="flickable" style="max-width:100vw">
+                        <p id="figypent2" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
+                        <p id="pentout2" class="pergamen" style="width:fit-content;min-width: 87%;margin:5px;padding:7px 5% ;font-size:18px;min-height:20px;background-image: radial-gradient(circle, #c7dfe3f2 40%, rgba(148, 184, 221, 0.4) 100%), url('https://transparenttextures.com');"></p>
+                    </div>
+                    <div id="pentsorcopytok2" style="display: none; position: sticky; left: 0px;color: #ccc;padding-bottom: 5px;">
+                        <button class="showpre1" id="pentsorcopy2" style="width:96px;margin-left:8px;margin-top:10px;" onclick="copy2OEISnerd2();">Copy</button>
+                        <label for="denoms2" style="vertical-align: middle;margin-left:10px;">Nevezők</label>
+                        <input type="checkbox" name="denoms2" id="denoms2" style="height:20px; width:20px;vertical-align:middle;">
+                        <label for="szorzo2" style="vertical-align: middle;margin-left:10px;margin-right:5px;">Szorzó</label>
+                        <input type="text" name="szorzo2" value="1" id="szorzo2" style="text-align: center;font-size:15px;width:50px;vertical-align:middle;">
+                        <span id="vagolap2" style="display:inline-block;margin:10px 10px 0 10px;padding:3px;border:1px solid #646464;;background-color: #040717;font-size: 18px;"></span>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="pentcontainer" class="flickable" style="max-width:100vw">
-            <p id="figypent" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
-            <p id="pentout" class="pergamen" style="width:fit-content;min-width: 87%;margin:5px;padding:7px 5% ;font-size:18px;min-height:20px;"></p>
-        </div>
-        <div id="pentsorcopytok" style="display: none; position: sticky; left: 0px;">
-            <button class="showpre1" id="pentsorcopy" style="width:96px;margin-left:8px;margin-top:10px;" onclick="copy2OEISnerd();">Copy</button>
-            <label for="denoms" style="vertical-align: middle;margin-left:10px;">Nevezők</label>
-            <input type="checkbox" name="denoms" id="denoms" style="height:20px; width:20px;vertical-align:middle;">
-            <label for="szorzo" style="vertical-align: middle;margin-left:10px;margin-right:5px;">Szorzó</label>
-            <input type="text" name="szorzo" value="1" id="szorzo" style="text-align: center;font-size:15px;width:50px;vertical-align:middle;">
-            <span id="vagolap" style="display:inline-block;margin:10px 10px 0 10px;padding:3px;border:1px solid #c8c8c8;background-color: #e3fff8;font-size: 18px;"></span>
-        </div>
+
+
+
     </div>
-    
+
     <script>
         setTimeout(() => {
             $('#w1coeff').trigger('change');
             $(function() {
                 $("#accordion").accordion({
-                    header: "> h3",
+                    header: "h3",
                     collapsible: true,
                     heightStyle: "content",
                     active: "none",
-                    /*animate: {
-                        easing: 'swing',
-                        duration: 400,
-                        down: true
-                    },*/
                 })
             });
-            setSpecClick(false);
+            setSpecClick(false, false);
+            setSpecClick(false, true);
         }, 1000);
     </script>
+    <script src="../tools/tribute/tributedict.js"></script>
+    <script type="text/javascript">
+        (function($) {
+            $(function() {
+                $('#my_tabs').tabs();
+            });
+        })(jQuery);
     </script>
-<script src="../tools/tribute/tributedict.js"></script>
+
 </body>
 
 </html>
