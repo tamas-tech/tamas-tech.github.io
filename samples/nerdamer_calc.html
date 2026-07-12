@@ -82,8 +82,6 @@
                 <a href="#" class="control" style="width: 25%;"> 2. </a>
             </div>
 
-
-
             <div class="targets">
                 <div class="target">
                     <span class="uitok"> <b><big class="sorszam" style="vertical-align:top;">Nerdamer</big></b></b><input class="kijelzoset" oninput="setkijelzoW('pentcontainer',this.value);/*setkijelzoW('penthelpcontainer',this.value);*/" type="range" min="1" max="6" step="0.5" value="0"><span class="uiset" onclick="setCard(this);">&#8677;</span></span>
@@ -212,13 +210,15 @@
                                                 <label><b>Feltöltés:</b></label>
                                                 <input type="file" id="fileNerd">
                                                 <label onclick="downloadNerd();">
-                                        <b>Letöltés:</b>
-                                        <span id="dwnbtn" style='display: inline-block;width: 60px;padding: 2px;border: 1px solid #aaa;text-align: center;border-radius: 5px;background-color: #e9e9ed;'>&#x21E9;</span>
-                                    </label>
+                                                    <b>Letöltés:</b>
+                                                        <span id="dwnbtn" style='display: inline-block;width: 60px;padding: 2px;border: 1px solid #aaa;text-align: center;border-radius: 5px;background-color: #e9e9ed;'>&#x21E9;</span>
+                                                </label>
                                                 <h3>Példák betöltése</h3>
-                                                <ul>
+                                                 <ul>
                                                     <li><a onclick="loadNerd(this);" data-page="PolynomSorok1.txt">Trianguláris polinomsorok 1. Elmélet</a>&nbsp;&nbsp;(Frissitve: 2026-07-05)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="PolynomSorok2.txt">Trianguláris polinomsorok 2. Deklarálás, Összetétel</a>&nbsp;&nbsp;(Frissitve: 2026-07-09)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="PolynomSorok3.txt">Trianguláris polinomsorok 3. Partíció polinomsorok</a>&nbsp;&nbsp;(Frissitve: 2026-07-09)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="Har_hatas.txt"><b>Har</b> hatása különboző sorokon</a>&nbsp;&nbsp;(Frissitve: 2026-07-05)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="Har_zeta3.txt">&zeta;(3) közelítése</a>&nbsp;&nbsp;(Frissitve: 2026-07-04)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="Har_pi2.txt">&pi;<sup>2</sup> közelítése</a>&nbsp;&nbsp;(Frissitve: 2026-07-04)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="nerdamerPell.txt">A Pell-számok Euler-transzformálja</a>&nbsp;&nbsp;(Frissitve: 2026-06-21)</li>
