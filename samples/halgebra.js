@@ -7443,6 +7443,11 @@ function setOutputFontPent(v) {
     elem.style.fontSize = v + 'px';
 };
 
+function setOutputFontPent2(v) {
+    var elem = document.getElementById("pentout2");
+    elem.style.fontSize = v + 'px';
+};
+
 function tglUsera() {
     const sel = $("#setpenttbl #spd").val();
     if (sel == "user") {
@@ -7743,17 +7748,24 @@ function tglSpecChars() {
     $("#speccharstok").toggleClass("shown");
 };
 
-function setSpecClick(b) {
-    const elems = $('#speccharstok table tr td');
+function tglSpecChars2() {
+    $("#speccharstok2").toggleClass("shown");
+};
+
+function setSpecClick(b, gep2) {
+    if (gep2)
+        var elems = $('#speccharstok2 table tr td');
+    else
+        var elems = $('#speccharstok table tr td');
     if (b) {
         elems.off('click');
         elems.on('dblclick', function() {
-            beTextbe(this.innerText)
+            beTextbe(this.innerText, gep2)
         });
     } else {
         elems.off('dblclick');
         elems.on('click', function() {
-            beTextbe(this.innerText)
+            beTextbe(this.innerText, gep2)
         });
     }
 };
@@ -7765,8 +7777,29 @@ function nerdTgl(b) {
         $('#usersorc').css('display', 'none');
 };
 
-function beTextbe(text) {
-    var textarea = document.getElementById("pentcinput");
+function beTextbe(text, gep2) {
+    if (gep2)
+        var textarea = document.getElementById("pentcinput2");
+    else
+        var textarea = document.getElementById("pentcinput");
+    var scrollPos = textarea.scrollTop;
+    var caretPos = textarea.selectionStart;
+
+    var front = textarea.value.substring(0, caretPos);
+    var back = textarea.value.substring(
+        textarea.selectionEnd,
+        textarea.value.length
+    );
+    textarea.value = front + text + back;
+    caretPos = caretPos + text.length;
+    textarea.selectionStart = caretPos;
+    textarea.selectionEnd = caretPos;
+    textarea.focus();
+    textarea.scrollTop = scrollPos;
+};
+
+function beTextbe2(text) {
+    var textarea = document.getElementById("pentcinput2");
     var scrollPos = textarea.scrollTop;
     var caretPos = textarea.selectionStart;
 
@@ -9695,6 +9728,27 @@ function nerdCalc() {
         updMathJax(c_txt);
 };
 
+function nerdCalc2() {
+    pentsorout = "";
+    var c_txt = $("#usersorc2 textarea").val();
+    // updMathJax2
+    try {
+        c_txt = prelatexjs(c_txt, true);
+    } catch (error) {
+        c_txt = error;
+        pentsorout = "";
+    }
+    const elem = document.querySelector("#pentout2");
+    const copyel = document.getElementById("pentsorcopytok2");
+    elem.style.whiteSpace = "nowrap";
+    elem.innerHTML = c_txt;
+    if (pentsorout == "")
+        copyel.style.display = "none";
+    else
+        copyel.style.display = "block";
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+};
+
 function drawPent() {
     nerdamer.flush();
     nerdamer.clearVars();
@@ -9904,6 +9958,36 @@ function copy2OEISnerd() {
     }, 300);
 };
 
+
+function copy2OEISnerd2() {
+    var txt = "";
+    const deno = document.getElementById("denoms2").checked;
+    const vagolap = document.getElementById("vagolap2");
+    var c = document.getElementById("szorzo2").value;
+    try {
+        c = nerdamer.convertFromLaTeX(c).evaluate();
+    } catch (error) {
+        document.getElementById("vagolap2").innerHTML = error;
+    }
+
+    if (pentsorout == "")
+        document.getElementById("vagolap2").innerHTML = "Nincs megjeleníthető sor";
+    var vec = pentsorout.slice(1, -1).split(',').map(y => nerdamer.convertFromLaTeX(y));
+    if (deno) {
+        const denoms = vec.map(y => y.denominator().multiply(c).toString());
+        txt = denoms.toString();
+    } else {
+        const numers = vec.map(y => y.numerator().multiply(c).toString());
+        txt = numers.toString();
+    }
+    txt = txt.replaceAll(",", ", ");
+    vagolap2.innerHTML = "clipboard &rightarrow; " + txt;
+    navigator.clipboard.writeText(txt);
+    $('#vagolap2').addClass('villbgdark');
+    setTimeout(() => {
+        $('#vagolap2').removeClass('villbgdark');
+    }, 300);
+};
 ///   #k7  polygonal polynomials
 
 function setOutputFontPolyg(v) {
@@ -10534,5 +10618,14 @@ function insertPPT() {
 
     makePPolys(name, "x", n, "C", "b");
     var txt = makePPTtext(name, n);
-    beTextbe(txt);
+    beTextbe(txt, false);
+};
+
+function insertPPT2() {
+    const name = document.getElementById("pptname2").value.trim();
+    var n = document.getElementById("pptdeg2").value * 1;
+
+    makePPolys(name, "x", n, "C", "b");
+    var txt = makePPTtext(name, n);
+    beTextbe(txt, true);
 };
