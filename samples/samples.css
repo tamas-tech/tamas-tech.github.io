@@ -3722,7 +3722,8 @@ select#mthselect {
     font-family: unset;
 }
 
-div#speccharstok {
+div#speccharstok,
+div#speccharstok2 {
     display: none;
     padding: 0 0 4px 0;
     position: sticky!important;
@@ -3731,11 +3732,13 @@ div#speccharstok {
     width: 100%;
 }
 
-div#speccharstok.shown {
+div#speccharstok.shown,
+div#speccharstok2.shown {
     display: block;
 }
 
-#speccharstok table tr td {
+#speccharstok table tr td,
+#speccharstok2 table tr td {
      width: 40px;
     height: 40px;
     cursor: pointer;
