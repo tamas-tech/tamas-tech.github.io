@@ -1,4 +1,4 @@
-▶ <style>p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} #pentout .sp {display:inline-block;width:2em;} #pentout .spd {display:inline-block;width:5em;} #pentout a {font-family:monospace;} #pentout code.kek {display:inline-block;font-size: 92%;color:#fff0c4;background-color:#393939;padding:2px 5px;margin:5px 0 5px 15px;border-radius:4px;} #pentout div.def {border:1px solid #00000024;padding:5px 10px;margin:10px 0;background-color:#95959524;} #pentout div.scroll {max-width:90vw;overflow-x:auto;user-select: none;border: 1px solid #7b7b7b;background-color:#dfd4b2;} #pentout h1,h2,h3,h4 {border-top: 1px solid #515151;border-bottom: 1px solid #515151;background-color: #c1b6885e;margin-top: 3em;padding-left: 10px;}</style>
+ ▶ <style>p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} #pentout .sp {display:inline-block;width:2em;} #pentout .spd {display:inline-block;width:5em;} #pentout a {font-family:monospace;} #pentout code.kek {display:inline-block;font-size: 92%;color:#fff0c4;background-color:#393939;padding:2px 5px;margin:5px 0 5px 15px;border-radius:4px;} #pentout div.def {border:1px solid #00000024;padding:5px 10px;margin:10px 0;background-color:#95959524;} #pentout div.scroll {max-width:90vw;overflow-x:auto;user-select: none;border: 1px solid #7b7b7b;background-color:#dfd4b2;} #pentout h1,h2,h3,h4 {border-top: 1px solid #515151;border-bottom: 1px solid #515151;background-color: #c1b6885e;margin-top: 3em;padding-left: 10px;}</style>
 <code style="font-size:105%;padding:10px;display:inline-block;border:1px solid;background-color:#bfbfbf1a;font-weight:bold;">
 &sect;Fgv(TPS_1,[x_'1..k],f_k(x_'1..k))&sect;◉
 comp2(TPS_1,TPS_2,n)◉
@@ -19,20 +19,21 @@ compTPS(TPS_1,TPS_2,compName,n)◉
 
 ▶Az <b>A</b> és <b>B</b> egyedi (képlettel nem felírható) trianguláris polinomsorok első négy tagjának deklarálása:◉
 
-▶<code class="kek">
-▶&sect;Fgv(A_1,[x_'1]      2*x_1                    )&sect;◉
-▶&sect;Fgv(A_2,[x_'1..2],  2*x_1 - x_1*x_2          )&sect;◉
-▶&sect;Fgv(A_3,[x_'1..3], -x_1 - x_3*x_1            )&sect;◉
-▶&sect;Fgv(A_4,[x_'1..4], -x_3 + x_4*x_3 - x_4*x_2  )&sect;◉
-◉
-▶&sect;Fgv(B_1,[x_'1],     -x_1              )&sect;◉
-▶&sect;Fgv(B_2,[x_'1..2],  -x_2^2 + 5*x_1^2  )&sect;◉
-▶&sect;Fgv(B_3,[x_'1..3],  -x_3 + 2*x_2*x_1  )&sect;◉
-▶&sect;Fgv(B_4,[x_'1..4],   x_4*x_1 - x_2^2  )&sect;◉
+▶<code class="kek clickable">
+&sect;Fgv(A_1,[x_'1],     2*x_1                    )&sect;◉
+&sect;Fgv(A_2,[x_'1..2],  2*x_1 - x_1*x_2          )&sect;◉
+&sect;Fgv(A_3,[x_'1..3], -x_1 - x_3*x_1            )&sect;◉
+&sect;Fgv(A_4,[x_'1..4], -x_3 + x_4*x_3 - x_4*x_2  )&sect;◉
+</code>◉
+▶<code class="kek clickable">
+&sect;Fgv(B_1,[x_'1],     -x_1              )&sect;◉
+&sect;Fgv(B_2,[x_'1..2],  -x_2^2 + 5*x_1^2  )&sect;◉
+&sect;Fgv(B_3,[x_'1..3],  -x_3 + 2*x_2*x_1  )&sect;◉
+&sect;Fgv(B_4,[x_'1..4],   x_4*x_1 - x_2^2  )&sect;◉
 ▶</code>◉
 ▶Ha az <b>A</b> trianguláris polinomsort szeretnénk megjeleníteni, akkor azt az alábbi kódsorral megtehetjük:◉
 
-▶<code class="kek">
+▶<code class="kek clickable">
 $A_1(x_1)=&lt;&lt;A_1(x_1)&gt;&gt;$◉
 $A_2(x_'1..2)=&lt;&lt;A_2(x_'1..2)&gt;&gt;$◉
 $A_3(x_'1..3)=&lt;&lt;A_3(x_'1..3)&gt;&gt;$◉
@@ -45,19 +46,18 @@ $A_3(x_1..3)=<<A_3(x_1..3)>>$◉
 $A_4(x_1..4)=<<A_4(x_1..4)>>$◉
 ◉
 ▶Ezt sokkal kényelmesebben is elérhetjük a <code style="font-size:105%;color:#500066;font-weight:bold;">showTPS(TPS,n)</code> parancs használatával: ◉
-<code class="kek">&lt;&lt;showTPS(A,4)&gt;&gt;</code>
+<code class="kek clickable">&lt;&lt;showTPS(A,4)&gt;&gt;</code>
 <<showTPS(A,4)>>
 ▶Ugyanígy a <b>B</b> trianguláris polinomsor is gyorsan megjeleníthető: ◉
-<code class="kek">&lt;&lt;showTPS(B,4)&gt;&gt;</code>
+<code class="kek clickable">&lt;&lt;showTPS(B,4)&gt;&gt;</code>
 <<showTPS(B,4)>>
 
 <h3>Trianguláris polinomsorok összetétele/kompozíció-szorzata</h3>
 ▶Az <b>A</b> és <b>B</b> polinomsorok $\mathbf{C}=\mathbf{A}\circ\mathbf{B}$ összetétele is egy trianguláris polinomsor lesz. Az összetétel részletes kiírásának kódja:◉
 -----------------------▶ 
-▶<code class="kek">
+▶<code class="kek clickable">
 ▶&#x25b6;$A_1(B_1(x_1))=&lt;&lt;A_1(B_1)>>=&lt;&lt;A_1(B_1(x_1))&gt;&gt;$&#x25c9;◉
-▶&#x25b6;$A_2(B_1(x_1),B_2(x_'1..2))=&lt;&lt;A_2(B_'1..2&gt;&gt;=&lt;&lt;A_2(B_1(x_1),B_2(x_'1..2))&gt;&gt;=
-&lt;&ltexpand(A_2(B_1(x_1),B_2(x_'1..2)))&gt;&gt;$&#x25c9;◉
+▶&#x25b6;$A_2(B_1(x_1),B_2(x_'1..2))=&lt;&lt;A_2(B_'1..2)&gt;&gt;=&lt;&lt;A_2(B_1(x_1),B_2(x_'1..2))&gt;&gt;=&lt;&ltexpand(A_2(B_1(x_1),B_2(x_'1..2)))&gt;&gt;$&#x25c9;◉
 ▶&#x25b6;$A_3(B_1(x_1),B_2(x_'1..2),B_3(x_'1..3))=&lt;&lt;A_3(B_1,B_2,B_3)&gt;&gt;=&lt;&lt;A_3(B_1(x_1),B_2(x_'1..2),B_3(x_'1..3))&gt;&gt;=◉
 &lt;&lt;expand(A_3(B_1(x_1),B_2(x_'1..2),B_3(x_'1..3)))&gt;&gt;$&#x25c9;◉
 ▶&#x25b6;$A_4(B_1(x_1),B_2(x_'1..2),B_3(x_'1..3),B_4(x_'1..4))=&lt;&lt;A_4(B_1,B_2,B_3,B_4)&gt;&gt;=$&#x25c9;◉
@@ -74,7 +74,7 @@ $A_4(x_1..4)=<<A_4(x_1..4)>>$◉
 ▶<span class="spd"></span>$=<<expand(A_4(B_1(x_1),B_2(x_1..2),B_3(x_1..3),B_4(x_1..4)))>>$◉  
 <hr/>
 ▶A $\mathbf{C}=\mathbf{A}\circ\mathbf{B}$ polinomsor deklarálása az <code>A_n(B_1(x_1),...,B_n(x_'1..n))</code> függvényösszetételek direkt begépelésével: ◉
-<code class="kek">
+<code class="kek clickable">
 &sect;Fgv(C_1,[x_1],     expand(A_1(B_1(x_1)))                                     )&sect;◉
 &sect;Fgv(C_2,[x_'1..2],  expand(A_2(B_1(x_1),B_2(x_'1..2)))                         )&sect;◉
 &sect;Fgv(C_3,[x_'1..3],  expand(A_3(B_1(x_1),B_2(x_'1..2),B_3(x_'1..3)))             )&sect;◉
@@ -86,12 +86,12 @@ $A_4(x_1..4)=<<A_4(x_1..4)>>$◉
 §Fgv(C_3,[x_1..3],  expand(A_3(B_1(x_1),B_2(x_1..2),B_3(x_1..3)))             )§
 §Fgv(C_4,[x_1..4],  expand(A_4(B_1(x_1),B_2(x_1..2),B_3(x_1..3),B_4(x_1..4))) )§◉
 ▶Az összetétellel kapott <b>C</b> trianguláris polinomsor már gyorsan megjeleníthető a <code>showTPS</code> paranccsal: ◉
-<code class="kek">&lt;&lt;showTPS(C,4)&gt;&gt;</code>◉
+<code class="kek clickable">&lt;&lt;showTPS(C,4)&gt;&gt;</code>◉
 <<showTPS(C,4)>>
 <hr/>
 ▶Az <b>A</b> és <b>B</b> polinomsorok $\mathbf{D}=\mathbf{A}\circ\mathbf{B}$ összetétele <code>comp2(A,B,k)</code> parancs használatával.◉
 
-<code class="kek">
+<code class="kek clickable">
 &sect;Fgv(D_1,[x_1],     comp2(A,B,1) )&sect;◉
 &sect;Fgv(D_2,[x_'1..2],  comp2(A,B,2) )&sect;◉
 &sect;Fgv(D_3,[x_'1..3],  comp2(A,B,3) )&sect;◉
@@ -103,13 +103,13 @@ $A_4(x_1..4)=<<A_4(x_1..4)>>$◉
 §Fgv(D_3,[x_1..3],  comp2(A,B,3) )§
 §Fgv(D_4,[x_1..4],  comp2(A,B,4) )§
 ▶Az összetétellel kapott <b>D</b> trianguláris polinomsor is gyorsan megjeleníthető a <code>showTPS</code> paranccsal: ◉
-<code class="kek">&lt;&lt;showTPS(D,4)&gt;&gt;</code>◉
+<code class="kek clickable">&lt;&lt;showTPS(D,4)&gt;&gt;</code>◉
 <<showTPS(D,4)>>
 
 <hr/>
 ▶Az <b>A</b> és <b>B</b> trianguláris polinomsorok kompozíció-szorzatát legkényelmesebben a <code style="font-size:105%;color:#500066;font-weight:bold;">compTPS(TPS_1,TPS_2,compName,n)</code> paranccsal kapjuk meg.◉
 Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsorok kompozíció-szorzatát, majd azt a <code>showTPS</code> paranccsal meg is jelenítjük:◉
-<code class="kek">
+<code class="kek clickable">
 &sect;compTPS(A,B,AB,4)&sect;◉
 &lt;&lt;showTPS(AB,4)&gt;&gt; 
 </code>
@@ -118,7 +118,7 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 
 ▶<h3>Beépített polinomsorok összetétele</h3>
 ▶Az alábbi kódrészlet <b>ZF</b> néven létrehozza a <b>Zyc</b> és <b>Fab</b> partíció polinomsorok (PPS) kompozíció-szorzatát n = 5-ig, majd azt meg is jeleníti.◉
-▶<code class="kek">
+▶<code class="kek clickable">
 &sect;compTPS(Zyc,Fab,ZF,5)&sect;◉
 &lt;&lt;showTPS(ZF,5)&gt;&gt;◉
 ▶</code>
@@ -126,7 +126,7 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 ▶<<showTPS(ZF,5)>> 
 <hr/>
 ▶Ismeretes, hogy $\mathbf{Sti}=\mathbf{Zyc}\circ\mathbf{Har}$. Most ezt ellenőrízzük n=5-ig.◉
-▶<code class="kek">
+▶<code class="kek clickable">
 &sect;compTPS(Zyc,Har,ST,5)&sect;◉
 &lt;&lt;showTPS(ST,5)&gt;&gt;◉
 &lt;&lt;showTPS(Sti,5)&gt;&gt;◉
@@ -137,11 +137,11 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 ◉
 ▶A két eredmény vizuális összevetése nem is olyan egyszerű. Itt kell megjegyezni, hogy <code>showTPS(TPS,n)</code> kimenete mindig egy $n\times 2$ méretű <em><b>mátrix</b></em>.◉
 ▶Így azok ki is vonhatók egymásból. Nézzük mit eredményez az alábbi kód:◉ 
-▶<code class="kek">&lt;&lt;sshowTPS(ST,5)-showTPS(Sti,5)&gt;&gt;</code>
+▶<code class="kek clickable">&lt;&lt;sshowTPS(ST,5)-showTPS(Sti,5)&gt;&gt;</code>
 <<showTPS(ST,5)-showTPS(Sti,5)>>
 <hr/>
 ▶Most azt a jól ismert tényt ellenőrizzük, hogy <b>Fib</b> involutorikus, azzaz $\mathbf{Fib}\circ\mathbf{Fib}=\mathbf{Pr}$. A $\mathbf{Fib}\circ\mathbf{Fib}$ összetételt <b>FF</b> névvel deklaráljuk.◉
-▶<code class="kek">
+▶<code class="kek clickable">
 &sect;compTPS(Fib,Fib,FF,6)&sect;◉
 &lt;&lt;showTPS(FF,6)&gt;&gt;◉
 ▶</code>
@@ -150,7 +150,7 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 
 <h3>Beépített polinomsorok összetétele deklarált polinomsorokkal</h3>
 ▶Az alábbi kód <b>L</b> néven deklarál egy egyedi (képlettel nem megadható) trianguláris polinomsort.◉
-▶<code class="kek">
+▶<code class="kek clickable">
 &sect;Fgv(L_1,[x_1],     2*x_1                     )&sect;◉
 &sect;Fgv(L_2,[x_'1..2],  2*x_1 - x_1*x_2           )&sect;◉
 &sect;Fgv(L_3,[x_1'..3],  -x_1 - x_3*x_1            )&sect;◉
@@ -163,7 +163,7 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 §Fgv(L_4,[x_1..4],  -x_3 + x_4*x_3 - x_4*x_2  )§
 §Fgv(L_5,[x_1..5],  x_4+2*x_5                 )§
 ▶A $\mathbf{Luc}\circ\mathbf{L}$ kompozíció-szorzatot <b>LucL</b> névvel hozzuk létre, majd <code>showTPS</code> paranccsal megjelenítjük.◉
-▶<code class="kek">
+▶<code class="kek clickable">
 &sect;compTPS(Luc,L,LucL,5)&sect;◉
 &lt;&lt;showTPS(LucL,5)&gt;&gt;◉
 ▶</code>
@@ -171,7 +171,7 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 <div class="scroll"><<showTPS(LucL,5)>></div>
 ◉ 
 ▶A fordított $\mathbf{L}\circ\mathbf{Luc}$ kompozíció-szorzatot <b>LLuc</b> néven deklaráljuk, majd a <code>showTPS</code> paranccsal ezt is megjelenítjük.◉
-▶<code class="kek">
+▶<code class="kek clickable">
 &sect;compTPS(L,Luc,LLuc,5)&sect;◉
 &lt;&lt;showTPS(LLuc,5)&gt;&gt;◉
 ▶</code>
@@ -184,7 +184,7 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 ▶parancsokra.) Az alábbi kód a fentebb definiált <b>L</b> polinomsor és a <b>Fab, Fib</b> beépített partíció polinomsorok <b>Fab</b> &#x26AC; (<b>L</b> &#x26AC; <b>Fib</b>) összetételét a <b>FabLFib</b> nevű◉
 ▶trianguláris polinomsorban tárolja. A kódból az is kiderül, hogy használhatunk <i>n</i> változót a bemenetben, és a <code>showTPS</code> parancs mátrix kimenetét is◉
 ▶tárolhatjuk egy változóban. (Ez a változó most <em>er1</em> lesz.)◉
-▶<code class="kek">
+▶<code class="kek clickable">
 &sect;n=4&sect;                           &lt;-- Az n változót 4-re állítjuk be ◉
 &sect;compTPS(L,Fib,LFib,n)&sect;         &lt;-- Lfib néven deklaráljuk az L &#x26AC; Fib összetételt ◉
 &sect;compTPS(Fab,LFib,FabLFib,n)&sect;   &lt;-- FabLfib néven deklaráljuk az Fab &#x26AC; LFib összetételt ◉
@@ -199,7 +199,7 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 <div class="scroll"><<er1>></div> 
 ◉
 ▶A fenti kódrészlethez hasonlóan az alábbi a <b>FabLFib</b >= (<b>Fab</b> &#x26AC; <b>L</b>) &#x26AC; <b>Fib</b> összetételt deklarálja melynek mátrix megjelenítése az <em>er2</em> változóval érhető el.◉ 
-<code class="kek">
+<code class="kek clickable">
 &sect;compTPS(Fab,L,FabL,n)&sect;         &lt;-- FabL néven deklaráljuk az L &#x26AC; Fib összetételt◉
 &sect;compTPS(FabL,Fib,FabLFib2,n)&sect;  &lt;-- FabLfib2 néven deklaráljuk az FabL &#x26AC; Fib összetételt◉
 &sect;er2=showTPS(FabLFib2,n)&sect;       &lt;-- Az er2 változó a showTPS(FabLFib2,n) mátrix lesz◉
@@ -211,5 +211,5 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 <div class="scroll"><<er2>></div>
 ◉ 
 ▶Az alábbi különbség jól példázza a kompozíció-szorzat $\textbf{A}\circ\left(\textbf{B}\circ\textbf{C}\right)=\left(\textbf{A}\circ\textbf{B}\right)\circ\textbf{C}$ asszociativítását.◉
-<code class="kek">&lt;&lt;er1-er2&gt;&gt;</code>
-<<er1-er2>>                                                                                
+<code class="kek clickable">&lt;&lt;er1-er2&gt;&gt;</code>
+<<er1-er2>>                                                                                                                                                                                                                                                       
