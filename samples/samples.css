@@ -3722,6 +3722,10 @@ select#mthselect {
     font-family: unset;
 }
 
+#pentout code.clickable.clickvolt {
+    outline: 2px solid #ffd700;
+}
+
 div#speccharstok,
 div#speccharstok2 {
     display: none;
