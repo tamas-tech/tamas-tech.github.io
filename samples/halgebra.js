@@ -9418,11 +9418,10 @@ function updMathJaxHTML(c_txt) {
 
 function selectCode(txt) {
     const tarea = document.getElementById('pentcinput2');
-
     if (!tarea || !txt) return false;
-    txt = txt.replaceAll(/([\<\>\§\$\,\(\)])/g, '\\$1')
+    //txt = txt.replaceAll(/([\[\]\^\<\>\§\$\*\(\)\+\-])/gm, '\\$1')
+    txt = txt.replaceAll(/([\[\]\^\$\*\(\)\+])/gm, '\\$1')
     const re = new RegExp(`${txt}`);
-    console.log(txt)
     const match = tarea.value.match(re);
     if (!match) return false;
 
@@ -9432,6 +9431,10 @@ function selectCode(txt) {
     tarea.focus();
     tarea.setSelectionRange(start, end);
     return true;
+};
+
+function clickVoltClear() {
+    $('#pentout code.clickable.clickvolt').removeClass('clickvolt');
 };
 
 function scrollToCode() {
@@ -9444,10 +9447,8 @@ function scrollToCode() {
     var numr = textArea.value.match(/[\n\r\f]/gm).length
     var lineHeight = textArea.scrollHeight / numr;
     // Scroll!!}
-    console.log("scrollTo", lineHeight * selectionRow)
     textArea.scrollTop = lineHeight * selectionRow;
 };
-
 
 function addCodeDblClick() {
     var elems = $('#pentout code.clickable');
@@ -9462,10 +9463,10 @@ function addCodeDblClick() {
             setTimeout(() => {
                 $('#pentcinput2').focus();
                 selectCode(codetxt);
-            }, 0)
+            }, 200)
             setTimeout(() => {
                 scrollToCode();
-            }, 10)
+            }, 300)
         } else
             $('#pentcinput2').val($('#pentcinput2').val() + "\n" + codetxt);
         $(this).addClass('villbgdark');
