@@ -7798,24 +7798,6 @@ function beTextbe(text, gep2) {
     textarea.scrollTop = scrollPos;
 };
 
-function beTextbe2(text) {
-    var textarea = document.getElementById("pentcinput2");
-    var scrollPos = textarea.scrollTop;
-    var caretPos = textarea.selectionStart;
-
-    var front = textarea.value.substring(0, caretPos);
-    var back = textarea.value.substring(
-        textarea.selectionEnd,
-        textarea.value.length
-    );
-    textarea.value = front + text + back;
-    caretPos = caretPos + text.length;
-    textarea.selectionStart = caretPos;
-    textarea.selectionEnd = caretPos;
-    textarea.focus();
-    textarea.scrollTop = scrollPos;
-};
-
 function pentSign(e, ov) {
     var sign = e.innerText;
     if (sign == "✚") {
@@ -9434,6 +9416,23 @@ function updMathJaxHTML(c_txt) {
     ZFibFab2Latex(out);
 };
 
+function addCodeDblClick() {
+    var elems = $('#pentout code.clickable');
+    elems.on('dblclick', function() {
+        var codetxt = this.innerText;
+        codetxt = codetxt.replace(/([§>$])( *)?\<\-\-(.*)?[\n\r\f]+/mg, '$1\n');
+        codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>{2}))[\n\r\f]+/mg, '◉\n');
+        //console.log(codetxt);
+        // beTextbe(codetxt, true)
+        $('#pentcinput2').val($('#pentcinput2').val() + "\n" + codetxt);
+        $(this).addClass('villbgdark');
+        setTimeout(() => {
+            $(this).removeClass('villbgdark');
+            $(this).addClass('clickvolt');
+        }, 300);
+    });
+};
+
 function updMathJax(c_txt) {
     try {
         c_txt = prelatexjs(c_txt, true);
@@ -9450,6 +9449,16 @@ function updMathJax(c_txt) {
     else
         copyel.style.display = "block";
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
+    addCodeDblClick();
+};
+
+function tglCalc(e) {
+    var allas = e.innerText;
+    if (allas == "1")
+        e.innerText = "2"
+    else
+        e.innerText = "1"
+    document.querySelector("#my_tabs .controls .control:not(.active)").click();
 };
 
 // >>> LatexJS
