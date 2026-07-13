@@ -9416,6 +9416,39 @@ function updMathJaxHTML(c_txt) {
     ZFibFab2Latex(out);
 };
 
+function selectCode(txt) {
+    const tarea = document.getElementById('pentcinput2');
+
+    if (!tarea || !txt) return false;
+    txt = txt.replaceAll(/([\<\>\§\$\,\(\)])/g, '\\$1')
+    const re = new RegExp(`${txt}`);
+    console.log(txt)
+    const match = tarea.value.match(re);
+    if (!match) return false;
+
+    const start = match.index;
+    const end = start + match[0].length;
+
+    tarea.focus();
+    tarea.setSelectionRange(start, end);
+    return true;
+};
+
+function scrollToCode() {
+    var textArea = document.getElementById('pentcinput2');
+    const selectionStart = textArea.selectionStart;
+    const selectionEnd = textArea.selectionEnd;
+    textArea.setSelectionRange(selectionStart, selectionEnd);
+    var charsPerRow = textArea.cols;
+    var selectionRow = (selectionStart - (selectionStart % charsPerRow)) / charsPerRow;
+    var numr = textArea.value.match(/[\n\r\f]/gm).length
+    var lineHeight = textArea.scrollHeight / numr;
+    // Scroll!!}
+    console.log("scrollTo", lineHeight * selectionRow)
+    textArea.scrollTop = lineHeight * selectionRow;
+};
+
+
 function addCodeDblClick() {
     var elems = $('#pentout code.clickable');
     elems.on('dblclick', function() {
@@ -9424,7 +9457,17 @@ function addCodeDblClick() {
         codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>{2}))[\n\r\f]+/mg, '◉\n');
         //console.log(codetxt);
         // beTextbe(codetxt, true)
-        $('#pentcinput2').val($('#pentcinput2').val() + "\n" + codetxt);
+        if ($(this).hasClass('clickvolt')) {
+            $('#back-to-top').trigger('click');
+            setTimeout(() => {
+                $('#pentcinput2').focus();
+                selectCode(codetxt);
+            }, 0)
+            setTimeout(() => {
+                scrollToCode();
+            }, 10)
+        } else
+            $('#pentcinput2').val($('#pentcinput2').val() + "\n" + codetxt);
         $(this).addClass('villbgdark');
         setTimeout(() => {
             $(this).removeClass('villbgdark');
