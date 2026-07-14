@@ -3723,7 +3723,9 @@ select#mthselect {
 }
 
 #pentout code.clickable.clickvolt {
-    outline: 2px solid #ffd700;
+    outline: 3px solid #444444b2;
+    box-shadow: 0 0 10px 5px #f7ff00;
+    outline-offset: 2px;
 }
 
 div#speccharstok,
