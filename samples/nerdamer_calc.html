@@ -114,8 +114,8 @@
 
         <div id="my_tabs" class="styled_tabs">
             <div class="controls" style="width:110px;display:none;">
-                <a href="#" class="control active" style="width: 25%;"> 1.</a>
-                <a href="#" class="control" style="width: 25%;"> 2. </a>
+                <a href="#" class="control active" style="width:50px"> 1.</a>
+                <a href="#" class="control" style="width:50px"> 2. </a>
             </div>
 
             <div class="targets" style="border:none;padding:0;">
@@ -181,12 +181,22 @@
                                     <td colspan="5" style="text-align:left;padding:10px;">
                                         <label for="nerdnumb" style="vertical-align: middle;margin-left:1px;">Szám</label>
                                         <select id="nerdnumb" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
-                                <option value="fraction">Tört</option>
-                                <option value="decimal">Tizedes</option>
-                                <option value="formal">Formális</option>
-                            </select>
+                                            <option value="fraction">Tört</option>
+                                            <option value="decimal">Tizedes</option>
+                                            <option value="formal">Formális</option>
+                                        </select>
                                         <label for="nerdtizedesek" style="vertical-align: middle;">Tizedesjegy</label>
-                                        <input type="number" id="nerdtizedesek" onchange="" value="10" min="1" max="100" style="width:44px;font-size: 15px;margin:0 3px;height:22px;">
+                                        <input type="number" id="nerdtizedesek" onchange="" value="10" min="1" max="100" style="width:44px;font-size: 15px;margin:0 3px;height:22px;vertical-align: middle;">
+                                        <label for="felulir" style="vertical-align: middle;">Felülírás</label>
+                                        <input type="checkbox" onchange="setFeluliras(this)" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                                        <span id="kijeltorol" class="" style="display: inline-block;vertical-align: bottom;">
+                                        <label style="margin-left:5px;display:inline-block;min-width:38px;">Mutat</label>
+                                            <label class="switch" style="bottom:2px;">
+                                                <input  type="checkbox" onchange="kijeltorol=this.checked;">
+                                                <span class="slider round" style="outline:1px solid #b9b9b9"></span>
+                                        </label>
+                                        <label style="margin-right:23px;min-width:44px;display: inline-block;">Töröl</label>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr id="sugosor">
@@ -246,11 +256,11 @@
                                                 <label><b>Feltöltés:</b></label>
                                                 <input type="file" id="fileNerd">
                                                 <label onclick="downloadNerd();">
-                                                    <b>Letöltés:</b>
-                                                        <span id="dwnbtn" style='display: inline-block;width: 60px;padding: 2px;border: 1px solid #aaa;text-align: center;border-radius: 5px;background-color: #e9e9ed;'>&#x21E9;</span>
-                                                </label>
+                                        <b>Letöltés:</b>
+                                        <span id="dwnbtn" style='display: inline-block;width: 60px;padding: 2px;border: 1px solid #aaa;text-align: center;border-radius: 5px;background-color: #e9e9ed;'>&#x21E9;</span>
+                                    </label>
                                                 <h3>Példák betöltése</h3>
-                                                 <ul>
+                                                <ul>
                                                     <li><a onclick="loadNerd(this);" data-page="PolynomSorok1.txt">Trianguláris polinomsorok 1. Elmélet</a>&nbsp;&nbsp;(Frissitve: 2026-07-05)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="PolynomSorok2.txt">Trianguláris polinomsorok 2. Deklarálás, Összetétel</a>&nbsp;&nbsp;(Frissitve: 2026-07-09)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="PolynomSorok3.txt">Trianguláris polinomsorok 3. Partíció polinomsorok</a>&nbsp;&nbsp;(Frissitve: 2026-07-09)</li>
@@ -376,7 +386,7 @@
                                         <input type="checkbox" onchange="setSpecClick(this.checked,true);" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
                                     </td>
                                     <td id="nerdreset2" style="width:20%;border:none;">
-                                        <button style="width:40px;font-size:0.6em;margin:0;" class="sbtglbtn" onclick="$('#pentcinput2').val('').focus();">Clear</button>
+                                        <button style="width:40px;font-size:0.6em;margin:0;" class="sbtglbtn" onclick="clickVoltClear();$('#pentcinput2').val('').focus();">Clear</button>
                                     </td>
                                     <td id="pptinsert2" style="width:290px;border: 1px solid #1e1e1e;background-color:#515151;">
                                         <button style="width:80px;font-size:0.8em;margin:0;font-weight: 800;" class="sbtglbtn" onclick="insertPPT2()">PPS(F,n)</button>
