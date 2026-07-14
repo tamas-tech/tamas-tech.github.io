@@ -9437,7 +9437,28 @@ function selectCode(txt) {
 
 var felulir = false;
 var kijeltorol = false;
+var mathjax_indent = "1em";
 
+function mathjaxIndent(val) {
+    mathjax_indent = val + "em";
+    MathJax.Hub.Config({
+        displayIndent: mathjax_indent,
+    });
+};
+
+
+function mathjaxAllign(left) {
+    if (left)
+        MathJax.Hub.Config({
+            displayAlign: 'left',
+            displayIndent: mathjax_indent,
+        });
+    else
+        MathJax.Hub.Config({
+            displayAlign: 'center',
+            displayIndent: 0,
+        });
+};
 function setFeluliras(e) {
     felulir = e.checked;
     if (felulir) {
