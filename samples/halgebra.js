@@ -9420,7 +9420,7 @@ function selectCode(txt) {
     const tarea = document.getElementById('pentcinput2');
     if (!tarea || !txt) return false;
     //txt = txt.replaceAll(/([\[\]\^\<\>\§\$\*\(\)\+\-])/gm, '\\$1')
-    txt = txt.replaceAll(/([\[\]\^\$\*\(\)\+])/gm, '\\$1')
+    txt = txt.replaceAll(/([\\\{\}\[\]\^\$\*\(\)\+])/gm, '\\$1')
     const re = new RegExp(`${txt}`);
     const match = tarea.value.match(re);
     if (!match) return false;
@@ -9433,8 +9433,51 @@ function selectCode(txt) {
     return true;
 };
 
+// utils
+
+var felulir = false;
+var kijeltorol = false;
+
+function setFeluliras(e) {
+    felulir = e.checked;
+    if (felulir) {
+        $('#pentout code.clickable.clickvolt').removeClass('clickvolt');
+        document.getElementById('pentcinput2').value = "";
+        idClear('#pentout2');
+    }
+};
+
 function clickVoltClear() {
     $('#pentout code.clickable.clickvolt').removeClass('clickvolt');
+};
+
+function visszajelol(e) {
+    var codetxt = '<div class="codeszam" ondblclick="visszajelol(this)">' + e.innerText + '</div>';
+    codetxt = codetxt.replace(/([§>$])( *)?\<\-\-(.*)?[\n\r\f]+/mg, '$1\n');
+    codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>{2}))[\n\r\f]+/mg, '◉\n');
+    $('#pentcinput2').focus();
+    console.log(codetxt)
+    selectCode(codetxt);
+    setTimeout(() => { scrollToCode(); }, 50);
+}
+
+
+function wrapTag(id, nyito, zaro, html) { // specialis tag "del"  html=true/false
+    var textarea = document.getElementById(id);
+    var startPos = textarea.selectionStart;
+    var endPos = textarea.selectionEnd;
+    var selectionBefore = textarea.value.substring(0, startPos);
+    var selection = textarea.value.substring(startPos, endPos);
+    var selectionAfter = textarea.value.substring(endPos);
+    if (nyito.startsWith("del"))
+        var surrounder = selection.replace(selection, "");
+    else if (html)
+        var surrounder = selection.replace(selection, "<" + nyito + ">" + selection + "</" + zaro + ">");
+    else
+        var surrounder = selection.replace(selection, nyito + selection + zaro);
+    var newText = selectionBefore + surrounder + selectionAfter;
+    textarea.value = newText;
+    textarea.focus();
 };
 
 function scrollToCode() {
@@ -9455,24 +9498,44 @@ function addCodeDblClick() {
     elems.on('dblclick', function() {
         var codetxt = this.innerText;
         codetxt = codetxt.replace(/([§>$])( *)?\<\-\-(.*)?[\n\r\f]+/mg, '$1\n');
-        codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>{2}))[\n\r\f]+/mg, '◉\n');
+        codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>))[\n\r\f]+/mg, '◉\n');
         //console.log(codetxt);
         // beTextbe(codetxt, true)
         if ($(this).hasClass('clickvolt')) {
-            $('#back-to-top').trigger('click');
-            setTimeout(() => {
-                $('#pentcinput2').focus();
-                selectCode(codetxt);
-            }, 200)
-            setTimeout(() => {
-                scrollToCode();
-            }, 300)
-        } else
-            $('#pentcinput2').val($('#pentcinput2').val() + "\n" + codetxt);
+            if (kijeltorol) {
+                setTimeout(() => {
+                    $('#pentcinput2').focus();
+                    selectCode(codetxt);
+                }, 20)
+                setTimeout(() => {
+                    wrapTag("pentcinput2", "delete", "", false);
+                }, 200)
+                $(this).removeClass('clickvolt');
+                idClear('#pentout2');
+            } else {
+                $('#back-to-top').trigger('click');
+                if (!felulir) {
+                    setTimeout(() => {
+                        $('#pentcinput2').focus();
+                        selectCode(codetxt);
+                    }, 200)
+                    setTimeout(() => {
+                        scrollToCode();
+                    }, 300)
+                };
+            };
+        } else {
+            if (felulir) {
+                $('#pentout code.clickable.clickvolt').removeClass('clickvolt');
+                $('#pentcinput2').val(codetxt);
+            } else
+                $('#pentcinput2').val($('#pentcinput2').val() + "\n" + codetxt);
+            $(this).addClass('clickvolt');
+            idClear('#pentout2');
+        }
         $(this).addClass('villbgdark');
         setTimeout(() => {
             $(this).removeClass('villbgdark');
-            $(this).addClass('clickvolt');
         }, 300);
     });
 };
