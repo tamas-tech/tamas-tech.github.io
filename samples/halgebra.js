@@ -9424,10 +9424,10 @@ function selectCode(txt) {
     const re = new RegExp(`${txt}`);
     const match = tarea.value.match(re);
     if (!match) return false;
-
+    console.log(match)
     const start = match.index;
     const end = start + match[0].length;
-
+    console.log(start, end)
     tarea.focus();
     tarea.setSelectionRange(start, end);
     return true;
@@ -9446,7 +9446,6 @@ function mathjaxIndent(val) {
     });
 };
 
-
 function mathjaxAllign(left) {
     if (left)
         MathJax.Hub.Config({
@@ -9459,6 +9458,7 @@ function mathjaxAllign(left) {
             displayIndent: 0,
         });
 };
+
 function setFeluliras(e) {
     felulir = e.checked;
     if (felulir) {
@@ -9472,14 +9472,36 @@ function clickVoltClear() {
     $('#pentout code.clickable.clickvolt').removeClass('clickvolt');
 };
 
-function visszajelol(e) {
-    var codetxt = '<div class="codeszam" ondblclick="visszajelol(this)">' + e.innerText + '</div>';
+function visszajelolOLD(e) {
+    var codetxt = '<div class="codenum" ondblclick="visszajelol(this)">' + e.innerText + '</div>';
     codetxt = codetxt.replace(/([§>$])( *)?\<\-\-(.*)?[\n\r\f]+/mg, '$1\n');
     codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>{2}))[\n\r\f]+/mg, '◉\n');
     $('#pentcinput2').focus();
     console.log(codetxt)
     selectCode(codetxt);
     setTimeout(() => { scrollToCode(); }, 50);
+}
+
+function visszajelol(e) {
+    console.log(e.outerHTML)
+    const tarea = document.getElementById('pentcinput2');
+    //var be = '<div class="codenum" ondblclick="visszajelol\\(this\\)">' + e.innerText + '</div>(.*)?<div class="codenumend">' + e.innerText + '</div>'
+    //var be = e.outerHTML.replaceAll('(', '\\(').replaceAll(')', '\\)') + '(.*)?<div class="codenumend" data-end="' + e.innerText.replaceAll('(', '\\(').replaceAll(')', '\\)') + '">([^\n\r\f]*)?</div>';
+    var be = e.outerHTML.replaceAll('(', '\\(').replaceAll(')', '\\)') + '(.*?)<div class="codenumend">(.*?)</div>';
+    var re = new RegExp(`${be}`, 's');
+    tarea.focus();
+    console.log(re)
+    const match = tarea.value.match(re);
+    if (!match) return false;
+
+    console.log(match)
+    const start = match.index;
+    const end = start + match[0].length;
+    console.log(start, end)
+    tarea.focus();
+    tarea.setSelectionRange(start, end);
+    setTimeout(() => { scrollToCode(); }, 50);
+    return true;
 }
 
 
