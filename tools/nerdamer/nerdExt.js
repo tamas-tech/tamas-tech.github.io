@@ -232,7 +232,11 @@
         for (var j = 1; j < N + 1; j++) {
             valt.push("x_" + j);
             var nev = F + "_" + j;
-            var exprj = expr.sub('n', j);
+            try {
+                var exprj = expr.sub('n', j);
+            } catch {
+                var exprj = nerdamer(expr, { 'n': j });
+            };
             exprj = exprj.toString().replaceAll("sum", "Sum").replaceAll("product", "Product");
             // console.log(exprj)
             nerdamer.setFunction(nev, valt, exprj)
