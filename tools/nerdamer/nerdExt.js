@@ -1282,27 +1282,27 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(a, b) {
+    function f(a, b, rov) {
         var c = _.functions.vector[0]();
         const ae = a.elements;
         const be = b.elements;
         const na = ae.length;
         const nb = be.length;
-        if (na != nb)
-            c.set(0, "convHIBA");
-        else
-            for (var n = 0; n < na; n++) {
-                var cn = 0;
-                for (var i = 0; i <= n; i++)
-                    cn += ae[i] * be[n - i];
-                c.set(n, cn);
-            }
+        var N = na + nb - 1;
+        if (rov != null)
+            N = Math.min(na, nb);
+        for (var n = 0; n < N; n++) {
+            var cn = 0;
+            for (var i = Math.max(0, n + 1 - nb); i < Math.min(na, n + 1); i++)
+                cn += ae[i] * be[n - i];
+            c.set(n, cn);
+        }
         return c;
     }
     nerdamer.register({
         name: 'conv',
         visible: true,
-        numargs: 2,
+        numargs: [2, 3],
         build: function() {
             return f;
         }
@@ -1366,23 +1366,24 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function F(f, g, n) {
+    function F(f, g, valt, n) {
+        valt = valt.toString();
         var c = _.functions.vector[0]();
         var fn = _.functions[f]['2'];
         var gn = _.functions[g]['2'];
 
         if (n == null) {
-            var df = nerdamer('deg(' + fn.body + ',x)') * 1;
-            var dg = nerdamer('deg(' + gn.body + ',x)') * 1;
+            var df = nerdamer('deg(' + fn.body + ',' + valt + ')') * 1;
+            var dg = nerdamer('deg(' + gn.body + ',' + valt + ')') * 1;
             n = Math.max(df, dg);
         };
         c = nerdamer('coeffs(expand((' + fn.body + ')*(' + gn.body + ')),x)');
-        return nerdamer('sum(vecget(' + c + ',k)*x^k,k,0,' + n + ')').evaluate().symbol;
+        return nerdamer('sum(vecget(' + c + ',k)*' + valt + '^k,k,0,' + n + ')').evaluate().symbol;
     }
     nerdamer.register({
         name: 'truncprod',
         visible: true,
-        numargs: [2, 3],
+        numargs: [3, 4],
         build: function() {
             return F;
         }
