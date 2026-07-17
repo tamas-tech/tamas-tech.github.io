@@ -9763,6 +9763,7 @@ function prelatexjs(c_txt, mathjax) {
                 var tt = dek[0].slice(4, -1).trim();
                 var name = tt.split(/\, *\[/)[0].toString().trim();
                 var expr = nerdamer(tt.split(/\] *\,/)[1].toString().trim()).toString();
+                expr = expr.replaceAll('sum', 'Sum').replaceAll('product', 'Product');
                 //console.log(expr)
                 var valt = JSON.parse(tt.match(/\[.*\]/)[0].replace(/(\w_?\d*)/g, "\"$1\""));
                 nerdamer.setFunction(name, valt, expr);
@@ -9771,6 +9772,7 @@ function prelatexjs(c_txt, mathjax) {
                 var zz = tt.split(":");
                 var name = zz[0].toString().trim();
                 var expr = zz[1].toString().trim();
+                expr = expr.replaceAll('sum', 'Sum').replaceAll('product', 'Product');
                 var valt = nerdamer(expr).variables();
                 nerdamer.setFunction(name, valt, expr);
             } else if (dek[0].startsWith("compTPS")) {
@@ -9791,7 +9793,7 @@ function prelatexjs(c_txt, mathjax) {
                 //var vv = dek[0].slice(8, -1).split(',');
                 //console.log(vv);
                 //makeLPS(vv[0], vv[1], nerdamer(vv[2]).symbol);
-            } else if (dek[0].startsWith("makeTPS") || dek[0].startsWith("makeLPS") || dek[0].startsWith("lincombTPS") || dek[0].startsWith("makeTPX")) {
+            } else if (dek[0].startsWith("polyToTPS") || dek[0].startsWith("makeTPS") || dek[0].startsWith("makeLPS") || dek[0].startsWith("lincombTPS") || dek[0].startsWith("makeTPX")) {
                 nerdamer(dek[0])
             }
         };
