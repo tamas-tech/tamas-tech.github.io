@@ -53,6 +53,23 @@
 })();
 
 (function() {
+    function f(expr, valt) {
+        valt = valt.toString();
+        var co = nerdamer('coeffs(' + expr + ',' + valt + ')');
+        var N = nerdamer('size(' + co + ')').toString() * 1 - 1;
+        return nerdamer('sum(vecget(' + co + ',k)*' + valt + '^k,k,0,' + N + ')').evaluate().symbol;;
+    }
+    nerdamer.register({
+        name: 'collect',
+        visible: true,
+        numargs: 2,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
@@ -224,10 +241,10 @@
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
-    function f(F, expr, N) {
+    function f(F, expr, N) { // 'n' paraméter expr-ben kitüntetett
         N = nerdamer(N).evaluate().valueOf();
         F = F.toString();
-
+        expr.value = expr.value.replaceAll("sum", "Sum").replaceAll("product", "Product");
         var valt = [];
         for (var j = 1; j < N + 1; j++) {
             valt.push("x_" + j);
@@ -238,13 +255,41 @@
                 var exprj = nerdamer(expr, { 'n': j });
             };
             exprj = exprj.toString().replaceAll("sum", "Sum").replaceAll("product", "Product");
-            // console.log(exprj)
+            console.log(exprj)
             nerdamer.setFunction(nev, valt, exprj)
         };
         return null;
     }
     nerdamer.register({
         name: 'makeTPS',
+        visible: true,
+        numargs: 3,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
+    function f(F, expr, par) { // 'n' paraméter expr-ben kitüntetett
+        F = F.toString();
+        par = par.toString();
+        var co = nerdamer('coeffs(' + expr + ',' + par + ')');
+        var N = nerdamer('size(' + co + ')').toString() * 1;
+        var valt = [];
+        for (var j = 1; j < N; j++) {
+            valt.push("x_" + j);
+            var nev = F + "_" + j;
+            var exprj = nerdamer('vecget(' + co + ',' + j + ')');
+            nerdamer.setFunction(nev, valt, exprj)
+        };
+        return null;
+    }
+    nerdamer.register({
+        name: 'polyToTPS',
         visible: true,
         numargs: 3,
         build: function() {
@@ -1368,16 +1413,20 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
 
     function F(f, g, valt, n) {
         valt = valt.toString();
-        var c = _.functions.vector[0]();
-        var fn = _.functions[f]['2'];
-        var gn = _.functions[g]['2'];
+        var c = _.functions.vector[0](),
+            fn = _.functions[f]['2'],
+            gn = _.functions[g]['2'],
+            fvalt = fn.params[0],
+            gvalt = gn.params[0];
 
         if (n == null) {
-            var df = nerdamer('deg(' + fn.body + ',' + valt + ')') * 1;
-            var dg = nerdamer('deg(' + gn.body + ',' + valt + ')') * 1;
+            var df = nerdamer('deg(' + fn.body + ',' + fvalt + ')') * 1;
+            var dg = nerdamer('deg(' + gn.body + ',' + gvalt + ')') * 1;
             n = Math.max(df, dg);
         };
-        c = nerdamer('coeffs(expand((' + fn.body + ')*(' + gn.body + ')),x)');
+        console.log(n)
+        c = nerdamer('coeffs(expand((' + fn.body.replaceAll(fvalt, valt) + ')*(' + gn.body.replaceAll(gvalt, valt) + ')),' + valt + ')');
+        console.log(c)
         return nerdamer('sum(vecget(' + c + ',k)*' + valt + '^k,k,0,' + n + ')').evaluate().symbol;
     }
     nerdamer.register({
