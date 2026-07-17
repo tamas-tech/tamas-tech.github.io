@@ -364,6 +364,7 @@ const autodictC = [
     { key: "compTPSösszetéosition2 part többvált polinom nerd", value: "compTPS({c},,,)", tag: "compTPS(F1,F2,Név,n)" },
     { key: "makePPS part többvált polinom nerd", value: "makePPS({c},,,,)", tag: "makePPS(F,x,n,C,b)" },
     { key: "makeTPS part többvált polinom nerd", value: "makeTPS({c},,)", tag: "makeTPS(F,expr,n)" },
+    { key: "polyToTPS part többvált polinom nerd", value: "polyToTPS({c},,)", tag: "polyToTPS(F,expr,var)" },
     { key: "makeTPX part többvált polinom nerd", value: "makeTPX({c},,)", tag: "makeTPX(F,F0,n)" },
     { key: "makeLPS part többvált polinom nerd", value: "makeLPS({c},)", tag: "makeLPS(F,mat)" },
 
@@ -381,6 +382,7 @@ const autodictC = [
     { key: "ceil mathfncüggvény nerd", value: "ceil({c})", tag: "ceil(x)=⌈x⌉" },
     { key: "simplifyegyszerűsít mathfncüggvény nerd", value: "simplify({c})", tag: "simplify(expr)" },
     { key: "expandkibont mathfncüggvény nerd", value: "expand({c})", tag: "expand(expr)" },
+    { key: "collect mathfncüggvény nerd", value: "collect({c})", tag: "collect(expr)" },
     { key: "facktoriaális mathfncüggvény nerd", value: "factorial({c})", tag: "factorial(x)=x!" },
     { key: "duplafacktoriaális mathfncüggvény nerd", value: "dfactorial({c})", tag: "dfactorial(x)=x!!" },
     { key: "modaradék mathfncüggvény", value: "mod({c},)", tag: "mod(x,y)" },
