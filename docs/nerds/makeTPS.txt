@@ -1,6 +1,21 @@
-▶ <style>p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} #pentout .sp {display:inline-block;width:2em;} #pentout .spd {display:inline-block;width:5em;} #pentout a {font-family:monospace;} #pentout code.kek {display:inline-block;font-size: 92%;color:#fff0c4;background-color:#393939;padding:2px 5px;margin:5px 0 5px 15px;border-radius:4px;} #pentout .note {display: inline-block;font-size: 92%;color:#1c1c1c;background-color:#cbceff;padding: 2px 5px;margin: 5px 0 5px 15px;border-radius: 4px;} #pentout div.def {border:1px solid #00000024;padding:5px 10px;margin:10px 0;background-color:#95959524;} #pentout div.scroll, #pentout2 div.scroll {max-width:80%;overflow-x:auto;user-select:none;border:1px solid #7b7b7b;background-color:#ececec;padding:5px 10px;margin-left:10%;} #pentout h1,h2,h3,h4 {border-top: 1px solid #515151;border-bottom: 1px solid #515151;background-color: #c1b6885e;margin-top: 3em;padding-left: 10px;} #pentout code {margin:0 20px;color:#00597b;} #pentout b.em {color:#000159;padding:0 6px 2px 6px;background-color:#96c4ff;border-radius:50%;border:1px solid #9f9f9f;font-size:120%;line-height:0.8;} #pentout2 .codenum {border-top:1px solid;border-left: 5px solid;margin-top: 5px;border-radius: 15px;} #pentout2 .codenumend {border-bottom:1px dotted;margin-bottom: 5px;}</style>
+▶ <style>
+ p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} 
+ #pentout .sp {display:inline-block;width:2em;} 
+ #pentout .spd {display:inline-block;width:5em;} 
+ #pentout a {font-family:monospace;} 
+ #pentout code.kek {display:inline-block;font-size: 92%;color:#fff0c4;background-color:#393939;padding:2px 5px;margin:5px 0 5px 15px;border-radius:4px;} 
+ #pentout .note {display: inline-block;font-size: 92%;color:#1c1c1c;background-color:#cbceff;padding: 2px 5px;margin: 5px 0 5px 15px;border-radius: 4px;} 
+ #pentout div.def {border:1px solid #00000024;padding:5px 10px;margin:10px 0;background-color:#95959524;} 
+ #pentout div.scroll, #pentout2 div.scroll {max-width:80%;overflow-x:auto;user-select:none;border:1px solid #7b7b7b;background-color:#ececec;padding:5px 10px;margin-left:10%;} 
+ #pentout h1,h2,h3,h4 {border-top: 1px solid #515151;border-bottom: 1px solid #515151;background-color: #c1b6885e;margin-top: 3em;padding-left: 10px;} 
+ #pentout code {margin:0 5px;color:#00597b;} 
+ #pentout b.em {color:#000159;padding:0 6px 2px 6px;background-color:#96c4ff;border-radius:50%;border:1px solid #9f9f9f;font-size:120%;line-height:0.8;} 
+ #pentout2 .codenum {border-top:1px solid;border-left: 5px solid;margin-top: 5px;border-radius: 15px;} 
+ #pentout2 .codenumend {border-bottom:1px dotted;margin-bottom: 5px;}
+</style>
 
 <h2>A <code> makeTPS </code> konstruktor és a <code>makeTPX</code> konverzor</h2>
+
 # első ------------------------------------------
 <code class="kek clickable">
 &sect;makeTPS(A,Sum(k^2*x_k^5,k,1,n),4)&sect;◉
@@ -13,7 +28,6 @@ $$&lt;&lt;A(Z)&gt;&gt;$$◉
 3. [TPS konverzor] TPS:<b>A</b>, Konstans tag:<b>A</b><sub>o</sub>=12, Hossz:4 ◉
 4. [TPX megjelenítése] TPX:<b>A</b>, Változó:Z◉
 </code>
-
 §makeTPS(A,Sum(k^2*x_k^5,k,1,n),4)§
 <<showTPS(A,4)>>
 §makeTPX(A,12,4)§
@@ -90,40 +104,5 @@ $$\mathbf{D}=<<showTPS(D,M)>>$$
 <div class="scroll">
    $$\mathbf{D}(\Theta)=<<D(\Theta)>>$$
 </div>
-
-#     ötödik -------------------------------------------
-<code class="kek clickable">
-&lt;div class="codenum" ondblclick="visszajelol(this)"&gt;5. példa:&lt;/div&gt;◉
-&sect;M1=6&sect;◉
-&sect;Fgv(f1,[x_'1..n],Sum(k*x_k^3,k,1,n))&sect;◉
-&sect;makeTPS(D1,f1(u),M1)&sect;◉
-$$\mathbf{D1}=&lt;&lt;showTPS(D1,M1)&gt;&gt;$$◉
-&sect;makeTPX(D1,3,M1)&sect;◉
-&lt;div class="scroll"&gt;◉
-   $$\mathbf{D1}(\Theta)=&lt;&lt;D1(\Theta)&gt;&gt;$$◉
-&lt;/div&gt;◉
-&lt;div class="codenumend"&gt;A 5. példa vége&lt;/div&gt;◉
-</code><code class="note">
-0. [HTML elem] A kimenetben erre katintva a kódot jelöli ki a szerkesztőben  ◉
-1. [M deklarálása] Változó:M1, Érték:6 ◉
-2. [Fgv deklaráció] Név:f1, Változók:x_'1..<b class="em">n</b>), Képlet:Sum(k*\alpha_k^3,k,1,<b class="em">n</b>) ◉
-3. [TPS konstruktor] TPS:<b>D1</b>, Képlet:f1(u), Hossz:M1 ◉
-4. [TPS megjelenítő] TPS:<b>D1</b>, Hossz:M1   Formázás:\mathbf{D1}=◉
-5. [TPS konverzor] TPS:<b>D1</b>, Konstans tag:<b>D1</b><sub>o</sub>=3; Hossz:M1 ◉
-6. [HTML elem nyitása] Nyitó tag:&lt;div&gt;, Osztály:"scroll" ◉
-5. [TPX megjelenítése] TPX:<b>D1</b>, Változó:\Theta    Formázás:\mathbf{D1}(\Theta)=◉
-6. [HTML elem zárása] Záró tag:&lt;/div&gt;," ◉
-7. [HTML elem zárása] A 0. sor záró eleme ◉
-</code>
-§M1=6§
-§Fgv(f1,[x_1..n],Sum(k*x_k^3,k,1,n))§
-§makeTPS(D1,f1(u),M1)§
-$$\mathbf{D1}=<<showTPS(D1,M1)>>$$
-§makeTPX(D1,3,M1)§
-<div class="scroll">
-   $$\mathbf{D1}(\Theta)=<<D1(\Theta)>>$$
-</div>
-
-$$<<truncprod(D,D1,3)>>$$
                                                                                                                                                                                                                                 
                           
