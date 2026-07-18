@@ -9424,10 +9424,10 @@ function selectCode(txt) {
     const re = new RegExp(`${txt}`);
     const match = tarea.value.match(re);
     if (!match) return false;
-    console.log(match)
+    //console.log(match)
     const start = match.index;
     const end = start + match[0].length;
-    console.log(start, end)
+    //console.log(start, end)
     tarea.focus();
     tarea.setSelectionRange(start, end);
     return true;
@@ -9542,6 +9542,7 @@ function addCodeDblClick() {
         var codetxt = this.innerText;
         codetxt = codetxt.replace(/([§>$])( *)?\<\-\-(.*)?[\n\r\f]+/mg, '$1\n');
         codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>))[\n\r\f]+/mg, '◉\n');
+        codetxt = codetxt.replace(/\\◉[\n\r\f]+/mg, '\n');
         //console.log(codetxt);
         // beTextbe(codetxt, true)
         if ($(this).hasClass('clickvolt')) {
