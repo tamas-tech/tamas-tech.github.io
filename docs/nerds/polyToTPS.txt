@@ -1,0 +1,143 @@
+ ▶ <style>
+ p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} 
+ #pentout .sp {display:inline-block;width:2em;} 
+ #pentout .spd {display:inline-block;width:5em;} 
+ #pentout a {font-family:monospace;} 
+ #pentout code.kek {display:inline-block;font-size: 92%;color:#fff0c4;background-color:#393939;padding:2px 5px;margin:5px 0 5px 15px;border-radius:4px;} 
+ #pentout .note {display: inline-block;font-size: 92%;color:#1c1c1c;background-color:#cbceff;padding: 2px 5px;margin: 5px 0 5px 15px;border-radius: 4px;} 
+ #pentout div.def {border:1px solid #00000024;padding:5px 10px;margin:10px 0;background-color:#95959524;} 
+ #pentout div.scroll, #pentout2 div.scroll {max-width:80%;overflow-x:auto;user-select:none;border:1px solid #7b7b7b;background-color:#ececec;padding:5px 10px;margin-left:10%;} 
+ #pentout h1,h2,h3,h4 {border-top: 1px solid #515151;border-bottom: 1px solid #515151;background-color: #c1b6885e;margin-top: 3em;padding-left: 10px;} 
+ #pentout code {margin:0 5px;color:#00597b;} 
+ #pentout b.em {color:#000159;padding:0 6px 2px 6px;background-color:#96c4ff;border-radius:50%;border:1px solid #9f9f9f;font-size:120%;line-height:0.8;} 
+ #pentout2 .codenum {border-top:1px solid;border-left: 5px solid;margin-top: 5px;border-radius: 15px;} 
+ #pentout2 .codenumend {border-bottom:1px dotted;margin-bottom: 5px;}
+</style>
+
+<h2>A <code>makeTPX</code> konverzor fordítottja: <code>polyToTPS</code>◉ Egy kifejezésből(polinomból) TPS deklarálása</h2>
+<code class="kek clickable">
+1.  &#x25b6;&sect; kif= \◉
+        x_1*T-(2*x_1^2*x_2+x_2)*T^2+(3*x_2^3 \◉
+       -x_1*x_3^2)*T^3+(x_1+x_2-x_3*x_4)*T^4 \◉
+      &sect;◉
+2.  &#x25b6;&sect;Fgv(R,[T],kif)&sect;◉
+3.  &#x25b6;&sect;Fgv(U,[x_'1..4,T],kif)&sect;◉
+</code><code class="note">
+1. [kif deklarálása] Név:kif, expr:x_1*T-(2*x_1^2*x_2+x_2)*T^2+... ◉
+     A kódban tetszőleges szóközt és sortörést használhatunk,◉
+     ezeket a fordító figyelmenkívül hagyja.◉
+     Ezzel az áttekinthetőség jelentősen növelhető.◉
+2. [Fgv deklarálása] Név:R, Változó:T, expr:kif ◉
+3. [Fgv deklarálása] Név:U, Változók:y_1,y_2,y_3,y_4,T, expr:kif  ◉
+</code>
+1.  ▶§ kif=
+  x_1*T-(2*x_1^2*x_2+x_2)*T^2+(3*x_2^3-
+  x_1*x_3^2)*T^3+(x_1+x_2-x_3*x_4)*T^4
+     §
+2.  ▶§Fgv(R,[T],kif)§
+3.  ▶§Fgv(U,[x_1..4,T],kif)§◉
+&bullet; Az elsőként deklarált <code>kif</code> csak egy kifejezés (formula, expr), amit a <code>$$&lt;&lt;kif&gt;&gt;$$</code> kóddal ki is irathatunk, és hivatkozhatunk rá a kód bármely részében.◉
+&bullet; A másodikként deklarált <code>R = R(T)</code> már egy egyváltozós polinom, amelynek a <em>képlete</em> <code>kif</code>. Ekkor már nem elegendő az <code>$$&lt;&lt;R&gt;&gt;$$</code> kód a megjelenítéshez,◉
+mert <em>egy függvényre mindig a változók pontos (argumentumszámban megegyező) megadásával kell hivatkozni</em>. Ebben az estben 1 argumentuma van a◉
+függvénynek, tehát <code>$$&lt;&lt;R(T)&gt;&gt;$$</code>, <code>$$&lt;&lt;R(x)&gt;&gt;$$</code>, <code>$$&lt;&lt;R(\alpha)&gt;&gt;$$</code>,... kóddal tudjuk megjeleníteni. A <code>$$&lt;&lt;R(3)&gt;&gt;$$</code> pedig 3-at helyettesít az<code>R(T)</code>◉
+polinomban T helyébe.◉
+&bullet; A harmadikként deklarált <code>U = U(x_'1..4,T)</code> már egy többváltozós polinom, amelynek a <em>képlete</em> szintén <code>kif</code>, és az előző ponban tárgyaltak szerint ◉
+<code>$$&lt;&lt;U(x_'1..4,T)&gt;&gt;$$</code>, <code>$$&lt;&lt;U(x,y,z,W)&gt;&gt;$$</code>, <code>$$&lt;&lt;U(a,b,c,d,\Theta)&gt;&gt;$$</code>,... kóddal tudjuk megjeleníteni. A <code>$$&lt;&lt;U(x_'1..4,3)&gt;&gt;$$</code>,◉
+<code>$$&lt;&lt;U(x,2,z,5)&gt;&gt;$$</code> meghívások pedig már a megfelelő behelyettesítésekkel kiszámított formulát jelenítik meg. Nem csak számokat, válozókat,◉
+hanem akár függvényeket is behelyettesíthetünk. Figyeljük meg az alábbi kódrészlet kimenetét az alatta található bekeretezett részben.◉
+
+<code class="kek clickable">
+1.  &#x25b6;&lt;div style="outline:2px solid #777;padding:10px;"&gt;◉
+2.  &#x25b6;$$\text{kif}=&lt;&lt;kif&gt;&gt;$$◉
+3.  &#x25b6;$$R=&lt;&lt;R&gt;&gt;,U=&lt;&lt;U&gt;&gt;$$◉
+4.  &#x25b6;$$R(T)=&lt;&lt;R(T)&gt;&gt;$$◉
+5.  &#x25b6;$$R(g)=&lt;&lt;R(g)&gt;&gt;$$◉
+6.  &#x25b6;$$R(2)=&lt;&lt;R(2)&gt;&gt;$$◉
+7.  &#x25b6;&sect;H0=expand(R(Fib_3(x_'1..3)))&sect;◉
+8.  &#x25b6;&lt;div class="scroll" style="max-width:1000px;"&gt;◉
+9.  &#x25b6;$$R(Fib_3(x_'1..3))=&lt;&lt;H0&gt;&gt;$$◉
+10. &#x25b6;&lt;/div&gt;◉
+11. &#x25b6;$$U(h_1..4,\alpha)=&lt;&lt;U(h_1..4,\alpha)&gt;&gt;$$◉
+12. &#x25b6;$$U(a,2,c,-1,2)=&lt;&lt;U(a,2,c,-1,2)&gt;&gt;$$◉
+13. &#x25b6;$$U(1,2,5,-3,T)=&lt;&lt;U(1,2,5,-3,T)&gt;&gt;$$◉
+14. &#x25b6;&sect;H=expand(U(\beta,Fib_2(y_1..2),t,Zyc_3(S_1..3),4))&sect;◉
+15. &#x25b6;&lt;div class="scroll" style="max-width:1000px;"&gt;◉
+16. &#x25b6;$$H=&lt;&lt;H&gt;&gt;$$◉
+17. &#x25b6;&lt;/div&gt;◉
+18. &#x25b6;&lt;/div&gt;◉
+</code><code class="note">
+1.  [HTML elem nyitása] Nyitó tag:&lt;div&gt;, stílus:"outline:2px solid #777;padding:10px;" ◉
+2.  [kif megjelenítése] kif-be nem lehet semmit helyettesíteni, mert nem függvény. ◉
+3.  [R,U]  R és U csak szimbólumok◉
+4.  [R(T)]  Az R(T) már függvény T=T változóval◉
+5.  [R(g)]  Az R(g) már függvény T=g változóval◉
+6.  [R(2)]  R(T=2) behelyettesítés◉
+7.  [H0 deklarálása]  H0 = R(T=Fib_3(x_'1..3)) összetétel kibontva. ◉
+8.  [HTML elem nyitása] Nyitó tag:&lt;div&gt;, Osztály:"scroll", stílus"max-width:1000px;" ◉
+9.  [H0 megjelenítése]  ◉
+10. [HTML elem zárása] Záró tag:&lt;/div&gt;, A 8. sor zárótagja" ◉
+11. [U(h_1..4,\alpha) megjelenítése] U(x_1=h_1,...,x_4=h_4,T=\alpha)◉
+12. [U(a,2,c,-1,2) megjelenítése] U(x_1=a,x_2=2,x_3=c,x_4=-1,T=2) ◉
+13. [U(1,2,5,-3,T) megjelenítése] U(x_1=1,x_2=2,x_3=5,x_4=-3,T=T) ◉
+14. [H deklarálása]  H = U(\beta,Fib_2(y_1..2),t,Zyc_3(S_1..3),4) összetétel kibontva. ◉
+15. [HTML elem nyitása] Nyitó tag:&lt;div&gt;, Osztály:"scroll", stílus"max-width:1000px;" ◉
+16. [H megjelenítése]  ◉
+17. [HTML elem zárása] Záró tag:&lt;/div&gt;, A 15. sor zárótagja" ◉
+18. [HTML elem zárása] Záró tag:&lt;/div&gt;, Az 1. sor záró eleme ◉
+</code>
+1.  ▶<div style="outline:2px solid #777;padding:10px;"> 
+2.  ▶$$\text{kif}=<<kif>>$$
+3.  ▶$$R=<<R>>,U=<<U>>$$
+4.  ▶$$R(T)=<<R(T)>>$$
+5.  ▶$$R(g)=<<R(g)>>$$
+6.  ▶$$R(2)=<<R(2)>>$$
+7.  ▶§H0=expand(R(Fib_3(x_1..3)))§
+8.  ▶<div class="scroll" style="max-width:1000px;">
+9.  ▶$$R(Fib_3(x_1..3))=<<H0>>$$
+10. ▶</div>
+11. ▶$$U(h_1..4,\alpha)=<<U(h_1..4,\alpha)>>$$
+12. ▶$$U(a,2,c,-1,2)=<<U(a,2,c,-1,2)>>$$
+13. ▶$$U(1,2,5,-3,T)=<<U(1,2,5,-3,T)>>$$
+14. ▶§H=expand(U(\beta,Fib_2(y_1..2),t,Zyc_3(S_1..3),4))§
+15. ▶<div class="scroll" style="max-width:1000px;">
+16. ▶$$H=<<H>>$$
+17. ▶</div> 
+18. ▶</div> 
+◉
+Habár a <code>kif</code> kifejezés, az <code>R(T)</code> egyváltozós, illetve az <code>U(x_'1..4,T) </code> ötváltozós polinom nagyon más matematikai entitások, megfelelően megválasztott◉
+paraméterekkel mindegyik nerdamer kimenete ugyanúgy néz ki:◉
+<code class="kek clickable">
+1.  &#x25b6;$$kif=&lt;&lt;kif&gt;&gt;$$◉
+2.  &#x25b6;$$R(T)=&lt;&lt;R(T)&gt;&gt;$$◉
+3.  &#x25b6;$$U(x_'1..4,T)=&lt;&lt;U(x_'1..4,T)&gt;&gt;$$◉
+</code>
+1.  ▶$$kif=<<kif>>$$
+2.  ▶$$R(T)=<<R(T)>>$$
+3.  ▶$$U(x_1..4,T)=<<U(x_1..4,T)>>$$
+És ami most a leglényegesebb, hogy mind a három matematikai entitásból kényelmesen el tudjuk készíteni a megfelelő trianguláris polinomsort (TPS) egyetlen◉
+<code>polyToTPS(Név,expr|fgv, valt)</code> parancs meghívásával. Csak arra kell ügyelnünk, hogy megfelellően hivatkozzunk a kifejezésre, illetve függvényre,◉ 
+a <code>valt</code> változó pedig mindig azon szimbólum legyen, amelynek az együtthatói adják a trianguláris polinomsort. ( Az a változó, amelynek csak mértani◉ 
+haladványa fordul elő a kifejezésben/függvényben: $T^0,T^1,T^2,\ldots$)◉
+
+<code class="kek clickable">
+1.  &#x25b6;&sect;polyToTPS(A,kif,T)&sect;◉
+2.  &#x25b6;&sect;polyToTPS(B,R(T),T)&sect;◉
+3.  &#x25b6;&sect;polyToTPS(C,U(x_'1..4,T),T)&sect;◉
+4.  &#x25b6;$$\mathbf{A}=&lt;&lt;showTPS(A,4)&gt;&gt;$$◉
+5.  &#x25b6;$$\mathbf{B}=&lt;&lt;showTPS(B,4)&gt;&gt;$$◉
+6.  &#x25b6;$$\mathbf{C}=&lt;&lt;showTPS(C,4)&gt;&gt;$$◉
+</code><code class="note">
+1. [Az <b>A</b> TPS deklarálása] Név:A, expr:x_1*T-(2*x_1^2*x_2+x_2)*T^2+..., valt:T◉
+2. [A <b>B</b> TPS deklarálása] Név:B, fgv:R(T), valt:T ◉
+3. [A <b>C</b> TPS deklarálása] Név:C, fgv:U(x_'1..4,T), valt:T ◉
+4. [TPS megjelenítő] TPS:<b>A</b>, Hossz:4 Formázás:\mathbf{A}=◉
+5. [TPS megjelenítő] TPS:<b>B</b>, Hossz:4 Formázás:\mathbf{B}=◉
+6. [TPS megjelenítő] TPS:<b>C</b>, Hossz:4 Formázás:\mathbf{C}=◉
+</code>
+
+1.  ▶§polyToTPS(A,kif,T)§
+2.  ▶§polyToTPS(B,R(T),T)§
+3.  ▶§polyToTPS(C,U(x_1..4,T),T)§
+4.  ▶$$\mathbf{A}=<<showTPS(A,4)>>$$ 
+5.  ▶$$\mathbf{B}=<<showTPS(B,4)>>$$
+6.  ▶$$\mathbf{C}=<<showTPS(C,4)>>$$                                                                                                                                                                                                                                                                                    
