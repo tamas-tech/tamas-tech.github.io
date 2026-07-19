@@ -430,7 +430,7 @@ const autodictC = [
     { key: "maátrix setrowsormegad nerd", value: "matsetrow({c},,)", tag: "matsetrow(<b>A</b>,i,<b>s</b>)" },
     { key: "maátrix setcoloszlopmegad nerd", value: "matsetcol({c},,)", tag: "matsetcol(<b>A</b>,i,<b>o</b>)" },
     { key: "maátrix getlekér nerd", value: "matget({c},,)", tag: "matget(<b>A</b>,i,j)" },
-    { key: "maátrixsetmatmegad nerd", value: "matset({c},,)", tag: "matset(<b>A</b>,i,j)" },
+    { key: "maátrixsetmatmegad nerd", value: "matset({c},,,)", tag: "matset(<b>A</b>,i,j,a<sub>i,j</sub>)" },
     { key: "maátrix Toeplitz nerd ", value: " matToeplitz([{c},,])", tag: " matToeplitz(<b>v</b>)" },
     // Nerdamer Vector
     { key: "[gyorsvecktor nerd", value: "[,||{c}]", tag: "[a_1, a_2,||n]" },
