@@ -3,7 +3,7 @@
 ▶<H2>Trianguláris polinomsorok</H3>
 ▶<div class="def"><b>Definíció: </b>Egy $\mathbf{F}:= \left(F_1(x_1),\;F_2(x_1,x_2),\;F_3(x_1,x_2,x_3),\ldots,F_n(x_1,x_2,\ldots,x_n),\ldots\right)$ polinomsort <em><b>trianguláris</b></em> polinomsornak nevezünk.◉
 ▶Az $\mathbf{F}$ trianguláris polinomsor <em><b>lineáris</b></em>, ha  $F_n(x_1,x_2,\ldots,x_n)=A_{n,1}\,x_1+A_{n,2}\,x_2+A_{n,3}\,x_3+\cdots+A_{n,n}\,x_n$ $(n=1,2,3,\ldots)$ alakba ítható,◉
-▶ahol$A_{i,j}\in \mathbb{R} (1\leq i\leq j\leq n, n=1,2,3,\ldots)$ A lineáris trianguláris polinomsorok az alábbi  mátrixos felírás szerint
+▶ahol$A_{i,j}\in \mathbb{R}\hspace{3mm}(1\leq j\leq i\leq n, n=1,2,3,\ldots)$ A lineáris trianguláris polinomsorok az alábbi  mátrixos felírás szerint
 $$
 \begin{vmatrix}
 F_1(x_1)\\
