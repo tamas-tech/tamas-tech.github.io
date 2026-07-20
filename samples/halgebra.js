@@ -9541,8 +9541,9 @@ function addCodeDblClick() {
     elems.on('dblclick', function() {
         var codetxt = this.innerText;
         codetxt = codetxt.replace(/([§>$])( *)?\<\-\-(.*)?[\n\r\f]+/mg, '$1\n');
-        codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>))[\n\r\f]+/mg, '◉\n');
+        codetxt = codetxt.replace(/(?<!(§|◉|▶|\${2}|\>))[\n\r\f]+/mg, '◉\n');
         codetxt = codetxt.replace(/\\◉[\n\r\f]+/mg, '\n');
+        codetxt = codetxt.replace(/[\n\r\f]+◉[\n\r\f]+/mg, '\n\n');
         //console.log(codetxt);
         // beTextbe(codetxt, true)
         if ($(this).hasClass('clickvolt')) {
@@ -9573,7 +9574,7 @@ function addCodeDblClick() {
                 $('#pentout code.clickable.clickvolt').removeClass('clickvolt');
                 $('#pentcinput2').val(codetxt);
             } else
-                $('#pentcinput2').val($('#pentcinput2').val() + "\n" + codetxt);
+                $('#pentcinput2').val($('#pentcinput2').val() + "\n\n#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n" + codetxt);
             $(this).addClass('clickvolt');
             idClear('#pentout2');
         }
