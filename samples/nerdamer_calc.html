@@ -109,9 +109,7 @@
 <body>
     <div id="back-to-top" onclick="tglCalc(this)">1</div>
     <div id="floatkijelzo"></div>
-    <div class="keret of odd" id="k1" style="margin-bottom:15px;">
-
-
+   <div class="keret of odd" id="k1" style="margin-bottom:15px;">
         <div id="my_tabs" class="styled_tabs">
             <div class="controls" style="width:110px;display:none;">
                 <a href="#" class="control active" style="width:50px"> 1.</a>
@@ -162,7 +160,7 @@
                                         <input type="checkbox" onchange="setSpecClick(this.checked,false);" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
                                     </td>
                                     <td id="nerdreset" style="width:90px;border:none;">
-                                        <button style="width:40px;font-size:0.6em;margin:0;" class="sbtglbtn" onclick="$('#pentcinput').val('').focus();">Clear</button>
+                                        <button style="background-color: #ec0000;color: white;border: 1px solid #ff7b7b;" class="showpre1" onclick="calcClear();">Clear</button>
                                     </td>
                                     <td id="pptinsert" style="width:290px;border: 1px solid #1e1e1e;background-color:#515151;">
                                         <button style="width:80px;font-size:0.8em;margin:0;font-weight: 800;" class="sbtglbtn" onclick="insertPPT()">PPS(F,n)</button>
@@ -262,11 +260,9 @@
                                     </label>
                                                 <h3>Példák betöltése</h3>
                                                 <ul>
-                                                    <li><a onclick="loadNerd(this);" data-page="makeLPS.txt">MakeLPS parancs</a>&nbsp;&nbsp;(Frissitve: 2026-07-19)</li>
-                                                    <li><a onclick="loadNerd(this);" data-page="makeTPS.txt">MakeTPS parancs</a>&nbsp;&nbsp;(Frissitve: 2026-07-18)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="makeTPS.txt">makeTPS parancs</a>&nbsp;&nbsp;(Frissitve: 2026-07-18)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="polyToTPS.txt">polyToTPS parancs</a>&nbsp;&nbsp;(Frissitve: 2026-07-18)</li>
-                                                     <li><a onclick="loadNerd(this);" data-page="TPSjobbfelalgebra.txt">TPS jobboldali félalgebra</a>&nbsp;&nbsp;(Frissitve: 2026-07-20)</li>
-                                                    <li><a onclick="loadNerd(this);" data-page="PolynomSorok1.txt">Trianguláris polinomsorok 1. Elmélet</a>&nbsp;&nbsp;(Frissitve: 2026-07-20)</li>
+                                                    <li><a onclick="loadNerd(this);" data-page="PolynomSorok1.txt">Trianguláris polinomsorok 1. Elmélet</a>&nbsp;&nbsp;(Frissitve: 2026-07-05)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="PolynomSorok2.txt">Trianguláris polinomsorok 2. Deklarálás, Összetétel</a>&nbsp;&nbsp;(Frissitve: 2026-07-09)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="PolynomSorok3.txt">Trianguláris polinomsorok 3. Partíció polinomsorok</a>&nbsp;&nbsp;(Frissitve: 2026-07-09)</li>
                                                     <li><a onclick="loadNerd(this);" data-page="Har_hatas.txt"><b>Har</b> hatása különboző sorokon</a>&nbsp;&nbsp;(Frissitve: 2026-07-05)</li>
@@ -327,17 +323,17 @@
                         <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
                             <label style="margin-right:1px;font-size:15px;">Font</label>
                             <select id="nerdnumb" onchange="document.getElementById('pentout').style.fontFamily=this.value" style="min-width:fit-content;border-color: #959595;margin-right:10px;font-size:14px;">
-                    <option value="">Auto</option>
-                    <option value="KaTeX_Main">KaTeX_Main</option>
-                    <option value="KaTeX_SansSerif">KaTeX_SansSerif</option>
-                    <option value="KaTeX_Typewriter">KaTeX_Typewriter</option>
-                    <option value="KaTeX_AMS">KaTeX_AMS</option>
-                    <option value="KaTeX_Math">KaTeX_Math</option>
-                    <option value="KaTeX_Fraktur">KaTeX_Fraktur</option>
-                    <option value="Cambria Math">Cambria Math</option>
-                    <option value=" Arial"> Arial</option>
-                    <option value="monospace">monospace</option>
-                </select>
+                                <option value="">Auto</option>
+                                <option value="KaTeX_Main">KaTeX_Main</option>
+                                <option value="KaTeX_SansSerif">KaTeX_SansSerif</option>
+                                <option value="KaTeX_Typewriter">KaTeX_Typewriter</option>
+                                <option value="KaTeX_AMS">KaTeX_AMS</option>
+                                <option value="KaTeX_Math">KaTeX_Math</option>
+                                <option value="KaTeX_Fraktur">KaTeX_Fraktur</option>
+                                <option value="Cambria Math">Cambria Math</option>
+                                <option value=" Arial"> Arial</option>
+                                <option value="monospace">monospace</option>
+                            </select>
                         </div>
                     </div>
                     <div id="pentcontainer" class="flickable" style="max-width:100vw">
@@ -400,7 +396,7 @@
                                         <input type="checkbox" onchange="setSpecClick(this.checked,true);" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
                                     </td>
                                     <td id="nerdreset2" style="width:20%;border:none;">
-                                        <button style="width:40px;font-size:0.6em;margin:0;" class="sbtglbtn" onclick="clickVoltClear();$('#pentcinput2').val('').focus();">Clear</button>
+                                        <button style="background-color: #ec0000;color: white;border: 1px solid #ff7b7b;" class="showpre1" onclick="clickVoltClear();$('#pentcinput2').val('').focus();">Clear</button>
                                     </td>
                                     <td id="pptinsert2" style="width:290px;border: 1px solid #1e1e1e;background-color:#515151;">
                                         <button style="width:80px;font-size:0.8em;margin:0;font-weight: 800;" class="sbtglbtn" onclick="insertPPT2()">PPS(F,n)</button>
@@ -446,6 +442,10 @@
                                 <option value="monospace">monospace</option>
                             </select>
                         </div>
+                        <div style="margin-bottom:10px;border-bottom: 1px solid #c1c1c1;padding-bottom: 10px;">
+                            <label style="font-family:monospace;font-size:15px;">A kód is megjelenjen</label>
+                            <input type="checkbox" onchange="koddal2be=this.checked;" style="height:20px;width:20px;vertical-align:middle;margin-right:10px;">
+                        </div>
                     </div>
                     <div id="pentcontainer2" class="flickable" style="max-width:100vw">
                         <p id="figypent2" style="display:none;padding:0 10px;background-color:#ffdfdf;line-height:1.7;"></p>
@@ -462,9 +462,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
 
     <script>
