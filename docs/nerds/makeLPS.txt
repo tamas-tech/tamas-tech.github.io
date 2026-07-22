@@ -40,7 +40,7 @@
 2. ▶<<showTPS(A,4,1)>>
 ●●●●●●END
 
-▶ Az <b>N</b> trianguláris polinomsort az <b>A</b> lineáris trianguláris polinomsor csekély megváltoztatásával deklaráljuk, amitól az már nem lesz lineáris.◉
+▶ Az <b>N</b> trianguláris polinomsort az <b>A</b> lineáris trianguláris polinomsor csekély megváltoztatásával deklaráljuk, amitől az már nem lesz lineáris.◉
 ●●●●●●START
 <code class="note">
 1. [N_1 deklarálása] Konstr:Fgv, Név:N_1, Vált:x_1, Képlet:2*x_1 (lin.)◉
