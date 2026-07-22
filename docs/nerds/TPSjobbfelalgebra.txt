@@ -1,8 +1,9 @@
-▶ <style>
+ ▶ <style>
  p#pentout {text-indent:unset;} #pentout .er {border: 1px solid red;padding: 2px;} 
  #pentout .sp {display:inline-block;width:2em;} 
  #pentout .spd {display:inline-block;width:5em;} 
  #pentout a {font-family:monospace;} 
+ #pentout div.forclickable:hover {border:1px solid #00000024;background-color:yellow;} 
  #pentout code.kek {display:inline-block;font-size: 92%;color:#fff0c4;background-color:#393939;padding:2px 5px;margin:5px 0 5px 15px;border-radius:4px;} 
  #pentout .note {display: inline-block;font-size:92%;color:#1c1c1c;background-color:#cbceff;padding: 2px 5px;margin: 5px 0 5px 15px;border-radius:4px;} 
  #pentout div.def {border:1px solid #00000024;padding:5px 10px;margin:10px 0;background-color:#95959524;} 
@@ -20,26 +21,7 @@ $$\begin{align*}\mathbf{K}\circ\left(\mathbf{A}+\mathbf{B}\right)\neq\mathbf{K}\
 
 ▶<h2>Az <b>A</b>, <b>B</b> és <b>K</b> általános trianguláris polinomsorok deklarálása</h2>
 ▶Deklaráljuk az $\mathbf{A},\mathbf{B}$ és $\mathbf{K}$ trianguláris polinomsorok első négy tagját majd azokat meg is jelenítjük.◉
-▶<code class="kek clickable">
-&sect;Fgv(A_1,[x_1],     2*x_1                     )&sect;◉
-&sect;Fgv(A_2,[x_'1..2],  2*x_1 - x_1*x_2           )&sect;◉
-&sect;Fgv(A_3,[x_'1..3],  -x_1 - x_3*x_1            )&sect;◉
-&sect;Fgv(A_4,[x_'1..4],  -x_3 + x_4*x_3 - x_4*x_2  )&sect;◉
-◉
-&sect;Fgv(B_1,[x_1],     -x_1              )&sect;◉
-&sect;Fgv(B_2,[x_'1..2],  -x_2^2 + 5*x_1^2  )&sect;◉
-&sect;Fgv(B_3,[x_'1..3],  -x_3 + 2*x_2*x_1  )&sect;◉
-&sect;Fgv(B_4,[x_'1..4],   x_4*x_1 - x_2^2  )&sect;◉
-◉
-&sect;Fgv(K_1,[x_1],     7*x_1                         )&sect;◉
-&sect;Fgv(K_2,[x_'1..2],  x_1 + 3*x_2*x_1               )&sect;◉
-&sect;Fgv(K_3,[x_'1..3],  -x_1 + x_1*x_2                )&sect;◉
-&sect;Fgv(K_4,[x_'1..4],  -x_1^3 + 3*x_1*x_2 - 8*x_4*x_3)&sect;◉
-◉
-$$\mathbf{A}=&lt;&lt;showTPS(A,4)&gt;&gt;$$◉
-$$\mathbf{A}=&lt;&lt;showTPS(B,4)&gt;&gt;$$◉
-$$\mathbf{K}=&lt;&lt;showTPS(K,4)&gt;&gt;$$ 
-▶</code>
+●●●●●●START
 §Fgv(A_1,[x_1],     2*x_1                     )§
 §Fgv(A_2,[x_1..2],  2*x_1 - x_1*x_2           )§
 §Fgv(A_3,[x_1..3],  -x_1 - x_3*x_1            )§
@@ -58,26 +40,14 @@ $$\mathbf{K}=&lt;&lt;showTPS(K,4)&gt;&gt;$$
 $$\mathbf{A}=<<showTPS(A,4)>>$$
 $$\mathbf{A}=<<showTPS(B,4)>>$$
 $$\mathbf{K}=<<showTPS(K,4)>>$$  
+●●●●●●END
 
-#----------------------------------------------------------------
 ▶<h2>A kompozíciós szorzás balról nem disztibutív az összeadásra</h2>
 ▶Látni fogjuk, hogy $\mathbf{K}\circ\left(\mathbf{A}+\mathbf{B}\right)\neq\mathbf{K}\circ\mathbf{A}+\mathbf{K}\circ\mathbf{B}$◉
-<code class="kek clickable">
-&sect;n=4&sect;◉
-&sect;lincombTPS([A,B],[1,1],AB,n)&sect;◉
-&sect;compTPS(K,AB,KAB,n)&sect;◉
-&sect;kab=showTPS(KAB,n)&sect;◉
-&sect;compTPS(K,A,KA,n)&sect;◉
-&sect;compTPS(K,B,KB,n)&sect;◉
-&sect;lincombTPS([KA,KB],[1,1],KAKB,n)&sect;◉
-&sect;kakb=showTPS(KAKB,n)&sect;◉
-◉
-&lt;div class="scroll"&gt;◉
-$$\mathbf{K}\circ\left(\mathbf{A}+\mathbf{B}\right)=&lt;&lt;kab&gt;&gt;$$◉
-$$\mathbf{K}\circ\mathbf{A}+\mathbf{K}\circ\mathbf{B}=&lt;&lt;kakb&gt;&gt;$$◉
-$$\text{Különbségük}=&lt;&lt;kab-kakb&gt;&gt;$$◉
-&lt;/div&gt;◉
-</code><code class="note">
+
+
+●●●●●●START
+<code class="note">
 1.  [n deklarálása] Név:n, Érték:4 ◉
 2.  [AB deklarálása] <b>AB</b> := 1&centerdot;<b>A</b>+1&centerdot;<b>B</b> = <b>A</b>+<b>B</b> ◉
 3.  [KAB deklarálása] <b>KAB</b> := <b>K</b>&#x2218;<b>AB</b> = <b>K</b>&#x2218;(<b>A</b>+<b>B</b>) ◉
@@ -92,8 +62,7 @@ $$\text{Különbségük}=&lt;&lt;kab-kakb&gt;&gt;$$◉
 12. [kakb megjelenítese] Az egyenlet jobboldala ◉
 13. [különbség megjelenítese] A két oldal különbsége ◉
 14. [HTML záróelem] A 10. sor nyitóelemének lezárása
-▶</code>◉
-#...................
+</code>
 §n=4§
 §lincombTPS([A,B],[1,1],AB,n)§
 §compTPS(K,AB,KAB,n)§
@@ -105,26 +74,15 @@ $$\text{Különbségük}=&lt;&lt;kab-kakb&gt;&gt;$$◉
 
 <div class="scroll">
 $$\mathbf{K}\circ\left(\mathbf{A}+\mathbf{B}\right)=<<kab>>$$
-$$\mathbf{K}\circ\mathbf{A}+\mathbf{K}\circ\mathbf{B}=<<kakb>>$$ 
-$$\text{Különbségük}=<<kab-kakb>>$$   
+$$\mathbf{K}\circ\mathbf{A}+\mathbf{K}\circ\mathbf{B}=<<kakb>>$$
+$$\text{Különbségük}=<<kab-kakb>>$$
 </div>
-#----------------------------------------------------------------
+●●●●●●END    
+
 <h2>A kompozíciós szorzás jobbról disztibutív az összeadásra</h2>
 
-<code class="kek clickable">
-&sect;compTPS(AB,K,ABK,n)&sect;◉
-&sect;abk=showTPS(ABK,n)&sect;◉
-&sect;compTPS(A,K,AK,n)&sect;◉
-&sect;compTPS(B,K,BK,n)&sect;◉
-&sect;lincombTPS([AK,BK],[1,1],AKBK,n)&sect;◉
-&sect;akbk=showTPS(AKBK,n)&sect;◉
-◉
-&lt;div class="scroll"&gt;◉
-$$\left(\mathbf{A}+\mathbf{B}\right)\circ\mathbf{K}=&lt;&lt;abk&gt;&gt;$$◉
-$$\mathbf{A}\circ\mathbf{K}+\mathbf{B}\circ\mathbf{K}=&lt;&lt;akbk&gt;&gt;$$◉
-$$\text{Különbségük}=&lt;&lt;abk-akbk&gt;&gt;$$◉
-&lt;/div&gt;
-</code><code class="note">
+●●●●●●START    
+<code class="note">
 1.  [ABK deklarálása] <b>ABK</b> := <b>AB</b>&#x2218;<b>K</b> = (<b>A</b>+<b>B</b>)&#x2218;<b>K</b> ◉
 2.  [abk deklarálása] abk a showTPS(<b>ABK</b>,n) mátrixa ◉
 3.  [AK deklarálása] <b>AK</b> := <b>A</b>&#x2218;<b>K</b> ◉
@@ -137,8 +95,7 @@ $$\text{Különbségük}=&lt;&lt;abk-akbk&gt;&gt;$$◉
 10. [akbk megjelenítese] Az egyenlet jobboldala ◉
 11. [kölönbség megjelenítese] A két oldal különbsége ◉
 12. [HTML záróelem] A 10. sor nyitóelemének lezárása
-▶</code>◉
-#...................
+</code>
 §compTPS(AB,K,ABK,n)§
 §abk=showTPS(ABK,n)§
 §compTPS(A,K,AK,n)§
@@ -150,30 +107,12 @@ $$\text{Különbségük}=&lt;&lt;abk-akbk&gt;&gt;$$◉
 $$\left(\mathbf{A}+\mathbf{B}\right)\circ\mathbf{K}=<<abk>>$$
 $$\mathbf{A}\circ\mathbf{K}+\mathbf{B}\circ\mathbf{K}=<<akbk>>$$
 $$\text{Különbségük}=<<abk-akbk>>$$
-</div>  
-
+</div>
+●●●●●●END
 ▶<h2> A patríció polinomsorok zártak a kompozíciós szorzásra</h2>
 ▶Szépen szedve deklaráljuk a $\textbf{P}_1,\textbf{P}_2$, illetve $\textbf{P}_3$ partíció polinomsorokat:◉
-▶<code class="kek clickable">
-----------  név = P1,  n = 4 -----------&#x25b6;◉
-P1_1 &#x25b6; &sect;Fgv(P1_1,[x_1],    x_1                                               )&sect;◉
-P1_2 &#x25b6; &sect;Fgv(P1_2,[x_'1..2], 2*x_1^2 + x_2                                     )&sect;◉
-P1_3 &#x25b6; &sect;Fgv(P1_3,[x_'1..3], 3*x_1*x_2 - 2*x_1^3 + 4*x_3                       )&sect;◉
-P1_4 &#x25b6; &sect;Fgv(P1_4,[x_'1..4], 2*x_1*x_3 - 3*x_1^2*x_2 - 2*x_1^4 + x_2^2 + 3*x_4 )&sect;◉
-◉
-----------  név = P2,  n = 4 -----------&#x25b6;◉
-P2_1 &#x25b6; &sect;Fgv(P2_1,[x_1],    -2*x_1                                          )&sect;◉
-P2_2 &#x25b6; &sect;Fgv(P2_2,[x_'1..2], -2*x_1^2 - 3*x_2                                )&sect;◉
-P2_3 &#x25b6; &sect;Fgv(P2_3,[x_'1..3], x_1*x_2 + 3*x_1^3 - x_3                         )&sect;◉
-P2_4 &#x25b6; &sect;Fgv(P2_4,[x_'1..4], 2*x_1*x_3 - x_1^2*x_2 + 2*x_1^4 - 3*x_2^2 + x_4 )&sect;◉
-◉
-----------  név = P3,  n = 4 -----------&#x25b6;◉
-P3_1 &#x25b6; &sect;Fgv(P3_1,[x_1],    7*x_1                                           )&sect;◉
-P3_2 &#x25b6; &sect;Fgv(P3_2,[x_'1..2], -2*x_1^2 + 3*x_2                                )&sect;◉
-P3_3 &#x25b6; &sect;Fgv(P3_3,[x_'1..3], x_1*x_2 + 3*x_1^3 + x_3                         )&sect;◉
-P3_4 &#x25b6; &sect;Fgv(P3_4,[x_'1..4], x_1*x_3 + x_1^2*x_2 + 4*x_1^4 - 2*x_2^2 + 7*x_4 )&sect;◉
-▶</code>◉ 
 
+●●●●●●START
 ----------  név = P1,  n = 4 -----------▶
 P1_1 ▶ §Fgv(P1_1,[x_1],    x_1                                               )§
 P1_2 ▶ §Fgv(P1_2,[x_1..2], 2*x_1^2 + x_2                                     )§
@@ -191,31 +130,11 @@ P3_1 ▶ §Fgv(P3_1,[x_1],     7*x_1                                          )�
 P3_2 ▶ §Fgv(P3_2,[x_1..2], -2*x_1^2 + 3*x_2                                )§
 P3_3 ▶ §Fgv(P3_3,[x_1..3], x_1*x_2 + 3*x_1^3 + x_3                         )§
 P3_4 ▶ §Fgv(P3_4,[x_1..4], x_1*x_3 + x_1^2*x_2 + 4*x_1^4 - 2*x_2^2 + 7*x_4 )§
+●●●●●●END
 
-#--------------------------------------------------------
 ▶A $\textbf{P}_1,\textbf{P}_2$, illetve $\textbf{P}_3$ partíció polinomsoroknak -sorrendet is figyelembe véve- összesen hat kompozíciós szorzata lehetséges. Ezeket mind deklaráljuk,◉
 ▶majd meg is jelenítjük. A kapott eredmények monomjait megfigyelve láthatjuk, hogy mind a hat kompozíciós szorzat szintén partíció polinomsor lesz.◉
-<code class="kek clickable">
-&sect;compTPS(P1,P2,P12,n)&sect;◉
-&sect;compTPS(P2,P1,P21,n)&sect;◉
-&sect;compTPS(P1,P3,P13,n)&sect;◉
-&sect;compTPS(P3,P1,P31,n)&sect;◉
-&sect;compTPS(P2,P3,P23,n)&sect;◉
-&sect;compTPS(P3,P2,P32,n)&sect;◉
-&sect;p12=showTPS(P12,n)&sect;◉
-&sect;p21=showTPS(P21,n)&sect;◉
-&sect;p13=showTPS(P13,n)&sect;◉
-&sect;p31=showTPS(P31,n)&sect;◉
-&sect;p23=showTPS(P23,n)&sect;◉
-&sect;p32=showTPS(P32,n)&sect;◉
-$$\mathbf{P}_{12}=\mathbf{P}_1\circ\textbf{P}_2=&lt;&lt;p12&gt;&gt;$$◉
-$$\mathbf{P}_{21}=\mathbf{P}_2\circ\textbf{P}_1=&lt;&lt;p21&gt;&gt;$$◉
-$$\mathbf{P}_{13}=\mathbf{P}_1\circ\textbf{P}_3=&lt;&lt;p13&gt;&gt;$$◉
-$$\mathbf{P}_{31}=\mathbf{P}_3\circ\textbf{P}_1=&lt;&lt;p31&gt;&gt;$$◉
-$$\mathbf{P}_{23}=\mathbf{P}_2\circ\textbf{P}_3=&lt;&lt;p23&gt;&gt;$$◉
-$$\mathbf{P}_{32}=\mathbf{P}_3\circ\textbf{P}_2=&lt;&lt;p32&gt;&gt;$$
-</code>
-#....................
+●●●●●●START
 §compTPS(P1,P2,P12,n)§
 §compTPS(P2,P1,P21,n)§
 §compTPS(P1,P3,P13,n)§
@@ -229,17 +148,17 @@ $$\mathbf{P}_{32}=\mathbf{P}_3\circ\textbf{P}_2=&lt;&lt;p32&gt;&gt;$$
 §p23=showTPS(P23,n)§
 §p32=showTPS(P32,n)§
 $$\mathbf{P}_{12}=\mathbf{P}_1\circ\textbf{P}_2=<<p12>>$$
-$$\mathbf{P}_{21}=\mathbf{P}_2\circ\textbf{P}_1=<<p21>>$$ 
+$$\mathbf{P}_{21}=\mathbf{P}_2\circ\textbf{P}_1=<<p21>>$$
 $$\mathbf{P}_{13}=\mathbf{P}_1\circ\textbf{P}_3=<<p13>>$$
 $$\mathbf{P}_{31}=\mathbf{P}_3\circ\textbf{P}_1=<<p31>>$$
 $$\mathbf{P}_{23}=\mathbf{P}_2\circ\textbf{P}_3=<<p23>>$$
-$$\mathbf{P}_{32}=\mathbf{P}_3\circ\textbf{P}_2=<<p32>>$$   
+$$\mathbf{P}_{32}=\mathbf{P}_3\circ\textbf{P}_2=<<p32>>$$
+●●●●●●END   
 ▶Végül egy négyszeres összetétel eredménye:◉
-<code class="kek clickable">
-&sect;compTPS(P12,P31,P1231,n)&sect;◉
-&sect;p1231=showTPS(P1231,n)&sect;◉
-$$\mathbf{P}_{1231}=\mathbf{P}_1\circ\textbf{P}_2\circ\textbf{P}_3\circ\textbf{P}_1=&lt;&lt;p1231&gt;&gt;$$
-</code>
+●●●●●●START
 §compTPS(P12,P31,P1231,n)§
 §p1231=showTPS(P1231,n)§
-$$\mathbf{P}_{1231}=\mathbf{P}_1\circ\textbf{P}_2\circ\textbf{P}_3\circ\textbf{P}_1=<<p1231>>$$                                                                                                     
+$$\mathbf{P}_{1231}=\mathbf{P}_1\circ\textbf{P}_2\circ\textbf{P}_3\circ\textbf{P}_1=<<p1231>>$$                 
+●●●●●●END    
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
