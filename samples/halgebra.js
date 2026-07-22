@@ -9477,27 +9477,27 @@ function visszajelolOLD(e) {
     codetxt = codetxt.replace(/([§>$])( *)?\<\-\-(.*)?[\n\r\f]+/mg, '$1\n');
     codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>{2}))[\n\r\f]+/mg, '◉\n');
     $('#pentcinput2').focus();
-    console.log(codetxt)
+    //console.log(codetxt)
     selectCode(codetxt);
     setTimeout(() => { scrollToCode(); }, 50);
 }
 
 function visszajelol(e) {
-    console.log(e.outerHTML)
+    //console.log(e.outerHTML)
     const tarea = document.getElementById('pentcinput2');
     //var be = '<div class="codenum" ondblclick="visszajelol\\(this\\)">' + e.innerText + '</div>(.*)?<div class="codenumend">' + e.innerText + '</div>'
     //var be = e.outerHTML.replaceAll('(', '\\(').replaceAll(')', '\\)') + '(.*)?<div class="codenumend" data-end="' + e.innerText.replaceAll('(', '\\(').replaceAll(')', '\\)') + '">([^\n\r\f]*)?</div>';
     var be = e.outerHTML.replaceAll('(', '\\(').replaceAll(')', '\\)') + '(.*?)<div class="codenumend">(.*?)</div>';
     var re = new RegExp(`${be}`, 's');
     tarea.focus();
-    console.log(re)
+    // console.log(re)
     const match = tarea.value.match(re);
     if (!match) return false;
 
-    console.log(match)
+    //console.log(match)
     const start = match.index;
     const end = start + match[0].length;
-    console.log(start, end)
+    //console.log(start, end)
     tarea.focus();
     tarea.setSelectionRange(start, end);
     setTimeout(() => { scrollToCode(); }, 50);
@@ -9584,6 +9584,25 @@ function addCodeDblClick() {
         }, 300);
     });
 };
+
+const chars = {
+    '<': '&lt;',
+    '>': '&gt;',
+    '§': '&sect;',
+    '[': '&lbrack;',
+    ']': '&rbrack;',
+    '▶': '&#x25B6;',
+    //'$': '&dollar;',
+    '\n': '◉\n',
+    '\r': '◉\n',
+    '\f': '◉\n',
+};
+
+function HtmlEncode(s) {
+    s = s.replace(/[\<\>\§\[\]\▶\n\r\f]/g, m => chars[m]);
+    return s;
+};
+
 
 function updMathJax(c_txt) {
     try {
@@ -9691,11 +9710,50 @@ function prelatexjs(c_txt, mathjax) {
     if (c_txt == "")
         c_txt = "A bemenet üres."
     nerdamer.clearVars();
+    var vagott = /\u25CF{3,}DOCSTART/.test(c_txt) && /\u25CF{3,}DOCEND/.test(c_txt);
+    if (vagott) {
+        var snipets = c_txt.match(/\u25CF{3,}DOCSTART(.*?)\u25CF{3,}DOCEND *[\n\r\f]/sg);
+        var sty = c_txt.match(/<style>(.*?)<\/style>/smg);
+        if (sty)
+            c_txt = sty + "\n";
+        else
+            c_txt = "";
+        for (let s of snipets) {
+            s = s.replace(/\u25CF{3,}DOCSTART *[\n\r\f]/, '\n');
+            s = s.replace(/\u25CF{3,}DOCEND *[\n\r\f]/, '\n')
+            c_txt += s;
+        }
+    };
+
     const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+|Witt_\d+|Pr_\d+)/g));
     if (ppolys.length > 0)
         for (let v of ppolys) {
             var L = v.split("_");
             getsetZycFabFib(L[0], parseInt(L[1]), false);
+        };
+
+    var forcode = c_txt.match(/\u25CF{3,}START(.*?)\u25CF{3,}END *[\n\r\f]/sg);
+    if (forcode)
+        for (let c of forcode) {
+            var codeid = c.match(/\u25CF{3,}START_([^\n\r\f]+) *[\n\r\f]/);
+            if (codeid) {
+                var c0 = c.replace(/\u25CF{3,}START_[^\n\r\f]+ *[\n\r\f]/, '\n<div class="codenum" ondblclick="visszajelol(this)">' + codeid[1] + '</div>\n');
+                c0 = c0.replace(/[\n\r\f]?\u25CF{3,}END *[\n\r\f]/, '\n<div class="codenumend">' + codeid[1] + ' vége</div>');
+            } else {
+                var c0 = c.replace(/\u25CF{3,}START *[\n\r\f]/, '\n');
+                c0 = c0.replace(/[\n\r\f]?\u25CF{3,}END *[\n\r\f]/, '\n');
+            };
+            c0 = c0.replace(/\$/g, '&dollar;');
+            var cnote = c0.match(/<code *class="note" *>(.*?)<\/code>[\n\r\f]/sg);
+            if (cnote)
+                c0 = c0.replace(cnote, '');
+            else
+                cnote = '';
+            var cc = '<code class="kek clickable">' + HtmlEncode(c0) + '</code>' + cnote + '◉\n';
+            cc = cc.replaceAll(/(\w+)\_(\d+|\w+)\.\.(\d+|\w+)/mg, '$1_\'$2..$3');
+            cc = cc.replaceAll('clickable">◉\n', 'clickable">\n');
+            //console.log(cc + c0);
+            c_txt = c_txt.replace(c, cc + c0);
         };
 
     //var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *= *\d+|\w+ *\;? *)*?\§{1}[\n\r\f]*/g);
@@ -9830,8 +9888,6 @@ function prelatexjs(c_txt, mathjax) {
     c_txt = c_txt.replaceAll("vmatrix", "pmatrix");
     return c_txt;
 };
-
-
 
 function ppcomp(fn1, fn2, F, n) {
     if (PartPolys.includes(fn1.replaceAll("-", "")))
