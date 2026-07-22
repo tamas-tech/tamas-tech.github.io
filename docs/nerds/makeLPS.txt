@@ -15,112 +15,102 @@
 </style>
 
 <h2>A <code> showTPS </code> parancs harmadik, opcionális paramétere</h2>
-▶Egyenként definiáljuk az <b>A</b> lineáris trianguláris polinomsor (LPS) első négy tagját.◉
-<code class="kek clickable">
-1. &#x25b6;&sect;Fgv(A_1,[x_1],2*x_1)&sect;◉
-2. &#x25b6;&sect;Fgv(A_2,[x_'1..2],12*x_1+3*x_2)&sect;◉
-2. &#x25b6;&sect;Fgv(A_3,[x_'1..3],-x_1-2*x_2+x_3)&sect;◉
-4. &#x25b6;&sect;Fgv(A_4,[x_'1..4],3*x_1+7*x_2-x_4)&sect;◉
-▶</code><code class="note">
+●●●●●●START
+<code class="note">
 1. [A_1 deklarálása] Konstruktor:Fgv, Név:A_1, Változók:x_1, Képlet:2*x_1 ◉
 2. [A_2 deklarálása] Konstruktor:Fgv, Név:A_2, Változók:x_'1..2, Képlet:12*x_1+3*x_2 ◉
 3. [A_3 deklarálása] Konstruktor:Fgv, Név:A_3, Változók:x_'1..3, Képlet:-x_1-2*x_2+x_3 ◉
 4. [A_4 deklarálása] Konstruktor:Fgv, Név:A_4, Változók:x_'1..4, Képlet:3*x_1+7*x_2-x_4 ◉
-▶</code>◉
-1. ▶§Fgv(A_1,[x_1],2*x_1)§
-2. ▶§Fgv(A_2,[x_1,x_2],12*x_1+3*x_2)§
-3. ▶§Fgv(A_3,[x_1,x_2,x_3],-x_1-2*x_2+x_3)§
-4. ▶§Fgv(A_4,[x_1,x_2,x_3,x_4],3*x_1+7*x_2-x_4)§   
+</code>
+1. ▶§Fgv(A_1,[x_1]   ,2*x_1           )§
+2. ▶§Fgv(A_2,[x_1..2],12*x_1+3*x_2    )§
+3. ▶§Fgv(A_3,[x_1..3],-x_1-2*x_2+x_3  )§
+4. ▶§Fgv(A_4,[x_1..4],3*x_1+7*x_2-x_4 )§
+●●●●●●END
+
 ▶A <code>showTPS(Név,n, [lineáris])</code> parancs harmadik (elhagyható) <code>lineáris</code> parméterének megadásakor a program automatikusan ellenőrzi,◉
 ▶hogy a trianguláris polinomsor (TPS) minden megadott tagja lineáris-e, és ha igen, akkor egy <em>alsó háromszögmátrixszal tér vissza</em>. Ahogyan azt◉
 ▶már megszokhattuk, ez az opcionális paraméter bármi lehet: 1,0,-3,..., true, hello,...◉
-▶<code class="kek clickable">
-1. &#x25b6;&lt;&lt;showTPS(A,4)&gt;&gt;◉
-2. &#x25b6;&lt;&lt;showTPS(A,4,1)&gt;&gt;◉
-▶</code><code class="note">
+●●●●●●START
+<code class="note">
 1. [TPS megjelenítő] Megjelenítő:showTPS, TPS:<b>A</b>, Hossz:4 ◉
 2. [TPS megjelenítő] Megjelenítő:showTPS, TPS:<b>A</b>, Hossz:4, Lineáris:1 ◉
-▶</code>◉
+</code>
 1. ▶<<showTPS(A,4)>>
 2. ▶<<showTPS(A,4,1)>>
+●●●●●●END
 
 ▶ Az <b>N</b> trianguláris polinomsort az <b>A</b> lineáris trianguláris polinomsor csekély megváltoztatásával deklaráljuk, amitól az már nem lesz lineáris.◉
-<code class="kek clickable">
-1. &#x25b6;&sect;Fgv(N_1,[x_1],2*x_1)&sect;◉
-2. &#x25b6;&sect;Fgv(N_2,[x_'1..2],12*x_1+3*x_2)&sect;◉
-2. &#x25b6;&sect;Fgv(N_3,[x_'1..3],-x_1*x_3</b>-2*x_2+x_3)&sect;◉
-4. &#x25b6;&sect;Fgv(N_4,[x_'1..4],3*x_1+7*x_2-x_4)&sect;◉
-▶</code><code class="note">
+●●●●●●START
+<code class="note">
 1. [N_1 deklarálása] Konstr:Fgv, Név:N_1, Vált:x_1, Képlet:2*x_1 (lin.)◉
 2. [N_2 deklarálása] Konstr:Fgv, Név:N_2, Vált:x_'1..2, Képlet:12*x_1+3*x_2 (lin.) ◉
 3. [N_3 deklarálása] Konstr:Fgv, Név:N_3, Vált:x_'1..3, Képlet:<b style="color:red">-x_1*x_3</b>-2*x_2+x_3 (nem lin.)◉
 4. [N_4 deklarálása] Konstr:Fgv, Név:N_4, Vált:x_'1..4, Képlet:3*x_1+7*x_2-x_4 (lin.) ◉
-▶</code>◉
-1. ▶§Fgv(N_1,[x_1],2*x_1)§
-2. ▶§Fgv(N_2,[x_1,x_2],12*x_1+3*x_2)§
-3. ▶§Fgv(N_3,[x_1,x_2,x_3],-x_1*x_3-2*x_2+x_3)§
-4. ▶§Fgv(N_4,[x_1,x_2,x_3,x_4],3*x_1+7*x_2-x_4)§   
+</code>
+1. ▶§Fgv(N_1,[x_1]   ,2*x_1              )§
+2. ▶§Fgv(N_2,[x_1..2],12*x_1+3*x_2       )§
+3. ▶§Fgv(N_3,[x_1..3],-x_1*x_3-2*x_2+x_3 )§
+4. ▶§Fgv(N_4,[x_1..4],3*x_1+7*x_2-x_4    )§
+●●●●●●END
+  
 ▶Mivel <b>N</b> nem lineáris, ezért a harmadik paramaméter a megszokott kimenettel tér vissza. (Így gyorsan ellenőrízhetjük, hogy egy TPS vajon LPS-e)◉
-▶<code class="kek clickable">
-1. &#x25b6;&lt;&lt;showTPS(N,4)&gt;&gt;◉
-2. &#x25b6;&lt;&lt;showTPS(N,4,1)&gt;&gt;◉
-▶</code><code class="note">
+●●●●●●START
+<code class="note">
 1. [TPS megjelenítő] Megjelenítő:showTPS, TPS:<b>N</b>, Hossz:4 ◉
 2. [TPS megjelenítő] Megjelenítő:showTPS, TPS:<b>N</b>, Hossz:4, Lineáris:1 ◉
-▶</code>◉
+</code>
 1. ▶<<showTPS(N,4)>>
 2. ▶<<showTPS(N,4,1)>>    
-
+●●●●●●END
 <h2>A <code> makeLPS </code> lineáris TPS konstruktor</h2>
 ▶A <code>makeLPS(N,mat)</code> konstruktor a <code>mat</code> alsó trianguláris mátrixból konstruál egy lineáris TPS-t a megadott <b>N</b> néven. A <code>mat</code> alsó háromszögmátrixot◉
 ▶megadhatjuk elemenként, vagy ha van rá szabály, akkor a <code>matTri(n,expr(sorindex,oszlopindex))</code> paranccsal. Az alábbi példában konstruálunk◉
 ▶egy 7 &times; 7-es <b>M</b> alsó háromszögmátrixot, majd ezt felhasználva a <b>C</b> lineáris trianguláris polinomsort:◉
-▶<code class="kek clickable">
-1. &#x25b6;&sect;M=matTri(7,x+y^2+1)&sect;◉
-2. &#x25b6;&sect;makeLPS(C,M)&sect;◉
-▶</code><code class="note">
+
+●●●●●●START
+<code class="note">
 1. [M deklarálása] Név:<b>M</b>, Konstruktor:matTri, Méret:7, sorvaltozó:x, oszlopváltozó:y ◉
 2. [C deklarálása] Konstruktor:makeLPS, LPS:<b>C</b>, Mátrix:<b>M</b> ◉
-▶</code>◉
+</code>
 1. ▶§M=matTri(7,x+y^2+1)§
 2. ▶§makeLPS(C,M)§
+●●●●●●END
 ▶Nézzük a megjelenítéseket:◉
-▶<code class="kek clickable">
-1. &#x25b6;&lt;&lt;M&gt;&gt;◉
-2. &#x25b6;&lt;&lt;showTPS(C,7)&gt;&gt;◉
-3. &#x25b6;&lt;&lt;showTPS(C,7,OK)&gt;&gt;◉
-▶</code><code class="note">
+
+●●●●●●START
+<code class="note">
 1. [M megjelenítése] ◉
 2. [C megjelenítése] Megjelenítő:showTPS, LPS:<b>C</b>, Hossz:7, Lineáris:- ◉
 3. [C megjelenítése] Megjelenítő:showTPS, LPS:<b>C</b>, Hossz:7, Lineáris:OK ◉
-▶</code>◉
+</code>
 1. ▶<<M>>
 2. ▶<<showTPS(C,7)>>
 3. ▶<<showTPS(C,7,OK)>>
+●●●●●●END
 
 Az következő példában pedig szintén egy 7 &times; 7-es <b>K</b> alsó háromszögmátrixot deklerálunk, majd ennek segítségével a <b>D</b> lineáris trianguláris polinomsort:◉
-▶<code class="kek clickable">
-1. &#x25b6;&sect;K=matTri(7,-x+y+2)&sect;◉
-2. &#x25b6;&sect;makeLPS(D,K)&sect;◉
-▶</code><code class="note">
+●●●●●●START
+<code class="note">
 1. [K deklarálása] Név:<b>K</b>, Konstruktor:matTri, Méret:7, sorvaltozó:x, oszlopváltozó:y ◉
 2. [D deklarálása] Konstruktor:makeLPS, LPS:<b>D</b>, Mátrix:<b>K</b> ◉
-▶</code>◉
+</code>
 1. ▶§K=matTri(7,-x+y+2)§
 2. ▶§makeLPS(D,K)§
+●●●●●●END
+
 ▶Ezeket is megjelenítjük:◉
-▶<code class="kek clickable">
-1. &#x25b6;&lt;&lt;K&gt;&gt;◉
-2. &#x25b6;&lt;&lt;showTPS(D,7)&gt;&gt;◉
-3. &#x25b6;&lt;&lt;showTPS(D,7,utca)&gt;&gt;◉
-▶</code><code class="note">
+
+●●●●●●START
+<code class="note">
 1. [K megjelenítése] ◉
 2. [D megjelenítése] Megjelenítő:showTPS, LPS:<b>D</b>, Hossz:7, Lineáris:- ◉
 3. [C megjelenítése] Megjelenítő:showTPS, LPS:<b>D</b>, Hossz:7, Lineáris:utca ◉
-▶</code>◉
+</code>
 1. ▶<<K>>
 2. ▶<<showTPS(D,7)>>
 3. ▶<<showTPS(D,7,utca)>>
+●●●●●●END
 
 <h2>Az LPS-ek lineáris tere algebra a kompozíciószorzással</h2>
 ▶Az nyilvánvaló, hogy egy alsó háromszögmátrix skalárral való szorzata, valamint két alsó háromszögmátrix összege is alsó háromszögmátrix lesz. Vagyis,◉
@@ -138,32 +128,29 @@ A tételt ellenőrizzük a fentebb definiált $\varphi(\mathbf{C})=\mathbf{M}$, 
 ▶amely a megadott $\left[\mathbf{A}_1,\mathbf{A}_2,\ldots,\mathbf{A}_n\right]$ TPS listából, illetve az azonos hosszúságú  $\left[a_1,a_2,\ldots,a_n\right]$ skalárok listájából, a harmadik paraméterként bevitt $\mathbf{C}$ néven◉
 ▶megalkotja a $\mathbf{C}=a_1\cdot\mathbf{A}_1+a_2\cdot\mathbf{A}_2+\cdots+a_n\cdot\mathbf{A}_n$ lineáris kombinációt. <em><b>A jelenlegi implementáció csak egész $a_1,a_2,\ldots$ számokkal működik.</b></em>◉
 ▶1. A linearitás ellenőrzése:◉
-▶<code class="kek clickable">
-1. &#x25b6;&sect;a=2;b=3&sect;◉
-2. &#x25b6;&sect;lincombTPS([C,D],[a,b],aCbD,7)&sect;◉
-3. &#x25b6;&sect;aMbK=a*M+b*K&sect;◉
-4. &#x25b6;$$&lt;&lt;showTPS(aCbD,7,1)&gt;&gt=&lt;&lt;aMbK&gt;&gt;$$◉
-▶</code><code class="note">
+●●●●●●START
+<code class="note">
 1. [a és b deklarálása] Név:a, Érték:2 ; Név:b, Érték:3 ◉
 2. [aCbD deklarálása] Konstruktor:lincombTPS, LPS sor:[<b>C,D</b>], Skalárok:[a,b], Név:<b>aCbD</b> ◉
 3. [aMbK deklarálása] Név:<b>aMbK</b>, érték:a&centerdot;<b>M</b> + b&centerdot;<b>K</b> ◉
 4. [Az egyenlőség megjelenítése] Megjelenítő:showTPS, LPS:<b>aCbD</b>, Hossz:7, Lineáris:1 ◉
-▶</code>◉
+</code>
 1. ▶§a=2;b=3§
 2. ▶§lincombTPS([C,D],[a,b],aCbD,7)§
 3. ▶§aMbK=a*M+b*K§
 4. ▶$$<<showTPS(aCbD,7,1)>>=<<aMbK>>$$
+●●●●●●END
 
 ▶2. A "$\circ$" kompozíciószorzás felcserélhetősége a "$\cdot$" mátrixszorzással (Homomorfia):◉
-▶<code class="kek clickable">
-1. &#x25b6;&sect;compTPS(C,D,CD,7)&sect;◉
-2. &#x25b6;$$&lt;&lt;showTPS(CD,7,1)&gt;&gt=&lt;&lt;M*K&gt;&gt;$$◉
-▶</code><code class="note">
+●●●●●●START
+<code class="note">
 1. [CD deklarálása] Konstruktor:compTPS, LPS1:<b>C</b>, LPS2:<b>D</b>, Név:<b>CD</b>, Méret:7◉
 2. [Az egyenlőség megjelenítése] Megjelenítő:showTPS, LPS:<b>CD</b>, Hossz:7, Lineáris:1◉
-▶</code>◉
+</code>
 1. ▶§compTPS(C,D,CD,7)§
-2. ▶$$<<showTPS(CD,7,1)>>=<<M*K>>$$ 
+2. ▶$$<<showTPS(CD,7,1)>>=<<M*K>>$$
+●●●●●●END
+
 ▶Ezen algebra tanulmányozásának egy jó kiindulópontja lehet:◉
 ▶<b>PAWEL J. SZABLOWSKI</b>: APPLICATIONS OF INFINITE LOWER TRIANGULAR MATRICES AND THEIR GROUP STRUCTURE◉
-▶IN COMBINATORICS AND THE THEORY OF ORTHOGONAL POLYNOMIALS. (<b>2026</b>. Jan. 26.)                        
+▶IN COMBINATORICS AND THE THEORY OF ORTHOGONAL POLYNOMIALS. (<b>2026</b>. Jan. 26.)                                                                                                            
