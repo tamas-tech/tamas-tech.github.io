@@ -9438,6 +9438,7 @@ function selectCode(txt) {
 var felulir = false;
 var kijeltorol = false;
 var mathjax_indent = "1em";
+var koddal2be = false;
 
 function mathjaxIndent(val) {
     mathjax_indent = val + "em";
@@ -9470,6 +9471,14 @@ function setFeluliras(e) {
 
 function clickVoltClear() {
     $('#pentout code.clickable.clickvolt').removeClass('clickvolt');
+};
+
+function calcClear() {
+    var conf = confirm("Biztosan törölni szeretné a calculátor_1 tartalmát?");
+    if (conf)
+        $('#pentcinput').val('').focus();
+    else
+        return;
 };
 
 function visszajelolOLD(e) {
@@ -9544,6 +9553,8 @@ function addCodeDblClick() {
         codetxt = codetxt.replace(/(?<!(§|◉|▶|\${2}|\>))[\n\r\f]+/mg, '◉\n');
         codetxt = codetxt.replace(/\\◉[\n\r\f]+/mg, '\n');
         codetxt = codetxt.replace(/[\n\r\f]+◉[\n\r\f]+/mg, '\n\n');
+        if (koddal2be)
+            codetxt = "\n●●●●●START\n" + codetxt + "●●●●●END\n";
         //console.log(codetxt);
         // beTextbe(codetxt, true)
         if ($(this).hasClass('clickvolt')) {
@@ -9574,7 +9585,7 @@ function addCodeDblClick() {
                 $('#pentout code.clickable.clickvolt').removeClass('clickvolt');
                 $('#pentcinput2').val(codetxt);
             } else
-                $('#pentcinput2').val($('#pentcinput2').val() + "\n\n#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n" + codetxt);
+                $('#pentcinput2').val($('#pentcinput2').val() + "\n#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n" + codetxt);
             $(this).addClass('clickvolt');
             idClear('#pentout2');
         }
