@@ -6,7 +6,8 @@ showTPS(TPS,n)◉
 compTPS(TPS_1,TPS_2,compName,n)◉
 </code>
 ▶<h3>Egyedi trianguláris polinomsor (TPS) megadása <code style="color:#000555;">&sect;Fgv(...)&sect;</code> deklarációk használatával</h3>
-
+▶Az <b>A</b> és <b>B</b> egyedi (képlettel nem felírható) trianguláris polinomsorok első négy tagjának deklarálása:◉
+●●●●●●START
 §Fgv(A_1,[x_1],     2*x_1                     )§
 §Fgv(A_2,[x_1..2],  2*x_1 - x_1*x_2           )§
 §Fgv(A_3,[x_1..3],  -x_1 - x_3*x_1            )§
@@ -16,42 +17,23 @@ compTPS(TPS_1,TPS_2,compName,n)◉
 §Fgv(B_2,[x_1..2],  -x_2^2 + 5*x_1^2  )§
 §Fgv(B_3,[x_1..3],  -x_3 + 2*x_2*x_1  )§
 §Fgv(B_4,[x_1..4],   x_4*x_1 - x_2^2  )§
-
-▶Az <b>A</b> és <b>B</b> egyedi (képlettel nem felírható) trianguláris polinomsorok első négy tagjának deklarálása:◉
-
-▶<code class="kek clickable">
-&sect;Fgv(A_1,[x_'1],     2*x_1                    )&sect;◉
-&sect;Fgv(A_2,[x_'1..2],  2*x_1 - x_1*x_2          )&sect;◉
-&sect;Fgv(A_3,[x_'1..3], -x_1 - x_3*x_1            )&sect;◉
-&sect;Fgv(A_4,[x_'1..4], -x_3 + x_4*x_3 - x_4*x_2  )&sect;◉
-</code>◉
-▶<code class="kek clickable">
-&sect;Fgv(B_1,[x_'1],     -x_1              )&sect;◉
-&sect;Fgv(B_2,[x_'1..2],  -x_2^2 + 5*x_1^2  )&sect;◉
-&sect;Fgv(B_3,[x_'1..3],  -x_3 + 2*x_2*x_1  )&sect;◉
-&sect;Fgv(B_4,[x_'1..4],   x_4*x_1 - x_2^2  )&sect;◉
-▶</code>◉
+●●●●●●END
 ▶Ha az <b>A</b> trianguláris polinomsort szeretnénk megjeleníteni, akkor azt az alábbi kódsorral megtehetjük:◉
-
-▶<code class="kek clickable">
-$A_1(x_1)=&lt;&lt;A_1(x_1)&gt;&gt;$◉
-$A_2(x_'1..2)=&lt;&lt;A_2(x_'1..2)&gt;&gt;$◉
-$A_3(x_'1..3)=&lt;&lt;A_3(x_'1..3)&gt;&gt;$◉
-$A_4(x_'1..4)=&lt;&lt;A_4(x_'1..4)&gt;&gt;$◉
-▶</code>◉
-
-$A_1(x_1)=<<A_1(x_1)>>$◉
-$A_2(x_1..2)=<<A_2(x_1..2)>>$◉
-$A_3(x_1..3)=<<A_3(x_1..3)>>$◉
-$A_4(x_1..4)=<<A_4(x_1..4)>>$◉
+●●●●●●START
+$A_1(x_1)=<<A_1(x_1)>>$
+$A_2(x_1..2)=<<A_2(x_1..2)>>$
+$A_3(x_1..3)=<<A_3(x_1..3)>>$
+$A_4(x_1..4)=<<A_4(x_1..4)>>$
+●●●●●●END
 ◉
-▶Ezt sokkal kényelmesebben is elérhetjük a <code style="font-size:105%;color:#500066;font-weight:bold;">showTPS(TPS,n)</code> parancs használatával: ◉
-<code class="kek clickable">&lt;&lt;showTPS(A,4)&gt;&gt;</code>
+▶Ezt sokkal kényelmesebben is elérhetjük a <code style="font-size:105%;color:#500066;font-weight:bold;">showTPS(TPS,n)</code> parancs használatával:◉
+●●●●●●START
 <<showTPS(A,4)>>
+●●●●●●END
 ▶Ugyanígy a <b>B</b> trianguláris polinomsor is gyorsan megjeleníthető: ◉
-<code class="kek clickable">&lt;&lt;showTPS(B,4)&gt;&gt;</code>
+●●●●●●START
 <<showTPS(B,4)>>
-
+●●●●●●END
 <h3>Trianguláris polinomsorok összetétele/kompozíció-szorzata</h3>
 ▶Az <b>A</b> és <b>B</b> polinomsorok $\mathbf{C}=\mathbf{A}\circ\mathbf{B}$ összetétele is egy trianguláris polinomsor lesz. Az összetétel részletes kiírásának kódja:◉
 -----------------------▶ 
@@ -103,19 +85,16 @@ $A_4(x_1..4)=<<A_4(x_1..4)>>$◉
 §Fgv(D_3,[x_1..3],  comp2(A,B,3) )§
 §Fgv(D_4,[x_1..4],  comp2(A,B,4) )§
 ▶Az összetétellel kapott <b>D</b> trianguláris polinomsor is gyorsan megjeleníthető a <code>showTPS</code> paranccsal: ◉
-<code class="kek clickable">&lt;&lt;showTPS(D,4)&gt;&gt;</code>◉
+●●●●●●START
 <<showTPS(D,4)>>
-
+●●●●●●END
 <hr/>
 ▶Az <b>A</b> és <b>B</b> trianguláris polinomsorok kompozíció-szorzatát legkényelmesebben a <code style="font-size:105%;color:#500066;font-weight:bold;">compTPS(TPS_1,TPS_2,compName,n)</code> paranccsal kapjuk meg.◉
 Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsorok kompozíció-szorzatát, majd azt a <code>showTPS</code> paranccsal meg is jelenítjük:◉
-<code class="kek clickable">
-&sect;compTPS(A,B,AB,4)&sect;◉
-&lt;&lt;showTPS(AB,4)&gt;&gt; 
-</code>
+●●●●●●START
 §compTPS(A,B,AB,4)§
 <<showTPS(AB,4)>>
-
+●●●●●●END
 ▶<h3>Beépített polinomsorok összetétele</h3>
 ▶Az alábbi kódrészlet <b>ZF</b> néven létrehozza a <b>Zyc</b> és <b>Fab</b> partíció polinomsorok (PPS) kompozíció-szorzatát n = 5-ig, majd azt meg is jeleníti.◉
 ▶<code class="kek clickable">
@@ -212,4 +191,5 @@ Az alábbi kód <b>AB</b> névvel megalkotja az <b>A</b> és <b>B</b> polinomsor
 ◉ 
 ▶Az alábbi különbség jól példázza a kompozíció-szorzat $\textbf{A}\circ\left(\textbf{B}\circ\textbf{C}\right)=\left(\textbf{A}\circ\textbf{B}\right)\circ\textbf{C}$ asszociativítását.◉
 <code class="kek clickable">&lt;&lt;er1-er2&gt;&gt;</code>
-<<er1-er2>>                                                                                                                                                                                                                                                       
+<<er1-er2>>
+                                                                                                                                                          
