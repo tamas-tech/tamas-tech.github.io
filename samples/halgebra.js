@@ -9784,6 +9784,7 @@ function prelatexjs(c_txt, mathjax) {
 
     if (mathjax) {
         c_txt = c_txt.replace(/^\#.*[\n\r\f]+/mg, '');
+        c_txt = c_txt.replace(/[^\n\r\f]*▶START *[\n\r\f]+(.*?)[\n\r\f]+[^\n\r\f]*▶END *[\n\r\f]+/mgs, '<div class="comment">...ELREJTVE...</div>');
         c_txt = c_txt.replace(/^.*▶ */mg, '');
         c_txt = c_txt.replace(/◉/mg, '<br/>');
         c_txt = c_txt.replaceAll(/(\w+)\_(\d+|\w+)\.\.(\d+|\w+)/mg, function(m, p1, p2, p3) { return sorra(p1, p2, p3) });
