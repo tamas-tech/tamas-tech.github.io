@@ -317,6 +317,10 @@ const autodictC = [
     { key: "display math fformáz", value: "$$ {c} $$", tag: "$$ $$" },
     { key: "def változó fformáz", value: "§ {c} §", tag: "§ §" },
     { key: "ddef változó fformáz", value: "§§ {c} §§", tag: "§§ §§" },
+    { key: "...START fformáz", value: "●●●START{c}", tag: "●●●START" },
+    { key: "...END fformáz", value: "●●●END{c}", tag: "●●●END" },
+    { key: "...DOCSTART fformáz", value: "●●●DOCSTART{c}", tag: "●●●DOCSTART" },
+    { key: "...DOCEND fformáz", value: "●●●DOCEND{c}", tag: "●●●DOCEND" },
     //Nerdamer Constants
     { key: "piconstáállandó nerd", value: "pi", tag: "&pi;" },
     { key: "imagconstáállandó nerd", value: "i", tag: "i (Imaginary)" },
