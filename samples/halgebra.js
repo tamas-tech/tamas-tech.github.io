@@ -7757,10 +7757,12 @@ function tglNerdSettings() {
 
 function tglSpecChars() {
     $("#speccharstok").toggleClass("shown");
+    nerditor.focus();
 };
 
 function tglSpecChars2() {
     $("#speccharstok2").toggleClass("shown");
+    nerditor2.focus();
 };
 
 function setSpecClick(b, gep2) {
@@ -7789,10 +7791,13 @@ function nerdTgl(b) {
 };
 
 function beTextbe(text, gep2) {
-    if (gep2)
+    if (gep2) {
         nerditor2.insert(text);
-    else
+        nerditor2.focus();
+    } else {
         nerditor.insert(text);
+        nerditor.focus();
+    };
 };
 
 function pentSign(e, ov) {
@@ -9455,9 +9460,10 @@ function clickVoltClear() {
 
 function calcClear() {
     var conf = confirm("Biztosan törölni szeretné a calculátor_1 tartalmát?");
-    if (conf)
+    if (conf) {
         nerditor.setValue('');
-    else
+        nerditor.focus();
+    } else
         return;
 };
 
@@ -9487,7 +9493,6 @@ function addCodeDblClick() {
         if (koddal2be)
             codetxt = "\n●●●●●START\n" + codetxt + "●●●●●END\n";
         //console.log(codetxt);
-        // beTextbe(codetxt, true)
         if ($(this).hasClass('clickvolt')) {
             if (kijeltorol) {
                 setTimeout(() => {
