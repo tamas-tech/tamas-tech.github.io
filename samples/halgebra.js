@@ -9487,9 +9487,9 @@ function addCodeDblClick() {
     elems.on('dblclick', function() {
         var codetxt = this.innerText;
         codetxt = codetxt.replace(/([§>$])( *)?\<\-\-(.*)?[\n\r\f]+/mg, '$1\n');
-        codetxt = codetxt.replace(/(?<!(§|◉|▶|\${2}|\>))[\n\r\f]+/mg, '◉\n');
-        codetxt = codetxt.replace(/\\◉[\n\r\f]+/mg, '\n');
-        codetxt = codetxt.replace(/[\n\r\f]+◉[\n\r\f]+/mg, '\n\n');
+        codetxt = codetxt.replace(/(?<!(§|█|▶|\${2}|\>))[\n\r\f]+/mg, '█\n');
+        codetxt = codetxt.replace(/\\█[\n\r\f]+/mg, '\n');
+        codetxt = codetxt.replace(/[\n\r\f]+█[\n\r\f]+/mg, '\n\n');
         if (koddal2be)
             codetxt = "\n●●●●●START\n" + codetxt + "●●●●●END\n";
         //console.log(codetxt);
@@ -9535,9 +9535,9 @@ const chars = {
     ']': '&rbrack;',
     '▶': '&#x25B6;',
     //'$': '&dollar;',
-    '\n': '◉\n',
-    '\r': '◉\n',
-    '\f': '◉\n',
+    '\n': '█\n',
+    '\r': '█\n',
+    '\f': '█\n',
 };
 
 function HtmlEncode(s) {
@@ -9691,9 +9691,9 @@ function prelatexjs(c_txt, mathjax) {
                 c0 = c0.replace(cnote, '');
             else
                 cnote = '';
-            var cc = '<code class="kek clickable">' + HtmlEncode(c0) + '</code>' + cnote + '◉\n';
+            var cc = '<code class="kek clickable">' + HtmlEncode(c0) + '</code>' + cnote + '█\n';
             cc = cc.replaceAll(/(\w+)\_(\d+|\w+)\.\.(\d+|\w+)/mg, '$1_\'$2..$3');
-            cc = cc.replaceAll('clickable">◉\n', 'clickable">\n');
+            cc = cc.replaceAll('clickable">█\n', 'clickable">\n');
             //console.log(cc + c0);
             c_txt = c_txt.replace(c, cc + c0);
         };
@@ -9717,7 +9717,7 @@ function prelatexjs(c_txt, mathjax) {
         c_txt = c_txt.replace(/^\#.*[\n\r\f]+/mg, '');
         c_txt = c_txt.replace(/[^\n\r\f]*▶START *[\n\r\f]+(.*?)[\n\r\f]+[^\n\r\f]*▶END *[\n\r\f]+/mgs, '<div class="comment">...ELREJTVE...</div>');
         c_txt = c_txt.replace(/^.*▶ */mg, '');
-        c_txt = c_txt.replace(/◉/mg, '<br/>');
+        c_txt = c_txt.replace(/█/mg, '<br/>');
         c_txt = c_txt.replaceAll(/(\w+)\_(\d+|\w+)\.\.(\d+|\w+)/mg, function(m, p1, p2, p3) { return sorra(p1, p2, p3) });
         c_txt = c_txt.replaceAll(/\[([^\[\]]*?)\|\|(.*?)\]/mg, function(m, p1, p2) { return getsorA(p1, p2) });
     }
@@ -10808,7 +10808,7 @@ function makePPTtext(F, n) {
         txt += nev + " ▶ §Fgv(" + nev + ",[" + valt + "]," + v1 + ")§\n";
         valt += ","
     };
-    txt = txt.replaceAll("C", " ⭕"); // &#x2B55 HEAVY LARG CIRCLE   (red)
+    txt = txt.replaceAll("C", " ▒"); // &#x2B55 HEAVY LARG CIRCLE   (red)
     txt = "#---------- PPS beillesztés: név = " + F + ",  n = " + n + " -----------\n" + txt;
     txt += "#--------------------------------------------------------\n"
     return txt;
