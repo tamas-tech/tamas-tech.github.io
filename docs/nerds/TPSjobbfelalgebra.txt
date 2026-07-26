@@ -15,12 +15,12 @@
  #pentout2 .codenumend {border-bottom:1px dotted;margin-bottom: 5px;}
 </style>
 ▶<h2>A trianguláris polinomsorok jobb félalgebrát alkotnak a "$\circ$" kompozíciós szorzással</h2>
-▶Konkrét példákon keresztül szemléltetjük, hogy a trianguláris polinomsorok lineáris tere jobboldali félalgebrát alkot a "$\circ$" kompozíciós szorzással.◉
-▶Vagyis, tetszőleges $\mathbf{A},\mathbf{B}$ és $\mathbf{K}$ trianguláris polinomsorokkal a kompozíciós szorzás balról nem disztibutív az összeadásra, de jobbról igen:◉
+▶Konkrét példákon keresztül szemléltetjük, hogy a trianguláris polinomsorok lineáris tere jobboldali félalgebrát alkot a "$\circ$" kompozíciós szorzással.█
+▶Vagyis, tetszőleges $\mathbf{A},\mathbf{B}$ és $\mathbf{K}$ trianguláris polinomsorokkal a kompozíciós szorzás balról nem disztibutív az összeadásra, de jobbról igen:█
 $$\begin{align*}\mathbf{K}\circ\left(\mathbf{A}+\mathbf{B}\right)\neq\mathbf{K}\circ\mathbf{A}+\mathbf{K}\circ\mathbf{B}\\ \left(\mathbf{A}+\mathbf{B}\right)\circ\mathbf{K}=\mathbf{A}\circ\mathbf{K}+\mathbf{B}\circ\mathbf{K}\end{align*}$$
 
 ▶<h2>Az <b>A</b>, <b>B</b> és <b>K</b> általános trianguláris polinomsorok deklarálása</h2>
-▶Deklaráljuk az $\mathbf{A},\mathbf{B}$ és $\mathbf{K}$ trianguláris polinomsorok első négy tagját majd azokat meg is jelenítjük.◉
+▶Deklaráljuk az $\mathbf{A},\mathbf{B}$ és $\mathbf{K}$ trianguláris polinomsorok első négy tagját majd azokat meg is jelenítjük.█
 ●●●●●●START
 §Fgv(A_1,[x_1],     2*x_1                     )§
 §Fgv(A_2,[x_1..2],  2*x_1 - x_1*x_2           )§
@@ -43,24 +43,24 @@ $$\mathbf{K}=<<showTPS(K,4)>>$$
 ●●●●●●END
 
 ▶<h2>A kompozíciós szorzás balról nem disztibutív az összeadásra</h2>
-▶Látni fogjuk, hogy $\mathbf{K}\circ\left(\mathbf{A}+\mathbf{B}\right)\neq\mathbf{K}\circ\mathbf{A}+\mathbf{K}\circ\mathbf{B}$◉
+▶Látni fogjuk, hogy $\mathbf{K}\circ\left(\mathbf{A}+\mathbf{B}\right)\neq\mathbf{K}\circ\mathbf{A}+\mathbf{K}\circ\mathbf{B}$█
 
 
 ●●●●●●START
 <code class="note">
-1.  [n deklarálása] Név:n, Érték:4 ◉
-2.  [AB deklarálása] <b>AB</b> := 1&centerdot;<b>A</b>+1&centerdot;<b>B</b> = <b>A</b>+<b>B</b> ◉
-3.  [KAB deklarálása] <b>KAB</b> := <b>K</b>&#x2218;<b>AB</b> = <b>K</b>&#x2218;(<b>A</b>+<b>B</b>) ◉
-4.  [kab deklarálása] kab a showTPS(<b>KAB</b>,n) mátrixa ◉
-5.  [KA deklarálása] <b>KA</b> := <b>K</b>&#x2218;<b>A</b> ◉
-6.  [KB deklarálása] <b>KB</b> := <b>K</b>&#x2218;<b>B</b> ◉
-7.  [KAKB deklarálása] <b>KAKB</b> := 1&centerdot;<b>KA</b>+1&centerdot;<b>KB</b> = <b>KA</b>+<b>KB</b> = <b>K</b>&#x2218;<b>A</b>+<b>K</b>&#x2218;<b>B</b> ◉
-8.  [kakb deklarálása] kakb a showTPS(<b>KAKB</b>,n) mátrixa ◉
-9.  [Üres]◉
-10. [HTML nyitóelem] Elem:&ltdiv&gt;, Osztály:scroll ◉
-11. [kab megjelenítese] Az egyenlet baloldala ◉
-12. [kakb megjelenítese] Az egyenlet jobboldala ◉
-13. [különbség megjelenítese] A két oldal különbsége ◉
+1.  [n deklarálása] Név:n, Érték:4 █
+2.  [AB deklarálása] <b>AB</b> := 1&centerdot;<b>A</b>+1&centerdot;<b>B</b> = <b>A</b>+<b>B</b> █
+3.  [KAB deklarálása] <b>KAB</b> := <b>K</b>&#x2218;<b>AB</b> = <b>K</b>&#x2218;(<b>A</b>+<b>B</b>) █
+4.  [kab deklarálása] kab a showTPS(<b>KAB</b>,n) mátrixa █
+5.  [KA deklarálása] <b>KA</b> := <b>K</b>&#x2218;<b>A</b> █
+6.  [KB deklarálása] <b>KB</b> := <b>K</b>&#x2218;<b>B</b> █
+7.  [KAKB deklarálása] <b>KAKB</b> := 1&centerdot;<b>KA</b>+1&centerdot;<b>KB</b> = <b>KA</b>+<b>KB</b> = <b>K</b>&#x2218;<b>A</b>+<b>K</b>&#x2218;<b>B</b> █
+8.  [kakb deklarálása] kakb a showTPS(<b>KAKB</b>,n) mátrixa █
+9.  [Üres]█
+10. [HTML nyitóelem] Elem:&ltdiv&gt;, Osztály:scroll █
+11. [kab megjelenítese] Az egyenlet baloldala █
+12. [kakb megjelenítese] Az egyenlet jobboldala █
+13. [különbség megjelenítese] A két oldal különbsége █
 14. [HTML záróelem] A 10. sor nyitóelemének lezárása
 </code>
 §n=4§
@@ -83,17 +83,17 @@ $$\text{Különbségük}=<<kab-kakb>>$$
 
 ●●●●●●START    
 <code class="note">
-1.  [ABK deklarálása] <b>ABK</b> := <b>AB</b>&#x2218;<b>K</b> = (<b>A</b>+<b>B</b>)&#x2218;<b>K</b> ◉
-2.  [abk deklarálása] abk a showTPS(<b>ABK</b>,n) mátrixa ◉
-3.  [AK deklarálása] <b>AK</b> := <b>A</b>&#x2218;<b>K</b> ◉
-4.  [BK deklarálása] <b>BK</b> := <b>B</b>&#x2218;<b>K</b> ◉
-5.  [AKBK deklarálása] <b>AKBK</b> := 1&centerdot;<b>AK</b>+1&centerdot;<b>BK</b> = <b>AK</b>+<b>BK</b> = <b>A</b>&#x2218;<b>K</b>+<b>B</b>&#x2218;<b>K</b> ◉
-6.  [akbk deklarálása] akbk a showTPS(<b>AKBK</b>,n) mátrixa ◉
-7.  [Üres]◉
-8.  [HTML nyitóelem] Elem:&ltdiv&gt;, Osztály:scroll ◉
-9.  [abk megjelenítese] Az egyenlet baloldala ◉
-10. [akbk megjelenítese] Az egyenlet jobboldala ◉
-11. [kölönbség megjelenítese] A két oldal különbsége ◉
+1.  [ABK deklarálása] <b>ABK</b> := <b>AB</b>&#x2218;<b>K</b> = (<b>A</b>+<b>B</b>)&#x2218;<b>K</b> █
+2.  [abk deklarálása] abk a showTPS(<b>ABK</b>,n) mátrixa █
+3.  [AK deklarálása] <b>AK</b> := <b>A</b>&#x2218;<b>K</b> █
+4.  [BK deklarálása] <b>BK</b> := <b>B</b>&#x2218;<b>K</b> █
+5.  [AKBK deklarálása] <b>AKBK</b> := 1&centerdot;<b>AK</b>+1&centerdot;<b>BK</b> = <b>AK</b>+<b>BK</b> = <b>A</b>&#x2218;<b>K</b>+<b>B</b>&#x2218;<b>K</b> █
+6.  [akbk deklarálása] akbk a showTPS(<b>AKBK</b>,n) mátrixa █
+7.  [Üres]█
+8.  [HTML nyitóelem] Elem:&ltdiv&gt;, Osztály:scroll █
+9.  [abk megjelenítese] Az egyenlet baloldala █
+10. [akbk megjelenítese] Az egyenlet jobboldala █
+11. [kölönbség megjelenítese] A két oldal különbsége █
 12. [HTML záróelem] A 10. sor nyitóelemének lezárása
 </code>
 §compTPS(AB,K,ABK,n)§
@@ -110,7 +110,7 @@ $$\text{Különbségük}=<<abk-akbk>>$$
 </div>
 ●●●●●●END
 ▶<h2> A patríció polinomsorok zártak a kompozíciós szorzásra</h2>
-▶Szépen szedve deklaráljuk a $\textbf{P}_1,\textbf{P}_2$, illetve $\textbf{P}_3$ partíció polinomsorokat:◉
+▶Szépen szedve deklaráljuk a $\textbf{P}_1,\textbf{P}_2$, illetve $\textbf{P}_3$ partíció polinomsorokat:█
 
 ●●●●●●START
 ----------  név = P1,  n = 4 -----------▶
@@ -132,8 +132,8 @@ P3_3 ▶ §Fgv(P3_3,[x_1..3], x_1*x_2 + 3*x_1^3 + x_3                         )�
 P3_4 ▶ §Fgv(P3_4,[x_1..4], x_1*x_3 + x_1^2*x_2 + 4*x_1^4 - 2*x_2^2 + 7*x_4 )§
 ●●●●●●END
 
-▶A $\textbf{P}_1,\textbf{P}_2$, illetve $\textbf{P}_3$ partíció polinomsoroknak -sorrendet is figyelembe véve- összesen hat kompozíciós szorzata lehetséges. Ezeket mind deklaráljuk,◉
-▶majd meg is jelenítjük. A kapott eredmények monomjait megfigyelve láthatjuk, hogy mind a hat kompozíciós szorzat szintén partíció polinomsor lesz.◉
+▶A $\textbf{P}_1,\textbf{P}_2$, illetve $\textbf{P}_3$ partíció polinomsoroknak -sorrendet is figyelembe véve- összesen hat kompozíciós szorzata lehetséges. Ezeket mind deklaráljuk,█
+▶majd meg is jelenítjük. A kapott eredmények monomjait megfigyelve láthatjuk, hogy mind a hat kompozíciós szorzat szintén partíció polinomsor lesz.█
 ●●●●●●START
 §compTPS(P1,P2,P12,n)§
 §compTPS(P2,P1,P21,n)§
@@ -154,7 +154,7 @@ $$\mathbf{P}_{31}=\mathbf{P}_3\circ\textbf{P}_1=<<p31>>$$
 $$\mathbf{P}_{23}=\mathbf{P}_2\circ\textbf{P}_3=<<p23>>$$
 $$\mathbf{P}_{32}=\mathbf{P}_3\circ\textbf{P}_2=<<p32>>$$
 ●●●●●●END   
-▶Végül egy négyszeres összetétel eredménye:◉
+▶Végül egy négyszeres összetétel eredménye:█
 ●●●●●●START
 §compTPS(P12,P31,P1231,n)§
 §p1231=showTPS(P1231,n)§
