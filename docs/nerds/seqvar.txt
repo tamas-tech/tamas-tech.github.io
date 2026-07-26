@@ -52,14 +52,14 @@ em {letter-spacing: 0.2em;font-weight:600;}
 <h2 style="font-family:monospace;">seqvar(expr|f(var,...), var, min, max, [expand])</h2>
 ▶ <dl>
 <dt style="margin-right: 35px;">expr</dt><dd>Tetszőleges matematikai kifejezés. Pld.: 2*x-u/(3*x^2+5); abs(sin(x+2));...</dd>
-<dt style="margin-right: 2px;">f(var,...)</dt><dd>Általunk definiált, vagy a Nerdamerbe beépített függvény tetszőleges változóval.◉
+<dt style="margin-right: 2px;">f(var,...)</dt><dd>Általunk definiált, vagy a Nerdamerbe beépített függvény tetszőleges változóval.█
 <span style="margin-left:140px;"></span>Pld.: Fgv(H,[x,y],-2*x+y^x); fgv(g,sin(x-y)+y^2); abs(x); sin(u);... </dd>
 <dt style="margin-right: 70px;">var</dt><dd>Tetszőleges változó. Pld.: x; k; vau;....</dd>
 <dt style="margin-right: 70px;">min</dt><dd>A sor kezdő tagját megadó egész szám (már definiált változó). Pld.: 2; -4; n;....</dd>
 <dt style="margin-right: 70px;">max</dt><dd>A sor utolsó tagját megadó egész szám (már definiált változó). Pld.: 5; -3; -m*2;....</dd>
 <dt style="margin-right: 40px;">expand</dt><dd>[opcionális] Ha megadjuk, és értéke 1/true, akkor kibontja a kifejezéseket.</dd>
 </dl>
-▶ A <code>seqvar(expr|f(var,...),var,min,max)</code> parncsot vektorok létrehozására használjuk, így a kimenet mindig egy nerdamer <em>vektor</em> objektum.◉
+▶ A <code>seqvar(expr|f(var,...),var,min,max)</code> parncsot vektorok létrehozására használjuk, így a kimenet mindig egy nerdamer <em>vektor</em> objektum.█
 A legtipikusabb használatot az alábbi táblázatban foglaltuk össze:
 ▶ <table class="table-seqvar">
 ▶ <thead><th>Parancs</th><th>Példák</th><th>Kiszedve</th></thead>
@@ -142,7 +142,7 @@ A legtipikusabb használatot az alábbi táblázatban foglaltuk össze:
     </tr>
 </table> 
 ▶ <h3>Az <code>expand</code> opciónális argumentum hatása</h3>
-▶ Definíáljunk egy f(x,y) függvényt az <code>&sect;Fgv(g,[x,y],(x+2*y)^2)&sect;</code> deklarációval. Ekkor a◉
-<code>$$&lt;&lt;seqvar(g(x,y)^2,x,3,5)&gt;&gt;$$</code> az alábbi kimenetet adja $$<<seqvar(g(x,y)^2,x,3,5)>>$$ Láthatóan  az x=3,4,5 behelyettesítésekkel kapot komponensek nincsenek kibontva. Ha az egyes tagokat szeretnénk kibontani, akkor kell az opcionális◉
+▶ Definíáljunk egy f(x,y) függvényt az <code>&sect;Fgv(g,[x,y],(x+2*y)^2)&sect;</code> deklarációval. Ekkor a█
+<code>$$&lt;&lt;seqvar(g(x,y)^2,x,3,5)&gt;&gt;$$</code> az alábbi kimenetet adja $$<<seqvar(g(x,y)^2,x,3,5)>>$$ Láthatóan  az x=3,4,5 behelyettesítésekkel kapot komponensek nincsenek kibontva. Ha az egyes tagokat szeretnénk kibontani, akkor kell az opcionális█
 paramétert megadni. Ez tetszőleges érték lehet: true, 1, p,.... Így a 
 <code>$$&lt;&lt;seqvar(g(x,y)^2,x,3,5,<b>true</b>)&gt;&gt;$$</code> kimenete $$<<seqvar(g(x,y)^2,x,3,5,true)>>$$                                                    
