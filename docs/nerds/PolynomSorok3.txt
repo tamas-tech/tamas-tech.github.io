@@ -24,7 +24,7 @@ Tar_5 &#x25b6; &sect;Fgv(Tar_5,[x_1,x_2,x_3,x_4,x_5], ▒*x_1*x_2^2+ ▒*x_1*x_4
 &num;-----------------------------------------------------█
 </code>█
 A beillesztett sablon jól áttekinthető formában tartalmazza a partíció polinomsor összes tagját 1-től a megadott n=5 értékig, és a megadandó█
-▶együtthatók helyét  egy jól észrevehető &#x2B55; karakter jelöli. Nekünk már csak annyi dolgunk van, hogy ezek mindegyikét átírjuk egy számra.█
+▶együtthatók helyét  egy jól észrevehető ▒ karakter jelöli. Nekünk már csak annyi dolgunk van, hogy ezek mindegyikét átírjuk egy számra.█
 Természetesen 0 együtthatót is adhatun egy monomnak, de ebben az esetben célszerűbb a monomot a 0 együtthatójával együtt törölni. A fenti sablon█
 ▶kitöltésekor mi is ezt tettük, emellett szóközök beszúrásával növeltük az áttekinthetőséget:█
 <code class="kek clickable">
