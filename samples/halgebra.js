@@ -7339,6 +7339,9 @@ function makeFlickable(slider) {
     }
 };
 
+const LinuxLineEndings = (str, normalized = '\n') =>
+    str.replace(/\r\n/g, normalized);
+
 $(document).ready(function() {
     $('.flickable').each(function() { makeFlickable(this) });
     $('#pentsor').on('click', function(event) {
@@ -7374,7 +7377,7 @@ $(document).ready(function() {
                 chn.click();
             var fr = new FileReader();
             fr.onload = (evt) => {
-                var txt = evt.target.result;
+                var txt = LinuxLineEndings(evt.target.result);
                 console.log(txt)
                 if (nerditor)
                     nerditor.setValue(txt);
@@ -10073,6 +10076,7 @@ function getDataNerd(file) {
             return response.text();
         })
         .then((text) => {
+            text = LinuxLineEndings(text);
             const ch = document.getElementById("cinput");
             const chn = document.getElementById("nerdkod");
             const tok = document.getElementById("tbltok");
@@ -10091,7 +10095,6 @@ function getDataNerd(file) {
 
 function getDataNerdCm(file) {
     const nerdRequest = new Request(file);
-
     window
         .fetch(nerdRequest)
         .then((response) => {
@@ -10101,6 +10104,7 @@ function getDataNerdCm(file) {
             return response.text();
         })
         .then((text) => {
+            text = LinuxLineEndings(text);
             const tok = document.getElementById("tbltok");
             nerditor.setValue(text);
             $(tok).addClass('villbgdark');
