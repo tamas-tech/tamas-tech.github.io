@@ -162,7 +162,7 @@
                 for (i = 0; i < n; i++) {
                     mat.set(j, i, 0);
                 }
-            }
+            };
             for (j = 1; j < n + 1; j++) {
                 valt += pars[j - 1];
                 var nev = FP + "_" + j;
@@ -170,12 +170,12 @@
                 var params = fn.params;
                 var v0 = nerdamer(fn.body).evaluate();
                 var v1 = v0.symbol.symbols;
+                //console.log(v1)
                 if (v1) {
                     var keys = Object.keys(v1)
                     for (let key of keys) {
                         mat.set(j - 1, params.indexOf(key), v1[key].multiplier.toString());
                     }
-
                 } else {
                     v1 = v0.symbol
                     mat.set(j - 1, params.indexOf(v1.value), v1.multiplier.toString());
@@ -255,7 +255,7 @@
                 var exprj = nerdamer(expr, { 'n': j });
             };
             exprj = exprj.toString().replaceAll("sum", "Sum").replaceAll("product", "Product");
-            console.log(exprj)
+            //console.log(exprj)
             nerdamer.setFunction(nev, valt, exprj)
         };
         return null;
@@ -366,13 +366,14 @@
 
                 nev += "_" + i;
                 var c = Csor[j];
-                lc += c + "*" + nev + "(" + valt + ")+"
+                //var c = nerdamer(Csor[j]).evaluate().symbol
+                lc += c + "*" + nev + "(" + valt + ")+";
             }
             lc = lc.slice(0, -1).replaceAll("+-", "-");
             //lc = nerdamer('expand(' + lc + ')').symbol.value;
             lc = nerdamer('expand(' + lc + ')').toString();
-            var valtvec = pars.slice(0, i)
-                //console.log(Nev + "_" + i, valtvec, lc);
+            var valtvec = pars.slice(0, i);
+            //console.log(Nev + "_" + i, valtvec, lc);
             nerdamer.setFunction(Nev + "_" + i, valtvec, lc)
             valt += ","
         }
@@ -406,7 +407,7 @@
                 fn += sor[j] + "*" + "x_" + (j + 1) + "+";
             }
             fn = fn.slice(0, -1);
-            console.log(F + "_" + (i + 1), valts, fn)
+            //console.log(F + "_" + (i + 1), valts, fn)
             nerdamer.setFunction(F + "_" + (i + 1), valts, fn)
         }
         return null;
@@ -500,16 +501,17 @@
                 vec.set(j - m, v1);
             }
         } else {
+            console.log("EZ AZ ÁG", valt.toString(), expr)
             for (j = m; j < n + 1; j++) {
                 if (expr.group == 1) {
                     var v1 = expr.sub(valt, j);
-                    //console.log("seqvar", 2)
+                    console.log("seqvartry", v1)
                     if (kibont)
                         v1 = nerdamer('expand(' + v1 + ')').symbol;
                 } else {
-                    //console.log("seqvar", 3)
                     expr = expr.toString().replaceAll("product", "Product").replaceAll("sum", "Sum");
                     var v1 = nerdamer(expr.replaceAll(valt, j)).evaluate().symbol;
+                    console.log("seqvarcatch", v1)
                 }
                 //console.log("seqvar v1", v1)
                 vec.set(j - m, v1);
@@ -536,7 +538,6 @@
             var fn = _.functions[expr]['2'];
             var valt = fn.params.filter(y => y != '__')[0],
                 expr = nerdamer(fn.body).symbol;
-
         } else
             var valt = nerdamer(expr).variables().filter(y => y != '__')[0];
         var v = vec.elements,
@@ -1424,9 +1425,9 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
             var dg = nerdamer('deg(' + gn.body + ',' + gvalt + ')') * 1;
             n = Math.max(df, dg);
         };
-        console.log(n)
+        //console.log(n)
         c = nerdamer('coeffs(expand((' + fn.body.replaceAll(fvalt, valt) + ')*(' + gn.body.replaceAll(gvalt, valt) + ')),' + valt + ')');
-        console.log(c)
+        //console.log(c)
         return nerdamer('sum(vecget(' + c + ',k)*' + valt + '^k,k,0,' + n + ')').evaluate().symbol;
     }
     nerdamer.register({
@@ -1485,7 +1486,7 @@ const PartPolys = ["Zyc", "Fib", "Fab", "Luc", "Sti", "Har", "Witt", "Pr"];
 
         txt += '</table>';
         txtv.set(0, txt)
-        console.log(txt, TXT);
+            //console.log(txt, TXT);
         return txtv;
     }
     nerdamer.register({
