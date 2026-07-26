@@ -10155,7 +10155,7 @@ function copy2OEISnerd() {
 function copy2OEISnerd2() {
     var txt = "";
     const deno = document.getElementById("denoms2").checked;
-    const vagolap = document.getElementById("vagolap2");
+    const vagolap2 = document.getElementById("vagolap2");
     var c = document.getElementById("szorzo2").value;
     try {
         c = nerdamer.convertFromLaTeX(c).evaluate();
