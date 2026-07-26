@@ -1,5 +1,5 @@
 //const nerdamer = require("../tools/nerdamer/nerdamer.core");
-//semmi
+
 function HideColumnIndex0() {
     var $el = $(this);
     var $cell = $el.closest('th,td');
@@ -7376,7 +7376,10 @@ $(document).ready(function() {
             fr.onload = (evt) => {
                 var txt = evt.target.result;
                 console.log(txt)
-                cinp.value = txt;
+                if (nerditor)
+                    nerditor.setValue(txt);
+                else
+                    cinp.value = txt;
             };
             fr.readAsText(this.files[0]);
         });
@@ -7436,6 +7439,11 @@ function setPentnmval(val, id) {
     } else if (id == 'b') {
         ppbval = val;
     };
+};
+
+function setcmnerdFontsize(v) {
+    nerditor.getWrapperElement().style["font-size"] = v + "em";
+    nerditor.refresh();
 };
 
 function setOutputFontPent(v) {
@@ -7779,23 +7787,9 @@ function nerdTgl(b) {
 
 function beTextbe(text, gep2) {
     if (gep2)
-        var textarea = document.getElementById("pentcinput2");
+        nerditor2.insert(text);
     else
-        var textarea = document.getElementById("pentcinput");
-    var scrollPos = textarea.scrollTop;
-    var caretPos = textarea.selectionStart;
-
-    var front = textarea.value.substring(0, caretPos);
-    var back = textarea.value.substring(
-        textarea.selectionEnd,
-        textarea.value.length
-    );
-    textarea.value = front + text + back;
-    caretPos = caretPos + text.length;
-    textarea.selectionStart = caretPos;
-    textarea.selectionEnd = caretPos;
-    textarea.focus();
-    textarea.scrollTop = scrollPos;
+        nerditor.insert(text);
 };
 
 function pentSign(e, ov) {
@@ -9416,23 +9410,6 @@ function updMathJaxHTML(c_txt) {
     ZFibFab2Latex(out);
 };
 
-function selectCode(txt) {
-    const tarea = document.getElementById('pentcinput2');
-    if (!tarea || !txt) return false;
-    //txt = txt.replaceAll(/([\[\]\^\<\>\§\$\*\(\)\+\-])/gm, '\\$1')
-    txt = txt.replaceAll(/([\\\{\}\[\]\^\$\*\(\)\+])/gm, '\\$1')
-    const re = new RegExp(`${txt}`);
-    const match = tarea.value.match(re);
-    if (!match) return false;
-    //console.log(match)
-    const start = match.index;
-    const end = start + match[0].length;
-    //console.log(start, end)
-    tarea.focus();
-    tarea.setSelectionRange(start, end);
-    return true;
-};
-
 // utils
 
 var felulir = false;
@@ -9476,74 +9453,25 @@ function clickVoltClear() {
 function calcClear() {
     var conf = confirm("Biztosan törölni szeretné a calculátor_1 tartalmát?");
     if (conf)
-        $('#pentcinput').val('').focus();
+        nerditor.setValue('');
     else
         return;
 };
 
-function visszajelolOLD(e) {
-    var codetxt = '<div class="codenum" ondblclick="visszajelol(this)">' + e.innerText + '</div>';
-    codetxt = codetxt.replace(/([§>$])( *)?\<\-\-(.*)?[\n\r\f]+/mg, '$1\n');
-    codetxt = codetxt.replace(/(?<!(§|◉|\${2}|\>{2}))[\n\r\f]+/mg, '◉\n');
-    $('#pentcinput2').focus();
-    //console.log(codetxt)
-    selectCode(codetxt);
-    setTimeout(() => { scrollToCode(); }, 50);
-}
-
 function visszajelol(e) {
-    //console.log(e.outerHTML)
     const tarea = document.getElementById('pentcinput2');
+    nerditor2.getValue();
     //var be = '<div class="codenum" ondblclick="visszajelol\\(this\\)">' + e.innerText + '</div>(.*)?<div class="codenumend">' + e.innerText + '</div>'
     //var be = e.outerHTML.replaceAll('(', '\\(').replaceAll(')', '\\)') + '(.*)?<div class="codenumend" data-end="' + e.innerText.replaceAll('(', '\\(').replaceAll(')', '\\)') + '">([^\n\r\f]*)?</div>';
     var be = e.outerHTML.replaceAll('(', '\\(').replaceAll(')', '\\)') + '(.*?)<div class="codenumend">(.*?)</div>';
     var re = new RegExp(`${be}`, 's');
-    tarea.focus();
-    // console.log(re)
-    const match = tarea.value.match(re);
+    const match = nerditor2.getValue().match(re);
     if (!match) return false;
-
-    //console.log(match)
-    const start = match.index;
-    const end = start + match[0].length;
-    //console.log(start, end)
-    tarea.focus();
-    tarea.setSelectionRange(start, end);
-    setTimeout(() => { scrollToCode(); }, 50);
+    nerditor2.find(match[0]);
+    tarea.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    nerditor2.focus();
     return true;
 }
-
-
-function wrapTag(id, nyito, zaro, html) { // specialis tag "del"  html=true/false
-    var textarea = document.getElementById(id);
-    var startPos = textarea.selectionStart;
-    var endPos = textarea.selectionEnd;
-    var selectionBefore = textarea.value.substring(0, startPos);
-    var selection = textarea.value.substring(startPos, endPos);
-    var selectionAfter = textarea.value.substring(endPos);
-    if (nyito.startsWith("del"))
-        var surrounder = selection.replace(selection, "");
-    else if (html)
-        var surrounder = selection.replace(selection, "<" + nyito + ">" + selection + "</" + zaro + ">");
-    else
-        var surrounder = selection.replace(selection, nyito + selection + zaro);
-    var newText = selectionBefore + surrounder + selectionAfter;
-    textarea.value = newText;
-    textarea.focus();
-};
-
-function scrollToCode() {
-    var textArea = document.getElementById('pentcinput2');
-    const selectionStart = textArea.selectionStart;
-    const selectionEnd = textArea.selectionEnd;
-    textArea.setSelectionRange(selectionStart, selectionEnd);
-    var charsPerRow = textArea.cols;
-    var selectionRow = (selectionStart - (selectionStart % charsPerRow)) / charsPerRow;
-    var numr = textArea.value.match(/[\n\r\f]/gm).length
-    var lineHeight = textArea.scrollHeight / numr;
-    // Scroll!!}
-    textArea.scrollTop = lineHeight * selectionRow;
-};
 
 function addCodeDblClick() {
     var elems = $('#pentout code.clickable');
@@ -9560,11 +9488,10 @@ function addCodeDblClick() {
         if ($(this).hasClass('clickvolt')) {
             if (kijeltorol) {
                 setTimeout(() => {
-                    $('#pentcinput2').focus();
-                    selectCode(codetxt);
-                }, 20)
+                    nerditor2.find(codetxt);
+                }, 20);
                 setTimeout(() => {
-                    wrapTag("pentcinput2", "delete", "", false);
+                    nerditor2.replaceall('')
                 }, 200)
                 $(this).removeClass('clickvolt');
                 idClear('#pentout2');
@@ -9572,20 +9499,16 @@ function addCodeDblClick() {
                 $('#back-to-top').trigger('click');
                 if (!felulir) {
                     setTimeout(() => {
-                        $('#pentcinput2').focus();
-                        selectCode(codetxt);
-                    }, 200)
-                    setTimeout(() => {
-                        scrollToCode();
-                    }, 300)
+                        nerditor2.find(codetxt);
+                    }, 200);
                 };
             };
         } else {
             if (felulir) {
                 $('#pentout code.clickable.clickvolt').removeClass('clickvolt');
-                $('#pentcinput2').val(codetxt);
+                nerditor2.setValue(codetxt);
             } else
-                $('#pentcinput2').val($('#pentcinput2').val() + "\n#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n" + codetxt);
+                nerditor2.setValue(nerditor2.getValue() + "\n#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n" + codetxt);
             $(this).addClass('clickvolt');
             idClear('#pentout2');
         }
@@ -9945,14 +9868,14 @@ function updLatexJS(c_txt) {
 // LatexJS <<<<
 function nerdCalc() {
     pentsorout = "";
-    var c_txt = $("#usersorc textarea").val();
+    var c_txt = nerditor.getValue();
     const processor = c_txt.match(/^>>> *(mathjax|latexjs)+ *[\n\r\f]+/m);
     var latexjs = document.getElementById("mathjs_mathjax").checked;
     if (processor && processor.length > 0) {
         latexjs = processor[1] == "latexjs";
         c_txt = c_txt.replaceAll(processor[0], "");
     }
-    $("#usersorc textarea").val(c_txt);
+    nerditor.setValue(c_txt);
     if (latexjs)
         updLatexJS(c_txt);
     else
@@ -9961,7 +9884,7 @@ function nerdCalc() {
 
 function nerdCalc2() {
     pentsorout = "";
-    var c_txt = $("#usersorc2 textarea").val();
+    var c_txt = nerditor2.getValue();
     // updMathJax2
     try {
         c_txt = prelatexjs(c_txt, true);
@@ -10085,7 +10008,7 @@ function peldaSet(e) {
     if (ch && !ch.checked)
         ch.click();
     $(N).val(n).trigger('change');
-    $(cinp).focus().val(inp).trigger('change');
+    $(cinp) /*.focus()*/ .val(inp).trigger('change');
     $(e).addClass('villbgdark');
     setTimeout(() => { $(e).removeClass('villbgdark') }, 300);
 };
@@ -10107,8 +10030,22 @@ function peldaSetNerd(e) {
     }, 300);
 };
 
-function downloadNerd() {
-    var str = normalizeLineEndings(document.getElementById("pentcinput").value);
+function peldaSetNerdCm(e) {
+    const txt = e.innerText;
+    nerditor.setValue(txt);
+    nerditor.focus();
+    $(e).addClass('villbgdark');
+    setTimeout(() => {
+        $(e).removeClass('villbgdark');
+    }, 300);
+};
+
+function downloadNerd(cm) {
+    if (cm)
+        var txt = nerditor.getValue();
+    else
+        var txt = document.getElementById("pentcinput").value;
+    var str = normalizeLineEndings(txt);
     const aletolt = document.createElement("a");
     aletolt.href = URL.createObjectURL(new Blob([str], {
         type: "text/plain"
@@ -10152,11 +10089,36 @@ function getDataNerd(file) {
         });
 };
 
-function loadNerd(e) {
+function getDataNerdCm(file) {
+    const nerdRequest = new Request(file);
+
+    window
+        .fetch(nerdRequest)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then((text) => {
+            const tok = document.getElementById("tbltok");
+            nerditor.setValue(text);
+            $(tok).addClass('villbgdark');
+            setTimeout(() => { $(tok).removeClass('villbgdark') }, 900);
+        })
+        .catch((error) => {
+            nerditor.setValue(`Error: ${error.message}`);
+        });
+};
+
+function loadNerd(e, cm) {
     const linkData = e.getAttribute("data-page");
     $('#setpenttbl.table-hideable tbody tr#sugosor.shown td div#accordion ul li a.selected').removeClass('selected');
     $(e).addClass("selected");
-    getDataNerd("../docs/nerds/" + linkData);
+    if (cm)
+        getDataNerdCm("../docs/nerds/" + linkData);
+    else
+        getDataNerd("../docs/nerds/" + linkData);
 };
 
 function copy2OEISnerd() {
