@@ -18,12 +18,12 @@
 <h2>A <code> makeTPS </code> konstruktor és a <code>makeTPX</code> konverzor</h2>
 ●●●●●●START_11457
 <code class="note">
-◉
-1. [TPS konstruktor] TPS:<b>A</b>, Képlet:Sum(k^2*x_k^5,k,1,<b class="em">n</b>), Hossz:4 ◉
-2. [TPS megjelenítő] TPS:<b>A</b>, Hossz:4 ◉
-3. [TPS konverzor] TPS:<b>A</b>, Konstans tag:<b>A</b><sub>o</sub>=12, Hossz:4 ◉
-4. [TPX megjelenítése] TPX:<b>A</b>, Változó:Z◉
-◉
+█
+1. [TPS konstruktor] TPS:<b>A</b>, Képlet:Sum(k^2*x_k^5,k,1,<b class="em">n</b>), Hossz:4 █
+2. [TPS megjelenítő] TPS:<b>A</b>, Hossz:4 █
+3. [TPS konverzor] TPS:<b>A</b>, Konstans tag:<b>A</b><sub>o</sub>=12, Hossz:4 █
+4. [TPX megjelenítése] TPX:<b>A</b>, Változó:Z█
+█
 </code>
 §makeTPS(A,Sum(k^2*x_k^5,k,1,n),4)§
 <<showTPS(A,4)>>
@@ -32,10 +32,10 @@ $$<<A(Z)>>$$
 ●●●●●●END
 ●●●●●●START
 <code class="note">
-1.◉
-2. \mathbf{B} (Az angol: "<b>math</b> <b>b</b>old <b>f</b>amily"-ből.) Vastagon szedi az agumentumát ◉
-3.◉
-4.\mathbf{B}◉
+1.█
+2. \mathbf{B} (Az angol: "<b>math</b> <b>b</b>old <b>f</b>amily"-ből.) Vastagon szedi az agumentumát █
+3.█
+4.\mathbf{B}█
 </code>
 §makeTPS(B,Sum(k^2*x_k^5,k,1,n),4)§
 $$\mathbf{B}=<<showTPS(B,4)>>$$
@@ -44,11 +44,11 @@ $$\mathbf{B}(Z)=<<B(Z)>>$$
 ●●●●●●END
 ●●●●●●START
 <code class="note">
-1. [N deklarálása] Változó:N, Érték:4 ◉
-2. [TPS konstruktor] TPS:<b>C</b>, Képlet:Sum(k^2*\alpha_k^5,k,1,<b class="em">n</b>), Hossz:N    Formázás:\alpha ◉
-3. [TPS megjelenítő] TPS:<b>C</b>, Hossz:4    Formázás:\mathbf{C}=◉
-4. [TPS konverzor] TPS:<b>C</b>, Konstans tag:<b>C</b><sub>o</sub>=0; Hossz: 4 ◉
-5. [TPX megjelenítése] TPX:<b>C</b>, Változó:T    Formázás:\mathbf{C}(T)=◉
+1. [N deklarálása] Változó:N, Érték:4 █
+2. [TPS konstruktor] TPS:<b>C</b>, Képlet:Sum(k^2*\alpha_k^5,k,1,<b class="em">n</b>), Hossz:N    Formázás:\alpha █
+3. [TPS megjelenítő] TPS:<b>C</b>, Hossz:4    Formázás:\mathbf{C}=█
+4. [TPS konverzor] TPS:<b>C</b>, Konstans tag:<b>C</b><sub>o</sub>=0; Hossz: 4 █
+5. [TPX megjelenítése] TPX:<b>C</b>, Változó:T    Formázás:\mathbf{C}(T)=█
 </code>
 §N=5§
 §makeTPS(C,Sum(k^2*\alpha_k^5,k,1,n),N)§
@@ -58,16 +58,16 @@ $$\mathbf{C}(T)=<<C(T)>>$$
 ●●●●●●END
 ●●●●●●START
 <code class="note">
-0. [HTML elem] A kimenetben erre katintva a kódot jelöli ki a szerkesztőben  ◉
-1. [M deklarálása] Változó:M, Érték:6 ◉
-2. [Fgv deklaráció] Név:f, Változók:x_'1..<b class="em">n</b>), Képlet:Sum(k^2*\alpha_k^5,k,1,<b class="em">n</b>) ◉
-3. [TPS konstruktor] TPS:<b>D</b>, Képlet:f(u), Hossz:M ◉
-4. [TPS megjelenítő] TPS:<b>D</b>, Hossz:M   Formázás:\mathbf{D}=◉
-5. [TPS konverzor] TPS:<b>D</b>, Konstans tag:<b>D</b><sub>o</sub>=2; Hossz:M ◉
-6. [HTML elem nyitása] Nyitó tag:&lt;div&gt;, Osztály:"scroll" ◉
-7. [TPX megjelenítése] TPX:<b>D</b>, Változó:\Theta    Formázás:\mathbf{D}(\Theta)=◉
-8. [HTML elem zárása] Záró tag:&lt;/div&gt;," ◉
-9. [HTML elem zárása] A 0. sor záró eleme ◉
+0. [HTML elem] A kimenetben erre katintva a kódot jelöli ki a szerkesztőben  █
+1. [M deklarálása] Változó:M, Érték:6 █
+2. [Fgv deklaráció] Név:f, Változók:x_'1..<b class="em">n</b>), Képlet:Sum(k^2*\alpha_k^5,k,1,<b class="em">n</b>) █
+3. [TPS konstruktor] TPS:<b>D</b>, Képlet:f(u), Hossz:M █
+4. [TPS megjelenítő] TPS:<b>D</b>, Hossz:M   Formázás:\mathbf{D}=█
+5. [TPS konverzor] TPS:<b>D</b>, Konstans tag:<b>D</b><sub>o</sub>=2; Hossz:M █
+6. [HTML elem nyitása] Nyitó tag:&lt;div&gt;, Osztály:"scroll" █
+7. [TPX megjelenítése] TPX:<b>D</b>, Változó:\Theta    Formázás:\mathbf{D}(\Theta)=█
+8. [HTML elem zárása] Záró tag:&lt;/div&gt;," █
+9. [HTML elem zárása] A 0. sor záró eleme █
 </code>
 <div class="codenum" ondblclick="visszajelol(this)">4. példa:</div>
 §M=6§
