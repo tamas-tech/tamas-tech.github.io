@@ -501,12 +501,12 @@
             }
         } else {
             for (j = m; j < n + 1; j++) {
-                try {
+                if (expr.group == 1) {
                     var v1 = expr.sub(valt, j);
                     //console.log("seqvar", 2)
                     if (kibont)
                         v1 = nerdamer('expand(' + v1 + ')').symbol;
-                } catch {
+                } else {
                     //console.log("seqvar", 3)
                     expr = expr.toString().replaceAll("product", "Product").replaceAll("sum", "Sum");
                     var v1 = nerdamer(expr.replaceAll(valt, j)).evaluate().symbol;
