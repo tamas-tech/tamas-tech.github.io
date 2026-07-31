@@ -9550,7 +9550,9 @@ function updMathJax(c_txt) {
     try {
         c_txt = prelatexjs(c_txt, true);
     } catch (error) {
-        c_txt = error;
+        c_txt = "updMathjax: prelatexjs(" + c_txt + ") nem sikerült ->";
+        c_txt += error;
+        console.log(c_txt)
         pentsorout = "";
     }
     const elem = document.querySelector("#pentout");
@@ -9648,10 +9650,19 @@ function sorra(valt, a, b) {
     return sor;
 };
 
+var desmosPLOTS = {};
+
+function splitFirstOccurrence(str) {
+    const [first, ...rest] = str.split("=");
+    const remainder = rest.join('=');
+    return [first, remainder];
+};
+
 function prelatexjs(c_txt, mathjax) {
     if (c_txt == "")
         c_txt = "A bemenet üres."
     nerdamer.clearVars();
+    desmosPLOTS = {};
     var vagott = /\u25CF{3,}DOCSTART/.test(c_txt) && /\u25CF{3,}DOCEND/.test(c_txt);
     if (vagott) {
         var snipets = c_txt.match(/\u25CF{3,}DOCSTART(.*?)\u25CF{3,}DOCEND *[\n\r\f]/sg);
@@ -9666,14 +9677,14 @@ function prelatexjs(c_txt, mathjax) {
             c_txt += s;
         }
     };
-
+    //console.log("prelatexjs: vagott után: " + c_txt);
     const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+|Witt_\d+|Pr_\d+)/g));
     if (ppolys.length > 0)
         for (let v of ppolys) {
             var L = v.split("_");
             getsetZycFabFib(L[0], parseInt(L[1]), false);
         };
-
+    //console.log("prelatexj: ppolys: ", ppolys);
     var forcode = c_txt.match(/\u25CF{3,}START(.*?)\u25CF{3,}END *[\n\r\f]/sg);
     if (forcode)
         for (let c of forcode) {
@@ -9697,7 +9708,7 @@ function prelatexjs(c_txt, mathjax) {
             //console.log(cc + c0);
             c_txt = c_txt.replace(c, cc + c0);
         };
-
+    //console.log("prelatexjs: forcode után: " + c_txt);
     //var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *= *\d+|\w+ *\;? *)*?\§{1}[\n\r\f]*/g);
     var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *=.*?\;? *)*?\§{1}[\n\r\f]*/sg);
     if (specVars) {
@@ -9712,7 +9723,7 @@ function prelatexjs(c_txt, mathjax) {
             //console.log(nerdamer(dek[1].trim()))
         };
     };
-
+    //console.log("prelatexj: specVars: ", specVars);
     if (mathjax) {
         c_txt = c_txt.replace(/^\#.*[\n\r\f]+/mg, '');
         c_txt = c_txt.replace(/[^\n\r\f]*▶START *[\n\r\f]+(.*?)[\n\r\f]+[^\n\r\f]*▶END *[\n\r\f]+/mgs, '<div class="comment">...ELREJTVE...</div>');
@@ -9721,6 +9732,7 @@ function prelatexjs(c_txt, mathjax) {
         c_txt = c_txt.replaceAll(/(\w+)\_(\d+|\w+)\.\.(\d+|\w+)/mg, function(m, p1, p2, p3) { return sorra(p1, p2, p3) });
         c_txt = c_txt.replaceAll(/\[([^\[\]]*?)\|\|(.*?)\]/mg, function(m, p1, p2) { return getsorA(p1, p2) });
     }
+    //console.log("prelatexjs: speciális karakterek után: " + c_txt);
     //c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
 
     var Vars = c_txt.match(/\§\§.*?\§\§[\n\r\f]*/g);
@@ -9743,8 +9755,11 @@ function prelatexjs(c_txt, mathjax) {
             Vtex += "}$$";
         Vtex = Vtex.replaceAll("vmatrix", "pmatrix");
     };
+    //console.log("prelatexj: Vars: ", Vars);
+    //console.log("prelatexj: Vtex: ", Vtex);
     //console.log(Vars);
     var sVars = c_txt.match(/\§{1}.*?\§{1}[\n\r\f]*/sg);
+    //console.log("prelatexj: sVars: ", sVars);
     if (sVars) {
         for (let v of sVars) {
             c_txt = c_txt.replace(v, '');
@@ -9752,63 +9767,70 @@ function prelatexjs(c_txt, mathjax) {
         sVars = _.flatten(sVars.map(y => y.replace(/ *\§ */g, "").split(";").map(z => z.trim())));
         //console.log(sVars);
         for (let v of sVars) {
-            var dek = v.split("=")
-            if (dek.length > 1) {
-                var d1 = dek[1];
-                /*if (/\|\|\d+/.test(d1) && d1.startsWith("[") && d1.endsWith("]")) {  //9510-ben c_txt=c_txt.replaceAll(   getsorA()) váltja ki
-                    d1 = d1.slice(1, -1);
-                    var ddk = d1.split("||");
-                    console.log(ddk[0], ddk[1] * 1)
-                    d1 = getsorA(ddk[0], ddk[1] * 1)
-                };*/
-                nerdamer.setVar(dek[0].trim(), nerdamer(d1.trim()));
-            } else if (dek[0].startsWith("Fgv(")) {
-                var tt = dek[0].slice(4, -1).trim();
-                var name = tt.split(/\, *\[/)[0].toString().trim();
-                var expr = nerdamer(tt.split(/\] *\,/)[1].toString().trim()).toString();
-                expr = expr.replaceAll('sum', 'Sum').replaceAll('product', 'Product');
-                //console.log(expr)
-                var valt = JSON.parse(tt.match(/\[.*\]/)[0].replace(/(\w_?\d*)/g, "\"$1\""));
-                nerdamer.setFunction(name, valt, expr);
-            } else if (dek[0].startsWith("fgv(")) {
-                var tt = dek[0].slice(4, -1).trim();
-                var zz = tt.split(":");
-                var name = zz[0].toString().trim();
-                var expr = zz[1].toString().trim();
-                expr = expr.replaceAll('sum', 'Sum').replaceAll('product', 'Product');
-                var valt = nerdamer(expr).variables();
-                nerdamer.setFunction(name, valt, expr);
-            } else if (dek[0].startsWith("compTPS")) {
-                var vv = dek[0].slice(8, -1).split(',');
-                var npp = vv[3];
-                npp = nerdamer(npp).evaluate().valueOf() * 1;
-                vv = vv.slice(0, -1)
-                for (var j = 1; j <= npp; j++)
-                    ppcomp(...vv, j)
-            } else if (dek[0].startsWith("makePPS")) {
-                var vv = dek[0].slice(8, -1).split(',');
-                var ww = vv.splice(0, 3)
-                ww.push(vv.slice(0, -1).join(','));
-                ww.push(_.last(vv));
-                //console.log(ww)
-                makePPolys(...ww);
-                //} else if (dek[0].startsWith("makeLPS")) {
-                //var vv = dek[0].slice(8, -1).split(',');
-                //console.log(vv);
-                //makeLPS(vv[0], vv[1], nerdamer(vv[2]).symbol);
-            } else if (dek[0].startsWith("polyToTPS") || dek[0].startsWith("makeTPS") || dek[0].startsWith("makeLPS") || dek[0].startsWith("lincombTPS") || dek[0].startsWith("makeTPX")) {
-                nerdamer(dek[0])
-            }
+            if (v.startsWith("desmos:")) {
+                v = v.replace("desmos:", "").trim();
+                var dek = splitFirstOccurrence(v);
+                var d1 = dek[1]; //.replaceAll("=", "\\u003D ");
+                try {
+                    var plot = JSON.parse(d1);
+                } catch (e) {
+                    console.log(e, d1)
+                }
+                desmosPLOTS[dek[0].trim()] = plot;
+            } else {
+                var dek = v.split("=");
+                if (dek.length > 1) {
+                    var d1 = dek[1].trim();
+                    nerdamer.setVar(dek[0].trim(), nerdamer(d1));
+                } else if (dek[0].startsWith("Fgv(")) {
+                    var tt = dek[0].slice(4, -1).trim();
+                    var name = tt.split(/\, *\[/)[0].toString().trim();
+                    var expr = nerdamer(tt.split(/\] *\,/)[1].toString().trim()).toString();
+                    expr = expr.replaceAll('sum', 'Sum').replaceAll('product', 'Product');
+                    //console.log(expr)
+                    var valt = JSON.parse(tt.match(/\[.*\]/)[0].replace(/(\w_?\d*)/g, "\"$1\""));
+                    nerdamer.setFunction(name, valt, expr);
+                } else if (dek[0].startsWith("fgv(")) {
+                    var tt = dek[0].slice(4, -1).trim();
+                    var zz = tt.split(":");
+                    var name = zz[0].toString().trim();
+                    var expr = zz[1].toString().trim();
+                    expr = expr.replaceAll('sum', 'Sum').replaceAll('product', 'Product');
+                    var valt = nerdamer(expr).variables();
+                    nerdamer.setFunction(name, valt, expr);
+                } else if (dek[0].startsWith("compTPS")) {
+                    var vv = dek[0].slice(8, -1).split(',');
+                    var npp = vv[3];
+                    npp = nerdamer(npp).evaluate().valueOf() * 1;
+                    vv = vv.slice(0, -1)
+                    for (var j = 1; j <= npp; j++)
+                        ppcomp(...vv, j)
+                } else if (dek[0].startsWith("makePPS")) {
+                    var vv = dek[0].slice(8, -1).split(',');
+                    var ww = vv.splice(0, 3)
+                    ww.push(vv.slice(0, -1).join(','));
+                    ww.push(_.last(vv));
+                    //console.log(ww)
+                    makePPolys(...ww);
+                    //} else if (dek[0].startsWith("makeLPS")) {
+                    //var vv = dek[0].slice(8, -1).split(',');
+                    //console.log(vv);
+                    //makeLPS(vv[0], vv[1], nerdamer(vv[2]).symbol);
+                } else if (dek[0].startsWith("polyToTPS") || dek[0].startsWith("makeTPS") || dek[0].startsWith("makeLPS") || dek[0].startsWith("lincombTPS") || dek[0].startsWith("makeTPX")) {
+                    nerdamer(dek[0])
+                };
+            };
         };
     };
-    //console.log(sVars);
-    const nerd = c_txt.match(/\<\<.*?\>\>/g);
-    //console.log(nerd)
 
+    const nerd = c_txt.match(/\<\<.*?\>\>/g);
+    //console.log("prelatexj: nerd: ", nerd);
     if (nerd) {
         for (let exp of nerd) {
             var exp0 = exp.slice(2, -2);
+            //console.log("nerd, exp0: ", exp0)
             const e = nerdamer(exp0);
+            //console.log("nerd, nerdamer(exp0): ", e)
             try {
                 var ltx = decForm(e.evaluateM().latex(nerd_numb));
             } catch (error) {
@@ -9818,10 +9840,10 @@ function prelatexjs(c_txt, mathjax) {
             if (typeof e.symbol.elements === "object" && ltx.startsWith("[") && ltx.endsWith("]"))
                 ltx = ltx.replaceAll("[", "\\left(").replaceAll("]", "\\right)")
             c_txt = c_txt.replaceAll(exp, ltx);
-
+            //console.log("nerdben: " + expr + " --> " + ltx);
         }
-    }
-
+    };
+    console.log("prelatexjs: nerd után: " + c_txt);
     if (mathjax) {
         c_txt = Vtex + c_txt;
         c_txt = c_txt.replace(/[\n\r\f]/g, "")
@@ -9830,6 +9852,14 @@ function prelatexjs(c_txt, mathjax) {
     c_txt = c_txt.replaceAll("'", "");
     c_txt = c_txt.replaceAll("vmatrix", "pmatrix");
     return c_txt;
+};
+
+function plotDESMOS(obj) {
+    calculator.setState(obj);
+};
+
+function getDesmos() {
+    nerditor.insert(JSON.stringify(calculator.getState(), null, 2)); //.replaceAll("=", "\\u003D "));
 };
 
 function ppcomp(fn1, fn2, F, n) {
@@ -9883,6 +9913,7 @@ function nerdCalc() {
         latexjs = processor[1] == "latexjs";
         c_txt = c_txt.replaceAll(processor[0], "");
     }
+    console.log("nerdCalc(): " + c_txt) + "; ";
     nerditor.setValue(c_txt);
     if (latexjs)
         updLatexJS(c_txt);
