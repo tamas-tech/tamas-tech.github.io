@@ -153,6 +153,7 @@
      { value: "truncprod(f${0},g,Nev,[n])", tag: "f&nbsp;&bullet;<sub>n</sub>&nbsp;g", meta: "nerd" },
      { value: "limit(f${0},x,a)", tag: "lim<sub>x&rightarrow;a</sub>f(x)", meta: "nerd" },
      { value: "diff(f${0},x,n)", tag: "&part;<sup style='vertical-align:0.7em;'>(n)</sup><sub style='margin-left:-1.1em;margin-right:0.7em;'>x</sub>f(x,..)", meta: "nerd" },
+     { value: "maclaurin(${0},)", tag: "maclaurin(f(x),n)", meta: "nerd" },
      { value: "int(f${0},x)", tag: "&int;f(x)dx", meta: "nerd" },
      { value: "defint(f${0},a,b,x)", tag: "&int;<sup style='margin-left:0.1em;vertical-align:0.7em;'>b</sup><sub style='margin-left:-0.6em;margin-right:0.3em;'>a</sub>f(x)dx", meta: "nerd" },
      { value: "laplace(f${0},s,t)", tag: "&#x2112;[f,s,t]", meta: "nerd" },
