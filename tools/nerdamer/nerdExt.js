@@ -482,6 +482,49 @@
     var core = nerdamer.getCore(),
         _ = core.PARSER;
 
+    function f(fString, order) {
+        fString = fString.value;
+        order = nerdamer(order).evaluate().valueOf();
+        console.log(fString, order)
+        let seriesTerms = [];
+        let currentFunc = fString;
+
+        // Native JS factorial helper
+        const factorial = (num) => (num <= 1 ? 1 : num * factorial(num - 1));
+
+        for (let n = 0; n <= order; n++) {
+            const evaluated = nerdamer(currentFunc, { x: 0 }).evaluate();
+            const termValue = evaluated.divide(factorial(n));
+            if (termValue !== 0) {
+                if (n === 0) {
+                    seriesTerms.push(`${termValue}`);
+                } else if (n === 1) {
+                    seriesTerms.push(`${termValue} * x`);
+                } else {
+                    seriesTerms.push(`${termValue} * x^${n}`);
+                }
+            }
+            if (n < order) {
+                currentFunc = nerdamer.diff(currentFunc, 'x').text();
+            }
+        }
+        console.log(seriesTerms.join(' + ').replace(/\+ -/g, '- '))
+        return nerdamer(seriesTerms.join(' + ').replace(/\+ -/g, '- '));
+    }
+    nerdamer.register({
+        name: 'maclaurin',
+        visible: true,
+        numargs: 2,
+        build: function() {
+            return f;
+        }
+    });
+})();
+
+(function() {
+    var core = nerdamer.getCore(),
+        _ = core.PARSER;
+
     function f(expr, valt, m, n, kibont) {
         m = nerdamer(m).evaluate().valueOf();
         n = nerdamer(n).evaluate().valueOf();
