@@ -10862,3 +10862,29 @@ function insertPPT2() {
     var txt = makePPTtext(name, n);
     beTextbe(txt, true);
 };
+
+function Maclaurin(fString, order) {
+    let seriesTerms = [];
+    let currentFunc = fString;
+
+    // Native JS factorial helper
+    const factorial = (num) => (num <= 1 ? 1 : num * factorial(num - 1));
+
+    for (let n = 0; n <= order; n++) {
+        const evaluated = nerdamer(currentFunc, { x: 0 }).evaluate();
+        const termValue = evaluated.divide(factorial(n));
+        if (termValue !== 0) {
+            if (n === 0) {
+                seriesTerms.push(`${termValue}`);
+            } else if (n === 1) {
+                seriesTerms.push(`${termValue} * x`);
+            } else {
+                seriesTerms.push(`${termValue} * x^${n}`);
+            }
+        }
+        if (n < order) {
+            currentFunc = nerdamer.diff(currentFunc, 'x').text();
+        }
+    }
+    return seriesTerms.join(' + ').replace(/\+ -/g, '- ');
+};
