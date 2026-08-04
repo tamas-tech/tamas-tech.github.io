@@ -402,7 +402,12 @@
                         <input type="text" name="szorzo" value="1" id="szorzo" style="text-align: center;font-size:15px;width:50px;vertical-align:middle;">
                         <span id="vagolap" style="display:inline-block;margin:10px 10px 0 10px;padding:3px;border:1px solid #c8c8c8;background-color: #e3fff8;font-size: 18px;"></span>
                     </div>
-                    <div id="calculator" style="width:96%; height:600px;padding:20px;"></div>
+                    <div id="desmoscontainer" class="flickable" style="max-width:100vw">
+                        <div style="position:sticky;left:10px;margin-left:12px;">
+                            <button class="showpre1" style="width:76px;margin-left:3px" onclick="$('#calculator').toggle( 'slide', 600 ); " title="Toggle Desmos">Desmos</button>
+                        </div>
+                        <div id="calculator" style="width:inherit; height:600px;padding:10px;display:none;margin-bottom:3em;"></div>
+                    </div>
                 </div>
 
                 <!-- MÁSODIK SZÁMOLŐGÉP MÁSODIK SZÁMOLŐGÉP MÁSODIK SZÁMOLŐGÉP MÁSODIK SZÁMOLŐGÉP-->
