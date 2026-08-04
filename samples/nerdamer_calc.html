@@ -577,6 +577,7 @@
     <script>
         var elt = document.getElementById('calculator');
         var calculator = Desmos.GraphingCalculator(elt);
+         $('#calculator').resizable();
         setTimeout(() => {
             $('#w1coeff').trigger('change');
             $(function() {
