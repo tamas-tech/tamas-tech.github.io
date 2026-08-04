@@ -9561,6 +9561,7 @@ function ltxFromNerd(str) {
         str = str.replace(re, "");
         //ET = ET.replace(re, "\\left\\{$2\\le $1\\le $3\\right\\}");
         ET = ET.replace(re, function(m, p1, p2, p3) { return makeET(p1, p2, p3) });
+        //console.log(str, ET)
     }
     return nerdamer(str).toTeX().replace(/\\mathrm\{(\w+?)\}/g, '\\$1') + ET;
 };
@@ -9571,13 +9572,18 @@ function pushToDesmosIDs(id, expr) {
     } else {
         expr = expr.map(y => ltxFromNerd(y));
     };
+    console.log(expr)
+        //desmosIDs[id] = expr;
     desmosIDs[id] = JSON.stringify(expr);
 };
+
+
 
 function makeDesmosPlot(id) {
     var name = "calc" + "_" + id;
     var elem = document.getElementById(id);
     name = Desmos.GraphingCalculator(elem);
+    desmoscalcs.push(name);
     var expr = JSON.parse(desmosIDs[id]);
     if (typeof expr == "string") {
         name.setExpression({ id: 'graph1', latex: expr });
@@ -9701,6 +9707,18 @@ function sorra(valt, a, b) {
 };
 
 var desmosPLOTS = {};
+var desmoscalcs = [];
+
+function destroyAlldesmoscalcs() {
+    desmoscalcs.forEach(calc => {
+        if (calc && typeof calc.destroy === 'function') {
+            calc.destroy();
+        }
+    });
+
+    // 3. Clear the array reference to free up memory
+    desmoscalcs.length = 0;
+};
 
 function splitFirstOccurrence(str, ch) {
     const [first, ...rest] = str.split(ch);
@@ -9727,6 +9745,7 @@ function prelatexjs(c_txt, mathjax) {
             c_txt += s;
         }
     };
+    //console.log("prelatexjs: vagott után: " + c_txt);
     const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+|Witt_\d+|Pr_\d+)/g));
     if (ppolys.length > 0)
         for (let v of ppolys) {
@@ -9757,6 +9776,7 @@ function prelatexjs(c_txt, mathjax) {
             //console.log(cc + c0);
             c_txt = c_txt.replace(c, cc + c0);
         };
+    //console.log("prelatexjs: forcode után: " + c_txt);
     //var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *= *\d+|\w+ *\;? *)*?\§{1}[\n\r\f]*/g);
     var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *=.*?\;? *)*?\§{1}[\n\r\f]*/sg);
     if (specVars) {
@@ -9780,6 +9800,7 @@ function prelatexjs(c_txt, mathjax) {
         c_txt = c_txt.replaceAll(/(\w+)\_(\d+|\w+)\.\.(\d+|\w+)/mg, function(m, p1, p2, p3) { return sorra(p1, p2, p3) });
         c_txt = c_txt.replaceAll(/\[([^\[\]]*?)\|\|(.*?)\]/mg, function(m, p1, p2) { return getsorA(p1, p2) });
     }
+    //console.log("prelatexjs: speciális karakterek után: " + c_txt);
     //c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
 
     var Vars = c_txt.match(/\§\§.*?\§\§[\n\r\f]*/g);
@@ -9897,9 +9918,11 @@ function prelatexjs(c_txt, mathjax) {
     if (nerd) {
         for (let exp of nerd) {
             var exp0 = exp.slice(2, -2).trim();
+            console.log("nerd, exp0: ", exp0);
             if (exp0.startsWith("desmosPlot(")) {
                 var plid = splitFirstOccurrence(exp0.slice(11, -1), ",");
                 var dv = '<div class="desmos-plot" id="' + plid[0] + '" style="width:300px; height:300px;"></div>';
+                console.log(dv);
                 c_txt = c_txt.replaceAll(exp, dv);
                 var fgvs = plid[1].split(";").map(y => y.replace(/[\[\]]/g, ""));
                 pushToDesmosIDs(plid[0], fgvs);
@@ -9919,6 +9942,7 @@ function prelatexjs(c_txt, mathjax) {
             }
         }
     };
+    console.log("prelatexjs: nerd után: " + c_txt);
     if (mathjax) {
         c_txt = Vtex + c_txt;
         c_txt = c_txt.replace(/[\n\r\f]/g, "")
