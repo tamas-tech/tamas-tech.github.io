@@ -9545,6 +9545,49 @@ function HtmlEncode(s) {
     return s;
 };
 
+var desmosIDs = {};
+
+function makeET(val, a, b) {
+    a = nerdamer(a).toTeX();
+    b = nerdamer(b).toTeX();
+    return "\\left\\{" + a + "\\le " + val + "\\le " + b + "\\right\\}";
+};
+
+function ltxFromNerd(str) {
+    var re = new RegExp(/\, *(\w*)\ *= *(\-?\d*)\.\.(\-?\d*)/);
+    var ET = "";
+    if (re.test(str)) {
+        ET = str.match(re)[0];
+        str = str.replace(re, "");
+        //ET = ET.replace(re, "\\left\\{$2\\le $1\\le $3\\right\\}");
+        ET = ET.replace(re, function(m, p1, p2, p3) { return makeET(p1, p2, p3) });
+    }
+    return nerdamer(str).toTeX().replace(/\\mathrm\{(\w+?)\}/g, '\\$1') + ET;
+};
+
+function pushToDesmosIDs(id, expr) {
+    if (typeof expr == "string") {
+        expr = ltxFromNerd(expr);
+    } else {
+        expr = expr.map(y => ltxFromNerd(y));
+    };
+    desmosIDs[id] = JSON.stringify(expr);
+};
+
+function makeDesmosPlot(id) {
+    var name = "calc" + "_" + id;
+    var elem = document.getElementById(id);
+    name = Desmos.GraphingCalculator(elem);
+    var expr = JSON.parse(desmosIDs[id]);
+    if (typeof expr == "string") {
+        name.setExpression({ id: 'graph1', latex: expr });
+    } else {
+        const n = expr.length;
+        for (var i = 1; i <= n; i++)
+            name.setExpression({ id: 'graph' + i, latex: expr[i - 1] });
+    };
+    $(elem).resizable();
+};
 
 function updMathJax(c_txt) {
     try {
@@ -9565,6 +9608,13 @@ function updMathJax(c_txt) {
         copyel.style.display = "block";
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, elem]);
     addCodeDblClick();
+    setTimeout(() => {
+        var plots = Object.entries(desmosIDs);
+        if (plots.length > 0)
+            plots.forEach(function(p) {
+                makeDesmosPlot(...p);
+            })
+    }, 10)
 };
 
 function tglCalc(e) {
@@ -9652,9 +9702,9 @@ function sorra(valt, a, b) {
 
 var desmosPLOTS = {};
 
-function splitFirstOccurrence(str) {
-    const [first, ...rest] = str.split("=");
-    const remainder = rest.join('=');
+function splitFirstOccurrence(str, ch) {
+    const [first, ...rest] = str.split(ch);
+    const remainder = rest.join(ch);
     return [first, remainder];
 };
 
@@ -9677,7 +9727,6 @@ function prelatexjs(c_txt, mathjax) {
             c_txt += s;
         }
     };
-    //console.log("prelatexjs: vagott után: " + c_txt);
     const ppolys = _.uniq(c_txt.match(/(Fib_\d+|Fab_\d+|Luc_\d+|Zyc_\d+|Sti_\d+|Har_\d+|Witt_\d+|Pr_\d+)/g));
     if (ppolys.length > 0)
         for (let v of ppolys) {
@@ -9708,7 +9757,6 @@ function prelatexjs(c_txt, mathjax) {
             //console.log(cc + c0);
             c_txt = c_txt.replace(c, cc + c0);
         };
-    //console.log("prelatexjs: forcode után: " + c_txt);
     //var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *= *\d+|\w+ *\;? *)*?\§{1}[\n\r\f]*/g);
     var specVars = c_txt.match(/\§{1}\!(\;? *\w+ *=.*?\;? *)*?\§{1}[\n\r\f]*/sg);
     if (specVars) {
@@ -9732,7 +9780,6 @@ function prelatexjs(c_txt, mathjax) {
         c_txt = c_txt.replaceAll(/(\w+)\_(\d+|\w+)\.\.(\d+|\w+)/mg, function(m, p1, p2, p3) { return sorra(p1, p2, p3) });
         c_txt = c_txt.replaceAll(/\[([^\[\]]*?)\|\|(.*?)\]/mg, function(m, p1, p2) { return getsorA(p1, p2) });
     }
-    //console.log("prelatexjs: speciális karakterek után: " + c_txt);
     //c_txt = c_txt.replace(/(\#.*[\n\r\f])/g, '');
 
     var Vars = c_txt.match(/\§\§.*?\§\§[\n\r\f]*/g);
@@ -9759,7 +9806,7 @@ function prelatexjs(c_txt, mathjax) {
     //console.log("prelatexj: Vtex: ", Vtex);
     //console.log(Vars);
     var sVars = c_txt.match(/\§{1}.*?\§{1}[\n\r\f]*/sg);
-    //console.log("prelatexj: sVars: ", sVars);
+    console.log("prelatexj: sVars: ", sVars);
     if (sVars) {
         for (let v of sVars) {
             c_txt = c_txt.replace(v, '');
@@ -9769,10 +9816,32 @@ function prelatexjs(c_txt, mathjax) {
         for (let v of sVars) {
             if (v.startsWith("desmos:")) {
                 v = v.replace("desmos:", "").trim();
-                var dek = splitFirstOccurrence(v);
+                var dek = splitFirstOccurrence(v, "=");
                 var d1 = dek[1]; //.replaceAll("=", "\\u003D ");
+
+                const kif = d1.match(/\<\<.*?\>\>/g);
+                //console.log("prelatexj: desmos: ", kif);
+                if (kif) {
+                    for (let exp of kif) {
+                        var exp0 = exp.slice(2, -2);
+                        // console.log("desmos:nerd, exp0: ", exp0)
+                        const e = nerdamer(exp0);
+                        console.log("nerd, nerdamer(exp0): ", e)
+                        try {
+                            var ltx = decForm(e.evaluateM().latex(nerd_numb));
+                        } catch (error) {
+                            console.log(error)
+                            var ltx = e.evaluateM().latex(nerd_numb); //EZ VOLT EREDETILEG
+                        };
+                        ltx = ltx.replaceAll("\\", "\\\\");
+                        d1 = d1.replaceAll(exp, ltx);
+                    }
+                };
+
                 try {
                     var plot = JSON.parse(d1);
+                    console.log("d1:", d1)
+                    console.log("plot", plot)
                 } catch (e) {
                     console.log(e, d1)
                 }
@@ -9824,26 +9893,32 @@ function prelatexjs(c_txt, mathjax) {
     };
 
     const nerd = c_txt.match(/\<\<.*?\>\>/g);
-    //console.log("prelatexj: nerd: ", nerd);
+    console.log("prelatexj: nerd: ", nerd);
     if (nerd) {
         for (let exp of nerd) {
-            var exp0 = exp.slice(2, -2);
-            //console.log("nerd, exp0: ", exp0)
-            const e = nerdamer(exp0);
-            //console.log("nerd, nerdamer(exp0): ", e)
-            try {
-                var ltx = decForm(e.evaluateM().latex(nerd_numb));
-            } catch (error) {
-                console.log(error)
-                var ltx = e.evaluateM().latex(nerd_numb); //EZ VOLT EREDETILEG
-            };
-            if (typeof e.symbol.elements === "object" && ltx.startsWith("[") && ltx.endsWith("]"))
-                ltx = ltx.replaceAll("[", "\\left(").replaceAll("]", "\\right)")
-            c_txt = c_txt.replaceAll(exp, ltx);
-            //console.log("nerdben: " + expr + " --> " + ltx);
+            var exp0 = exp.slice(2, -2).trim();
+            if (exp0.startsWith("desmosPlot(")) {
+                var plid = splitFirstOccurrence(exp0.slice(11, -1), ",");
+                var dv = '<div class="desmos-plot" id="' + plid[0] + '" style="width:300px; height:300px;"></div>';
+                c_txt = c_txt.replaceAll(exp, dv);
+                var fgvs = plid[1].split("|").map(y => y.replace(/[\[\]]/g, ""));
+                pushToDesmosIDs(plid[0], fgvs);
+            } else {
+                const e = nerdamer(exp0);
+                console.log("nerd, nerdamer(exp0): ", e)
+                try {
+                    var ltx = decForm(e.evaluateM().latex(nerd_numb));
+                } catch (error) {
+                    console.log(error)
+                    var ltx = e.evaluateM().latex(nerd_numb); //EZ VOLT EREDETILEG
+                };
+                if (typeof e.symbol.elements === "object" && ltx.startsWith("[") && ltx.endsWith("]"))
+                    ltx = ltx.replaceAll("[", "\\left(").replaceAll("]", "\\right)")
+                c_txt = c_txt.replaceAll(exp, ltx);
+                //console.log("nerdben: " + expr + " --> " + ltx);
+            }
         }
     };
-    console.log("prelatexjs: nerd után: " + c_txt);
     if (mathjax) {
         c_txt = Vtex + c_txt;
         c_txt = c_txt.replace(/[\n\r\f]/g, "")
