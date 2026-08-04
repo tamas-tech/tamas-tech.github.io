@@ -9901,7 +9901,7 @@ function prelatexjs(c_txt, mathjax) {
                 var plid = splitFirstOccurrence(exp0.slice(11, -1), ",");
                 var dv = '<div class="desmos-plot" id="' + plid[0] + '" style="width:300px; height:300px;"></div>';
                 c_txt = c_txt.replaceAll(exp, dv);
-                var fgvs = plid[1].split("|").map(y => y.replace(/[\[\]]/g, ""));
+                var fgvs = plid[1].split(";").map(y => y.replace(/[\[\]]/g, ""));
                 pushToDesmosIDs(plid[0], fgvs);
             } else {
                 const e = nerdamer(exp0);
