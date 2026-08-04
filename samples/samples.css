@@ -3728,6 +3728,10 @@ select#mthselect {
     outline-offset: 2px;
 }
 
+#pentout {
+    text-indent: 0
+}
+
 #pentout .desmos-plot {
     padding: 10px;
     outline: rgb(138, 138, 140) solid 2px;
