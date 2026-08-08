@@ -10,7 +10,7 @@ $$=\dfrac{\left(\dfrac{f(x^1)}{1}+\dfrac{f(x^2)}{2}+\dfrac{f(x^3)}{3}+\cdots\rig
 \dfrac{\left(\dfrac{f(x^1)}{1}+\dfrac{f(x^2)}{2}+\dfrac{f(x^3)}{3}+\cdots\right)^2}{2!}+
 \dfrac{\left(\dfrac{f(x^1)}{1}+\dfrac{f(x^2)}{2}+\dfrac{f(x^3)}{3}+\cdots\right)^3}{3!}+\cdots=$$
 $$=b_1\,x^1+b_2\,x^2+b_3\,x^3+\cdots$$
-generátorfüggvényt értjük, és azt írjuk: $\mathbf{PE}[\mathbf{a}]=\mathbf{b}=(b_1,b_2,b_3,\ldots)$.
+generátorfüggvényt értjük, és azt írjuk: $\mathbf{PE}\triangleright\mathbf{a}=\mathbf{b}=(b_1,b_2,b_3,\ldots)$.
 Látni fogjuk, hogy $\mathbf{PE}\triangleright\mathbf{a}=\mathbf{Sti}\triangleright\mathbf{a}$
 </div>
 §a=randseq(-5,7,4)§
