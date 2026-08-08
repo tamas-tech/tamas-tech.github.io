@@ -1,0 +1,61 @@
+ ▶ <style>
+ #pentout div.def {border:1px solid #00000024;padding:5px 10px;margin:10px 0;background-color:#95959524;} 
+ #pentout code {margin:0 5px;color:#00597b;} 
+</style>
+
+<h2>Plethystic exponential</h2>
+<div class="def">Az $\mathbf{a}=(a_1,a_2,a_3,\ldots)$ sor generátorfüggvénye legyen $f(x)=a_1\,x+a_2\,x^2+a_3\,x^3+\cdots$. 
+Ekkor az $f(x)$ <b>pletisztikus exponenciálisán</b> a $$\mathbf{PE}[f](x)=\exp\left(\sum_{k=1}^{\infty}\dfrac{f\left(x^k\right)}{k}\right)=\exp\left(\dfrac{f(x^1)}{1}+\dfrac{f(x^2)}{2}+\dfrac{f(x^3)}{3}+\cdots\right)=$$ 
+$$=\dfrac{\left(\dfrac{f(x^1)}{1}+\dfrac{f(x^2)}{2}+\dfrac{f(x^3)}{3}+\cdots\right)^1}{1!}+
+\dfrac{\left(\dfrac{f(x^1)}{1}+\dfrac{f(x^2)}{2}+\dfrac{f(x^3)}{3}+\cdots\right)^2}{2!}+
+\dfrac{\left(\dfrac{f(x^1)}{1}+\dfrac{f(x^2)}{2}+\dfrac{f(x^3)}{3}+\cdots\right)^3}{3!}+\cdots=$$
+$$=b_1\,x^1+b_2\,x^2+b_3\,x^3+\cdots$$
+generátorfüggvényt értjük, és azt írjuk: $\mathbf{PE}[\mathbf{a}]=\mathbf{b}=(b_1,b_2,b_3,\ldots)$.
+Látni fogjuk, hogy $\mathbf{PE}\triangleright\mathbf{a}=\mathbf{Sti}\triangleright\mathbf{a}$
+</div>
+§a=randseq(-5,7,4)§
+§n=size(a)§
+§fgv(egy:x^0)§
+§Fgv(fa,[x],Sum(vecget(a,k-1)*x^k,k,1,n))§
+§Fgv(f1,[x],fa(x))§
+§Fgv(f2,[x],1/2*fa(x^2))§
+§Fgv(f3,[x],1/3*fa(x^3))§
+§Fgv(f4,[x],1/4*fa(x^4))§
+§Fgv(f14,[x],f1(x)+f2(x)+f3(x)+f4(x))§
+§Fgv(fexp,[x],f14(x)+1/2*f14(x)^2+1/6*f14(x)^3+1/24*f14(x)^4)§
+§Fgv(ef2,[x],1/2*f14(x)^2)§
+§Fgv(ef3,[x],1/6*f14(x)^3)§
+§Fgv(ef4,[x],1/24*f14(x)^4)§
+§c=coeffs(truncprod(egy,fexp,x,n),x)§
+§pea=seq(vecget(c,k),1,n)§
+
+§Fgv(p,[x],Product((1-x^k)^(-vecget(a,k-1)),k,1,n))§
+§b=hatas1(Sti,a)§
+§Fgv(s,[x],Sum(vecget(b,k-1)*x^k,k,1,n))§
+
+Az OK gombra nyomva a $[-5,7]$ intervalumból generálódott egy négy hosszú véletlen $\mathbf{a}$ vektor. Ez most:  $$\mathbf{a}=<<a>>,\hspace{5mm}n=|\mathbf{a}|=<<n>>$$
+A vektorhoz tartozó $f(x)=a_1\,x+a_2\,x^2+a_3\,x^3+a_4\,x^4+\cdots$ generátorfüggvény:
+$$f(x)=<<fa(x)>>$$
+Egyenként kiszámítjuk az $\dfrac{f(x^1)}{1},\;\dfrac{f(x^2)}{2},\;\dfrac{f(x^3)}{3},\;\dfrac{f(x^4)}{4}$ függvényeket:
+$$\dfrac{f(x^1)}{1}=<<f1(x)>>$$
+$$\dfrac{f(x^2)}{2}=<<expand(f2(x))>>$$
+$$\dfrac{f(x^3)}{3}=<<expand(f3(x))>>$$
+$$\dfrac{f(x^4)}{4}=<<expand(f4(x))>>$$
+A képletben ezek összegének a hatványait kell majd venni, amit $F(x):=\dfrac{f(x^1)}{1}+\dfrac{f(x^2)}{2}+\dfrac{f(x^3)}{3}+\dfrac{f(x^4)}{4}$-el rövidítünk::
+$$F(x):=\dfrac{f(x^1)}{1}+\dfrac{f(x^2)}{2}+\dfrac{f(x^3)}{3}+\dfrac{f(x^4)}{4}=<<expand(f14(x))>>$$
+$F(x)$ hatványait a megfelelő faktoriálisokkal elosztva rendre az alábbiakat kapjuk (csak az első négy tagig számolunk):
+$$\dfrac{1}{1!}\left(F(x)\right)^1=<<truncprod(egy,f14,x,n)>>+\ldots$$
+$$\dfrac{1}{2!}\left(F(x)\right)^2=<<truncprod(egy,ef2,x,n)>>+\ldots$$
+$$\dfrac{1}{3!}\left(F(x)\right)^3=<<truncprod(egy,ef3,x,n)>>+\ldots$$
+$$\dfrac{1}{4!}\left(F(x)\right)^4=<<truncprod(egy,ef4,x,n)>>+\ldots$$
+Az $f(x)$  pletisztikus exponenciálisa pedig:
+$$\mathbf{PE}[f](x)=e^{F(x)}=\dfrac{1}{1!}\left(F(x)\right)^1+\dfrac{1}{2!}\left(F(x)\right)^2+\dfrac{1}{3!}\left(F(x)\right)^3+\dfrac{1}{4!}\left(F(x)\right)^4=<<truncprod(egy,fexp,x,n)>>$$
+A kapott polinomot visszafordítva vektorra $<<s(x)>>\longrightarrow<<b>>$, azt is mondhatjuk, hogy $$\mathbf{PE}\triangleright<<a>>=<<pea>>$$
+Az alábbi eredmény pedig lényegében azt igazolja, hogy $\mathbf{PE}=\mathbf{Sti}$
+$$\mathbf{Sti}\triangleright<<a>>=<<b>>$$
+<div class="def"><b>Tétel</b>: Az $\displaystyle{f(x)=\sum_{k=1}^{\infty}a_kx^k=a_1\,x+a_2\,x^2+a_3\,x^3+\cdots}$  formális hatványsor pletisztikus exponenciálisa 
+$$\mathbf{PE}[f](x)=\prod_{k=1}^{\infty}\dfrac{1}{(1-x^k)^{a_k}}$$</div>
+A jelenlegi $f(x)=<<fa(x)>>$ polinomra alkalmazva a tételt:
+$$\mathbf{PE}[f](x)=\prod_{k=1}^{n}\dfrac{1}{(1-x^k)^{a_k}}=<<p(x)>>$$
+Amit a <code>maclaurin(p(x),<<n>>)</code> paranccsal $x^{<<n>>}$-ig nulla körül sorbafejtünk:
+$$<<maclaurin(p(x),n)>>$$
