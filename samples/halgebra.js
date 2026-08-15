@@ -1497,7 +1497,6 @@ function derivGen(muv) {
         } else
             sh = derivOutHn(sh, doutfok);
     };
-
     if (document.getElementById("xymonom").checked)
         var txt = formazxyMonom(sh);
     else {
@@ -1910,7 +1909,7 @@ function xystuffleW(s1, s2, jelent) {
         if (jelent) {
             jelentes = "1. A w<sub>1</sub> = " + xy2XYmonom(s1) + " szó végéről levágjuk a(z) <b>" + n + "</b> darab " + xy2XYmonom('x') + " karaktert így a(z) " + xy2XY('y') + " karakterre végzödő <b>" + xy2XYmonom(b1) + "</b>  szót kapjuk, amit átalakítunk <b>v<sub>1</sub></b> = (" + v1 + ") vektorrá.<br/>2. A w<sub>2</sub> = " + xy2XYmonom(s2) + " szó végéről levágjuk a(z) <b>" + m + "</b> darab " + xy2XY('x') + " karaktert  így a(z)  " + xy2XY('y') + " karakterre végzödő <b>" + xy2XYmonom(b2) + "</b> szót kapjuk, amit átalakítunk <b>v<sub>2</sub></b> = (" + v2 + ") vektorrá.<br/>3. Kiszámítjuk a(z) (" + v1 + ")&nbsp;&lowast;&nbsp;(" + v2 + ") stuffle-szorzatot:<br/>";
             jelentes += ms2HTML(v);
-            jelentes += "<br>4. Végül mindent vektort visszaalakítunk xy-szóvá, és mindegyik végéhez " + n + " + " + m + " = <b>" + (n + m) + "</b> darab " + xy2XY('x') + " karaktert írunk." + conjinv
+            jelentes += "<br>4. Végül minden vektort visszaalakítunk xy-szóvá, és mindegyik végéhez " + n + " + " + m + " = <b>" + (n + m) + "</b> darab " + xy2XY('x') + " karaktert írunk." + conjinv
         };
     };
 
@@ -4144,6 +4143,116 @@ function descSn() {
 
     elem.innerHTML = out;
 }
+
+// determinánssal írjuk fel az Ihara-Kaneko deriváltat
+
+function xy2descSor(xy) {
+    const v = xy2vec(xy);
+    var u = kum(v[0]);
+    const n = _.last(u) + 1;
+    if (v[1] == "x")
+        u = u.slice(0, -1);
+    u = [0, ...u, n];
+    return u;
+};
+
+function dpos(a, b) {
+    if (a > b)
+        return 0;
+    else
+        return 1 / math.factorial(b - a);
+};
+
+function descMat(u) {
+    const n = u.length - 1;
+    var mat = [];
+    for (var i = 1; i <= n; i++) {
+        sor = [];
+        for (var j = 1; j <= n; j++)
+            sor.push(dpos(u[i - 1], u[j]));
+        mat.push(sor);
+    }
+    return mat;
+};
+
+function ritkitas(xy, d) {
+    var w = "";
+    for (var i = d - 1; i < xy.length; i = i + d)
+        w += xy.charAt(i);
+    return w;
+};
+
+function descxy(xy) {
+    xy = xy.slice(1, -1);
+    const n = xy.length + 1;
+    return math.round(math.factorial(n) * math.det(descMat(xy2descSor(xy))));
+};
+
+function descxy0(xy) {
+    const n = xy.length + 1;
+    const e = xy.split('x').length - 1;
+    return math.round(math.factorial(n) * math.pow(-1, e) * math.det(descMat(xy2descSor(xy))));
+};
+
+function descXY(xy, n) {
+    xy = xy.slice(1, -1);
+    xy = ritkitas(xy, n)
+    return descxy0(xy);
+};
+
+function IKderiv(n, m) {
+    var C = allcomps(n * m).map(v => "x" + yvec2xy(v));
+    C = C.map(y => [descXY(y, n), y]);
+    return C;
+};
+
+// EGYÉBB
+
+function xy2dec(xy) {
+    return parseInt(xy.replaceAll("x", "1").replaceAll("y", "0"), 2)
+};
+
+function dec2xy(d) {
+    const bin = d.toString(2)
+    return bin.replaceAll("1", "x").replaceAll("0", "y");
+};
+
+function korbe(v) {
+    var xy = "x" + yvec2xy(v);
+    xy = xy.slice(1, -1);
+    return ([v, xy2descSor(xy)])
+}
+
+function vritkitas(v, n) {
+    var xy = "x" + yvec2xy(v);
+    xy = ritkitas(xy.slice(1, -1), n);
+    return ([v, xy2vec(xy), xy2descSor(xy)])
+}
+
+function setxyDern(nstr, ch) {
+    var strv = nstr.match(/(\++|\-+)*(\d)*[xy]*/g);
+    strv = strv.filter(y => y != "");
+    if (ch == "x") {
+        derivOfX = [];
+        dxcoeff = [];
+        for (let str of strv)
+            makexCoeff(str);
+    } else {
+        derivOfY = [];
+        dycoeff = [];
+        for (let str of strv)
+            makeyCoeff(str);
+    }
+};
+
+function setIKn(n) {
+    var dxy = xydn(n);
+    setxyDern(dxy, "x");
+    dxy = "-" + dxy.replaceAll("+", "-");
+    setxyDern(dxy, "y");
+    console.log(derivOfX, dxcoeff)
+    console.log(derivOfY, dycoeff)
+};
 
 // ranking of space by derivation-relation.........................................
 
@@ -6970,6 +7079,9 @@ function derLIR(n) {
     const formulais = !document.getElementById("onlyPtbl").checked;
     var txt = pE[4];
     const ert = pE[0] - 1 + dP;
+    const indx = ert - math.pow(2, n - 4);
+    const xyw = "x" + num2xy(indx);
+    var txtmin = "";
     if (formulais) {
         var eloj = "";
         if (dP == -1)
@@ -6983,10 +7095,22 @@ function derLIR(n) {
         txt += pE[1] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
         txt += pE[2] + " + <b>&delta;</b>(" + (n - 1) + ") − 1 = ";
         txt += pE[3] + dPtxt + " − 1";
-        document.getElementById("dimout").innerHTML = txt + " = " + Fraction(ert).toFraction();
+        txt += " = " + Fraction(ert).toFraction();
+        if (n < 4)
+            txtmin = "<br/>A legkisebb w szó a lexikografikus rendezésben, melynek &part;<sub>1</sub>(w) deriváltja előáll a w-nél kisebb szavak deriváltjainak lineáris kombinációjaként: NEM ÉRTELMEZETT";
+        else if (n == 6)
+            txtmin = "<br/>A legkisebb w szó a lexikografikus rendezésben, melynek &part;<sub>1</sub>(w) deriváltja előáll a w-nél kisebb szavak deriváltjainak lineáris kombinációjaként:<span style='color:red;'> w = xxyxy&longrightarrow;(3,2) (Kivételes eset!)</span>";
+        else
+            txtmin = "<br/>A legkisebb w szó a lexikografikus rendezésben, melynek &part;<sub>1</sub>(w) deriváltja előáll a w-nél kisebb szavak deriváltjainak lineáris kombinációjaként: w = x&bullet;binary<sub>xy</sub>(" + ert + " − " + "2<sup>" + n + " − 4</sup>)&bullet;y = x&bullet;binary<sub>xy</sub>(" + indx + ")&bullet;y = " + xyw + "&longrightarrow;(" + xy2vec(xyw)[0] + ")";
+        txt += txtmin;
+        document.getElementById("dimout").innerHTML = txt;
     } else
         document.getElementById("dimout").innerHTML = txt;
     return ert;
+};
+
+function firstLD(N) {
+    return xy2vec("x" + num2xy(derLIR(N) - math.pow(2, N - 4)))[0];
 };
 
 // dblshuffrel rangcsokkenese
@@ -10987,3 +11111,117 @@ function Maclaurin(fString, order) {
     }
     return seriesTerms.join(' + ').replace(/\+ -/g, '- ');
 };
+
+
+
+/**
+ * Checks if a composition is "inverting".
+ * For every N > 1 in the composition, the first occurrence of N 
+ * must appear before the last occurrence of N - 1.
+ * @param {number[]} w - The integer composition array.
+ * @returns {boolean}
+ */
+function isInverting(w) {
+    const uniqueVals = new Set(w);
+
+    for (const N of uniqueVals) {
+        if (N > 1) {
+            // If N-1 doesn't even exist, it fails the tracking condition
+            if (!uniqueVals.has(N - 1)) return false;
+
+            const firstN = w.indexOf(N);
+            const lastNMinus1 = w.lastIndexOf(N - 1);
+
+            if (firstN >= lastNMinus1) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+/**
+ * Calculates the stability depth 'k' of the composition suffix.
+ * Returns the maximum integer k such that all elements <= k reside 
+ * entirely within a weakly decreasing terminal suffix.
+ * @param {number[]} w - The integer composition array.
+ * @returns {number}
+ */
+function getPureDepth(w) {
+    if (w.length === 0 || w[w.length - 1] !== 1) {
+        return 0; // Pure base state if it doesn't end in 1
+    }
+
+    const maxVal = Math.max(...w);
+    let maxK = 0;
+
+    // Test increasing values of k to find the structural boundary
+    for (let k = 1; k <= maxVal; k++) {
+        const firstIdx = w.findIndex(val => val <= k);
+        const suffix = w.slice(firstIdx);
+
+        let isValidSuffix = true;
+        for (let i = 0; i < suffix.length; i++) {
+            // Check if bounds or weakly decreasing order are broken
+            if (suffix[i] > k || suffix[i] < 1) {
+                isValidSuffix = false;
+                break;
+            }
+            if (i > 0 && suffix[i] > suffix[i - 1]) {
+                isValidSuffix = false;
+                break;
+            }
+        }
+
+        if (isValidSuffix) {
+            maxK = k;
+        }
+    }
+    return maxK;
+}
+
+/**
+ * Generates all compositions of an integer n.
+ * @param {number} n - The target integer sum.
+ * @returns {number[][]}
+ */
+function generateCompositions(n) {
+    const results = [];
+
+    function backtrack(current, remaining) {
+        if (remaining === 0) {
+            results.push([...current]);
+            return;
+        }
+        for (let i = 1; i <= remaining; i++) {
+            current.push(i);
+            backtrack(current, remaining - i);
+            current.pop();
+        }
+    }
+
+    backtrack([], n);
+    return results;
+}
+
+/**
+ * Computes all Pure and Inverting Compositions for a given integer n.
+ * @param {number} n - Target sum.
+ */
+function pureandinvertingComps(n) {
+    const allCompositions = generateCompositions(n);
+    const validCompositions = [];
+
+    for (const comp of allCompositions) {
+        if (isInverting(comp)) {
+            const k = getPureDepth(comp);
+            // "Pure" if the depth k is an even integer
+            if (k % 2 === 0) {
+                //validCompositions.push({ composition: comp, k: k });
+                validCompositions.push(comp);
+            }
+        }
+    }
+
+    return validCompositions;
+}
