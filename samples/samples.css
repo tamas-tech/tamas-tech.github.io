@@ -3241,6 +3241,7 @@ background-color: #eaeaea;
 
 #ranktbl.table-hideable thead tr th {
     text-align: center;
+    box-shadow: inset 0 -1px 1px 0px #7d7d7d, inset 0 1px 0 #7d7d7d;
 }
 
 #ranktbl.table-hideable tr th {
