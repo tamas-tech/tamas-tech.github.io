@@ -5033,7 +5033,7 @@ function drawTable() {
             hh = 'unset';
         else
             hh += "vh";
-        txt += '<div style="max-height:' + hh + ';overflow-y:auto;width:fit-content;margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead><tr class="fej"><th>&mu;(w)</th><th style="background-color:#8cffff; outline: 2px solid #999e9f;outline-offset: -4px;">&rho;</th><th>D</th>';
+        txt += '<div style="max-height:' + hh + ';overflow-y:auto;width:fit-content;margin-bottom: 10px;border: 1px solid #d79d9d;padding-top:15px;padding-right:15px;padding-bottom:6px;"><table id="ranktbl" class="table-hideable' + shrcls + '"><thead style="position: sticky;top: -0.7em;"><tr class="fej"><th>&mu;(w)</th><th style="background-color:#8cffff; outline: 2px solid #999e9f;outline-offset: -4px;">&rho;</th><th>D</th>';
         for (var j = 0; j < m; j++)
             txt += '<th class="hide-column hide-col">' + (j + 1) + '</th>';
         txt += '</tr></thead><tbody><tr class="fej vert"><td>w</td><td style="background-color:#8cffff; outline: 2px solid #999e9f;outline-offset: -4px;">rank</td><td>Delete</td>';
