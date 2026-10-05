@@ -1,0 +1,1101 @@
+%% LyX 2.3.4.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[oneside,english]{amsart}
+\usepackage{amsbsy}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{geometry}
+\geometry{verbose,tmargin=1cm,bmargin=1.5cm,lmargin=1cm,rmargin=1cm}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{xcolor}
+\definecolor{shadecolor}{rgb}{0.9375, 0.9375, 0.9375}
+\usepackage{framed}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage[unicode=true]
+ {hyperref}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\providecommand\textquotedblplain{%
+  \bgroup\addfontfeatures{Mapping=}\char34\egroup}
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\theoremstyle{plain}
+\newtheorem{thm}{\protect\theoremname}
+\theoremstyle{plain}
+\newtheorem{conjecture}[thm]{\protect\conjecturename}
+\theoremstyle{definition}
+\newtheorem*{defn*}{\protect\definitionname}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{shuffle}
+
+\makeatother
+
+\usepackage{polyglossia}
+\setdefaultlanguage[variant=american]{english}
+\providecommand{\conjecturename}{Conjecture}
+\providecommand{\definitionname}{Definition}
+\providecommand{\theoremname}{Theorem}
+
+\begin{document}
+\begin{center} {\Large  Conjecture on the Number of Linearly Independent Relations of Ihara--Kaneko--Zagier Derivation Relation: An Euler-type Pentagonal Formula } \\[1.5em]
+{\bf  Tamás Szűcs} \\[0.5em]{October 05, 2026 -- Szeged} \\[0.5em] {\tt szucs.tamas.prof@gmail.com} \end{center}
+
+\section{Generalized Pentagonal Numbers and the $\omega(n)$ Function}
+
+Let $P_{0},P_{1},P_{2},P_{3},P_{4},P_{5},P_{6},P_{7},\ldots=0,1,2,5,7,12,15,22,\ldots$
+denote the generalized pentagonal numbers \href{https://oeis.org/A001318}{OEIS:A001318},
+and let $\omega(k)$= \href{https://oeis.org/A010815}{A010815(k)},
+defined by 
+\[
+\omega(k)=\begin{cases}
+1 & {\text{if }}k=0;\\
+(-1)^{m} & {\text{if }}k=\frac{3m^{2}\pm m}{2};\\
+0 & {\text{otherwise.}}
+\end{cases}
+\]
+
+\parbox[t]{1\columnwidth}{%
+\begin{center}
+Table 1. $P_{n}$ and $\omega(n)$
+\par\end{center}
+\begin{center}
+{\small{}}%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}n$} & {\small{}0} & {\small{}1} & {\small{}2} & {\small{}3} & {\small{}4} & {\small{}5} & {\small{}6} & {\small{}7} & {\small{}8} & {\small{}9} & {\small{}10} & {\small{}11} & {\small{}12} & {\small{}13} & {\small{}14} & {\small{}15} & {\small{}16} & {\small{}17} & {\small{}18} & {\small{}19} & {\small{}20} & {\small{}21} & {\small{}22} & {\small{}23}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}P_{n}$} & {\small{}0} & {\small{}1} & {\small{}2} & {\small{}5} & {\small{}7} & {\small{}12} & {\small{}15} & {\small{}22} & {\small{}26} & {\small{}35} & {\small{}40} & {\small{}51} & {\small{}57} & {\small{}70} & {\small{}77} & {\small{}92} & {\small{}100} & {\small{}117} & {\small{}126} & {\small{}145} & {\small{}155} & {\small{}176} & {\small{}187} & {\small{}210}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}\omega(n)$} & {\small{}1} & {\small{}-1} & {\small{}-1} & {\small{}0} & {\small{}0} & {\small{}1} & {\small{}0} & {\small{}1} & {\small{}0} & {\small{}0} & {\small{}0} & {\small{}0} & {\small{}-1} & {\small{}0} & {\small{}0} & {\small{}-1} & {\small{}0} & {\small{}0} & {\small{}0} & {\small{}0} & {\small{}0} & {\small{}0} & {\small{}1} & {\small{}0}\tabularnewline
+\hline 
+\end{tabular}{\small\par}
+\par\end{center}%
+}
+
+\section{The Conjecture and Some Equivalent Formulations }
+
+For a given weight $n\geq3$ let $\mathscr{L}(n)$ denote the the
+number of linearly independent relations of Ihara-Kaneko-Zagier derivation
+relation. In \cite{doi:10.1142/S1793042117500245,TANAKA20092021}
+the authors have tabulated the values of $\mathscr{L}(n)$ calculated
+using the Risa/Asir and Mathematica general computer algebra system
+for $\ensuremath{n=3}$ to $n=15$.
+
+\parbox[t]{1\columnwidth}{%
+\begin{center}
+Table 2. Number of Independent Derivation Relations for MZVs
+\par\end{center}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}n$} & {\small{}3} & {\small{}4} & {\small{}5} & {\small{}6} & {\small{}7} & {\small{}8} & {\small{}9} & {\small{}10} & {\small{}11} & {\small{}12} & {\small{}13} & {\small{}14} & {\small{}15} & \textcolor{gray}{\small{}16{*}} & \textcolor{gray}{\small{}17{*}}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}\mathscr{L}(n)$} & {\small{}1} & {\small{}2} & {\small{}5} & {\small{}10} & {\small{}22} & {\small{}44} & {\small{}90} & {\small{}181} & {\small{}363} & {\small{}727} & {\small{}1456} & {\small{}2912} & {\small{}5825} & \textcolor{gray}{\small{}11652{*}} & \textcolor{gray}{\small{}23304{*}}\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}%
+}
+
+{*}{\small{} Calculated with a JavaScript application of my own development.}\footnote{\begin{onehalfspace}
+On page https://tamas-tech.github.io 
+\end{onehalfspace}
+} 
+
+\begin{minipage}[t]{1\columnwidth}%
+\begin{shaded}%
+\begin{conjecture}
+For all weight $n\geq3$ the number of linearly independent relations
+of Ihara-Kaneko-Zagier derivation relation can be calculated by the
+following Euler-type pentagonal formula:
+\[
+\mathscr{L}(n)=2^{n-2-P_{1}}+2^{n-2-P_{2}}-2^{n-2-P_{3}}-2^{n-2-P_{4}}\pm\cdots-\omega(n-1)-1=-\sum_{k=1}^{n-2}\omega(k)\,2^{n-2-k}-\omega(n-1)-1.
+\]
+ The generating function of $\mathscr{L}(n)$ is given by: 
+\[
+{\displaystyle F(x)=\frac{x^{2}}{x-1}+\frac{x(x-1)}{2x-1}\prod_{k\geq1}(1-x^{k})},
+\]
+and $\mathscr{L}(n)$ satisfies the following recurrence relation
+for all $n\geq3$:
+\[
+\mathscr{L}(n+1)=2\cdot\mathscr{L}(n)+1-\omega(n)+\omega(n-1).
+\]
+\end{conjecture}
+
+\end{shaded}%
+\end{minipage}
+
+The calculations below verify that Conjecture 1. holds for $n=3$
+through $n=17$:
+\begin{flushleft}
+$\mathscr{L}(3)=2^{1-{\color{blue}1}}-{\color{red}\omega(2)}-1=2^{0}+{\color{red}1}-1=1+1-1=\mathbf{1}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(4)=2^{2-{\color{blue}1}}+2^{2-{\color{blue}2}}-{\color{red}\omega(3)}-1=2^{1}+2^{0}-{\color{red}0}-1=2+1-1=\mathbf{2}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(5)=2^{3-{\color{blue}1}}+2^{3-{\color{blue}2}}-{\color{red}\omega(4)}-1=2^{2}+2^{1}-{\color{red}0}-1=4+2-1=\mathbf{5}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(6)=2^{4-{\color{blue}1}}+2^{4-{\color{blue}2}}-{\color{red}\omega(5)}-1=2^{3}+2^{2}-{\color{red}1}-1=8+4-1-1=\mathbf{10}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(7)=2^{5-{\color{blue}1}}+2^{5-{\color{blue}2}}-2^{5-{\color{blue}5}}-{\color{red}\omega(6)}-1=2^{4}+2^{3}-2^{0}-{\color{red}0}-1=16+8-1-1=\mathbf{22}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(8)=2^{6-{\color{blue}1}}+2^{6-{\color{blue}2}}-2^{6-{\color{blue}5}}-{\color{red}\omega(7)}-1=2^{5}+2^{4}-2^{1}-{\color{red}1}-1=32+16-2-1-1=\mathbf{44}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(9)=2^{7-{\color{blue}1}}+2^{7-{\color{blue}2}}-2^{7-{\color{blue}5}}-2^{7-{\color{blue}7}}-{\color{red}\omega(8)}-1=2^{6}+2^{5}-2^{2}-2^{0}-{\color{red}0}-1=64+32-4-1-1=\mathbf{90}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(10)=2^{8-{\color{blue}1}}+2^{8-{\color{blue}2}}-2^{8-{\color{blue}5}}-2^{8-{\color{blue}7}}-{\color{red}\omega(9)}-1=2^{7}+2^{6}-2^{3}-2^{1}-{\color{red}0}-1=128+64-8-2-1=\mathbf{181}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(11)=2^{9-{\color{blue}1}}+2^{9-{\color{blue}2}}-2^{9-{\color{blue}5}}-2^{9-{\color{blue}7}}-{\color{red}\omega(10)}-1=2^{8}+2^{7}-2^{4}-2^{2}-{\color{red}0}-1=256+128-16-4-1=\mathbf{363}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(12)=2^{10-{\color{blue}1}}+2^{10-{\color{blue}2}}-2^{10-{\color{blue}5}}-2^{10-{\color{blue}7}}-{\color{red}\omega(11)}-1=2^{9}+2^{8}-2^{5}-2^{3}-{\color{red}0}-1=512+256-32-8-1=\mathbf{727}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(13)=2^{11-{\color{blue}1}}+2^{11-{\color{blue}2}}-2^{11-{\color{blue}5}}-2^{11-{\color{blue}7}}-{\color{red}\omega(12)}-1=2^{10}+2^{9}-2^{6}-2^{4}+{\color{red}1}-1=1024+512-64-16=\mathbf{1456}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(14)=2^{12-{\color{blue}1}}+2^{12-{\color{blue}2}}-2^{12-{\color{blue}5}}-2^{12-{\color{blue}7}}+2^{12-{\color{blue}12}}-{\color{red}\omega(13)}-1=2^{11}+2^{10}-2^{7}-2^{5}+2^{0}-{\color{red}0}-1=2048+1024-128-32+1-1=\mathbf{2912}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(15)=2^{13-{\color{blue}1}}+2^{13-{\color{blue}2}}-2^{13-{\color{blue}5}}-2^{13-{\color{blue}7}}+2^{13-{\color{blue}12}}-{\color{red}\omega(14)}-1=2^{12}+2^{11}-2^{8}-2^{6}+2^{1}-{\color{red}0}-1=4096+2048-256-64+2-1=\mathbf{5825}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(16)=2^{14-{\color{blue}1}}+2^{14-{\color{blue}2}}-2^{14-{\color{blue}5}}-2^{14-{\color{blue}7}}+2^{14-{\color{blue}12}}-{\color{red}\omega(15)}-1=2^{13}+2^{12}-2^{9}-2^{7}+2^{2}+{\color{red}1}-1=8192+4096-512-128+4=\mathbf{11652}$
+\par\end{flushleft}
+
+\begin{flushleft}
+$\mathscr{L}(17)=2^{15-{\color{blue}1}}+2^{15-{\color{blue}2}}-2^{15-{\color{blue}5}}-2^{15-{\color{blue}7}}+2^{15-{\color{blue}12}}+2^{15-{\color{blue}15}}-{\color{red}\omega(16)}-1=2^{14}+2^{13}-2^{10}-2^{8}+2^{3}+2^{0}-{\color{red}0}-1=$
+\par\end{flushleft}
+
+$\hphantom{\mathscr{L}(17)}=16384+8192-1024-256+8+1-1=\mathbf{23304}$
+
+~
+
+The first equivalent version reveals a simple connection between $\mathscr{L}(n)$
+and $\text{pic}(n)=$\href{https://oeis.org/A178841}{A178841(n)}
+the number of pure inverting compositions of $n$. 
+\begin{conjecture}
+For all weight $n\geq3$ the number of linearly independent relations
+of Ihara-Kaneko-Zagier derivation relation can be calculated by the
+following formula:
+\[
+\mathscr{L}(n)=2^{n-2}-1-\text{pic}(n-1)
+\]
+\end{conjecture}
+
+The calculations summarized in the table below verify that Conjecture
+2. holds for $n=3$ through $n=17$:
+
+\parbox[t]{1\columnwidth}{%
+\begin{center}
+Table 3. $\mathscr{L}(n)=2^{n-2}-1-\text{pic}(n-1)$
+\par\end{center}
+\begin{center}
+{\small{}}%
+\begin{tabular}{|c||c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}n$} & {\small{}3} & {\small{}4} & {\small{}5} & {\small{}6} & {\small{}7} & {\small{}8} & {\small{}9} & {\small{}10} & {\small{}11} & {\small{}12} & {\small{}13} & {\small{}14} & {\small{}15} & {\small{}16} & {\small{}17}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}2^{n-2}-1$} & {\small{}1} & {\small{}3} & {\small{}7} & {\small{}15} & {\small{}31} & {\small{}63} & {\small{}127} & {\small{}255} & {\small{}511} & {\small{}1023} & {\small{}2047} & {\small{}4095} & {\small{}8191} & {\small{}16383} & {\small{}32767}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}\text{pic}(n-1)$} & {\small{}0} & {\small{}1} & {\small{}2} & {\small{}5} & {\small{}9} & {\small{}19} & {\small{}37} & {\small{}74} & {\small{}148} & {\small{}296} & {\small{}591} & {\small{}1183} & {\small{}2366} & {\small{}4731} & {\small{}9463}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}2^{n-2}-1-\text{pic}(n-1)$} & 1 & 2 & 5 & 10 & 22 & 44 & 90 & 181 & 363 & 727 & 1456 & 2912 & 5825 & 11652 & 23304\tabularnewline
+\hline 
+\end{tabular}{\small\par}
+\par\end{center}%
+}
+
+Let $c(n)=$\href{https://oeis.org/A152537}{A152537(n)}. The second
+equivalent reformulation highlights a deeper algebraic relationship
+between $c(n)$ and $\text{pic}(n)$.
+\begin{conjecture}
+For all weight $n\geq3$ the number of linearly independent relations
+of Ihara-Kaneko-Zagier derivation relation can be calculated by the
+following formula:
+\[
+\mathscr{L}(n)=2^{n-2}-1-\omega(n-1)-c(n-2)
+\]
+\end{conjecture}
+
+The calculations summarized in the table below verify that Conjecture
+3. holds for $n=3$ through $n=17$:
+
+\parbox[t]{1\columnwidth}{%
+\begin{center}
+Table 4. $\mathscr{L}(n)=2^{n-2}-1-\omega(n-1)-c(n-2)$
+\par\end{center}
+\begin{center}
+{\small{}}%
+\begin{tabular}{|c||c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}n$} & {\small{}3} & {\small{}4} & {\small{}5} & {\small{}6} & {\small{}7} & {\small{}8} & {\small{}9} & {\small{}10} & {\small{}11} & {\small{}12} & {\small{}13} & {\small{}14} & {\small{}15} & {\small{}16} & {\small{}17}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}2^{n-2}-1$} & {\small{}1} & {\small{}3} & {\small{}7} & {\small{}15} & {\small{}31} & {\small{}63} & {\small{}127} & {\small{}255} & {\small{}511} & {\small{}1023} & {\small{}2047} & {\small{}4095} & {\small{}8191} & {\small{}16383} & {\small{}32767}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}\omega(n-1)$} & {\small{}-1} & {\small{}0} & {\small{}0} & {\small{}1} & {\small{}0} & {\small{}1} & {\small{}0} & {\small{}0} & {\small{}0} & {\small{}0} & {\small{}-1} & {\small{}0} & {\small{}0} & {\small{}-1} & {\small{}0}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}c(n-2)$} & {\small{}1} & {\small{}1} & {\small{}2} & {\small{}4} & {\small{}9} & {\small{}18} & {\small{}37} & {\small{}74} & {\small{}148} & {\small{}296} & {\small{}592} & {\small{}1183} & {\small{}2366} & {\small{}4732} & {\small{}9463}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}2^{n-2}-1-\omega(n-1)-c(n-2)$} & 1 & 2 & 5 & 10 & 22 & 44 & 90 & 181 & 363 & 727 & 1456 & 2912 & 5825 & 11652 & 23304\tabularnewline
+\hline 
+\end{tabular}{\small\par}
+\par\end{center}%
+}
+
+\section{Empirical and Theoretical Results Leading to Conjecture 1}
+
+Before proceeding, we establish some terminology and notation that
+will be used throughout the remainder of this work.
+
+Le $\mathfrak{H}_{n}:=\{w\in\mathfrak{H},\left|w\right|=n\}$ denote
+the set of words of weight $n$. We recall that the set of admissible
+words is given by $\mathcal{A}=x\mathfrak{H}y$, and we denote the
+subset of admissible words of weight $n$ by $\mathcal{A}_{n}:=x\mathfrak{H}_{n-2}y$.
+For any admissible word $w\in\mathcal{A}$, we define its binary value,
+denoted by $\mathrm{bin}(w)$ , as the unique even natural number
+whose binary representation yields the word $w$ upon replacing each
+digit $1$ with $x$ and each digit $0$ with $y$. Equivalently,
+if a word is written as $\ensuremath{w=u_{1}u_{2}\dots u_{k}}$, where
+$\ensuremath{u_{i}\in\{x,y\}}$ then 
+\[
+\ensuremath{\mathrm{bin}(w)=\sum_{i=1}^{k}c_{i}2^{k-i}},\text{ where }\ensuremath{c_{i}=1}\text{ if }\ensuremath{u_{i}=x}\text{, and }\ensuremath{c_{i}=0}\text{ if }\ensuremath{u_{i}=y.}
+\]
+
+For example, consider the admissible word $w=xxyy$. Replacing each
+$x$ with $1$ and $y$ with $0$ gives the binary string $1100_{2}$.
+Converting this to base 10, we obtain: $\mathrm{bin}(xxyy)=1\cdot2^{3}+1\cdot2^{2}+0\cdot2^{1}+0\cdot2^{0}=8+4=12.$
+
+We will use a graded lexicographic total order on the words of $\mathfrak{H}$,
+defined as follows. If $u$ and $v$ are words with $\left|u\right|<\left|v\right|$
+, set $u<v$ . If $\left|u\right|=\left|v\right|$ and $u=wyw_{2}$
+and $v=wxw_{3}$ , for any words $w$,$w_{1}$, and $w_{2}$, set
+$u<v$ . It is easy to see that the order on $\mathcal{A}$ induced
+by the mapping $\mathrm{bin(\,\cdot\,)}$ coincides with the graded
+lexicographic order restricted to $\mathcal{A}$. The words of degree
+at most $3$ are thus ordered as follows:
+\[
+1<y<x<yy<yx<xy<xx<yyy<yyx<yxy<yxx<xyy<xyx<xxy<xxx
+\]
+
+For any subset $V\subseteq\mathfrak{H}$ and any integer $m\ge1$,
+let $\partial_{m}(V)$ denote the set $\{\partial_{m}(w):w\in V\}$. 
+
+Conjecture 1 is based on the following analysis of the rank growth,
+which chronologically preceded the formulation of Conjecture~2.
+
+For a fixed $n\ge3$, we will construct a full row-rank matrix $\mathbf{M}_{n}$
+from the derivatives $\partial_{n-\vert w\vert}(w)$ of the elements
+$w$ in the subset
+\[
+\mathcal{B}_{n}=\mathcal{A}_{n-1}\cup x\mathcal{A}_{n-3}\cup x\mathcal{A}_{n-2}\cup\dots\cup x\mathcal{A}_{2}\cup\mathcal{A}_{2}\subset h
+\]
+$\left(\left|\mathcal{B}_{n}\right|=2^{n-3}+(2^{n-5}+2^{n-6}+\cdots+2^{0})+1=3\cdot2^{n-4}\right)$
+according to the following procedure: 
+
+The columns of $\mathbf{M}_{n}$ are indexed by the elements of the
+set of admissible words of $\mathcal{A}_{n}$, ordered ascendingly
+with respect to the graded lexicographic order. 
+\begin{enumerate}
+\item Let $w=x^{n-2}y$ be the maximal element of the set $\mathcal{A}_{n-1}$.
+The first row of the matrix $\mathbf{M}_{n}$ is defined as the coordinate
+vector of the derivative $\partial_{1}(w)\in\partial_{1}(\mathcal{A}_{n-1})\subset\text{Span}(\mathcal{A}_{n})$
+relative to the ordered basis $(\mathcal{A}_{n},<)$.
+\item We then proceed iteratively through the remaining elements of $A_{n-1}$
+in descending order. For each element, we compute the coordinate vector
+of its derivative and insert it as a new row in $\mathbf{M}_{n}$.
+\emph{Crucially, throughout this process, we ensure that if a candidate
+row can be expressed as a linear combination of the preceding rows,
+it is discarded}.
+\item This procedure is then repeated analogously for the elements of the
+remaining subsets in $\mathcal{B}_{n}$ (namely $x\mathcal{A}_{n-3},x\mathcal{A}_{n-2},\dots,x\mathcal{A}_{2}$,
+and $\mathcal{A}_{2}$ in the given order), examining their corresponding
+derivatives in descending order within each subset. 
+\end{enumerate}
+Constructing the matrix via this elimination process, it is evident
+that the resulting matrix $\mathbf{M}_{n}$ will have full row-rank.
+At the end of the procedure, we count how many derivatives originating
+from the subsets $\mathcal{A}_{n-1},x\mathcal{A}_{n-3},x\mathcal{A}_{n-2},\dots,x\mathcal{A}_{2}$,
+and $\mathcal{A}_{2}$ remain as rows in the matrix. These quantities
+will be denoted by $r_{0,n-2},r_{1,n-2},r_{2,n-2},\dots,r_{n-3,n-2}$
+respectively, and they will constitute the entries of the $(n-2)$-th
+column of an upper triangular matrix $\mathbf{R}$, whose rows and
+columns are indexed starting from $0$.
+
+Since our JavaScript application, which includes the implementation
+of the above procedure, generates a clear graphical layout for smaller
+values of $n$, the visual output representing the matrix $\mathbf{M}_{6}$
+for $n=6$ is included below as an illustrative example.
+\begin{center}
+\includegraphics[width=0.96\textwidth]{Rank6}
+\par\end{center}
+
+For $n=6$, the generating set is given by $\mathcal{B}_{6}=\mathcal{A}_{5}\cup x\mathcal{A}_{3}\cup x\mathcal{A}_{2}\cup\mathcal{A}_{2}$.
+As clearly observed from the visual output, all $2^{3}=8$ elements
+of $\partial_{1}\left(\mathcal{A}_{5}\right)$ and all $2^{1}=2$
+elements of $\partial_{2}\left(x\mathcal{A}_{3}\right)$ remain in
+the matrix. Conversely, the elements of $\partial_{3}\left(x\mathcal{A}_{2}\right)=\{\partial_{3}(xxy)\}$
+and $\partial_{4}\left(\mathcal{A}_{2}\right)=\{\partial_{4}(xy)\}$
+can already be expressed as linear combinations of the preceding rows
+and are thus discarded. By definition, this yields $\ensuremath{r_{0,4}=8},\,\ensuremath{r_{1,4}=2}$,
+and $r_{2,4}=r_{3,4}=0$.
+
+To provide an additional illustration, let us consider the output
+generated for the case $n=7$.
+\begin{center}
+\includegraphics[width=0.96\textwidth]{Rank7}
+\par\end{center}
+
+From this output, it can be observed that all $16$, $4$, and $2$
+elements of $\partial_{1}\left(\mathcal{A}_{6}\right)$, $\partial_{2}\left(x\mathcal{A}_{4}\right)$,
+and $\partial_{3}\left(x\mathcal{A}_{3}\right)$, respectively, remain
+in the matrix, whereas all elements of $\partial_{4}\left(x\mathcal{A}_{2}\right)$
+and $\partial_{5}\left(\mathcal{A}_{2}\right)$ are eliminated. By
+definition, this yields $r_{0,5}=16$, $r_{1,5}=4$, $r_{2,5}=2$,
+and $r_{3,5}=r_{4,5}=0$.
+
+Next, we present the empirical results obtained for $r_{i,j}$ from
+$n=2$ to $n=17$, collected into the table below:
+
+\[
+\begin{array}{cc|ccccccccccccccccc}
+{\color{lightgray}} & {\color{lightgray}n=} & {\color{lightgray}2} & {\color{lightgray}3} & {\color{lightgray}4} & {\color{lightgray}5} & {\color{lightgray}6} & {\color{lightgray}7} & {\color{lightgray}8} & {\color{lightgray}9} & {\color{lightgray}10} & {\color{lightgray}11} & {\color{lightgray}12} & {\color{lightgray}13} & {\color{lightgray}14} & {\color{lightgray}15} & {\color{lightgray}16} & {\color{lightgray}17} & {\color{lightgray}18}\\
+{\color{lightgray}} & i\setminus j & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16\\
+\hline {\color{lightgray}\partial_{1}} & 0 & 1 & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 & 2048 & 4096 & 8192 & 16384 & \cdots\\
+{\color{lightgray}\partial_{2}} & 1 &  &  & 0 & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 & 2048 & 4096 & \cdots\\
+{\color{lightgray}\partial_{3}} & 2 &  &  &  & 0 & 0 & 2 & 3 & 6 & 12 & 24 & 48 & 96 & 192 & 384 & 768 & 1536 & \cdots\\
+{\color{lightgray}\partial_{4}} & 3 &  &  &  &  & 0 & 0 & 1 & 3 & 6 & 10 & 21 & 42 & 84 & 168 & 336 & 672 & \cdots\\
+{\color{lightgray}\partial_{5}} & 4 &  &  &  &  &  & 0 & 0 & 1 & 2 & 6 & 10 & 20 & 39 & 78 & 158 & 315 & \cdots\\
+{\color{lightgray}\partial_{6}} & 5 &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 10 & 20 & 38 & 76 & 152 & \cdots\\
+{\color{lightgray}\partial_{7}} & 6 &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 9 & 20 & 38 & 75 & \cdots\\
+{\color{lightgray}\partial_{8}} & 7 &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 9 & 19 & 38 & \cdots\\
+{\color{lightgray}\partial_{9}} & 8 &  &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 9 & 19 & \cdots\\
+{\color{lightgray}\partial_{10}} & 9 &  &  &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 9 & \cdots\\
+{\color{lightgray}\partial_{11}} & 10 &  &  &  &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & \cdots\\
+{\color{lightgray}\partial_{12}} & 11 &  &  &  &  &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & \cdots\\
+{\color{lightgray}\partial_{13}} & 12 &  &  &  &  &  &  &  &  &  &  &  &  &  & 0 & 0 & 1 & \cdots\\
+{\color{lightgray}\partial_{14}} & 13 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 0 & 0 & \cdots\\
+{\color{lightgray}\partial_{15}} & 14 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 0 & \cdots\\
+{\color{lightgray}\partial_{16}} & 15 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \cdots\cdots
+\end{array}
+\]
+
+The most significant observation regarding the resulting table is
+that, putting aside the first few entries of each row, the values
+follow a clearly discernible recurrence relation. Specifically, the
+$j$-th entry of the $i$-th row can be obtained as the difference
+between the $(j-1)$-th entry of the $(i-1)$-th row and the $(j-i-1)$-th
+entry of the $(i-1)$-th row. 
+
+Formally, for sufficiently large indices, the entries satisfy the
+following recurrence: $r_{i,j}=r_{i-1,j-1}-r_{i-1,j-i-1}$. To illustrate
+this pattern, consider the following examples taken directly from
+the empirical data:
+\begin{itemize}
+\item For $i=4$ and $j=12$ (corresponding to $\partial_{5}$ at $n=14$),
+we have $39=42-3$.
+\item For $i=3$ and $j=13$ (corresponding to $\partial_{4}$ at $n=15$),
+we have $168=192-24$.
+\end{itemize}
+By applying this recurrence relation backward, we can determine the
+exact initial values required at the beginning of each row for the
+relation to hold globally across the entire table. Although such a
+backward extension could potentially lead to a contradiction, remarkably,
+no such inconsistency arises. Specifically, if we set all entries
+on the main diagonal to $1$ and all entries strictly below the main
+diagonal to $0$, the recurrence relation is satisfied consistently
+throughout the entire table. The resulting extended table is presented
+below:
+\[
+\begin{array}{c|ccccccccccccccccc}
+i\setminus j & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16\\
+\hline 0 & \mathbf{1} & \mathbf{1} & \mathbf{2} & \mathbf{4} & \mathbf{8} & \mathbf{16} & \mathbf{32} & \mathbf{64} & \mathbf{128} & \mathbf{256} & \mathbf{512} & \mathbf{1024} & \mathbf{2048} & \mathbf{4096} & \mathbf{8192} & \mathbf{16384} & \cdots\\
+1 & 0 & 1 & 0 & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 & 2048 & 4096 & \cdots\\
+2 & 0 & 0 & 1 & 0 & 0 & 2 & 3 & 6 & 12 & 24 & 48 & 96 & 192 & 384 & 768 & 1536 & \cdots\\
+3 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 3 & 6 & 10 & 21 & 42 & 84 & 168 & 336 & 672 & \cdots\\
+4 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 6 & 10 & 20 & 39 & 78 & 158 & 315 & \cdots\\
+5 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & 10 & 20 & 38 & 76 & 152 & \cdots\\
+6 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & 9 & 20 & 38 & 75 & \cdots\\
+7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & 9 & 19 & 38 & \cdots\\
+8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & 9 & 19 & \cdots\\
+9 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & 9 & \cdots\\
+10 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & \cdots\\
+11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & \cdots\\
+12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & \cdots\\
+13 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & \cdots\\
+14 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & \cdots\\
+15 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \cdots\\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \ddots\\
+{\displaystyle \sum_{j=1}^{i}a_{i,j}} & 1 & \mathbf{2} & \mathbf{3} & \mathbf{6} & \boldsymbol{11} & \mathbf{23} & \mathbf{45} & \boldsymbol{91} & \mathbf{182} & \mathbf{364} & \mathbf{728} & \mathbf{1457} & \mathbf{2913} & \mathbf{5826} & \mathbf{11653} & \mathbf{23305} & \cdots
+\end{array}
+\]
+
+It naturally follows from the construction of the table that subtracting
+$1$ from the sum of the entries in its $j$-th column yields exactly
+the values of $\mathscr{L}(j+2)$ for all $j\geq1$. 
+
+A formalization of the recurrence relation observed in the table is
+given by:
+
+\[
+r_{i,j}=\begin{cases}
+0 & \text{if }i<0\text{ or }j<0;\\
+1 & \text{if }i=j\text{ for }i=0,1,2,3,\dots;\\
+2^{\max(0,j-1)} & \text{if }i=1\text{ for }j=0,1,2,3,\dots;\\
+a_{i-1,j-1}-a_{i-1,j-i-1} & \text{otherwise.}
+\end{cases}
+\]
+
+The recurrence relation was investigated within a more general theoretical
+framework as a transformation. Instead of the initial values $2^{\max(0,j-1)}$
+entered into the first row, let us consider an arbitrary arithmetic
+sequence $\boldsymbol{a}=(a(1),a(2),\dots)$, and let the column sums
+define the values of the transformed sequence $T(\boldsymbol{a})=(T(a(1)),T(a(2)),\dots)$.
+During our thorough theoretical investigation, it soon became apparent
+that this transformation is remarkably versatile and well-suited for
+providing concise and clear explanations of the connections between
+various combinatorial results with a special emphasis on pentagonal
+formulas. Furthermore, since it is based on shifted differences and
+a summation, the transformation is inherently linear. What is essential
+for our purposes is that the transformation maps the sequence $\boldsymbol{a}=(1,0,0,0,\dots)$
+to the sequence $-\boldsymbol{\omega}=(1,1,0,0,-1,0,-1,0,0,0,0,1,0,\dots)$
+(now, starting from $1$ rather than $0$ as done above). Consequently,
+by linearity, the transform of an arbitrary sequence $\boldsymbol{a}=(a_{1},a_{2},a_{3},\dots)$
+yields a pentagonal formula of the form $-\sum_{k=1}^{\infty}\omega(k)a_{n-k}$,
+which can be written more concisely as $T(\boldsymbol{a})=-(a_{1},a_{2},\dots)*(\omega(1),\omega(2),\dots)$,
+where $*$ denotes the convolution of sequences. This, along with
+a few straightforward algebraic manipulations, directly recovers the
+pentagonal formula presented in Conjecture 1. Since the specific areas
+discussing this type of transformation lie beyond the current scope
+of our knowledge, we shall adopt the term \emph{pentagonal transformation}
+for the remainder of this work. During the study of the transformation,
+it also became apparent that when transforming various sequences $\boldsymbol{a}=(a(1),a(2),\dots)$,
+it is not only the transformed sequence $T(\mathbf{a})$ itself that
+is of interest; the individual rows generated in the table during
+the underlying recurrence relation, as well as their corresponding
+generating functions, are also highly significant. In the table above
+leading to the values of $\mathscr{L}(j)$, for instance, it is clearly
+observable that the first non-zero entries of successive rows coincide
+with the sequence $(\text{pic}(0),\text{pic}(1),\text{pic}(2),\dots)=(1,0,0,1,2,5,9,19,37,\dots)$
+for increasingly longer stretches. From this, together with certain
+relations to be discussed in Section 5, it will become completely
+evident that each row of the table contains parametric generalizations
+$(\text{pic}_{n}(0),\text{pic}_{n}(1),\text{pic}_{n}(2),\dots)$ of
+the sequence $(\text{pic}(0),\text{pic}(1),\text{pic}(2),\dots)$
+corresponding to the parameter $n$ of that row. 
+
+As for the proof of Conjecture 1, it suffices to demonstrate two conditions:
+\begin{enumerate}
+\item for any $n\geq3$, the vectors in the set $\partial_{1}(\mathcal{A}_{n-1})$
+are linearly independent; 
+\item the rank increments $r_{i,j}$ follow the aforementioned recurrence
+relation. 
+\end{enumerate}
+The first statement can be straightforwardly established without any
+difficulty, from which the corresponding power of two naturally follows.
+However, we have been unable to provide a proof for the second statement.
+
+It is worth emphasizing that the credibility of Conjecture 1 is significantly
+reinforced by the fact that the consistency does not merely rest on
+the first fourteen terms of a single sequence. Rather, it is deeply
+embedded in the entire underlying table of rank increments, matching
+perfectly across the whole two-dimensional recursive structure. 
+
+\section{Empirical and Theoretical Results Leading to Conjecture 2}
+
+The empirical results leading to Conjecture 2 can be obtained via
+the exact same elimination procedure described for Conjecture~1;
+however, rather than traversing the words in descending order, the
+matrix is iteratively expanded by examining the coordinate vectors
+of their derivatives in ascending order. This modification offers
+a distinct computational advantage: as can be readily verified, the
+coordinate vectors of the derivatives in the set 
+\[
+\mathcal{B}_{n}^{*}=\mathcal{B}_{n}\setminus\mathcal{A}_{n-1}=\partial_{n-2}(\mathcal{A}_{2})\cup\partial_{n-3}(x\mathcal{A}_{2})\cup\dots\cup\partial_{2}(x\mathcal{A}_{n-3})
+\]
+relative to the ordered basis $(\mathcal{A}_{n},<)$ are guaranteed
+to form a linearly independent system of vectors. Consequently, for
+any fixed $n\ge3$, the elimination procedure can be initiated immediately
+with the full row-rank matrix $\mathbf{N}_{n}$ whose rows are defined
+as the coordinate vectors of the derivatives contained in the set
+$\mathcal{B}_{n}^{*}$ without requiring any prior rank computation.
+This initial matrix $\mathbf{N}_{n}$ consists of exactly $1+(2^{0}+2^{1}+\cdots+2^{n-6}+2^{n-5})=2^{n-4}$
+rows. Subsequently, we iterate through the remaining elements of the
+set $\mathcal{A}_{n-1}$ in ascending order, starting from its minimal
+element, $xy^{n-2}$. For each successive word $w$, we append the
+coordinate vector of its derivative $\partial_{1}(w)$ as a candidate
+row to $\mathbf{N}_{n}$; if this candidate row increases the rank
+of the matrix, it is retained, and otherwise, it is discarded. Upon
+completion of this procedure, the resulting matrix $\mathbf{N}_{n}$
+is inherently full row-rank, just like the matrix $\mathbf{M}_{n}$
+discussed in Conjecture 1. Furthermore, the ranks of these two matrices
+are identical. 
+
+Since our custom JavaScript application—which implements the aforementioned
+procedure too—generates a clear graphical layout for small values
+of $n$, the visual outputs representing the matrices $\mathbf{N}_{6}$
+and $\mathbf{N}_{7}$ are included below as illustrative examples. 
+\begin{center}
+\includegraphics[width=0.96\textwidth]{Rank6Le}
+\par\end{center}
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{Rank7Le}
+\par\end{center}
+
+Although it is theoretically possible that a word $w_{1}\in\mathcal{A}_{n-1}$
+is skipped while the derivative of a larger word $w_{2}>w_{1}$ is
+retained in the matrix $\mathbf{N}_{n}$, empirical evidence suggests
+that this never occurs for $n>6$. Specifically, for any weight $n\neq6$,
+there exists a unique critical threshold word $w_{\text{crit}}\in\mathcal{A}_{n-1}$
+such that its derivative is discarded, and consequently, the derivatives
+of all subsequent words $w>w_{\text{crit}}$ are also eliminated.
+In short, with the sole exception of $n=6$, elements are systematically
+discarded exclusively from the tail of the ordered set $\mathcal{A}_{n-1}$.
+(The anomalous behavior observed in the case $n=6$ is explicitly
+accounted for by the \textquotedbl congestion\textquotedbl{} of the
+pentagonal numbers 3 and 5.)
+
+In light of these observations, \emph{Conjecture 2 can be stated in
+a sharper form as follows}: for any weight $n\neq6$, during the construction
+of the matrix $\mathbf{N}_{n}$, the first and minimal word $w_{0}\in\mathcal{A}_{n-1}$
+whose derivative fails to increase the rank of the matrix is precisely
+the $\left(3\cdot2^{n-4}-\text{pic}(n-1)\right)$-th element in the
+ordered set. Consequently, the derivatives of all words larger than
+$w_{0}$ likewise fail to increment the rank of the matrix. 
+
+Since $|\mathcal{B}_{n}^{*}|=2^{n-4}$, and exactly $3\cdot2^{n-4}-\text{pic}(n-1)-1$
+elements from $\mathcal{A}_{n-1}$ are retained in the matrix $\mathbf{N}_{n}$,
+it follows that: 
+\[
+\mathscr{L}(n)=\text{rank}(\mathbf{N}_{n})=2^{n-4}+3\cdot2^{n-4}-\text{pic}(n-1)-1=2^{n-2}-\text{pic}(n-1)-1,
+\]
+which precisely recovers the formulation of Conjecture 2 presented
+in Section 2. Although the equivalence between Conjecture 1 and Conjecture
+2 can be formally established with ease in light of the identities
+to be discussed in Section 5 (where we shall demonstrate that the
+rank increments are fundamentally parametric generalizations of pure
+inverting compositions), we consider it essential to present these
+two approaches separately, as the structural nuances arising between
+them are not fully captured by the explicit formulas alone. 
+
+It is worth noting that this particular formulation and matrix construction
+are highly optimized for computationally efficient implementations,
+which could potentially enable the verification of the conjecture
+for weights well beyond $n=17$. 
+
+It is highly instructive to reflect upon a comment by N. J. A. Sloane
+in the OEIS entry for $\mathbf{A178841}$, where he noted that the
+striking similarity between the terms of $\mathbf{A178841}(n)$ and
+$\mathbf{A152537}(n)$ might be \textquotedbl just a coincidence,
+caused by the fact that their generating functions are almost identical.\textquotedbl{}
+Our framework provides a rigorous, deeper theoretical explanation
+that dispels this assumption of coincidence. The connection between
+these two sequences is fundamentally rooted in the dual matrix constructions
+presented herein. Specifically, building the derivation matrix in
+descending order yields a rank-increment structure governed by $\mathbf{A152537}$
+(Conjecture 1), whereas building it in ascending order yields a structure
+governed by $\mathbf{A178841}$ (Conjecture~2). Since both procedures
+ultimately resolve the exact same system of Ihara-Kaneko\nobreakdash-Zagier
+derivation relations, the ranks of the resulting matrices $\mathbf{M}_{n}$
+and $\mathbf{N}_{n}$ must identically coincide with $\mathscr{L}(n)$,
+thereby intrinsically forcing the near-identity of their respective
+generating functions. 
+
+\section{Generalization of $\text{pic}(n)$}
+\begin{center}
+\textcolor{gray}{Preliminary draft.}
+\par\end{center}
+
+In this section, we demonstrate that the rank increments can be viewed
+as a natural generalization of the classical sequence $\text{pic}(k)$
+to the parametric function $\text{pic}_{n}(k)$.
+
+Before presenting the formal identities, we define three fundamental
+families of polynomials that govern these combinatorial structures.
+Let $\mathrm{Fib}_{n}$ and $\mathrm{Fab}_{n}$ denote the multivariate
+Fibonacci and Faber partition polynomials, respectively. Furthermore,
+let $\mathrm{Z}_{n}$ denote the cycle index polynomial of the symmetric
+group $S_{n}$. For a given set of variables $(x_{1},x_{2},\ldots,x_{n})$,
+these polynomials are explicitly defined as follows: 
+
+\begin{eqnarray*}
+\mathrm{Fib}_{n}(x_{1},x_{2},\ldots x_{n}) & = & \sum_{1b_{1}+2b_{2}+\cdots+nb_{n}=n}(-1)^{b_{1}+\cdots+b_{n}}\left(b_{1}+\cdots+b_{n}\right)!\;\frac{x_{1}^{b_{1}}x_{2}^{b_{2}}\cdots x_{n}^{b_{n}}}{b_{1}!\,b_{2}!\cdots b_{n}!}\\
+\mathrm{Fab}_{n}(x_{1},x_{2},\ldots x_{n}) & = & \sum_{1b_{1}+2b_{2}+\cdots+nb_{n}=n}(-1)^{b_{1}+\cdots+b_{n}}\,n\,\left(b_{1}+\cdots+b_{n}-1\right)!\;\frac{x_{1}^{b_{1}}x_{2}^{b_{2}}\cdots x_{n}^{b_{n}}}{b_{1}!\,b_{2}!\cdots b_{n}!}\\
+\mathrm{Z}_{n}(x_{1},x_{2},\ldots x_{n}) & = & \sum_{1b_{1}+2b_{2}+\cdots+nb_{n}=n}\dfrac{1}{1^{b_{1}}2^{b_{2}}\cdots n^{b_{n}}}\;\frac{x_{1}^{b_{1}}x_{2}^{b_{2}}\cdots x_{n}^{b_{n}}}{b_{1}!\,b_{2}!\cdots b_{n}!}
+\end{eqnarray*}
+
+Motivated by the theoretical results established in \cite{claesson2023permutationsinversions},
+we present the fundamental recurrence relation satisfied by $\text{pic}(k)$,
+along with several formulas that characterize the intricate relations
+among the pure inverting composition function $\text{pic}(k)$, the
+partition function $p(k)$, and the divisor sum function $\sigma(k)$. 
+
+\begin{eqnarray*}
+\text{pic}(k) & = & \sum_{j=0}^{k}\omega(j)\,2^{k-1-j}+\omega(j)\\
+k\,\text{pic}(k) & = & \sum_{j=0}^{k}\text{pic}(k-j)\,\left(2^{j}-\sigma(j)-1\right)\\
+\text{pic}(k) & = & 2\,\text{pic}(k-1)+\omega(k)-\omega(k-1)\\
+\text{pic}(k) & = & \text{Z}_{k}(2^{1}-\sigma(1)-1,2^{2}-\sigma(2)-1,\ldots,2^{k}-\sigma(k)-1)\\
+\sigma(k)-2^{k}+1 & = & \text{Fab}_{k}(\text{pic}(1),\text{pic}(2),\ldots,\text{pic}(k))\\
+\sum_{j=0}^{k}p(j)-2p(k) & = & -\text{Fib}_{k}(\text{pic}(1),\text{pic}(2),\ldots,\text{pic}(k))\\
+\text{pic}(k) & = & \text{Fib}_{k}\left(2p(1)-\sum_{j=0}^{1}p(j),2p(2)-\sum_{j=0}^{2}p(j),\ldots,2p(k)-\sum_{j=0}^{k}p(j)\right)\\
+p(k) & = & \sum_{j=0}^{k}2^{\max(0,k-1-j)}\,\text{Fib}_{j}(\text{pic}(1),\text{pic}(2),\ldots,\text{pic}(j))
+\end{eqnarray*}
+
+These relationships can be naturally generalized by restricting the
+underlying arithmetic functions. Specifically, let $p_{{\scriptscriptstyle >}n}(k)$
+denote the number of partitions of $k$ into parts strictly greater
+than $n$, and let $\sigma_{n}(k)$ denote the restricted divisor
+sum function, representing the sum of divisors of $k$ that are at
+most $n$. By adopting the first formula below as the formal definition
+of the generalized function $\text{pic}_{n}(k)$, all the preceding
+identities can be seamlessly mapped to this generalized setting as
+follows: 
+
+\begin{eqnarray*}
+\text{pic}_{n}(k) & := & \text{Z}_{k}(2^{1}-\sigma_{n}(1)-1,2^{2}-\sigma_{n}(2)-1,\ldots,2^{k}-\sigma_{n}(k)-1)\\
+k\,\text{pic}_{n}(k) & = & \sum_{j=1}^{k}\text{pic}_{n}(k-j)\,\left(2^{j}-\sigma_{n}(j)-1\right)\\
+\text{pic}_{n}(k) & = & \text{pic}_{n-1}(k)-\text{pic}_{n-1}(k-n)\\
+\text{pic}_{n}\left(\binom{n+1}{2}+k\right) & = & 2^{k-1}\left[2\,\text{pic}_{n}\left(\binom{n+1}{2}\right)-(-1)^{n}\right]\\
+\sigma_{n}(k)-2^{k}+1 & = & \text{Fab}_{k}(\text{pic}_{n}(1),\text{pic}_{n}(2),\ldots,\text{pic}_{n}(k))\\
+\sum_{j=0}^{k}p_{{\scriptscriptstyle >}n}(j)-2p_{{\scriptscriptstyle >}n}(k) & = & -\text{Fib}_{k}(\text{pic}_{n}(1),\text{pic}_{n}(2),\ldots,\text{pic}_{n}(k))\\
+\text{pic}_{n}(k) & = & \text{Fib}_{k}\left(2p_{{\scriptscriptstyle >}n}(1)-\sum_{j=0}^{1}p_{{\scriptscriptstyle >}n}(j),2p_{{\scriptscriptstyle >}n}(2)-\sum_{j=0}^{2}p_{{\scriptscriptstyle >}n}(j),\ldots,2p_{{\scriptscriptstyle >}n}(k)-\sum_{j=0}^{k}p_{{\scriptscriptstyle >}n}(j)\right)\\
+p_{{\scriptscriptstyle >}n}(k) & = & \sum_{j=0}^{k}2^{\max(0,k-1-j)}\,\text{Fib}_{j}(\text{pic}_{n}(1),\text{pic}_{n}(2),\ldots,\text{pic}_{n}(j))
+\end{eqnarray*}
+
+Furthermore, the following connection holds between the newly introduced
+generalized function $\text{pic}_{n}(k)$ and the classical sequence
+$\text{pic}(k)$: 
+\[
+\sum_{k=0}^{n}\text{pic}_{n-k}(k)=2^{n}-\text{pic}(n+1)\,\,(n=0,1,2,\ldots).
+\]
+
+For all $n\geq0$ let $\omega_{n}(k)$ (cf. \href{https://oeis.org/A231599}{OEIS:A231599}
+and \href{https://oeis.org/A333290}{A333290}) defined by
+\[
+\omega_{n}(k):=\begin{cases}
+1 & \text{if }n,k=0,\\
+0 & \text{if }n=0\text{ and }k>0,\\
+\text{the coefficient of \ensuremath{x^{k}}}\text{ in the expansion of the product \ensuremath{{\displaystyle \prod_{j=1}^{n}(1-x^{j})}}} & \text{if }n>0\text{, }k=0,1,2,\ldots
+\end{cases}
+\]
+
+For each $n\geq0$, we introduce the following sequences:
+
+\begin{align*}
+ & \mathbf{\omega}_{n}:=(\omega_{n}(0),\omega_{n}(1),\omega_{n}(2),\omega_{n}(3),\ldots), &  & \mathbf{p}:=(p(0),p(1),p(2),p(3),\ldots),\\
+ & \mathbf{pic}:=(\text{pic}(0),\text{pic}(1),\text{pic}(2),\ldots), &  & \mathbf{p}_{{\scriptscriptstyle >}n}:=(p_{{\scriptscriptstyle >}n}(0),p_{{\scriptscriptstyle >}n}(1),p_{{\scriptscriptstyle >}n}(2),\ldots),\\
+ & \mathbf{pic}_{n}:=(\text{pic}_{n}(0),\text{pic}_{n}(1),\text{pic}_{n}(2),\ldots), &  & \mathbf{p}_{{\scriptscriptstyle \leqq}n}:=(p_{{\scriptscriptstyle \leqq}n}(0),p_{{\scriptscriptstyle \leqq}n}(1),p_{{\scriptscriptstyle \leqq}n}(2),\ldots),
+\end{align*}
+
+where $p_{{\scriptscriptstyle \leqq}n}(k)$ denotes the number of
+partitions of $k$ into parts $\leq n$ (or equivalently, into at
+most $n$ parts).
+
+($\mathbf{p}_{{\scriptscriptstyle >}n}$: cf. \href{https://oeis.org/A000041}{OEIS:A000041},
+\href{https://oeis.org/A002865}{A002865}, \href{https://oeis.org/A008483}{A008483},
+\href{https://oeis.org/A008484}{A008484}, \href{https://oeis.org/A185325}{A185325}-\href{https://oeis.org/A185329}{A185329})
+
+($\mathbf{p}_{{\scriptscriptstyle \leqq}n}$: cf. \href{https://oeis.org/A000012}{OEIS:A000012},
+\href{https://oeis.org/A004526}{A004526}, \href{https://oeis.org/A001399}{A001399},
+\href{https://oeis.org/A001400}{A001400}, \href{https://oeis.org/A001401}{A001401},\href{https://oeis.org/A001402}{A001402},
+\href{https://oeis.org/A026813}{A026813}-\href{https://oeis.org/A026816}{A026816})
+
+By definition, the following limiting cases immediately follow from
+the interpretations of these sequences: 
+\begin{center}
+$\omega_{0}=(1,0,0,0,\ldots)$, $\omega_{\infty}=\omega$, $\mathbf{p}=\mathbf{p}_{{\scriptscriptstyle >}0}=\mathbf{p}_{{\scriptscriptstyle \leqq}\infty}$,
+$\mathbf{0}=(0,0,0,\ldots)=\mathbf{p}_{{\scriptscriptstyle >}\infty}=\mathbf{p}_{{\scriptscriptstyle \leqq}0}$,
+$\mathbf{1}=(1,1,1,\ldots)=\mathbf{p}_{{\scriptscriptstyle \leqq}1}$.
+\par\end{center}
+
+We will use the well-known inverse relation
+
+\[
+\mathbf{\omega}_{n}^{-\ast}=\mathbf{p}_{{\scriptscriptstyle \leqq}n}\,\,(n=0,1,2,\ldots,\infty)
+\]
+
+where the superscript $\mathbf{a}^{-\ast}$ denotes the convolutional
+inverse of a sequence $\mathbf{a}$.
+
+Using these algebraic formulations and sequence definitions, the relations
+established above for $\text{pic}_{n}(k)$ can be rewritten in a highly
+compact, equivalent form via the following convolutions:
+\begin{eqnarray*}
+\mathbf{p}_{{\scriptscriptstyle >}n} & = & \mathbf{\omega}_{n}\ast\mathbf{p}\\
+\mathbf{pic}_{n} & = & \mathbf{p}_{{\scriptscriptstyle >}n}\ast\mathbf{pic}
+\end{eqnarray*}
+
+To illustrate these algebraic properties, we explicitly compute the
+initial terms of the sequences $\mathbf{pic}_{n}$ corresponding to
+the cases $n=0,1,\text{and }2$.
+
+\begin{align*}
+\mathbf{pic}_{0} & =\mathbf{p}_{{\scriptscriptstyle >}0}\ast\mathbf{pic}=\mathbf{p}\ast\mathbf{pic}\\
+ & =(1,1,2,3,5,7,11,15,22,30,42,56,77,101,\ldots)\ast(1,0,0,1,2,5,9,19,37,74,148,296,591,1183,\ldots)\\
+ & =(1,1,2,4,8,16,32,64,128,256,512,1024,2048,4096,\ldots).
+\end{align*}
+
+\begin{align*}
+\mathbf{pic}_{1} & =\mathbf{p}_{{\scriptscriptstyle >}1}\ast\mathbf{pic}\\
+ & =(1,0,1,1,2,2,4,4,7,8,12,14,21,24,\ldots)\ast(1,0,0,1,2,5,9,19,37,74,148,296,591,1183,\ldots)\\
+ & =(1,0,1,2,4,8,16,32,64,128,256,512,1024,2048,\ldots).
+\end{align*}
+\begin{align*}
+\mathbf{pic}_{2} & =\mathbf{p}_{{\scriptscriptstyle >}2}\ast\mathbf{pic}\\
+ & =(1,0,0,1,1,1,2,2,3,4,5,6,9,10,\ldots)\ast(1,0,0,1,2,5,9,19,37,74,148,296,591,1183,\ldots)\\
+ & =(1,0,0,2,3,6,12,24,48,96,192,384,768,1536,\ldots).
+\end{align*}
+
+The following matrix summarizes the first $14$ terms of the sequences
+$\mathbf{pic}_{n}$ computed for $n=0,1,\ldots,9$.
+
+\[
+\left[\begin{array}{cccccccccccccc}
+1 & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 & 2048 & 4096\\
+\noalign{\medskip}1 & 0 & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 & 2048\\
+\noalign{\medskip}1 & 0 & 0 & 2 & 3 & 6 & 12 & 24 & 48 & 96 & 192 & 384 & 768 & 1536\\
+\noalign{\medskip}1 & 0 & 0 & 1 & 3 & 6 & 10 & 21 & 42 & 84 & 168 & 336 & 672 & 1344\\
+\noalign{\medskip}1 & 0 & 0 & 1 & 2 & 6 & 10 & 20 & 39 & 78 & 158 & 315 & 630 & 1260\\
+\noalign{\medskip}1 & 0 & 0 & 1 & 2 & 5 & 10 & 20 & 38 & 76 & 152 & 305 & 610 & 1221\\
+\noalign{\medskip}1 & 0 & 0 & 1 & 2 & 5 & 9 & 20 & 38 & 75 & 150 & 300 & 600 & 1201\\
+\noalign{\medskip}1 & 0 & 0 & 1 & 2 & 5 & 9 & 19 & 38 & 75 & 149 & 298 & 595 & 1192\\
+\noalign{\medskip}1 & 0 & 0 & 1 & 2 & 5 & 9 & 19 & 37 & 75 & 149 & 297 & 593 & 1187\\
+\noalign{\medskip}1 & 0 & 0 & 1 & 2 & 5 & 9 & 19 & 37 & 74 & 149 & 297 & 592 & 1185\\
+\noalign{\medskip}1 & 0 & 0 & 1 & 2 & 5 & 9 & 19 & 37 & 74 & 148 & 297 & 592 & 1184
+\end{array}\right]
+\]
+
+By shifting each row of this matrix by its corresponding index $n=0,1,2,3,\ldots$,
+we obtain precisely the matrix $\mathbf{R}$ discussed in Conjecture
+1:
+
+\[
+\mathbf{R}=\left[\begin{array}{ccccccccccccccc}
+1 & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 & 2048 & 4096 & \cdots\\
+\noalign{\medskip}0 & 1 & 0 & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 & \cdots\\
+\noalign{\medskip}0 & 0 & 1 & 0 & 0 & 2 & 3 & 6 & 12 & 24 & 48 & 96 & 192 & 384 & \cdots\\
+\noalign{\medskip}0 & 0 & 0 & 1 & 0 & 0 & 1 & 3 & 6 & 10 & 21 & 42 & 84 & 168 & \cdots\\
+\noalign{\medskip}0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 6 & 10 & 20 & 39 & 78 & \cdots\\
+\noalign{\medskip}0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & 10 & 20 & 38 & \cdots\\
+\noalign{\medskip}0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & 9 & 20 & \cdots\\
+\noalign{\medskip}0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & 9 & \cdots\\
+\noalign{\medskip}0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & 5 & \cdots\\
+\noalign{\medskip}0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 2 & \cdots\\
+\noalign{\medskip}0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & \cdots
+\end{array}\right]
+\]
+
+By combining the two fundamental convolution formulas above, we immediately
+obtain the following identity for $\mathbf{pic}_{n}$:
+
+\[
+\mathbf{pic}_{n}=\mathbf{p}_{{\scriptscriptstyle >}n}\ast\mathbf{pic}=\mathbf{\omega}_{n}\ast\left(\mathbf{p}\ast\mathbf{pic}\right)=\mathbf{\omega}_{n}\ast(1,1,2,4,8,16,32,\ldots)
+\]
+
+Convolving both sides of this equation with $\mathbf{\omega}_{n}^{-\ast}$,
+we arrive at:
+
+\[
+\mathbf{\omega}_{n}^{-\ast}\ast\mathbf{pic}_{n}=\mathbf{p}_{{\scriptscriptstyle \leqq}n}\ast\mathbf{pic}_{n}=\mathbf{p}\ast\mathbf{pic}=(1,1,2,4,8,16,32,\ldots)
+\]
+
+Alternatively, convolving both sides with $\mathbf{p}^{-\ast}=\mathbf{\omega}$
+we get the remarkably symmetric relation:
+
+\[
+\mathbf{\omega}\ast\mathbf{pic}_{n}=\mathbf{\omega}_{n}\ast\mathbf{pic}
+\]
+
+
+\section{The Pentagonal Transform and Its Recurrence Matrix}
+
+Let $S$ denote the left shift operator acting on sequences, defined
+by 
+\[
+S((a_{n})_{n\ge0})=(a_{n+1})_{n\ge0}.
+\]
+
+For each $k\ge0$, let $\mathbf{e}_{k}=(e_{k}(n))_{n\ge0}$ denote
+the $k$-th standard basis sequence, defined via the Kronecker delta
+by $e_{k}(n):=\delta_{k,n}\quad(n\ge0).$ In particular, $\mathbf{e}_{0}=(1,0,0,\dots)$
+and $\mathbf{e}_{1}=(0,1,0,\dots)$, where the only non-zero term
+of $\mathbf{e}_{k}$ appears at index $k$. We will frequently use
+throughout this chapter the sequence $\mathbf{\delta}=(\delta(n))_{n\ge0}$
+\[
+\mathbf{\delta}:=S(\mathbf{e}_{0}-\mathbf{\omega})=(1,1,0,0,-1,0,-1,0,0,0,0,1,0,0,1,0,\dots).
+\]
+
+That is, $\delta(n)=$\href{https://oeis.org/A257628}{A257628(n+1)}
+$(n\geq0)$. We retain the notation for the vectors $\mathbf{\omega}_{n}$,
+$\mathbf{p}$, $\mathbf{p}_{{\scriptscriptstyle \leqq}n}$, $\mathbf{p}_{{\scriptscriptstyle >}n}$,
+$\mathbf{pic}$, $\mathbf{pic}_{n}$ established in the previous chapter.
+\begin{defn*}
+Let $\mathbf{a}=(a(n))_{n\ge0}$ be a fixed sequence with $a(0)=1$.
+We associate with $\mathbf{a}$ an infinite two-dimensional matrix
+$\mathbf{R}(\mathbf{a})=(r(i,j))$ ($i,j\in\mathbb{Z}$) by the following
+recurrence relation:
+\[
+r(i,j)=\begin{cases}
+0 & \text{if }i<0\text{ or }j<i,\\
+a(j) & \text{if }i=0\text{ and }j\ge0,\\
+r(i-1,j-1)-r(i-1,j-1-i) & \text{otherwise.}
+\end{cases}
+\]
+The \emph{pentagonal transform} of the sequence $\mathbf{a}$, denoted
+by $\mathcal{P}(\mathbf{a})$ is the sequence $\mathbf{b}=(b(n))_{n\ge0}$
+whose $n$-th term is given by the sum of the elements in the $n$-th
+column of $\mathbf{R}(\mathbf{a})$:
+\[
+b(n):=\sum_{i=0}^{n}r(i,n)\quad(n\ge0).
+\]
+\end{defn*}
+It is an immediate consequence of the definition that the transform
+$\mathcal{P}$ is linear. The pentagonal transform $\mathcal{P}$
+and its underlying recurrence relation possess widespread applications;
+in fact, the wealth of combinatorial identities derivable from them
+could fill an entire volume on their own. For our present purposes,
+however, it suffices to note that for any arbitrary sequence $\mathbf{a}$,
+we have
+\[
+\mathcal{P}(\mathbf{a})=\mathbf{\delta}*\mathbf{a},
+\]
+ where $*$ denotes the convolution of sequences. 
+
+To illustrate the mechanics of the pentagonal transform $\mathcal{P}$
+and the structure of its associated matrix $\mathbf{R}(\mathbf{a})$,
+we present two concrete examples generated via a custom JavaScript
+application. Since these matrices are inherently infinite, the figures
+display only their first few rows and columns. The first displays
+matrix $\mathbf{R}(\mathbf{e}_{0})$ corresponding to the standard
+basis sequence $\mathbf{e}_{0}=(1,0,0,\dots)$ (indicated in the top
+blue row). As expected, the resulting column sums (highlighted in
+the bottom green row) precisely yield the sequence $\mathbf{\delta}$,
+reflecting the property $\mathcal{P}(\mathbf{e}_{0})=\mathbf{\delta}$.
+Similarly, the second demonstrates the transform applied to the sequence
+of partition numbers $\mathbf{p}=(p(n))_{n\ge0}$. In this case, the
+top blue row contains the initial partition values, while the bottom
+green row displays the row sums constituting the transformed sequence
+$\mathcal{P}(\mathbf{p})=S(\mathbf{p})$. 
+\begin{center}
+\includegraphics[width=0.42\paperwidth]{rek_1} \hspace{2mm}\includegraphics[width=0.42\paperwidth]{rek_p}
+\par\end{center}
+
+Furthermore, the next figure illustrates the transform applied to
+the sequence $\mathbf{a}=\mathbf{p}*\mathbf{pic}=(1,1,2,4,8,16,\dots)$.
+This particular case is of primary interest as it is directly related
+to Conjecture 1, by virtue of the fact that each value of the sequence
+$\mathcal{P}(\mathbf{a})$ displayed in the bottom green row is precisely
+one greater than the corresponding value of $\mathcal{L}(n)$.
+
+\hfill{}\includegraphics[width=0.86\textwidth]{rek_2}\hfill{}
+
+If $\mathbf{1}$ denotes the constant sequence $(1,1,1,\dots)$ and
+$\mathbf{L}$ denotes the sequence $(\mathcal{L}(2),\mathcal{L}(3),\mathcal{L}(4),\dots)$,
+then this relationship can be expressed in the following compact form
+\[
+\mathbf{L}=\mathcal{P}(\mathbf{a})-\mathbf{1}=\delta*\mathbf{p}*\mathbf{pic}-\mathbf{1},
+\]
+ from which the formula stated in Conjecture 1 can be obtained via
+basic algebraic manipulations. 
+
+However, the connection runs much deeper; it manifests not only at
+the level of the transformed sequence $\mathbf{L}=\mathcal{P}(\mathbf{a})-\mathbf{1}$,
+but also throughout the entire recurrence matrix, appearing in every
+single row. Consequently, this observation opens a clear avenue toward
+proving Conjecture 1. To elucidate this deeper connection, we introduce
+a so-called rank-increment matrix associated with the derivation relation,
+and compare its empirically observed values with the matrix of the
+recently discussed transform. In alignment with the notation established
+in Chapter 3, let $\mathcal{A}_{n}:=x\mathfrak{H}_{n-2}y$ denote
+the set of admissible words of length $n\geq2$, and let $\partial_{m}(\mathcal{A}_{n}):=\{\partial_{m}(w):w\in\mathcal{A}_{n}\}$
+for any $m\geq1$. For notational convenience, we index the rows of
+the rank-increment matrix $\mathbf{R}=(r_{m,n})$ starting from $1$
+and its columns starting from $2$, so that $m\ge1$ and $n\ge2$.
+The entries $r_{n,m}$ of the rank-increment matrix are formally defined
+as follows: 
+\begin{enumerate}
+\item The entry in the first row and $n$-th column is given by the rank
+of the vector system $\partial_{1}(\mathcal{A}_{n-1})$; that is,
+\[
+r_{1,n}=\text{rank}\left(\partial_{1}(\mathcal{A}_{n-1})\right)\quad\text{for all }n\ge2.
+\]
+\item For the subsequent rows where $m\ge2$, the entry $r_{m,n}$ is defined
+as the rank increment obtained by adjoining the vector system $\partial_{m}(\mathcal{A}_{n-m})$
+to the combined system 
+\[
+\bigcup_{k=1}^{m-1}\partial_{k}(\mathcal{A}_{n-k}).
+\]
+ That is,
+\[
+r_{m,n}=\text{rank}\left(\bigcup_{k=1}^{m}\partial_{k}(\mathcal{A}_{n-k})\right)-\text{rank}\left(\bigcup_{k=1}^{m-1}\partial_{k}(\mathcal{A}_{n-k})\right)
+\]
+ for all $m\ge2$ and $n\ge m+1$. 
+\end{enumerate}
+This formulation is completely equivalent to the rank-increment procedure
+discussed in Chapter 3; however, while the focus here is on conceptual
+clarity and conciseness, the description there was tailored to precisely
+reflect the algorithmic implementation. By exploiting the underlying
+duality, for rows where $2\leq m\leq n-3$, we restricted our analysis
+to the vector systems $\partial_{m}(x\mathcal{A}_{n-m-1})$, which
+comprise only half of the full system $\partial_{m}(\mathcal{A}_{n-m})$.
+Furthermore, those elements were adjoined to the matrix sequentially,
+one by one, according to a fixed ordering, discarding those that did
+not increase the rank. 
+
+The empirically computed rank-increment matrix is presented below,
+exhibiting a perfect match with the strictly upper triangular part
+of the transformation matrix $\mathbf{R}(\mathbf{a})$ initialized
+with the sequence $\mathbf{a}=(1,1,2,4,8,16,\dots)$. 
+
+\[
+\begin{array}{c|cccccccccccccccc}
+{\color{lightgray}} & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17\\
+\hline \partial_{1} & 1 & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 & 2048 & 4096 & 8192 & 16384\\
+\partial_{2} &  &  & 0 & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 & 2048 & 4096\\
+\partial_{3} &  &  &  & 0 & 0 & 2 & 3 & 6 & 12 & 24 & 48 & 96 & 192 & 384 & 768 & 1536\\
+\partial_{4} &  &  &  &  & 0 & 0 & 1 & 3 & 6 & 10 & 21 & 42 & 84 & 168 & 336 & 672\\
+\partial_{5} &  &  &  &  &  & 0 & 0 & 1 & 2 & 6 & 10 & 20 & 39 & 78 & 158 & 315\\
+\partial_{6} &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 10 & 20 & 38 & 76 & 152\\
+\partial_{7} &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 9 & 20 & 38 & 75\\
+\partial_{8} &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 9 & 19 & 38\\
+\partial_{9} &  &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 9 & 19\\
+\partial_{10} &  &  &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5 & 9\\
+\partial_{11} &  &  &  &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2 & 5\\
+\partial_{12} &  &  &  &  &  &  &  &  &  &  &  &  & 0 & 0 & 1 & 2\\
+\partial_{13} &  &  &  &  &  &  &  &  &  &  &  &  &  & 0 & 0 & 1\\
+\partial_{14} &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 0 & 0\\
+\partial_{15} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 0\\
+\partial_{16}
+\end{array}
+\]
+
+The fact that the powers of two appear in the first row of the empirical
+rank-increment matrix $\mathbf{R}$ is theoretically straightforward
+to verify; specifically, $\text{rank}(\partial_{1}(\mathcal{A}_{n}))=2^{n-3}$
+for $n\ge3$. Indeed, the cardinality of the underlying set is given
+by $|\mathcal{A}_{n-1}|=|x\mathfrak{H}_{n-3}y|=2^{n-3}$. To establish
+the linear independence of the vector system $\partial_{1}(\mathcal{A}_{n-1})$,
+it suffices to examine the first term of the derivative of each word
+$w\in\mathcal{A}_{n}$ with respect to the ordering fixed in Chapter
+3. Consequently, to complete the proof of Conjecture 1, it suffices
+to demonstrate that under the appropriate reindexing, the defined
+rank increments $r_{m,n}$ satisfy the recurrence relation prescribed
+in the definition of the pentagonal transform. 
+
+To further investigate the underlying algebraic foundations, it is
+highly instructive that the matrix can be viewed as a two-dimensional
+extension $\mathbf{pic}_{n}(k)$ of the sequence of pure inverting
+compositions $\mathbf{pic}(k)$, as discussed in detail in the preceding
+section. In view of what is described there, \emph{Conjecture 1 would
+follow from directly showing that} the vector system $\partial_{m}(\mathcal{A}_{k})$
+increases the rank of the system 
+\[
+\bigcup_{j=1}^{m-1}\partial_{m-j}(\mathcal{A}_{k+j})=\partial_{m-1}(\mathcal{A}_{k+1})\cup\partial_{m-2}(\mathcal{A}_{k+2})\cup\dots\cup\partial_{1}(\mathcal{A}_{k+m-1})
+\]
+ by exactly 
+\[
+\sum_{i=0}^{k}p_{{\scriptscriptstyle >}m}(i)\cdot\text{pic}(k-i)=p_{{\scriptscriptstyle >}m}(0)\,\text{pic}(k)+p_{{\scriptscriptstyle >}m}(1)\,\text{pic}(k-1)+\cdots+p_{{\scriptscriptstyle >}m}(k-1)\,\text{pic}(1)+p_{{\scriptscriptstyle >}m}(k)\,\text{pic}(0).
+\]
+
+
+\section{Other Conjectures on Derivation Relations}
+
+Recall that for any admissible word $w\in\mathfrak{H}_{0}$ and any
+integers $a,b\geq0$, the shuffle regularization of the word $y^{a}wx^{b}$
+is given by
+\[
+\text{reg}_{\ensuremath{\shuffle}}(y^{a}wx^{b}):=\sum_{i=0}^{a}\sum_{j=0}^{b}(-1)^{i+j}\,y^{i}\shuffle\left(y^{a-i}wx^{b-j}\right)\shuffle x^{j}
+\]
+
+\begin{conjecture}
+(Generalized Derivation Relation) For any admissible word $w\in\mathfrak{H}_{0}$
+and any integers $n>0$, $a,b\geq0$, and $m>a+b$, we have
+\[
+\zeta\left(\text{reg}_{\ensuremath{\shuffle}}\left[\partial_{n}^{m}\left(y^{a}wx^{b}\right)\right]\right)=0.
+\]
+\end{conjecture}
+
+Moreover, the quasi-derivation relation can be generalized in a similar
+manner:
+\begin{conjecture}
+(Generalized Quasi-derivation Relation) For any rational number $c\in\mathbb{Q}$
+, any admissible word $w\in\mathfrak{H}_{0}$ and any integers $n>0$,
+$a,b\geq0$, and $m>a+b$, we have
+\[
+\zeta\left(\text{reg}_{\ensuremath{\shuffle}}\left[\left(\partial_{n}^{(c)}\right)^{m}\left(y^{a}wx^{b}\right)\right]\right)=0.
+\]
+\end{conjecture}
+
+The bold rows of the table (which also incorporate rows from the table
+in \cite{TANAKA20092021}) below present the number of linearly independent
+relations obtained from Conjecture 4, Conjecture 5 (calculated via
+a JavaScript application developed by the author), and the linear
+part of Kawashima's relation, respectively. 
+
+\parbox[t]{1\columnwidth}{%
+\begin{center}
+Table 5. Number of Independent Relations for MZVs
+\par\end{center}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}n$} & {\small{}3} & {\small{}4} & {\small{}5} & {\small{}6} & {\small{}7} & {\small{}8} & {\small{}9} & {\small{}10} & {\small{}11} & {\small{}12} & {\small{}13} & {\small{}14} & {\small{}15}\tabularnewline
+\hline 
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}\partial_{n}$} & {\small{}1} & {\small{}2} & {\small{}5} & {\small{}10} & {\small{}22} & {\small{}44} & {\small{}90} & {\small{}181} & {\small{}363} & {\small{}727} & {\small{}1456} & {\small{}2912} & {\small{}5825}\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}\partial_{n}^{m}$} & \textbf{\small{}1} & \textbf{\small{}2} & \textbf{\small{}5} & \textbf{\small{}10} & \textbf{\small{}24} & \textbf{50} & \textbf{104} & \textbf{213} & \textbf{431} & \textbf{873} & \textbf{1756} & \textbf{3532} & \textbf{7080}\tabularnewline
+\hline 
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}\partial_{n}^{(c)}$} & 1 & 2 & 5 & 10 & 23 & 46 & 98 & 200 & 410 & 830 & 1679 & - & -\tabularnewline
+\hline 
+{\small{}$\vphantom{\dfrac{A}{B}}\left(\partial_{n}^{(c)}\right)^{m}$} & \textbf{1} & \textbf{2} & \textbf{5} & \textbf{11} & \textbf{24} & \textbf{50} & \textbf{105} & \textbf{217} & \textbf{445} & \textbf{910} & - & - & -\tabularnewline
+\hline 
+\hline 
+$\vphantom{\dfrac{A}{B}}$Ohno & 1 & 2 & 5 & 10 & 23 & 46 & 98 & 199 & 411 & 830 & 1691 & - & -\tabularnewline
+\hline 
+$\vphantom{\dfrac{A}{B}}$Lin.Kaw. & \textbf{1} & \textbf{2} & \textbf{5} & \textbf{10} & \textbf{23} & \textbf{46} & \textbf{98} & \textbf{200} & \textbf{413} & \textbf{838} & \textbf{1713} & - & -\tabularnewline
+\hline 
+$\vphantom{\dfrac{A}{B}}$All & 1 & 3 & 6 & 14 & 29 & 60 & 123 & 249 & 503 & 1012 & 2032 & 4075 & 8164\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}%
+}
+
+\bibliographystyle{plain}
+\addcontentsline{toc}{section}{\refname}\nocite{*}
+\bibliography{conjecture}
+
+\end{document}
