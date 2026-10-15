@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omega Mátrix és Euler A010815 Generátor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .control-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        label {
+            font-weight: bold;
+            color: #34495e;
+        }
+        
+        input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .table-container {
+            max-width: 100%;
+            overflow-x: auto;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        
+        th,
+        td {
+            border: 1px solid #e0e0e0;
+            padding: 10px 14px;
+            text-align: center;
+            font-size: 18px;
+            min-width: max-content;
+        }
+        
+        th {
+            background-color: #34495e;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:first-child th {
+            background-color: #2c3e50;
+        }
+        
+        td.index-cell {
+            background-color: #eaeded;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        /* Az új OEIS A010815 sor egyedi stílusa */
+        
+        .oeis-row {
+            background-color: #fef9e7;
+            font-weight: bold;
+        }
+        
+        .oeis-index {
+            background-color: #fcf3cf;
+            color: #25231b;
+            font-weight: bold;
+        }
+        /* Számok színei */
+        
+        .pos {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .neg {
+            color: #c0392b;
+            font-weight: bold;
+        }
+        
+        .zero {
+            color: #95a5a6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>&omega;(k) és &omega;<sub>n</sub>(k) mátrix generátor</h1>
+
+    <div class="control-panel">
+        <label for="maxNInput">Sor:</label>
+        <input type="number" id="maxNInput" value="10" min="0" max="500">
+
+        <label for="maxKInput">Oszlop:</label>
+        <input type="number" id="maxKInput" value="10" min="0" max="400">
+
+        <button onclick="handleGenerate()">Mátrix Generálása</button>
+    </div>
+
+    <div class="table-container" id="matrixContainer">
+        <!-- Ide kerül a generált táblázat -->
+    </div>
+
+    <script>
+        // Háttérben futó hatékony DP logika az omegaMatrix-hoz
+        function omegaMatrix(maxN, maxK) {
+            const dp = Array.from({
+                length: maxN + 1
+            }, () => new Array(maxK + 1).fill(0));
+            if (maxN >= 0 && maxK >= 0) dp[0][0] = 1;
+
+            for (let n = 1; n <= maxN; n++) {
+                for (let k = 0; k <= maxK; k++) {
+                    let term1 = dp[n - 1][k];
+                    let term2 = (k - n >= 0) ? dp[n - 1][k - n] : 0;
+                    dp[n][k] = term1 - term2;
+                }
+            }
+            return dp;
+        }
+
+        // Kiszámítja az OEIS A010815 sorozat k-adik elemét az Euler-féle pentagonális képlettel
+        function getA010815(k) {
+            if (k === 0) return 1;
+
+            // Megnézzük, hogy k pentagonális szám-e valamilyen m-re (m lehet negatív is!)
+            // k = m*(3m - 1)/2  vagy  k = m*(3m + 1)/2
+            // Keressük m-et brute-force jelleggel, mivel k kicsi, ez villámgyors
+            let m = 1;
+            while (true) {
+                let p1 = m * (3 * m - 1) / 2;
+                let p2 = m * (3 * m + 1) / 2;
+
+                if (p1 === k || p2 === k) {
+                    return Math.pow(-1, m); // (-1)^m a pentagonális tétel szerint
+                }
+                if (p1 > k && p2 > k) break; // Ha túlléptünk k-n, nem pentagonális
+                m++;
+            }
+            return 0; // minden más esetben 0
+        }
+
+        function handleGenerate() {
+            const maxN = parseInt(document.getElementById('maxNInput').value) || 0;
+            const maxK = parseInt(document.getElementById('maxKInput').value) || 0;
+
+            const baseData = omegaMatrix(maxN, maxK);
+            const rowCount = maxN + 1;
+            const colCount = maxK + 1;
+
+            let html = '<table>';
+
+            // 1. Fő fejléc (k indexek)
+            html += '<tr><th>n \\ k</th>';
+            for (let c = 0; c < colCount; c++) {
+                html += `<th>${c}</th>`;
+            }
+            html += '</tr>';
+
+            // 2. AZ ÚJ SÖR: Az OEIS A010815 sorozat elemei (mint "-1. sor")
+            html += '<tr class="oeis-row">';
+            html += '<td class="oeis-index" title="Euler sorozat határértéke">&omega;(k)</td>';
+            for (let c = 0; c < colCount; c++) {
+                // Mivel a(n-1, k-1) eltolást kértél, a k oszlop fejlécéhez tartozó valódi OEIS index: c - 1
+                const targetK = c;
+                let val = 0;
+                if (targetK >= 0) {
+                    val = getA010815(targetK);
+                }
+
+                let cellClass = 'zero';
+                if (val > 0) cellClass = 'pos';
+                if (val < 0) cellClass = 'neg';
+
+                html += `<td class="${cellClass}">${val}</td>`;
+            }
+            html += '</tr>';
+
+            // 3. A normál Mátrix adatsorai
+            for (let r = 0; r < rowCount; r++) {
+                html += '<tr>';
+                html += `<td class="index-cell">${r}</td>`;
+
+                for (let c = 0; c < colCount; c++) {
+                    const nIndex = r;
+                    const kIndex = c;
+
+                    let value = 0;
+                    if (nIndex >= 0 && kIndex >= 0) {
+                        value = baseData[nIndex][kIndex];
+                    }
+
+                    let cellClass = 'zero';
+                    if (value > 0) cellClass = 'pos';
+                    if (value < 0) cellClass = 'neg';
+
+                    html += `<td class="${cellClass}">${value}</td>`;
+                }
+                html += '</tr>';
+            }
+
+            html += '</table>';
+            document.getElementById('matrixContainer').innerHTML = html;
+        }
+
+        window.onload = handleGenerate;
+    </script>
+</body>
+
+</html>
