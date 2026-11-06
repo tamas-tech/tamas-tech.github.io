@@ -6991,6 +6991,7 @@ function stuff() {
     const elem = document.getElementById("shoutr");
     var a = kiszed_dbl("avli", "figyshst");
     var b = kiszed_dbl("bvli", "figyshst");
+    var L = 1;
     var sh = "";
     if (a == undefined || b == undefined)
         sh = "HIBA";
@@ -7001,9 +7002,9 @@ function stuff() {
     else if (b.length == 0)
         sh = "(" + a + ")&lowast;( ) = (" + a + ")";
     else {
-        const S = _.countBy(stuffle(a, b));
-        /*  for (let s of S)
-             sh += "(" + s.toString() + ") + "; */
+        const stab = stuffle(a, b);
+        const S = _.countBy(stab);
+        L = stab.length;
         _.forEach(S, function(value, key) {
             if (value * 1 == 1)
                 sh += "(" + key + ") + ";
@@ -7017,7 +7018,7 @@ function stuff() {
             sh = sh.slice(0, -2)
         }
     };
-    elem.innerHTML = sh;
+    elem.innerHTML = "Az összegben szereplő tagok együtthatóinak összege: " + L + "<hr style='color:#d7d7d7;'/>" + sh;
 };
 
 function rshtuff() {
